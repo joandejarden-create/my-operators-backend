@@ -1,0 +1,456 @@
+{
+  "contract": "HE50_CONTROLLED_APPLY_V1",
+  "approvalContract": "HE50_CONDITIONAL_APPROVAL_V1",
+  "standingAuth": {
+    "standingAuthorization": true,
+    "authorizationVersion": "he-5-0-standing-authorization-v1.1-hi-org-contacts",
+    "grantedAt": "2026-11-20",
+    "hiOrgContactsAuthorizedAt": "2026-11-20",
+    "hiOrgContactsAuthorized": true,
+    "hiContactChannelsAuthorized": true,
+    "hiOrganizationsForContactsAuthorized": true,
+    "ownershipRelationshipPromotionAuthorized": false,
+    "pilotRunId": "he50_mullen_eight_hotel_2026_11_19",
+    "baseId": "appCCUsuGsE1ifoLk",
+    "globalUsdCap": 50,
+    "applyAuthorized": true,
+    "airtableWritesAllowed": true,
+    "surfeAutomatic": false,
+    "productionDeploy": false,
+    "schemaChangesAllowed": false,
+    "legacyHotelCensusWritesAllowed": false,
+    "legacyHotelCensusTableIdBlocked": "tblgj2qEwxjTcg6q0",
+    "ownershipProposedMustRemainProposed": true,
+    "stopMessage": "STANDING CONDITIONAL AUTHORIZATION — auto-apply only when all mutation gates pass; quarantine exceptions and continue. HI Org Contacts / Channels authorized for eight-hotel pilot PUBLIC_SOURCE facts only.",
+    "reportStatuses": {
+      "FULL": "AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED",
+      "PARTIAL": "PARTIAL AUTO-APPLY — EXCEPTIONS QUARANTINED",
+      "OUT_OF_SCOPE": "FOUNDER APPROVAL REQUIRED — OUT-OF-SCOPE OPERATION"
+    }
+  },
+  "pilotRunId": "he50_mullen_eight_hotel_2026_11_19",
+  "startedAt": "2026-11-20T02:09:50.642Z",
+  "completedAt": "2026-11-20T02:09:52.973Z",
+  "dryRun": true,
+  "applyRequested": false,
+  "hpcTableId": "tbl9aY5ijiuIzzWam",
+  "schemaFieldCount": 153,
+  "classificationSummary": {
+    "total": 11,
+    "executable": 11,
+    "byClass": {
+      "AUTO_APPROVED_CANONICAL_CREATE": 10,
+      "AUTO_APPROVED_CANONICAL_LINK": 1
+    }
+  },
+  "results": [
+    {
+      "mutationId": "M-BETH-ORG-MULLEN-001",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_ORGANIZATION_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Organization ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Legal Name": "Mullen Real Estate Capital",
+            "Trading Name": "Mullen Real Estate Capital",
+            "Organization Type": "Asset Manager",
+            "Jurisdiction": "US-PA",
+            "Official Website": "https://mullencap.com/",
+            "Verification State": "Evidence Collected",
+            "Confidence": "MEDIUM",
+            "Dedupe Key": "org::mullen_real_estate_capital::us_pa",
+            "Provenance Summary": "Public company site + prior HE research. Proposed economic sponsor association only — not verified legal owner.",
+            "Publication State": "INTERNAL_ONLY",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "HE50_CONTACT_EMPLOYER · proposed economic sponsor for Bethesda Marriott · DO NOT treat as verified legal PropCo. HE50_PILOT_HOTEL:recLuxvwwxID7U2B8"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CONTACT-katherine_button",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_ORG_CONTACT_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Person ID": "dlp_D8345CA976AF6BE7B4708CD969",
+            "Display Name": "Katherine Button",
+            "Organization ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Title": "VP, Asset Management and Investments",
+            "Function / Role": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+            "Hotel / Commercial Responsibility": "RELEVANT_COMMERCIAL_ENTRY_POINT — senior AM/investments at proposed economic sponsor; property-specific assignment unconfirmed. HE50_PILOT_HOTEL:recLuxvwwxID7U2B8",
+            "Affiliation Verified?": true,
+            "Role Currency": "CURRENT_PROBABLE",
+            "Confidence": "HIGH",
+            "Verification State": "Evidence Collected",
+            "Person Dedupe Key": "person::katherine_button::identity",
+            "Affiliation Dedupe Key": "person::katherine_button::dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Publication State": "INTERNAL_ONLY",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "{\"he50_pilot_hotel\":\"recLuxvwwxID7U2B8\",\"propertyResponsibility\":\"INFERRED\",\"verificationStates\":{\"PERSON_IDENTITY_VERIFIED\":true,\"CURRENT_ROLE_VERIFIED\":false,\"ORGANIZATION_AFFILIATION_VERIFIED\":true,\"HOTEL_ORGANIZATION_RELATIONSHIP_VERIFIED\":false,\"PERSON_PROPERTY_RESPONSIBILITY_VERIFIED\":false,\"PUBLIC_CONTACT_CHANNEL_VERIFIED\":false},\"sources\":[\"https://mullencap.com/about/\",\"https://www.linkedin.com/in/katherine-button/\"],\"lastVerified\":\"2026-11-20\"}"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CH-LI-katherine_button",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_CONTACT_CHANNEL_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Channel ID": "dlc_EA6552E86E83E62CF779A1E5B1",
+            "Subject Type": "Person",
+            "Subject ID": "dlp_D8345CA976AF6BE7B4708CD969",
+            "Channel Kind": "LinkedIn",
+            "Channel Value": "https://www.linkedin.com/in/katherine-button/",
+            "Classification": "Public",
+            "Verification Status": "Public Listed",
+            "Source Name": "LinkedIn public profile",
+            "Source URL": "https://www.linkedin.com/in/katherine-button/",
+            "Observed At": "2026-11-20",
+            "Provider": "public_web",
+            "Usage Provenance": "PUBLIC_SOURCE",
+            "Access / Publication Restriction": "INTERNAL_ONLY",
+            "Dedupe Key": "ch::dlp_D8345CA976AF6BE7B4708CD969::linkedin::https_www_linkedin_com_in_katherine_button",
+            "Publication State": "CUSTOMER_BLOCKED",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "VERIFIED_PROFESSIONAL_PROFILE"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CONTACT-jeff_mullen",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_ORG_CONTACT_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Person ID": "dlp_F5D58111301C0B9963E7447E9F",
+            "Display Name": "Jeff Mullen",
+            "Organization ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Title": "President and CEO",
+            "Function / Role": "VERIFIED_ORGANIZATION_CONTACT",
+            "Hotel / Commercial Responsibility": "VERIFIED_ORGANIZATION_CONTACT — President/CEO of proposed economic sponsor; not automatically day-to-day AM for Bethesda Marriott. HE50_PILOT_HOTEL:recLuxvwwxID7U2B8",
+            "Affiliation Verified?": true,
+            "Role Currency": "CURRENT_PROBABLE",
+            "Confidence": "HIGH",
+            "Verification State": "Evidence Collected",
+            "Person Dedupe Key": "person::jeff_mullen::identity",
+            "Affiliation Dedupe Key": "person::jeff_mullen::dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Publication State": "INTERNAL_ONLY",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "{\"he50_pilot_hotel\":\"recLuxvwwxID7U2B8\",\"propertyResponsibility\":\"INFERRED\",\"verificationStates\":{\"PERSON_IDENTITY_VERIFIED\":true,\"CURRENT_ROLE_VERIFIED\":false,\"ORGANIZATION_AFFILIATION_VERIFIED\":true,\"HOTEL_ORGANIZATION_RELATIONSHIP_VERIFIED\":false,\"PERSON_PROPERTY_RESPONSIBILITY_VERIFIED\":false,\"PUBLIC_CONTACT_CHANNEL_VERIFIED\":false},\"sources\":[\"https://mullencap.com/about/\",\"https://www.linkedin.com/in/jeffmmullen/\"],\"lastVerified\":\"2026-11-20\"}"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CH-LI-jeff_mullen",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_CONTACT_CHANNEL_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Channel ID": "dlc_CD3D10DC21332995E906074673",
+            "Subject Type": "Person",
+            "Subject ID": "dlp_F5D58111301C0B9963E7447E9F",
+            "Channel Kind": "LinkedIn",
+            "Channel Value": "https://www.linkedin.com/in/jeffmmullen/",
+            "Classification": "Public",
+            "Verification Status": "Public Listed",
+            "Source Name": "LinkedIn public profile",
+            "Source URL": "https://www.linkedin.com/in/jeffmmullen/",
+            "Observed At": "2026-11-20",
+            "Provider": "public_web",
+            "Usage Provenance": "PUBLIC_SOURCE",
+            "Access / Publication Restriction": "INTERNAL_ONLY",
+            "Dedupe Key": "ch::dlp_F5D58111301C0B9963E7447E9F::linkedin::https_www_linkedin_com_in_jeffmmullen",
+            "Publication State": "CUSTOMER_BLOCKED",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "VERIFIED_PROFESSIONAL_PROFILE"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CONTACT-patrick_reece",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_ORG_CONTACT_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Person ID": "dlp_51FB8AFA43E27AA3D92A09A90A",
+            "Display Name": "Patrick Reece",
+            "Organization ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Title": "Director, Asset Management",
+            "Function / Role": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+            "Hotel / Commercial Responsibility": "RELEVANT_COMMERCIAL_ENTRY_POINT — director-level AM referral; property responsibility not confirmed. HE50_PILOT_HOTEL:recLuxvwwxID7U2B8",
+            "Affiliation Verified?": true,
+            "Role Currency": "CURRENT_PROBABLE",
+            "Confidence": "MEDIUM",
+            "Verification State": "Evidence Collected",
+            "Person Dedupe Key": "person::patrick_reece::identity",
+            "Affiliation Dedupe Key": "person::patrick_reece::dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Publication State": "INTERNAL_ONLY",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "{\"he50_pilot_hotel\":\"recLuxvwwxID7U2B8\",\"propertyResponsibility\":\"UNKNOWN\",\"verificationStates\":{\"PERSON_IDENTITY_VERIFIED\":true,\"CURRENT_ROLE_VERIFIED\":false,\"ORGANIZATION_AFFILIATION_VERIFIED\":true,\"HOTEL_ORGANIZATION_RELATIONSHIP_VERIFIED\":false,\"PERSON_PROPERTY_RESPONSIBILITY_VERIFIED\":false,\"PUBLIC_CONTACT_CHANNEL_VERIFIED\":false},\"sources\":[\"https://mullencap.com/about/\",\"https://www.linkedin.com/in/patrick-reece-375b8937/\"],\"lastVerified\":\"2026-11-20\"}"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CH-LI-patrick_reece",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_CONTACT_CHANNEL_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Channel ID": "dlc_5CD05B7EE386CF6762A7C62F8E",
+            "Subject Type": "Person",
+            "Subject ID": "dlp_51FB8AFA43E27AA3D92A09A90A",
+            "Channel Kind": "LinkedIn",
+            "Channel Value": "https://www.linkedin.com/in/patrick-reece-375b8937/",
+            "Classification": "Public",
+            "Verification Status": "Public Listed",
+            "Source Name": "LinkedIn public profile",
+            "Source URL": "https://www.linkedin.com/in/patrick-reece-375b8937/",
+            "Observed At": "2026-11-20",
+            "Provider": "public_web",
+            "Usage Provenance": "PUBLIC_SOURCE",
+            "Access / Publication Restriction": "INTERNAL_ONLY",
+            "Dedupe Key": "ch::dlp_51FB8AFA43E27AA3D92A09A90A::linkedin::https_www_linkedin_com_in_patrick_reece_375b8937",
+            "Publication State": "CUSTOMER_BLOCKED",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "VERIFIED_PROFESSIONAL_PROFILE"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CH-ORG-1",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_CONTACT_CHANNEL_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Channel ID": "dlc_B80A2AB5B1E4FA17865193C37B",
+            "Subject Type": "Organization",
+            "Subject ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Channel Kind": "Email",
+            "Channel Value": "info@mullencap.com",
+            "Classification": "General / Switchboard",
+            "Verification Status": "Public Listed",
+            "Source Name": "Public organization contact",
+            "Source URL": "https://mullencap.com/contact/",
+            "Observed At": "2026-11-20",
+            "Provider": "public_web",
+            "Usage Provenance": "PUBLIC_SOURCE",
+            "Access / Publication Restriction": "INTERNAL_ONLY",
+            "Dedupe Key": "ch::dle_06GZDDWW5RXS3TFSCKGN5CF11Y::email::info_mullencap_com",
+            "Publication State": "CUSTOMER_BLOCKED",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "VERIFIED_ORGANIZATION_EMAIL — not a named personal inbox"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CH-ORG-2",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_CONTACT_CHANNEL_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Channel ID": "dlc_906C07B6967C6B2B66F946DFC6",
+            "Subject Type": "Organization",
+            "Subject ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Channel Kind": "Telephone",
+            "Channel Value": "(610) 742-9167",
+            "Classification": "General / Switchboard",
+            "Verification Status": "Public Listed",
+            "Source Name": "Public organization contact",
+            "Source URL": "https://www.sec.gov/Archives/edgar/data/2080980/0002080980-25-000001.txt",
+            "Observed At": "2026-11-20",
+            "Provider": "public_web",
+            "Usage Provenance": "PUBLIC_SOURCE",
+            "Access / Publication Restriction": "INTERNAL_ONLY",
+            "Dedupe Key": "ch::dle_06GZDDWW5RXS3TFSCKGN5CF11Y::telephone::610_742_9167",
+            "Publication State": "CUSTOMER_BLOCKED",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "VERIFIED_ORGANIZATION_PHONE — SEC Form D business line; not named direct"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-CH-ORG-3",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_CONTACT_CHANNEL_UPSERT",
+          "dryRun": true,
+          "wouldCreate": {
+            "Channel ID": "dlc_C19D498239DCBCD4DF1BC53261",
+            "Subject Type": "Organization",
+            "Subject ID": "dle_06GZDDWW5RXS3TFSCKGN5CF11Y",
+            "Channel Kind": "Other",
+            "Channel Value": "https://mullencap.com/",
+            "Classification": "Public",
+            "Verification Status": "Public Listed",
+            "Source Name": "Public organization contact",
+            "Source URL": "https://mullencap.com/",
+            "Observed At": "2026-11-20",
+            "Provider": "public_web",
+            "Usage Provenance": "PUBLIC_SOURCE",
+            "Access / Publication Restriction": "INTERNAL_ONLY",
+            "Dedupe Key": "ch::dle_06GZDDWW5RXS3TFSCKGN5CF11Y::other::https_mullencap_com",
+            "Publication State": "CUSTOMER_BLOCKED",
+            "Schema Version": "HE50_CONTROLLED_APPLY_V1",
+            "Notes": "Organization website"
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-EV-CONTACTS-001",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_LINK",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_GRAPH_EVIDENCE_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Evidence ID": "he50:M-BETH-EV-CONTACTS-001:recLuxvwwxID7U2B8",
+            "HPC Hotel ID": "recLuxvwwxID7U2B8",
+            "Entity Type": "Other",
+            "Entity Record ID": "recLuxvwwxID7U2B8",
+            "Field Name": "contact_intelligence_scope",
+            "Value Observed": "{\n  \"orgId\": \"dle_06GZDDWW5RXS3TFSCKGN5CF11Y\",\n  \"people\": [\n    {\n      \"personId\": \"dlp_D8345CA976AF6BE7B4708CD969\",\n      \"name\": \"Katherine Button\",\n      \"functionRole\": \"RELEVANT_COMMERCIAL_ENTRY_POINT\",\n      \"propertyResponsibility\": \"INFERRED\"\n    },\n    {\n      \"personId\": \"dlp_F5D58111301C0B9963E7447E9F\",\n      \"name\": \"Jeff Mullen\",\n      \"functionRole\": \"VERIFIED_ORGANIZATION_CONTACT\",\n      \"propertyResponsibility\": \"INFERRED\"\n    },\n    {\n      \"personId\": \"dlp_51FB8AFA43E27AA3D92A09A90A\",\n      \"name\": \"Patrick Reece\",\n      \"functionRole\": \"RELEVANT_COMMERCIAL_ENTRY_POINT\",\n      \"propertyResponsibility\": \"UNKNOWN\"\n    }\n  ],\n  \"note\": \"RELEVANT_COMMERCIAL_ENTRY_POINT / VERIFIED_ORGANIZATION_CONTACT — not confirmed property AM\"\n}",
+            "Source Name": "HE 5.0 free research",
+            "Source Type": "public_web",
+            "Source URL": "https://mullencap.com/about/",
+            "Retrieved At": "2026-11-20T02:09:50.643Z",
+            "Confidence": "HIGH",
+            "Current?": true,
+            "Notes": "Scope evidence linking PUBLIC_SOURCE Mullen contacts to Bethesda pilot without Economic Owner edge",
+            "Schema Version": "HE50_CONDITIONAL_APPROVAL_V1",
+            "Hotel Property Census": [
+              "recLuxvwwxID7U2B8"
+            ]
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "total": 11,
+    "applied": 0,
+    "quarantined": 0,
+    "skipped": 0,
+    "createdHpc": 0,
+    "updatedHpc": 0,
+    "evidenceCreated": 0
+  },
+  "reportStatus": "DRY_RUN — STANDING AUTH CLASSIFICATION COMPLETE (no writes)",
+  "legacyHotelCensusAccess": "BLOCKED_CONFIRMED"
+}
