@@ -1,0 +1,94 @@
+{
+  "generatedAt": "2026-11-20T06:54:49.391Z",
+  "before": {
+    "inventoryRows": 290,
+    "nonemptyNameMentions": 290,
+    "distinctNonemptyNameStrings": 228,
+    "note": "Distinct name strings ≠ distinct physical properties. Do not promote as verified unique hotels.",
+    "sampleProblematic": [
+      "AC Hotel",
+      "Andaz Miami Beach and Marriott Long Beach Downtown",
+      "AZ Residence Inn",
+      "CA SpringHill Suites",
+      "Comparable Hotel",
+      "Contents Comparable Hotel",
+      "Contents Hotel",
+      "Embassy Suites",
+      "Four Seasons Resort and Residences Jackson Hole",
+      "Grand Hyatt San Diego and Hyatt Regency Reston.",
+      "Hilton San Diego Bayfront and The Westin Washington",
+      "Hotel Central Park and The Ritz-Carlton O'ahu",
+      "Hyatt Regency Coconut Point Resort and Spa",
+      "Hyatt Regency Maui Resort and Spa",
+      "JW Marriott New Orleans and The Westin Washington",
+      "Marriott and Hyatt",
+      "Marriott and Hyatt hotels",
+      "Marriott and Mr. C",
+      "Marriott Boston Long Wharf and The Westin Washington",
+      "MD TownePlace Suites",
+      "NV Residence Inn",
+      "Residence Inn",
+      "See Comparable Hotel",
+      "the Four Seasons Resort and Residences Jackson Hole",
+      "TRS. Comparable Hotel",
+      "TX Residence Inn",
+      "TX SpringHill Suites"
+    ]
+  },
+  "after": {
+    "rawCandidates": 1612,
+    "distinctRawNameStringsBefore": 228,
+    "identityClassCounts": {
+      "VERIFIED_PROPERTY": 18,
+      "PROBABLE_PROPERTY": 71,
+      "AMBIGUOUS_PROPERTY": 1124,
+      "MULTIPLE_PROPERTIES": 21,
+      "GENERIC_BRAND_OR_COMPANY": 178,
+      "EXTRACTION_ARTIFACT": 200,
+      "DUPLICATE_ALIAS": 0
+    },
+    "uniqueVerifiedProperties": 18,
+    "probablePendingVerification": 71,
+    "duplicateAliases": 0,
+    "falsePositivesRejected": 378,
+    "multiHotelReferences": 21,
+    "ambiguous": 1124,
+    "verifiedPrecisionGate": {
+      "sampleSize": 18,
+      "correct": 18,
+      "precision": 1,
+      "meetsGate": true,
+      "gateThreshold": 0.95
+    },
+    "durableInventory": {
+      "totalHotels": 1610,
+      "withContractFindings": 125,
+      "matchedHpc": 4,
+      "notInHpc": 1606,
+      "contractVerifiedPendingHpc": 0,
+      "ambiguous": 0,
+      "byStatus": {
+        "DISCOVERED_MATCHED_HPC": 4,
+        "DISCOVERED_NOT_IN_HPC": 1606,
+        "CONTRACT_VERIFIED_PENDING_HPC": 0,
+        "MATCH_AMBIGUOUS": 0,
+        "PORTFOLIO_ONLY_EVIDENCE": 0,
+        "UNATTRIBUTED_CONTRACT_LANGUAGE": 0
+      }
+    },
+    "hpcMatched": 4,
+    "hpcMissing": 1608,
+    "verifiedContractualMilestones": 69,
+    "researchSpendUsd": 0,
+    "note": "Do not claim the pre-cleanup distinct name count as verified unique hotels."
+  },
+  "beforeAfterReconciliation": {
+    "baselineDistinctNameStrings": 228,
+    "baselineInventoryRows": 290,
+    "verifiedPropertiesAfter": 18,
+    "probableAfter": 71,
+    "rejectedArtifactOrGeneric": 378,
+    "multiSplitNeeded": 21,
+    "reductionNote": "228 distinct name strings → 18 VERIFIED_PROPERTY (promotion gate); 71 PROBABLE pending"
+  }
+}

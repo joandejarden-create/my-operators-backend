@@ -103,6 +103,21 @@ npm run sec-edgar-contract-intelligence:pilot -- --apply
 - Adaptive queue: registrant↔hotel↔owner with depth/company caps; unverified entities blocked
 - V1 pilot 2-year / 6–12 filing limits = smoke control only; production path is inventory + checkpoint batches
 
+## Identity quality gate (mandatory before broad persistence)
+
+```bash
+npm run test:sec-edgar-identity-quality-v2
+npm run sec-edgar-inventory-quality:cleanup
+```
+
+- Classes: `VERIFIED_PROPERTY` / `PROBABLE_PROPERTY` / `AMBIGUOUS_PROPERTY` / `MULTIPLE_PROPERTIES` / `GENERIC_BRAND_OR_COMPANY` / `EXTRACTION_ARTIFACT` / `DUPLICATE_ALIAS`
+- Distinct name strings ≠ verified unique hotels
+- Never invent a property from brand + city alone
+- Registrant ≠ owner/manager unless explicitly evidenced
+- Raw vs verified inventories: `reports/sec-edgar-identity-quality-v2/`
+- Airtable durable store: **proposed only** — `docs/ai-build-system/SEC_EDGAR_HOTEL_DISCOVERY_AIRTABLE_SCHEMA_PROPOSAL.md`
+- Universal company research: V2 registry is not Marriott/Hilton-only; MH export is a view filter, not a research restriction
+
 ## Artifacts
 
 | Path | Contents |

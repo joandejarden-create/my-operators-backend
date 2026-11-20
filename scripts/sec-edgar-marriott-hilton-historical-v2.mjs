@@ -84,7 +84,9 @@ function argValue(flag, fallback = null) {
 const OFFLINE = process.argv.includes("--offline-fixture");
 const BATCH_SIZE = Math.max(1, Number(argValue("--batch-size", "12")) || 12);
 const SINCE_YEAR = Number(argValue("--since-year", "1994")) || 1994;
-const MAX_PRIORITY = Number(argValue("--max-priority", "2")) || 2;
+// Universal company research: registry includes REITs/owners/managers beyond Marriott/Hilton.
+// MH inventory export remains available as a brand-family view, not a research restriction.
+const MAX_PRIORITY = Number(argValue("--max-priority", "3")) || 3;
 const COMPANY_FILTER = argValue("--companies", "")
   .split(",")
   .map((s) => s.trim())
@@ -455,9 +457,31 @@ async function main() {
   const savedInventory = saveDiscoveryInventory(inventory, defaultInventoryRoot(ROOT));
   const invSummary = inventorySummary(savedInventory);
 
+  // Brand-family view for MH reporting; full inventory retains all families.
+  const mhOnly = !process.argv.includes("--all-brands");
   const mhReport = buildMarriottHiltonInventory(savedInventory.hotels, {
-    marriottHiltonOnly: true,
+    marriottHiltonOnly: mhOnly,
   });
+  if (mhOnly) {
+    const universalReport = buildMarriottHiltonInventory(savedInventory.hotels, {
+      marriottHiltonOnly: false,
+    });
+    fs.writeFileSync(
+      path.join(OUT_DIR, "UNIVERSAL_HOTEL_INTELLIGENCE_INVENTORY.json"),
+      JSON.stringify(
+        {
+          version: "sec-edgar-universal-hotel-inventory-v2",
+          generatedAt: new Date().toISOString(),
+          rowCount: universalReport.rowCount,
+          summaries: universalReport.summaries,
+          note: "Includes non-Marriott/Hilton brands when present; quality gate still required before persistence",
+        },
+        null,
+        2,
+      ),
+      "utf8",
+    );
+  }
   fs.writeFileSync(
     path.join(OUT_DIR, "MARRIOTT_HILTON_HISTORICAL_CONTRACT_INVENTORY.json"),
     JSON.stringify(mhReport, null, 2),
