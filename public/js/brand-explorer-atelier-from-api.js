@@ -1203,17 +1203,39 @@
     return sanitizeDisplayCopy(String(v));
   }
 
+  /**
+   * Permanent Founder rule: Brand Website must read as the brand page, not the
+   * parent-company homepage. Never label a brand-specific marriott.com/… path
+   * as bare "marriott.com" (same for Hilton/Hyatt/IHG/Accor/Wyndham roots).
+   */
+  function brandWebsiteDisplayLabel(val) {
+    var s = String(val || '').trim();
+    if (!s) return '';
+    try {
+      var u = new URL(s.indexOf('://') >= 0 ? s : 'https://' + s);
+      var host = String(u.hostname || '')
+        .toLowerCase()
+        .replace(/^www\./, '');
+      var path = String(u.pathname || '').replace(/\/+$/, '');
+      if (!host) return 'Official brand website';
+      if (!path || path === '/') return host;
+      var label = host + path;
+      if (label.length > 64) {
+        var parts = path.split('/').filter(Boolean);
+        var tail = parts.slice(-2).join('/');
+        label = host + '/…/' + tail;
+      }
+      return label;
+    } catch (e) {
+      return 'Official brand website';
+    }
+  }
+
   function linkIfUrl(val) {
     var s = String(val || '').trim();
     if (!s) return '';
     if (s.indexOf('http') !== 0) return escapeHtml(s);
-    var label = 'Official brand website';
-    try {
-      var u = new URL(s);
-      if (u && u.hostname) label = u.hostname.replace(/^www\./, '');
-    } catch (e) {
-      label = 'Official brand website';
-    }
+    var label = brandWebsiteDisplayLabel(s);
     return (
       '<a class="be-link" href="' +
       escapeHtml(s) +
