@@ -282,6 +282,14 @@ import {
   updateLegalTermsByBrandId,
   getOperationalSupportByBrandId
 } from "./api/brand-library.js";
+import {
+  postBrandExplorerCompareReview,
+  getBrandExplorerCompareReview,
+} from "./api/brand-explorer-compare-review.js";
+import {
+  postBrandExplorerComparePublish,
+  getBrandExplorerComparePublishStatus,
+} from "./api/brand-explorer-compare-publish.js";
 import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
@@ -358,6 +366,7 @@ import {
   getGdiSummary,
   getGdiProfile,
   getGdiPublicationComparison,
+  getGdiDrawerComparison,
   getGdiOpportunities,
   getGdiDemandCampaigns,
   getGdiPublicationMonitors,
@@ -1204,6 +1213,13 @@ app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/publication-comparison",
   gdiPilotReadAuth,
   getGdiPublicationComparison
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/drawer-comparison",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  getGdiDrawerComparison
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/need-dates",
@@ -2579,8 +2595,17 @@ app.get("/group-demand-intelligence/", (req, res) => {
     res.redirect(302, "/group-demand-intelligence.html" + q);
 });
 app.get("/group-demand-intelligence.html", (req, res) => {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.sendFile(path.join(__dirname, "public", "group-demand-intelligence.html"));
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.sendFile(path.join(__dirname, "public", "group-demand-intelligence.html"));
+});
+// Founder/admin comparison shell — API is admin-gated; mark non-indexable.
+app.get("/group-demand-intelligence-drawer-comparison.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+  res.setHeader("X-GDI-Surface", "FOUNDER_INTERNAL_DRAWER_COMPARISON");
+  res.sendFile(
+    path.join(__dirname, "public", "group-demand-intelligence-drawer-comparison.html")
+  );
 });
 app.get("/group-demand-intelligence-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
@@ -3404,6 +3429,11 @@ app.get("/api/capital-provider-explorer/provider", optionalDealalityAuth, getCap
 app.get("/api/brand-library/operational-support", getOperationalSupportByBrandId);
 app.get("/api/brand-library/brands", getBrandLibraryBrands);
 app.get("/api/brand-library/brand", getBrandLibraryBrandById);
+// Brand Explorer Comparison Studio — local founder review + gated publish (default DRY_RUN; no production writes until founder activation)
+app.get("/api/brand-explorer-compare/review", ...internalRunbookAuth, getBrandExplorerCompareReview);
+app.post("/api/brand-explorer-compare/review", ...internalRunbookAuth, postBrandExplorerCompareReview);
+app.get("/api/brand-explorer-compare/publish/status", ...internalRunbookAuth, getBrandExplorerComparePublishStatus);
+app.post("/api/brand-explorer-compare/publish", ...internalRunbookAuth, postBrandExplorerComparePublish);
 app.get("/api/brand-library/brand-status-options", getBrandStatusOptions);
 app.patch("/api/brand-library/brand/:recordId", updateBrandBasicsById);
 app.patch("/api/brand-library/brand/:recordId/sustainability-esg", updateSustainabilityEsgByBrandId);

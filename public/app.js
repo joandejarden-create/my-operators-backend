@@ -105,7 +105,21 @@
         '/outreach/analytics': { file: '/outreach-analytics.html', title: 'Outreach Analytics' },
         '/outreach/deal-activity-log': { file: '/outreach-deal-activity-log.html', title: 'Outreach Deal Activity Log' },
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
-        '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
+        '/brand-explorer-combined': {
+            file: '/brand-explorer-combined.html',
+            title: 'Brand Explorer',
+            // Admin/founder sessions inject beInternalPreview=1 in routeToEmbedUrl / navigate
+            // so Current Saved | Proposed Update appears without manually editing the hash.
+            founderProductPreview: true
+        },
+        '/brand-explorer-compare': {
+            file: '/brand-explorer-compare.html',
+            title: 'Brand Explorer Comparison',
+            roles: ['admin'],
+            internalRunbookOnly: true,
+            // Founder Comparison Studio — always open internal preview on the active origin.
+            defaultQuery: { beInternalPreview: '1' }
+        },
         '/brand-explorer-export': { file: '/brand-explorer-export.html', title: 'Brand Explorer PDF' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
@@ -332,6 +346,15 @@
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'AI Demand Admin', route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
+                        {
+                            // Permanent founder review workspace (CURRENT vs PROPOSED).
+                            // Single Admin Resources entry — do not duplicate elsewhere.
+                            label: 'Brand Explorer Comparison',
+                            route: '/brand-explorer-compare',
+                            roles: ['admin'],
+                            internalRunbookOnly: true,
+                            navId: 'brand-explorer-comparison'
+                        },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {
                             label: 'Validation Scorecard',
@@ -394,6 +417,7 @@
         '/brand-library': '/brand-explorer-combined',
         '/brand-library.html': '/brand-explorer-combined',
         '/brand-explorer-combined.html': '/brand-explorer-combined',
+        '/brand-explorer-compare.html': '/brand-explorer-compare',
         '/brand-library-atelier': '/brand-explorer-combined',
         '/brand-library-atelier-north.html': '/brand-explorer-combined',
         '/financial-term-library.html': '/financial-term-library',
@@ -460,6 +484,14 @@
 
     /** Owner Pilot Runbook — same platform admin signal as /api/me dealality.isAdmin. */
     function hasInternalRunbookNavAccess() {
+        return hasAdminNavAccess();
+    }
+
+    /**
+     * Founder product preview (Current Saved | Proposed Update) inside the real Brand Explorer.
+     * Platform admins only — never for ordinary customers.
+     */
+    function shouldEnableBeFounderProductPreview() {
         return hasAdminNavAccess();
     }
 
@@ -1354,14 +1386,50 @@
         try {
             var hashQs = getHashQueryParams();
             var u = new URL(url, window.location.origin);
-            ['recordId', 'operatorId', 'id', 'tab', 'propertyId', 'hotelId', 'preview', 'live', 'publicationPackage', 'inventory', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
+            [
+                'recordId',
+                'operatorId',
+                'id',
+                'tab',
+                'propertyId',
+                'hotelId',
+                'preview',
+                'live',
+                'publicationPackage',
+                'inventory',
+                'gdiDiag',
+                'inventoryAudience',
+                'beInternalPreview',
+                'beProfileMode',
+                'beCandidateOverlay',
+                'beCandidateOverlayUrl',
+                'factoryPreview',
+                'exportPdf',
+                'refresh',
+                'spacious',
+                'share',
+                'pack'
+            ].forEach(function (key) {
                 var v = hashQs.get(key);
                 if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
             });
             // Also forward parent /app?preview=staged#/route query params into the embed.
             try {
                 var parentQs = new URLSearchParams(window.location.search || '');
-                ['hotelId', 'preview', 'live', 'publicationPackage', 'inventory', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
+                [
+                    'hotelId',
+                    'preview',
+                    'live',
+                    'publicationPackage',
+                    'inventory',
+                    'gdiDiag',
+                    'inventoryAudience',
+                    'beInternalPreview',
+                    'beProfileMode',
+                    'beCandidateOverlay',
+                    'beCandidateOverlayUrl',
+                    'factoryPreview'
+                ].forEach(function (key) {
                     var v = parentQs.get(key);
                     if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
                 });
@@ -1373,6 +1441,24 @@
             }
             if (mapped.defaultTab && !u.searchParams.get('tab')) {
                 u.searchParams.set('tab', mapped.defaultTab);
+            }
+            // Origin-relative defaults (never hardcode host/port). Comparison Studio always
+            // needs beInternalPreview=1 so founder review loads on 8080, 8082, or deployed admin.
+            if (mapped.defaultQuery && typeof mapped.defaultQuery === 'object') {
+                Object.keys(mapped.defaultQuery).forEach(function (key) {
+                    if (!u.searchParams.get(key)) {
+                        u.searchParams.set(key, String(mapped.defaultQuery[key]));
+                    }
+                });
+            }
+            // Authenticated founder/admin: inject internal preview into the real Brand Explorer
+            // embed so Current Saved | Proposed Update appears without manual URL editing.
+            if (
+                mapped.founderProductPreview &&
+                shouldEnableBeFounderProductPreview() &&
+                !u.searchParams.get('beInternalPreview')
+            ) {
+                u.searchParams.set('beInternalPreview', '1');
             }
             url = u.pathname + u.search;
         } catch (_hashQsErr) {
@@ -1536,10 +1622,19 @@
                 pendingDivider = false;
             }
             visibleBeforeDivider = true;
-            html += '<button type="button" class="nav-item nav-item-child' + (isAdpAdminNavActive(child.route, currentRoute) ? ' active' : '') + '" data-href="' + child.route + '">' +
+            html +=
+                '<button type="button" class="nav-item nav-item-child' +
+                (isAdpAdminNavActive(child.route, currentRoute) ? ' active' : '') +
+                '" data-href="' +
+                child.route +
+                '"' +
+                (child.navId ? ' data-nav-id="' + escapeHtml(child.navId) + '"' : '') +
+                '>' +
                 (child.icon ? '<span class="nav-item-icon">' + child.icon + '</span>' : '') +
-                '<span class="nav-label">' + child.label + '</span>' +
-            '</button>';
+                '<span class="nav-label">' +
+                child.label +
+                '</span>' +
+                '</button>';
         });
         return html;
     }
@@ -1770,8 +1865,53 @@
         var target = ROUTES[normalized] ? normalized : getLandingRouteForNavRole(resolveCurrentNavRole());
         currentRoute = target;
 
+        // Apply route defaultQuery into the hash when the caller did not supply query params
+        // (e.g. Admin Resources → Brand Explorer Comparison).
+        if (!routeQuery && ROUTES[target] && ROUTES[target].defaultQuery) {
+            try {
+                var dq = new URLSearchParams();
+                Object.keys(ROUTES[target].defaultQuery).forEach(function (key) {
+                    dq.set(key, String(ROUTES[target].defaultQuery[key]));
+                });
+                var dqStr = dq.toString();
+                if (dqStr) routeQuery = '?' + dqStr;
+            } catch (_dqErr) {
+                /* keep empty */
+            }
+        }
+
+        // Founder/admin Brand Explorer: put beInternalPreview=1 on the visible app hash so
+        // /app#/brand-explorer-combined works without manually constructing preview URLs.
+        // Preserve any existing hash query (brand, etc.) — getPath() strips query before navigate.
+        var founderPreviewInjected = false;
+        if (ROUTES[target] && ROUTES[target].founderProductPreview && shouldEnableBeFounderProductPreview()) {
+            try {
+                var hq = new URLSearchParams(
+                    routeQuery && routeQuery.charAt(0) === '?' ? routeQuery.slice(1) : routeQuery || ''
+                );
+                if (!routeQuery) {
+                    getHashQueryParams().forEach(function (value, key) {
+                        if (!hq.has(key)) hq.set(key, value);
+                    });
+                }
+                if (!hq.get('beInternalPreview')) {
+                    hq.set('beInternalPreview', '1');
+                    founderPreviewInjected = true;
+                }
+                var hqStr = hq.toString();
+                routeQuery = hqStr ? '?' + hqStr : '';
+            } catch (_hqErr) {
+                /* keep existing routeQuery */
+            }
+        }
+
         var hashRoute = target + routeQuery;
-        if (updateHash !== false && window.location.hash !== '#' + hashRoute) {
+        // Always write the hash when we auto-inject founder preview (even on silent re-nav after /api/me)
+        // so a bare #/brand-explorer-combined becomes preview-capable without a second click.
+        if (
+            (updateHash !== false || founderPreviewInjected) &&
+            window.location.hash !== '#' + hashRoute
+        ) {
             window.location.hash = hashRoute;
         }
 
@@ -1823,6 +1963,12 @@
                         var expectedAssetV = expectedUrlObj.searchParams.get('v') || '';
                         var childAssetV = childQs.get('v') || '';
                         if (expectedAssetV !== childAssetV) {
+                            mustReloadFrame = true;
+                        }
+                        // Founder preview must remount when beInternalPreview appears/disappears.
+                        var expectedBePreview = expectedUrlObj.searchParams.get('beInternalPreview') || '';
+                        var childBePreview = childQs.get('beInternalPreview') || '';
+                        if (expectedBePreview !== childBePreview) {
                             mustReloadFrame = true;
                         }
                     }

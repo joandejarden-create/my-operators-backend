@@ -236,18 +236,60 @@
     return fetch(url, opts);
   }
 
+  var memberAuth = window.DealalityMemberstackAuth || null;
   var memberFetch =
-    window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
-      ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+    memberAuth && memberAuth.fetchMyDealsApi
+      ? memberAuth.fetchMyDealsApi.bind(memberAuth)
       : null;
+
+  /**
+   * GDI optional/authenticated requests must never raise window.alert().
+   * On missing credentials we either silently retry with a JWT (when present)
+   * or return the original 401 so callers can show an inline state.
+   */
+  function withSilentAuthOptions(opts) {
+    return Object.assign({}, opts || {}, {
+      notifyLoginRequired: false,
+      silent: true,
+      waitForLogin: false,
+    });
+  }
+
+  function retryWithMemberstackJwt(url, opts, priorResponse) {
+    if (!memberAuth || typeof memberAuth.getAuthHeaders !== "function") {
+      return Promise.resolve(priorResponse);
+    }
+    return memberAuth
+      .getAuthHeaders(null, { waitForLogin: false, maxWaitMs: 2500 })
+      .then(function (headersResult) {
+        if (!headersResult || headersResult.error || !headersResult.headers) {
+          return priorResponse;
+        }
+        var mergedHeaders = Object.assign(
+          {},
+          headersResult.headers,
+          (opts && opts.headers) || {},
+        );
+        return plainFetch(url, Object.assign({}, opts || {}, { headers: mergedHeaders }));
+      })
+      .catch(function () {
+        return priorResponse;
+      });
+  }
 
   function fetchFn(url, opts) {
     opts = opts || {};
     var method = String(opts.method || "GET").toUpperCase();
     var needsAuthWrite = method !== "GET" && method !== "HEAD";
-    if (needsAuthWrite && memberFetch) return memberFetch(url, opts);
+    if (needsAuthWrite && memberFetch) {
+      return memberFetch(url, withSilentAuthOptions(opts)).catch(function (err) {
+        // Preserve auth failure without native alert; let api() surface inline.
+        if (err && (err.code === "AUTH_REQUIRED" || err.authRequired)) throw err;
+        throw err;
+      });
+    }
     return plainFetch(url, opts).then(function (r) {
-      if (r.status === 401 && memberFetch) return memberFetch(url, opts);
+      if (r.status === 401) return retryWithMemberstackJwt(url, opts, r);
       return r;
     });
   }
@@ -555,6 +597,19 @@
   function api(path, opts) {
     return fetchFn(path, opts)
       .catch(function (networkErr) {
+        if (
+          networkErr &&
+          (networkErr.code === "AUTH_REQUIRED" || networkErr.authRequired)
+        ) {
+          var authErr = new Error(
+            networkErr.message ||
+              "Sign in required to continue with this Group & Demand Intelligence action.",
+          );
+          authErr.code = "AUTH_REQUIRED";
+          authErr.status = 401;
+          authErr.cause = networkErr;
+          throw authErr;
+        }
         var err = new Error(
           "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card."
         );
@@ -568,7 +623,14 @@
         return r.json().then(function (data) {
           if (!r.ok || data.ok === false) {
             var msg = data.message || data.error || "Request failed";
-            if (/opportunity_not_found/i.test(String(msg))) {
+            if (r.status === 401) {
+              msg =
+                "Sign in required to continue with this Group & Demand Intelligence action.";
+            } else if (r.status === 403) {
+              msg =
+                data.message ||
+                "Access denied for this Group & Demand Intelligence request.";
+            } else if (/opportunity_not_found/i.test(String(msg))) {
               msg =
                 data.message && !/opportunity_not_found/i.test(String(data.message))
                   ? data.message
@@ -577,6 +639,8 @@
             var err = new Error(msg);
             err.status = r.status;
             err.data = data;
+            if (r.status === 401) err.code = "AUTH_REQUIRED";
+            if (r.status === 403) err.code = "ACCESS_DENIED";
             throw err;
           }
           return data;
@@ -2029,6 +2093,9 @@
         typeof window.DealalityGdiPortfolioTab.mount === "function"
       ) {
         window.DealalityGdiPortfolioTab.mount(portfolioRoot, {
+          onLoading: function (on, message) {
+            setLoading(!!on, message || "Loading Portfolio Demand Intelligence…");
+          },
           onOpenBrief: function (ref) {
             if (!ref || !ref.hotelId || !ref.opportunityId) return;
             var runOpen = function () {
@@ -2214,6 +2281,25 @@
     });
   }
 
+  // Canonical Surfe / contact reveal — shared with comparison preview.
+  if (
+    drawerBody &&
+    window.DealalityGdiContactReveal &&
+    typeof window.DealalityGdiContactReveal.bindContactRevealClicks === "function"
+  ) {
+    window.DealalityGdiContactReveal.bindContactRevealClicks(drawerBody, {
+      getHotelId: function () {
+        return state.hotelId || "";
+      },
+      setLoadingToast: function (on, message) {
+        setLoading(on, message || "Retrieving contact details\u2026");
+      },
+      fetchFn: fetchFn,
+      plainFetch: plainFetch,
+      surface: "drawer",
+    });
+  }
+
   drawerBody &&
     drawerBody.addEventListener("click", function (e) {
       var t = e.target;
@@ -2221,142 +2307,6 @@
       if (retryBtn) {
         var retryId = retryBtn.getAttribute("data-gdi-detail-retry");
         if (retryId) openDetail(retryId);
-        return;
-      }
-
-      var surfeBtn =
-        t && t.closest ? t.closest("[data-gdi-contact-cta]") : null;
-      if (surfeBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        var channel = String(
-          surfeBtn.getAttribute("data-gdi-contact-channel") || "both"
-        ).toLowerCase();
-        var contactName = String(
-          surfeBtn.getAttribute("data-contact-name") || ""
-        ).trim();
-        var opportunityId = String(
-          surfeBtn.getAttribute("data-opportunity-id") || ""
-        ).trim();
-        var rootEl =
-          surfeBtn.closest("[data-gdi-contact-reveal-root]") ||
-          surfeBtn.parentElement;
-        var statusEl = rootEl
-          ? rootEl.querySelector("[data-gdi-contact-reveal-status]")
-          : null;
-        function setRevealStatus(msg, isError) {
-          if (!statusEl) return;
-          statusEl.hidden = false;
-          statusEl.textContent = msg || "";
-          statusEl.classList.toggle("gdi-contact-reveal-status--error", !!isError);
-        }
-        if (!opportunityId || !contactName) {
-          setRevealStatus("Select a named contact before retrieving details.", true);
-          return;
-        }
-        if (!state.hotelId) {
-          setRevealStatus("Hotel context missing.", true);
-          return;
-        }
-        var flightKey =
-          state.hotelId + "|" + opportunityId + "|" + contactName + "|" + channel;
-        if (state.contactRevealInFlight[flightKey]) return;
-        state.contactRevealInFlight[flightKey] = true;
-        surfeBtn.disabled = true;
-        var prevLabel = surfeBtn.textContent;
-        surfeBtn.textContent = "Looking up…";
-        setRevealStatus("Retrieving contact details…", false);
-
-        var useMock =
-          /(?:^|[?&])gdiContactRevealMock=1(?:&|$)/.test(
-            window.location.search || ""
-          ) || window.__GDI_CONTACT_REVEAL_MOCK__ === true;
-
-        var revealUrl =
-          "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/opportunities/" +
-          encodeURIComponent(opportunityId) +
-          "/contacts/reveal";
-        var revealOpts = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            channel: channel,
-            contactName: contactName,
-            authorizeLiveProvider: useMock ? false : true,
-            useMock: useMock,
-            mockScenario: "hit",
-          }),
-        };
-        // Mock certification uses plain fetch (no Memberstack). Live uses auth write path.
-        var revealFetch = useMock
-          ? plainFetch(revealUrl, revealOpts)
-          : fetchFn(revealUrl, revealOpts);
-        revealFetch
-          .then(function (r) {
-            return r.json().then(function (data) {
-              return { okHttp: r.ok, status: r.status, data: data || {} };
-            });
-          })
-          .then(function (res) {
-            var data = res.data || {};
-            var details = data.contactDetails || null;
-            if (res.okHttp && details && (details.email || details.phone)) {
-              var bits = [];
-              if (details.email) bits.push("Email: " + details.email);
-              if (details.phone) bits.push("Phone: " + details.phone);
-              setRevealStatus(
-                bits.join(" · ") +
-                  " (session only — not saved to Dealality records)",
-                false
-              );
-              return;
-            }
-            if (data.miss || data.error === "NO_RESULT") {
-              setRevealStatus(
-                data.message ||
-                  "No matching email/phone found for this person.",
-                false
-              );
-              return;
-            }
-            if (res.status === 401 || res.status === 403) {
-              setRevealStatus(
-                data.message ||
-                  "Contact lookup requires a signed-in Dealality user.",
-                true
-              );
-              return;
-            }
-            if (res.status === 402) {
-              setRevealStatus(
-                data.message || "Insufficient Surfe credits for this lookup.",
-                true
-              );
-              return;
-            }
-            setRevealStatus(
-              data.message ||
-                data.error ||
-                "Contact lookup did not return a usable result.",
-              true
-            );
-          })
-          .catch(function (err) {
-            setRevealStatus(
-              (err && err.message) || "Contact lookup failed.",
-              true
-            );
-          })
-          .finally(function () {
-            delete state.contactRevealInFlight[flightKey];
-            surfeBtn.disabled = false;
-            surfeBtn.textContent = prevLabel;
-          });
         return;
       }
 

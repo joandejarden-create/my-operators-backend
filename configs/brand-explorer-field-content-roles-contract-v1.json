@@ -1,0 +1,55 @@
+{
+  "version": "BE_FIELD_CONTENT_ROLES_CONTRACT_V1",
+  "status": "ACTIVE",
+  "purpose": "Distinguish numeric KPI validation from narrative commercial summaries and other nonnumeric content roles so validators never erase valid text.",
+  "numericRoles": ["number", "percentage", "percent", "amount", "ratio", "currency"],
+  "nonNumericRoles": [
+    "short_commercial_summary",
+    "owner_insight",
+    "narrative_insight",
+    "text",
+    "bullet_collection",
+    "table",
+    "timeline",
+    "image_gallery"
+  ],
+  "slotRoles": {
+    "commercial.kpi.channels": {
+      "role": "short_commercial_summary",
+      "canonicalLabel": "Channels",
+      "acceptsNarrative": true,
+      "forbidNumericOnlyValidation": true
+    },
+    "commercial.kpi.campaigns": {
+      "role": "short_commercial_summary",
+      "canonicalLabel": "Campaigns",
+      "acceptsNarrative": true,
+      "forbidNumericOnlyValidation": true
+    },
+    "commercial.kpi.b2b": {
+      "role": "short_commercial_summary",
+      "canonicalLabel": "B2B Programs",
+      "acceptsNarrative": true,
+      "forbidNumericOnlyValidation": true
+    },
+    "commercial.kpi.lens": {
+      "role": "owner_insight",
+      "canonicalLabel": "Owner Lens",
+      "acceptsNarrative": true,
+      "forbidNumericOnlyValidation": true
+    },
+    "loyalty.kpi.members": { "role": "number", "acceptsNarrative": false },
+    "loyalty.kpi.hotels": { "role": "number", "acceptsNarrative": false },
+    "loyalty.kpi.markets": { "role": "number", "acceptsNarrative": false },
+    "loyalty.kpi.mix": { "role": "percentage", "acceptsNarrative": false },
+    "economics.kpi.fee_stack": { "role": "number", "acceptsNarrative": false },
+    "economics.kpi.agreement": { "role": "text", "acceptsNarrative": true }
+  },
+  "rules": {
+    "numericValidationAppliesOnlyToNumericRoles": true,
+    "narrativeCardsMustNotRequireNumbers": true,
+    "populatedNonNumericCardsMustNotSilentNa": true,
+    "diligenceInstructionsAreNotCustomerFacingSummaries": true,
+    "retainCompleteCurrentUnlessValidatedImprovement": true
+  }
+}

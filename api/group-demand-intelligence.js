@@ -813,6 +813,48 @@ export async function getGdiPublicationComparison(req, res) {
   }
 }
 
+/**
+ * Founder-only Sheraton drawer before/after comparison payload.
+ * Preview-only — does not mutate publication packages or Airtable.
+ * Not a customer share route.
+ */
+export async function getGdiDrawerComparison(req, res) {
+  try {
+    if (!flagGate(req, res)) return;
+    // Founder/admin only — never serve unpublished research via pilot unauth read.
+    if (req.gdiPilotUnauthRead || !req.dealalityUser) {
+      return res.status(401).json({
+        ok: false,
+        error: "authentication_required",
+        message:
+          "Sheraton drawer comparison requires authenticated founder/admin access.",
+      });
+    }
+    const hotelId = String(req.params.hotelId || "").trim();
+    if (!hotelId) {
+      return res.status(400).json({ ok: false, error: "hotelId_required" });
+    }
+    const opportunityId = String(req.query.opportunityId || "").trim();
+    const { getSheratonDrawerComparisonPayload } = await import(
+      "../lib/group-demand-intelligence/presentation/gdi-sheraton-drawer-comparison-v1.js"
+    );
+    const payload = await getSheratonDrawerComparisonPayload({
+      hotelId,
+      opportunityId: opportunityId || undefined,
+    });
+    if (!payload.ok) {
+      const status =
+        payload.error === "HOTEL_NOT_AUTHORIZED_FOR_COMPARISON" ? 403 : 404;
+      return res.status(status).json(payload);
+    }
+    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+    res.setHeader("X-GDI-Surface", "FOUNDER_INTERNAL_DRAWER_COMPARISON");
+    return res.json(payload);
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiDrawerComparison");
+  }
+}
+
 export async function getGdiOpportunities(req, res) {
   try {
     if (!flagGate(req, res)) return;
@@ -1682,6 +1724,19 @@ export async function getGdiOpportunityDetail(req, res) {
             tilePreviewErr?.message || tilePreviewErr,
           );
         }
+        try {
+          const { ensureDrawerContactParityPresentation } = await import(
+            "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js"
+          );
+          withFeedback = await ensureDrawerContactParityPresentation(
+            withFeedback,
+          );
+        } catch (contactParityErr) {
+          console.error(
+            "[gdi] auth publication-package detail contact parity failed",
+            contactParityErr?.message || contactParityErr,
+          );
+        }
         res.setHeader("X-GDI-Detail-Source", "PUBLICATION_PACKAGE");
         return res.json({
           ok: true,
@@ -1888,6 +1943,17 @@ export async function getGdiOpportunityDetail(req, res) {
     // Annotate Market Scope + competitive/future-cycle presentation before DTO
     // so Confirmed Competitor Business vs Potential Future Opportunity survive.
     opportunity = annotateInventoryPopulations([opportunity], { hotelId })[0];
+    try {
+      const { ensureDrawerContactParityPresentation } = await import(
+        "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js"
+      );
+      opportunity = await ensureDrawerContactParityPresentation(opportunity);
+    } catch (contactParityErr) {
+      console.error(
+        "[gdi] auth live detail contact parity failed",
+        contactParityErr?.message || contactParityErr,
+      );
+    }
     const authProjected = projectOpportunityForPresentation(opportunity, {
       hotelId,
       surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
@@ -2750,12 +2816,29 @@ export async function postGdiContactReveal(req, res) {
   } catch (err) {
     return res.status(500).json({ ok: false, error: "load_failed" });
   }
-  const opportunity = (doc.opportunities || []).find(
+  let opportunity = (doc.opportunities || []).find(
     (o) =>
       o.id === opportunityId ||
       o.opportunityId === opportunityId ||
       String(o.opportunityId || "") === opportunityId,
   );
+  // Founder comparison preview may surface staged/local inventory rows that are
+  // not yet in the hotel's published opportunity document.
+  if (!opportunity && hotelId === "recCAGqkERSXgiku4") {
+    try {
+      const { buildSheratonDrawerComparisonInventory } = await import(
+        "../lib/group-demand-intelligence/presentation/gdi-sheraton-drawer-comparison-v1.js"
+      );
+      const inv = buildSheratonDrawerComparisonInventory({ hotelId });
+      const hit = (inv.items || []).find((i) => i.id === opportunityId);
+      if (hit?.raw) opportunity = hit.raw;
+    } catch (cmpErr) {
+      console.warn(
+        "[gdi] comparison inventory fallback for contact reveal failed",
+        cmpErr?.message || cmpErr,
+      );
+    }
+  }
   if (!opportunity) {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
   }
@@ -2819,14 +2902,26 @@ export async function postGdiContactReveal(req, res) {
     secondary ||
     null;
 
+  // Mock: env GDI_CONTACT_REVEAL_MOCK=1, or explicit body.useMock on local
+  // worktree preview servers (never enables live Surfe / never spends credits).
+  // Production customer hosts must never honor fixture contact values — even if
+  // GDI_CONTACT_REVEAL_MOCK is accidentally set on the deploy host.
+  const isProductionCustomerHost =
+    process.env.NODE_ENV === "production" &&
+    process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1";
+  const allowLocalMock =
+    !isProductionCustomerHost &&
+    (process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
+      process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1");
   const useMock =
-    (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1") &&
-    process.env.GDI_CONTACT_REVEAL_MOCK === "1";
+    allowLocalMock &&
+    (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1");
   // Live Surfe requires an explicit button authorize flag AND a signed-in user.
-  // Mock mode is env-gated (GDI_CONTACT_REVEAL_MOCK=1) for local certification only.
+  // Mock mode never calls Surfe and never persists PII.
   const authorizeLive =
     body.authorizeLiveProvider === true &&
-    Boolean(req.dealalityUser || req.memberstackMemberId);
+    Boolean(req.dealalityUser || req.memberstackMemberId) &&
+    !useMock;
 
   if (!useMock && !authorizeLive) {
     return res.status(403).json({
@@ -2836,7 +2931,7 @@ export async function postGdiContactReveal(req, res) {
       surfePiiPersisted: false,
       error: "LIVE_PROVIDER_NOT_AUTHORIZED",
       message:
-        "Contact lookup requires a signed-in Dealality user. Live Surfe is never called for anonymous or share viewers.",
+        "Contact lookup requires a signed-in Dealality user. Live Surfe is never called for anonymous or share viewers. For local smoke use ?gdiContactRevealMock=1 on a worktree preview server.",
       contactDetails: null,
       hotelId,
       opportunityId,
@@ -3707,6 +3802,19 @@ export async function getGdiShareOpportunityDetail(req, res) {
         console.error(
           "[gdi] share publication-package detail customer presentation attach failed",
           tilePreviewErr?.message || tilePreviewErr,
+        );
+      }
+      try {
+        const { ensureDrawerContactParityPresentation } = await import(
+          "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js"
+        );
+        withFeedback = await ensureDrawerContactParityPresentation(
+          withFeedback,
+        );
+      } catch (contactParityErr) {
+        console.error(
+          "[gdi] share publication-package detail contact parity failed",
+          contactParityErr?.message || contactParityErr,
         );
       }
       const validation = getShareValidationForOpportunity(

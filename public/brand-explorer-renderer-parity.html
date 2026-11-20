@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-brand-explorer-unified-tabs="1" class="be-gate1-product">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Explorer — Gate 1 Renderer Parity (Product Mount)</title>
+  <link rel="stylesheet" href="/css/dealality-explorer-platform.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-combined-detail-parity.css" />
+  <style>
+    html.be-gate1-product, html.be-gate1-product body {
+      margin: 0;
+      background: #080f25;
+      color: #fff;
+      font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    }
+    .gate1-banner {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 10px 18px;
+      background: #1a1430;
+      border-bottom: 1px solid rgba(255, 214, 120, 0.45);
+      color: #ffe5a3;
+      font-size: 0.8rem;
+    }
+    .gate1-banner strong { color: #fff; }
+    .gate1-meta { color: #b7c0d9; font-size: 0.72rem; margin-top: 4px; }
+    #beAtelierExplorer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 16px 48px;
+    }
+    #gate1Status { padding: 24px; color: #b7c0d9; }
+  </style>
+</head>
+<body>
+  <div class="gate1-banner">
+    <strong>GATE 1 — Renderer Parity · Environment A (Product mount)</strong>
+    · Saved Curio Presentation · No content regeneration · Not founder-approved
+    <div class="gate1-meta" id="gate1Meta">Loading payload…</div>
+  </div>
+  <div id="gate1Status">Mounting Brand Explorer atelier…</div>
+  <div id="beAtelierExplorer" class="be-atelier-explorer" hidden>
+    <div class="be-atelier-root" id="beAtelierRoot" data-be-atelier-root>
+      <nav class="tabs-section" id="beAtelierTabs" data-be-atelier-nav aria-label="Brand explorer tabs"></nav>
+      <div id="beAtelierPanels" data-be-atelier-panels></div>
+    </div>
+  </div>
+
+  <script src="/js/brand-explorer-census-metrics.js"></script>
+  <script src="/js/brand-explorer-atelier-from-api.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var params = new URLSearchParams(location.search);
+      if (!params.get('beInternalPreview')) {
+        params.set('beInternalPreview', '1');
+        history.replaceState({}, '', location.pathname + '?' + params.toString());
+      }
+      var payloadName = params.get('payload') || 'curio-gate1-renderer-parity-payload.json';
+      var url = '/brand-explorer-phase2e-preview/' + payloadName;
+
+      function setStatus(msg, isErr) {
+        var el = document.getElementById('gate1Status');
+        if (el) {
+          el.hidden = !msg;
+          el.textContent = msg || '';
+          el.style.color = isErr ? '#ffb4b4' : '#b7c0d9';
+        }
+      }
+
+      fetch(url, { credentials: 'same-origin' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('payload HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (brand) {
+          if (!window.BrandExplorerAtelierFromApi || !window.BrandExplorerAtelierFromApi.mountIntoRoot) {
+            throw new Error('BrandExplorerAtelierFromApi.mountIntoRoot missing');
+          }
+          var root = document.getElementById('beAtelierRoot');
+          window.BrandExplorerAtelierFromApi.mountIntoRoot(root, brand);
+          document.getElementById('beAtelierExplorer').hidden = false;
+          setStatus('');
+          var g = brand.gate1 || {};
+          document.getElementById('gate1Meta').textContent =
+            (brand.name || 'Curio') +
+            ' · blocks=' +
+            ((brand.brandExplorer && brand.brandExplorer.blocks && brand.brandExplorer.blocks.length) || 0) +
+            ' · hash=' +
+            (g.presentationBlocksHashSha256 || '—') +
+            ' · source=' +
+            (g.payloadSource || 'saved') +
+            ' · renderer=BrandExplorerAtelierFromApi.mountIntoRoot';
+          window.__BE_GATE1_PRODUCT__ = {
+            env: 'A-product',
+            brandId: brand.id,
+            hash: g.presentationBlocksHashSha256 || null,
+            blockCount: (brand.brandExplorer && brand.brandExplorer.blocks && brand.brandExplorer.blocks.length) || 0,
+            renderer: 'mountIntoRoot'
+          };
+        })
+        .catch(function (err) {
+          setStatus('ERROR: ' + err.message, true);
+        });
+    })();
+  </script>
+</body>
+</html>

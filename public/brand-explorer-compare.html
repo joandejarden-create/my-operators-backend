@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" class="becs-page" data-brand-explorer-unified-tabs="1">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Brand Explorer Comparison Studio — Dealality (Internal)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/dealality-explorer-platform.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-list-parity.css?v=3" />
+  <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-compare-studio.css" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+</head>
+<body>
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>Brand Explorer Comparison is for Dealality platform administrators only. Sign in through the Dealality app with an authorized admin account.</p>
+  </div>
+
+  <div id="supportGateContent" hidden>
+  <div class="becs-shell becs-shell-paired becs-shell-founder">
+    <header class="becs-topbar becs-topbar-founder">
+      <div class="becs-topbar-row">
+        <h1>Brand Explorer Comparison Studio</h1>
+        <span class="becs-badge">Internal · Founder review · No Airtable writes</span>
+      </div>
+      <div class="becs-controls becs-controls-founder">
+        <label class="becs-brand-label">Brand
+          <select id="becsBrand"></select>
+        </label>
+        <div id="becsTabs" class="becs-tabbar" aria-label="Brand Explorer tabs"></div>
+        <div id="becsViewModes" class="becs-modes becs-modes-primary">
+          <button type="button" class="becs-mode active" data-becs-mode="full">Full Comparison</button>
+          <button type="button" class="becs-mode" data-becs-mode="changes">Changes Only</button>
+          <button type="button" class="becs-mode" data-becs-mode="items">Item-by-Item</button>
+        </div>
+        <label class="becs-hl-toggle becs-hl-toggle-toolbar" title="Highlight only genuine additions and modifications on the proposed profile.">
+          <input type="checkbox" id="becsHighlightChanges" checked />
+          <span data-becs-hl-toggle-label>Highlight Changes: ON</span>
+        </label>
+        <button type="button" id="becsViewIssues" class="becs-view-issues">View Issues</button>
+        <details class="becs-advanced-menu">
+          <summary>Advanced</summary>
+          <div class="becs-advanced-panel">
+            <button type="button" class="becs-mode" data-becs-mode="gate1">Renderer Parity (Gate 1)</button>
+            <a class="becs-mode" href="/brand-explorer-renderer-parity.html?beInternalPreview=1&payload=curio-gate1-renderer-parity-payload.json" target="_blank" rel="noopener">Open Product Mount</a>
+            <button type="button" id="becsExport">Export review report</button>
+            <button type="button" id="becsPrepPublish" class="becs-publish-prep">Prepare publication package (draft)</button>
+            <button type="button" id="becsApprovePublish" class="becs-approve-publish">Approve &amp; Publish</button>
+          </div>
+        </details>
+      </div>
+      <div class="becs-review-compact" id="becsReviewCompact" aria-label="Review summary">
+        <span id="becsCompactSummary">Loading…</span>
+        <span class="becs-hl-legend becs-hl-legend-compact" id="becsHighlightLegend" aria-label="Highlight legend">
+          <span class="becs-hl-badge becs-hl-badge-added">Added</span>
+          <span class="becs-hl-badge becs-hl-badge-modified">Modified</span>
+          <span class="becs-hl-badge becs-hl-badge-removed">Removed</span>
+          <span class="becs-hl-badge becs-hl-badge-incomplete">Incomplete</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- Diagnostics retained but hidden from founder-first surface -->
+    <div class="becs-diagnostics-hidden" hidden>
+      <div class="becs-source-banner" id="becsSourceBanner" aria-label="Data sources"></div>
+      <div class="becs-summary" id="becsSummary" aria-label="Changes summary"></div>
+      <div class="becs-scorecard" id="becsScorecard"></div>
+      <div class="becs-completeness" id="becsCompleteness" aria-label="Implementation completeness"></div>
+      <div class="becs-quality-filters" id="becsQualityFilters" aria-label="Filters"></div>
+    </div>
+
+    <div class="becs-paired-layout becs-paired-layout-founder">
+      <aside class="becs-sidebar becs-sidebar-founder">
+        <h2>Subsections</h2>
+        <nav id="becsSubnav" class="becs-subnav" aria-label="Subsection navigation"></nav>
+        <div class="becs-sidebar-meta" id="becsSidebarMeta"></div>
+      </aside>
+      <main class="becs-doc-scroll" id="becsDocScroll">
+        <div class="becs-col-heads sticky">
+          <div>
+            <strong>CURRENT · SAVED PROFILE</strong>
+            <span class="tag" id="becsLeftTag">…</span>
+            <div class="becs-col-meta" id="becsLeftMeta"></div>
+          </div>
+          <div class="becs-col-head-proposed">
+            <strong>PROPOSED · CUMULATIVE PROFILE</strong>
+            <span class="tag" id="becsRightTag">…</span>
+            <div class="becs-col-meta" id="becsRightMeta"></div>
+          </div>
+        </div>
+        <div id="becsPairedDoc" class="becs-paired-doc"></div>
+      </main>
+    </div>
+
+    <div class="becs-review-drawer" id="becsReviewDrawer" hidden>
+      <h3>Subsection / field review</h3>
+      <p class="becs-review-meta">Select a changed field or subsection.</p>
+    </div>
+    <div class="becs-brand-approval" id="becsBrandApproval" aria-label="Brand-level founder decision"></div>
+    <div class="becs-status-bar" id="becsStatus">Starting…</div>
+  </div>
+
+  <!-- Issues & Research Gaps drawer (preserves all unresolved diagnostics) -->
+  <aside class="becs-issues-drawer" id="becsIssuesDrawer" aria-label="Issues and research gaps" hidden>
+    <div class="becs-issues-head">
+      <h2>Issues &amp; Research Gaps</h2>
+      <button type="button" id="becsIssuesClose" class="becs-issues-close">Close</button>
+    </div>
+    <div class="becs-issues-filters" id="becsIssuesFilters" aria-label="Issue filters"></div>
+    <div class="becs-issues-body" id="becsIssuesBody"></div>
+    <div class="becs-issues-legacy">
+      <h3>Requirements (active tab)</h3>
+      <ul class="becs-req-list" id="becsReqList"></ul>
+      <h3>Changed fields</h3>
+      <ul class="becs-change-list" id="becsChangeList"></ul>
+    </div>
+  </aside>
+  <div class="becs-issues-backdrop" id="becsIssuesBackdrop" hidden></div>
+  </div><!-- /supportGateContent -->
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) {
+      window.SupportAdminGate.showPageLoading('supportGateLoading', 'Verifying admin access…');
+    }
+  })();
+  </script>
+  <script src="/js/brand-explorer-editorial-title-case.js"></script>
+  <script src="/js/brand-explorer-property-image-integrity.js"></script>
+  <script src="/js/brand-explorer-dealality-insight-advisory.js"></script>
+  <script src="/js/brand-explorer-no-repeated-card-heading.js"></script>
+  <script src="/js/brand-explorer-census-metrics.js"></script>
+  <script src="/js/brand-explorer-staged-candidate-registry.js"></script>
+  <script src="/js/brand-explorer-atelier-from-api.js"></script>
+  <script src="/js/brand-explorer-cumulative-proposal-assembler.js"></script>
+  <script src="/js/brand-explorer-compare-highlight.js"></script>
+  <script src="/js/brand-explorer-compare-studio.js"></script>
+  <script>
+  (function () {
+    async function initCompareAccess() {
+      var loadingEl = document.getElementById('supportGateLoading');
+      var contentEl = document.getElementById('supportGateContent');
+      var deniedEl = document.getElementById('supportGateDenied');
+
+      // Automated Gate 1 / parity harnesses may opt out explicitly.
+      try {
+        var qs = new URLSearchParams(window.location.search || '');
+        if (qs.get('becsSkipAccessGate') === '1') {
+          window.__BECS_SKIP_ACCESS_GATE__ = true;
+          if (window.SupportAdminGate) window.SupportAdminGate.hidePageLoading(loadingEl);
+          if (deniedEl) deniedEl.hidden = true;
+          if (contentEl) contentEl.hidden = false;
+          window.__BECS_ACCESS_ALLOWED__ = true;
+          if (typeof window.BrandExplorerCompareStudioBoot === 'function') {
+            window.BrandExplorerCompareStudioBoot();
+          }
+          return;
+        }
+      } catch (e) {
+        /* continue with gate */
+      }
+
+      if (!window.SupportAdminGate) {
+        if (loadingEl) loadingEl.hidden = true;
+        if (contentEl) contentEl.hidden = true;
+        if (deniedEl) {
+          deniedEl.hidden = false;
+          var msg = deniedEl.querySelector('[data-gate-message]');
+          if (msg) msg.textContent = 'Unable to verify admin access. Refresh and try again.';
+        }
+        return;
+      }
+
+      var allowed = await window.SupportAdminGate.requireInternalRunbook({
+        contentId: 'supportGateContent',
+        onAllowed: function () {
+          window.__BECS_ACCESS_ALLOWED__ = true;
+        }
+      });
+
+      if (!allowed) return;
+
+      if (contentEl) contentEl.hidden = false;
+      window.SupportAdminGate.hidePageLoading(loadingEl);
+      if (typeof window.BrandExplorerCompareStudioBoot === 'function') {
+        window.BrandExplorerCompareStudioBoot();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCompareAccess);
+    } else {
+      initCompareAccess();
+    }
+  })();
+  </script>
+  <script src="/embed-chrome.js" defer></script>
+</body>
+</html>

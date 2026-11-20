@@ -153,13 +153,45 @@
       init.headers["Content-Type"] = "application/json";
       init.body = JSON.stringify(opts.body);
     }
+    // Never surface native login alerts from optional GDI tab fetches.
+    var silentAuth = { notifyLoginRequired: false, silent: true, waitForLogin: false };
     var res;
     var method = String(init.method || "GET").toUpperCase();
     if (method !== "GET" && method !== "HEAD" && memberFetch) {
-      res = await memberFetch(path, init);
+      try {
+        res = await memberFetch(path, Object.assign({}, init, silentAuth));
+      } catch (authErr) {
+        if (authErr && (authErr.code === "AUTH_REQUIRED" || authErr.authRequired)) {
+          var signInErr = new Error(
+            "Sign in required to save Hotel Commercial Priorities.",
+          );
+          signInErr.status = 401;
+          signInErr.code = "AUTH_REQUIRED";
+          throw signInErr;
+        }
+        throw authErr;
+      }
     } else {
       res = await fetch(path, init);
-      if (res.status === 401 && memberFetch) res = await memberFetch(path, init);
+      if (res.status === 401 && window.DealalityMemberstackAuth &&
+          typeof window.DealalityMemberstackAuth.getAuthHeaders === "function") {
+        try {
+          var headersResult = await window.DealalityMemberstackAuth.getAuthHeaders(
+            null,
+            { waitForLogin: false, maxWaitMs: 2500 },
+          );
+          if (headersResult && headersResult.headers && !headersResult.error) {
+            res = await fetch(
+              path,
+              Object.assign({}, init, {
+                headers: Object.assign({}, headersResult.headers, init.headers || {}),
+              }),
+            );
+          }
+        } catch (_retryErr) {
+          /* keep original 401 */
+        }
+      }
     }
     var data = await res.json().catch(function () {
       return { ok: false, error: "invalid_json" };
@@ -173,9 +205,16 @@
         msg =
           "API route not found — restart the local Dealality server (npm start) so Hotel Commercial Priorities routes register.";
       }
+      if (res.status === 401) {
+        msg = "Sign in required for this Hotel Commercial Priorities action.";
+      } else if (res.status === 403) {
+        msg = data.message || "Access denied for Hotel Commercial Priorities.";
+      }
       var err = new Error(msg);
       err.status = res.status;
       err.payload = data;
+      if (res.status === 401) err.code = "AUTH_REQUIRED";
+      if (res.status === 403) err.code = "ACCESS_DENIED";
       throw err;
     }
     return data;

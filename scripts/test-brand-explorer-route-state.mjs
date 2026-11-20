@@ -109,6 +109,36 @@ function testForwardKeysIncludePreview() {
   assert.ok(RS.FORWARD_QUERY_KEYS.includes("beInternalPreview"));
   assert.ok(RS.FORWARD_QUERY_KEYS.includes("factoryPreview"));
   assert.ok(RS.FORWARD_QUERY_KEYS.includes("id"));
+  assert.ok(RS.FORWARD_QUERY_KEYS.includes("beProfileMode"));
+  assert.ok(RS.FORWARD_QUERY_KEYS.includes("beCandidateOverlay"));
+  assert.ok(RS.FORWARD_QUERY_KEYS.includes("beCandidateOverlayUrl"));
+}
+
+function testProposedProfileModeFromHash() {
+  const st = RS.getBrandExplorerRouteState({
+    location: loc({
+      pathname: "/brand-explorer-combined.html",
+      search: "?embed=1&appShell=1&id=receQkxgjlezsc1xg",
+    }),
+    parentLocation: loc({
+      pathname: "/app",
+      hash: "#/brand-explorer-combined?id=receQkxgjlezsc1xg&beInternalPreview=1&beProfileMode=proposed",
+    }),
+  });
+  assert.equal(st.beInternalPreview, true);
+  assert.equal(st.beProfileMode, "proposed");
+  assert.equal(st.isProposedProfileMode, true);
+}
+
+function testLegacyOverlayFlagImpliesProposed() {
+  const st = RS.getBrandExplorerRouteState({
+    location: loc({
+      search: "?id=receQkxgjlezsc1xg&beInternalPreview=1&beCandidateOverlay=1",
+    }),
+    parentLocation: null,
+  });
+  assert.equal(st.beProfileMode, "proposed");
+  assert.equal(st.isProposedProfileMode, true);
 }
 
 function testParentPreviewOverridesStaleIframe() {
@@ -150,12 +180,14 @@ testBuildQueryPreservesPreview();
 testForwardKeysIncludePreview();
 testParentPreviewOverridesStaleIframe();
 testHashToEmbedForward();
+testProposedProfileModeFromHash();
+testLegacyOverlayFlagImpliesProposed();
 
 console.log(
   JSON.stringify(
     {
       ok: true,
-      cases: 9,
+      cases: 11,
       ready: "brand_explorer_route_state_direct_and_hash_preview_pass",
     },
     null,

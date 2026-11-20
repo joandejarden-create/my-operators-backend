@@ -1,0 +1,124 @@
+{
+  "version": "BE_SUBSECTION_PARITY_CONTRACT_V1",
+  "phase": "2G",
+  "hierarchy": ["brand", "tab", "section", "subsection", "contentItem"],
+  "comparisonDefault": "paired_subsection_document",
+  "forbidDualFullPageScrollAsDefault": true,
+  "customerFacingForbiddenPatterns": [
+    "Evidence-grounded reconstruction",
+    "Focus this card on",
+    "RESEARCH_REQUIRED",
+    "APPLICABLE_POPULATED",
+    "slotKey",
+    "phase2",
+    "diligence framing only",
+    "do not invent",
+    "Internal Preview",
+    "\\[insight\\.similar\\]",
+    "\\[standards\\.similar\\]",
+    "economics\\.[a-z0-9_.]+\\s*:",
+    "Owner diligence note"
+  ],
+  "tabs": [
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "subsections": [
+        { "id": "overview.snapshot", "section": "Brand Snapshot", "label": "Brand Snapshot", "slotPatterns": ["^snapshot\\.", "^identity\\.", "^overview\\.(typical_use_case|development_model|relative_positioning)$"] },
+        { "id": "overview.positioning", "section": "Brand Positioning", "label": "Brand Positioning", "slotPatterns": ["^positioning\\."] },
+        { "id": "overview.scenarios", "section": "Where This Brand Creates the Most Value", "label": "Where This Brand Creates the Most Value", "slotPatterns": ["^overview\\.scenario\\.\\d+$"], "minItems": 3, "requireImage": true, "componentType": "scenario_card" },
+        { "id": "overview.why_value", "section": "Why Value Is Strongest", "label": "Why Value Is Strongest", "slotPatterns": ["^overview\\.why_value$"] },
+        { "id": "overview.differentiators", "section": "Key Differentiators", "label": "Key Differentiators", "slotPatterns": ["^overview\\.differentiators\\."] },
+        { "id": "overview.best_at", "section": "What This Brand Is Best At", "label": "What This Brand Is Best At", "slotPatterns": ["^overview\\.bestAt\\.\\d+$"], "minItems": 3 },
+        { "id": "overview.proof", "section": "Proof Points", "label": "Proof Points", "slotPatterns": ["^overview\\.proof\\.\\d+$"], "minItems": 4, "forbidGenericTitles": ["Proof 1", "Proof 2", "Proof 3", "Proof 4", "Proof 5", "Proof 6"] },
+        { "id": "overview.featured", "section": "Featured Application", "label": "Featured Application / Conversion Example", "slotPatterns": ["^overview\\.featured"] },
+        { "id": "overview.portfolio", "section": "Portfolio Context", "label": "Portfolio Context", "slotPatterns": ["^overview\\.portfolio_context$"] }
+      ]
+    },
+    {
+      "tabId": "atelier-value-owners",
+      "tabName": "Value to Owners",
+      "subsections": [
+        { "id": "value.scenarios", "section": "Value Creation Scenarios", "label": "Value Creation Scenarios", "slotPatterns": ["^valueOwners\\.scenario\\.\\d+$"], "minItems": 4 },
+        { "id": "value.outcomes", "section": "Owner Outcomes", "label": "Owner Outcomes", "slotPatterns": ["^valueOwners\\.overview\\.outcomes$", "^owner\\.outcomes$"] },
+        { "id": "value.experience", "section": "Owner Experience", "label": "Owner Experience", "slotPatterns": ["^valueOwners\\.overview\\.experience$", "^owner\\.experience$"] },
+        { "id": "value.lifecycle", "section": "Support Across the Lifecycle", "label": "Support Across the Lifecycle", "slotPatterns": ["^valueOwners\\.lifecycle\\.\\d+$"], "minItems": 6 }
+      ]
+    },
+    {
+      "tabId": "atelier-ops",
+      "tabName": "Operating Model",
+      "subsections": [
+        { "id": "ops.model", "section": "Operating Model", "label": "Operating Model", "slotPatterns": ["^operations\\.model"] },
+        { "id": "ops.standards", "section": "Standards Philosophy", "label": "Standards Philosophy", "slotPatterns": ["^operations\\.standards_philosophy$"] },
+        { "id": "ops.flexibility", "section": "Flexibility Indicators", "label": "Flexibility Indicators", "slotPatterns": ["^operations\\.flexibility\\."] },
+        { "id": "ops.operator", "section": "Third-Party Operator Compatibility", "label": "Third-Party Operator Compatibility", "slotPatterns": ["^operations\\.operator_compat\\."] },
+        { "id": "ops.compliance", "section": "Compliance & Oversight", "label": "Compliance & Oversight", "slotPatterns": ["^operations\\.compliance\\."] }
+      ]
+    },
+    {
+      "tabId": "atelier-standards-owner",
+      "tabName": "Owner Considerations",
+      "subsections": [
+        { "id": "standards.detail", "section": "Standard Detail, Where Available", "label": "Standard Detail, Where Available", "slotPatterns": ["^standards\\.(requirement|intro|last_reviewed|source_confidence)"] },
+        { "id": "standards.conversion", "section": "Conversion & Sister-Flag Transitions", "label": "Conversion & Sister-Flag Transitions", "slotPatterns": ["^standards\\.conversion"] },
+        { "id": "standards.questions", "section": "Confirm With Brand", "label": "Confirm With Brand", "slotPatterns": ["^standards\\.questions"] },
+        { "id": "standards.deal_inputs", "section": "Deal Context Inputs", "label": "Deal Context Inputs", "slotPatterns": ["^standards\\.deal_inputs"] }
+      ]
+    },
+    {
+      "tabId": "atelier-commercial",
+      "tabName": "Commercial Engine",
+      "subsections": [
+        { "id": "commercial.intro", "section": "Commercial Engine", "label": "Commercial Intro & Perception", "slotPatterns": ["^commercial\\.(intro|perception|differentiator)$"] },
+        { "id": "commercial.demand", "section": "Demand Themes", "label": "Demand Themes", "slotPatterns": ["^commercial\\.(demand|theme)$"] },
+        { "id": "commercial.levers", "section": "Commercial Levers", "label": "Commercial Levers", "slotPatterns": ["^commercial\\.lever\\."] },
+        { "id": "commercial.kpis", "section": "Commercial KPIs", "label": "Commercial KPIs", "slotPatterns": ["^commercial\\.kpi\\."] }
+      ]
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "subsections": [
+        { "id": "economics.glance", "section": "Typical Economics at a Glance", "label": "Typical Economics at a Glance", "slotPatterns": ["^economics\\.kpi\\.", "^economics\\.intro$"] },
+        { "id": "economics.cash", "section": "Cash & Capital Rhythm", "label": "Cash & Capital Rhythm", "slotPatterns": ["^economics\\.cash\\.", "^economics\\.lifecycle\\."] },
+        { "id": "economics.opening", "section": "Opening & Conversion Path", "label": "Opening & Conversion Path", "slotPatterns": ["^economics\\.opening"] },
+        { "id": "economics.fees", "section": "Fees in Three Buckets", "label": "Fees in Three Buckets", "slotPatterns": ["^economics\\.fee"] },
+        { "id": "economics.risks", "section": "Term, Renewal & Exit Risk", "label": "Term, Renewal & Exit Risk", "slotPatterns": ["^economics\\.(risk|legal|performance|support|diligence|checklist|model|term)"] },
+        { "id": "economics.negotiable", "section": "Negotiability & Incentives", "label": "Negotiability & Incentives", "slotPatterns": ["^economics\\.(negotiab|rarely_negotiable|negotiable|incentives)"] },
+        { "id": "economics.confirm", "section": "Confirm With Brand / Legal Counsel", "label": "Confirm With Brand / Legal Counsel", "slotPatterns": ["^economics\\.(confirm|disclaimer)"] }
+      ]
+    },
+    {
+      "tabId": "atelier-loyalty",
+      "tabName": "Loyalty Program",
+      "subsections": [
+        { "id": "loyalty.program", "section": "Loyalty Architecture", "label": "Loyalty Architecture", "slotPatterns": ["^loyalty\\."] }
+      ]
+    },
+    {
+      "tabId": "atelier-footprint",
+      "tabName": "Footprint & Growth",
+      "subsections": [
+        { "id": "footprint.geo", "section": "Geographic Footprint", "label": "Geographic Footprint", "slotPatterns": ["^footprint\\.(geo|primary|region|editorial)"] },
+        { "id": "footprint.growth", "section": "Growth Priorities", "label": "Growth Priorities", "slotPatterns": ["^footprint\\.growth", "^metric\\."] },
+        { "id": "footprint.momentum", "section": "Recent Momentum & Portfolio Mix", "label": "Recent Momentum & Portfolio Mix", "slotPatterns": ["^footprint\\.(momentum|openings|portfolio_mix)"] }
+      ]
+    },
+    {
+      "tabId": "atelier-materials",
+      "tabName": "Brand Materials",
+      "subsections": [
+        { "id": "materials.gallery", "section": "Gallery", "label": "Image Gallery", "slotPatterns": ["^materials\\.gallery\\.\\d+$"], "minItems": 6, "requireImage": true },
+        { "id": "materials.files", "section": "Supporting Materials", "label": "Files & Case Studies", "slotPatterns": ["^materials\\.(file|caseStudy|documents)"] }
+      ]
+    },
+    {
+      "tabId": "atelier-insight",
+      "tabName": "Dealality Insight",
+      "subsections": [
+        { "id": "insight.similar", "section": "Similar Brands", "label": "Similar Brands", "slotPatterns": ["^insight\\.similar"] }
+      ]
+    }
+  ]
+}

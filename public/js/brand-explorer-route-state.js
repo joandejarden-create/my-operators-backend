@@ -19,6 +19,9 @@
     'brand',
     'name',
     'beInternalPreview',
+    'beProfileMode',
+    'beCandidateOverlay',
+    'beCandidateOverlayUrl',
     'factoryPreview',
     'exportPdf',
     'refresh',
@@ -130,6 +133,9 @@
         'name',
         'recordId',
         'beInternalPreview',
+        'beProfileMode',
+        'beCandidateOverlay',
+        'beCandidateOverlayUrl',
         'factoryPreview',
         'exportPdf',
         'refresh',
@@ -160,17 +166,42 @@
     var beInternalPreview = flagTrue(params, 'beInternalPreview');
     var exportPdf = flagTrue(params, 'exportPdf');
     var factoryPreview = flagTrue(params, 'factoryPreview');
+    var beCandidateOverlay = flagTrue(params, 'beCandidateOverlay');
+    var beProfileModeRaw = String(params.get('beProfileMode') || '')
+      .trim()
+      .toLowerCase();
+    var beProfileMode = 'saved';
+    if (
+      beProfileModeRaw === 'proposed' ||
+      beProfileModeRaw === 'proposed_update' ||
+      beProfileModeRaw === 'update'
+    ) {
+      beProfileMode = 'proposed';
+    } else if (
+      beProfileModeRaw === 'saved' ||
+      beProfileModeRaw === 'current' ||
+      beProfileModeRaw === 'current_saved'
+    ) {
+      beProfileMode = 'saved';
+    } else if (beCandidateOverlay && beInternalPreview) {
+      // Legacy overlay flag without explicit mode → proposed.
+      beProfileMode = 'proposed';
+    }
 
     return {
       route: route,
       brandId: brandId,
       beInternalPreview: beInternalPreview,
+      beProfileMode: beProfileMode,
+      beCandidateOverlay: beCandidateOverlay,
+      beCandidateOverlayUrl: String(params.get('beCandidateOverlayUrl') || '').trim(),
       exportPdf: exportPdf,
       factoryPreview: factoryPreview,
       refresh: flagTrue(params, 'refresh'),
       embed: flagTrue(params, 'embed'),
       appShell: flagTrue(params, 'appShell'),
       isInternalPreviewRequest: beInternalPreview || exportPdf,
+      isProposedProfileMode: beInternalPreview && beProfileMode === 'proposed',
       params: params,
     };
   }
@@ -187,6 +218,11 @@
     }
     if (brandId) next.set('id', String(brandId));
     if (state && state.beInternalPreview) next.set('beInternalPreview', '1');
+    if (state && state.beProfileMode) next.set('beProfileMode', String(state.beProfileMode));
+    if (state && state.beCandidateOverlay) next.set('beCandidateOverlay', '1');
+    if (state && state.beCandidateOverlayUrl) {
+      next.set('beCandidateOverlayUrl', String(state.beCandidateOverlayUrl));
+    }
     if (state && state.factoryPreview) next.set('factoryPreview', '1');
     if (state && state.exportPdf) next.set('exportPdf', '1');
     if (state && state.refresh) next.set('refresh', '1');

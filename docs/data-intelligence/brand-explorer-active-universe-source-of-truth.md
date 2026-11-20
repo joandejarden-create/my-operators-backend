@@ -30,7 +30,7 @@ npm run brand-explorer-active-universe-source-of-truth -- --dry-run
 - No Company Validated / Source Library / Registry / release / content changes
 - Do not use stale 23-brand reconciliation lists as active source of truth
 
-Latest run: see reports (generated 2026-08-09T21:12:55.241Z).
+Latest run: see reports (generated 2026-11-19T20:49:05.816Z).
 
-Inventory size: **62** · reconciles to 54: **false**
+Inventory size: **68** · reconciles to 54: **false**
 
