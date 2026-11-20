@@ -2464,6 +2464,19 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: 'f164d7d881ec0db58b65402eec0538f586c0a1b7f7e25876d88cbee783ed4e5f'
+    },
+    {
+      id: 'recRqHJW2SbKY0N2v',
+      slug: 'shangri-la-hotels-resorts',
+      name: 'Shangri-La Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/shangri-la-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-16-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'bc63c61997974062e1c901d9160f01de4f7f43664d65463ffb11c321c6ee380f'
     }
   ];
 
@@ -2712,6 +2725,26 @@
     if (/barcel/i.test(name) && !/royal\s*hideaway|occidental|allegro/i.test(name)) return bySlug('barcelo-hotels-resorts');
     if (/\boccidental\b/i.test(name)) return bySlug('occidental-hotels-resorts');
     if (/\ballegro\b/i.test(name)) return bySlug('allegro-hotels');
+    if (/pan\s*pacific/i.test(name)) return bySlug('pan-pacific-hotels-resorts');
+    if (/park\s*royal\s*collection/i.test(name)) return bySlug('parkroyal-collection');
+    if (/park\s*royal/i.test(name) && !/collection/i.test(name)) return bySlug('parkroyal-hotels-resorts');
+    if (/shangri/i.test(name) && !/kerry|\bjen\b|traders/i.test(name)) return bySlug('shangri-la-hotels-resorts');
+    if (/\bkerry\b/i.test(name)) return bySlug('kerry-hotels');
+    if (/\bjen\b.*shangri|shangri.*\bjen\b/i.test(name)) return bySlug('jen-by-shangri-la');
+    if (/\btraders\b/i.test(name)) return bySlug('traders-hotels');
+    if (/dusit\s*thani/i.test(name)) return bySlug('dusit-thani');
+    if (/dusit\s*d2|dusitd2/i.test(name)) return bySlug('dusitd2');
+    if (/dusit\s*princess/i.test(name)) return bySlug('dusit-princess');
+    if (/\basai\b/i.test(name)) return bySlug('asai-hotels');
+    if (/dusit\s*collection/i.test(name)) return bySlug('dusit-collection');
+    if (/^rotana\b/i.test(name) && !/rayhaan|arjaan|centro/i.test(name)) return bySlug('rotana-hotels-resorts');
+    if (/\brayhaan\b/i.test(name)) return bySlug('rayhaan-hotels-resorts');
+    if (/\barjaan\b/i.test(name)) return bySlug('arjaan-hotel-apartments');
+    if (/\bcentro\b/i.test(name) && /rotana|hotel/i.test(name)) return bySlug('centro-hotels');
+    if (/\bcitadines\b/i.test(name)) return bySlug('citadines');
+    if (/\bsomerset\b/i.test(name)) return bySlug('somerset');
+    if (/\blyf\b/i.test(name)) return bySlug('lyf');
+    if (/\boakwood\b/i.test(name)) return bySlug('oakwood');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
