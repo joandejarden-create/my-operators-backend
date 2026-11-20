@@ -2979,7 +2979,7 @@ export async function postGdiContactReveal(req, res) {
     preflightSurfeCredits,
     beginSurfeInFlight,
     endSurfeInFlight,
-    appendSurfeLiveAccountingSafe,
+    appendSurfeLiveAccounting,
   } = await import(
     "../lib/group-demand-intelligence/gdi-surfe-live-gate-v1.js"
   );
@@ -2991,10 +2991,6 @@ export async function postGdiContactReveal(req, res) {
     contactName: resolvedName,
     channel,
   });
-  if (authorizeLive && !useMock) {
-    res.locals = res.locals || {};
-    res.locals.gdiSurfeRevealStartedAtMs = Date.now();
-  }
 
   let creditsBefore = null;
   let provider = null;
@@ -3113,17 +3109,7 @@ export async function postGdiContactReveal(req, res) {
       opportunityId,
       identityKey,
       channel,
-      lookupType: channel,
       enrichmentId: result?.enrichmentId || null,
-      clientRequestId:
-        String(body.clientRequestId || body.idempotencyKey || "").trim() ||
-        null,
-      // Future-ready: only set when Surfe returns per-request billed credits
-      providerCreditsCharged: Number.isFinite(
-        Number(result?.providerCreditsCharged),
-      )
-        ? Number(result.providerCreditsCharged)
-        : undefined,
       ok: result?.ok === true,
       miss: result?.miss === true,
       error: result?.error || null,

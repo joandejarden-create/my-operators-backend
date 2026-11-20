@@ -1,0 +1,2131 @@
+{
+  "module": "HOTEL_CONTRACT_TIMING_INTELLIGENCE_V1",
+  "version": "1.0.0",
+  "started": "2026-11-20T20:00:24.580Z",
+  "finished": "2026-11-20T20:01:36.013Z",
+  "mode": "APPLY",
+  "guarantees": [
+    "Mortgage/loan maturity is never treated as franchise or management expiration",
+    "Portfolio-level date rows are rejected — hotel identity required",
+    "Conditional renewal / termination-right language is preserved as DATE_MEANING, not silent expiration",
+    "CUSTOMER_BLOCKED on all research-only persistence",
+    "No automatic HPC hotel creation",
+    "Registrant / CMBS issuer is not auto-classified as legal owner"
+  ],
+  "documents": {
+    "researched": 23,
+    "ok": 21,
+    "cap": 50,
+    "bySourceFamily": {
+      "HOTEL_REIT_SCHEDULE": 7,
+      "CMBS_424B": 16
+    },
+    "detail": [
+      {
+        "id": "seed_chatham_10k_2019",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001476045/000143774926006103/cldt20251231_10k.htm",
+        "slug": "chatham-lodging-trust",
+        "form": "10-K",
+        "accessionNumber": "0001437749-26-006103",
+        "filingDate": "2026-02-27",
+        "bytes": 3599349,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_chatham_10k_2016",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001476045/000143774926006103/cldt20251231_10k.htm",
+        "slug": "chatham-lodging-trust",
+        "form": "10-K",
+        "accessionNumber": "0001437749-26-006103",
+        "filingDate": "2026-02-27",
+        "bytes": 3599349,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_sotherly_10k_2019",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001166003/000116600326000016/xpo-20251231.htm",
+        "slug": "sotherly-hotels",
+        "form": "10-K",
+        "accessionNumber": "0001166003-26-000016",
+        "filingDate": "2026-02-05",
+        "bytes": 2502895,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_sotherly_10k_2015",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001166003/000116600326000016/xpo-20251231.htm",
+        "slug": "sotherly-hotels",
+        "form": "10-K",
+        "accessionNumber": "0001166003-26-000016",
+        "filingDate": "2026-02-05",
+        "bytes": 2502895,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_sunstone_10k_2012",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001295810/000110465912013838/a12-1033_110k.htm",
+        "slug": "sunstone-hotel-investors",
+        "form": "10-K",
+        "accessionNumber": "0001104659-12-013838",
+        "filingDate": "2012-02-28",
+        "bytes": 3543851,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 24
+      },
+      {
+        "id": "seed_diamondrock_10k_2014",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001298946/000129894614000021/drh_10kx12312013.htm",
+        "slug": "diamondrock-hospitality",
+        "form": "10-K",
+        "accessionNumber": "0001298946-14-000021",
+        "filingDate": "2014-02-25",
+        "bytes": 2978428,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_cmbs_jpmcc_424b_courtyard_portfolio",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-20-000579",
+        "filingDate": "2020-03-24",
+        "bytes": 14598200,
+        "hotelContractDates": 57,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_cmbs_jpmcc_424b",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949726001598/n5898_x19-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-26-001598",
+        "filingDate": "2026-05-28",
+        "bytes": 8851312,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_nexpoint_10k",
+        "sourceFamily": "HOTEL_REIT_SCHEDULE",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001780312/000178031226000006/asts-20251231.htm",
+        "slug": "nexpoint-real-estate-finance",
+        "form": "10-K",
+        "accessionNumber": "0001780312-26-000006",
+        "filingDate": "2026-03-02",
+        "bytes": 4397306,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "seed_cmbs_banc_america_424b",
+        "sourceFamily": "CMBS_424B",
+        "ok": false,
+        "error": "no_filing",
+        "slug": "banc-america-commercial-mortgage"
+      },
+      {
+        "id": "seed_cmbs_wells_424b",
+        "sourceFamily": "CMBS_424B",
+        "ok": false,
+        "error": "HTTP_404",
+        "slug": "wells-fargo-commercial-mortgage"
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-26-001598",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949726001598/n5898_x19-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-26-001598",
+        "filingDate": "2026-05-28",
+        "bytes": 8851312,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-26-001045",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949726001045/n5750_x20-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-26-001045",
+        "filingDate": "2026-03-27",
+        "bytes": 14623510,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-25-002563",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949725002563/n5297_x15-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-25-002563",
+        "filingDate": "2025-09-30",
+        "bytes": 14382495,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-25-001563",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949725001563/n4935_x15-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-25-001563",
+        "filingDate": "2025-06-02",
+        "bytes": 12186686,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-25-000441",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949725000441/n4706-x21_424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-25-000441",
+        "filingDate": "2025-02-10",
+        "bytes": 12114925,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-24-001776",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949724001776/n4440_x19-424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-24-001776",
+        "filingDate": "2024-08-21",
+        "bytes": 12086086,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-24-000890",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949724000890/n4133-x20_424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-24-000890",
+        "filingDate": "2024-04-23",
+        "bytes": 11839781,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-23-002175",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949723002175/n3749-x19_424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-23-002175",
+        "filingDate": "2023-12-13",
+        "bytes": 10485938,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-22-001472",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949722001472/n3202-x17424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-22-001472",
+        "filingDate": "2022-08-23",
+        "bytes": 11780966,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-22-000442",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949722000442/n2897-x20_424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-22-000442",
+        "filingDate": "2022-02-16",
+        "bytes": 15283761,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-21-001251",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949721001251/n2647-x18_424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-21-001251",
+        "filingDate": "2021-08-19",
+        "bytes": 19418866,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      },
+      {
+        "id": "cmbs_jpmorgan-chase-commercial-mortgage_0001539497-21-000382",
+        "sourceFamily": "CMBS_424B",
+        "ok": true,
+        "url": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949721000382/n2450-x17_424b2.htm",
+        "slug": "jpmorgan-chase-commercial-mortgage",
+        "form": "424B2",
+        "accessionNumber": "0001539497-21-000382",
+        "filingDate": "2021-03-24",
+        "bytes": 14706174,
+        "hotelContractDates": 0,
+        "loanMaturities": 0,
+        "scheduleHotels": 0
+      }
+    ]
+  },
+  "extraction": {
+    "hotelsMentioned": 81,
+    "uniqueContractFindings": 57,
+    "loanMaturitiesIsolated": 0,
+    "rejectedRows": 24,
+    "duplicateDiscoveriesPrevented": 0,
+    "exhibitIndexMentions": 0
+  },
+  "verification": {
+    "input": 57,
+    "verifiedHotelContractDates": 0,
+    "probable": 57,
+    "rejected": 0,
+    "loanMaturityExcluded": 0,
+    "historicalNeedRevalidation": 52,
+    "uniqueHotels": 57,
+    "horizon6": 0,
+    "horizon12": 0,
+    "horizon24": 0,
+    "horizon36": 0,
+    "franchise": 57,
+    "management": 0,
+    "terminationRights": 0,
+    "hpcMatched": 0
+  },
+  "horizons": {
+    "next6m": 0,
+    "next12m": 0,
+    "next24m": 0,
+    "next36m": 0,
+    "historicalNeedRevalidation": 52
+  },
+  "agreementSplit": {
+    "franchise": 57,
+    "management": 0,
+    "terminationRights": 0
+  },
+  "managersDisclosed": [
+    {
+      "entityName": "IHR",
+      "hotelName": "Courtyard by Marriott Los Angeles (2)",
+      "city": "Los Angeles",
+      "stateRegion": "CA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Doubletree Guest Suites Minneapolis",
+      "city": "Minneapolis",
+      "stateRegion": "MN"
+    },
+    {
+      "entityName": "Highgate",
+      "hotelName": "Doubletree Guest Suites Times Square (2)",
+      "city": "New York City",
+      "stateRegion": "NY"
+    },
+    {
+      "entityName": "Davidson",
+      "hotelName": "Embassy Suites Chicago",
+      "city": "Chicago",
+      "stateRegion": "IL"
+    },
+    {
+      "entityName": "Hilton",
+      "hotelName": "Embassy Suites La Jolla",
+      "city": "San Diego",
+      "stateRegion": "CA"
+    },
+    {
+      "entityName": "Sage",
+      "hotelName": "Hilton Del Mar",
+      "city": "Del Mar",
+      "stateRegion": "CA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Hilton North Houston",
+      "city": "Houston",
+      "stateRegion": "TX"
+    },
+    {
+      "entityName": "Hilton",
+      "hotelName": "Hilton San Diego Bayfront (2) (3)",
+      "city": "San Diego",
+      "stateRegion": "CA"
+    },
+    {
+      "entityName": "Highgate",
+      "hotelName": "Hilton Times Square (2)",
+      "city": "New York City",
+      "stateRegion": "NY"
+    },
+    {
+      "entityName": "Hyatt",
+      "hotelName": "Hyatt Regency Newport Beach (2)",
+      "city": "Newport Beach",
+      "stateRegion": "CA"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "JW Marriott New Orleans (2)",
+      "city": "New Orleans",
+      "stateRegion": "LA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Kahler Inn &amp; Suites",
+      "city": "Rochester",
+      "stateRegion": "MN"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "Marriott Boston Long Wharf",
+      "city": "Boston",
+      "stateRegion": "MA"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "Marriott Del Mar",
+      "city": "San Diego",
+      "stateRegion": "CA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Marriott Houston",
+      "city": "Houston",
+      "stateRegion": "TX"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Marriott Park City",
+      "city": "Park City",
+      "stateRegion": "UT"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "Marriott Philadelphia",
+      "city": "West Conshohocken",
+      "stateRegion": "PA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Marriott Portland",
+      "city": "Portland",
+      "stateRegion": "OR"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "Marriott Quincy",
+      "city": "Quincy",
+      "stateRegion": "MA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Marriott Rochester",
+      "city": "Rochester",
+      "stateRegion": "MN"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "Marriott Troy",
+      "city": "Troy",
+      "stateRegion": "MI"
+    },
+    {
+      "entityName": "Marriott",
+      "hotelName": "Marriott Tysons Corner",
+      "city": "Vienna",
+      "stateRegion": "VA"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Residence Inn by Marriott Rochester",
+      "city": "Rochester",
+      "stateRegion": "MN"
+    },
+    {
+      "entityName": "IHR",
+      "hotelName": "Sheraton Cerritos (2)",
+      "city": "Cerritos",
+      "stateRegion": "CA"
+    }
+  ],
+  "hpc": {
+    "candidatesLoaded": 0,
+    "matched": 0,
+    "autoCreate": false
+  },
+  "persistence": {
+    "persisted": 40,
+    "dryRun": 0,
+    "duplicatesPrevented": 0,
+    "readBackOk": 40,
+    "errors": 0
+  },
+  "persistenceDetail": {
+    "ok": true,
+    "apply": true,
+    "persisted": [
+      {
+        "findingId": "ctim_fbf53aba2d5e369519a0",
+        "propertyId": "disc_ctim_063da52932f5fce1afe7",
+        "action": "CREATE",
+        "airtableFindingId": "recGY60GpuPLDuhZC",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_5365b4b5543069810d5c",
+        "propertyId": "disc_ctim_4aa332d2db9c59e86c07",
+        "action": "CREATE",
+        "airtableFindingId": "recyhxcQ69LDuMz8i",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_36c118a2641a858d3026",
+        "propertyId": "disc_ctim_164de7633871a62292f1",
+        "action": "CREATE",
+        "airtableFindingId": "rec0XmT1uDoioHc9d",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_3318380cb4d12ec888a3",
+        "propertyId": "prop_f148916c2f2e8464",
+        "action": "CREATE",
+        "airtableFindingId": "reclBFhJRaNEzycla",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_59e058319454ef4513e4",
+        "propertyId": "disc_ctim_22872d68c31297044025",
+        "action": "CREATE",
+        "airtableFindingId": "recdFEsstr2j4SR2F",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_f064f0a5545247cdfcd5",
+        "propertyId": "disc_ctim_1b256fe1d0eb0d9e8f7e",
+        "action": "CREATE",
+        "airtableFindingId": "recJhS4fTYPjGP2L6",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_d00786b66182e674ec31",
+        "propertyId": "disc_ctim_ec89e3140df66d62443d",
+        "action": "CREATE",
+        "airtableFindingId": "recUHVEXfiWnqmuzj",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_09653fb89663e4c57b03",
+        "propertyId": "disc_ctim_e62c050841de5f10d2c1",
+        "action": "CREATE",
+        "airtableFindingId": "recYoWibcgbzP1q5t",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_b752033fe350ef8f4a9e",
+        "propertyId": "disc_ctim_70602c4e1de59b33bb77",
+        "action": "CREATE",
+        "airtableFindingId": "recdLBnmOGlGTBpoz",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_05c385fb4f69a076fa4e",
+        "propertyId": "disc_ctim_714b3d70ac4b2139c504",
+        "action": "CREATE",
+        "airtableFindingId": "recRGc7XPDq6U0pfY",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_35ad33306e9c435fdfc8",
+        "propertyId": "disc_ctim_1a0d43ad36f5edc39bdb",
+        "action": "CREATE",
+        "airtableFindingId": "rec06PW8tGfZZNkOT",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_c72126426925bcb1ae77",
+        "propertyId": "disc_ctim_c32c34f31d98192c3fc5",
+        "action": "CREATE",
+        "airtableFindingId": "recPSj5auReOedeQV",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_a02d6e262305439d7d1d",
+        "propertyId": "disc_ctim_7b017715047ca2198897",
+        "action": "CREATE",
+        "airtableFindingId": "recG9uM8eXjixAHTZ",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_c5fc0aa8da0fe9281655",
+        "propertyId": "disc_ctim_aadf9234621becd16743",
+        "action": "CREATE",
+        "airtableFindingId": "reclYMu0xiEd0RHzW",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_41f6c23777f226da3d84",
+        "propertyId": "disc_ctim_124358a702aedf8e07c1",
+        "action": "CREATE",
+        "airtableFindingId": "rec9Ah6cfWIU8Q49z",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_be1a484545d7f48e7548",
+        "propertyId": "disc_ctim_38773b25f8f09336fe32",
+        "action": "CREATE",
+        "airtableFindingId": "recUrUNlGxkupxq4a",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_511c0f7d77e64fb778cf",
+        "propertyId": "disc_ctim_db2bb82fb436a88595a8",
+        "action": "CREATE",
+        "airtableFindingId": "recXINvTNjKCt7AMB",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_97ced4ed2ca7f548da2a",
+        "propertyId": "disc_ctim_7a8a83b6639e4b7b5006",
+        "action": "CREATE",
+        "airtableFindingId": "recPexxXszAcxD2VS",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_aa3705a358e53bc0a5f2",
+        "propertyId": "disc_ctim_248c2e513c40d1d12b5a",
+        "action": "CREATE",
+        "airtableFindingId": "recxhzuO9SVe9fOi6",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_e3113e20a5bf8e81ccd2",
+        "propertyId": "disc_ctim_27e12e9113c334176d18",
+        "action": "CREATE",
+        "airtableFindingId": "rec4UIHt0BxGUE0j8",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_397dd884daae59eeca15",
+        "propertyId": "disc_ctim_dde0f687b3404118c033",
+        "action": "CREATE",
+        "airtableFindingId": "recXdbR0sv5ad3YDG",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_328adc6611ff966214ae",
+        "propertyId": "disc_ctim_6c41d5558d159efb47bd",
+        "action": "CREATE",
+        "airtableFindingId": "recvQZxDGIGAFTA6F",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_b9f5e2ceaa2f28f3dda4",
+        "propertyId": "disc_ctim_e6d42d232570e6ec8502",
+        "action": "CREATE",
+        "airtableFindingId": "rec6rcxLk029lXuv9",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_1828009a07e0658c10bc",
+        "propertyId": "disc_ctim_d8def3e7dc6a20ad15b5",
+        "action": "CREATE",
+        "airtableFindingId": "reco34OE3jaHWSThd",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_366b827fa2d23f97c5c9",
+        "propertyId": "disc_ctim_454ea2a62d186968e67d",
+        "action": "CREATE",
+        "airtableFindingId": "rec0suGbWTRpsXenB",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_0bd3ef825a62789b4cfc",
+        "propertyId": "disc_ctim_ee37128287069cfcc077",
+        "action": "CREATE",
+        "airtableFindingId": "rec4yCmsQwZaGVmGM",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_eb12094f92fb90f6396d",
+        "propertyId": "disc_ctim_ffc7fa463c4744346004",
+        "action": "CREATE",
+        "airtableFindingId": "recGj5aI43INgclgr",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_c659c4b165ed24185c13",
+        "propertyId": "disc_ctim_18076433de521985df0c",
+        "action": "CREATE",
+        "airtableFindingId": "reczBj3bCGZcDa9g7",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_4046fe0cfa161878b075",
+        "propertyId": "disc_ctim_a014695e44da5b820cb6",
+        "action": "CREATE",
+        "airtableFindingId": "recG6foxemEA1JZHX",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_0be541f474bf46d34459",
+        "propertyId": "disc_ctim_210aa9c71c121f1154d1",
+        "action": "CREATE",
+        "airtableFindingId": "recQJ9S2MyDOooR1N",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_8470841b7093b53c8e33",
+        "propertyId": "disc_ctim_cc74b5b5dcfbd31ac275",
+        "action": "CREATE",
+        "airtableFindingId": "recOtmyxOMAj2R5sO",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_d92da27cef2f8a833434",
+        "propertyId": "disc_ctim_67258e267ae9eb4eafd2",
+        "action": "CREATE",
+        "airtableFindingId": "recZyYdlcOGth6R9x",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_9bc781b42184a06157e3",
+        "propertyId": "disc_ctim_0b140be2ec2cc83707bc",
+        "action": "CREATE",
+        "airtableFindingId": "recYoI2JH1MEwIHBb",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_d147d05d79f48673d28e",
+        "propertyId": "disc_ctim_9190763ad29dc1d64144",
+        "action": "CREATE",
+        "airtableFindingId": "recaXU7iLUHAnEN77",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_9c4769302cc03882ac57",
+        "propertyId": "disc_ctim_77c5bbececaed292f6b5",
+        "action": "CREATE",
+        "airtableFindingId": "recToVeVlpHtvsqK6",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_8ade682af2f26a26b893",
+        "propertyId": "prop_07265e75e6c9b6f8",
+        "action": "CREATE",
+        "airtableFindingId": "recZvvBD30lrmq3JR",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_898a6bb85a6fb35931e0",
+        "propertyId": "disc_ctim_cc3675e00d4972a3f08c",
+        "action": "CREATE",
+        "airtableFindingId": "reccpOk0zmkbauVQe",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_654d125e25a146fcb391",
+        "propertyId": "disc_ctim_941c01454f63f99a96c5",
+        "action": "CREATE",
+        "airtableFindingId": "rec03tWBUjNBAjxcF",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_5cc6bd07a0a8b0759bee",
+        "propertyId": "disc_ctim_ef4ab1e6ae77137c9ced",
+        "action": "CREATE",
+        "airtableFindingId": "recyidQMHOUawc2Qp",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      {
+        "findingId": "ctim_818d5e524819a38e44fd",
+        "propertyId": "disc_ctim_b2e715121ce1254dda9f",
+        "action": "CREATE",
+        "airtableFindingId": "recTPWjHQQqTwbmKS",
+        "readBackOk": true,
+        "publicationState": "CUSTOMER_BLOCKED"
+      }
+    ],
+    "skippedDup": [],
+    "errors": [],
+    "counts": {
+      "persisted": 40,
+      "dryRun": 0,
+      "duplicatesPrevented": 0,
+      "readBackOk": 40,
+      "errors": 0
+    }
+  },
+  "metrics": {
+    "researchSpendUsd": 0,
+    "exactHotelLevelContractDates": 57,
+    "datesPer100Documents": 271.43,
+    "datesPerResearchDollar": null,
+    "sourcePrecision": 1
+  },
+  "scalability": {
+    "assessment": "PROMISING — public CMBS/REIT schedules can yield hotel-level franchise/management dates when tables are HTML-parsable; loan maturity isolation is mandatory.",
+    "remainingCoverage": "Expand CMBS depositor CIKs, EX-10 hotel agreement exhibits, FDD term tables (selected brands), and non-SEC REIT supplements. Revalidate historical dates before CURRENTLY_VERIFIED.",
+    "recommendedNext": "Target high-yield HTML 424B property schedules with Franchise Expiration columns; keep loan maturity in a separate ledger."
+  },
+  "sampleVerified": [
+    {
+      "findingId": "ctim_fbf53aba2d5e369519a0",
+      "hotelName": "Courtyard Larkspur Landing Marin County",
+      "city": "Larkspur Landing Marin County",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.01 | GACC | Courtyard Larkspur Landing Marin County | 10,606,885 | 6,313,605 | 5,093,110 | 530,344 | 4,562,766 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_5365b4b5543069810d5c",
+      "hotelName": "Courtyard San Mateo Foster City",
+      "city": "San Mateo Foster City",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.02 | GACC | Courtyard San Mateo Foster City | 10,075,100 | 5,507,288 | 5,227,381 | 503,755 | 4,723,626 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_36c118a2641a858d3026",
+      "hotelName": "Courtyard San Jose Cupertino",
+      "city": "San Jose Cupertino",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.03 | GACC | Courtyard San Jose Cupertino | 9,929,264 | 5,237,133 | 4,692,130 | 496,463 | 4,195,667 | Leasehold | 12/31/2033 | Three, 10-year options | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_3318380cb4d12ec888a3",
+      "hotelName": "Courtyard Boulder",
+      "city": "Boulder",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.04 | GACC | Courtyard Boulder | 6,412,709 | 4,098,743 | 2,638,153 | 320,635 | 2,317,517 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": "prop_f148916c2f2e8464",
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_59e058319454ef4513e4",
+      "hotelName": "Courtyard Los Angeles Torrance Palos Verdes",
+      "city": "Los Angeles Torrance Palos",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.05 | GACC | Courtyard Los Angeles Torrance Palos Verdes | 7,071,345 | 4,762,563 | 2,835,580 | 353,567 | 2,482,013 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_f064f0a5545247cdfcd5",
+      "hotelName": "Courtyard Los Angeles Hacienda Heights",
+      "city": "Los Angeles Hacienda Heights",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.06 | GACC | Courtyard Los Angeles Hacienda Heights | 6,447,505 | 4,432,551 | 2,534,642 | 322,375 | 2,212,267 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_d00786b66182e674ec31",
+      "hotelName": "Courtyard Seattle South Center",
+      "city": "Seattle South Center",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.07 | GACC | Courtyard Seattle South Center | 7,211,855 | 4,637,132 | 2,971,846 | 360,593 | 2,611,254 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_09653fb89663e4c57b03",
+      "hotelName": "Courtyard Nashville Airport",
+      "city": "Nashville Airport",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.08 | GACC | Courtyard Nashville Airport | 6,995,720 | 4,282,394 | 3,076,419 | 349,786 | 2,726,633 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_b752033fe350ef8f4a9e",
+      "hotelName": "Courtyard Palm Springs",
+      "city": "Palm Springs",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.09 | GACC | Courtyard Palm Springs | 6,444,877 | 4,130,091 | 2,631,625 | 322,244 | 2,309,381 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_05c385fb4f69a076fa4e",
+      "hotelName": "Courtyard Portland Beaverton",
+      "city": "Portland Beaverton",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.10 | GACC | Courtyard Portland Beaverton | 5,440,429 | 3,738,704 | 1,919,227 | 272,021 | 1,647,205 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_35ad33306e9c435fdfc8",
+      "hotelName": "Courtyard Atlanta Perimeter Center",
+      "city": "Atlanta Perimeter Center",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.11 | GACC | Courtyard Atlanta Perimeter Center | 6,151,593 | 4,083,960 | 2,493,524 | 307,580 | 2,185,945 | Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_c72126426925bcb1ae77",
+      "hotelName": "Courtyard Detroit Livonia",
+      "city": "Detroit Livonia",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.12 | GACC | Courtyard Detroit Livonia | 4,905,287 | 3,206,698 | 1,899,973 | 245,264 | 1,654,708 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_a02d6e262305439d7d1d",
+      "hotelName": "Courtyard St. Louis Creve Coeur",
+      "city": "St. Louis Creve Coeur",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.13 | GACC | Courtyard St. Louis Creve Coeur | 5,485,918 | 3,754,890 | 2,007,206 | 274,296 | 1,732,910 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_c5fc0aa8da0fe9281655",
+      "hotelName": "Courtyard Lincroft Red Bank",
+      "city": "Lincroft Red Bank",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.14 | GACC | Courtyard Lincroft Red Bank | 6,609,633 | 4,550,578 | 2,358,806 | 330,482 | 2,028,324 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_41f6c23777f226da3d84",
+      "hotelName": "Courtyard Rye",
+      "city": "Rye",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.15 | GACC | Courtyard Rye | 6,784,031 | 5,039,573 | 2,085,216 | 339,202 | 1,746,014 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_be1a484545d7f48e7548",
+      "hotelName": "Courtyard Fresno",
+      "city": "Fresno",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.16 | GACC | Courtyard Fresno | 6,896,173 | 4,365,589 | 2,530,584 | 344,809 | 2,185,775 | Leasehold | 06/30/2054 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_511c0f7d77e64fb778cf",
+      "hotelName": "Courtyard Tampa Westshore",
+      "city": "Tampa Westshore",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.17 | GACC | Courtyard Tampa Westshore | 5,671,150 | 4,641,944 | 1,029,206 | 283,558 | 745,649 | Fee/Leasehold | 07/01/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_97ced4ed2ca7f548da2a",
+      "hotelName": "Courtyard Boston Andover",
+      "city": "Boston Andover",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.18 | GACC | Courtyard Boston Andover | 6,344,692 | 4,351,043 | 2,250,473 | 317,235 | 1,933,239 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_aa3705a358e53bc0a5f2",
+      "hotelName": "Courtyard Detroit Metro Airport",
+      "city": "Detroit Metro Airport",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.19 | GACC | Courtyard Detroit Metro Airport | 4,815,378 | 3,446,541 | 1,570,859 | 240,769 | 1,330,090 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_e3113e20a5bf8e81ccd2",
+      "hotelName": "Courtyard Denver Tech Center",
+      "city": "Denver Tech Center",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.20 | GACC | Courtyard Denver Tech Center | 4,934,676 | 3,540,939 | 1,666,630 | 246,734 | 1,419,896 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_397dd884daae59eeca15",
+      "hotelName": "Courtyard Charlottesville North",
+      "city": "Charlottesville North",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.21 | GACC | Courtyard Charlottesville North | 4,195,427 | 3,045,137 | 1,318,621 | 209,771 | 1,108,849 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_328adc6611ff966214ae",
+      "hotelName": "Courtyard St. Petersburg Clearwater",
+      "city": "St. Petersburg Clearwater",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.22 | GACC | Courtyard St. Petersburg Clearwater | 5,105,160 | 3,909,777 | 1,401,653 | 255,258 | 1,146,395 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_b9f5e2ceaa2f28f3dda4",
+      "hotelName": "Courtyard Fort Lauderdale Plantation",
+      "city": "Fort Lauderdale Plantation",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.23 | GACC | Courtyard Fort Lauderdale Plantation | 5,955,730 | 4,088,632 | 2,165,038 | 297,786 | 1,867,252 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_1828009a07e0658c10bc",
+      "hotelName": "Courtyard West Palm Beach",
+      "city": "West Palm Beach",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.24 | GACC | Courtyard West Palm Beach | 5,713,823 | 4,282,972 | 1,688,397 | 285,691 | 1,402,706 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    },
+    {
+      "findingId": "ctim_366b827fa2d23f97c5c9",
+      "hotelName": "Courtyard Chicago Lincolnshire",
+      "city": "Chicago Lincolnshire",
+      "stateRegion": null,
+      "brandFamily": "MARRIOTT",
+      "brandLabel": "Courtyard",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "agreementType": "FRANCHISE_AGREEMENT",
+      "primaryDate": "2025-12-31",
+      "datePrecision": "DAY",
+      "dateRaw": "12/31/2025",
+      "isHotelContractDate": true,
+      "isLoanMaturity": false,
+      "verificationClass": "VERIFIED_EXPIRATION",
+      "historicalApplicability": "REQUIRES_FURTHER_RESEARCH",
+      "hotelAttributed": true,
+      "portfolioWide": false,
+      "snippet": "5.25 | GACC | Courtyard Chicago Lincolnshire | 4,716,987 | 3,013,280 | 1,703,707 | 235,849 | 1,467,858 | Fee | 12/31/2025",
+      "source": {
+        "cik": "0001013611",
+        "companyName": "J.P. Morgan Chase Commercial Mortgage Securities Corp.",
+        "accessionNumber": "0001539497-20-000579",
+        "formType": "424B2",
+        "filingDate": "2020-03-24",
+        "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm",
+        "sourceFamily": "CMBS_424B"
+      },
+      "notes": [
+        "HTML_TABLE_FRANCHISE_EXPIRATION_COLUMN",
+        "HISTORICAL_DATE_REQUIRES_REVALIDATION"
+      ],
+      "discoveryMethod": "HTML_PROPERTY_TABLE",
+      "identityClass": "PROBABLE_PROPERTY",
+      "identityReasons": [
+        "distinctive_name_with_location",
+        "has_contract_finding"
+      ],
+      "discoveryPropertyId": null,
+      "hpcMatchStatus": "NO_MATCH",
+      "hpcRecordId": null,
+      "horizon": {
+        "ok": true,
+        "daysAhead": -324.83361782407405,
+        "historical": true,
+        "buckets": [],
+        "note": "Date is in the past — requires revalidation for current applicability"
+      },
+      "persistable": false
+    }
+  ],
+  "sampleLoanIsolated": [],
+  "publicationState": "CUSTOMER_BLOCKED",
+  "mergeStatus": "DO_NOT_MERGE_WITHOUT_IC"
+}
