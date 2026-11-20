@@ -1229,6 +1229,266 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '3c94517f446301534c93c7eb36d25d88f23fe5ba131ac3a9f8a2f06bd7b25065'
+    },
+    {
+      id: 'rec7hTXwMRC81EPqz',
+      slug: 'handwritten-collection',
+      name: 'Handwritten Collection',
+      overlayUrl: '/brand-explorer-phase2e-preview/handwritten-collection-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9c8ff695fc77d7178728e1ebeffeb77cc8dd0c1f75725d589a19491706c559da'
+    },
+    {
+      id: 'recrWCD1LMqu864oU',
+      slug: 'mgallery-collection',
+      name: 'MGallery Collection',
+      overlayUrl: '/brand-explorer-phase2e-preview/mgallery-collection-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '20590601a99f526140cbfa29b60348d3bf64158851f3f6e0ff7fa866e9c7ee71'
+    },
+    {
+      id: 'recFW9kfqKfOjv7Z1',
+      slug: 'pullman',
+      name: 'Pullman',
+      overlayUrl: '/brand-explorer-phase2e-preview/pullman-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '62896a83160d4f478851642a5595e3cbb17a3286df8f9cfeee936561d7ddfe37'
+    },
+    {
+      id: 'recJhPaDVU3YUDQUt',
+      slug: 'fairmont',
+      name: 'Fairmont',
+      overlayUrl: '/brand-explorer-phase2e-preview/fairmont-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'bac738c22553cbb77d2fddc01975c9d29ff93b0fd7a460214fe8f214ad54e112'
+    },
+    {
+      id: 'recevrLJ3m6rIug3S',
+      slug: 'mercure',
+      name: 'Mercure',
+      overlayUrl: '/brand-explorer-phase2e-preview/mercure-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e4567d792819d2b23cd696fe423fe0a3a1855ebe3c317bedbb1bbfbd616f119e'
+    },
+    {
+      id: 'reclFXbpZ5XzLWbGP',
+      slug: 'ibis',
+      name: 'ibis',
+      overlayUrl: '/brand-explorer-phase2e-preview/ibis-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '23af2f6d8aae15a2f57494d3c5b681c2d73a34a1a854e0b23ae5fa37089fef34'
+    },
+    {
+      id: 'recXCZCK05XXYX7Q8',
+      slug: 'mama-shelter',
+      name: 'Mama Shelter',
+      overlayUrl: '/brand-explorer-phase2e-preview/mama-shelter-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9a11ee34928dbf76d13ca8241b8f6eeb14d2d880d90762b9ca712e40bd220398'
+    },
+    {
+      id: 'recQE2lSSSSyuUrMQ',
+      slug: 'novotel',
+      name: 'Novotel',
+      overlayUrl: '/brand-explorer-phase2e-preview/novotel-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '5daab738784b53eaf24bbbc0b562d9ed87bdebbb0610ce59734f4fe776d7b97d'
+    },
+    {
+      id: 'recTJdPlr4mDs9app',
+      slug: 'so',
+      name: 'SO/',
+      overlayUrl: '/brand-explorer-phase2e-preview/so-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8b4a7c97c44e12d68e47128d099626f3b2598603a965a4914e6d1653ef0b4ec5'
+    },
+    {
+      id: 'recwXZ5gVZ8ZH8ekA',
+      slug: 'bw-premier-collection',
+      name: 'BW Premier Collection',
+      overlayUrl: '/brand-explorer-phase2e-preview/bw-premier-collection-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'b46271e0aa30b66ce83464a2050c8b29e6717749bb1207c9b1c1b23f7b02c0ba'
+    },
+    {
+      id: 'recdeh1NsP4gjrv80',
+      slug: 'bw-signature-collection',
+      name: 'BW Signature Collection',
+      overlayUrl: '/brand-explorer-phase2e-preview/bw-signature-collection-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e02686b934b85375d801b356d1ae0d44cf12d1d9d77d8fb7d4ffce028bdd3bd3'
+    },
+    {
+      id: 'recob7tgHRryRSbeO',
+      slug: 'trademark-collection-by-wyndham',
+      name: 'Trademark Collection by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/trademark-collection-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '01766f0898319d0620eaf4faff4b2b7e8b7c738bfb548e492807447cea0bc33b'
+    },
+    {
+      id: 'rec5CNMM4ZUD7ZHlM',
+      slug: 'dazzler-by-wyndham',
+      name: 'Dazzler by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/dazzler-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ce30b2ed3395db805b41c37212c82dc11d7f21e03e3a56f23fbd834ad90a9ad1'
+    },
+    {
+      id: 'reclcjg5Foa9Vs5TC',
+      slug: 'suburban-studios',
+      name: 'Suburban Studios',
+      overlayUrl: '/brand-explorer-phase2e-preview/suburban-studios-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '607d120fcb05fa3d8263835ea9eea610cd59bd4a6efbd1b5ee2af4c34a044374'
+    },
+    {
+      id: 'recqkkrsevi4r9ibj',
+      slug: 'everhome-suites',
+      name: 'Everhome Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/everhome-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'bc4fbfe3bdc6ef052d3053ee5959cabc987bb23aacb25e38fd13b5bb1e23e997'
+    },
+    {
+      id: 'recd8o4k1JddhkRWW',
+      slug: 'quality-inn',
+      name: 'Quality Inn',
+      overlayUrl: '/brand-explorer-phase2e-preview/quality-inn-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9fa8bcd422c2390b8540bf7316d018196bb735fb5b5e7fca59e49a3558b77e02'
+    },
+    {
+      id: 'recmKqo7M7mLZgRqQ',
+      slug: 'radisson-red-by-choice',
+      name: 'Radisson RED by Choice',
+      overlayUrl: '/brand-explorer-phase2e-preview/radisson-red-by-choice-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '733e1771d41cb192d8a2445a98c4fb44e135b3f3625bb8d67719e14c10914ade'
+    },
+    {
+      id: 'recywbx1YQSTCPqW1',
+      slug: 'radisson-by-choice',
+      name: 'Radisson by Choice',
+      overlayUrl: '/brand-explorer-phase2e-preview/radisson-by-choice-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '01d32caeee56330d635a8431fcd203b29c74b3d9a7340054980cc897f930cf4f'
+    },
+    {
+      id: 'recwl5JOYxlChuCAr',
+      slug: 'preferred-hotels-and-resorts',
+      name: 'Preferred Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/preferred-hotels-and-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '486556b7dd1408687f3362ff1e9de71b984729b4a1d0f14b6d386bb10933046e'
+    },
+    {
+      id: 'recjjSnY2opb8P4DG',
+      slug: 'small-luxury-hotels-of-the-world',
+      name: 'Small Luxury Hotels of the World',
+      overlayUrl: '/brand-explorer-phase2e-preview/small-luxury-hotels-of-the-world-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-10-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e3d0b349cd4ed3b9e4b45f443e3005a6bbbcbd46713c0490817ab0908e66e317'
     }
   ];
 
@@ -1370,6 +1630,26 @@
     if (/hyatt\s*regency/i.test(name)) return bySlug('hyatt-regency');
     if (/thompson/i.test(name)) return bySlug('thompson-hotels');
     if (/delta\s*hotels/i.test(name)) return bySlug('delta-hotels-by-marriott');
+    if (/handwritten/i.test(name)) return bySlug('handwritten-collection');
+    if (/mgallery|m gallery/i.test(name)) return bySlug('mgallery-collection');
+    if (/^pullman\b/i.test(name)) return bySlug('pullman');
+    if (/^fairmont\b/i.test(name)) return bySlug('fairmont');
+    if (/^mercure\b/i.test(name) && !/grand\s*mercure/i.test(name)) return bySlug('mercure');
+    if (/^ibis\b/i.test(name) && !/styles|budget/i.test(name)) return bySlug('ibis');
+    if (/mama\s*shelter/i.test(name)) return bySlug('mama-shelter');
+    if (/^novotel\b/i.test(name)) return bySlug('novotel');
+    if (/^so\/?$/i.test(name) || /^so\/\b/i.test(name) || /\bso\/\b/i.test(name)) return bySlug('so');
+    if (/bw\s*premier|premier\s*collection/i.test(name) && /best\s*western|bw\b/i.test(name)) return bySlug('bw-premier-collection');
+    if (/bw\s*signature|signature\s*collection/i.test(name) && /best\s*western|bw\b/i.test(name)) return bySlug('bw-signature-collection');
+    if (/trademark/i.test(name) && /wyndham/i.test(name)) return bySlug('trademark-collection-by-wyndham');
+    if (/dazzler/i.test(name)) return bySlug('dazzler-by-wyndham');
+    if (/suburban\s*studios|^suburban\b/i.test(name)) return bySlug('suburban-studios');
+    if (/everhome/i.test(name)) return bySlug('everhome-suites');
+    if (/^quality\s*inn\b/i.test(name)) return bySlug('quality-inn');
+    if (/radisson\s*red/i.test(name)) return bySlug('radisson-red-by-choice');
+    if (/^radisson\b/i.test(name) && !/red|blu|individuals|collection/i.test(name)) return bySlug('radisson-by-choice');
+    if (/preferred\s*hotels/i.test(name)) return bySlug('preferred-hotels-and-resorts');
+    if (/small\s*luxury\s*hotels|\bslh\b/i.test(name)) return bySlug('small-luxury-hotels-of-the-world');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
