@@ -4030,6 +4030,15 @@
         return key === filters.priority;
       });
     }
+    if (filters.contactActionability) {
+      rows = rows.filter(function (o) {
+        var key =
+          o.contactActionabilityFilterKey ||
+          o.contactActionabilityTier ||
+          "";
+        return key === filters.contactActionability;
+      });
+    }
     if (filters.segment) {
       rows = rows.filter(function (o) {
         return o.segment === filters.segment;
@@ -7337,11 +7346,82 @@
     );
   }
 
+  function contactActionabilityBadgeHtml(o) {
+    var tier =
+      (o && (o.contactActionabilityTier || o.contactActionabilityFilterKey)) ||
+      null;
+    if (!tier) return "";
+    var label =
+      (o && o.contactActionabilityLabel) ||
+      (tier === "SALES_READY"
+        ? "Sales-ready contact"
+        : tier === "REACHABLE"
+          ? "Reachable contact"
+          : tier === "CONTACT_RESEARCH_REQUIRED"
+            ? "Contact research needed"
+            : tier === "CONTACT_IDENTIFICATION_REQUIRED"
+              ? "Contact not yet identified"
+              : String(tier));
+    var explain =
+      (o && o.contactActionabilityExplanation) ||
+      "";
+    var buyerLabel =
+      (o && o.buyerVsEntryLabel) ||
+      (o && o.primaryContact && o.primaryContact.buyerVsEntryLabel) ||
+      null;
+    var buyerCode =
+      (o && o.buyerVsEntry) ||
+      (o && o.primaryContact && o.primaryContact.buyerVsEntry) ||
+      null;
+    // Never mislabel entry points as direct buyers
+    if (buyerCode === "RELEVANT_COMMERCIAL_ENTRY_POINT") {
+      buyerLabel = buyerLabel || "Commercial entry point";
+    } else if (buyerCode === "DIRECT_BUYER") {
+      buyerLabel = buyerLabel || "Direct buyer";
+    }
+    var verifiedEmail =
+      o &&
+      (o.contactEmailCustomerVerified === true ||
+        (o.primaryContact && o.primaryContact.emailCustomerVerified === true));
+    var unverifiedEmailNote = "";
+    if (
+      o &&
+      o.primaryContact &&
+      o.primaryContact.email &&
+      !verifiedEmail
+    ) {
+      unverifiedEmailNote =
+        '<p class="gdi-contact-quality-quiet">Email on file is not source-confirmed — not shown as verified.</p>';
+    }
+    return (
+      '<div class="gdi-contact-actionability" data-actionability-tier="' +
+      esc(tier) +
+      '">' +
+      '<p class="gdi-contact-actionability__badge"><strong>' +
+      esc(label) +
+      "</strong>" +
+      (buyerLabel
+        ? ' · <span class="gdi-contact-actionability__buyer">' +
+          esc(buyerLabel) +
+          "</span>"
+        : "") +
+      "</p>" +
+      (explain
+        ? '<p class="gdi-contact-actionability__explain">' +
+          esc(explain) +
+          "</p>"
+        : "") +
+      unverifiedEmailNote +
+      "</div>"
+    );
+  }
+
   function whoShouldSalesContactHtml(o, whoFn) {
     // Unified Who to Contact: Scaling gold-standard two-contact slots win for
     // every segment (Events + Scaling). Segment-only whoFn is fallback only.
+    var actionabilityPrefix = contactActionabilityBadgeHtml(o);
     var twoContactHtml = scalingTwoContactPresentationHtml(o);
-    if (twoContactHtml) return twoContactHtml;
+    if (twoContactHtml) return actionabilityPrefix + twoContactHtml;
     // Never re-enter this function via whoFn — share-app historically passed
     // whoShouldSalesContactHtml as whoContactHtml, which double-appended the
     // secondary contact (Adrienne ×2) and skipped the named-primary path.
@@ -7360,7 +7440,7 @@
     }
     var drawer = o.customerContactDrawer || null;
     function withSecondary(html) {
-      return html + secondaryNamedContactHtml(o);
+      return actionabilityPrefix + html + secondaryNamedContactHtml(o);
     }
     var rawPath = o.commercialContactPath || null;
     // Never display raw internal enums (NAMED_DIRECT, ORGANIZATION_PATH, …) as the contact name.
