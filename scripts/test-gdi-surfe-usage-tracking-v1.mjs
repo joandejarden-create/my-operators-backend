@@ -203,6 +203,7 @@ assert.equal(classifySurfeLookupStatus({ error: "TIMEOUT" }), "error");
   assert.match(appJs, /\/admin\/surfe-usage/);
   assert.match(appJs, /Surfe Usage/);
   assert.match(appJs, /adminResources/);
+  assert.match(appJs, /normalized === '\/admin\/surfe-usage'/);
 
   const html = fs.readFileSync(
     path.join(ROOT, "public/app/admin/surfe-usage.html"),
@@ -211,18 +212,26 @@ assert.equal(classifySurfeLookupStatus({ error: "TIMEOUT" }), "error");
   assert.match(html, /admin-surfe-usage\.js/);
   assert.match(html, /support-admin-gate/);
   assert.match(html, /asuKpis/);
+  assert.match(html, /Monitor on-demand contact enrichment/);
+  assert.match(html, /support-runbook\.css/);
+  assert.match(html, /admin-ai-demand-reviews\.css/);
+  assert.match(html, /asuOutcome/);
+  assert.match(html, /asuClearFilters/);
 
   const css = fs.readFileSync(
     path.join(ROOT, "public/css/admin-surfe-usage.css"),
     "utf8",
   );
   assert.match(css, /\.asu-page/);
+  assert.match(css, /--runbook-/);
 
   const client = fs.readFileSync(
     path.join(ROOT, "public/js/admin-surfe-usage.js"),
     "utf8",
   );
   assert.match(client, /\/api\/admin\/surfe-usage\/summary/);
+  assert.match(client, /Remaining Surfe Credits/);
+  assert.match(client, /Email Contacts Found/);
   assert.doesNotMatch(client, /contactDetails/);
   assert.doesNotMatch(client, /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
 

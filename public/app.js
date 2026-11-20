@@ -978,6 +978,7 @@
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
         if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
+        if (normalized === '/admin/surfe-usage') return '/support';
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') return '/home';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }

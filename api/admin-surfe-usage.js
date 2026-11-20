@@ -29,6 +29,7 @@ function parseQuery(req) {
   return {
     hotelId: q.hotelId ? String(q.hotelId) : null,
     portfolioId: q.portfolioId ? String(q.portfolioId) : null,
+    status: q.status ? String(q.status) : null,
     from: q.from ? String(q.from) : null,
     to: q.to ? String(q.to) : null,
     latestLimit: q.latestLimit ? Number(q.latestLimit) : 50,

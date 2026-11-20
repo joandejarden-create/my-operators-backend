@@ -1,5 +1,5 @@
 /**
- * Admin — Surfe Usage dashboard client.
+ * Admin — Surfe Usage dashboard (Dealality Admin Resources shell).
  * Never renders or requests personal email/phone values.
  */
 (function () {
@@ -47,42 +47,77 @@
     var to = document.getElementById("asuTo").value;
     var hotelId = document.getElementById("asuHotel").value;
     var portfolioId = document.getElementById("asuPortfolio").value.trim();
+    var outcome = document.getElementById("asuOutcome").value;
     var q = [];
     if (from) q.push("from=" + encodeURIComponent(from));
     if (to) q.push("to=" + encodeURIComponent(to + "T23:59:59.999Z"));
     if (hotelId) q.push("hotelId=" + encodeURIComponent(hotelId));
     if (portfolioId) q.push("portfolioId=" + encodeURIComponent(portfolioId));
+    if (outcome) q.push("status=" + encodeURIComponent(outcome));
     return q.length ? "?" + q.join("&") : "";
   }
 
-  function renderKpis(totals) {
+  function clearFilters() {
+    document.getElementById("asuFrom").value = "";
+    document.getElementById("asuTo").value = "";
+    document.getElementById("asuHotel").value = "";
+    document.getElementById("asuPortfolio").value = "";
+    document.getElementById("asuOutcome").value = "";
+  }
+
+  function renderKpis(totals, remainingCredits) {
+    var remainingLabel = "—";
+    if (remainingCredits) {
+      remainingLabel =
+        "E " +
+        num(remainingCredits.totalEmail) +
+        " · M " +
+        num(remainingCredits.totalMobile);
+    }
+    var successLike =
+      (totals.successfulLookups || 0) + (totals.partialLookups || 0);
     var items = [
-      { label: "Total lookups", value: num(totals.totalLookups) },
-      { label: "Successful (+ partial)", value: num((totals.successfulLookups || 0) + (totals.partialLookups || 0)) },
-      { label: "Success rate", value: num(totals.successRate) + "%" },
-      { label: "Credits consumed", value: num(totals.creditsConsumed) },
-      { label: "Est. enrichment cost", value: money(totals.totalCostEstimateUsd) },
-      { label: "Avg cost / success", value: money(totals.avgCostPerSuccessfulLookupUsd) },
+      { label: "Total Lookups", value: num(totals.totalLookups) },
+      { label: "Successful Lookups", value: num(successLike) },
+      { label: "Success Rate", value: num(totals.successRate) + "%" },
+      { label: "Email Contacts Found", value: num(totals.emailFoundCount) },
+      { label: "Phone Contacts Found", value: num(totals.phoneFoundCount) },
+      { label: "Credits Consumed", value: num(totals.creditsConsumed) },
+      { label: "Estimated Cost", value: money(totals.totalCostEstimateUsd) },
+      { label: "Remaining Surfe Credits", value: remainingLabel },
     ];
     var root = document.getElementById("asuKpis");
     root.innerHTML = items
       .map(function (it) {
         return (
-          '<div class="asu-kpi"><div class="asu-kpi__label">' +
-          esc(it.label) +
-          '</div><div class="asu-kpi__value">' +
+          '<div class="adr-count"><span class="adr-count__n">' +
           esc(it.value) +
-          "</div></div>"
+          '</span><span class="adr-count__l">' +
+          esc(it.label) +
+          "</span></div>"
         );
       })
       .join("");
+  }
+
+  function emptyRow(colspan, message) {
+    return (
+      '<tr><td colspan="' +
+      colspan +
+      '"><div class="asu-empty">' +
+      esc(message) +
+      "</div></td></tr>"
+    );
   }
 
   function renderTrends() {
     var rows = (summary && summary.trends && summary.trends[activeTrend]) || [];
     var tbody = document.querySelector("#asuTrendsTable tbody");
     if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="6">No tracked events in this range.</td></tr>';
+      tbody.innerHTML = emptyRow(
+        6,
+        "No tracked Surfe usage in this range yet.",
+      );
       return;
     }
     tbody.innerHTML = rows
@@ -122,11 +157,18 @@
   function renderHotels(hotels) {
     var tbody = document.querySelector("#asuHotelsTable tbody");
     if (!hotels || !hotels.length) {
-      tbody.innerHTML = '<tr><td colspan="9">No hotel-level usage yet.</td></tr>';
+      tbody.innerHTML = emptyRow(
+        8,
+        "No hotel-level Surfe usage recorded for these filters.",
+      );
       return;
     }
     tbody.innerHTML = hotels
       .map(function (h) {
+        var phoneSearches =
+          Number(h.phoneSearches || 0) + Number(h.bothSearches || 0);
+        var emailSearches =
+          Number(h.emailSearches || 0) + Number(h.bothSearches || 0);
         return (
           "<tr><td>" +
           esc(h.hotelName || h.hotelId) +
@@ -135,11 +177,9 @@
           "</td><td>" +
           esc(h.lookups) +
           "</td><td>" +
-          esc(h.emailSearches) +
+          esc(emailSearches) +
           "</td><td>" +
-          esc(h.phoneSearches) +
-          "</td><td>" +
-          esc(h.bothSearches) +
+          esc(phoneSearches) +
           "</td><td>" +
           esc(h.successfulLookups) +
           "</td><td>" +
@@ -157,14 +197,13 @@
     return '<span class="asu-pill asu-pill--' + esc(s) + '">' + esc(s) + "</span>";
   }
 
-  function yn(v) {
-    return v ? "Yes" : "No";
-  }
-
   function renderLatest(rows) {
     var tbody = document.querySelector("#asuLatestTable tbody");
     if (!rows || !rows.length) {
-      tbody.innerHTML = '<tr><td colspan="9">No lookup activity recorded yet.</td></tr>';
+      tbody.innerHTML = emptyRow(
+        7,
+        "No lookup activity recorded yet for these filters.",
+      );
       return;
     }
     tbody.innerHTML = rows
@@ -181,13 +220,9 @@
           "</td><td>" +
           statusPill(r.status) +
           "</td><td>" +
-          esc(yn(r.emailFound)) +
-          "</td><td>" +
-          esc(yn(r.phoneFound)) +
-          "</td><td>" +
           esc(r.creditsCharged == null ? "—" : r.creditsCharged) +
           "</td><td>" +
-          esc(r.providerLatencyMs == null ? "—" : r.providerLatencyMs + " ms") +
+          esc(money(r.costEstimateUsd)) +
           "</td></tr>"
         );
       })
@@ -198,12 +233,17 @@
     var t = summaryData.totals || {};
     var list = document.getElementById("asuOpsList");
     list.innerHTML = [
-      "No-match frequency: <strong>" + esc(num(summaryData.noMatchFrequency)) + "%</strong>",
+      "No-match frequency: <strong>" +
+        esc(num(summaryData.noMatchFrequency)) +
+        "%</strong>",
       "Error lookups: <strong>" + esc(num(t.errorLookups)) + "</strong>",
       "Avg provider latency: <strong>" +
         esc(t.avgLatencyMs == null ? "—" : t.avgLatencyMs + " ms") +
         "</strong>",
-      esc(t.duplicateSuppressedNote || "Duplicate in-flight lookups are blocked server-side."),
+      esc(
+        t.duplicateSuppressedNote ||
+          "Duplicate in-flight lookups are blocked server-side.",
+      ),
       "Personal contact details are not stored in this ledger.",
     ]
       .map(function (html) {
@@ -214,7 +254,7 @@
     var errors = summaryData.recentErrors || [];
     var tbody = document.querySelector("#asuErrorsTable tbody");
     if (!errors.length) {
-      tbody.innerHTML = '<tr><td colspan="4">No recent provider errors.</td></tr>';
+      tbody.innerHTML = emptyRow(4, "No recent provider errors.");
       return;
     }
     tbody.innerHTML = errors
@@ -234,20 +274,6 @@
       .join("");
   }
 
-  function renderRemaining(credits) {
-    var el = document.getElementById("asuRemainingCredits");
-    if (!credits) {
-      el.textContent = "Live credit balance unavailable.";
-      return;
-    }
-    el.innerHTML =
-      "Email credits: <strong>" +
-      esc(credits.totalEmail) +
-      "</strong> · Mobile credits: <strong>" +
-      esc(credits.totalMobile) +
-      "</strong>";
-  }
-
   async function loadSummary() {
     setStatus("Loading…");
     var res = await authFetch("/api/admin/surfe-usage/summary" + queryParams(), {
@@ -262,15 +288,15 @@
     }
     summary = data;
     if (data.trackingStartedNote) {
-      document.getElementById("asuHistoryNote").textContent = data.trackingStartedNote;
+      document.getElementById("asuHistoryNote").textContent =
+        data.trackingStartedNote;
     }
-    renderKpis(data.totals || {});
+    renderKpis(data.totals || {}, data.remainingCredits);
     fillHotelFilter(data.hotels || []);
     renderTrends();
     renderHotels(data.hotels || []);
     renderLatest(data.latestActivity || []);
     renderOps(data);
-    renderRemaining(data.remainingCredits);
     setStatus("Updated " + (data.generatedAt || ""));
   }
 
@@ -280,17 +306,25 @@
         setStatus(err && err.message ? err.message : "Load failed");
       });
     });
+    document.getElementById("asuClearFilters").addEventListener("click", function () {
+      clearFilters();
+      loadSummary().catch(function (err) {
+        setStatus(err && err.message ? err.message : "Load failed");
+      });
+    });
     document.getElementById("asuRefresh").addEventListener("click", function () {
       loadSummary().catch(function (err) {
         setStatus(err && err.message ? err.message : "Load failed");
       });
     });
-    document.querySelectorAll(".asu-tab").forEach(function (btn) {
+    document.querySelectorAll(".asu-trend-tab").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        document.querySelectorAll(".asu-tab").forEach(function (b) {
+        document.querySelectorAll(".asu-trend-tab").forEach(function (b) {
           b.classList.remove("active");
+          b.setAttribute("aria-selected", "false");
         });
         btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
         activeTrend = btn.getAttribute("data-trend") || "daily";
         renderTrends();
       });
