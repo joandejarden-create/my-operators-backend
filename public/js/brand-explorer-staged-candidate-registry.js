@@ -49,6 +49,76 @@
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash:
         '43c473e65fa26df531ec4886a8f7373992fff0a335f2cc94c3205898cf9ba7e6'
+    },
+    {
+      id: 'rec9aZp7GHtzUEg0c',
+      slug: 'ac-hotels-by-marriott',
+      name: 'AC Hotels by Marriott',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/ac-hotels-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-depth-batch-five-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '551af8631699b8853647fd05a20795695580b43c1b3baec717cfbdd699b8d167'
+    },
+    {
+      id: 'recahVIW4aCx0Ao84',
+      slug: 'moxy-hotels',
+      name: 'Moxy Hotels',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/moxy-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-depth-batch-five-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'a9426eee651806470f243444eae774d8bc3cccf60adc27136da7f0167a4a5978'
+    },
+    {
+      id: 'recDwzv86TWnz2gGB',
+      slug: 'vignette-collection',
+      name: 'Vignette Collection',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/vignette-collection-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-depth-batch-five-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '238e00056b023ccc591b83074570185516ad5718b6c34c38d2c48630cfb862eb'
+    },
+    {
+      id: 'recsggfbKlJbjeRP9',
+      slug: 'canopy-by-hilton',
+      name: 'Canopy by Hilton',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/canopy-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-depth-batch-five-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '31b18d4e445e7e833153328cef1ad046894b867e205293e951166f68002f8794'
+    },
+    {
+      id: 'recvvmiyReHhiKdoK',
+      slug: 'even-hotels',
+      name: 'EVEN Hotels',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/even-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-depth-batch-five-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ec158fb22512e63bcadef73c243cd8817019613d755e66d0e3cd44320106ad6a'
     }
   ];
 
@@ -100,6 +170,13 @@
     var name = nz(brand.name) || nz(brand.brandName);
     if (/curio/i.test(name)) return bySlug('curio-collection');
     if (/ascend/i.test(name)) return bySlug('ascend');
+    if (/autograph/i.test(name)) return bySlug('autograph-collection');
+    if (/^ac hotels/i.test(name) || /\bac hotels by marriott\b/i.test(name))
+      return bySlug('ac-hotels-by-marriott');
+    if (/^moxy/i.test(name)) return bySlug('moxy-hotels');
+    if (/vignette/i.test(name)) return bySlug('vignette-collection');
+    if (/canopy/i.test(name)) return bySlug('canopy-by-hilton');
+    if (/^even\b/i.test(name)) return bySlug('even-hotels');
     return null;
   }
 
