@@ -166,6 +166,12 @@
             adpMonthlyReviewAdmin: true,
             defaultTab: 'action-plan'
         },
+        '/admin/surfe-usage': {
+            file: '/app/admin/surfe-usage.html',
+            title: 'Surfe Usage',
+            roles: ['admin'],
+            internalRunbookOnly: true
+        },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -352,6 +358,13 @@
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'AI Demand Admin', route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
+                        {
+                            label: 'Surfe Usage',
+                            route: '/admin/surfe-usage',
+                            roles: ['admin'],
+                            internalRunbookOnly: true,
+                            navId: 'surfe-usage'
+                        },
                         {
                             // Permanent founder review workspace (CURRENT vs PROPOSED).
                             // Single Admin Resources entry — do not duplicate elsewhere.

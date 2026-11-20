@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Surfe Usage — Dealality Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1" />
+  <script>
+    (function () {
+      if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
+        document.documentElement.classList.add("embed-mode");
+      }
+    })();
+  </script>
+</head>
+<body class="support-page asu-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>Surfe Usage is for Dealality administrators only.</p>
+  </div>
+
+  <div class="support-page-shell asu-shell" id="supportGateContent" hidden>
+    <header class="asu-header">
+      <div class="asu-header__title-row">
+        <span class="asu-header__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 2 5-6"/></svg>
+        </span>
+        <div>
+          <h1>Surfe Usage</h1>
+          <p class="asu-subtitle">
+            On-demand GDI contact lookup telemetry. Emails and phones are never stored here.
+          </p>
+        </div>
+      </div>
+      <p class="asu-history-note" id="asuHistoryNote">
+        Metrics reflect events recorded after Surfe Usage Tracking V1. Pre-tracking history is not fabricated.
+      </p>
+    </header>
+
+    <section class="asu-filters" aria-label="Filters">
+      <label>
+        From
+        <input type="date" id="asuFrom" />
+      </label>
+      <label>
+        To
+        <input type="date" id="asuTo" />
+      </label>
+      <label>
+        Hotel
+        <select id="asuHotel">
+          <option value="">All hotels</option>
+        </select>
+      </label>
+      <label>
+        Portfolio ID
+        <input type="text" id="asuPortfolio" placeholder="Optional" autocomplete="off" />
+      </label>
+      <button type="button" class="asu-btn" id="asuApplyFilters">Apply</button>
+      <button type="button" class="asu-btn asu-btn--ghost" id="asuRefresh">Refresh</button>
+      <span class="asu-status" id="asuStatus" aria-live="polite"></span>
+    </section>
+
+    <section class="asu-kpis" id="asuKpis" aria-label="Executive KPIs"></section>
+
+    <section class="asu-grid">
+      <article class="asu-card">
+        <h2>Usage trends</h2>
+        <div class="asu-tabs" role="tablist">
+          <button type="button" class="asu-tab active" data-trend="daily">Daily</button>
+          <button type="button" class="asu-tab" data-trend="weekly">Weekly</button>
+          <button type="button" class="asu-tab" data-trend="monthly">Monthly</button>
+        </div>
+        <div class="asu-table-wrap">
+          <table class="asu-table" id="asuTrendsTable">
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th>Lookups</th>
+                <th>Success</th>
+                <th>Unsuccessful</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="asu-card">
+        <h2>Credits remaining (live)</h2>
+        <div id="asuRemainingCredits" class="asu-remaining">Loading…</div>
+        <p class="asu-muted">Cost estimates use configured USD-per-credit constants when balance deltas are unavailable. Misses are not assumed to consume credits.</p>
+      </article>
+    </section>
+
+    <section class="asu-card">
+      <h2>Hotel breakdown</h2>
+      <div class="asu-table-wrap">
+        <table class="asu-table" id="asuHotelsTable">
+          <thead>
+            <tr>
+              <th>Hotel</th>
+              <th>Portfolio</th>
+              <th>Lookups</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Both</th>
+              <th>Successful</th>
+              <th>Credits</th>
+              <th>Est. cost</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="asu-grid">
+      <article class="asu-card">
+        <h2>Latest lookup activity</h2>
+        <div class="asu-table-wrap">
+          <table class="asu-table" id="asuLatestTable">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Hotel</th>
+                <th>Opportunity</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Credits</th>
+                <th>Latency</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="asu-card">
+        <h2>Operational visibility</h2>
+        <ul class="asu-ops" id="asuOpsList"></ul>
+        <h3 class="asu-subhead">Recent provider errors</h3>
+        <div class="asu-table-wrap">
+          <table class="asu-table" id="asuErrorsTable">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Hotel</th>
+                <th>Category</th>
+                <th>Opportunity</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script src="/js/memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v1"></script>
+</body>
+</html>

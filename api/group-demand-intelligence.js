@@ -2979,7 +2979,7 @@ export async function postGdiContactReveal(req, res) {
     preflightSurfeCredits,
     beginSurfeInFlight,
     endSurfeInFlight,
-    appendSurfeLiveAccounting,
+    appendSurfeLiveAccountingSafe,
   } = await import(
     "../lib/group-demand-intelligence/gdi-surfe-live-gate-v1.js"
   );
@@ -2991,6 +2991,10 @@ export async function postGdiContactReveal(req, res) {
     contactName: resolvedName,
     channel,
   });
+  if (authorizeLive && !useMock) {
+    res.locals = res.locals || {};
+    res.locals.gdiSurfeRevealStartedAtMs = Date.now();
+  }
 
   let creditsBefore = null;
   let provider = null;
@@ -3085,11 +3089,19 @@ export async function postGdiContactReveal(req, res) {
     } catch {
       creditsAfter = null;
     }
-    appendSurfeLiveAccounting({
+    const startedAt = Number(res.locals?.gdiSurfeRevealStartedAtMs) || null;
+    const latencyMs =
+      startedAt && Number.isFinite(startedAt)
+        ? Math.max(0, Date.now() - startedAt)
+        : null;
+    // Non-blocking / never fails the customer response; never persists PII.
+    // On this path authorizeLive implies Surfe was the enrichment provider.
+    appendSurfeLiveAccountingSafe({
       hotelId,
       opportunityId,
       identityKey,
       channel,
+      lookupType: channel,
       enrichmentId: result?.enrichmentId || null,
       ok: result?.ok === true,
       miss: result?.miss === true,
@@ -3098,6 +3110,19 @@ export async function postGdiContactReveal(req, res) {
       creditsAfter,
       emailReturned: Boolean(result?.contactDetails?.email),
       phoneReturned: Boolean(result?.contactDetails?.phone),
+      surfeAttempted: true,
+      surface: "gdi_drawer",
+      providerLatencyMs: latencyMs,
+      userId:
+        req.dealalityUser?.memberstackId ||
+        req.dealalityUser?.id ||
+        req.user?.id ||
+        null,
+      portfolioId:
+        opportunity?.portfolioId ||
+        opportunity?.customerId ||
+        opportunity?.ownerPortfolioId ||
+        null,
     });
   }
 
