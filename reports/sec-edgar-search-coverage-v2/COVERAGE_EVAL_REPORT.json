@@ -1,0 +1,523 @@
+{
+  "generatedAt": "2026-11-20T06:51:04.987Z",
+  "coverageMatrixSummary": {
+    "IMPLEMENTED": 9,
+    "PARTIAL": 14,
+    "MISSING": 0,
+    "NOT_APPLICABLE": 1
+  },
+  "taxonomy": {
+    "version": "sec-edgar-search-taxonomy-v2.1.0",
+    "families": [
+      {
+        "id": "hotel_identity_aliases",
+        "label": "Hotel identity and aliases",
+        "patternCount": 12,
+        "abbreviations": [
+          "f/k/a",
+          "a/k/a",
+          "n/k/a"
+        ]
+      },
+      {
+        "id": "ownership_legal_entities",
+        "label": "Ownership and legal entities",
+        "patternCount": 13,
+        "abbreviations": [
+          "LLC",
+          "LP",
+          "LLP",
+          "JV"
+        ]
+      },
+      {
+        "id": "parent_subsidiary",
+        "label": "Parent/subsidiary relationships",
+        "patternCount": 8,
+        "abbreviations": []
+      },
+      {
+        "id": "management_operating",
+        "label": "Management and operating companies",
+        "patternCount": 9,
+        "abbreviations": [
+          "HMA"
+        ]
+      },
+      {
+        "id": "franchise_licensing",
+        "label": "Franchise and licensing agreements",
+        "patternCount": 9,
+        "abbreviations": []
+      },
+      {
+        "id": "signing_effectiveness",
+        "label": "Agreement signing and effectiveness",
+        "patternCount": 9,
+        "abbreviations": []
+      },
+      {
+        "id": "expiration_termination",
+        "label": "Expiration and termination",
+        "patternCount": 9,
+        "abbreviations": []
+      },
+      {
+        "id": "renewal_extensions",
+        "label": "Renewal options and extensions",
+        "patternCount": 8,
+        "abbreviations": []
+      },
+      {
+        "id": "acquisitions_dispositions",
+        "label": "Acquisitions and dispositions",
+        "patternCount": 9,
+        "abbreviations": [
+          "PSA"
+        ]
+      },
+      {
+        "id": "brand_conversions",
+        "label": "Brand changes and conversions",
+        "patternCount": 10,
+        "abbreviations": []
+      },
+      {
+        "id": "capital_renovations",
+        "label": "Capital investment and renovations",
+        "patternCount": 8,
+        "abbreviations": [
+          "PIP",
+          "FF&E",
+          "capex"
+        ]
+      },
+      {
+        "id": "hotel_financial_performance",
+        "label": "Hotel-level financial performance",
+        "patternCount": 7,
+        "abbreviations": [
+          "RevPAR",
+          "ADR"
+        ]
+      },
+      {
+        "id": "restructuring_distress",
+        "label": "Corporate restructuring and distress",
+        "patternCount": 8,
+        "abbreviations": []
+      },
+      {
+        "id": "portfolio_membership",
+        "label": "Portfolio membership and historical changes",
+        "patternCount": 8,
+        "abbreviations": []
+      }
+    ],
+    "patternCount": 127,
+    "legacyContractKeywords": 8
+  },
+  "fixtureEvaluation": {
+    "version": "sec-edgar-search-strategy-eval-v2",
+    "taxonomyVersion": "sec-edgar-search-taxonomy-v2.1.0",
+    "hotelsDiscovered": 24,
+    "scheduleHotels": 9,
+    "contractFindings": 2,
+    "historicallyVerifiedExpirations": 9,
+    "recallHotels": 1,
+    "precisionHotelsApprox": 0.42857142857142855,
+    "recallExpirations": 1,
+    "falsePositiveHotelCount": 0,
+    "duplicateHotelNames": 3,
+    "taxonomyHitTotal": 12,
+    "taxonomyByFamily": {
+      "hotel_identity_aliases": 7,
+      "ownership_legal_entities": 0,
+      "parent_subsidiary": 0,
+      "management_operating": 0,
+      "franchise_licensing": 0,
+      "signing_effectiveness": 0,
+      "expiration_termination": 1,
+      "renewal_extensions": 0,
+      "acquisitions_dispositions": 0,
+      "brand_conversions": 2,
+      "capital_renovations": 0,
+      "hotel_financial_performance": 0,
+      "restructuring_distress": 0,
+      "portfolio_membership": 2
+    },
+    "sampleHotels": [
+      {
+        "hotelName": "Courtyard Denver Downtown",
+        "city": "Denver",
+        "stateRegion": "CO",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Westin San Diego San",
+        "city": "Diego",
+        "stateRegion": "CA",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Hilton Garden Inn Boston Downtown",
+        "city": "Boston",
+        "stateRegion": "MA",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Residence Inn Atlanta Midtown",
+        "city": "Atlanta",
+        "stateRegion": "GA",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Embassy Suites Chicago Downtown",
+        "city": "Chicago",
+        "stateRegion": "IL",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Marriott Chicago Downtown Magnificent Mile",
+        "city": "Chicago",
+        "stateRegion": "IL",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Hampton Inn Seattle Downtown",
+        "city": "Seattle",
+        "stateRegion": "WA",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Courtyard Boston Downtown",
+        "city": "Boston",
+        "stateRegion": "MA",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "DoubleTree by Hilton Bethesda",
+        "city": "Bethesda",
+        "stateRegion": "MD",
+        "discoveryMethod": "FRANCHISE_EXPIRATION_SCHEDULE"
+      },
+      {
+        "hotelName": "Courtyard Denver Downtown Denver CO Franchise",
+        "city": null,
+        "stateRegion": "CO",
+        "discoveryMethod": "SCHEDULE_LINE_BRAND"
+      },
+      {
+        "hotelName": "Westin San Diego San Diego",
+        "city": null,
+        "stateRegion": "CA",
+        "discoveryMethod": "SCHEDULE_LINE_BRAND"
+      },
+      {
+        "hotelName": "Hilton Garden Inn Boston Downtown Boston MA",
+        "city": null,
+        "stateRegion": "MA",
+        "discoveryMethod": "SCHEDULE_LINE_BRAND"
+      }
+    ]
+  },
+  "eligibleFilingSummary": [
+    {
+      "slug": "marriott-international",
+      "cik": "0001048286",
+      "sinceYear": 1994,
+      "eligibleFound": 536,
+      "formEntries": 536,
+      "exhibitAsFormRows": 0,
+      "processed": 0,
+      "remainingInQueue": 536,
+      "yearSpan": {
+        "min": 2000,
+        "max": 2026
+      },
+      "formTypeCounts": {
+        "424B3": 6,
+        "10-K": 25,
+        "10-K/A": 1,
+        "424B5": 58,
+        "424B1": 22,
+        "8-K": 290,
+        "8-K/A": 4,
+        "10-Q": 80,
+        "10-Q/A": 5,
+        "DEF 14A": 26,
+        "ARS": 15,
+        "S-3": 3,
+        "S-3/A": 1
+      },
+      "exhibitGapNote": "EX-10 contractual exhibits are typically nested under a parent 10-K/8-K accession. Enumerate via Archives .../index.json in a follow-on pass; do not assume EX-10 is a standalone submissions form."
+    },
+    {
+      "slug": "sunstone-hotel-investors",
+      "cik": "0001295810",
+      "sinceYear": 1994,
+      "eligibleFound": 483,
+      "formEntries": 483,
+      "exhibitAsFormRows": 0,
+      "processed": 0,
+      "remainingInQueue": 483,
+      "yearSpan": {
+        "min": 2004,
+        "max": 2026
+      },
+      "formTypeCounts": {
+        "S-11/A": 10,
+        "S-11": 4,
+        "424B4": 7,
+        "10-K": 22,
+        "424B5": 31,
+        "424B7": 9,
+        "424B3": 2,
+        "10-Q": 67,
+        "8-K": 294,
+        "10-K/A": 1,
+        "DEF 14A": 22,
+        "S-3/A": 2,
+        "S-3": 2,
+        "8-K/A": 6,
+        "ARS": 4
+      },
+      "exhibitGapNote": "EX-10 contractual exhibits are typically nested under a parent 10-K/8-K accession. Enumerate via Archives .../index.json in a follow-on pass; do not assume EX-10 is a standalone submissions form."
+    },
+    {
+      "slug": "ashford-hospitality-trust",
+      "cik": "0001232582",
+      "sinceYear": 1994,
+      "eligibleFound": 1507,
+      "formEntries": 1507,
+      "exhibitAsFormRows": 0,
+      "processed": 0,
+      "remainingInQueue": 1507,
+      "yearSpan": {
+        "min": 2003,
+        "max": 2026
+      },
+      "formTypeCounts": {
+        "S-11/A": 6,
+        "S-11": 12,
+        "424B3": 128,
+        "10-K": 23,
+        "424B5": 32,
+        "424B7": 3,
+        "424B2": 9,
+        "10-K/A": 10,
+        "8-K": 1120,
+        "8-K/A": 38,
+        "10-Q": 70,
+        "ARS": 5,
+        "DEF 14A": 24,
+        "S-3": 14,
+        "S-3/A": 12,
+        "10-Q/A": 1
+      },
+      "exhibitGapNote": "EX-10 contractual exhibits are typically nested under a parent 10-K/8-K accession. Enumerate via Archives .../index.json in a follow-on pass; do not assume EX-10 is a standalone submissions form."
+    },
+    {
+      "slug": "host-hotels-resorts",
+      "cik": "0001070750",
+      "sinceYear": 1994,
+      "eligibleFound": 617,
+      "formEntries": 617,
+      "exhibitAsFormRows": 0,
+      "processed": 0,
+      "remainingInQueue": 617,
+      "yearSpan": {
+        "min": 2000,
+        "max": 2026
+      },
+      "formTypeCounts": {
+        "10-K": 26,
+        "424B5": 21,
+        "424B2": 6,
+        "424B7": 60,
+        "424B3": 14,
+        "8-K": 342,
+        "10-K/A": 1,
+        "10-Q": 80,
+        "8-K/A": 7,
+        "DEF 14A": 26,
+        "ARS": 16,
+        "10-Q/A": 1,
+        "S-3": 7,
+        "S-3/A": 10
+      },
+      "exhibitGapNote": "EX-10 contractual exhibits are typically nested under a parent 10-K/8-K accession. Enumerate via Archives .../index.json in a follow-on pass; do not assume EX-10 is a standalone submissions form."
+    },
+    {
+      "slug": "hilton-worldwide",
+      "cik": "0001585689",
+      "sinceYear": 1994,
+      "eligibleFound": 238,
+      "formEntries": 238,
+      "exhibitAsFormRows": 0,
+      "processed": 0,
+      "remainingInQueue": 238,
+      "yearSpan": {
+        "min": 2013,
+        "max": 2026
+      },
+      "formTypeCounts": {
+        "424B3": 4,
+        "424B4": 3,
+        "10-K": 13,
+        "424B7": 1,
+        "424B5": 5,
+        "424B2": 4,
+        "8-K": 140,
+        "10-Q": 39,
+        "ARS": 6,
+        "DEF 14A": 14,
+        "S-1/A": 6,
+        "S-1": 3
+      },
+      "exhibitGapNote": "EX-10 contractual exhibits are typically nested under a parent 10-K/8-K accession. Enumerate via Archives .../index.json in a follow-on pass; do not assume EX-10 is a standalone submissions form."
+    },
+    {
+      "slug": "diamondrock-hospitality",
+      "cik": "0001298946",
+      "sinceYear": 1994,
+      "eligibleFound": 482,
+      "formEntries": 482,
+      "exhibitAsFormRows": 0,
+      "processed": 0,
+      "remainingInQueue": 482,
+      "yearSpan": {
+        "min": 2005,
+        "max": 2026
+      },
+      "formTypeCounts": {
+        "S-11/A": 10,
+        "S-11": 4,
+        "424B3": 5,
+        "424B4": 2,
+        "10-K": 21,
+        "424B5": 20,
+        "424B2": 2,
+        "8-K": 309,
+        "424B7": 1,
+        "10-Q": 65,
+        "8-K/A": 12,
+        "10-Q/A": 3,
+        "ARS": 5,
+        "DEF 14A": 21,
+        "S-3/A": 1,
+        "S-3": 1
+      },
+      "exhibitGapNote": "EX-10 contractual exhibits are typically nested under a parent 10-K/8-K accession. Enumerate via Archives .../index.json in a follow-on pass; do not assume EX-10 is a standalone submissions form."
+    }
+  ],
+  "durableInventory": {
+    "totalHotels": 1612,
+    "withContractFindings": 125,
+    "matchedHpc": 4,
+    "notInHpc": 1608,
+    "contractVerifiedPendingHpc": 0,
+    "ambiguous": 0,
+    "byStatus": {
+      "DISCOVERED_MATCHED_HPC": 4,
+      "DISCOVERED_NOT_IN_HPC": 1608,
+      "CONTRACT_VERIFIED_PENDING_HPC": 0,
+      "MATCH_AMBIGUOUS": 0,
+      "PORTFOLIO_ONLY_EVIDENCE": 0,
+      "UNATTRIBUTED_CONTRACT_LANGUAGE": 0
+    }
+  },
+  "coverageAccounting": {
+    "version": "sec-edgar-search-strategy-eval-v2",
+    "eligibleFilings": 3863,
+    "processedFilings": 50,
+    "remainingFilings": 3813,
+    "coverageRatio": 0.012943308309603935,
+    "newUniqueHotels": 1612,
+    "verifiedOwnersOperators": 0,
+    "verifiedHistoricalRelationships": 0,
+    "verifiedContractDates": 69,
+    "falsePositiveRate": null,
+    "duplicateRate": 0.125,
+    "costPerNewVerifiedFinding": 0,
+    "note": "Batch finish ≠ comprehensive coverage. Always report eligible vs processed vs remaining."
+  },
+  "hpcBackfillOpportunities": {
+    "matchedInInventory": 4,
+    "unmatchedRetained": 1608,
+    "note": "Unmatched hotels retained for future HPC reconciliation; no auto HPC create."
+  },
+  "researchSpendUsd": 0,
+  "remainingGaps": [
+    {
+      "area": "SEC registrants and historical CIKs",
+      "status": "PARTIAL",
+      "gap": "Need systematic predecessor/successor CIK mapping and dissolved-entity harvest."
+    },
+    {
+      "area": "Company aliases and predecessor names",
+      "status": "PARTIAL",
+      "gap": "Registrant legal-name alias table (e.g. Hilton Hotels Corp → Hilton Worldwide)."
+    },
+    {
+      "area": "Exhibit document types (EX-10, schedules)",
+      "status": "PARTIAL",
+      "gap": "Parse filing index.json / FilingSummary to enumerate exhibits separately from form types."
+    },
+    {
+      "area": "Historical filing years",
+      "status": "PARTIAL",
+      "gap": "Make complete eligible inventory the default path; keep short windows only for smoke tests."
+    },
+    {
+      "area": "Complete eligible filing inventory before download",
+      "status": "PARTIAL",
+      "gap": "Persist full eligible inventory artifact per CIK before any document fetch."
+    },
+    {
+      "area": "Hotel name variants",
+      "status": "PARTIAL",
+      "gap": "Systematic alias capture from f/k/a / conversion language."
+    },
+    {
+      "area": "Legal entity and subsidiary names",
+      "status": "PARTIAL",
+      "gap": "Subsidiary-name extractor from Exhibit 21 / org charts."
+    },
+    {
+      "area": "Ownership and management terminology",
+      "status": "PARTIAL",
+      "gap": "Named-entity owner/operator linker with evidence spans."
+    },
+    {
+      "area": "Brand conversion terminology",
+      "status": "PARTIAL",
+      "gap": "Structured conversion event findings with before/after brand."
+    },
+    {
+      "area": "Geographic variations",
+      "status": "PARTIAL",
+      "gap": "Non-US geography normalization for 20-F/6-K property lists."
+    },
+    {
+      "area": "Structured agreement-exhibit extraction",
+      "status": "PARTIAL",
+      "gap": "Exhibit-index driven EX-10.* download + extract."
+    },
+    {
+      "area": "Adaptive registrant↔hotel↔owner expansion",
+      "status": "PARTIAL",
+      "gap": "Auto-enqueue only after verified entity extraction quality gates."
+    },
+    {
+      "area": "HPC hotel → SEC company reverse path",
+      "status": "PARTIAL",
+      "gap": "HPC Affiliation/Operator → ticker/CIK resolve → enqueue."
+    },
+    {
+      "area": "V1 pilot limits (2-year window, 6/12 filings)",
+      "status": "PARTIAL",
+      "gap": "Document V1 limits as smoke-only; V2 inventory-first is the production research path."
+    }
+  ]
+}

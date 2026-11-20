@@ -94,6 +94,15 @@ npm run sec-edgar-contract-intelligence:pilot -- --apply
 - No arbitrary free-SEC document cap; use batch size + checkpoint resume
 - Paid AI remains at $25 ceiling unless separately approved
 
+## Search coverage & adaptive discovery V2
+
+- Coverage matrix: `npm run sec-edgar-search-coverage:eval` → `reports/sec-edgar-search-coverage-v2/`
+- Taxonomy: 14 versioned search families (`search-taxonomy-v2.js`); legacy 8 keywords retained for audit baseline
+- Eligible filing inventory first: `--build-eligible` writes `data/sec-edgar/eligible-filings/`
+- Forms ≠ exhibits: EX-10 nested under parent accessions (index.json follow-on gap documented)
+- Adaptive queue: registrant↔hotel↔owner with depth/company caps; unverified entities blocked
+- V1 pilot 2-year / 6–12 filing limits = smoke control only; production path is inventory + checkpoint batches
+
 ## Artifacts
 
 | Path | Contents |
