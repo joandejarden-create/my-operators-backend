@@ -1,0 +1,2744 @@
+{
+  "generatedAt": "2026-11-20T10:10:25.177Z",
+  "version": "gdi-pdl-prospeo-enrichment-pilot-v1",
+  "dryRun": false,
+  "authorization": {
+    "pdlCeiling": 10,
+    "prospeoCeiling": 10,
+    "mobile": false,
+    "fullenrich": false,
+    "surfeEnrich": false,
+    "apollo": false,
+    "newPurchases": false
+  },
+  "pr484": {
+    "state": "OPEN",
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/484",
+    "note": "Pilot lands on same GDI contact-enrichment branch; IC owns merge."
+  },
+  "balances": {
+    "pdl": {
+      "keyPresent": true,
+      "note": "No free balance endpoint; credits inferred from HTTP 200 matches + response headers",
+      "creditsConsumedSuccessfulMatches": 2,
+      "headerTrail": [
+        {
+          "call_credits_spent": 1,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 699,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 55,
+          "ratelimit_remaining": "{\"minute\": 499}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 498}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 497}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 496}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 495}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 494}"
+        },
+        {
+          "call_credits_spent": 1,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 699,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 493}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 57,
+          "ratelimit_remaining": "{\"minute\": 492}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 57,
+          "ratelimit_remaining": "{\"minute\": 491}"
+        },
+        {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 57,
+          "ratelimit_remaining": "{\"minute\": 490}"
+        }
+      ]
+    },
+    "prospeo": {
+      "before": {
+        "ok": true,
+        "plan": "FREE",
+        "remaining": 100,
+        "used": 0
+      },
+      "after": {
+        "ok": true,
+        "plan": "FREE",
+        "remaining": 97,
+        "used": 3
+      },
+      "creditsConsumedEstimate": 3,
+      "deltaRemaining": 3
+    }
+  },
+  "metrics": {
+    "cohortSize": 10,
+    "skippedEntirely": 0,
+    "pdlMatched": 2,
+    "pdlIdentityAccepted": 2,
+    "pdlLinkedInVerified": 0,
+    "prospeoNamedEmailsAccepted": 2,
+    "quarantined": 8,
+    "movedPartialToReady": 0,
+    "pdlProspeoEmailOverlap": 0,
+    "surfeInputsImproved": 2
+  },
+  "costPerValidIncrementalRecovery": {
+    "pdlCredits": 2,
+    "prospeoCredits": 3,
+    "acceptedProspeoEmails": 2,
+    "acceptedPdlIdentity": 2,
+    "note": "Provider-derived — not customer-publishable without license confirmation"
+  },
+  "licensing": {
+    "persistenceMode": "INTERNAL_EVALUATION_REPORT_ONLY",
+    "canonicalPublicFieldsWritten": false,
+    "stagedToCurrent": false,
+    "pdlEmbeddedProductPermission": "Reported in .env.example / client (2026-09) — still verify exact customer-display use before publication",
+    "prospeo": "Standard ToS = internal B2B use; provider-derived emails must NOT auto-enter customer-visible research records"
+  },
+  "recommendations": {
+    "pdlAsOptionalIdentityProvider": "YES_OPTIONAL — use when LinkedIn/employer unresolved after public research; gate on identity_match_accepted",
+    "prospeoAsSelectiveEmailFallback": "YES_SELECTIVE — email-only after public+PDL miss; keep provider-derived / non-customer until Order permits",
+    "fullenrichStillNeeded": "HOLD — not tested; revisit only if PDL+Prospeo miss rate stays high on larger PARTIAL set",
+    "surfeSearchPeople": "HOLD — zero search credits; Search is org/role discovery not exact-person; Enrich remains on-click",
+    "customerFacingLawfulUse": "Public-verified only by default. PDL embedded permission needs counsel check for hotel disclosure. Prospeo standard ToS does not authorize customer disclosure without Schedule 5/Order."
+  },
+  "results": [
+    {
+      "personName": "Abbas Zavar",
+      "opportunityId": "rx_d_2400ebe4c2bb",
+      "hotelId": "recH9h3McgMNFQEla",
+      "baseline": {
+        "readiness": "READY",
+        "employerName": "University of Toronto — Institute of Health Policy, Management and Evaluation",
+        "employerDomain": "ihpme.utoronto.ca",
+        "linkedinUrl": "https://www.linkedin.com/in/abbaszavar/",
+        "linkedinTrusted": true,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Abbas",
+          "lastName": "Zavar",
+          "companyName": "University of Toronto — Institute of Health Policy, Management and Evaluation",
+          "companyDomain": "ihpme.utoronto.ca",
+          "linkedInUrl": "https://www.linkedin.com/in/abbaszavar"
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 1,
+        "http_status": 200,
+        "matched": true,
+        "likelihood": 10,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "bucket": "RELATED_DOMAIN_UNATTRIBUTED",
+          "phone_bucket": null,
+          "identity_match_accepted": true,
+          "affiliation_accepted": false,
+          "work_email_returned": true,
+          "work_email": "abbaszavar@gmail.com",
+          "email_provider_status": "PDL_REPORTED",
+          "phone_returned": true,
+          "phone": "+16478712480",
+          "phone_type": "mobile",
+          "phone_business_use": "PROVIDER_REPORTED_MOBILE_UNKNOWN_BUSINESS_USE",
+          "likelihood": 10,
+          "matched_inputs": [
+            "linkedin",
+            "name"
+          ],
+          "identity": {
+            "full_name": "Abbas Zavar",
+            "job_title": "Founder & Principal",
+            "job_company_name": "Az Digital Health Consulting",
+            "job_company_website": null,
+            "linkedin_url": "linkedin.com/in/abbaszavar",
+            "job_last_verified": "2026-11-01",
+            "pdl_id": "YbjBYD-VvIxjIuJTf1qbrQ_0000"
+          },
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 893,
+          "cost_credits": 1,
+          "error": null,
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": "Abbas Zavar",
+          "job_title": "Founder & Principal",
+          "job_company_name": "Az Digital Health Consulting",
+          "job_company_website": null,
+          "linkedin_url": "linkedin.com/in/abbaszavar",
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": true,
+            "presence": "NULL",
+            "typeof": "object",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": true,
+            "presence": "POPULATED",
+            "typeof": "object",
+            "length": 1,
+            "usable_contact_value": true
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": true,
+            "presence": "POPULATED",
+            "typeof": "string",
+            "usable_contact_value": true,
+            "looks_like_email": false,
+            "looks_like_phone": true
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": true,
+            "presence": "POPULATED",
+            "typeof": "object",
+            "length": 1,
+            "usable_contact_value": true
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 1,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 699,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 55,
+          "ratelimit_remaining": "{\"minute\": 499}"
+        },
+        "request": {
+          "first_name": "Abbas",
+          "last_name": "Zavar",
+          "company": "ihpme.utoronto.ca",
+          "profile": "https://www.linkedin.com/in/abbaszavar/"
+        },
+        "identityAccepted": true,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": false,
+        "quarantined": true,
+        "creditsConsumed": 1,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": true,
+          "employerOk": false,
+          "domainOk": false,
+          "linkedInOk": false,
+          "reasons": [
+            "EMPLOYER_MISMATCH",
+            "DOMAIN_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website",
+            "linkedin_url"
+          ],
+          "company_website": "ihpme.utoronto.ca",
+          "has_linkedin": true,
+          "full_name": "Abbas Zavar"
+        },
+        "http_status": 200,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "READY",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Abbas",
+          "lastName": "Zavar",
+          "fullName": "Abbas Zavar",
+          "nameVariants": [
+            "Abbas Zavar"
+          ],
+          "title": "Founder & Principal",
+          "employerName": "Az Digital Health Consulting",
+          "employerDomain": "ihpme.utoronto.ca",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "DIRECT_EMPLOYER",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": "https://www.linkedin.com/in/abbaszavar/",
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "VERIFIED_LINKEDIN_PROFILE",
+          "linkedinTrustedForSurfe": true,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "name_tokens_in_slug",
+            "organization_in_evidence"
+          ],
+          "opportunityId": "rx_d_2400ebe4c2bb",
+          "hotelId": "recH9h3McgMNFQEla",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:16.270Z",
+          "linkedInQueries": [
+            "\"Abbas Zavar\" \"Az Digital Health Consulting\" linkedin",
+            "site:linkedin.com/in \"Abbas Zavar\" \"Az Digital Health Consulting\"",
+            "\"Abbas Zavar\" \"Founder & Principal\" linkedin",
+            "\"Abbas Zavar\" \"ihpme.utoronto.ca\""
+          ],
+          "readiness": "READY",
+          "readinessGaps": [],
+          "readinessReason": "Verified name, employer, and personal LinkedIn"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "READY",
+          "person": {
+            "linkedInUrl": "https://www.linkedin.com/in/abbaszavar",
+            "firstName": "Abbas",
+            "lastName": "Zavar",
+            "companyName": "Az Digital Health Consulting",
+            "companyDomain": "ihpme.utoronto.ca"
+          },
+          "surfeFieldNames": {
+            "firstName": "Abbas",
+            "lastName": "Zavar",
+            "companyName": "Az Digital Health Consulting",
+            "companyDomain": "ihpme.utoronto.ca",
+            "linkedInUrl": "https://www.linkedin.com/in/abbaszavar"
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Abbas",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Zavar",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Az Digital Health Consulting",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "ihpme.utoronto.ca",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": "https://www.linkedin.com/in/abbaszavar",
+              "verified": true,
+              "status": "VERIFIED_LINKEDIN_PROFILE"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified LinkedIn + name/company context (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Daryl Simon",
+      "opportunityId": "wy_pd_fc13e2e08dd5",
+      "hotelId": "recXh4NgF8sDbi9cQ",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "The Tie",
+        "employerDomain": "thetie.io",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Daryl",
+          "lastName": "Simon",
+          "companyName": "The Tie",
+          "companyDomain": "thetie.io",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 256,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 498}"
+        },
+        "request": {
+          "first_name": "Daryl",
+          "last_name": "Simon",
+          "company": "thetie.io"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": true,
+        "miss": false,
+        "quarantined": false,
+        "creditsConsumed": 1,
+        "verification": {
+          "accepted": true,
+          "quarantined": false,
+          "nameOk": true,
+          "employerOk": true,
+          "domainOk": true,
+          "linkedInOk": false,
+          "reasons": [],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": "[object object]",
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "thetie.io",
+          "has_linkedin": false,
+          "full_name": "Daryl Simon"
+        },
+        "http_status": 200,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Daryl",
+          "lastName": "Simon",
+          "fullName": "Daryl Simon",
+          "nameVariants": [
+            "Daryl Simon"
+          ],
+          "title": null,
+          "employerName": "The Tie",
+          "employerDomain": "thetie.io",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "DIRECT_EMPLOYER",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "wy_pd_fc13e2e08dd5",
+          "hotelId": "recXh4NgF8sDbi9cQ",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:17.360Z",
+          "linkedInQueries": [
+            "\"Daryl Simon\" \"The Tie\" linkedin",
+            "site:linkedin.com/in \"Daryl Simon\" \"The Tie\"",
+            "\"Daryl Simon\" \"thetie.io\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Daryl",
+            "lastName": "Simon",
+            "companyName": "The Tie",
+            "companyDomain": "thetie.io"
+          },
+          "surfeFieldNames": {
+            "firstName": "Daryl",
+            "lastName": "Simon",
+            "companyName": "The Tie",
+            "companyDomain": "thetie.io",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Daryl",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Simon",
+              "verified": true
+            },
+            "companyName": {
+              "value": "The Tie",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "thetie.io",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Ariela Kiradjian",
+      "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "Boutique & Luxury Lodging Association",
+        "employerDomain": "bllaevents.com",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Ariela",
+          "lastName": "Kiradjian",
+          "companyName": "Boutique & Luxury Lodging Association",
+          "companyDomain": "bllaevents.com",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 249,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 497}"
+        },
+        "request": {
+          "first_name": "Ariela",
+          "last_name": "Kiradjian",
+          "company": "bllaevents.com"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "bllaevents.com",
+          "has_linkedin": false,
+          "full_name": "Ariela Kiradjian"
+        },
+        "http_status": 400,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Ariela",
+          "lastName": "Kiradjian",
+          "fullName": "Ariela Kiradjian",
+          "nameVariants": [
+            "Ariela Kiradjian"
+          ],
+          "title": "Partner & COO",
+          "employerName": "Boutique & Luxury Lodging Association",
+          "employerDomain": "bllaevents.com",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "ASSOCIATION_OR_HOST",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+          "hotelId": "gdi_hotel_renaissance_times_square",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:18.388Z",
+          "linkedInQueries": [
+            "\"Ariela Kiradjian\" \"Boutique & Luxury Lodging Association\" linkedin",
+            "site:linkedin.com/in \"Ariela Kiradjian\" \"Boutique & Luxury Lodging Association\"",
+            "\"Ariela Kiradjian\" \"Partner & COO\" linkedin",
+            "\"Ariela Kiradjian\" \"bllaevents.com\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Ariela",
+            "lastName": "Kiradjian",
+            "companyName": "Boutique & Luxury Lodging Association",
+            "companyDomain": "bllaevents.com"
+          },
+          "surfeFieldNames": {
+            "firstName": "Ariela",
+            "lastName": "Kiradjian",
+            "companyName": "Boutique & Luxury Lodging Association",
+            "companyDomain": "bllaevents.com",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Ariela",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Kiradjian",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Boutique & Luxury Lodging Association",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "bllaevents.com",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Francesco Francavilla",
+      "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+      "hotelId": "rece0or38cxo3Fymb",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "Red Bull",
+        "employerDomain": "sailgp.com",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Francesco",
+          "lastName": "Francavilla",
+          "companyName": "Red Bull",
+          "companyDomain": "sailgp.com",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 253,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 496}"
+        },
+        "request": {
+          "first_name": "Francesco",
+          "last_name": "Francavilla",
+          "company": "sailgp.com"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "sailgp.com",
+          "has_linkedin": false,
+          "full_name": "Francesco Francavilla"
+        },
+        "http_status": 400,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Francesco",
+          "lastName": "Francavilla",
+          "fullName": "Francesco Francavilla",
+          "nameVariants": [
+            "Francesco Francavilla"
+          ],
+          "title": "Head of Marketing Communications & PR",
+          "employerName": "Red Bull",
+          "employerDomain": "sailgp.com",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "DIRECT_EMPLOYER",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+          "hotelId": "rece0or38cxo3Fymb",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:19.209Z",
+          "linkedInQueries": [
+            "\"Francesco Francavilla\" \"Red Bull\" linkedin",
+            "site:linkedin.com/in \"Francesco Francavilla\" \"Red Bull\"",
+            "\"Francesco Francavilla\" \"Head of Marketing Communications & PR\" linkedin",
+            "\"Francesco Francavilla\" \"sailgp.com\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Francesco",
+            "lastName": "Francavilla",
+            "companyName": "Red Bull",
+            "companyDomain": "sailgp.com"
+          },
+          "surfeFieldNames": {
+            "firstName": "Francesco",
+            "lastName": "Francavilla",
+            "companyName": "Red Bull",
+            "companyDomain": "sailgp.com",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Francesco",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Francavilla",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Red Bull",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "sailgp.com",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Olivia Jallits",
+      "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "International Association of Airport and Duty Free Stores (IAADFS)",
+        "employerDomain": "iaadfs.org",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Olivia",
+          "lastName": "Jallits",
+          "companyName": "International Association of Airport and Duty Free Stores (IAADFS)",
+          "companyDomain": "iaadfs.org",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 280,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 495}"
+        },
+        "request": {
+          "first_name": "Olivia",
+          "last_name": "Jallits",
+          "company": "iaadfs.org"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "iaadfs.org",
+          "has_linkedin": false,
+          "full_name": "Olivia Jallits"
+        },
+        "http_status": 400,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Olivia",
+          "lastName": "Jallits",
+          "fullName": "Olivia Jallits",
+          "nameVariants": [
+            "Olivia Jallits"
+          ],
+          "title": "Event Director",
+          "employerName": "International Association of Airport and Duty Free Stores (IAADFS)",
+          "employerDomain": "iaadfs.org",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "ASSOCIATION_OR_HOST",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+          "hotelId": "recgMYovrrZDJMqzX",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:20.272Z",
+          "linkedInQueries": [
+            "\"Olivia Jallits\" \"International Association of Airport and Duty Free Stores (IAADFS)\" linkedin",
+            "site:linkedin.com/in \"Olivia Jallits\" \"International Association of Airport and Duty Free Stores (IAADFS)\"",
+            "\"Olivia Jallits\" \"Event Director\" linkedin",
+            "\"Olivia Jallits\" \"iaadfs.org\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Olivia",
+            "lastName": "Jallits",
+            "companyName": "International Association of Airport and Duty Free Stores (IAADFS)",
+            "companyDomain": "iaadfs.org"
+          },
+          "surfeFieldNames": {
+            "firstName": "Olivia",
+            "lastName": "Jallits",
+            "companyName": "International Association of Airport and Duty Free Stores (IAADFS)",
+            "companyDomain": "iaadfs.org",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Olivia",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Jallits",
+              "verified": true
+            },
+            "companyName": {
+              "value": "International Association of Airport and Duty Free Stores (IAADFS)",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "iaadfs.org",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Aimee Welsh",
+      "opportunityId": "rx_d_5976330f194d",
+      "hotelId": "recH9h3McgMNFQEla",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce",
+        "employerDomain": "iccwbo.org",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Aimee",
+          "lastName": "Welsh",
+          "companyName": "International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce",
+          "companyDomain": "iccwbo.org",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 254,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 698,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 494}"
+        },
+        "request": {
+          "first_name": "Aimee",
+          "last_name": "Welsh",
+          "company": "iccwbo.org"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "iccwbo.org",
+          "has_linkedin": false,
+          "full_name": "Aimee Welsh"
+        },
+        "http_status": 429,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Aimee",
+          "lastName": "Welsh",
+          "fullName": "Aimee Welsh",
+          "nameVariants": [
+            "Aimee Welsh"
+          ],
+          "title": null,
+          "employerName": "International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce",
+          "employerDomain": "iccwbo.org",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "ASSOCIATION_OR_HOST",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "rx_d_5976330f194d",
+          "hotelId": "recH9h3McgMNFQEla",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:21.068Z",
+          "linkedInQueries": [
+            "\"Aimee Welsh\" \"International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce\" linkedin",
+            "site:linkedin.com/in \"Aimee Welsh\" \"International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce\"",
+            "\"Aimee Welsh\" \"iccwbo.org\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Aimee",
+            "lastName": "Welsh",
+            "companyName": "International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce",
+            "companyDomain": "iccwbo.org"
+          },
+          "surfeFieldNames": {
+            "firstName": "Aimee",
+            "lastName": "Welsh",
+            "companyName": "International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce",
+            "companyDomain": "iccwbo.org",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Aimee",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Welsh",
+              "verified": true
+            },
+            "companyName": {
+              "value": "International Chamber of Commerce / World Chambers Federation and Ontario Chamber of Commerce",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "iccwbo.org",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Agathe Lairy",
+      "opportunityId": "rx_d_52859ee0961e",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "OENOVITI International Network; local hosts CHANGINS and Agroscope",
+        "employerDomain": "oenoviti.u-bordeaux.fr",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Agathe",
+          "lastName": "Lairy",
+          "companyName": "OENOVITI International Network; local hosts CHANGINS and Agroscope",
+          "companyDomain": "oenoviti.u-bordeaux.fr",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 1,
+        "http_status": 200,
+        "matched": true,
+        "likelihood": 9,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "bucket": "NEW_ATTRIBUTABLE_WORK_EMAIL",
+          "phone_bucket": "NEW_PROVIDER_REPORTED_PHONE",
+          "identity_match_accepted": true,
+          "affiliation_accepted": true,
+          "work_email_returned": true,
+          "work_email": "agathe.lairy@u-bordeaux.fr",
+          "email_provider_status": "PDL_REPORTED",
+          "phone_returned": true,
+          "phone": "+33673233111",
+          "phone_type": "mobile",
+          "phone_business_use": "PROVIDER_REPORTED_MOBILE_UNKNOWN_BUSINESS_USE",
+          "likelihood": 9,
+          "matched_inputs": [
+            "company",
+            "name"
+          ],
+          "identity": {
+            "full_name": "Agathe Lairy",
+            "job_title": "Founder - Translator",
+            "job_company_name": "Idyom Translations",
+            "job_company_website": "idyomtranslations.wixsite.com/website",
+            "linkedin_url": "linkedin.com/in/alairy",
+            "job_last_verified": "2026-09-08",
+            "pdl_id": "pHQfNImTJ-K40kqfcjOdpA_0000"
+          },
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": true,
+          "counts_as_new_provider_phone": true,
+          "latency_ms": 305,
+          "cost_credits": 1,
+          "error": null,
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": "Agathe Lairy",
+          "job_title": "Founder - Translator",
+          "job_company_name": "Idyom Translations",
+          "job_company_website": "idyomtranslations.wixsite.com/website",
+          "linkedin_url": "linkedin.com/in/alairy",
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": true,
+            "presence": "NULL",
+            "typeof": "object",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": true,
+            "presence": "POPULATED",
+            "typeof": "object",
+            "length": 2,
+            "usable_contact_value": true
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": true,
+            "presence": "POPULATED",
+            "typeof": "string",
+            "usable_contact_value": true,
+            "looks_like_email": false,
+            "looks_like_phone": true
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": true,
+            "presence": "POPULATED",
+            "typeof": "object",
+            "length": 1,
+            "usable_contact_value": true
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 1,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 699,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 56,
+          "ratelimit_remaining": "{\"minute\": 493}"
+        },
+        "request": {
+          "first_name": "Agathe",
+          "last_name": "Lairy",
+          "company": "oenoviti.u-bordeaux.fr"
+        },
+        "identityAccepted": true,
+        "affiliationAccepted": true,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "idyomtranslations.wixsite.com",
+          "has_linkedin": false,
+          "full_name": "Agathe Lairy"
+        },
+        "http_status": 400,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Agathe",
+          "lastName": "Lairy",
+          "fullName": "Agathe Lairy",
+          "nameVariants": [
+            "Agathe Lairy"
+          ],
+          "title": "Founder - Translator",
+          "employerName": "Idyom Translations",
+          "employerDomain": "idyomtranslations.wixsite.com",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "DIRECT_EMPLOYER",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "rx_d_52859ee0961e",
+          "hotelId": "recrPQcZg7SFARRb2",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:21.925Z",
+          "linkedInQueries": [
+            "\"Agathe Lairy\" \"Idyom Translations\" linkedin",
+            "site:linkedin.com/in \"Agathe Lairy\" \"Idyom Translations\"",
+            "\"Agathe Lairy\" \"Founder - Translator\" linkedin",
+            "\"Agathe Lairy\" \"idyomtranslations.wixsite.com\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Agathe",
+            "lastName": "Lairy",
+            "companyName": "Idyom Translations",
+            "companyDomain": "idyomtranslations.wixsite.com"
+          },
+          "surfeFieldNames": {
+            "firstName": "Agathe",
+            "lastName": "Lairy",
+            "companyName": "Idyom Translations",
+            "companyDomain": "idyomtranslations.wixsite.com",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Agathe",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Lairy",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Idyom Translations",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "idyomtranslations.wixsite.com",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Alexandre Catton",
+      "opportunityId": "rx_d_d29851414427",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "Easyfairs Group",
+        "employerDomain": "easyfairs.com",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Alexandre",
+          "lastName": "Catton",
+          "companyName": "Easyfairs Group",
+          "companyDomain": "easyfairs.com",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 247,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 57,
+          "ratelimit_remaining": "{\"minute\": 492}"
+        },
+        "request": {
+          "first_name": "Alexandre",
+          "last_name": "Catton",
+          "company": "easyfairs.com"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "easyfairs.com",
+          "has_linkedin": false,
+          "full_name": "Alexandre Catton"
+        },
+        "http_status": 400,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Alexandre",
+          "lastName": "Catton",
+          "fullName": "Alexandre Catton",
+          "nameVariants": [
+            "Alexandre Catton"
+          ],
+          "title": null,
+          "employerName": "Easyfairs Group",
+          "employerDomain": "easyfairs.com",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "DIRECT_EMPLOYER",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "rx_d_d29851414427",
+          "hotelId": "recrPQcZg7SFARRb2",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:22.720Z",
+          "linkedInQueries": [
+            "\"Alexandre Catton\" \"Easyfairs Group\" linkedin",
+            "site:linkedin.com/in \"Alexandre Catton\" \"Easyfairs Group\"",
+            "\"Alexandre Catton\" \"easyfairs.com\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Alexandre",
+            "lastName": "Catton",
+            "companyName": "Easyfairs Group",
+            "companyDomain": "easyfairs.com"
+          },
+          "surfeFieldNames": {
+            "firstName": "Alexandre",
+            "lastName": "Catton",
+            "companyName": "Easyfairs Group",
+            "companyDomain": "easyfairs.com",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Alexandre",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Catton",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Easyfairs Group",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "easyfairs.com",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Andrew Bartucci",
+      "opportunityId": "rx_d_096138499154",
+      "hotelId": "recH9h3McgMNFQEla",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "Insurance Bureau of Canada",
+        "employerDomain": "ibc.ca",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Andrew",
+          "lastName": "Bartucci",
+          "companyName": "Insurance Bureau of Canada",
+          "companyDomain": "ibc.ca",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 249,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 57,
+          "ratelimit_remaining": "{\"minute\": 491}"
+        },
+        "request": {
+          "first_name": "Andrew",
+          "last_name": "Bartucci",
+          "company": "ibc.ca"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": true,
+        "miss": false,
+        "quarantined": false,
+        "creditsConsumed": 1,
+        "verification": {
+          "accepted": true,
+          "quarantined": false,
+          "nameOk": true,
+          "employerOk": true,
+          "domainOk": true,
+          "linkedInOk": true,
+          "reasons": [],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": "[object object]",
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "ibc.ca",
+          "has_linkedin": false,
+          "full_name": "Andrew Bartucci"
+        },
+        "http_status": 200,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Andrew",
+          "lastName": "Bartucci",
+          "fullName": "Andrew Bartucci",
+          "nameVariants": [
+            "Andrew Bartucci"
+          ],
+          "title": null,
+          "employerName": "Insurance Bureau of Canada",
+          "employerDomain": "ibc.ca",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "DIRECT_EMPLOYER",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "rx_d_096138499154",
+          "hotelId": "recH9h3McgMNFQEla",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:23.813Z",
+          "linkedInQueries": [
+            "\"Andrew Bartucci\" \"Insurance Bureau of Canada\" linkedin",
+            "site:linkedin.com/in \"Andrew Bartucci\" \"Insurance Bureau of Canada\"",
+            "\"Andrew Bartucci\" \"ibc.ca\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Andrew",
+            "lastName": "Bartucci",
+            "companyName": "Insurance Bureau of Canada",
+            "companyDomain": "ibc.ca"
+          },
+          "surfeFieldNames": {
+            "firstName": "Andrew",
+            "lastName": "Bartucci",
+            "companyName": "Insurance Bureau of Canada",
+            "companyDomain": "ibc.ca",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Andrew",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Bartucci",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Insurance Bureau of Canada",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "ibc.ca",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    },
+    {
+      "personName": "Ben Hawkins",
+      "opportunityId": "gdi_opp_alexandria_soccer_kickoff_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "baseline": {
+        "readiness": "PARTIAL",
+        "employerName": "Alexandria Soccer Association",
+        "employerDomain": "alexandriasoccer.com",
+        "linkedinUrl": null,
+        "linkedinTrusted": false,
+        "existingEmail": null,
+        "existingPhone": null,
+        "surfeFieldNames": {
+          "firstName": "Ben",
+          "lastName": "Hawkins",
+          "companyName": "Alexandria Soccer Association",
+          "companyDomain": "alexandriasoccer.com",
+          "linkedInUrl": null
+        }
+      },
+      "pdl": {
+        "skipped": false,
+        "creditsConsumed": 0,
+        "http_status": 404,
+        "matched": false,
+        "likelihood": null,
+        "score": {
+          "version": "pdl-contact-enrichment-eval-v1",
+          "subject_id": null,
+          "bucket": "NO_MATCH",
+          "phone_bucket": null,
+          "identity_match_accepted": false,
+          "affiliation_accepted": false,
+          "work_email_returned": false,
+          "work_email": null,
+          "email_provider_status": null,
+          "phone_returned": false,
+          "phone": null,
+          "phone_type": null,
+          "phone_business_use": null,
+          "likelihood": null,
+          "matched_inputs": null,
+          "identity": null,
+          "returned_gate": null,
+          "known_email_for_scoring": null,
+          "counts_as_new_attributable_email": false,
+          "counts_as_new_provider_phone": false,
+          "latency_ms": 250,
+          "cost_credits": 0,
+          "error": {
+            "type": "not_found",
+            "message": "No records were found matching your request"
+          },
+          "canonical_writes": false,
+          "customer_publication": "BLOCKED"
+        },
+        "identity": {
+          "full_name": null,
+          "job_title": null,
+          "job_company_name": null,
+          "job_company_website": null,
+          "linkedin_url": null,
+          "linkedInVerified": false
+        },
+        "work_email": null,
+        "emails_usable": [],
+        "field_presence": {
+          "work_email": {
+            "field": "work_email",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "emails": {
+            "field": "emails",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "mobile_phone": {
+            "field": "mobile_phone",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phone_numbers": {
+            "field": "phone_numbers",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          },
+          "phones": {
+            "field": "phones",
+            "in_data_object": false,
+            "presence": "ABSENT",
+            "typeof": "undefined",
+            "usable_contact_value": false
+          }
+        },
+        "credit_headers": {
+          "call_credits_spent": 0,
+          "call_credits_type": "enrich",
+          "totallimit_remaining": 697,
+          "totallimit_purchased_remaining": 700,
+          "totallimit_overages_remaining": 0,
+          "lifetime_used": 57,
+          "ratelimit_remaining": "{\"minute\": 490}"
+        },
+        "request": {
+          "first_name": "Ben",
+          "last_name": "Hawkins",
+          "company": "alexandriasoccer.com"
+        },
+        "identityAccepted": false,
+        "affiliationAccepted": false,
+        "quarantined": false,
+        "dataOrigin": "PDL_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "prospeo": {
+        "skipped": false,
+        "reason": null,
+        "ok": false,
+        "miss": true,
+        "quarantined": true,
+        "creditsConsumed": 0,
+        "verification": {
+          "accepted": false,
+          "quarantined": true,
+          "nameOk": false,
+          "employerOk": null,
+          "domainOk": null,
+          "linkedInOk": null,
+          "reasons": [
+            "NAME_MISMATCH"
+          ],
+          "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+          "independentlyVerifiedPublic": false
+        },
+        "email": null,
+        "free_enrichment": false,
+        "request_sanitized": {
+          "only_verified_email": true,
+          "enrich_mobile": false,
+          "data_keys": [
+            "first_name",
+            "last_name",
+            "full_name",
+            "company_name",
+            "company_website"
+          ],
+          "company_website": "alexandriasoccer.com",
+          "has_linkedin": false,
+          "full_name": "Ben Hawkins"
+        },
+        "http_status": 400,
+        "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
+        "independentlyVerifiedPublic": false
+      },
+      "after": {
+        "readinessAfter": "PARTIAL",
+        "identityAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "firstName": "Ben",
+          "lastName": "Hawkins",
+          "fullName": "Ben Hawkins",
+          "nameVariants": [
+            "Ben Hawkins"
+          ],
+          "title": null,
+          "employerName": "Alexandria Soccer Association",
+          "employerDomain": "alexandriasoccer.com",
+          "employerDomainVerified": true,
+          "employerDomainSource": "explicit",
+          "employerRelationship": "ASSOCIATION_OR_HOST",
+          "demandOrganizationName": null,
+          "demandOrganizationDistinct": false,
+          "linkedinUrl": null,
+          "linkedinCandidateUrl": null,
+          "linkedinStatus": "NO_PROFILE_FOUND",
+          "linkedinTrustedForSurfe": false,
+          "linkedinRejectReason": null,
+          "linkedinReasons": [
+            "no_url"
+          ],
+          "opportunityId": "gdi_opp_alexandria_soccer_kickoff_2027",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "commercialClassification": "NAMED_CONTACT",
+          "sourceEvidence": null,
+          "verifiedAt": "2026-11-20T10:10:24.627Z",
+          "linkedInQueries": [
+            "\"Ben Hawkins\" \"Alexandria Soccer Association\" linkedin",
+            "site:linkedin.com/in \"Ben Hawkins\" \"Alexandria Soccer Association\"",
+            "\"Ben Hawkins\" \"alexandriasoccer.com\""
+          ],
+          "readiness": "PARTIAL",
+          "readinessGaps": [
+            "LINKEDIN_MISSING"
+          ],
+          "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+        },
+        "surfeInputAfter": {
+          "version": "gdi-contact-identity-preflight-v1",
+          "paidCallAuthorized": false,
+          "surfeCallExecuted": false,
+          "sufficient": true,
+          "readiness": "PARTIAL",
+          "person": {
+            "firstName": "Ben",
+            "lastName": "Hawkins",
+            "companyName": "Alexandria Soccer Association",
+            "companyDomain": "alexandriasoccer.com"
+          },
+          "surfeFieldNames": {
+            "firstName": "Ben",
+            "lastName": "Hawkins",
+            "companyName": "Alexandria Soccer Association",
+            "companyDomain": "alexandriasoccer.com",
+            "linkedInUrl": null
+          },
+          "fieldsProvided": {
+            "firstName": {
+              "value": "Ben",
+              "verified": true
+            },
+            "lastName": {
+              "value": "Hawkins",
+              "verified": true
+            },
+            "companyName": {
+              "value": "Alexandria Soccer Association",
+              "verified": true
+            },
+            "companyDomain": {
+              "value": "alexandriasoccer.com",
+              "verified": true
+            },
+            "linkedinUrl": {
+              "value": null,
+              "verified": false,
+              "status": "NO_PROFILE_FOUND"
+            }
+          },
+          "omittedUnverifiedLinkedIn": false,
+          "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
+        },
+        "movedPartialToReady": false,
+        "prospeoEmailAccepted": false
+      },
+      "skippedEntirely": false
+    }
+  ],
+  "stop": "STOP after ten-contact evaluation. No full-database backfill. No mobile. No Surfe/FullEnrich/Apollo."
+}
