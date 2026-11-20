@@ -319,6 +319,136 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '207bed048829d783095eb4415d38b82121acfb1e8ad0bf1b133e15d47708d9d4'
+    },
+    {
+      id: 'recj5BCSpWqMEEBDg',
+      slug: 'jw-marriott',
+      name: 'JW Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/jw-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '60d56158cef771d0c57afaba9c75c87f4ce4225fc21ab4c7ab570884d1fc8568'
+    },
+    {
+      id: 'recqBiokz5ePxbFTE',
+      slug: 'w-hotels',
+      name: 'W Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/w-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3367f7905d0448feb3f490ee0311d42814a8571f162eb01dd0db657dc7b90082'
+    },
+    {
+      id: 'recN6sas0Km17O2Yn',
+      slug: 'le-meridien',
+      name: 'Le Méridien',
+      overlayUrl: '/brand-explorer-phase2e-preview/le-meridien-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '79c2683a7deab241e088e949e82ea03bf4dc9d690383fa2e89ced7bde03e07c8'
+    },
+    {
+      id: 'recXopdFodrD3IyIR',
+      slug: 'waldorf-astoria',
+      name: 'Waldorf Astoria Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/waldorf-astoria-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '17f7a2a46d180b4fd442f7c788f30b446835ca78c8977fed635b0c5f62ad6f35'
+    },
+    {
+      id: 'rec90n1dSVVyoEOto',
+      slug: 'conrad-hotels-resorts',
+      name: 'Conrad Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/conrad-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '99a941f5fb3bd80d587fd90b45c1d33e5f373e3e88599b3024ae835fb975f5bd'
+    },
+    {
+      id: 'recUsZOxtqIpeA5ZW',
+      slug: 'lxr-hotels-resorts',
+      name: 'LXR Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/lxr-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '49d39d29274d54bea47704756fe4f07bae36a4583c9dde551b95aa21ae224fb1'
+    },
+    {
+      id: 'recswdE1mhwDvXtBi',
+      slug: 'park-hyatt',
+      name: 'Park Hyatt',
+      overlayUrl: '/brand-explorer-phase2e-preview/park-hyatt-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '4ac19f56b3b47aef1618e254d345a32ba31e33b46622ca32045b5f6852571380'
+    },
+    {
+      id: 'recGCWhkeEvsQxuez',
+      slug: 'grand-hyatt',
+      name: 'Grand Hyatt',
+      overlayUrl: '/brand-explorer-phase2e-preview/grand-hyatt-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ec44f44dc10ee710a10f50a57f21026b6f7d0cf698ba1a645ac96886edbe521b'
+    },
+    {
+      id: 'recbtJoMub5wcankK',
+      slug: 'andaz',
+      name: 'Andaz',
+      overlayUrl: '/brand-explorer-phase2e-preview/andaz-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c540832f80afa187bbdc48c20abebba1ed13e9f0e0f5d28c45dc0ecfb2d22515'
+    },
+    {
+      id: 'recgwxli5IsoPKCOY',
+      slug: 'hyatt-place',
+      name: 'Hyatt Place',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-place-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-5-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'b317d06e90df190fb5804078e9f9b93e71b69cf60c6429631be4f64150b0e728'
     }
   ];
 
@@ -392,6 +522,16 @@
     if (/courtyard/i.test(name)) return bySlug('courtyard-by-marriott');
     if (/^westin\b/i.test(name)) return bySlug('westin');
     if (/holiday inn express/i.test(name)) return bySlug('holiday-inn-express');
+    if (/^jw marriott\b/i.test(name)) return bySlug('jw-marriott');
+    if (/^w hotels\b/i.test(name)) return bySlug('w-hotels');
+    if (/le m[eé]ridien/i.test(name)) return bySlug('le-meridien');
+    if (/waldorf/i.test(name)) return bySlug('waldorf-astoria');
+    if (/^conrad\b/i.test(name)) return bySlug('conrad-hotels-resorts');
+    if (/\blxr\b/i.test(name)) return bySlug('lxr-hotels-resorts');
+    if (/park hyatt/i.test(name)) return bySlug('park-hyatt');
+    if (/grand hyatt/i.test(name)) return bySlug('grand-hyatt');
+    if (/^andaz\b/i.test(name)) return bySlug('andaz');
+    if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
   }
 
