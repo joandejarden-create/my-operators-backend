@@ -1,7 +1,8 @@
-# SEC EDGAR Contract Intelligence V1
+# SEC EDGAR Contract Intelligence V1 + Historical Intelligence V2
 
 **Contract:** `SEC_EDGAR_CONTRACT_INTELLIGENCE_V1`  
-**Status:** Pilot + independent hotel discovery enhancement — internal persistence only  
+**Historical program:** `SEC_EDGAR_HISTORICAL_INTELLIGENCE_V2` (Marriott & Hilton)  
+**Status:** Pilot + independent hotel discovery + historical research runner — internal persistence only  
 **Customer publication:** BLOCKED without separate founder approval
 
 ## Purpose
@@ -71,12 +72,27 @@ SEC_EDGAR_TIMEOUT_MS=15000
 
 ```bash
 npm run test:sec-edgar-contract-intelligence-v1
+npm run test:sec-edgar-marriott-hilton-historical-v2
 npm run sec-edgar-contract-intelligence:pilot -- --offline-fixture
 npm run sec-edgar-contract-intelligence:pilot
 npm run sec-edgar-contract-intelligence:pilot -- --reconcile-only
+# Historical Marriott/Hilton research (checkpointed batches):
+npm run sec-edgar-marriott-hilton-historical:v2 -- --offline-fixture
+npm run sec-edgar-marriott-hilton-historical:v2 -- --batch-size 12 --max-priority 2
+npm run sec-edgar-marriott-hilton-historical:v2 -- --companies diamondrock-hospitality
 # Airtable writes only with explicit apply + credentials:
 npm run sec-edgar-contract-intelligence:pilot -- --apply
 ```
+
+## Historical V2 (Marriott & Hilton)
+
+- Brand families: `lib/hotel-intelligence/sec-edgar/brand-families-v2.js`
+- Franchise/management expiration schedules: `franchise-schedule-extractor-v2.js` (DiamondRock test case)
+- Historical applicability: `HISTORICALLY_VERIFIED` ≠ `CURRENTLY_VERIFIED` without later evidence
+- Checkpoints: `data/sec-edgar/checkpoints/marriott-hilton-historical-v2.json`
+- Inventory export: `reports/sec-edgar-marriott-hilton-historical-v2/`
+- No arbitrary free-SEC document cap; use batch size + checkpoint resume
+- Paid AI remains at $25 ceiling unless separately approved
 
 ## Artifacts
 
