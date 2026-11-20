@@ -1,9 +1,10 @@
 # SEC EDGAR — Hotel Discovery Airtable Schema Proposal (Founder Review)
 
-**Status:** DESIGN ONLY — not created  
+**Status:** APPROVED + APPLIED (V2.3) — tables created on HPC base  
 **Program:** SEC EDGAR Contract / Historical Intelligence (PR #492)  
 **Canonical HPC base:** `appCCUsuGsE1ifoLk`  
-**Decision required before any Meta API table/field creation**
+**Applied tables:** `HI Hotel Discovery Inventory` (`tblx77Nmh56h4xa9z`), `HI Discovery Findings` (`tblGjTWNm8G4UOF1e`)  
+**Graph Evidence reuse:** DO_NOT_REUSE_FOR_UNMATCHED — see contract `discovery-inventory-airtable-contract-v23.js`
 
 ## Problem
 
@@ -51,18 +52,31 @@ Existing HI destinations assume an **HPC hotel link**:
 | Persistence Status | singleSelect | INVENTORY_ONLY / PERSISTED_VERIFIED / … |
 | Notes / Quarantine Reason | longText | |
 
-### Optional linked table: `HI Discovery Contract Findings`
+### Linked table: `HI Discovery Findings` (general-purpose — applied)
+
+Prefer this over a contract-only child table. Supports ownership, management, brand, contractual, transaction, and other findings as discrete rows (not JSON blobs).
 
 | Field | Type | Notes |
 |---|---|---|
+| Finding ID | singleLineText | Primary |
 | Discovery Property | link → HI Hotel Discovery Inventory | |
-| Agreement Type | singleSelect | |
-| Milestone Class | singleSelect | VERIFIED_EXPIRATION / … |
-| Historical Applicability | singleSelect | HISTORICALLY_VERIFIED / CURRENTLY_VERIFIED / … |
-| Primary Date | singleLineText | Preserve original date string |
-| Snippet | longText | |
+| Finding Type | singleSelect | CONTRACT_MILESTONE / OWNERSHIP / MANAGEMENT / … |
+| Field Name | singleLineText | |
+| Value Observed | multilineText | |
+| Agreement Type | singleSelect | where relevant |
+| Historical Applicability | singleSelect | |
+| Effective / Event Date | date | |
+| Reporting Date | date | |
 | Source URL | url | |
-| Accession | singleLineText | |
+| SEC Accession | singleLineText | |
+| Registrant CIK | singleLineText | |
+| Evidence Snippet | multilineText | |
+| Confidence | singleSelect | |
+| Verification Status | singleSelect | |
+| Related Organization | link → HI Organizations | optional |
+| Related Organization Name | singleLineText | when org not yet linked |
+| Superseded By | singleLineText | |
+| HPC Promotion Status | singleSelect | NOT_PROMOTED / ELIGIBLE / … |
 
 ### Reuse without new fields
 
@@ -112,10 +126,10 @@ For owner/operator/franchisor evidence **before** HPC match (HI Hotel–Org Rela
 
 ## Founder decision checklist
 
-- [ ] Approve table name `HI Hotel Discovery Inventory` on HPC base  
-- [ ] Approve field list above (or mark removals)  
-- [ ] Approve optional findings child table vs JSON attachment on parent  
-- [ ] Authorize ensure-script `--apply`  
-- [ ] Confirm no production customer surfaces read this table  
+- [x] Approve table name `HI Hotel Discovery Inventory` on HPC base  
+- [x] Approve field list above (or mark removals)  
+- [x] Prefer general-purpose `HI Discovery Findings` (not JSON blob)  
+- [x] Authorize ensure-script `--apply` (V2.3)  
+- [x] Confirm no production customer surfaces read this table (`Publication State` = CUSTOMER_BLOCKED)
 
-**Until approved:** continue filesystem + git-tracked inventory; do not discard unmatched research.
+**Ongoing:** filesystem raw archive retained for ambiguous/rejected candidates; Airtable holds VERIFIED + PROBABLE cohorts only.

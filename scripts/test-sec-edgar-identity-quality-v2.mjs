@@ -79,6 +79,17 @@ test("state_prefix_and_incomplete_location_not_verified", () => {
   );
 });
 
+test("city_legal_suffix_bleed_not_verified", () => {
+  const c = classifyHotelIdentity({
+    hotelName: "Allen Stacy Hotel",
+    city: "Ltd. Allen",
+    stateRegion: "TX",
+    discoveryMethod: "HTML_PROPERTY_TABLE",
+  });
+  assert.equal(c.identityClass, IDENTITY_CLASS.AMBIGUOUS_PROPERTY);
+  assert.equal(c.promotionEligible, false);
+});
+
 test("schedule_backed_city_state_is_verified", () => {
   const c = classifyHotelIdentity({
     hotelName: "Courtyard Denver Downtown",

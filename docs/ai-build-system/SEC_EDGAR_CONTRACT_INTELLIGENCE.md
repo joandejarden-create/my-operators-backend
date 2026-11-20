@@ -116,6 +116,22 @@ npm run sec-edgar-v22-live-evidence:eval -- --max-filings 5 --max-exhibits 8
 - Coverage ledger separates CORE_SIX (3,863) from EXTENDED cohorts (Apple/RLJ/Park)
 - Live evidence report: `reports/sec-edgar-v22-live-evidence/`
 
+## V2.3 — Permanent discovery inventory (Airtable)
+
+```bash
+npm run ensure:sec-edgar-discovery-inventory-v23 -- --dry-run
+npm run ensure:sec-edgar-discovery-inventory-v23 -- --apply
+npm run sec-edgar-discovery-inventory:migrate-v23 -- --dry-run
+npm run sec-edgar-discovery-inventory:migrate-v23 -- --apply
+npm run test:sec-edgar-discovery-inventory-v23
+```
+
+- Tables: `HI Hotel Discovery Inventory` + `HI Discovery Findings` on `appCCUsuGsE1ifoLk`
+- HI Graph Evidence **not** reused for unmatched hotels (HPC Sources SoT)
+- Lifecycle: DISCOVERY_PERSISTED → IDENTITY_VERIFIED → HPC_MATCHED → EVIDENCE_PROMOTED → PERSISTED_VERIFIED
+- Publication State defaults to CUSTOMER_BLOCKED
+- Reports: `reports/sec-edgar-v23-discovery-inventory/`
+
 ## Identity quality gate (mandatory before broad persistence)
 
 ```bash
