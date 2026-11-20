@@ -1,0 +1,443 @@
+{
+  "contract": "SEC_EDGAR_CONTRACT_INTELLIGENCE_V1",
+  "historicalProgram": "SEC_EDGAR_HISTORICAL_INTELLIGENCE_V2",
+  "generatedAt": "2026-11-20T06:45:40.761Z",
+  "mode": "DRY_RUN_BATCH",
+  "writeGuarantees": {
+    "contract": "SEC_EDGAR_CONTRACT_INTELLIGENCE_V1",
+    "version": "1.0.0",
+    "new_airtable_tables": false,
+    "new_airtable_fields": false,
+    "customer_publication": false,
+    "destructive_overwrite": false,
+    "estimates_as_verified": false,
+    "paid_ceiling_usd": 25,
+    "destinations": [
+      "HI Graph Evidence",
+      "HI Hotel–Org Relationships",
+      "HI Organizations",
+      "HI Ownership Research Runs",
+      "HPC allowlisted null-fill only"
+    ]
+  },
+  "schemaGaps": [
+    {
+      "gap": "No HPC columns for agreement expiration / renewal / termination",
+      "mitigation": "Persist milestones on HI Graph Evidence Field Name + Value Observed; relationship Effective From/To when interval is filing-backed."
+    },
+    {
+      "gap": "No SEC Source Type enum on Partner Source Library",
+      "mitigation": "Use HI Graph Evidence Source Type free text 'SEC EDGAR Filing'."
+    },
+    {
+      "gap": "No dedicated CIK registry table",
+      "mitigation": "Pilot CIK map in lib + HI Organizations Registry / Identifier."
+    },
+    {
+      "gap": "No Airtable table for unmatched SEC-discovered hotels",
+      "mitigation": "Filesystem inventory at data/sec-edgar/discovery-inventory (hotels.json). Do not auto-create HPC. Founder approval required before adding an Airtable discovery-inventory table."
+    }
+  ],
+  "discoveryInventory": {
+    "destination": {
+      "kind": "FILESYSTEM_RESEARCH_INVENTORY",
+      "rootRelative": "data/sec-edgar/discovery-inventory",
+      "airtableReuse": "HI Ownership Research Runs (run ledger) + HI Graph Evidence (only when HPC matched)",
+      "schemaGap": "No dedicated Airtable table for unmatched discovered hotels. Do not auto-create HPC records. Founder approval required for a durable Airtable discovery-inventory table if filesystem retention is insufficient."
+    },
+    "summary": {
+      "totalHotels": 1867,
+      "withContractFindings": 209,
+      "matchedHpc": 4,
+      "notInHpc": 1863,
+      "contractVerifiedPendingHpc": 0,
+      "ambiguous": 0,
+      "byStatus": {
+        "DISCOVERED_MATCHED_HPC": 4,
+        "DISCOVERED_NOT_IN_HPC": 1863,
+        "CONTRACT_VERIFIED_PENDING_HPC": 0,
+        "MATCH_AMBIGUOUS": 0,
+        "PORTFOLIO_ONLY_EVIDENCE": 0,
+        "UNATTRIBUTED_CONTRACT_LANGUAGE": 0
+      }
+    }
+  },
+  "brandFamilySummary": {
+    "marriott": 497,
+    "hilton": 368,
+    "other": 103,
+    "total": 968
+  },
+  "batch": {
+    "batchSize": 15,
+    "sinceYear": 2004,
+    "maxPriority": 2,
+    "companies": [
+      "diamondrock-hospitality",
+      "rlj-lodging-trust",
+      "apple-hospitality-reit"
+    ]
+  },
+  "companyReports": [
+    {
+      "slug": "diamondrock-hospitality",
+      "legalName": "DiamondRock Hospitality Company",
+      "ticker": "DRH",
+      "cik": "0001298946",
+      "filingsEligible": 482,
+      "filingsProcessed": 0,
+      "filingsRemaining": 467,
+      "documentsProcessed": 0,
+      "documentsSkippedCached": 15,
+      "hotels": 0,
+      "findings": 0,
+      "scheduleHotels": 0,
+      "errors": [],
+      "coverage": {
+        "sinceYear": 2004,
+        "untilYear": null,
+        "formTypes": [
+          "10-K",
+          "10-K/A",
+          "10-Q",
+          "10-Q/A",
+          "8-K",
+          "8-K/A",
+          "20-F",
+          "20-F/A",
+          "6-K",
+          "6-K/A",
+          "EX-10",
+          "S-11",
+          "S-11/A",
+          "S-1",
+          "S-1/A",
+          "S-3",
+          "S-3/A",
+          "424B1",
+          "424B2",
+          "424B3",
+          "424B4",
+          "424B5",
+          "424B7",
+          "F-1",
+          "F-1/A",
+          "ARS",
+          "DEF 14A"
+        ],
+        "eligibleFound": 482,
+        "returned": 15,
+        "remainingInQueue": 467
+      },
+      "sampleHotels": []
+    },
+    {
+      "slug": "rlj-lodging-trust",
+      "legalName": "RLJ Lodging Trust",
+      "ticker": "RLJ",
+      "cik": "0001511337",
+      "filingsEligible": 249,
+      "filingsProcessed": 15,
+      "filingsRemaining": 234,
+      "documentsProcessed": 15,
+      "documentsSkippedCached": 0,
+      "hotels": 496,
+      "findings": 1123,
+      "scheduleHotels": 0,
+      "errors": [],
+      "coverage": {
+        "sinceYear": 2004,
+        "untilYear": null,
+        "formTypes": [
+          "10-K",
+          "10-K/A",
+          "10-Q",
+          "10-Q/A",
+          "8-K",
+          "8-K/A",
+          "20-F",
+          "20-F/A",
+          "6-K",
+          "6-K/A",
+          "EX-10",
+          "S-11",
+          "S-11/A",
+          "S-1",
+          "S-1/A",
+          "S-3",
+          "S-3/A",
+          "424B1",
+          "424B2",
+          "424B3",
+          "424B4",
+          "424B5",
+          "424B7",
+          "F-1",
+          "F-1/A",
+          "ARS",
+          "DEF 14A"
+        ],
+        "eligibleFound": 249,
+        "returned": 15,
+        "remainingInQueue": 234
+      },
+      "sampleHotels": [
+        {
+          "hotelName": "Hilton TM",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Courtyard by Marriott",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Fairfield Inn",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Residence Inn by Marriott",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "SpringHill Suites by Marriott",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Embassy Suites",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hampton Inn",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton Garden Inn",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Homewood Suites",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hyatt Summerfield Suites",
+          "city": null,
+          "brandFamily": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        }
+      ]
+    },
+    {
+      "slug": "apple-hospitality-reit",
+      "legalName": "Apple Hospitality REIT, Inc.",
+      "ticker": "APLE",
+      "cik": "0001418121",
+      "filingsEligible": 563,
+      "filingsProcessed": 15,
+      "filingsRemaining": 548,
+      "documentsProcessed": 15,
+      "documentsSkippedCached": 0,
+      "hotels": 472,
+      "findings": 1175,
+      "scheduleHotels": 0,
+      "errors": [],
+      "coverage": {
+        "sinceYear": 2004,
+        "untilYear": null,
+        "formTypes": [
+          "10-K",
+          "10-K/A",
+          "10-Q",
+          "10-Q/A",
+          "8-K",
+          "8-K/A",
+          "20-F",
+          "20-F/A",
+          "6-K",
+          "6-K/A",
+          "EX-10",
+          "S-11",
+          "S-11/A",
+          "S-1",
+          "S-1/A",
+          "S-3",
+          "S-3/A",
+          "424B1",
+          "424B2",
+          "424B3",
+          "424B4",
+          "424B5",
+          "424B7",
+          "F-1",
+          "F-1/A",
+          "ARS",
+          "DEF 14A"
+        ],
+        "eligibleFound": 563,
+        "returned": 15,
+        "remainingInQueue": 548
+      },
+      "sampleHotels": [
+        {
+          "hotelName": "Fairfield Inn",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hampton Inn",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Residence Inn",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "SpringHill Suites",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton Garden Inn",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Homewood Suites",
+          "city": null,
+          "brandFamily": "HILTON",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Marriott Suites",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Courtyard by Marriott",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Marriott is not involved",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Marriott has not assumed",
+          "city": null,
+          "brandFamily": "MARRIOTT",
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ]
+    }
+  ],
+  "marriottHiltonSummaries": {
+    "marriott": {
+      "hotels": 1010,
+      "withExpiration": 54,
+      "historicallyVerified": 59,
+      "currentlyVerified": 0,
+      "inHpc": 4,
+      "missingHpc": 1006
+    },
+    "hilton": {
+      "hotels": 578,
+      "withExpiration": 48,
+      "historicallyVerified": 49,
+      "currentlyVerified": 0,
+      "inHpc": 0,
+      "missingHpc": 578
+    },
+    "brandFamilySummary": {
+      "marriott": 1010,
+      "hilton": 578,
+      "other": 0,
+      "total": 1588
+    }
+  },
+  "reconciliation": {
+    "counts": {
+      "inventoryHotels": 1867,
+      "newlyMatchable": 0,
+      "stillUnmatched": 1863,
+      "ambiguous": 0,
+      "unchangedMatched": 4,
+      "plannedEvidenceWrites": 0
+    }
+  },
+  "metrics": {
+    "historicalPeriodCovered": "2004–present",
+    "companiesResearched": 3,
+    "filingInventoriesSearched": 3,
+    "relevantFilingsEligible": 1294,
+    "relevantFilingsProcessedThisRun": 30,
+    "relevantFilingsRemainingInQueue": 1249,
+    "documentsAndExhibitsProcessed": 30,
+    "uniqueHotelsDiscovered": 1867,
+    "marriottAffiliatedHotels": 1010,
+    "hiltonAffiliatedHotels": 578,
+    "hotelsWithVerifiedHistoricalSigningDates": 17,
+    "hotelsWithVerifiedHistoricalExpirationDates": 106,
+    "hotelsWithCurrentlyVerifiedExpirationDates": 0,
+    "hotelsWithVerifiedRenewals": 11,
+    "hotelsWithVerifiedTerminations": 62,
+    "hotelsWithOwnershipOrManagementTransitions": 4,
+    "hotelsCurrentlyInHpc": 4,
+    "hotelsMissingFromHpc": 1863,
+    "findingsDurablyPersisted": 1867,
+    "readBackSuccessRate": null,
+    "ambiguousMatches": 0,
+    "researchExtractionErrors": 0,
+    "totalPaidResearchCostUsd": 0,
+    "checkpointDocuments": 50,
+    "clientStats": {
+      "requests": 34,
+      "cacheHits": 5,
+      "retries": 0,
+      "errors": 0,
+      "status403": 0,
+      "status429": 0
+    },
+    "marriottHiltonInventoryRows": 1588,
+    "coverageDenominatorNote": "eligible = filings matching form/year filters; processed = this run; remaining = still queued. Batch finish ≠ research complete."
+  },
+  "expansionPlan": {
+    "next": "Continue checkpointed batches with --batch-size until remainingInQueue approaches 0 for priority≤2 REITs",
+    "prioritize": [
+      "DiamondRock / Apple / RLJ / Park property schedules",
+      "EX-10 property-specific agreements",
+      "S-11 / 424B IPO & follow-on property portfolios",
+      "Then broader Marriott/Hilton corporate disclosures"
+    ],
+    "paidAi": "Still gated at $25 ceiling; deterministic schedule parsing preferred"
+  },
+  "airtablePersistenceGate": "PERSISTENCE_DESIGNED",
+  "classificationNote": "Schedule expirations are HISTORICALLY_VERIFIED. Never promoted to CURRENTLY_VERIFIED without later evidence. Unmatched hotels retained in filesystem inventory."
+}

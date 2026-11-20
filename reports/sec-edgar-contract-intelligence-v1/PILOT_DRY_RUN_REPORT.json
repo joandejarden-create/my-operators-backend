@@ -1,0 +1,1616 @@
+{
+  "contract": "SEC_EDGAR_CONTRACT_INTELLIGENCE_V1",
+  "version": "1.0.0",
+  "generatedAt": "2026-11-20T06:36:45.111Z",
+  "mode": "DRY_RUN",
+  "stages": [
+    "1_DISCOVER_HOTELS",
+    "2_EXTRACT_VERIFY_CONTRACTS",
+    "3_MATCH_HPC"
+  ],
+  "writeGuarantees": {
+    "contract": "SEC_EDGAR_CONTRACT_INTELLIGENCE_V1",
+    "version": "1.0.0",
+    "new_airtable_tables": false,
+    "new_airtable_fields": false,
+    "customer_publication": false,
+    "destructive_overwrite": false,
+    "estimates_as_verified": false,
+    "paid_ceiling_usd": 25,
+    "destinations": [
+      "HI Graph Evidence",
+      "HI Hotel–Org Relationships",
+      "HI Organizations",
+      "HI Ownership Research Runs",
+      "HPC allowlisted null-fill only"
+    ]
+  },
+  "schemaGaps": [
+    {
+      "gap": "No HPC columns for agreement expiration / renewal / termination",
+      "mitigation": "Persist milestones on HI Graph Evidence Field Name + Value Observed; relationship Effective From/To when interval is filing-backed."
+    },
+    {
+      "gap": "No SEC Source Type enum on Partner Source Library",
+      "mitigation": "Use HI Graph Evidence Source Type free text 'SEC EDGAR Filing'."
+    },
+    {
+      "gap": "No dedicated CIK registry table",
+      "mitigation": "Pilot CIK map in lib + HI Organizations Registry / Identifier."
+    },
+    {
+      "gap": "No Airtable table for unmatched SEC-discovered hotels",
+      "mitigation": "Filesystem inventory at data/sec-edgar/discovery-inventory (hotels.json). Do not auto-create HPC. Founder approval required before adding an Airtable discovery-inventory table."
+    }
+  ],
+  "discoveryInventory": {
+    "destination": {
+      "kind": "FILESYSTEM_RESEARCH_INVENTORY",
+      "rootRelative": "data/sec-edgar/discovery-inventory",
+      "airtableReuse": "HI Ownership Research Runs (run ledger) + HI Graph Evidence (only when HPC matched)",
+      "schemaGap": "No dedicated Airtable table for unmatched discovered hotels. Do not auto-create HPC records. Founder approval required for a durable Airtable discovery-inventory table if filesystem retention is insufficient."
+    },
+    "summary": {
+      "totalHotels": 290,
+      "withContractFindings": 14,
+      "matchedHpc": 0,
+      "notInHpc": 290,
+      "contractVerifiedPendingHpc": 0,
+      "ambiguous": 0,
+      "byStatus": {
+        "DISCOVERED_MATCHED_HPC": 0,
+        "DISCOVERED_NOT_IN_HPC": 290,
+        "CONTRACT_VERIFIED_PENDING_HPC": 0,
+        "MATCH_AMBIGUOUS": 0,
+        "PORTFOLIO_ONLY_EVIDENCE": 0,
+        "UNATTRIBUTED_CONTRACT_LANGUAGE": 0
+      }
+    },
+    "path": "data\\sec-edgar\\discovery-inventory\\hotels.json"
+  },
+  "internationalReadiness": {
+    "version": "sec-edgar-intl-readiness-v1",
+    "requiredCapabilities": [
+      "fetch_filings_or_disclosures",
+      "normalize_to_contract_finding",
+      "preserve_jurisdiction_and_original_dates",
+      "attribute_to_hpc_hotel",
+      "persist_via_hi_graph_evidence",
+      "change_detect_against_prior_state"
+    ],
+    "sharedDestinations": [
+      "HI Graph Evidence",
+      "HI Hotel–Org Relationships",
+      "HI Organizations",
+      "HI Ownership Research Runs"
+    ],
+    "paidSourcesAuthorizedThisPhase": false,
+    "jurisdictions": [
+      {
+        "jurisdiction": "GB",
+        "label": "United Kingdom",
+        "sources": [
+          "UK Companies House",
+          "LSE filings"
+        ],
+        "agreementNotes": "Distinguish management agreements vs leases under English law terminology."
+      },
+      {
+        "jurisdiction": "ES",
+        "label": "Spain",
+        "sources": [
+          "CNMV filings",
+          "Registro Mercantil"
+        ],
+        "agreementNotes": "Contrato de gestión hotelera vs franquicia vs arrendamiento."
+      },
+      {
+        "jurisdiction": "PT",
+        "label": "Portugal",
+        "sources": [
+          "CMVM",
+          "IRN commercial registry"
+        ],
+        "agreementNotes": "Preserve original Portuguese date formats and agreement labels."
+      },
+      {
+        "jurisdiction": "MX",
+        "label": "Mexico",
+        "sources": [
+          "BMV filings",
+          "CNBV",
+          "public deed disclosures"
+        ],
+        "agreementNotes": "Contrato de operación / franquicia; notarial ownership deeds."
+      },
+      {
+        "jurisdiction": "DO",
+        "label": "Dominican Republic",
+        "sources": [
+          "Government corporate disclosures",
+          "transaction announcements"
+        ],
+        "agreementNotes": "CALA priority; often announcement-led rather than registry-rich."
+      },
+      {
+        "jurisdiction": "CALA",
+        "label": "Wider Caribbean & Latin America",
+        "sources": [
+          "Exchange filings",
+          "hotel transaction announcements"
+        ],
+        "agreementNotes": "Reuse HI graph destinations; jurisdiction field mandatory."
+      },
+      {
+        "jurisdiction": "ME",
+        "label": "Middle East",
+        "sources": [
+          "Exchange disclosures",
+          "government ownership announcements"
+        ],
+        "agreementNotes": "Owner/operator structures often layered; do not collapse PropCo/OpCo."
+      },
+      {
+        "jurisdiction": "APAC",
+        "label": "Asia-Pacific",
+        "sources": [
+          "Local exchange filings",
+          "corporate registries"
+        ],
+        "agreementNotes": "Franchise vs management terminology varies by market."
+      }
+    ]
+  },
+  "budget": {
+    "spentUsd": 0,
+    "operations": [],
+    "updatedAt": null,
+    "ceilingUsd": 25,
+    "remaining": 25
+  },
+  "clientStats": {
+    "requests": 0,
+    "cacheHits": 50,
+    "retries": 0,
+    "errors": 0,
+    "status403": 0,
+    "status429": 0
+  },
+  "companies": [
+    {
+      "slug": "marriott-international",
+      "legalName": "Marriott International, Inc.",
+      "ticker": "MAR",
+      "cik": "0001048286",
+      "organizationType": "Brand / Franchisor",
+      "priority": 1,
+      "note": "Global brand/franchisor + manager; property-level exhibits less common than REIT schedules.",
+      "cikSource": "sec_company_tickers"
+    },
+    {
+      "slug": "sunstone-hotel-investors",
+      "legalName": "Sunstone Hotel Investors, Inc.",
+      "ticker": "SHO",
+      "cik": "0001295810",
+      "organizationType": "REIT",
+      "priority": 1,
+      "note": "Lodging REIT — prioritize property schedules and management/franchise disclosures. CIK confirmed via SEC company_tickers when live.",
+      "cikSource": "sec_company_tickers"
+    },
+    {
+      "slug": "ashford-hospitality-trust",
+      "legalName": "Ashford Hospitality Trust, Inc.",
+      "ticker": "AHT",
+      "cik": "0001232582",
+      "organizationType": "REIT",
+      "priority": 1,
+      "note": "Lodging REIT — confirm CIK via SEC ticker resolve before persist if registry drifts.",
+      "cikSource": "sec_company_tickers"
+    },
+    {
+      "slug": "host-hotels-resorts",
+      "legalName": "Host Hotels & Resorts, Inc.",
+      "ticker": "HST",
+      "cik": "0001070750",
+      "organizationType": "REIT",
+      "priority": 1,
+      "note": "Lodging REIT — strong property-level disclosure history. CIK confirmed via SEC company_tickers (HST).",
+      "cikSource": "sec_company_tickers"
+    }
+  ],
+  "companyReports": [
+    {
+      "slug": "marriott-international",
+      "companyKey": "marriott-international",
+      "legalName": "Marriott International, Inc.",
+      "ticker": "MAR",
+      "cik": "0001048286",
+      "cikSource": "sec_company_tickers",
+      "filingsReviewed": 6,
+      "documentsProcessed": 6,
+      "findings": 22,
+      "keywordSummaries": [
+        {
+          "accession": "0001048286-26-000043",
+          "form": "10-Q",
+          "franchise_agreement": 1,
+          "management_agreement": 4,
+          "expiration": 1,
+          "termination": 2,
+          "renewal": 0,
+          "characters": 105742,
+          "hotelsDiscovered": 2
+        },
+        {
+          "accession": "0001048286-26-000040",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 3429,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001193125-26-401051",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 5494,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001193125-26-349395",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 7343,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001048286-26-000035",
+          "form": "10-Q",
+          "franchise_agreement": 1,
+          "management_agreement": 3,
+          "expiration": 1,
+          "termination": 2,
+          "renewal": 0,
+          "characters": 98256,
+          "hotelsDiscovered": 2
+        },
+        {
+          "accession": "0001048286-26-000033",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 3407,
+          "hotelsDiscovered": 0
+        }
+      ],
+      "failedAttributionReasons": [],
+      "errors": [],
+      "discoveredHotelCount": 2,
+      "sampleHotels": [
+        {
+          "hotelName": "Marriott Bonvoy SM",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Marriott Bonvoy",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ],
+      "sampleFindings": [
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "FRANCHISE_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "se stated. In addition, we use the term &#8220;hotel owners&#8221; throughout this report to refer, collectively, to owners of hotels and other lodging offerings operating in our system pursuant to franchise agreements, management agreements, license agreements, or similar arrangements, and we use the term &#8220;hotels in our system&#8221; to refer to hotels and other lodging offerings operating in our system pursuant to such arrangeme",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001048286",
+            "accessionNumber": "0001048286-26-000043",
+            "formType": "10-Q",
+            "filingDate": "2026-11-02",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001048286/000104828626000043/mar-20260930.htm",
+            "primaryDocument": "mar-20260930.htm",
+            "companyName": "Marriott International, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:39.981Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "VERIFIED_SIGNING_DATE",
+          "evidenceFieldName": "Management Agreement Signing Date",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "corded an impairment charge of $ 68 &#160;million in the &#8220;Depreciation, amortization, and other&#8221; caption of our Income Statements. In May 2026, we completed the sale of the hotel and entered into a long-term management agreement to operate the hotel. In September 2026, we entered into an agreement to sell a U.S. & Canada hotel to a third-party buyer and classified the hotel as held for sale. We determined that the carrying a",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001048286",
+            "accessionNumber": "0001048286-26-000043",
+            "formType": "10-Q",
+            "filingDate": "2026-11-02",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001048286/000104828626000043/mar-20260930.htm",
+            "primaryDocument": "mar-20260930.htm",
+            "companyName": "Marriott International, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:39.982Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "expenses and other&#8221; caption and $ 26 million of related liabilities in the &#8220;Accrued expenses and other&#8221; caption. We expect to sell the hotel later in the 2026 fourth quarter and enter into a long-term management agreement to operate the hotel. 11 Table of Contents NOTE&#160;8. ACCUMULATED OTHER COMPREHENSIVE LOSS AND STOCKHOLDERS&#8217; DEFICIT The following tables detail the accumulated other comprehensive loss activ",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001048286",
+            "accessionNumber": "0001048286-26-000043",
+            "formType": "10-Q",
+            "filingDate": "2026-11-02",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001048286/000104828626000043/mar-20260930.htm",
+            "primaryDocument": "mar-20260930.htm",
+            "companyName": "Marriott International, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:39.982Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "we generally receive an initial application fee and continuing royalty fees, which are typically based on a percentage of room revenues, plus for certain brands, a percentage of food and beverage revenues. Terms of our management agreements vary, but we earn a management fee that is typically composed of a base management fee, which is a percentage of the revenues of the hotel, and an incentive management fee, which is based on the pro",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001048286",
+            "accessionNumber": "0001048286-26-000043",
+            "formType": "10-Q",
+            "filingDate": "2026-11-02",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001048286/000104828626000043/mar-20260930.htm",
+            "primaryDocument": "mar-20260930.htm",
+            "companyName": "Marriott International, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:39.982Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "FRANCHISE_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "ements, unless otherwise stated. In addition, we use the term &#8220;hotel owners&#8221; throughout this report to refer, collectively, to owners of hotels and other lodging offerings operating in our system pursuant to franchise agreements, management agreements, license agreements, or similar arrangements, and we use the term &#8220;hotels in our system&#8221; to refer to hotels and other lodging offerings operating in our system purs",
+          "keyword": "franchise agreement",
+          "source": {
+            "cik": "0001048286",
+            "accessionNumber": "0001048286-26-000043",
+            "formType": "10-Q",
+            "filingDate": "2026-11-02",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001048286/000104828626000043/mar-20260930.htm",
+            "primaryDocument": "mar-20260930.htm",
+            "companyName": "Marriott International, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:39.982Z"
+        }
+      ]
+    },
+    {
+      "slug": "sunstone-hotel-investors",
+      "companyKey": "sunstone-hotel-investors",
+      "legalName": "Sunstone Hotel Investors, Inc.",
+      "ticker": "SHO",
+      "cik": "0001295810",
+      "cikSource": "sec_company_tickers",
+      "filingsReviewed": 12,
+      "documentsProcessed": 12,
+      "findings": 145,
+      "keywordSummaries": [
+        {
+          "accession": "0001295810-26-000009",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 1,
+          "renewal": 0,
+          "characters": 5426,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001295810-26-000007",
+          "form": "10-Q",
+          "franchise_agreement": 9,
+          "management_agreement": 6,
+          "expiration": 2,
+          "termination": 7,
+          "renewal": 2,
+          "characters": 233443,
+          "hotelsDiscovered": 22
+        },
+        {
+          "accession": "0001295810-26-000005",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4614,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001193125-26-342819",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 3,
+          "renewal": 0,
+          "characters": 12839,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-091907",
+          "form": "10-Q",
+          "franchise_agreement": 7,
+          "management_agreement": 6,
+          "expiration": 2,
+          "termination": 7,
+          "renewal": 2,
+          "characters": 226066,
+          "hotelsDiscovered": 18
+        },
+        {
+          "accession": "0001104659-26-091645",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 5093,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-076640",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 5133,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-068568",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4890,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-055508",
+          "form": "10-Q",
+          "franchise_agreement": 7,
+          "management_agreement": 5,
+          "expiration": 2,
+          "termination": 7,
+          "renewal": 2,
+          "characters": 184116,
+          "hotelsDiscovered": 9
+        },
+        {
+          "accession": "0001104659-26-055280",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 1,
+          "renewal": 0,
+          "characters": 9188,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-021440",
+          "form": "10-K",
+          "franchise_agreement": 30,
+          "management_agreement": 28,
+          "expiration": 4,
+          "termination": 32,
+          "renewal": 4,
+          "characters": 492007,
+          "hotelsDiscovered": 37
+        },
+        {
+          "accession": "0001104659-26-020996",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 5126,
+          "hotelsDiscovered": 0
+        }
+      ],
+      "failedAttributionReasons": [],
+      "errors": [],
+      "discoveredHotelCount": 50,
+      "sampleHotels": [
+        {
+          "hotelName": "Renaissance Orlando at SeaWorld",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hyatt Regency San Francisco",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Hilton Key West Resort & Marina",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Andaz Miami Beach",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Hilton New Orleans St. Charles",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Four Seasons Resort Napa Valley",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Marriott Boston Long Wharf",
+          "city": "The Westin Washington",
+          "stateRegion": "DC",
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The Westin Washington",
+          "city": "The Westin Washington",
+          "stateRegion": "DC",
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ],
+      "sampleFindings": [
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "UNKNOWN_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "VERIFIED_TERMINATION",
+          "evidenceFieldName": "Management Agreement Termination Date",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "aims following the Separation Date and his continued compliance with certain terms and conditions set forth in the Separation Agreement, Mr. Springer will receive the following payments and benefits in connection with a termination of employment by the Company without &#8220;cause&#8221;: (i) a cash payment equal to two times the sum of (a) his annual base salary as in effect on the Separation Date and (b) Mr. Springer&#8217;s target an",
+          "keyword": "termination",
+          "source": {
+            "cik": "0001295810",
+            "accessionNumber": "0001295810-26-000009",
+            "formType": "8-K",
+            "filingDate": "2026-11-19",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001295810/000129581026000009/sho-20261118.htm",
+            "primaryDocument": "sho-20261118.htm",
+            "companyName": "Sunstone Hotel Investors, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.024Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [
+            "September 30, 2026"
+          ],
+          "primaryDate": "September 30, 2026",
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "nt of &#8220;non-qualifying&#8221; income the Company can earn, including income derived directly from the operation of hotels. The Company leases all of its hotels to its TRS Lessee, which in turn enters into long-term management agreements with third parties to manage the operations of the Company&#8217;s hotels, in transactions that are intended to generate qualifying income. As of September 30, 2026 , the Company owned 13 hotels. 2.",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001295810",
+            "accessionNumber": "0001295810-26-000007",
+            "formType": "10-Q",
+            "filingDate": "2026-11-06",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001295810/000129581026000007/sho-20260930.htm",
+            "primaryDocument": "sho-20260930.htm",
+            "companyName": "Sunstone Hotel Investors, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.089Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "th those included on the Company&#8217;s consolidated balance sheets, with particular emphasis on the Company&#8217;s cash and cash equivalents, restricted cash, and debt. &#160; &#160; 14. Commitments and Contingencies Management Agreements Management agreements with the Company&#8217;s third-party hotel managers currently require the Company to pay between 2.0 % and 3.0 % of total revenue of the managed hotels to the third-party manag",
+          "keyword": "Management Agreement",
+          "source": {
+            "cik": "0001295810",
+            "accessionNumber": "0001295810-26-000007",
+            "formType": "10-Q",
+            "filingDate": "2026-11-06",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001295810/000129581026000007/sho-20260930.htm",
+            "primaryDocument": "sho-20260930.htm",
+            "companyName": "Sunstone Hotel Investors, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.089Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "he Company&#8217;s consolidated balance sheets, with particular emphasis on the Company&#8217;s cash and cash equivalents, restricted cash, and debt. &#160; &#160; 14. Commitments and Contingencies Management Agreements Management agreements with the Company&#8217;s third-party hotel managers currently require the Company to pay between 2.0 % and 3.0 % of total revenue of the managed hotels to the third-party managers each month as a ba",
+          "keyword": "Management agreement",
+          "source": {
+            "cik": "0001295810",
+            "accessionNumber": "0001295810-26-000007",
+            "formType": "10-Q",
+            "filingDate": "2026-11-06",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001295810/000129581026000007/sho-20260930.htm",
+            "primaryDocument": "sho-20260930.htm",
+            "companyName": "Sunstone Hotel Investors, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.089Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [
+            "September 30, 2026"
+          ],
+          "primaryDate": "September 30, 2026",
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "onths ended September 30, 2026, we received $270.8 million of proceeds from the sale of Hyatt Regency San Francisco, $4.0 million in key money received from the manager of one of our hotels pursuant to the hotel&#8217;s management agreement, and $2.6 million in property insurance proceeds received. These cash inflows were partially offset by our investment of $76.6 million for renovations and additions to our portfolio and other assets.",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001295810",
+            "accessionNumber": "0001295810-26-000007",
+            "formType": "10-Q",
+            "filingDate": "2026-11-06",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001295810/000129581026000007/sho-20260930.htm",
+            "primaryDocument": "sho-20260930.htm",
+            "companyName": "Sunstone Hotel Investors, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.089Z"
+        }
+      ]
+    },
+    {
+      "slug": "ashford-hospitality-trust",
+      "companyKey": "ashford-hospitality-trust",
+      "legalName": "Ashford Hospitality Trust, Inc.",
+      "ticker": "AHT",
+      "cik": "0001232582",
+      "cikSource": "sec_company_tickers",
+      "filingsReviewed": 12,
+      "documentsProcessed": 12,
+      "findings": 109,
+      "keywordSummaries": [
+        {
+          "accession": "0001232582-26-000220",
+          "form": "10-Q",
+          "franchise_agreement": 3,
+          "management_agreement": 10,
+          "expiration": 3,
+          "termination": 40,
+          "renewal": 2,
+          "characters": 389355,
+          "hotelsDiscovered": 130
+        },
+        {
+          "accession": "0001232582-26-000214",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4431,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-125247",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 5941,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-117508",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 8,
+          "renewal": 0,
+          "characters": 12510,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001232582-26-000207",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4533,
+          "hotelsDiscovered": 2
+        },
+        {
+          "accession": "0001232582-26-000199",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4524,
+          "hotelsDiscovered": 2
+        },
+        {
+          "accession": "0001232582-26-000188",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4517,
+          "hotelsDiscovered": 2
+        },
+        {
+          "accession": "0001232582-26-000183",
+          "form": "10-Q",
+          "franchise_agreement": 3,
+          "management_agreement": 10,
+          "expiration": 3,
+          "termination": 30,
+          "renewal": 2,
+          "characters": 379212,
+          "hotelsDiscovered": 122
+        },
+        {
+          "accession": "0001232582-26-000181",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4395,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001232582-26-000172",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4575,
+          "hotelsDiscovered": 1
+        },
+        {
+          "accession": "0001232582-26-000166",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4561,
+          "hotelsDiscovered": 1
+        },
+        {
+          "accession": "0001232582-26-000160",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4541,
+          "hotelsDiscovered": 2
+        }
+      ],
+      "failedAttributionReasons": [],
+      "errors": [],
+      "discoveredHotelCount": 147,
+      "sampleHotels": [
+        {
+          "hotelName": "Courtyard Boston Downtown",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Residence Inn Evansville",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton NASA Clear Lake",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Residence Inn San Diego",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Embassy Suites Houston",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Embassy Suites Austin",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton St. Petersburg Bayfront",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton Alexandria Old Town",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        }
+      ],
+      "sampleFindings": [
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "advisory services fee $ 113 &#160; $ 687 &#160; ________ (1) Reimbursable expenses include overhead, internal audit, risk management advisory and asset management services . Warwick Pursuant to the Company&#8217;s hotel management agreements with each hotel management company, the Company bears the economic burden for casualty insurance coverage, which includes workers&#8217; compensation, general liability and auto liability coverages.",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001232582",
+            "accessionNumber": "0001232582-26-000220",
+            "formType": "10-Q",
+            "filingDate": "2026-11-13",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001232582/000123258226000220/aht-20260930.htm",
+            "primaryDocument": "aht-20260930.htm",
+            "companyName": "Ashford Hospitality Trust, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.324Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "neral liability and auto liability coverages. The hotel management companies procure workers&#8217; compensation insurance, the expenses of which are passed through to the Company. Under the Advisory Agreement and hotel management agreements, Ashford Inc. secures general liability and auto liability policies to cover Ashford Trust, Braemar Hotels & Resorts Inc. (&#8220;Braemar&#8221;), their hotel managers, as needed, and Ashford Inc. T",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001232582",
+            "accessionNumber": "0001232582-26-000220",
+            "formType": "10-Q",
+            "filingDate": "2026-11-13",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001232582/000123258226000220/aht-20260930.htm",
+            "primaryDocument": "aht-20260930.htm",
+            "companyName": "Ashford Hospitality Trust, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.324Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "% of gross revenues as well as annual incentive management fees, if certain operational criteria were met, and other general and administrative expense reimbursements primarily related to accounting services. Our hotel management agreement also requires that we fund property-level operating costs including the hotel manager&#8217;s payroll and related costs. Our hotel management agreement provides for an initial term of ten years as to",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001232582",
+            "accessionNumber": "0001232582-26-000220",
+            "formType": "10-Q",
+            "filingDate": "2026-11-13",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001232582/000123258226000220/aht-20260930.htm",
+            "primaryDocument": "aht-20260930.htm",
+            "companyName": "Ashford Hospitality Trust, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.324Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "reimbursements primarily related to accounting services. Our hotel management agreement also requires that we fund property-level operating costs including the hotel manager&#8217;s payroll and related costs. Our hotel management agreement provides for an initial term of ten years as to each hotel. The term may be renewed by Remington Hospitality, at its option, for three successive periods of seven years each, and, thereafter, a final",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001232582",
+            "accessionNumber": "0001232582-26-000220",
+            "formType": "10-Q",
+            "filingDate": "2026-11-13",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001232582/000123258226000220/aht-20260930.htm",
+            "primaryDocument": "aht-20260930.htm",
+            "companyName": "Ashford Hospitality Trust, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.324Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "VERIFIED_RENEWAL_OPTION",
+          "evidenceFieldName": "Management Agreement Renewal Option",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": ", for three successive periods of seven years each, and, thereafter, a final term of four years ; provided that, at the time the option to renew is exercised, Remington Hospitality is not then in default under the hotel management agreement. The hotel management agreement also provides that Remington Hospitality may charge market premiums for its self-insured health plans to its hotel employees, the cost of which is an operating expense",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001232582",
+            "accessionNumber": "0001232582-26-000220",
+            "formType": "10-Q",
+            "filingDate": "2026-11-13",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001232582/000123258226000220/aht-20260930.htm",
+            "primaryDocument": "aht-20260930.htm",
+            "companyName": "Ashford Hospitality Trust, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.324Z"
+        }
+      ]
+    },
+    {
+      "slug": "host-hotels-resorts",
+      "companyKey": "host-hotels-resorts",
+      "legalName": "Host Hotels & Resorts, Inc.",
+      "ticker": "HST",
+      "cik": "0001070750",
+      "cikSource": "sec_company_tickers",
+      "filingsReviewed": 12,
+      "documentsProcessed": 12,
+      "findings": 76,
+      "keywordSummaries": [
+        {
+          "accession": "0001628280-26-073508",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 2,
+          "renewal": 0,
+          "characters": 12281,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000156",
+          "form": "10-Q",
+          "franchise_agreement": 0,
+          "management_agreement": 1,
+          "expiration": 0,
+          "termination": 5,
+          "renewal": 4,
+          "characters": 222008,
+          "hotelsDiscovered": 17
+        },
+        {
+          "accession": "0001070750-26-000152",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4041,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000150",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 2,
+          "renewal": 0,
+          "characters": 12464,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000126",
+          "form": "10-Q",
+          "franchise_agreement": 0,
+          "management_agreement": 1,
+          "expiration": 0,
+          "termination": 3,
+          "renewal": 4,
+          "characters": 209591,
+          "hotelsDiscovered": 13
+        },
+        {
+          "accession": "0001070750-26-000122",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4033,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000109",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 1,
+          "termination": 2,
+          "renewal": 0,
+          "characters": 6242,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000086",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4728,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000080",
+          "form": "10-Q",
+          "franchise_agreement": 0,
+          "management_agreement": 1,
+          "expiration": 0,
+          "termination": 2,
+          "renewal": 4,
+          "characters": 174511,
+          "hotelsDiscovered": 12
+        },
+        {
+          "accession": "0001070750-26-000077",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4022,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000054",
+          "form": "10-K",
+          "franchise_agreement": 10,
+          "management_agreement": 17,
+          "expiration": 1,
+          "termination": 42,
+          "renewal": 25,
+          "characters": 561696,
+          "hotelsDiscovered": 79
+        },
+        {
+          "accession": "0001070750-26-000038",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4046,
+          "hotelsDiscovered": 0
+        }
+      ],
+      "failedAttributionReasons": [],
+      "errors": [],
+      "discoveredHotelCount": 91,
+      "sampleHotels": [
+        {
+          "hotelName": "Marriott at Metro Center",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "St. Regis Houston",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "the Four Seasons Resort and Residences Jackson Hole",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "the Sheraton Parsippany Hotel",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The Westin Kierland Resort & Spa",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The Ritz-Carlton Naples",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The St. Regis Houston",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "the 1 Hotel Brooklyn Bridge",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ],
+      "sampleFindings": [
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "UNKNOWN_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "VERIFIED_TERMINATION",
+          "evidenceFieldName": "Management Agreement Termination Date",
+          "datesMentioned": [
+            "May 31, 2023",
+            "May 27, 2026"
+          ],
+          "primaryDate": "May 31, 2023",
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "hares&#8221;). The Distribution Agreement is attached hereto as Exhibit 1.1 and is incorporated herein by reference. Substantially concurrently with the Company&#8217;s entry into the Distribution Agreement, the Company terminated its existing distribution agreement, dated as of May 31, 2023, among the Company and the agents, forward sellers and forward purchasers party thereto (as amended on May 27, 2026, the &#8220;Prior Distribution",
+          "keyword": "terminate",
+          "source": {
+            "cik": "0001070750",
+            "accessionNumber": "0001628280-26-073508",
+            "formType": "8-K",
+            "filingDate": "2026-11-12",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001070750/000162828026073508/hst-20261112.htm",
+            "primaryDocument": "hst-20261112.htm",
+            "companyName": "Host Hotels & Resorts, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.406Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "UNKNOWN_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "VERIFIED_TERMINATION",
+          "evidenceFieldName": "Management Agreement Termination Date",
+          "datesMentioned": [
+            "May 27, 2026"
+          ],
+          "primaryDate": "May 27, 2026",
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "ts, forward sellers and forward purchasers party thereto (as amended on May 27, 2026, the &#8220;Prior Distribution Agreement&#8221;), in accordance with the terms of the Prior Distribution Agreement. At the time of the termination of the Prior Distribution Agreement, shares of the Company&#8217;s common stock, par value $0.01 per share, having a combined aggregate offering price of up to $600 million, remained unsold under the Prior Di",
+          "keyword": "termination",
+          "source": {
+            "cik": "0001070750",
+            "accessionNumber": "0001628280-26-073508",
+            "formType": "8-K",
+            "filingDate": "2026-11-12",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001070750/000162828026073508/hst-20261112.htm",
+            "primaryDocument": "hst-20261112.htm",
+            "companyName": "Host Hotels & Resorts, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.406Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "UNKNOWN_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "VERIFIED_AMENDMENT",
+          "evidenceFieldName": "Agreement Amendment",
+          "datesMentioned": [
+            "October 21, 2026"
+          ],
+          "primaryDate": "October 21, 2026",
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "f net share settlement) to the relevant Forward Purchaser. Host Hotels & Resorts, L.P., through which the Company conducts all operations, and for which the Company is the sole general partner, is a party to the Seventh Amended and Restated Credit Agreement, dated as of October 21, 2026, as amended, under which an affiliate of certain of the Sales Agents is an agent and/or a lender. Each of the Sales Agents, the Forward Sellers and thei",
+          "keyword": "Amended and Restated",
+          "source": {
+            "cik": "0001070750",
+            "accessionNumber": "0001628280-26-073508",
+            "formType": "8-K",
+            "filingDate": "2026-11-12",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001070750/000162828026073508/hst-20261112.htm",
+            "primaryDocument": "hst-20261112.htm",
+            "companyName": "Host Hotels & Resorts, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.406Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "MANAGEMENT_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "l into the following broad categories: disputes involving hotel-level contracts, employment litigation, compliance with laws such as the Americans with Disabilities Act, tax disputes and other general matters. Under our management agreements, our operators have broad latitude to resolve individual hotel-level claims for amounts generally less than $ 150,000 . However, for matters exceeding such threshold, our operators may not settle cl",
+          "keyword": "management agreement",
+          "source": {
+            "cik": "0001070750",
+            "accessionNumber": "0001070750-26-000156",
+            "formType": "10-Q",
+            "filingDate": "2026-11-06",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001070750/000107075026000156/hst-20260930.htm",
+            "primaryDocument": "hst-20260930.htm",
+            "companyName": "Host Hotels & Resorts, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.447Z"
+        },
+        {
+          "extractorVersion": "sec-edgar-contract-extractor-v1",
+          "agreementType": "UNKNOWN_AGREEMENT",
+          "verificationClass": "INSUFFICIENT_EVIDENCE",
+          "verificationClassRaw": "INSUFFICIENT_EVIDENCE",
+          "evidenceFieldName": "Contractual Disclosure",
+          "datesMentioned": [],
+          "primaryDate": null,
+          "hotelNameHints": [],
+          "hotelAttributed": false,
+          "portfolioWide": true,
+          "snippet": "ve to that of the common unitholders of Host L.P. The redemption value is based on the amount of cash or Host Inc. common stock, at our option, that would be paid to the non-controlling interests of Host L.P. if it were terminated. We have estimated that the redemption value of the common OP units is equivalent to the number of common shares issuable upon conversion of the common OP units held by third parties valued at the market price",
+          "keyword": "terminate",
+          "source": {
+            "cik": "0001070750",
+            "accessionNumber": "0001070750-26-000156",
+            "formType": "10-Q",
+            "filingDate": "2026-11-06",
+            "documentUrl": "https://www.sec.gov/Archives/edgar/data/0001070750/000107075026000156/hst-20260930.htm",
+            "primaryDocument": "hst-20260930.htm",
+            "companyName": "Host Hotels & Resorts, Inc."
+          },
+          "extractedAt": "2026-11-20T06:36:40.448Z"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "total": 352,
+    "persistable": 6,
+    "rejectedEstimates": 346,
+    "quarantined": 0
+  },
+  "attribution": {
+    "matched": 0,
+    "quarantined": 352
+  },
+  "yieldPrioritization": {
+    "version": "sec-edgar-yield-prioritization-v1",
+    "ranked": [
+      {
+        "companyKey": "ashford-hospitality-trust",
+        "companyName": "Ashford Hospitality Trust, Inc.",
+        "cik": "0001232582",
+        "namedHotels": 147,
+        "verifiedContractualMilestones": 0,
+        "relevantAgreementsPer10Filings": 0,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [],
+        "yieldScore": 49,
+        "recommendation": "PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+      },
+      {
+        "companyKey": "host-hotels-resorts",
+        "companyName": "Host Hotels & Resorts, Inc.",
+        "cik": "0001070750",
+        "namedHotels": 91,
+        "verifiedContractualMilestones": 0,
+        "relevantAgreementsPer10Filings": 0,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [],
+        "yieldScore": 30.333,
+        "recommendation": "PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+      },
+      {
+        "companyKey": "sunstone-hotel-investors",
+        "companyName": "Sunstone Hotel Investors, Inc.",
+        "cik": "0001295810",
+        "namedHotels": 50,
+        "verifiedContractualMilestones": 6,
+        "relevantAgreementsPer10Filings": 9.17,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [
+          "no_hpc_candidate_above_threshold"
+        ],
+        "yieldScore": 24.25,
+        "recommendation": "PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+      },
+      {
+        "companyKey": "marriott-international",
+        "companyName": "Marriott International, Inc.",
+        "cik": "0001048286",
+        "namedHotels": 2,
+        "verifiedContractualMilestones": 0,
+        "relevantAgreementsPer10Filings": 0,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [],
+        "yieldScore": 1.333,
+        "recommendation": "PRIORITIZE_EX_10_PROPERTY_AGREEMENTS"
+      }
+    ],
+    "nextCohortGuidance": "Next research focus: ashford-hospitality-trust — PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+  },
+  "reconciliationDryRun": {
+    "counts": {
+      "inventoryHotels": 290,
+      "newlyMatchable": 0,
+      "stillUnmatched": 290,
+      "ambiguous": 0,
+      "unchangedMatched": 0,
+      "plannedEvidenceWrites": 0
+    },
+    "note": "Reconciliation uses stored discovery inventory — no SEC re-download required."
+  },
+  "persistencePlan": {
+    "version": "sec-edgar-persistence-planner-v1",
+    "dryRun": true,
+    "publication": {
+      "customerFacing": false,
+      "autoPublish": false,
+      "layer": "AIRTABLE_PERSISTENCE_INTERNAL_ONLY",
+      "note": "Persisted contract intelligence stays INTERNAL_ONLY until separate publication approval."
+    },
+    "counts": {
+      "evidence": 0,
+      "relationships": 0,
+      "organizations": 1,
+      "hpcNullFills": 0,
+      "quarantined": 6,
+      "rejectedEstimates": 346
+    },
+    "evidenceRows": [],
+    "relationshipRows": [],
+    "orgRows": [
+      {
+        "action": "UPSERT",
+        "table": "HI Organizations",
+        "fields": {
+          "Legal Name": "Marriott International, Inc.",
+          "Trading Name": "Marriott International, Inc.",
+          "Organization Type": "Brand / Franchisor",
+          "Registry / Identifier": "CIK:0001048286",
+          "Verification State": "Evidence Collected",
+          "Confidence": "HIGH",
+          "Publication State": "INTERNAL_ONLY",
+          "Schema Version": "he_intel_airtable_graph_v1",
+          "Notes": "SEC EDGAR pilot registrant"
+        }
+      }
+    ],
+    "hpcNullFills": [],
+    "quarantined": [
+      {
+        "class": "VERIFIED_AMENDMENT",
+        "reason": "no_hpc_candidate_above_threshold",
+        "snippet": "t and Restatement of Sunstone Hotel Investors, Inc. (incorporated by reference to Exhibit 3.1 to the registration statement on Form S-11 (File No. 333-117141) filed by the Company). &#160; &#160; &#16"
+      },
+      {
+        "class": "VERIFIED_AMENDMENT",
+        "reason": "no_hpc_candidate_above_threshold",
+        "snippet": "60; Articles Supplementary for Series I preferred stock (incorporated by reference to Exhibit 3.3 to the registration statement on Form 8-A, filed by the Company on July 15, 2021). &#160; &#160; &#160"
+      },
+      {
+        "class": "VERIFIED_AMENDMENT",
+        "reason": "no_hpc_candidate_above_threshold",
+        "snippet": "stors,&#160;Inc. (incorporated by reference to Exhibit&#160;3.1 to the registration statement on Form&#160;S-11 (File No.&#160;333-117141) filed by the Company). &#8203; &#8203; &#8203; &#8203; 3.2 &#"
+      },
+      {
+        "class": "VERIFIED_AMENDMENT",
+        "reason": "no_hpc_candidate_above_threshold",
+        "snippet": "entary for Series I preferred stock (incorporated by reference to Exhibit 3.3 to the registration statement on Form 8-A, filed by the Company on July 15, 2021). &#8203; &#8203; &#8203; &#8203; 3.7 &#8"
+      },
+      {
+        "class": "VERIFIED_AMENDMENT",
+        "reason": "no_hpc_candidate_above_threshold",
+        "snippet": "stors,&#160;Inc. (incorporated by reference to Exhibit&#160;3.1 to the registration statement on Form&#160;S-11 (File No.&#160;333-117141) filed by the Company). &#8203; &#8203; &#8203; &#8203; 3.2 &#"
+      },
+      {
+        "class": "VERIFIED_AMENDMENT",
+        "reason": "no_hpc_candidate_above_threshold",
+        "snippet": "entary for Series I preferred stock (incorporated by reference to Exhibit 3.3 to the registration statement on Form 8-A, filed by the company on July 15, 2021). &#8203; &#8203; &#8203; &#8203; 3.7 &#8"
+      }
+    ],
+    "rejectedEstimates": 346
+  },
+  "applyResult": {
+    "version": "sec-edgar-persistence-apply-v1",
+    "applied": false,
+    "dryRun": true,
+    "baseId": "appCCUsuGsE1ifoLk",
+    "plannedEvidence": 0,
+    "results": []
+  },
+  "opportunities": {
+    "version": "sec-edgar-opportunity-discovery-v1",
+    "count": 0,
+    "dossiers": []
+  },
+  "changeDiff": {
+    "counts": {
+      "NEW": 0,
+      "UPDATED": 0,
+      "UNCHANGED": 109,
+      "SUPERSEDED": 0,
+      "CONFLICTED": 0
+    }
+  },
+  "metrics": {
+    "companiesResearched": 4,
+    "secFilingsReviewed": 42,
+    "documentsAndExhibitsProcessed": 42,
+    "hotelsDiscoveredIndependentOfHpc": 290,
+    "hotelsMatchedToHpc": 0,
+    "hotelsNotInHpc": 290,
+    "contractVerifiedPendingHpc": 0,
+    "matchAmbiguous": 0,
+    "hotelInventoryRows": 631,
+    "verifiedSigningDates": 0,
+    "verifiedManagementExpirations": 0,
+    "verifiedFranchiseExpirations": 0,
+    "verifiedRenewals": 0,
+    "verifiedTerminations": 0,
+    "amendmentsAndExtensions": 6,
+    "verifiedPropertyLevelContractFindings": 0,
+    "ownershipAndOperatorRelationships": 0,
+    "successfullyPersistedHpcUpdates": 0,
+    "successfulReadbacks": 0,
+    "conflictsAndQuarantinedFindings": 358,
+    "potentialConversionOpportunities": 0,
+    "estimatedOrUnsupportedDatesRejected": 346,
+    "actualResearchSpendUsd": 0,
+    "yieldNextCohortGuidance": "Next research focus: ashford-hospitality-trust — PRIORITIZE_EXHIBITS_AND_SCHEDULES",
+    "discoveryInventoryDestination": "data/sec-edgar/discovery-inventory",
+    "reconciliationNewlyMatchable": 0
+  },
+  "classificationNote": "PERSISTENCE_DESIGNED for architecture; PERSISTED_VERIFIED only when --apply + read-back pass. Unmatched discoveries retained in filesystem inventory. Customer publication BLOCKED.",
+  "airtablePersistenceGate": "PERSISTENCE_DESIGNED"
+}

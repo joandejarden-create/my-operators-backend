@@ -1,0 +1,233 @@
+{
+  "mode": "DRY_RUN",
+  "additions": [
+    {
+      "table": "HI Hotel Discovery Inventory",
+      "action": "CREATE_TABLE",
+      "tableId": null,
+      "fieldsAdded": [
+        {
+          "name": "Discovery Property ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel Name (normalized)",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel Name (raw)",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Historical Names / Aliases",
+          "type": "multilineText"
+        },
+        {
+          "name": "City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "State / Region",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Address",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Family",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Brand Label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Historical Brand",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Current Brand",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Identity Class",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Evidence Confidence",
+          "type": "singleSelect"
+        },
+        {
+          "name": "SEC Registrant",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Registrant CIK",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Source Filing URL",
+          "type": "url"
+        },
+        {
+          "name": "Filing Date",
+          "type": "date"
+        },
+        {
+          "name": "Source Document Ledger",
+          "type": "multilineText"
+        },
+        {
+          "name": "Primary Accession",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Discovery Method",
+          "type": "singleLineText"
+        },
+        {
+          "name": "HPC Match Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "HPC Hotel",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Lifecycle Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Persistence Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "First Discovered At",
+          "type": "dateTime"
+        },
+        {
+          "name": "Last Researched At",
+          "type": "dateTime"
+        },
+        {
+          "name": "Property Key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Notes / Quarantine Reason",
+          "type": "multilineText"
+        },
+        {
+          "name": "Schema Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Publication State",
+          "type": "singleSelect"
+        }
+      ],
+      "fieldsSkippedExisting": [],
+      "fieldsFailed": []
+    },
+    {
+      "table": "HI Discovery Findings",
+      "action": "CREATE_TABLE",
+      "tableId": null,
+      "fieldsAdded": [
+        {
+          "name": "Finding ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Discovery Property",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Finding Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Field Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Value Observed",
+          "type": "multilineText"
+        },
+        {
+          "name": "Agreement Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Historical Applicability",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Effective / Event Date",
+          "type": "date"
+        },
+        {
+          "name": "Reporting Date",
+          "type": "date"
+        },
+        {
+          "name": "Source URL",
+          "type": "url"
+        },
+        {
+          "name": "SEC Accession",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Registrant CIK",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Evidence Snippet",
+          "type": "multilineText"
+        },
+        {
+          "name": "Confidence",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Verification Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Related Organization Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Related Organization",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Superseded By",
+          "type": "singleLineText"
+        },
+        {
+          "name": "HPC Promotion Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Schema Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText"
+        }
+      ],
+      "fieldsSkippedExisting": [],
+      "fieldsFailed": []
+    }
+  ],
+  "hpcSchemaMutations": [],
+  "graphEvidenceMutations": []
+}
