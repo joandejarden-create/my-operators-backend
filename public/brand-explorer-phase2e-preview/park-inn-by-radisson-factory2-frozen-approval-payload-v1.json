@@ -5,7 +5,7 @@
   "slug": "park-inn-by-radisson",
   "generatedAt": "2026-11-20T09:19:12.375Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "928fcd5629ab35a86f55d95bed191c4931c8ad33e58a8b7324fae8a476fa02e1",
+  "approvalContentHash": "7eda81323762a7e6ddf086350bc42f170f4bf6c7fb2609904f19171128478a28",
   "overlayHash": "9a1eb5e94b365f2b782c58a56b3e099c41e6de91f13e72692034fec52a8ef1ca",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,64 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Member",
+        "body": "Choice Privileges membership: earn points on qualifying stays booked direct; member promotions where enabled.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Entry elite (nights or Elite Qualifying Credits per current rules): bonus points and recognition benefits.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Higher bonus earn and stronger recognition versus Gold. Confirm current EQC/night thresholds.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Upper elite recognition and elevated service benefits on participating Choice brands. Delivery varies by hotel.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Titanium",
+        "body": "Highest published Choice Privileges tier with premium program benefits. Confirm current qualification path.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -1996,5 +2041,22 @@
   "sources": {
     "brandPage": "https://www.choicehotels.com/park-inn"
   },
-  "batchTag": "batch-12"
+  "batchTag": "batch-12",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.189Z",
+    "programId": "choice_privileges",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Gold",
+      "Platinum",
+      "Diamond",
+      "Titanium"
+    ]
+  }
 }

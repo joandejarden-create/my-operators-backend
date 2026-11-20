@@ -5,7 +5,7 @@
   "slug": "staybridge-suites",
   "generatedAt": "2026-11-20T09:27:06.730Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "d4fe39bb6e5bccf8f361bf5feeabe7e6dc1e0bc8c867d62ee2bd8784ab0c0d16",
+  "approvalContentHash": "fb9d6d1160df301463fa4f04e793261b7f8bba7dc4c67ede9a9f7a29e700a09a",
   "overlayHash": "9959a43114f8de821257b077605961a99f9b75aa3bf1eaaab53cda1deb887640",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,64 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Club",
+        "body": "Base IHG One Rewards membership: earn toward Reward Nights, Member Rates on direct bookings. Benefits vary by brand and hotel.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ihg.com/rewardsclub/content/us/en/home",
+        "loyaltyProgramId": "ihg_one_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver Elite",
+        "body": "Entry elite: bonus points and recognition benefits per current IHG One Rewards rules. Confirm night/spend thresholds annually.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ihg.com/rewardsclub/content/us/en/home",
+        "loyaltyProgramId": "ihg_one_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold Elite",
+        "body": "Enhanced earn, room upgrades where available, and stronger recognition versus Silver. Property delivery varies.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ihg.com/rewardsclub/content/us/en/home",
+        "loyaltyProgramId": "ihg_one_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum Elite",
+        "body": "Upper elite: higher upgrade priority and elite benefits including Milestone Rewards choices where program rules apply.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ihg.com/rewardsclub/content/us/en/home",
+        "loyaltyProgramId": "ihg_one_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond Elite",
+        "body": "Top elite: highest published recognition, suite/upgrade pathways where offered, and dedicated support pathways per current program terms.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ihg.com/rewardsclub/content/us/en/home",
+        "loyaltyProgramId": "ihg_one_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2020,5 +2065,22 @@
     "gallery": 0,
     "scenario": 0,
     "brandWebsite": "https://ihg.com/staybridge"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.538Z",
+    "programId": "ihg_one_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Club",
+      "Silver Elite",
+      "Gold Elite",
+      "Platinum Elite",
+      "Diamond Elite"
+    ]
   }
 }

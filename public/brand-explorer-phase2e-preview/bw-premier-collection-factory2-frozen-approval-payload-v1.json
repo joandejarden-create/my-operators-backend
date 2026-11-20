@@ -5,7 +5,7 @@
   "slug": "bw-premier-collection",
   "generatedAt": "2026-11-20T09:04:21.243Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "b46271e0aa30b66ce83464a2050c8b29e6717749bb1207c9b1c1b23f7b02c0ba",
+  "approvalContentHash": "7f8101ec6eb21bf198a669564e7ecdbcf4163d53d3ff106a1f71bfdab3721e93",
   "overlayHash": "11f0a13c9f4e2d1d950246cee4a1c77511172d30385a240ccf1cbf0277a87360",
   "brandExplorer": {
     "version": 1,
@@ -671,26 +671,59 @@
         "caseSummaryTags": ""
       },
       {
+        "slotKey": "loyalty.elite",
+        "title": "Blue",
+        "body": "Base Best Western Rewards membership and member rates on participating hotels.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Enhanced earn and recognition benefits per current Best Western Rewards rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Stronger recognition and earn versus Gold. Confirm current night thresholds.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top published Best Western Rewards status. Property delivery varies.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
         "recordId": "rechqKf42jFCllN05",
         "slotKey": "footprint.region.mea",
         "title": "MEA",
         "body": "MEA relevance is market-specific and should be confirmed directly with BWH for the proposed country and asset. Treat wider BWH presence as context, not evidence that the Premier collection path is available or commercially equivalent in every market.",
         "sort": 45,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "cumulative-proposed-46",
-        "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 46,
         "imageUrl": null,
         "imageFilename": null,
         "summaryUrl": "",
@@ -2356,5 +2389,21 @@
   "sources": {
     "brandPage": "https://www.bestwestern.com/en_US/hotels/brand/bw-premier-collection.html"
   },
-  "batchTag": "batch-10"
+  "batchTag": "batch-10",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.262Z",
+    "programId": "best_western_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Blue",
+      "Gold",
+      "Platinum",
+      "Diamond"
+    ]
+  }
 }

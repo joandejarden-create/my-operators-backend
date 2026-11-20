@@ -5,7 +5,7 @@
   "slug": "citadines",
   "generatedAt": "2026-11-20T09:47:42.917Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "0394f34607c528eee239817c61656264564d5899933058e6bad984bb2257860d",
+  "approvalContentHash": "c97b792f76d8aadbb5014dbd8e2ea3e9a9aacd25dbd86f2d0ab16aa5393dabd6",
   "overlayHash": "3d81644f515ecc7a61c988f17a180c2b3cb15a3acc0e898ccf1da8120f65641c",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Classic",
+        "body": "Base Ascott Star Rewards on participating Ascott brands (Citadines, lyf, Somerset, Oakwood, etc.).",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.the-ascott.com/en/ascott-star-rewards.html",
+        "loyaltyProgramId": "ascott_star_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry elite: bonus points and recognition per current Ascott Star Rewards rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.the-ascott.com/en/ascott-star-rewards.html",
+        "loyaltyProgramId": "ascott_star_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid elite recognition and enhanced benefits versus Silver. Property delivery varies.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.the-ascott.com/en/ascott-star-rewards.html",
+        "loyaltyProgramId": "ascott_star_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Top published Ascott Star Rewards elite recognition. Confirm current qualification path.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.the-ascott.com/en/ascott-star-rewards.html",
+        "loyaltyProgramId": "ascott_star_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2011,5 +2044,21 @@
   "sources": {
     "brandPage": "https://www.discoverasr.com/en/citadines"
   },
-  "batchTag": "batch-16"
+  "batchTag": "batch-16",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.311Z",
+    "programId": "ascott_star_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Classic",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ]
+  }
 }

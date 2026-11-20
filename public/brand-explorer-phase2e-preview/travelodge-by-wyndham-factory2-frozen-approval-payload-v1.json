@@ -5,7 +5,7 @@
   "slug": "travelodge-by-wyndham",
   "generatedAt": "2026-11-20T08:21:25.527Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "9a45b98a7fd5c87d3cebb9d96c698505d3f1112e0cddedcf27c3ace059a3edad",
+  "approvalContentHash": "24a40d5d7d74233b22e22fefd383b60362bb26f9aa052a89c57f93475a8762be",
   "overlayHash": "2ecd18606c03997967974e6be669ba494b5b1486e3c620b4cfffb852b4a5cdcf",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Blue",
+        "body": "Base Wyndham Rewards: earn points on qualifying stays; member rates on participating Wyndham brands.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Entry elite: bonus points and recognition benefits per current Wyndham Rewards rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Mid elite: stronger earn and recognition versus Gold. Property-level delivery varies by brand.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top published Wyndham Rewards elite recognition. Confirm current qualification and benefit schedule before underwriting.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2121,5 +2154,21 @@
     "contract": "BE_FACTORY_2_0_OPENINGS_HOTEL_IMAGES_V1",
     "remediatedAt": "2026-11-20T08:40:12.303Z",
     "mode": "create_examples"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.700Z",
+    "programId": "wyndham_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Blue",
+      "Gold",
+      "Platinum",
+      "Diamond"
+    ]
   }
 }

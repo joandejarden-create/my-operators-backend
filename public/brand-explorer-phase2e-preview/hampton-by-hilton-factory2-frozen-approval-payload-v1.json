@@ -5,7 +5,7 @@
   "slug": "hampton-by-hilton",
   "generatedAt": "2026-11-20T08:21:50.515Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "63ada41713253aa76c0d5b1f2742909803e742fabcbf9e11a3ec4a051668c74e",
+  "approvalContentHash": "14e39e18509538fc897771a00d7cd6c33ae39f5c0f0036b4a9df70d0acb37c98",
   "overlayHash": "3f846231fa3fc110c9feb9e2bcaf4bd2fcbe12b2c79394b93c4039b5209643d6",
   "brandExplorer": {
     "version": 1,
@@ -686,19 +686,64 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-46",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 46,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Member",
+        "body": "Hilton Honors Points on eligible stays; Member Rates and digital tools on direct Hilton paths. Property-level delivery varies.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry elite: Fifth Night Free on standard room rewards (where program rules apply), Points pooling, and baseline recognition per current Honors rules.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Enhanced earn bonus, room upgrade preference where available, and stronger recognition versus Silver. Confirm current night/spend thresholds.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top mainstream elite: higher upgrade priority, executive lounge access where offered, and elevated service pathways. Not guaranteed at every hotel.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond Reserve",
+        "body": "Highest published Honors elite recognition (per current program rules). Confirm 2026+ qualification and benefit schedule on honors.hilton.com before underwriting.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "cumulative-proposed-47",
@@ -2370,5 +2415,22 @@
     "gallery": 6,
     "scenario": 3,
     "brandWebsite": "https://hilton.com/en/brands/hampton-by-hilton"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.614Z",
+    "programId": "hilton_honors",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Silver",
+      "Gold",
+      "Diamond",
+      "Diamond Reserve"
+    ]
   }
 }

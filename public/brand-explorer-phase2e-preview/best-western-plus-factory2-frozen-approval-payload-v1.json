@@ -5,7 +5,7 @@
   "slug": "best-western-plus",
   "generatedAt": "2026-11-20T08:21:33.902Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "50036206a8c5eeb2951a0f4c4eaad23fee366e499baec113d563471509d6d2e9",
+  "approvalContentHash": "b52ff76b2d6bd9410e9ec3f50ed5389e592cef74a09c6d3563badb45b76c9127",
   "overlayHash": "dfd1ddd350080e93a39b87c37284b47763e5a9358341f9424c9533b44988908a",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Blue",
+        "body": "Base Best Western Rewards membership and member rates on participating hotels.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Enhanced earn and recognition benefits per current Best Western Rewards rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Stronger recognition and earn versus Gold. Confirm current night thresholds.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top published Best Western Rewards status. Property delivery varies.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.bestwestern.com/en_US/book/hotel-rewards.html",
+        "loyaltyProgramId": "best_western_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2121,5 +2154,21 @@
     "contract": "BE_FACTORY_2_0_OPENINGS_HOTEL_IMAGES_V1",
     "remediatedAt": "2026-11-20T08:40:11.909Z",
     "mode": "create_examples"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.225Z",
+    "programId": "best_western_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Blue",
+      "Gold",
+      "Platinum",
+      "Diamond"
+    ]
   }
 }

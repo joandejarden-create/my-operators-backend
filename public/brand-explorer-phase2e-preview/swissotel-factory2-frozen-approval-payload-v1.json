@@ -5,7 +5,7 @@
   "slug": "swissotel",
   "generatedAt": "2026-11-20T09:19:10.137Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "6538fafe25ad8a69145d80c4bce2504fbe7b688e76e4a896f81ac4ceb74b5ca8",
+  "approvalContentHash": "01ae79394a115b1c1a4cff41e7dbf8087ebabf39d0e9bfce56abfbb33153c444",
   "overlayHash": "310deb52382233bfc8027204b2dc6b1d12185a638908b3ed9344df1a7cd380e9",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,64 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Classic",
+        "body": "ALL Accor membership: earn Reward points on qualifying stays; member offers on Accor brands. Brand and hotel rules apply.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry status: enhanced earn and recognition benefits per current ALL Accor status rules.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid status: room upgrades where available, late checkout preference, and stronger recognition versus Silver.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Upper status: suite/upgrade pathways and lounge access where offered. Confirm current qualification nights/stays.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top ALL Accor status: highest published recognition and service pathways. Delivery varies by Accor brand and hotel.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2083,5 +2128,22 @@
     "gallery": 6,
     "scenario": 3,
     "brandWebsite": "https://all.accor.com/brands/swissotel.en.shtml"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.599Z",
+    "programId": "all_accor",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Classic",
+      "Silver",
+      "Gold",
+      "Platinum",
+      "Diamond"
+    ]
   }
 }

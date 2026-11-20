@@ -5,7 +5,7 @@
   "slug": "sonesta-es-suites",
   "generatedAt": "2026-11-20T08:21:41.333Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "287bf23f901dbf7b362d86788185b3acec17ab40bcbeb778ab38515aff16a788",
+  "approvalContentHash": "a82b7b28dc8cc06606e026b6618fd03e67fa72556c2aa3a180bfda89a74ec612",
   "overlayHash": "6f17f10a03ac501bee0169e9fc918d5583c9d9bbe7e20da462021524daf03010",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Member",
+        "body": "Sonesta Travel Pass membership: earn on qualifying stays; member offers where enabled.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.sonesta.com/sonesta-travel-pass",
+        "loyaltyProgramId": "sonesta_travel_pass",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry elite recognition and bonus earn per current Sonesta Travel Pass rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.sonesta.com/sonesta-travel-pass",
+        "loyaltyProgramId": "sonesta_travel_pass",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid elite: stronger recognition and earn versus Silver.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.sonesta.com/sonesta-travel-pass",
+        "loyaltyProgramId": "sonesta_travel_pass",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Top published Sonesta Travel Pass elite recognition. Confirm current qualification.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.sonesta.com/sonesta-travel-pass",
+        "loyaltyProgramId": "sonesta_travel_pass",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2121,5 +2154,21 @@
     "contract": "BE_FACTORY_2_0_OPENINGS_HOTEL_IMAGES_V1",
     "remediatedAt": "2026-11-20T08:40:12.250Z",
     "mode": "create_examples"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.471Z",
+    "programId": "sonesta_travel_pass",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ]
   }
 }

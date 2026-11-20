@@ -5,7 +5,7 @@
   "slug": "alila",
   "generatedAt": "2026-11-20T08:21:14.610Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "9f0864a90a3bd88ed1c29bf504f19eba8f9f6030586999d2d35f51a81e14c469",
+  "approvalContentHash": "64d488c7c7b69e44dccdcbc2f4dcf1f4127971a81cc7f683b9760bb88637f018",
   "overlayHash": "03590eb31e6fcbc0559f9fad8a8308ee73a362004eb52d5106a5b7387af18e6b",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Member",
+        "body": "World of Hyatt Points on qualifying stays; member rates and digital experience on direct Hyatt paths where enabled.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://world.hyatt.com/",
+        "loyaltyProgramId": "world_of_hyatt",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Discoverist",
+        "body": "Entry elite: bonus Points, late checkout where offered, and room upgrade preference per current World of Hyatt rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://world.hyatt.com/",
+        "loyaltyProgramId": "world_of_hyatt",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Explorist",
+        "body": "Mid elite: higher bonus earn, stronger upgrade preference, and welcome amenities pattern where the hotel participates.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://world.hyatt.com/",
+        "loyaltyProgramId": "world_of_hyatt",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Globalist",
+        "body": "Top elite: suite upgrades and Club lounge access where offered, breakfast benefits on qualifying rates, and elevated service expectations. Confirm current qualification.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://world.hyatt.com/",
+        "loyaltyProgramId": "world_of_hyatt",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2121,5 +2154,21 @@
     "contract": "BE_FACTORY_2_0_OPENINGS_HOTEL_IMAGES_V1",
     "remediatedAt": "2026-11-20T08:40:34.186Z",
     "mode": "patch"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.027Z",
+    "programId": "world_of_hyatt",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Discoverist",
+      "Explorist",
+      "Globalist"
+    ]
   }
 }

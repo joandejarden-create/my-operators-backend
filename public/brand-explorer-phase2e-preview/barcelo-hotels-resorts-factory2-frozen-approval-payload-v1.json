@@ -5,7 +5,7 @@
   "slug": "barcelo-hotels-resorts",
   "generatedAt": "2026-11-20T09:41:06.085Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "03ac5c00fb39b1088191f0856b1465b48f0b139976e1925f30dd31aa53537f03",
+  "approvalContentHash": "74b790cf59748b86eaef5b212107930e81e37800573a529094c0ea6d5f2445cf",
   "overlayHash": "65091807acf882d0c7a3008838982333bc927e7c963aebf9ee3e418c172a3b77",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,40 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Essential",
+        "body": "Entry my Barceló Benefits level on signup: member rates and base recognition. Not a points program—benefits are stay/discount oriented and vary by region and hotel.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.barcelo.com/en-us/mybarcelo/",
+        "loyaltyProgramId": "my_barcelo",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Special",
+        "body": "Mid level after qualifying stays and spend within 24 months (per current Barceló rules). Stronger member discounts and in-stay attentions where offered.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.barcelo.com/en-us/mybarcelo/",
+        "loyaltyProgramId": "my_barcelo",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Unique",
+        "body": "Top published my Barceló Benefits level after higher stay/spend thresholds. Preferential room, welcome attentions, and flexible arrival/departure where hotel capability allows.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.barcelo.com/en-us/mybarcelo/",
+        "loyaltyProgramId": "my_barcelo",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2083,5 +2104,20 @@
     "gallery": 6,
     "scenario": 3,
     "brandWebsite": "https://barcelo.com/"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.195Z",
+    "programId": "my_barcelo",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Essential",
+      "Special",
+      "Unique"
+    ]
   }
 }

@@ -5,7 +5,7 @@
   "slug": "innside-by-melia",
   "generatedAt": "2026-11-20T09:41:01.806Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "97e5216532d5c1bf97aafc4dab432d64846852827729188b97409e04edb0f696",
+  "approvalContentHash": "3fbdb7cf2a87d8dfd01f7af40c3916cd401dab2f4c0cbf2ea708b27a9e316b35",
   "overlayHash": "c0991fcaf6916ce5d726aff771e517b34f402b92bc67317c78931a04f77a5f0b",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "MeliáRewards",
+        "body": "Base MeliáRewards membership on participating Meliá brands.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.melia.com/en/meliarewards",
+        "loyaltyProgramId": "melia_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry elite: bonus earn and recognition per current MeliáRewards rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.melia.com/en/meliarewards",
+        "loyaltyProgramId": "melia_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid elite recognition and enhanced benefits versus Silver.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.melia.com/en/meliarewards",
+        "loyaltyProgramId": "melia_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Top published MeliáRewards elite recognition. Confirm current qualification.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.melia.com/en/meliarewards",
+        "loyaltyProgramId": "melia_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2011,5 +2044,21 @@
   "sources": {
     "brandPage": "https://www.melia.com/en/hotels/innside"
   },
-  "batchTag": "batch-15"
+  "batchTag": "batch-15",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.837Z",
+    "programId": "melia_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "MeliáRewards",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ]
+  }
 }

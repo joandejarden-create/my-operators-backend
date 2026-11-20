@@ -5,7 +5,7 @@
   "slug": "radisson-by-choice",
   "generatedAt": "2026-11-20T09:04:29.258Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "01d32caeee56330d635a8431fcd203b29c74b3d9a7340054980cc897f930cf4f",
+  "approvalContentHash": "2d9822eaa32c2f469ee3e2bfc77bb6bbd74d44492ac36297a22b6ae59a2da05e",
   "overlayHash": "2baab244ef451aeb81328e508d43c455ee4ac07a33416f443907bca36ab3e90f",
   "brandExplorer": {
     "version": 1,
@@ -1766,51 +1766,6 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "recFlaZSQPXoA8BcU",
-        "slotKey": "loyalty.elite",
-        "title": "Club Member",
-        "body": "Entry tier with member rates and baseline recognition—foundation for repeat stays and direct contribution when fulfillment is crisp.",
-        "sort": 118,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "recBAg0TLerRPBIwf",
-        "slotKey": "loyalty.elite",
-        "title": "Premium Member",
-        "body": "Elevated earn and recognition versus base—owners should stress consistent elite fulfillment (upgrades, arrival experience) to protect reviews and rate.",
-        "sort": 119,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "recWUtvRg9sfNWIx9",
-        "slotKey": "loyalty.elite",
-        "title": "VIP Member",
-        "body": "Top-tier recognition—tier names and benefits follow the active program in your market (Choice Privileges vs Radisson Rewards per disclosure); cite only published tables.",
-        "sort": 120,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
         "recordId": "recoOX4wH9W7I9s9J",
         "slotKey": "loyalty.hero_title",
         "title": "",
@@ -1989,6 +1944,66 @@
         "caseSummaryBrandRelevance": "",
         "caseSummaryInterpretation": "",
         "caseSummaryTags": ""
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Member",
+        "body": "Choice Privileges membership: earn points on qualifying stays booked direct; member promotions where enabled.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Entry elite (nights or Elite Qualifying Credits per current rules): bonus points and recognition benefits.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Higher bonus earn and stronger recognition versus Gold. Confirm current EQC/night thresholds.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Upper elite recognition and elevated service benefits on participating Choice brands. Delivery varies by hotel.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Titanium",
+        "body": "Highest published Choice Privileges tier with premium program benefits. Confirm current qualification path.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.choicehotels.com/choice-privileges",
+        "loyaltyProgramId": "choice_privileges",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "rechoeBAFvcgK0aiF",
@@ -3346,5 +3361,24 @@
   "sources": {
     "brandPage": "https://www.choicehotels.com/radisson"
   },
-  "batchTag": "batch-10"
+  "batchTag": "batch-10",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.259Z",
+    "programId": "choice_privileges",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Club Member",
+      "Premium Member",
+      "VIP Member"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Gold",
+      "Platinum",
+      "Diamond",
+      "Titanium"
+    ]
+  }
 }

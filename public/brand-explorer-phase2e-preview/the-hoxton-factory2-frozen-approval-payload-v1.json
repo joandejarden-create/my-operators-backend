@@ -5,7 +5,7 @@
   "slug": "the-hoxton",
   "generatedAt": "2026-11-20T09:19:05.642Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "6a8151f22e8673520b7eb0f6f8703548c7ff487b0a67976ce802bdb3b7e2215a",
+  "approvalContentHash": "e1f34e0d3cfcb26e844cd36f9ee50e503f258adc65163ba9f95b39011835819c",
   "overlayHash": "44915206dda742c201ecf92a1020d97281622e8d40e949f1a217e513134527fe",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,64 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Classic",
+        "body": "ALL Accor membership: earn Reward points on qualifying stays; member offers on Accor brands. Brand and hotel rules apply.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry status: enhanced earn and recognition benefits per current ALL Accor status rules.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid status: room upgrades where available, late checkout preference, and stronger recognition versus Silver.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Upper status: suite/upgrade pathways and lounge access where offered. Confirm current qualification nights/stays.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top ALL Accor status: highest published recognition and service pathways. Delivery varies by Accor brand and hotel.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://all.accor.com/",
+        "loyaltyProgramId": "all_accor",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2038,5 +2083,22 @@
     "gallery": 3,
     "scenario": 3,
     "brandWebsite": "https://thehoxton.com/"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.627Z",
+    "programId": "all_accor",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Classic",
+      "Silver",
+      "Gold",
+      "Platinum",
+      "Diamond"
+    ]
   }
 }

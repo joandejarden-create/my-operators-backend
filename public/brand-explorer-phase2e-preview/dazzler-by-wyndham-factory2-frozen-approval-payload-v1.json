@@ -5,7 +5,7 @@
   "slug": "dazzler-by-wyndham",
   "generatedAt": "2026-11-20T09:04:23.658Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "ce30b2ed3395db805b41c37212c82dc11d7f21e03e3a56f23fbd834ad90a9ad1",
+  "approvalContentHash": "d410f1a37b11fd83fb25b9437900be3cebae604a954c4b92b2d3c40788fc8514",
   "overlayHash": "6af1318ad60d5643aeee2fc65740d6e118ef1cf9dd600c3646667eb4f72dfa77",
   "brandExplorer": {
     "version": 1,
@@ -1106,66 +1106,6 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "recpeCFbsEHeVYENi",
-        "slotKey": "loyalty.elite",
-        "title": "Member",
-        "body": "Base enrollment tier for Wyndham Rewards members. Confirm current qualification criteria, benefits, and any updates to this tier directly with Wyndham — this label is directional and not a confirmed program specification.",
-        "sort": 74,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "rec8KxgAtEEmuHR4F",
-        "slotKey": "loyalty.elite",
-        "title": "Blue",
-        "body": "A mid-tier level within Wyndham Rewards' elite structure as publicly described. Confirm current qualification thresholds (stays/nights/points) and associated benefits directly with Wyndham before using in owner underwriting.",
-        "sort": 75,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "recenXY07AEYr0lLv",
-        "slotKey": "loyalty.elite",
-        "title": "Gold",
-        "body": "A higher elite level within Wyndham Rewards as publicly described, generally associated with enhanced recognition benefits. Confirm current qualification thresholds and benefit detail directly with Wyndham.",
-        "sort": 76,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "recemUPUrRDPbuMTI",
-        "slotKey": "loyalty.elite",
-        "title": "Platinum",
-        "body": "The upper elite level within Wyndham Rewards as publicly described, generally associated with the program's top recognition benefits. Confirm current qualification thresholds, benefit detail, and any additional tiers directly with Wyndham — do not assume this is the program's final or only top-tier structure without confirmation.",
-        "sort": 77,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
         "recordId": "cumulative-proposed-78",
         "slotKey": "operations.model",
         "title": "Operating Model",
@@ -1299,6 +1239,54 @@
         "caseSummaryBrandRelevance": "",
         "caseSummaryInterpretation": "",
         "caseSummaryTags": ""
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Blue",
+        "body": "Base Wyndham Rewards: earn points on qualifying stays; member rates on participating Wyndham brands.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Entry elite: bonus points and recognition benefits per current Wyndham Rewards rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Mid elite: stronger earn and recognition versus Gold. Property-level delivery varies by brand.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Top published Wyndham Rewards elite recognition. Confirm current qualification and benefit schedule before underwriting.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.wyndhamhotels.com/wyndham-rewards",
+        "loyaltyProgramId": "wyndham_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-87",
@@ -2551,5 +2539,24 @@
   "sources": {
     "brandPage": "https://www.wyndhamhotels.com/dazzler"
   },
-  "batchTag": "batch-10"
+  "batchTag": "batch-10",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.380Z",
+    "programId": "wyndham_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Member",
+      "Blue",
+      "Gold",
+      "Platinum"
+    ],
+    "afterTierNames": [
+      "Blue",
+      "Gold",
+      "Platinum",
+      "Diamond"
+    ]
+  }
 }

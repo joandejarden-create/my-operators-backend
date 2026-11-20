@@ -5,7 +5,7 @@
   "slug": "preferred-hotels-and-resorts",
   "generatedAt": "2026-11-20T09:04:30.028Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "486556b7dd1408687f3362ff1e9de71b984729b4a1d0f14b6d386bb10933046e",
+  "approvalContentHash": "9750ab381b302d416f6c3eeb6f920b81cae1044851c4c12473894b298e66deef",
   "overlayHash": "8e3e27006beeaf7056e0493296894e08f46d9dad23ace46dda7aaddab841ad97",
   "brandExplorer": {
     "version": 1,
@@ -671,26 +671,23 @@
         "caseSummaryTags": ""
       },
       {
+        "slotKey": "loyalty.elite",
+        "title": "Membership Network Recognition",
+        "body": "This brand participates in a membership / soft-brand network rather than a multi-tier franchise loyalty ladder. Recognition and member rates (if any) follow network rules—do not invent elite tiers.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": null,
+        "loyaltyProgramId": "non_tiered_network",
+        "loyaltyTierKind": "non_tiered",
+        "loyaltyTierOrder": 1
+      },
+      {
         "recordId": "recMJFG0QN77kQ0Ph",
         "slotKey": "footprint.region.mea",
         "title": "MEA",
         "body": "MEA relevance is market- and property-specific. Confirm authorized participation, sales support, and the fit between the asset's guest proposition and regional independent-luxury demand.",
         "sort": 45,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
-      },
-      {
-        "recordId": "cumulative-proposed-46",
-        "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 46,
         "imageUrl": null,
         "imageFilename": null,
         "summaryUrl": "",
@@ -2356,5 +2353,18 @@
   "sources": {
     "brandPage": "https://preferredhotels.com/"
   },
-  "batchTag": "batch-10"
+  "batchTag": "batch-10",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.230Z",
+    "programId": "non_tiered_network",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Membership Network Recognition"
+    ]
+  }
 }

@@ -5,7 +5,7 @@
   "slug": "st-regis",
   "generatedAt": "2026-11-20T08:21:10.022Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "2dbd637a3bb37c4a476d691d375991a4abbf6dca8dec1b35babded35c8cdd1e2",
+  "approvalContentHash": "e1390999f610353ca7c2209a169ff6eb73762cf022fd51df20e5ccdb6f5d5705",
   "overlayHash": "1396c0c24f42298a7113d9ef5b8062e4ef33807609a7393ddce51acce946a724",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,76 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Member",
+        "body": "Base Bonvoy earn on qualifying stays; Member Rates on direct bookings; mobile check-in/key where offered. Benefits vary by hotel, rate, and market.",
+        "sort": 3394,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.marriott.com/loyalty.mi",
+        "loyaltyProgramId": "marriott_bonvoy",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver Elite",
+        "body": "Entry elite: enhanced earn versus Member, priority late checkout where offered, and recognition benefits per current Bonvoy rules. Confirm qualification nights/spend annually.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.marriott.com/loyalty.mi",
+        "loyaltyProgramId": "marriott_bonvoy",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold Elite",
+        "body": "Stronger room/upgrade preference and enhanced earn. Welcome amenities pattern and improved recognition vs Silver—delivery depends on property capability.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.marriott.com/loyalty.mi",
+        "loyaltyProgramId": "marriott_bonvoy",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum Elite",
+        "body": "Upper elite: suite/room upgrade pathways and lounge access where the hotel offers a lounge. Material for suite inventory and arrival planning.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.marriott.com/loyalty.mi",
+        "loyaltyProgramId": "marriott_bonvoy",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Titanium Elite",
+        "body": "Near-top elite with elevated suite-night and upgrade economics. Model elite fulfillment cost against Bonvoy-driven demand.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.marriott.com/loyalty.mi",
+        "loyaltyProgramId": "marriott_bonvoy",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Ambassador Elite",
+        "body": "Top Bonvoy elite tier (qualification/invitation path per current Marriott Bonvoy terms). Highest service expectation—confirm published qualification before underwriting.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.marriott.com/loyalty.mi",
+        "loyaltyProgramId": "marriott_bonvoy",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 6
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2121,5 +2178,23 @@
     "contract": "BE_FACTORY_2_0_OPENINGS_HOTEL_IMAGES_V1",
     "remediatedAt": "2026-11-20T08:40:12.278Z",
     "mode": "create_examples"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.528Z",
+    "programId": "marriott_bonvoy",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Silver Elite",
+      "Gold Elite",
+      "Platinum Elite",
+      "Titanium Elite",
+      "Ambassador Elite"
+    ]
   }
 }

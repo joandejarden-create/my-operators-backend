@@ -5,7 +5,7 @@
   "slug": "rayhaan-hotels-resorts",
   "generatedAt": "2026-11-20T09:47:39.756Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "80b176f4c9bb0341362285c50a9319106841a83663c59e5ea63a5a63de06566c",
+  "approvalContentHash": "3c142668cdf6de28ed18e2aa299a0d79abb1dd3f1768904503b742a306e429a0",
   "overlayHash": "59767aff9515a975ce68bbf04956290a17f289367c713f33ec9ee00da08ea15f",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Blue",
+        "body": "Base Rotana Rewards membership on participating Rotana brands. Confirm current earn/redeem rules on rotana.com.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.rotana.com/rotanarewards",
+        "loyaltyProgramId": "rotana_rewards",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry elite recognition and bonus benefits per current Rotana Rewards rules. Delivery varies by hotel.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.rotana.com/rotanarewards",
+        "loyaltyProgramId": "rotana_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid elite: enhanced recognition versus Silver. Confirm qualification nights/stays annually.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.rotana.com/rotanarewards",
+        "loyaltyProgramId": "rotana_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Top published Rotana Rewards elite recognition. Confirm current benefit schedule before underwriting.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.rotana.com/rotanarewards",
+        "loyaltyProgramId": "rotana_rewards",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2083,5 +2116,21 @@
     "gallery": 6,
     "scenario": 3,
     "brandWebsite": "https://rotana.com/"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.290Z",
+    "programId": "rotana_rewards",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Blue",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ]
   }
 }

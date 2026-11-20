@@ -5,7 +5,7 @@
   "slug": "anantara-hotels-resorts",
   "generatedAt": "2026-11-20T09:40:47.525Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "3f2cf7a7c8e15e7a89a5b5c8d6e7e22c61d991774a17154f35e42503767318a7",
+  "approvalContentHash": "1330e5551320ab6991e8c52727d85abd6dba411e8a75cd9ecdc34db40b7a08ed",
   "overlayHash": "9b6f92a30b602c9824abfbb25d1f65d0a483e6188c0989489bd717c2c90d068b",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,64 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Discovery",
+        "body": "GHA DISCOVERY membership across participating Global Hotel Alliance brands.",
+        "sort": 3395,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ghadiscovery.com/",
+        "loyaltyProgramId": "gha_discovery",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Enhanced recognition and local experiences per GHA DISCOVERY status rules.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ghadiscovery.com/",
+        "loyaltyProgramId": "gha_discovery",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Stronger recognition and experience benefits versus Gold.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ghadiscovery.com/",
+        "loyaltyProgramId": "gha_discovery",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Titanium",
+        "body": "Upper GHA DISCOVERY status with elevated recognition across participating brands.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ghadiscovery.com/",
+        "loyaltyProgramId": "gha_discovery",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Black",
+        "body": "Highest published GHA DISCOVERY recognition. Confirm current qualification path.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.ghadiscovery.com/",
+        "loyaltyProgramId": "gha_discovery",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 5
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2011,5 +2056,22 @@
   "sources": {
     "brandPage": "https://www.anantara.com/"
   },
-  "batchTag": "batch-15"
+  "batchTag": "batch-15",
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.075Z",
+    "programId": "gha_discovery",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Discovery",
+      "Gold",
+      "Platinum",
+      "Titanium",
+      "Black"
+    ]
+  }
 }

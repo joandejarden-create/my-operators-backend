@@ -771,6 +771,38 @@
         "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-duplicate.json",
         "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-invalid-fit.json"
       ]
+    },
+    {
+      "lessonId": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+      "date": "2026-11-20",
+      "phase": "FACTORY-2-0",
+      "founderObservation": "Comparison Studio Proposed Update replaced several named loyalty elite tiers with one generic Elite Recognition card. Participating brands must show the complete official tier ladder — never collapse verified tiers into a single generic card.",
+      "affected": [
+        "loyalty.elite",
+        "Elite Tiers — Illustrative Benefits",
+        "Comparison Studio RIGHT",
+        "cumulative proposal assembler",
+        "Factory 2.0 depth candidate builder",
+        "canonical loyalty program registry",
+        "batch certification",
+        "portfolio content quality audit"
+      ],
+      "correctExpectedBehavior": "Elite Tiers display ALL applicable officially recognized membership/elite tiers in correct sequence. Card count equals the actual program (3/4/5/6…) — no artificial min/max. Distinct from Key Benefits exact-six (loyalty.proof). Never apply a candidate that collapses CURRENT named tiers into one generic card. Unverified participation blocks certification rather than inventing benefits. Shared program references remediate participating brands efficiently with brand-specific exceptions preserved.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-collapsed-four-to-one.json",
+      "associatedContract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+      "automatedRegressionTest": "test:be-factory-permanent-loyalty-tier-completeness-v1",
+      "browserValidationEvidence": "reports/brand-explorer/portfolio-content-quality-audit-v1/15-loyalty-tier-audit-dashboard.md",
+      "status": "TESTED",
+      "supersededRule": "Emitting a single generic Elite Recognition loyalty.elite card for every Factory 2.0 depth brand",
+      "linkedRequirementIds": ["BE-QL-LOYALTY-SIX-001"],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-loyalty-tier-completeness-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-collapsed-four-to-one.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-removes-valid-tier.json"
+      ]
     }
   ]
 }

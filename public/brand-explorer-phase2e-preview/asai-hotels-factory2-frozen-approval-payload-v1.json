@@ -5,7 +5,7 @@
   "slug": "asai-hotels",
   "generatedAt": "2026-11-20T09:47:36.582Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "29ad3c24238ba6db234385c566a32acd429273819b552a5a174d60d0d601ccb6",
+  "approvalContentHash": "871e585a087d333b00eed79e3beccaffeaae9f7a64c084a2a74dbf5eaa71251b",
   "overlayHash": "e820413596e076418d854ed3309e0c1ae699e9ed5d0a27f8a71e0726d60ff19a",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Member",
+        "body": "Base Dusit Gold membership on participating Dusit brands. Confirm whether the property also honors GHA DISCOVERY.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.dusit.com/dusitgold/",
+        "loyaltyProgramId": "dusit_gold",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Silver",
+        "body": "Entry Dusit Gold elite recognition per current program rules.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.dusit.com/dusitgold/",
+        "loyaltyProgramId": "dusit_gold",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid Dusit Gold elite recognition versus Silver.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.dusit.com/dusitgold/",
+        "loyaltyProgramId": "dusit_gold",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Platinum",
+        "body": "Top published Dusit Gold elite recognition. Confirm current qualification.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.dusit.com/dusitgold/",
+        "loyaltyProgramId": "dusit_gold",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2083,5 +2116,21 @@
     "gallery": 6,
     "scenario": 3,
     "brandWebsite": "https://dusit.com/"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:04.124Z",
+    "programId": "dusit_gold",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Member",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ]
   }
 }

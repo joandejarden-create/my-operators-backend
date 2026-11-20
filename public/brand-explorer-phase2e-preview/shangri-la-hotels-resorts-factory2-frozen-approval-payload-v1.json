@@ -5,7 +5,7 @@
   "slug": "shangri-la-hotels-resorts",
   "generatedAt": "2026-11-20T09:47:28.610Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "c8bd865086eedb9d16fbf5561afe16369098785c4729a86849a7e2f1cb0fc75c",
+  "approvalContentHash": "0a26c0f405306228eaaa223785229befdfb78d31d84d75ce872025ef6fabf9c4",
   "overlayHash": "bcbb98defd2e3d4bd79da7a6dc6e8dd05b4f77aaa5ad055b73f2cf7955da43d9",
   "brandExplorer": {
     "version": 1,
@@ -356,19 +356,52 @@
         "caseSummaryTags": ""
       },
       {
-        "recordId": "cumulative-proposed-24",
         "slotKey": "loyalty.elite",
-        "title": "Elite Recognition",
-        "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel.",
-        "sort": 24,
-        "imageUrl": null,
-        "imageFilename": null,
-        "summaryUrl": "",
-        "caseSummaryOverview": "",
-        "caseSummaryOwnerObjective": "",
-        "caseSummaryBrandRelevance": "",
-        "caseSummaryInterpretation": "",
-        "caseSummaryTags": ""
+        "title": "Jade",
+        "body": "Base Golden Circle membership on Shangri-La / participating sister brands. Confirm current earn rules.",
+        "sort": 3396,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.shangri-la.com/corporate/golden-circle/",
+        "loyaltyProgramId": "golden_circle",
+        "loyaltyTierKind": "membership",
+        "loyaltyTierOrder": 1
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Gold",
+        "body": "Mid Golden Circle status with enhanced recognition versus Jade. Delivery varies by hotel.",
+        "sort": 3397,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.shangri-la.com/corporate/golden-circle/",
+        "loyaltyProgramId": "golden_circle",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 2
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Diamond",
+        "body": "Upper Golden Circle elite recognition. Confirm current night/spend thresholds.",
+        "sort": 3398,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.shangri-la.com/corporate/golden-circle/",
+        "loyaltyProgramId": "golden_circle",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 3
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Immersion",
+        "body": "Invitation / top recognition pathway within Golden Circle (per current Shangri-La terms). Label separately from standard elite ladder when presenting.",
+        "sort": 3399,
+        "active": true,
+        "externalDisplayStatus": "Internal Preview",
+        "source": "https://www.shangri-la.com/corporate/golden-circle/",
+        "loyaltyProgramId": "golden_circle",
+        "loyaltyTierKind": "elite",
+        "loyaltyTierOrder": 4
       },
       {
         "recordId": "cumulative-proposed-25",
@@ -2068,5 +2101,21 @@
     "gallery": 6,
     "scenario": 3,
     "brandWebsite": "https://shangri-la.com/"
+  },
+  "loyaltyTierCompletenessRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+    "lesson": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+    "remediatedAt": "2026-11-20T15:22:05.375Z",
+    "programId": "golden_circle",
+    "researchSpendUsd": 0,
+    "beforeTierNames": [
+      "Elite Recognition"
+    ],
+    "afterTierNames": [
+      "Jade",
+      "Gold",
+      "Diamond",
+      "Immersion"
+    ]
   }
 }
