@@ -44,11 +44,39 @@ function token() {
   return (process.env.AIRTABLE_API_KEY || process.env.AIRTABLE_PAT || "").trim();
 }
 
-async function meta(pathname) {
+async function meta(pathname, opts = {}) {
   const res = await fetch(`https://api.airtable.com/v0/meta/bases/${CANONICAL_BASE_ID}${pathname}`, {
-    headers: { Authorization: `Bearer ${token()}` },
+    method: opts.method || "GET",
+    headers: {
+      Authorization: `Bearer ${token()}`,
+      ...(opts.body ? { "Content-Type": "application/json" } : {}),
+    },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
   return { ok: res.ok, status: res.status, json: await res.json().catch(() => ({})) };
+}
+
+async function createTable(name, description, fields) {
+  return meta("/tables", {
+    method: "POST",
+    body: { name, description, fields },
+  });
+}
+
+async function addField(tableId, fieldSpec) {
+  return meta(`/tables/${tableId}/fields`, {
+    method: "POST",
+    body: {
+      name: fieldSpec.name,
+      type: fieldSpec.type,
+      ...(fieldSpec.options ? { options: fieldSpec.options } : {}),
+      ...(fieldSpec.description ? { description: fieldSpec.description } : {}),
+    },
+  });
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 function fieldLinkTarget(field) {
@@ -360,18 +388,321 @@ async function main() {
     ),
   );
 
-  if (APPLY && !DRY) {
-    console.log(
+  if (!(APPLY && !DRY)) return;
+
+  // ── Controlled Meta apply (founder-authorized via HIF_SCHEMA_APPLY=1) ──
+  const ops = [];
+  const applyLogPath = path.join(
+    ROOT,
+    "reports/sec-edgar-contract-timing-v4/SCHEMA_APPLY_OPERATIONS.json",
+  );
+  const readbackPath = path.join(
+    ROOT,
+    "reports/sec-edgar-contract-timing-v4/SCHEMA_APPLY_READBACK.json",
+  );
+
+  async function recordOp(op) {
+    ops.push({ at: new Date().toISOString(), ...op });
+  }
+
+  try {
+    let contractsTableId = contracts?.id || null;
+    let milestonesTableId = milestones?.id || null;
+
+    // Step 1 — HI Hotel Contracts
+    if (!contractsTableId) {
+      const primary = contractCreate[0];
+      const rest = contractCreate.slice(1);
+      const created = await createTable(
+        "HI Hotel Contracts",
+        "Stable global hotel agreement identity (ctr_…); research-only until promotion",
+        [primary, ...rest],
+      );
+      await recordOp({
+        step: 1,
+        action: "CREATE_TABLE",
+        name: "HI Hotel Contracts",
+        ok: created.ok,
+        status: created.status,
+        tableId: created.json?.id || null,
+        error: created.ok ? null : created.json,
+      });
+      if (!created.ok) throw new Error(`CREATE_CONTRACTS_FAILED:${JSON.stringify(created.json)}`);
+      contractsTableId = created.json.id;
+      await sleep(400);
+    } else {
+      await recordOp({
+        step: 1,
+        action: "REUSE_TABLE",
+        name: "HI Hotel Contracts",
+        tableId: contractsTableId,
+      });
+    }
+
+    // Step 2 — Contract self-links
+    {
+      const refresh = await meta("/tables");
+      const liveContracts = (refresh.json.tables || []).find((t) => t.id === contractsTableId);
+      const existing = new Set((liveContracts?.fields || []).map((f) => f.name));
+      for (const fld of buildContractSelfLinkFields(contractsTableId)) {
+        if (existing.has(fld.name)) {
+          await recordOp({ step: 2, action: "SKIP_FIELD", table: "HI Hotel Contracts", field: fld.name });
+          continue;
+        }
+        const added = await addField(contractsTableId, fld);
+        await recordOp({
+          step: 2,
+          action: "ADD_FIELD",
+          table: "HI Hotel Contracts",
+          field: fld.name,
+          ok: added.ok,
+          status: added.status,
+          error: added.ok ? null : added.json,
+        });
+        if (!added.ok) throw new Error(`ADD_CONTRACT_SELF_LINK_FAILED:${fld.name}`);
+        await sleep(300);
+      }
+    }
+
+    // Step 3 — HI Contract Milestones (Contract link uses live contractsTableId)
+    if (!milestonesTableId) {
+      const msFields = buildMilestoneCreateFields({
+        contractsTableId,
+        inventoryId,
+        hpcId,
+        findingsId,
+      });
+      const primary = msFields[0];
+      const rest = msFields.slice(1);
+      const created = await createTable(
+        "HI Contract Milestones",
+        "Dated contractual events (ms_…); Publication State required CUSTOMER_BLOCKED",
+        [primary, ...rest],
+      );
+      await recordOp({
+        step: 3,
+        action: "CREATE_TABLE",
+        name: "HI Contract Milestones",
+        ok: created.ok,
+        status: created.status,
+        tableId: created.json?.id || null,
+        contractLinkTarget: contractsTableId,
+        error: created.ok ? null : created.json,
+      });
+      if (!created.ok) throw new Error(`CREATE_MILESTONES_FAILED:${JSON.stringify(created.json)}`);
+      milestonesTableId = created.json.id;
+      await sleep(400);
+    } else {
+      await recordOp({
+        step: 3,
+        action: "REUSE_TABLE",
+        name: "HI Contract Milestones",
+        tableId: milestonesTableId,
+      });
+    }
+
+    // Step 4 — Milestone self-link
+    {
+      const refresh = await meta("/tables");
+      const liveMs = (refresh.json.tables || []).find((t) => t.id === milestonesTableId);
+      const existing = new Set((liveMs?.fields || []).map((f) => f.name));
+      for (const fld of buildMilestoneSelfLinkFields(milestonesTableId)) {
+        if (existing.has(fld.name)) {
+          await recordOp({
+            step: 4,
+            action: "SKIP_FIELD",
+            table: "HI Contract Milestones",
+            field: fld.name,
+          });
+          continue;
+        }
+        const added = await addField(milestonesTableId, fld);
+        await recordOp({
+          step: 4,
+          action: "ADD_FIELD",
+          table: "HI Contract Milestones",
+          field: fld.name,
+          ok: added.ok,
+          status: added.status,
+          error: added.ok ? null : added.json,
+        });
+        if (!added.ok) throw new Error(`ADD_MILESTONE_SELF_LINK_FAILED:${fld.name}`);
+        await sleep(300);
+      }
+    }
+
+    // Step 5 — Inventory geographic fields
+    {
+      const refresh = await meta("/tables");
+      const liveInv = (refresh.json.tables || []).find((t) => t.id === inventoryId);
+      const existing = new Set((liveInv?.fields || []).map((f) => f.name));
+      for (const fld of buildAdditiveInventoryFields()) {
+        if (existing.has(fld.name)) {
+          await recordOp({
+            step: 5,
+            action: "SKIP_FIELD",
+            table: "HI Hotel Discovery Inventory",
+            field: fld.name,
+          });
+          continue;
+        }
+        const added = await addField(inventoryId, fld);
+        await recordOp({
+          step: 5,
+          action: "ADD_FIELD",
+          table: "HI Hotel Discovery Inventory",
+          field: fld.name,
+          ok: added.ok,
+          status: added.status,
+          error: added.ok ? null : added.json,
+        });
+        if (!added.ok) throw new Error(`ADD_INVENTORY_FIELD_FAILED:${fld.name}`);
+        await sleep(300);
+      }
+    }
+
+    // Step 6 — Findings links
+    {
+      const refresh = await meta("/tables");
+      const liveFind = (refresh.json.tables || []).find((t) => t.id === findingsId);
+      const existing = new Set((liveFind?.fields || []).map((f) => f.name));
+      for (const fld of buildFindingsLinkFields({
+        contractsTableId,
+        milestonesTableId,
+      })) {
+        if (existing.has(fld.name)) {
+          await recordOp({
+            step: 6,
+            action: "SKIP_FIELD",
+            table: "HI Discovery Findings",
+            field: fld.name,
+          });
+          continue;
+        }
+        const added = await addField(findingsId, fld);
+        await recordOp({
+          step: 6,
+          action: "ADD_FIELD",
+          table: "HI Discovery Findings",
+          field: fld.name,
+          ok: added.ok,
+          status: added.status,
+          linkedTableId: fld.options?.linkedTableId,
+          error: added.ok ? null : added.json,
+        });
+        if (!added.ok) throw new Error(`ADD_FINDINGS_LINK_FAILED:${fld.name}`);
+        await sleep(300);
+      }
+    }
+
+    // Independent schema read-back + link validation
+    const rb = await meta("/tables");
+    if (!rb.ok) throw new Error(`SCHEMA_READBACK_FAILED:${rb.status}`);
+    const byNameRb = Object.fromEntries((rb.json.tables || []).map((t) => [t.name, t]));
+    const byIdRb = Object.fromEntries((rb.json.tables || []).map((t) => [t.id, t]));
+    const cTbl = byNameRb["HI Hotel Contracts"];
+    const mTbl = byNameRb["HI Contract Milestones"];
+    const linkChecks = [];
+    for (const edge of expectedLinkGraph()) {
+      const tbl = byNameRb[edge.from];
+      const fld = (tbl?.fields || []).find((f) => f.name === edge.field);
+      const targetId = fld?.options?.linkedTableId || null;
+      const targetName = targetId ? byIdRb[targetId]?.name || targetId : null;
+      linkChecks.push({
+        edge: `${edge.from}.${edge.field} → ${edge.to}`,
+        present: Boolean(fld),
+        type: fld?.type || null,
+        linkedTableName: targetName,
+        ok: Boolean(fld) && fld.type === "multipleRecordLinks" && targetName === edge.to,
+      });
+    }
+    const contractFieldNames = (cTbl?.fields || []).map((f) => f.name);
+    const milestoneFieldNames = (mTbl?.fields || []).map((f) => f.name);
+    const requiredContract = blueprint.contractFieldNames;
+    const requiredMilestone = blueprint.milestoneFieldNames;
+    const missingContract = requiredContract.filter((n) => !contractFieldNames.includes(n));
+    const missingMilestone = requiredMilestone.filter((n) => !milestoneFieldNames.includes(n));
+    const linkFailures = linkChecks.filter((c) => !c.ok);
+    const pubOk =
+      contractFieldNames.includes("Publication State") &&
+      milestoneFieldNames.includes("Publication State");
+
+    const readback = {
+      at: new Date().toISOString(),
+      baseId: CANONICAL_BASE_ID,
+      contractsTableId: cTbl?.id || null,
+      milestonesTableId: mTbl?.id || null,
+      contractFieldCount: contractFieldNames.length,
+      milestoneFieldCount: milestoneFieldNames.length,
+      // Airtable may add inverse link fields; require approved names present, not exact count
+      requiredContractFieldsPresent: missingContract.length === 0,
+      requiredMilestoneFieldsPresent: missingMilestone.length === 0,
+      missingContract,
+      missingMilestone,
+      linkChecks,
+      linkFailures,
+      publicationStateFieldsPresent: pubOk,
+      publicationStateDefaultEnforcement: PUBLICATION_STATE_DEFAULT,
+      ok:
+        Boolean(cTbl && mTbl) &&
+        missingContract.length === 0 &&
+        missingMilestone.length === 0 &&
+        linkFailures.length === 0 &&
+        pubOk,
+    };
+
+    fs.writeFileSync(applyLogPath, JSON.stringify({ ops, contractsTableId, milestonesTableId }, null, 2));
+    fs.writeFileSync(readbackPath, JSON.stringify(readback, null, 2));
+
+    // Persist table IDs for research pilot
+    const idsPath = path.join(ROOT, "reports/sec-edgar-contract-timing-v4/SCHEMA_TABLE_IDS.json");
+    fs.writeFileSync(
+      idsPath,
       JSON.stringify(
         {
-          ok: false,
-          error: "APPLY_NOT_EXECUTED_STOP_FOR_FOUNDER_CORRECTED_PACKET_REVIEW",
+          baseId: CANONICAL_BASE_ID,
+          contractsTableId: cTbl?.id,
+          milestonesTableId: mTbl?.id,
+          inventoryTableId: inventoryId,
+          findingsTableId: findingsId,
+          hpcTableId: hpcId,
+          orgsTableId: orgsId,
+          appliedAt: new Date().toISOString(),
         },
         null,
         2,
       ),
     );
-    process.exitCode = 2;
+
+    console.log(
+      JSON.stringify(
+        {
+          ok: readback.ok,
+          applyOps: ops.length,
+          contractsTableId: cTbl?.id,
+          milestonesTableId: mTbl?.id,
+          linkFailures: linkFailures.length,
+          missingContract,
+          missingMilestone,
+          applyLogPath,
+          readbackPath,
+        },
+        null,
+        2,
+      ),
+    );
+
+    if (!readback.ok) {
+      process.exitCode = 3;
+      throw new Error("SCHEMA_READBACK_VALIDATION_FAILED");
+    }
+  } catch (err) {
+    fs.writeFileSync(
+      applyLogPath,
+      JSON.stringify({ ops, error: String(err.message || err) }, null, 2),
+    );
+    console.error(JSON.stringify({ ok: false, error: String(err.message || err), ops }, null, 2));
+    process.exitCode = process.exitCode || 1;
   }
 }
 

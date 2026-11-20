@@ -1,0 +1,99 @@
+{
+  "ops": [
+    {
+      "at": "2026-11-20T23:13:36.871Z",
+      "step": 1,
+      "action": "CREATE_TABLE",
+      "name": "HI Hotel Contracts",
+      "ok": true,
+      "status": 200,
+      "tableId": "tblMjUCBtXF2o3r9u",
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:37.704Z",
+      "step": 2,
+      "action": "ADD_FIELD",
+      "table": "HI Hotel Contracts",
+      "field": "Supersedes Contract",
+      "ok": true,
+      "status": 200,
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:38.323Z",
+      "step": 2,
+      "action": "ADD_FIELD",
+      "table": "HI Hotel Contracts",
+      "field": "Superseded By Contract",
+      "ok": true,
+      "status": 200,
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:39.094Z",
+      "step": 3,
+      "action": "CREATE_TABLE",
+      "name": "HI Contract Milestones",
+      "ok": true,
+      "status": 200,
+      "tableId": "tbljzAYjYs3dyHWZk",
+      "contractLinkTarget": "tblMjUCBtXF2o3r9u",
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:39.899Z",
+      "step": 4,
+      "action": "ADD_FIELD",
+      "table": "HI Contract Milestones",
+      "field": "Superseded By Milestone",
+      "ok": true,
+      "status": 200,
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:40.634Z",
+      "step": 5,
+      "action": "ADD_FIELD",
+      "table": "HI Hotel Discovery Inventory",
+      "field": "Geographic Processing Class",
+      "ok": true,
+      "status": 200,
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:41.173Z",
+      "step": 5,
+      "action": "ADD_FIELD",
+      "table": "HI Hotel Discovery Inventory",
+      "field": "Continent / Macro Region",
+      "ok": true,
+      "status": 200,
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:41.871Z",
+      "step": 6,
+      "action": "ADD_FIELD",
+      "table": "HI Discovery Findings",
+      "field": "Linked Contract",
+      "ok": true,
+      "status": 200,
+      "linkedTableId": "tblMjUCBtXF2o3r9u",
+      "error": null
+    },
+    {
+      "at": "2026-11-20T23:13:42.428Z",
+      "step": 6,
+      "action": "ADD_FIELD",
+      "table": "HI Discovery Findings",
+      "field": "Linked Milestone",
+      "ok": true,
+      "status": 200,
+      "linkedTableId": "tbljzAYjYs3dyHWZk",
+      "error": null
+    }
+  ],
+  "contractsTableId": "tblMjUCBtXF2o3r9u",
+  "milestonesTableId": "tbljzAYjYs3dyHWZk"
+}
