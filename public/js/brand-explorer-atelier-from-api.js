@@ -2265,14 +2265,31 @@
         var title = srowOv && hasVal(srowOv.title) ? String(srowOv.title).trim() : '';
         if (!hasVal(title)) title = 'Scenario ' + (idx + 1);
         title = proposedHeading(brand, title);
-        var imgUrl =
-          srowOv && hasVal(srowOv.imageUrl) ? String(srowOv.imageUrl).trim() : '';
+        var imgUrl = '';
+        if (srowOv) {
+          if (hasVal(srowOv.imageDeliveryUrl)) imgUrl = String(srowOv.imageDeliveryUrl).trim();
+          else if (hasVal(srowOv.imageUrl)) imgUrl = String(srowOv.imageUrl).trim();
+          // Prefer allowlisted delivery when Airtable CDN URLs are present (expired signed URLs).
+          if (
+            hasVal(imgUrl) &&
+            /airtableusercontent\.com/i.test(imgUrl) &&
+            hasVal(srowOv.recordId) &&
+            /^rec[a-zA-Z0-9]+$/.test(String(srowOv.recordId))
+          ) {
+            imgUrl =
+              '/api/brand-library/presentation-image/' + encodeURIComponent(String(srowOv.recordId));
+          }
+        }
         var visual = hasVal(imgUrl)
           ? '<div class="scenario-card__visual"><img src="' +
             escapeHtml(imgUrl) +
             '" alt=""' +
             exportPdfImgAttrs() +
-            '/></div>'
+            ' data-be-record-id="' +
+            escapeHtml(srowOv && srowOv.recordId ? String(srowOv.recordId) : '') +
+            '" data-be-slot="' +
+            escapeHtml(srowOv && srowOv.slotKey ? String(srowOv.slotKey) : '') +
+            '"/></div>'
           : '<div class="scenario-card__visual scenario-card__visual--empty" aria-hidden="true">Image</div>';
         return (
           '<div class="scenario-card scenario-card--visual">' +

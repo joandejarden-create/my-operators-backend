@@ -44,6 +44,70 @@
     );
   }
 
+  function isEphemeralAirtableCdnUrl(url) {
+    try {
+      return /(^|\.)airtableusercontent\.com$/i.test(new URL(String(url || '')).hostname);
+    } catch (e) {
+      return /airtableusercontent\.com/i.test(String(url || ''));
+    }
+  }
+
+  function currentImageDeliveryUrl(curBlock) {
+    if (!curBlock) return '';
+    var delivery = nz(curBlock.imageDeliveryUrl);
+    if (delivery) return delivery;
+    var recId = nz(curBlock.recordId);
+    if (recId && /^rec[a-zA-Z0-9]+$/.test(recId) && (nz(curBlock.imageUrl) || nz(curBlock.imageAttachmentId))) {
+      // Prefer allowlisted fresh-delivery endpoint over caching signed CDN URLs.
+      return '/api/brand-library/presentation-image/' + encodeURIComponent(recId);
+    }
+    var img = nz(curBlock.imageUrl);
+    if (img && !isEphemeralAirtableCdnUrl(img)) return img;
+    if (img && isEphemeralAirtableCdnUrl(img) && recId && /^rec[a-zA-Z0-9]+$/.test(recId)) {
+      return '/api/brand-library/presentation-image/' + encodeURIComponent(recId);
+    }
+    return img;
+  }
+
+  function isPresentationDeliveryUrl(url) {
+    return /\/api\/brand-(?:library|explorer)\/presentation-image\//i.test(String(url || ''));
+  }
+
+  /**
+   * Never let frozen/proposed ephemeral Airtable CDN URLs win over fresh CURRENT attachments.
+   * Display-only rehydration — does not rewrite approval text hashes.
+   */
+  function rehydrateEphemeralImageUrls(proposedBlocks, currentBlocks) {
+    var bySlot = {};
+    (currentBlocks || []).forEach(function (b) {
+      var sk = nz(b && b.slotKey);
+      if (!sk) return;
+      if (!bySlot[sk]) bySlot[sk] = b;
+    });
+    return (proposedBlocks || []).map(function (b) {
+      if (!b) return b;
+      var sk = nz(b.slotKey);
+      var cur = bySlot[sk];
+      var proposedUrl = nz(b.imageUrl || b.image_url);
+      var delivery = currentImageDeliveryUrl(cur);
+      if (!delivery) return b;
+      if (isPresentationDeliveryUrl(proposedUrl)) return b;
+      // Keep durable non-Airtable absolute sources (e.g. Marriott DAM).
+      if (proposedUrl && !isEphemeralAirtableCdnUrl(proposedUrl) && /^https?:\/\//i.test(proposedUrl)) {
+        return b;
+      }
+      // Missing or ephemeral CDN → prefer CURRENT attachment delivery.
+      if (proposedUrl && !isEphemeralAirtableCdnUrl(proposedUrl)) return b;
+      var out = Object.assign({}, b);
+      out.imageUrl = delivery;
+      out.imageDeliveryUrl = delivery;
+      if (cur && cur.recordId) out.recordId = cur.recordId;
+      if (cur && cur.imageAttachmentId) out.imageAttachmentId = cur.imageAttachmentId;
+      out.imageRehydratedFromCurrent = true;
+      return out;
+    });
+  }
+
   function isBrandLogoGalleryAsset(url) {
     var u = nz(url);
     if (!u) return false;
@@ -667,8 +731,15 @@
         (candidateOverlay.brandExplorer && candidateOverlay.brandExplorer.blocks) ||
         candidateOverlay.blocks ||
         [];
+      var currentBlocksFrozen =
+        (currentBrand.brandExplorer && currentBrand.brandExplorer.blocks) ||
+        currentBrand.blocks ||
+        [];
+      // Display-only: replace expired airtableusercontent imageUrls with CURRENT delivery URLs.
+      // Approval contentHash remains the frozen payload hash (text identity unchanged).
+      var displayFrozenBlocks = rehydrateEphemeralImageUrls(frozenBlocks.slice(), currentBlocksFrozen);
       var brandFrozen = Object.assign({}, currentBrand, {
-        brandExplorer: { version: 1, blocks: frozenBlocks.slice() },
+        brandExplorer: { version: 1, blocks: displayFrozenBlocks },
         beCumulativeProposal: true,
         beFrozenApprovalPayload: true,
         beCandidateOverlayMeta: Object.assign({}, currentBrand.beCandidateOverlayMeta || {}, {
@@ -676,7 +747,8 @@
           lockId: candidateOverlay.lockId || null,
           frozenAt: candidateOverlay.frozenAt || null,
           contract: frozenContract,
-          source: 'frozen-approval-payload'
+          source: 'frozen-approval-payload',
+          imageUrlsRehydratedFromCurrent: true
         })
       });
       return {
@@ -684,10 +756,11 @@
         assembly: {
           summary: {
             frozenApprovalPayload: true,
-            assembledBlockCount: frozenBlocks.length,
-            approvalContentHash: candidateOverlay.approvalContentHash || null
+            assembledBlockCount: displayFrozenBlocks.length,
+            approvalContentHash: candidateOverlay.approvalContentHash || null,
+            imageUrlsRehydratedFromCurrent: true
           },
-          blocks: frozenBlocks.slice(),
+          blocks: displayFrozenBlocks,
           provenanceBySlot: {},
           incompleteDrafts: []
         }
@@ -705,6 +778,7 @@
       (candidateOverlay && candidateOverlay.blocks) ||
       [];
     var assembled = assembleCumulativeProposal(currentBlocks, candidateBlocks, opts);
+    assembled.blocks = rehydrateEphemeralImageUrls(assembled.blocks, currentBlocks);
     var titleCaseApi = global.BeEditorialTitleCase;
 
     // RIGHT-only: reject publication thumbnails as property photos; apply verified replacements.
@@ -858,6 +932,10 @@
     slotGroupQuality: slotGroupQuality,
     decideSlotProvenance: decideSlotProvenance,
     assembleCumulativeProposal: assembleCumulativeProposal,
-    buildCumulativeProposedBrand: buildCumulativeProposedBrand
+    buildCumulativeProposedBrand: buildCumulativeProposedBrand,
+    isEphemeralAirtableCdnUrl: isEphemeralAirtableCdnUrl,
+    isPresentationDeliveryUrl: isPresentationDeliveryUrl,
+    currentImageDeliveryUrl: currentImageDeliveryUrl,
+    rehydrateEphemeralImageUrls: rehydrateEphemeralImageUrls
   };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -381,10 +381,56 @@
       "curioAscendApproval": "NOT_APPROVED",
       "gate2ContentReconstructionStillBlockedUntilGate1": true
     },
+    "factoryImageIntegrity": {
+      "componentId": "factory_image_integrity",
+      "permanentStandard": "BE_FACTORY_IMAGE_INTEGRITY_V1",
+      "standardModule": "lib/brand-explorer/factory-2/be-factory-image-integrity-v1.js",
+      "recoveryModule": "lib/brand-explorer/factory-2/be-factory-image-integrity-recovery-v1.js",
+      "regressionTest": "test:be-factory-image-integrity-v1",
+      "requiredSlots": [
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6",
+        "overview.scenario.1",
+        "overview.scenario.2",
+        "overview.scenario.3"
+      ],
+      "statuses": [
+        "MISSING",
+        "URL_PRESENT_UNVERIFIED",
+        "FETCH_FAILED",
+        "DECODE_FAILED",
+        "BROWSER_RENDER_FAILED",
+        "RENDER_VALID",
+        "VISUAL_REVIEW_REQUIRED",
+        "CERTIFIED"
+      ],
+      "rule": "A populated image URL is not a successful image. Only CERTIFIED raises Certified Image Completion.",
+      "certifiedImageCompletion": "certifiedRequiredSlots / totalRequiredSlots",
+      "approvalThreshold": 1,
+      "pipeline": [
+        "Discover",
+        "Select",
+        "Fetch",
+        "Decode",
+        "Browser Render",
+        "Visual Validate",
+        "Certify",
+        "Score",
+        "Approval"
+      ],
+      "urlPopulationMustNotGateApproval": true,
+      "browserValidateOnAuthenticated8080": true,
+      "refuse8082AsCertification": true
+    },
     "propertyFacingImages": {
       "componentId": "property_facing_images",
       "permanentStandard": "BE_PROPERTY_IMAGE_INTEGRITY_V1",
       "standardModule": "lib/brand-explorer/be-property-image-integrity-v1.js",
+      "alsoSubjectTo": "BE_FACTORY_IMAGE_INTEGRITY_V1",
       "appliesTo": [
         "footprint.openings",
         "footprint.momentum",
@@ -473,7 +519,10 @@
       "count": 6,
       "permanentStandard": "BE_PERMANENT_SIX_IMAGE_GALLERY_STANDARD_V1",
       "standardModule": "lib/brand-explorer/be-permanent-six-image-gallery-standard-v1.js",
-      "alsoSubjectTo": "BE_PROPERTY_IMAGE_INTEGRITY_V1",
+      "alsoSubjectTo": [
+        "BE_PROPERTY_IMAGE_INTEGRITY_V1",
+        "BE_FACTORY_IMAGE_INTEGRITY_V1"
+      ],
       "sourcingHierarchy": [
         "verified_photos_of_operating_branded_hotels",
         "official_photos_of_recently_opened_or_announced_branded_hotels",
