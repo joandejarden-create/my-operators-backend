@@ -2810,6 +2810,31 @@ export async function postGdiContactReveal(req, res) {
   const body = req.body || {};
   const channel = String(body.channel || "both").toLowerCase();
 
+  // Hotel-scoped auth BEFORE opportunity load / provider / credits.
+  // Client hotelId, contactName, authorizeLiveProvider, useMock are never grants.
+  const {
+    assertGdiContactRevealAuthorization,
+    resolveContactRevealMockAllowance,
+  } = await import(
+    "../lib/group-demand-intelligence/gdi-contact-reveal-authorization-v1.js"
+  );
+  const access = assertGdiContactRevealAuthorization(req, { hotelId });
+  if (!access.ok) {
+    return res.status(access.status || 403).json({
+      ok: false,
+      ephemeral: true,
+      persisted: false,
+      surfePiiPersisted: false,
+      error: access.code,
+      message: access.message,
+      contactDetails: null,
+      hotelId,
+      opportunityId,
+      signInHref: access.signInHref || undefined,
+      reason: access.reason || undefined,
+    });
+  }
+
   let doc;
   try {
     doc = await loadOppDoc(hotelId);
@@ -2902,26 +2927,14 @@ export async function postGdiContactReveal(req, res) {
     secondary ||
     null;
 
-  // Mock: env GDI_CONTACT_REVEAL_MOCK=1, or explicit body.useMock on local
-  // worktree preview servers (never enables live Surfe / never spends credits).
-  // Production customer hosts must never honor fixture contact values — even if
-  // GDI_CONTACT_REVEAL_MOCK is accidentally set on the deploy host.
-  const isProductionCustomerHost =
-    process.env.NODE_ENV === "production" &&
-    process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1";
-  const allowLocalMock =
-    !isProductionCustomerHost &&
-    (process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
-      process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1");
-  const useMock =
-    allowLocalMock &&
-    (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1");
-  // Live Surfe requires an explicit button authorize flag AND a signed-in user.
-  // Mock mode never calls Surfe and never persists PII.
+  // Isolated non-production mock only. Production customer hosts never honor
+  // fixture values, URL tokens, or client useMock alone. No anonymous mock.
+  const mockGate = resolveContactRevealMockAllowance(req, body, process.env);
+  const useMock = mockGate.allowMock === true;
+  // Live Surfe: explicit button flag + hotel-authorized Dealality user + not mock.
+  // Client authorizeLiveProvider is never sufficient without access.ok above.
   const authorizeLive =
-    body.authorizeLiveProvider === true &&
-    Boolean(req.dealalityUser || req.memberstackMemberId) &&
-    !useMock;
+    body.authorizeLiveProvider === true && !useMock && access.ok === true;
 
   if (!useMock && !authorizeLive) {
     return res.status(403).json({
@@ -2931,11 +2944,30 @@ export async function postGdiContactReveal(req, res) {
       surfePiiPersisted: false,
       error: "LIVE_PROVIDER_NOT_AUTHORIZED",
       message:
-        "Contact lookup requires a signed-in Dealality user. Live Surfe is never called for anonymous or share viewers. For local smoke use ?gdiContactRevealMock=1 on a worktree preview server.",
+        "Contact lookup is not authorized for this session. Live Surfe requires a signed-in Dealality user with hotel access.",
       contactDetails: null,
       hotelId,
       opportunityId,
     });
+  }
+
+  // Live path: refuse before credit spend when Surfe is not configured.
+  if (authorizeLive && !useMock) {
+    const { getSurfeApiKeyFromEnv } = await import("../lib/surfe/client.js");
+    if (!getSurfeApiKeyFromEnv()) {
+      return res.status(503).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        error: "PROVIDER_UNAVAILABLE",
+        message:
+          "Contact lookup provider is unavailable. Email and phone enrichment is not configured for this environment.",
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
   }
 
   const {
@@ -2963,13 +2995,21 @@ export async function postGdiContactReveal(req, res) {
   } else if (authorizeLive) {
     const pre = await preflightSurfeCredits(channel);
     if (!pre.ok) {
-      return res.status(pre.error === "INSUFFICIENT_CREDITS" ? 402 : 503).json({
+      const preError =
+        pre.error === "SURFE_CREDITS_UNAVAILABLE"
+          ? "PROVIDER_UNAVAILABLE"
+          : pre.error;
+      const preMessage =
+        preError === "PROVIDER_UNAVAILABLE"
+          ? "Contact lookup provider is unavailable. Email and phone enrichment could not verify credit balance."
+          : pre.message;
+      return res.status(preError === "INSUFFICIENT_CREDITS" ? 402 : 503).json({
         ok: false,
         ephemeral: true,
         persisted: false,
         surfePiiPersisted: false,
-        error: pre.error,
-        message: pre.message,
+        error: preError,
+        message: preMessage,
         contactDetails: null,
         credits: pre.credits,
         hotelId,
@@ -3060,15 +3100,22 @@ export async function postGdiContactReveal(req, res) {
   const status =
     result.error === "NO_NAMED_CONTACT_SELECTED"
       ? 400
-      : result.error === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
-          result.error === "PROVIDER_ADAPTER_NOT_WIRED" ||
-          result.error === "CONTACT_ENRICHMENT_DISABLED"
-        ? 403
-        : result.error === "INSUFFICIENT_CREDITS"
-          ? 402
-          : result.ok
-            ? 200
-            : 502;
+      : result.error === "SIGN_IN_REQUIRED"
+        ? 401
+        : result.error === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
+            result.error === "PROVIDER_ADAPTER_NOT_WIRED" ||
+            result.error === "CONTACT_ENRICHMENT_DISABLED" ||
+            result.error === "INSUFFICIENT_PERMISSIONS"
+          ? 403
+          : result.error === "INSUFFICIENT_CREDITS"
+            ? 402
+            : result.error === "PROVIDER_UNAVAILABLE" ||
+                result.error === "MISSING_SURFE_API_KEY" ||
+                result.error === "SURFE_CREDITS_UNAVAILABLE"
+              ? 503
+              : result.ok
+                ? 200
+                : 502;
 
   // Never echo Surfe PII into logs — only return in this response body for the active session.
   return res.status(status).json({
