@@ -815,11 +815,16 @@
       hotel.year_built ||
       hotel.YearBuilt ||
       (hotel.commercialProfile && hotel.commercialProfile.yearBuilt) ||
+      hotel.openingDate ||
+      hotel.openDate ||
+      hotel.opening_date ||
       null;
     if (v == null || v === "" || v === "—") return null;
     var n = Number(v);
     if (Number.isFinite(n) && n >= 1800 && n <= 2100) return String(Math.round(n));
     var s = String(v).trim();
+    var yearMatch = s.match(/(18|19|20)\d{2}/);
+    if (yearMatch) return yearMatch[0];
     return s || null;
   }
 
@@ -1571,7 +1576,7 @@
         expanded: false,
         locationType: locationType,
         corridor: corridor,
-        note: "Hotel Census pool unavailable in this session — search radius kept at the location-type default. Market totals are not fabricated.",
+        note: "Nearby HPC hotel pool unavailable in this session — search radius kept at the location-type default. Market totals are not fabricated.",
         existing: [],
         pipeline: [],
       };
@@ -3824,45 +3829,56 @@
       return Promise.resolve(window.__hexAreaHotelsCensusCache);
     }
 
-    // Prefer Scout Hotel Census sample (coords + status) before brand-presence search.
-    return resolveCensusHotelPool(hotel).then(function (pool) {
-      var scoutRows = dedupeHotelsByIdentity(pool.hotels || []).filter(function (h) {
-        return hotelCoords(h);
-      });
-      if (scoutRows.length) {
-        window.__hexAreaHotelsCensusCache = scoutRows;
-        window.__hexAreaHotelsCensusCacheKey = cacheKey;
-        if (!(window.allHotels && window.allHotels.length)) {
-          window.allHotels = scoutRows;
-        }
-        return scoutRows;
-      }
-
-      var queries = areaHotelsCensusQueries(hotel);
-      if (!queries.length) return [];
-
-      function tryNext(i) {
-        if (i >= queries.length) return Promise.resolve([]);
-        return fetchAreaHotelsCensusByQuery(queries[i]).then(function (rows) {
-          var deduped = dedupeHotelsByIdentity(rows || []);
-          if (deduped.length) {
-            window.__hexAreaHotelsCensusCache = deduped;
-            window.__hexAreaHotelsCensusCacheKey = cacheKey;
-            if (!(window.allHotels && window.allHotels.length)) {
-              window.allHotels = deduped;
-            }
-            return deduped;
+    // HE 5.0: Area Hotels is HPC-native via Brand Presence. Do not query legacy Hotel Census.
+    // Prefer HPC submarket snapshot hotels (coords required), then Brand Presence search.
+    return fetchHpcSubmarketSnapshot(hotel)
+      .then(function (hpcResult) {
+        var hpcBody = hpcResult && hpcResult.ok ? hpcResult.body : null;
+        var hpcHotels = ((hpcBody && hpcBody.hotels) || [])
+          .map(normalizeCensusHotelRow)
+          .filter(function (h) {
+            return hotelCoords(h);
+          });
+        var withSelf = ensureSelectedHotelInPool(hotel, hpcHotels);
+        if (withSelf.length > 1) {
+          window.__hexAreaHotelsCensusCache = withSelf;
+          window.__hexAreaHotelsCensusCacheKey = cacheKey;
+          if (!(window.allHotels && window.allHotels.length)) {
+            window.allHotels = withSelf;
           }
-          return tryNext(i + 1);
-        });
-      }
-      return tryNext(0);
-    }).catch(function (err) {
-      if (typeof console !== "undefined" && console.warn) {
-        console.warn("[HotelDetailPanel] area hotels census fallback failed:", err);
-      }
-      return [];
-    });
+          return withSelf;
+        }
+
+        var queries = areaHotelsCensusQueries(hotel);
+        if (!queries.length) return withSelf.length ? withSelf : [];
+
+        function tryNext(i) {
+          if (i >= queries.length) return Promise.resolve(withSelf.length ? withSelf : []);
+          return fetchAreaHotelsCensusByQuery(queries[i]).then(function (rows) {
+            var deduped = dedupeHotelsByIdentity(
+              ensureSelectedHotelInPool(hotel, rows || [])
+            ).filter(function (h) {
+              return hotelCoords(h);
+            });
+            if (deduped.length > 1 || (deduped.length === 1 && !withSelf.length)) {
+              window.__hexAreaHotelsCensusCache = deduped;
+              window.__hexAreaHotelsCensusCacheKey = cacheKey;
+              if (!(window.allHotels && window.allHotels.length)) {
+                window.allHotels = deduped;
+              }
+              return deduped;
+            }
+            return tryNext(i + 1);
+          });
+        }
+        return tryNext(0);
+      })
+      .catch(function (err) {
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn("[HotelDetailPanel] area hotels HPC pool failed:", err);
+        }
+        return [];
+      });
   }
 
   function areaHotelsCensusCacheKey(hotel) {
