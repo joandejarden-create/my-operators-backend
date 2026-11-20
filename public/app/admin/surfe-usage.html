@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
   <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
-  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1-2" />
+  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1-3" />
   <script>
     (function () {
       if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
@@ -37,108 +37,113 @@
         <div>
           <h1>Surfe Usage</h1>
           <p class="adr-subtitle">
-            Monitor on-demand contact enrichment by opportunity hotel, request origin, opportunity, and cost — without storing returned contact details.
+            See which hotel and market each lookup relates to, which GDI opportunity was pursued, and which organization initiated the request — without storing returned contact details.
           </p>
         </div>
       </div>
       <p class="asu-history-note" id="asuHistoryNote">
-        Metrics reflect events recorded after Surfe Usage Tracking V1. Fixture/test rows are labeled and are not customer adoption. Pre-tracking history is not fabricated.
+        Fixture/test rows stay classified and are hidden by default. Production activity is preferred. Pre-tracking history is not fabricated.
       </p>
     </header>
 
-    <section class="adr-filters asu-filters" aria-label="Filters">
-      <label>
-        From
-        <input type="date" id="asuFrom" />
-      </label>
-      <label>
-        To
-        <input type="date" id="asuTo" />
-      </label>
-      <label>
-        Opportunity hotel
-        <select id="asuHotel">
-          <option value="">All hotels</option>
-        </select>
-      </label>
-      <label>
-        Requesting organization
-        <input type="text" id="asuRequestingOrg" placeholder="Org / portfolio" autocomplete="off" />
-      </label>
-      <label>
-        Opportunity
-        <input type="text" id="asuOpportunity" placeholder="Opportunity ID" autocomplete="off" />
-      </label>
-      <label>
-        Portfolio
-        <input type="text" id="asuPortfolio" placeholder="Portfolio ID" autocomplete="off" />
-      </label>
-      <label>
-        Lookup outcome
-        <select id="asuOutcome">
-          <option value="">All outcomes</option>
-          <option value="success">Success</option>
-          <option value="partial">Partial</option>
-          <option value="no_match">No match</option>
-          <option value="error">Error</option>
-        </select>
-      </label>
-      <label>
-        Environment
-        <select id="asuEnvironment">
-          <option value="">All environments</option>
-          <option value="production">Production</option>
-          <option value="staging">Staging</option>
-          <option value="development">Development</option>
-          <option value="test">Test / fixture</option>
-        </select>
-      </label>
-      <label class="asu-check">
-        <input type="checkbox" id="asuHideFixtures" />
-        Hide fixture/test
-      </label>
-      <button type="button" class="adr-btn" id="asuApplyFilters">Apply</button>
-      <button type="button" class="adr-btn adr-btn--secondary" id="asuClearFilters">Clear filters</button>
-      <button type="button" class="adr-btn adr-btn--secondary" id="asuRefresh">Refresh</button>
-      <span class="asu-status" id="asuStatus" aria-live="polite"></span>
-    </section>
+    <!-- TOP: filters + KPIs + trends -->
+    <section class="asu-top">
+      <section class="adr-filters asu-filters" aria-label="Filters">
+        <label>
+          From
+          <input type="date" id="asuFrom" />
+        </label>
+        <label>
+          To
+          <input type="date" id="asuTo" />
+        </label>
+        <label>
+          Opportunity hotel
+          <select id="asuHotel">
+            <option value="">All hotels</option>
+          </select>
+        </label>
+        <label>
+          Requesting organization
+          <input type="text" id="asuRequestingOrg" placeholder="Org / portfolio" autocomplete="off" />
+        </label>
+        <label>
+          Opportunity
+          <input type="text" id="asuOpportunity" placeholder="Opportunity ID" autocomplete="off" />
+        </label>
+        <label>
+          Portfolio
+          <input type="text" id="asuPortfolio" placeholder="Portfolio ID" autocomplete="off" />
+        </label>
+        <label>
+          Lookup outcome
+          <select id="asuOutcome">
+            <option value="">All outcomes</option>
+            <option value="success">Success</option>
+            <option value="partial">Partial</option>
+            <option value="no_match">No match</option>
+            <option value="error">Error</option>
+          </select>
+        </label>
+        <label>
+          Environment
+          <select id="asuEnvironment">
+            <option value="">All environments</option>
+            <option value="production">Production</option>
+            <option value="staging">Staging</option>
+            <option value="development">Development</option>
+            <option value="test">Test / fixture</option>
+          </select>
+        </label>
+        <label class="asu-check">
+          <input type="checkbox" id="asuHideFixtures" checked />
+          Hide fixture/test
+        </label>
+        <button type="button" class="adr-btn" id="asuApplyFilters">Apply</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="asuClearFilters">Clear filters</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="asuRefresh">Refresh</button>
+        <span class="asu-status" id="asuStatus" aria-live="polite"></span>
+      </section>
 
-    <section class="adr-counts asu-kpis" id="asuKpis" aria-label="Executive KPIs"></section>
+      <section class="adr-counts asu-kpis" id="asuKpis" aria-label="Executive KPIs"></section>
 
-    <section class="asu-panel">
-      <div class="asu-panel__head">
-        <h2>Usage trends</h2>
-        <div class="asu-trend-tabs" role="tablist" aria-label="Trend period">
-          <button type="button" class="asu-trend-tab active" data-trend="daily" role="tab" aria-selected="true">Daily</button>
-          <button type="button" class="asu-trend-tab" data-trend="weekly" role="tab" aria-selected="false">Weekly</button>
-          <button type="button" class="asu-trend-tab" data-trend="monthly" role="tab" aria-selected="false">Monthly</button>
+      <section class="asu-panel asu-panel--trends">
+        <div class="asu-panel__head">
+          <h2>Usage trends</h2>
+          <div class="asu-trend-tabs" role="tablist" aria-label="Trend period">
+            <button type="button" class="asu-trend-tab active" data-trend="daily" role="tab" aria-selected="true">Daily</button>
+            <button type="button" class="asu-trend-tab" data-trend="weekly" role="tab" aria-selected="false">Weekly</button>
+            <button type="button" class="asu-trend-tab" data-trend="monthly" role="tab" aria-selected="false">Monthly</button>
+          </div>
         </div>
-      </div>
-      <div class="adr-table-wrap asu-table-wrap">
-        <table class="adr-table asu-table" id="asuTrendsTable">
-          <thead>
-            <tr>
-              <th>Period</th>
-              <th>Lookups</th>
-              <th>Success</th>
-              <th>Unsuccessful</th>
-              <th>Credits</th>
-              <th>Est. cost</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+        <div class="asu-table-scroll">
+          <table class="adr-table asu-table asu-table--compact" id="asuTrendsTable">
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th>Lookups</th>
+                <th>Success</th>
+                <th>Unsuccessful</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
-    <section class="asu-panel-grid asu-panel-grid--3">
+    <!-- MIDDLE: stacked summary tables (full width each) -->
+    <section class="asu-middle" aria-label="Usage summaries">
       <section class="asu-panel">
         <div class="asu-panel__head"><h2>Usage by opportunity hotel</h2></div>
-        <div class="adr-table-wrap asu-table-wrap">
+        <div class="asu-table-scroll">
           <table class="adr-table asu-table" id="asuHotelsTable">
             <thead>
               <tr>
-                <th>Opportunity hotel</th>
+                <th class="asu-col-identity">Hotel</th>
+                <th>City / Market / Country</th>
                 <th>Class</th>
                 <th>Lookups</th>
                 <th>Email</th>
@@ -152,14 +157,17 @@
           </table>
         </div>
       </section>
+
       <section class="asu-panel">
         <div class="asu-panel__head"><h2>Usage by requesting organization</h2></div>
-        <div class="adr-table-wrap asu-table-wrap">
+        <div class="asu-table-scroll">
           <table class="adr-table asu-table" id="asuOrgsTable">
             <thead>
               <tr>
-                <th>Requesting organization</th>
+                <th class="asu-col-identity">Organization / office</th>
+                <th>Location</th>
                 <th>Lookups</th>
+                <th>Hotels researched</th>
                 <th>Credits</th>
                 <th>Est. cost</th>
               </tr>
@@ -168,14 +176,17 @@
           </table>
         </div>
       </section>
+
       <section class="asu-panel">
         <div class="asu-panel__head"><h2>Most researched opportunities</h2></div>
-        <div class="adr-table-wrap asu-table-wrap">
+        <div class="asu-table-scroll">
           <table class="adr-table asu-table" id="asuOppsTable">
             <thead>
               <tr>
-                <th>Opportunity</th>
-                <th>Hotel</th>
+                <th class="asu-col-identity">Opportunity</th>
+                <th>Organization / event</th>
+                <th>Associated hotel</th>
+                <th>Hotel market</th>
                 <th>Lookups</th>
                 <th>Est. cost</th>
               </tr>
@@ -186,19 +197,20 @@
       </section>
     </section>
 
-    <section class="asu-panel-grid">
-      <section class="asu-panel">
+    <!-- BOTTOM: full-width activity + ops -->
+    <section class="asu-bottom">
+      <section class="asu-panel asu-panel--activity">
         <div class="asu-panel__head">
           <h2>Activity history</h2>
         </div>
-        <div class="adr-table-wrap asu-table-wrap">
-          <table class="adr-table asu-table" id="asuLatestTable">
+        <div class="asu-table-scroll asu-table-scroll--tall">
+          <table class="adr-table asu-table asu-table--activity" id="asuLatestTable">
             <thead>
               <tr>
                 <th>Date/time</th>
-                <th>Opportunity hotel</th>
-                <th>Requesting org / office</th>
-                <th>Opportunity</th>
+                <th class="asu-col-identity">Opportunity hotel</th>
+                <th class="asu-col-identity">Requested from</th>
+                <th class="asu-col-identity">Opportunity</th>
                 <th>Lookup type</th>
                 <th>Result</th>
                 <th>Credits</th>
@@ -211,14 +223,14 @@
         </div>
       </section>
 
-      <section class="asu-panel">
+      <section class="asu-panel asu-panel--ops">
         <div class="asu-panel__head">
           <h2>Operational visibility</h2>
         </div>
         <ul class="asu-ops" id="asuOpsList"></ul>
         <h3 class="asu-subhead">Recent provider errors</h3>
-        <div class="adr-table-wrap asu-table-wrap">
-          <table class="adr-table asu-table" id="asuErrorsTable">
+        <div class="asu-table-scroll">
+          <table class="adr-table asu-table asu-table--compact" id="asuErrorsTable">
             <thead>
               <tr>
                 <th>When</th>
@@ -231,8 +243,8 @@
           </table>
         </div>
         <h3 class="asu-subhead">Accounting failures</h3>
-        <div class="adr-table-wrap asu-table-wrap">
-          <table class="adr-table asu-table" id="asuAccountingFailures">
+        <div class="asu-table-scroll">
+          <table class="adr-table asu-table asu-table--compact" id="asuAccountingFailures">
             <thead>
               <tr>
                 <th>When</th>
@@ -250,6 +262,6 @@
 
   <script src="/js/memberstack-auth.js"></script>
   <script src="/js/support-admin-gate.js"></script>
-  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v1-2"></script>
+  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v1-3"></script>
 </body>
 </html>

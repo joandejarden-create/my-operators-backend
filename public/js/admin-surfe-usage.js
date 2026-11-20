@@ -1,5 +1,6 @@
 /**
- * Admin — Surfe Usage dashboard (Dealality Admin Resources shell).
+ * Admin — Surfe Usage dashboard V1.3 (Dealality Admin Resources shell).
+ * Readable stacked layout + dual-line hotel / opportunity / request-origin cells.
  * Never renders or requests personal email/phone values.
  */
 (function () {
@@ -80,7 +81,8 @@
     document.getElementById("asuRequestingOrg").value = "";
     document.getElementById("asuOutcome").value = "";
     document.getElementById("asuEnvironment").value = "";
-    document.getElementById("asuHideFixtures").checked = false;
+    // Prefer production / non-fixture by default
+    document.getElementById("asuHideFixtures").checked = true;
   }
 
   function renderKpis(totals, remainingCredits) {
@@ -130,10 +132,10 @@
     root.innerHTML = items
       .map(function (it) {
         return (
-          '<div class="adr-count"><span class="adr-count__n">' +
-          esc(it.value) +
-          '</span><span class="adr-count__l">' +
+          '<div class="asu-kpi"><span class="asu-kpi__label">' +
           esc(it.label) +
+          '</span><span class="asu-kpi__value">' +
+          esc(it.value) +
           "</span></div>"
         );
       })
@@ -148,6 +150,62 @@
       esc(message) +
       "</div></td></tr>"
     );
+  }
+
+  function identityCell(opts) {
+    opts = opts || {};
+    var primary = opts.primary || "UNKNOWN";
+    var secondary = opts.secondary || "";
+    var meta = opts.meta || "";
+    var href = opts.href || null;
+    var flag = opts.flag === true;
+    var primaryHtml =
+      href && primary !== "UNKNOWN"
+        ? '<a href="' + esc(href) + '" target="_top">' + esc(primary) + "</a>"
+        : esc(primary);
+    var html =
+      '<div class="asu-identity"><span class="asu-identity__primary">' +
+      primaryHtml +
+      "</span>";
+    if (secondary) {
+      html +=
+        '<span class="asu-identity__secondary">' + esc(secondary) + "</span>";
+    }
+    if (meta) {
+      html += '<span class="asu-identity__meta">' + esc(meta) + "</span>";
+    }
+    if (flag) {
+      html += '<span class="asu-flag">Investigate</span>';
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function locationLineFrom(row) {
+    if (row.hotelLocationLine && row.hotelLocationLine !== "UNKNOWN") {
+      return row.hotelLocationLine;
+    }
+    var parts = [];
+    if (row.hotelCity && row.hotelCity !== "UNKNOWN") parts.push(row.hotelCity);
+    else if (row.hotelMarket && row.hotelMarket !== "UNKNOWN") {
+      parts.push(row.hotelMarket);
+    }
+    if (row.hotelCountry && row.hotelCountry !== "UNKNOWN") {
+      parts.push(row.hotelCountry);
+    }
+    return parts.length ? parts.join(", ") : "UNKNOWN";
+  }
+
+  function marketLineFrom(row) {
+    var parts = [];
+    if (row.hotelCity && row.hotelCity !== "UNKNOWN") parts.push(row.hotelCity);
+    if (row.hotelMarket && row.hotelMarket !== "UNKNOWN") {
+      parts.push(row.hotelMarket);
+    }
+    if (row.hotelCountry && row.hotelCountry !== "UNKNOWN") {
+      parts.push(row.hotelCountry);
+    }
+    return parts.length ? parts.join(" / ") : "UNKNOWN";
   }
 
   function renderTrends() {
@@ -188,7 +246,9 @@
     (hotels || []).forEach(function (h) {
       var opt = document.createElement("option");
       opt.value = h.hotelId;
-      opt.textContent = h.hotelName || h.hotelId;
+      opt.textContent =
+        (h.hotelName && h.hotelName !== "UNKNOWN" ? h.hotelName : h.hotelId) +
+        (h.hotelCity && h.hotelCity !== "UNKNOWN" ? " — " + h.hotelCity : "");
       sel.appendChild(opt);
     });
     if (prev) sel.value = prev;
@@ -198,8 +258,8 @@
     var tbody = document.querySelector("#asuHotelsTable tbody");
     if (!hotels || !hotels.length) {
       tbody.innerHTML = emptyRow(
-        8,
-        "No hotel-level Surfe usage recorded for these filters.",
+        9,
+        "No hotel-level Surfe usage recorded for these filters. Uncheck “Hide fixture/test” to inspect development/fixture rows.",
       );
       return;
     }
@@ -209,13 +269,24 @@
           Number(h.phoneSearches || 0) + Number(h.bothSearches || 0);
         var emailSearches =
           Number(h.emailSearches || 0) + Number(h.bothSearches || 0);
-        var name = h.hotelName || "UNKNOWN";
+        var classBadge =
+          h.usageClass === "FIXTURE_TEST"
+            ? '<span class="asu-badge asu-badge--fixture">' +
+              esc(h.usageClass) +
+              "</span>"
+            : esc(h.usageClass || "—");
         return (
           "<tr><td>" +
-          esc(name) +
-          (h.hotelId ? '<div class="asu-muted">' + esc(h.hotelId) + "</div>" : "") +
+          identityCell({
+            primary: h.hotelName || "UNKNOWN",
+            secondary: locationLineFrom(h),
+            meta: h.hotelId ? "ID: " + h.hotelId : "",
+            flag: h.identityInvestigationFlag === true,
+          }) +
           "</td><td>" +
-          esc(h.usageClass || "—") +
+          esc(marketLineFrom(h)) +
+          "</td><td>" +
+          classBadge +
           "</td><td>" +
           esc(h.lookups) +
           "</td><td>" +
@@ -234,20 +305,54 @@
       .join("");
   }
 
+  function originLocation(o) {
+    var parts = [];
+    if (o.requestingOfficeCity && o.requestingOfficeCity !== "UNKNOWN") {
+      parts.push(o.requestingOfficeCity);
+    }
+    if (o.requestingOfficeMarket && o.requestingOfficeMarket !== "UNKNOWN") {
+      parts.push(o.requestingOfficeMarket);
+    }
+    return parts.length ? parts.join(", ") : "UNKNOWN";
+  }
+
   function renderOrgs(orgs) {
     var tbody = document.querySelector("#asuOrgsTable tbody");
     if (!tbody) return;
     if (!orgs || !orgs.length) {
-      tbody.innerHTML = emptyRow(4, "No requesting-organization attribution yet.");
+      tbody.innerHTML = emptyRow(
+        6,
+        "No requesting-organization attribution yet for these filters.",
+      );
       return;
     }
     tbody.innerHTML = orgs
       .map(function (o) {
+        var office =
+          o.requestingHotelOrOfficeId &&
+          o.requestingHotelOrOfficeId !== "UNKNOWN"
+            ? o.requestingHotelOrOfficeId
+            : "";
         return (
           "<tr><td>" +
-          esc(o.requestingOrganizationName || "UNKNOWN") +
+          identityCell({
+            primary: o.requestingOrganizationName || "UNKNOWN",
+            secondary: office ? "Office: " + office : "Office: UNKNOWN",
+            meta:
+              o.requestingPortfolioId &&
+              o.requestingPortfolioId !== "UNKNOWN"
+                ? "Portfolio: " + o.requestingPortfolioId
+                : "",
+            flag:
+              !o.requestingOrganizationName ||
+              o.requestingOrganizationName === "UNKNOWN",
+          }) +
+          "</td><td>" +
+          esc(originLocation(o)) +
           "</td><td>" +
           esc(o.lookups) +
+          "</td><td>" +
+          esc(o.hotelsResearchedCount) +
           "</td><td>" +
           esc(o.creditsConsumed) +
           "</td><td>" +
@@ -262,28 +367,41 @@
     var tbody = document.querySelector("#asuOppsTable tbody");
     if (!tbody) return;
     if (!rows || !rows.length) {
-      tbody.innerHTML = emptyRow(4, "No opportunity-level usage yet.");
+      tbody.innerHTML = emptyRow(
+        6,
+        "No opportunity-level usage yet for these filters.",
+      );
       return;
     }
     tbody.innerHTML = rows
       .map(function (o) {
         var title = o.opportunityTitle || "UNKNOWN";
-        var link =
-          o.drawerHref && title !== "UNKNOWN"
-            ? '<a class="asu-link" href="' +
-              esc(o.drawerHref) +
-              '" target="_top">' +
-              esc(title) +
-              "</a>"
-            : esc(title);
         return (
           "<tr><td>" +
-          link +
-          (o.opportunityId
-            ? '<div class="asu-muted">' + esc(o.opportunityId) + "</div>"
-            : "") +
+          identityCell({
+            primary: title,
+            secondary:
+              o.opportunityCategory && o.opportunityCategory !== "UNKNOWN"
+                ? o.opportunityCategory
+                : "",
+            meta: o.opportunityId ? "Opportunity ID: " + o.opportunityId : "",
+            href: o.drawerHref || null,
+            flag: title === "UNKNOWN",
+          }) +
           "</td><td>" +
-          esc(o.hotelName || "UNKNOWN") +
+          esc(o.opportunityOrganizationName || "UNKNOWN") +
+          "</td><td>" +
+          identityCell({
+            primary: o.hotelName || "UNKNOWN",
+            secondary: locationLineFrom(o),
+            meta: o.hotelId ? "ID: " + o.hotelId : "",
+          }) +
+          "</td><td>" +
+          esc(
+            o.hotelMarket && o.hotelMarket !== "UNKNOWN"
+              ? o.hotelMarket
+              : marketLineFrom(o),
+          ) +
           "</td><td>" +
           esc(o.lookups) +
           "</td><td>" +
@@ -294,20 +412,13 @@
       .join("");
   }
 
-  function statusPill(status) {
+  function statusBadge(status) {
     var s = String(status || "unknown");
-    return '<span class="asu-pill asu-pill--' + esc(s) + '">' + esc(s) + "</span>";
-  }
-
-  function certaintyPill(certainty) {
-    var c = String(certainty || "unknown");
-    return (
-      '<span class="asu-pill asu-pill--certainty-' +
-      esc(c) +
-      '">' +
-      esc(c) +
-      "</span>"
-    );
+    var cls = "asu-badge";
+    if (s === "success") cls += " asu-badge--ok";
+    else if (s === "partial") cls += " asu-badge--partial";
+    else if (s === "no_match" || s === "error") cls += " asu-badge--bad";
+    return '<span class="' + cls + '">' + esc(s) + "</span>";
   }
 
   function renderLatest(rows) {
@@ -315,7 +426,7 @@
     if (!rows || !rows.length) {
       tbody.innerHTML = emptyRow(
         9,
-        "No lookup activity recorded yet for these filters.",
+        "No lookup activity for these filters. Fixture/test rows are hidden by default — uncheck “Hide fixture/test” to review them.",
       );
       return;
     }
@@ -325,55 +436,68 @@
           r.creditsCharged == null
             ? "—"
             : String(r.creditsCharged) +
-              (r.creditCertainty ? " (" + r.creditCertainty + ")" : "");
+              (r.creditCertainty ? " · " + r.creditCertainty : "");
         var oppTitle = r.opportunityTitle || "UNKNOWN";
-        var oppCell =
-          r.opportunityDrawerHref && oppTitle !== "UNKNOWN"
-            ? '<a class="asu-link" href="' +
-              esc(r.opportunityDrawerHref) +
-              '" target="_top">' +
-              esc(oppTitle) +
-              "</a>"
-            : esc(oppTitle);
-        if (r.opportunityId) {
-          oppCell +=
-            '<div class="asu-muted">' + esc(r.opportunityId) + "</div>";
-        }
-        var origin =
-          (r.requestingOrganizationName || "UNKNOWN") +
-          (r.requestingHotelOrOfficeId &&
+        var office =
+          r.requestingHotelOrOfficeId &&
           r.requestingHotelOrOfficeId !== "UNKNOWN"
-            ? " · " + r.requestingHotelOrOfficeId
-            : "");
-        var envLabel =
-          (r.dataEnvironment || "—") +
-          (r.usageClass ? " · " + r.usageClass : "");
+            ? r.requestingHotelOrOfficeId
+            : "UNKNOWN";
+        var originLoc =
+          r.requestingOfficeMarket && r.requestingOfficeMarket !== "UNKNOWN"
+            ? r.requestingOfficeMarket
+            : "UNKNOWN";
+        var envLabel = r.dataEnvironment || "—";
+        var classBadge =
+          r.usageClass === "FIXTURE_TEST"
+            ? ' <span class="asu-badge asu-badge--fixture">' +
+              esc(r.usageClass) +
+              "</span>"
+            : r.usageClass
+              ? " · " + esc(r.usageClass)
+              : "";
         return (
           "<tr><td>" +
           esc(r.at) +
           "</td><td>" +
-          esc(r.hotelName || "UNKNOWN") +
+          identityCell({
+            primary: r.hotelName || "UNKNOWN",
+            secondary: locationLineFrom(r),
+            meta: r.hotelId ? "ID: " + r.hotelId : "",
+            flag: r.hotelIdentityInvestigationFlag === true,
+          }) +
           "</td><td>" +
-          esc(origin) +
+          identityCell({
+            primary: r.requestingOrganizationName || "UNKNOWN",
+            secondary: "Office: " + office + " · " + originLoc,
+            flag:
+              !r.requestingOrganizationName ||
+              r.requestingOrganizationName === "UNKNOWN",
+          }) +
           "</td><td>" +
-          oppCell +
+          identityCell({
+            primary: oppTitle,
+            secondary: r.opportunityOrganizationName || "",
+            meta: r.opportunityId ? "Opportunity ID: " + r.opportunityId : "",
+            href: r.opportunityDrawerHref || null,
+            flag: r.opportunityIdentityInvestigationFlag === true,
+          }) +
           "</td><td>" +
           esc(r.lookupType || "—") +
           "</td><td>" +
-          statusPill(r.status) +
+          statusBadge(r.status) +
           "</td><td>" +
           esc(creditsDisplay) +
-          " " +
-          certaintyPill(r.creditCertainty) +
           "</td><td>" +
           esc(
             r.costEstimateUsd == null
               ? "—"
               : money(r.costEstimateUsd) +
-                  (r.costCertainty ? " (" + r.costCertainty + ")" : ""),
+                  (r.costCertainty ? " · " + r.costCertainty : ""),
           ) +
           "</td><td>" +
           esc(envLabel) +
+          classBadge +
           "</td></tr>"
         );
       })
@@ -384,61 +508,70 @@
     var t = summaryData.totals || {};
     var durability = summaryData.durability || {};
     var list = document.getElementById("asuOpsList");
-    list.innerHTML = [
-      "No-match frequency: <strong>" +
-        esc(num(summaryData.noMatchFrequency)) +
-        "%</strong>",
-      "Error lookups: <strong>" + esc(num(t.errorLookups)) + "</strong>",
-      "Avg provider latency: <strong>" +
-        esc(t.avgLatencyMs == null ? "—" : t.avgLatencyMs + " ms") +
-        "</strong>",
-      "Accounting complete: <strong>" +
-        esc(t.accountingComplete === false ? "No" : "Yes") +
-        "</strong> (" +
-        esc(num(t.accountingFailureCount)) +
-        " failures)",
-      "Credits unknown rows: <strong>" +
-        esc(num(t.creditsUnknownCount)) +
-        "</strong>",
-      esc(
-        t.creditAccountingNote ||
-          "Confirmed / estimated / unknown credits are reported separately.",
-      ),
-      esc(
-        t.duplicateSuppressedNote ||
-          "Transport retries dedupe on clientRequestId; legitimate repeats are counted.",
-      ),
-      "Persistence: <strong>" +
-        esc(durability.store || "filesystem") +
-        "</strong> · " +
-        esc(durability.mechanism || "lock + atomic write"),
-      "Airtable sync: <strong>" +
-        esc(
-          (summaryData.airtableSyncHealth &&
+    var items = [
+      {
+        label: "No-match frequency",
+        value: num(summaryData.noMatchFrequency) + "%",
+      },
+      { label: "Error lookups", value: num(t.errorLookups) },
+      {
+        label: "Avg provider latency",
+        value: t.avgLatencyMs == null ? "—" : t.avgLatencyMs + " ms",
+      },
+      {
+        label: "Accounting complete",
+        value:
+          (t.accountingComplete === false ? "No" : "Yes") +
+          " (" +
+          num(t.accountingFailureCount) +
+          " failures)",
+      },
+      {
+        label: "Credits unknown rows",
+        value: num(t.creditsUnknownCount),
+      },
+      {
+        label: "Persistence",
+        value:
+          (durability.store || "filesystem") +
+          " · " +
+          (durability.mechanism || "lock + atomic write"),
+      },
+      {
+        label: "Airtable sync",
+        value:
+          ((summaryData.airtableSyncHealth &&
             summaryData.airtableSyncHealth.tableStatus) ||
-            "PROPOSED",
-        ) +
-        "</strong> · pending " +
-        esc(
-          summaryData.airtableSyncHealth
+            "PROPOSED") +
+          " · pending " +
+          (summaryData.airtableSyncHealth
             ? summaryData.airtableSyncHealth.pending
-            : "—",
-        ) +
-        " · synced " +
-        esc(
-          summaryData.airtableSyncHealth
+            : "—") +
+          " · synced " +
+          (summaryData.airtableSyncHealth
             ? summaryData.airtableSyncHealth.synced
-            : "—",
-        ),
-      esc(
-        summaryData.totals && summaryData.totals.adoptionNote
-          ? summaryData.totals.adoptionNote
-          : "Fixture/test usage is labeled and is not customer adoption.",
-      ),
-      "Personal contact details are not stored in this ledger.",
-    ]
-      .map(function (html) {
-        return "<li>" + html + "</li>";
+            : "—"),
+      },
+      {
+        label: "Adoption note",
+        value:
+          (summaryData.totals && summaryData.totals.adoptionNote) ||
+          "Fixture/test usage is labeled and is not customer adoption.",
+      },
+      {
+        label: "Privacy",
+        value: "Personal contact details are not stored in this ledger.",
+      },
+    ];
+    list.innerHTML = items
+      .map(function (it) {
+        return (
+          "<li><span class=\"asu-ops__label\">" +
+          esc(it.label) +
+          '</span><span class="asu-ops__value">' +
+          esc(it.value) +
+          "</span></li>"
+        );
       })
       .join("");
 
@@ -453,11 +586,11 @@
             "<tr><td>" +
             esc(e.at) +
             "</td><td>" +
-            esc(e.hotelId || "—") +
+            esc(e.hotelName || e.hotelId || "—") +
             "</td><td>" +
             esc(e.errorCategory || "—") +
             "</td><td>" +
-            esc(e.opportunityId || "—") +
+            esc(e.opportunityTitle || e.opportunityId || "—") +
             "</td></tr>"
           );
         })
@@ -503,7 +636,8 @@
     summary = data;
     if (data.trackingStartedNote) {
       document.getElementById("asuHistoryNote").textContent =
-        data.trackingStartedNote;
+        data.trackingStartedNote +
+        " Fixture/test rows stay classified and are hidden by default.";
     }
     renderKpis(data.totals || {}, data.remainingCredits);
     fillHotelFilter(data.hotels || []);
