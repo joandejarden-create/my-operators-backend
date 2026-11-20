@@ -2,8 +2,10 @@
 
 **Date:** 2026-11-20  
 **Branch:** `feat/he-radar-canonical-12-tab-explorer-v1`  
+**PR:** [#482](https://github.com/joandejarden-create/my-operators-backend/pull/482) — OPEN  
 **Workspace:** `C:\Dev\dealality\ws-hotel-explorer`  
-**Pilot hotel:** Bethesda Marriott `recLuxvwwxID7U2B8`
+**Pilot hotel:** Bethesda Marriott `recLuxvwwxID7U2B8`  
+**HEAD:** `980cc4b51`
 
 ## 1. Exact Opportunity Radar popup implementation discovered
 
