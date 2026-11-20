@@ -1,6 +1,6 @@
 # SEC EDGAR V2.4 — Hotel-Specific Exhibit + Schedule Research
 
-**Generated:** 2026-11-20T08:00:05.118Z
+**Generated:** 2026-11-20T08:09:44.703Z
 
 | Metric | Value |
 |---|---|
