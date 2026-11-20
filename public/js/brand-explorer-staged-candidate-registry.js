@@ -1710,6 +1710,253 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '292c1faa9d79921a49c48383c1be120ce5fc54db62f9f413181d031555b830af'
+    },
+    {
+      id: 'recQxUKKgH0Pq1VgR',
+      slug: 'graduate-by-hilton',
+      name: 'Graduate by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/graduate-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '0c804342a6e729c3299a88c7729ebddd5c3ee9af8e8c71693b4f37b789f4698c'
+    },
+    {
+      id: 'recVAnsCsz4ifaAw2',
+      slug: 'livsmart-studios-by-hilton',
+      name: 'LivSmart Studios by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/livsmart-studios-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd42447f9e8ffcfbf957703e7bc029ea6c951d4f356ec9ebcaf0af1f848b08926'
+    },
+    {
+      id: 'recjvESTY8tYZjlAJ',
+      slug: 'embassy-suites-by-hilton',
+      name: 'Embassy Suites by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/embassy-suites-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'a5e4b93dc475ec5bafe5f4388afcf3cd87bee25200ac986d712e6f253c1a90e6'
+    },
+    {
+      id: 'recqsodgJLUzsdCED',
+      slug: 'nomad-hotels',
+      name: 'NoMad Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/nomad-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '075cdc9c6e01f8ab15461be39d7b161aedb1d9f35944761e29715d3ad3e5b05c'
+    },
+    {
+      id: 'recF9TQzTd3wwEiKa',
+      slug: 'ibis-styles',
+      name: 'ibis Styles',
+      overlayUrl: '/brand-explorer-phase2e-preview/ibis-styles-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '089c795f05fc12ecb63a76a3b6e46c01581b5bc0bbcecab79c0df4babb0af50b'
+    },
+    {
+      id: 'rec0lQ4Imf614F8jo',
+      slug: 'ibis-budget',
+      name: 'ibis budget',
+      overlayUrl: '/brand-explorer-phase2e-preview/ibis-budget-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '7acd35a74644de5f40c490c5a90d02a954360aed00cdfb3ba7b4b090bc85cb7c'
+    },
+    {
+      id: 'recGJctYTmJiwwXKG',
+      slug: 'greet',
+      name: 'greet',
+      overlayUrl: '/brand-explorer-phase2e-preview/greet-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3f5ae3531ed46da4fde6d53d0cadfd557b029f5a9cc75a328fb176805666a419'
+    },
+    {
+      id: 'rec9Q89yzK4QZKnal',
+      slug: 'hotelf1',
+      name: 'hotelF1',
+      overlayUrl: '/brand-explorer-phase2e-preview/hotelf1-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ca3b413aa8a9e5466350ab070f0a9fc847611d4d565e9e27133ed0c04622860c'
+    },
+    {
+      id: 'rechyrQmHmeR1ovme',
+      slug: 'tribe',
+      name: 'TRIBE',
+      overlayUrl: '/brand-explorer-phase2e-preview/tribe-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '08593e2f64e6ee6a61b311d8f1a50c00aff386b7fb3ab66ba69e32d1c352d185'
+    },
+    {
+      id: 'reck9Gq60El13HG5Z',
+      slug: 'adagio',
+      name: 'Adagio',
+      overlayUrl: '/brand-explorer-phase2e-preview/adagio-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '83befe6c225aff37efd9d146e19b5278e4944e733c143fc6d47df9f9d23182a4'
+    },
+    {
+      id: 'recSAVQWVAnn0NKYg',
+      slug: 'adagio-access',
+      name: 'Adagio Access',
+      overlayUrl: '/brand-explorer-phase2e-preview/adagio-access-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9a053839df37d204849d324ecb204d59f30d7940548c8d1f4bf19b72d1e3d619'
+    },
+    {
+      id: 'recKPpUCq9EZlSSYx',
+      slug: '25hours-hotels',
+      name: '25hours Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/25hours-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '1378530bfed1b104d3affafcc1497afbdf392cff43ea2c72411b4342c181f4ae'
+    },
+    {
+      id: 'recXmadOxgzU6Ug5l',
+      slug: 'the-hoxton',
+      name: 'The Hoxton',
+      overlayUrl: '/brand-explorer-phase2e-preview/the-hoxton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '49a34d5ccf2f0d9deed5c7ba0f88aaee464b0af0465eceefecdeafe72fd03ee4'
+    },
+    {
+      id: 'recPF5NM9kDZwkNmS',
+      slug: 'mondrian',
+      name: 'Mondrian',
+      overlayUrl: '/brand-explorer-phase2e-preview/mondrian-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'dc185200d683b65b5fb4175ffa08a4d7ecd1f156fd6aa8944083d6739cfcb279'
+    },
+    {
+      id: 'recharEz6EaOg9AiP',
+      slug: 'hyde-hotels',
+      name: 'Hyde Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyde-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '125092f97ed5ff6f77d5a311886bd756cc872dadfbe817b953d689dab1b1089b'
+    },
+    {
+      id: 'recrJtboQyjYGsZZm',
+      slug: 'sls-hotels',
+      name: 'SLS Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/sls-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8b6309d823f49f4e25adc38f70c3f6dc6acfa68d69c46c2bbd31c64417761825'
+    },
+    {
+      id: 'rect7iv1y3mGFadqL',
+      slug: 'swissotel',
+      name: 'Swissôtel',
+      overlayUrl: '/brand-explorer-phase2e-preview/swissotel-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8255c27be2f2f3e8cb9e037072a64daaba4977c313f51cec8772590905d6b646'
+    },
+    {
+      id: 'reclu1Fgv5Leq25qn',
+      slug: 'park-plaza',
+      name: 'Park Plaza',
+      overlayUrl: '/brand-explorer-phase2e-preview/park-plaza-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '4b9c3f9dca1d0a6a860e8c4e9546cc5672fe75a930e3a4430b6a504dc4ac4abc'
+    },
+    {
+      id: 'recyI1O61Or7LXwXl',
+      slug: 'park-inn-by-radisson',
+      name: 'Park Inn by Radisson',
+      overlayUrl: '/brand-explorer-phase2e-preview/park-inn-by-radisson-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-12-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '928fcd5629ab35a86f55d95bed191c4931c8ad33e58a8b7324fae8a476fa02e1'
     }
   ];
 
@@ -1888,6 +2135,25 @@
     if (/joie\s*de\s*vivre|\bjdv\b/i.test(name)) return bySlug('jdv-by-hyatt');
     if (/unbound\s*collection/i.test(name)) return bySlug('unbound-collection-by-hyatt');
     if (/sonesta\s*simply\s*suites/i.test(name)) return bySlug('sonesta-simply-suites');
+    if (/graduate/i.test(name) && /hilton/i.test(name)) return bySlug('graduate-by-hilton');
+    if (/livsmart/i.test(name)) return bySlug('livsmart-studios-by-hilton');
+    if (/embassy\s*suites/i.test(name)) return bySlug('embassy-suites-by-hilton');
+    if (/\bnomad\b/i.test(name)) return bySlug('nomad-hotels');
+    if (/ibis\s*styles/i.test(name)) return bySlug('ibis-styles');
+    if (/ibis\s*budget/i.test(name)) return bySlug('ibis-budget');
+    if (/^greet\b/i.test(name)) return bySlug('greet');
+    if (/hotelf1|hotel\s*f1|formule\s*1/i.test(name)) return bySlug('hotelf1');
+    if (/^tribe\b/i.test(name)) return bySlug('tribe');
+    if (/adagio\s*access/i.test(name)) return bySlug('adagio-access');
+    if (/\badagio\b/i.test(name) && !/access/i.test(name)) return bySlug('adagio');
+    if (/25\s*hours|25hours/i.test(name)) return bySlug('25hours-hotels');
+    if (/hoxton/i.test(name)) return bySlug('the-hoxton');
+    if (/mondrian/i.test(name)) return bySlug('mondrian');
+    if (/^hyde\b/i.test(name)) return bySlug('hyde-hotels');
+    if (/\bsls\b/i.test(name)) return bySlug('sls-hotels');
+    if (/swissotel|swissôtel/i.test(name)) return bySlug('swissotel');
+    if (/park\s*plaza/i.test(name)) return bySlug('park-plaza');
+    if (/park\s*inn/i.test(name)) return bySlug('park-inn-by-radisson');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
