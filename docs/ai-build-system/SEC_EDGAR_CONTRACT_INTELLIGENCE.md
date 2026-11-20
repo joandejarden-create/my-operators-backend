@@ -2,6 +2,7 @@
 
 **Contract:** `SEC_EDGAR_CONTRACT_INTELLIGENCE_V1`  
 **Historical program:** `SEC_EDGAR_HISTORICAL_INTELLIGENCE_V2` (Marriott & Hilton)  
+**Extraction quality / exhibits:** `SEC_EDGAR_V2_2` — filing-package EX-10/EX-21, identity gate, coverage ledger  
 **Status:** Pilot + independent hotel discovery + historical research runner — internal persistence only  
 **Customer publication:** BLOCKED without separate founder approval
 
@@ -102,6 +103,18 @@ npm run sec-edgar-contract-intelligence:pilot -- --apply
 - Forms ≠ exhibits: EX-10 nested under parent accessions (index.json follow-on gap documented)
 - Adaptive queue: registrant↔hotel↔owner with depth/company caps; unverified entities blocked
 - V1 pilot 2-year / 6–12 filing limits = smoke control only; production path is inventory + checkpoint batches
+
+## V2.2 — EX-10 packages, relationships, coverage ledger
+
+```bash
+npm run test:sec-edgar-v22-exhibits-relationships
+npm run sec-edgar-v22-live-evidence:eval -- --max-filings 5 --max-exhibits 8
+```
+
+- Filing-package `index.json` enumerates EX-10 / EX-21 (parent accession ≠ exhibit URL)
+- Relationship extractor: explicit owner/manager/franchisor only (never portfolio→owner inference)
+- Coverage ledger separates CORE_SIX (3,863) from EXTENDED cohorts (Apple/RLJ/Park)
+- Live evidence report: `reports/sec-edgar-v22-live-evidence/`
 
 ## Identity quality gate (mandatory before broad persistence)
 

@@ -71,12 +71,38 @@ Existing HI destinations assume an **HPC hotel link**:
 - **HI Graph Evidence** — only after HPC match + verified milestone.
 - **HI Ownership Research Runs** — continue as run/cost ledger.
 
+## Expected initial record counts (order-of-magnitude)
+
+| Store | Expected after V2.2 DiamondRock-quality pass | Notes |
+|---|---|---|
+| HI Hotel Discovery Inventory | ~40–2,000 rows | Start with VERIFIED + PROBABLE only; grow with CORE_SIX |
+| HI Discovery Contract Findings | ~0–5,000 | Only dated milestones; many portfolio rows have no date |
+| HI Discovery Org Mentions (optional) | ~100–10,000 | Manager/franchisor/owner mentions before HPC link |
+| Filesystem raw evidence | retain all | Immutable; source of truth until Airtable approved |
+
+## Optional: `HI Discovery Org Mentions` (unmatched relationships)
+
+For owner/operator/franchisor evidence **before** HPC match (HI Hotel–Org Relationships requires HPC link):
+
+| Field | Type | Notes |
+|---|---|---|
+| Discovery Property | link → Inventory (optional) | Null for org-only mentions |
+| Role | singleSelect | LEGAL_OWNER / MANAGEMENT_COMPANY / FRANCHISOR / … |
+| Entity Name | singleLineText | |
+| Relationship Status | singleSelect | CURRENTLY_VERIFIED / HISTORICALLY_VERIFIED / SUPERSEDED / CONFLICTED / CURRENT_STATUS_UNKNOWN |
+| Effective Period Start/End | date | When disclosed |
+| Source URL | url | Exhibit or primary doc |
+| Parent Accession | singleLineText | |
+| Explicit Evidence | checkbox | Must be true |
+| Inferred From Portfolio Listing | checkbox | Must stay false for ownership claims |
+
 ## Migration plan (after founder approval)
 
 1. Dry-run create table via ensure script (new, dedicated).
 2. Backfill from `data/sec-edgar/discovery-inventory/hotels.json` **VERIFIED_PROPERTY + PROBABLE_PROPERTY** only.
 3. Keep raw evidence JSON as immutable research archive.
 4. Wire reconciliation: when HPC gains hotel → link Discovery Inventory → promote evidence.
+5. Sync/recovery: Discovery Property ID is the idempotency key; never delete historical findings on re-import.
 
 ## Explicit non-goals (this proposal)
 
