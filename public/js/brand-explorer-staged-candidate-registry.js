@@ -33,6 +33,18 @@
       candidateVersion: 'phase2h-component-parity',
       source: 'phase2h-cumulative-staged',
       founderApprovalStatus: 'FOUNDER_APPROVED_WRITEBACK'
+    },
+    {
+      id: 'recEJCTDj1zrsjPM6',
+      slug: 'autograph-collection',
+      name: 'Autograph Collection',
+      overlayUrl: '/brand-explorer-phase2e-preview/autograph-collection-phase2h-candidate.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: '/brand-explorer-phase2e-preview/autograph-collection-staged-candidate-manifest-v1.json',
+      candidateVersion: 'phase2h-component-parity',
+      source: 'phase2h-factory-1-0',
+      founderApprovalStatus: 'NOT_APPROVED'
     }
   ];
 

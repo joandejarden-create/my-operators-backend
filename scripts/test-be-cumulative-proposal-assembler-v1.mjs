@@ -64,6 +64,31 @@ const weak = assembleCumulativeProposal(
 assert.strictEqual(weak.blocks.length, 6);
 assert.strictEqual(weak.provenanceBySlot["loyalty.proof"].provenance, PROVENANCE.RETAINED_FROM_CURRENT);
 
+// Empty CURRENT + single Proof Point stub must NOT publish (protects static six-card UX).
+const emptyCurrentProof = assembleCumulativeProposal(
+  [],
+  [
+    {
+      slotKey: "loyalty.proof",
+      title: "Proof Point",
+      body: "Marriott discloses Autograph Collection as a Premium soft brand with 362 properties.",
+    },
+  ]
+);
+assert.strictEqual(
+  emptyCurrentProof.provenanceBySlot["loyalty.proof"].applyCandidate,
+  false,
+  "single loyalty.proof stub must not apply over empty CURRENT"
+);
+assert.strictEqual(
+  emptyCurrentProof.provenanceBySlot["loyalty.proof"].reason,
+  "loyalty_proof_requires_exact_six_cards"
+);
+assert.ok(
+  !emptyCurrentProof.blocks.some((b) => b.slotKey === "loyalty.proof"),
+  "incomplete loyalty.proof must stay out of publication blocks"
+);
+
 console.log(
   JSON.stringify(
     {
