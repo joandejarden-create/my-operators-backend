@@ -189,6 +189,136 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '018c4c0143741ed0817bb28b5ff91d72b6763d20a06ffd2abc15c11acac007c4'
+    },
+    {
+      id: 'reccXxMHEh7NNRhIE',
+      slug: 'tapestry-collection-by-hilton',
+      name: 'Tapestry Collection by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/tapestry-collection-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e2f595a6c2d35da1333c838d0e840389e2624346b9f3c854a9f4bb198b7c4f1a'
+    },
+    {
+      id: 'recqiHq3GHKMj8Meo',
+      slug: 'tempo-by-hilton',
+      name: 'Tempo by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/tempo-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9025151cd2e09b96b54ac75c5f034194cc553188d3bc8687f61ae12d87af6590'
+    },
+    {
+      id: 'rec02zPClpWUTCyXM',
+      slug: 'design-hotels',
+      name: 'Design Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/design-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'be8a61c49129a293822275f496a5f2e34ddcdeff3a4daeedcb6db0a9244b5418'
+    },
+    {
+      id: 'recJ1GZQpttX7qHgw',
+      slug: 'aloft-hotels',
+      name: 'Aloft Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/aloft-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3b6218b8cd7844493a8fe5bac4852fdc23a8ca2053de8557ac8ba2303c3e92a4'
+    },
+    {
+      id: 'recCKuXCmGvxHPfb3',
+      slug: 'kimpton-hotels',
+      name: 'Kimpton Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/kimpton-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '49e624b0a59143dc6f051fe14e7c99287b6acc92c54e458877f1ff6c90dd7fc9'
+    },
+    {
+      id: 'recGv268Wda31PlSZ',
+      slug: 'bunkhouse-hotels',
+      name: 'Bunkhouse Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/bunkhouse-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ef4a952c2cb82a89f40637429666b9bdf2ca57d70c04672a0ea7733a50656c4d'
+    },
+    {
+      id: 'recNy2efMm4N1JtgC',
+      slug: 'hyatt-centric',
+      name: 'Hyatt Centric',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-centric-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'a117a06519b56319f54557aa72f8c028b3a168c3020c2112b43bc52588e67e33'
+    },
+    {
+      id: 'rec6hye5H8zJmAGv3',
+      slug: 'courtyard-by-marriott',
+      name: 'Courtyard by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/courtyard-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3500dc7289a8808fd5f1f0d482550ae6568173fdb984f2b0adf8c54ca2936daa'
+    },
+    {
+      id: 'recIPuBC50fv13zRR',
+      slug: 'westin',
+      name: 'Westin',
+      overlayUrl: '/brand-explorer-phase2e-preview/westin-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '6adeb132751e08f8ac6d59d6f6fead08c570946f74eddbe1fe5c99c8b1ed49e9'
+    },
+    {
+      id: 'recmGmiIqDtAsm01f',
+      slug: 'holiday-inn-express',
+      name: 'Holiday Inn Express',
+      overlayUrl: '/brand-explorer-phase2e-preview/holiday-inn-express-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-4-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '207bed048829d783095eb4415d38b82121acfb1e8ad0bf1b133e15d47708d9d4'
     }
   ];
 
@@ -252,6 +382,16 @@
     if (/^avid\b/i.test(name)) return bySlug('avid-hotels');
     if (/tribute/i.test(name)) return bySlug('tribute-portfolio');
     if (/hotel indigo/i.test(name)) return bySlug('hotel-indigo');
+    if (/tapestry/i.test(name)) return bySlug('tapestry-collection-by-hilton');
+    if (/^tempo\b/i.test(name)) return bySlug('tempo-by-hilton');
+    if (/design hotels/i.test(name)) return bySlug('design-hotels');
+    if (/^aloft\b/i.test(name)) return bySlug('aloft-hotels');
+    if (/kimpton/i.test(name)) return bySlug('kimpton-hotels');
+    if (/bunkhouse/i.test(name)) return bySlug('bunkhouse-hotels');
+    if (/hyatt centric/i.test(name)) return bySlug('hyatt-centric');
+    if (/courtyard/i.test(name)) return bySlug('courtyard-by-marriott');
+    if (/^westin\b/i.test(name)) return bySlug('westin');
+    if (/holiday inn express/i.test(name)) return bySlug('holiday-inn-express');
     return null;
   }
 

@@ -25,10 +25,12 @@ npm run be-factory-2-process-batch -- --force --brand rec…
 npm run be-factory-2-confirm-batch-ids
 npm run be-factory-2-named-batch-five     # AC / Moxy / Vignette / Canopy / EVEN depth batch
 npm run be-factory-2-batch3               # voco / Motto / avid / Tribute / Indigo
+npm run be-factory-2-batch4               # Tapestry / Tempo / Design / Aloft / Kimpton / Bunkhouse / Centric / Courtyard / Westin / HI Express
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
 npm run test:be-factory-2-named-batch-five-v1
 npm run test:be-factory-2-batch3-v1
+npm run test:be-factory-2-batch4-v1
 ```
 
 ## Named batch five (2026-11-20)
@@ -44,6 +46,12 @@ Review package: `reports/brand-explorer/factory-2-0/13-named-batch-five-consolid
 Brands: voco Hotels, Motto by Hilton, avid hotels, Tribute Portfolio, Hotel Indigo.  
 Same depth factory; fee exhibits remain the READY blocker ($0 paid).  
 Review package: `reports/brand-explorer/factory-2-0/21-batch3-consolidated-review.md`.
+
+## Batch 4 (2026-11-20)
+
+Ten brands: Tapestry, Tempo, Design Hotels, Aloft, Kimpton, Bunkhouse, Hyatt Centric, Courtyard, Westin, Holiday Inn Express.  
+All staged `NEEDS_REMEDIATION` pending verified fee exhibits ($0 paid).  
+Review package: `reports/brand-explorer/factory-2-0/31-batch4-consolidated-review.md`.
 
 ## Durable storage
 
