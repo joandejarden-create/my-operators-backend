@@ -51,13 +51,27 @@ Evidence: `pilot-100/PILOT_RESULTS.json` · `pilot-100/PILOT_REPORT.md` · `pilo
 
 Live Exa searches are distinct from offline seeded Maritza/Alejandra regressions (regression seeds still available for cert scripts).
 
-## 4. Integration
+## 4. Local / external browser validation
 
-- PR #475 HEAD at phase start: `174d398fe` (CI green). Additional commits for persist/restage/pilot pending push.
+**Local `:8080` STAGED preview** (after syncing restaged package into canonical checkout):
+
+| Opportunity | Package version | Email | Phone | Surfe channel |
+|-------------|-----------------|-------|-------|---------------|
+| Maritza | `…_20261120_public_contact_channels_v1` | maritza.medina@jalisco.gob.mx | +52 33 3819 2333 | none |
+| Alejandra | same | alejandra.vazquez@igeco.mx | — | phone (Find Phone) |
+| Paulina (secondary) | same | paulina.sanchez@igeco.mx | — | — |
+
+Evidence JSON: `LOCAL_MARITZA_DETAIL.json` · `LOCAL_ALEJANDRA_DETAIL.json`
+
+**Railway production:** still on `ffc15db0…` (PR #475 not merged/deployed). External cards will not show new channels until IC merge + deploy.
+
+## 5. Integration
+
+- Phase commit: `dd181dd96` on `feat/gdi-public-contact-discovery-2-v1` (push to update #475).
 - GDI does **not** merge — Integration Controller owns merge + deploy.
 - Live Surfe auth (PR #474) kept separate.
 
-## 5. Remaining limitations
+## 6. Remaining limitations
 
 - Default customer CURRENT for Sheraton still absent; STAGED refreshed only.
 - Railway deploy of #475 not yet merged.
