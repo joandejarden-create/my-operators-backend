@@ -1577,6 +1577,11 @@
                             explicitSaved = true;
                         }
                     } catch (_ePm) { /* ignore */ }
+                    var stagedWritebackDone =
+                        stagedCfg &&
+                        (String(stagedCfg.founderApprovalStatus || '') ===
+                            'FOUNDER_APPROVED_WRITEBACK' ||
+                            String(stagedCfg.founderApprovalStatus || '') === 'FOUNDER_APPROVED');
                     var wantProposed =
                         !explicitSaved &&
                         (modeNow === 'proposed' ||
@@ -1586,7 +1591,8 @@
                                 apiPop.isInternalPreviewRequest &&
                                 apiPop.isInternalPreviewRequest()
                             ) &&
-                                !!stagedCfg));
+                                !!stagedCfg &&
+                                !stagedWritebackDone));
                     if (
                         wantProposed &&
                         apiPop.buildCumulativeProposedBrandAsync
