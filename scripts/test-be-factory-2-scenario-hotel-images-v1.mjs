@@ -18,10 +18,10 @@ import {
 const ROOT = process.cwd();
 
 for (const [slug, brand] of [
-  ["sonesta-select", "Sonesta Select"],
-  ["ritz-carlton", "The Ritz-Carlton"],
+  ["waldorf-astoria", "Waldorf Astoria Hotels & Resorts"],
   ["hampton-by-hilton", "Hampton by Hilton"],
   ["hyatt-regency", "Hyatt Regency"],
+  ["courtyard-by-marriott", "Courtyard by Marriott"],
 ]) {
   const imgs = pickScenarioHotelImages(ROOT, slug, brand, 3);
   assert.ok(imgs.length >= 3, `${slug}: need 3 scenario hotel images, got ${imgs.length}`);
@@ -38,20 +38,20 @@ for (const [slug, brand] of [
 }
 
 const pack = {
-  slug: "sonesta-select",
-  brandName: "Sonesta Select",
-  parentCompany: "Sonesta",
-  loyaltyProgram: "Sonesta Travel Pass",
-  positioning: "Upper-midscale select-service",
+  slug: "hampton-by-hilton",
+  brandName: "Hampton by Hilton",
+  parentCompany: "Hilton",
+  loyaltyProgram: "Hilton Honors",
+  positioning: "Upper-Midscale Limited Service",
   scenarios: [
-    { title: "Suburban Select-Service", body: "Suburban corridors needing Travel Pass." },
-    { title: "Airport Edge Select-Service", body: "Airport edge sites with midweek corporate mix." },
-    { title: "Conversion Into Select-Service", body: "Conversions that can fund Select product standards." },
+    { title: "Suburban Limited-Service", body: "Suburban corridors needing Honors." },
+    { title: "Airport Edge Limited-Service", body: "Airport edge sites with midweek corporate mix." },
+    { title: "Conversion Into Limited-Service", body: "Conversions that can fund Hampton product standards." },
   ],
-  sources: { brandPage: "https://www.sonesta.com/" },
-  operatingModel: "Franchise select-service",
-  footprint: "Confirm live Sonesta Select footprint.",
-  insight: "Select works when product clears IC.",
+  sources: { brandPage: "https://www.hilton.com/en/brands/hampton/" },
+  operatingModel: "Franchise limited-service",
+  footprint: "Confirm live Hampton footprint.",
+  insight: "Hampton works when product clears IC.",
   feeNote: "Confirm current fee exhibits.",
 };
 

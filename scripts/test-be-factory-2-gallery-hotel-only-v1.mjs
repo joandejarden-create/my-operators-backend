@@ -44,10 +44,10 @@ assert.equal(
 );
 
 for (const [slug, brand] of [
-  ["ritz-carlton", "The Ritz-Carlton"],
-  ["renaissance-hotels", "Renaissance Hotels"],
+  ["waldorf-astoria", "Waldorf Astoria Hotels & Resorts"],
   ["hampton-by-hilton", "Hampton by Hilton"],
   ["hyatt-regency", "Hyatt Regency"],
+  ["courtyard-by-marriott", "Courtyard by Marriott"],
 ]) {
   const cards = loadGalleryCardsFromFixture(ROOT, slug, brand);
   assert.ok(cards.length >= 4, `${slug}: expected >=4 hotel photos, got ${cards.length}`);
