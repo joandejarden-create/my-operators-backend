@@ -2186,7 +2186,9 @@
         [
           { k: 'Segment', v: brand.hotelChainScale },
           { k: 'Affiliation Model', v: brand.brandModelFormat },
-          { k: 'Service / Operating Model', v: brand.hotelServiceModel }
+          { k: 'Service / Operating Model', v: brand.hotelServiceModel },
+          // Permanent: canonical Brand Basics Brand Positioning (concise market proposition)
+          { k: 'Positioning', v: brand.brandPositioning }
         ],
         { suppressEmpty: suppressEmptySnapshot }
       ) +
