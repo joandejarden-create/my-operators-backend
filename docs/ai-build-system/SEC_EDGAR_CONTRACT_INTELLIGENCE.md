@@ -116,6 +116,20 @@ npm run sec-edgar-v22-live-evidence:eval -- --max-filings 5 --max-exhibits 8
 - Coverage ledger separates CORE_SIX (3,863) from EXTENDED cohorts (Apple/RLJ/Park)
 - Live evidence report: `reports/sec-edgar-v22-live-evidence/`
 
+## V2.4 — Universal company & historical expansion
+
+```bash
+npm run test:sec-edgar-universal-registry-v24
+npm run sec-edgar-universal-wave:v24 -- --inventory-only
+npm run sec-edgar-universal-wave:v24 -- --batch-size 20 --max-exhibits 3
+```
+
+- Registry: ~32 high-priority registrants (REITs, brands, resorts, historical owners) — not Marriott/Hilton-only
+- Eligible inventory default: **1994+**, complete per CIK (no 6/12/20 global cap)
+- Wave runner prioritizes REIT + historical HTML 10-Ks for property-schedule yield
+- Checkpoint: `data/sec-edgar/checkpoints/universal-research-v24.json`
+- Reports: `reports/sec-edgar-universal-wave-v24/`
+
 ## V2.3 — Permanent discovery inventory (Airtable)
 
 ```bash
