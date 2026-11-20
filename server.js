@@ -646,6 +646,7 @@ import { requireInternalRunbookAdmin } from "./middleware/requireInternalRunbook
 import {
   getAdminSurfeUsageSummary,
   getAdminSurfeUsageEvents,
+  getAdminSurfeUsageAirtablePlan,
 } from "./api/admin-surfe-usage.js";
 import {
   postAcquisitionConnectionsPreview,
@@ -1685,6 +1686,11 @@ app.get(
 // GDI Surfe Usage — admin-only non-PII usage telemetry (on-demand reveal accounting)
 app.get("/api/admin/surfe-usage/summary", ...adminAuth, getAdminSurfeUsageSummary);
 app.get("/api/admin/surfe-usage/events", ...adminAuth, getAdminSurfeUsageEvents);
+app.get(
+  "/api/admin/surfe-usage/airtable-plan",
+  ...adminAuth,
+  getAdminSurfeUsageAirtablePlan,
+);
 
 // AI Demand Leak Audit — free diagnostic (sample + client report + admin)
 const adpLeakAuditAdminAuth = adminAuth;
