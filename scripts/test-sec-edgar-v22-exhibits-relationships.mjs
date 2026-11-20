@@ -3,7 +3,11 @@ import assert from "node:assert/strict";
 import {
   enumerateFilingPackageExhibits,
   dedupeExhibits,
+  scoreHotelSpecificExhibit,
+  filterHotelRelevantExhibits,
+  parseHotelAgreementsFromExhibitIndex,
 } from "../lib/hotel-intelligence/sec-edgar/filing-package-exhibits-v2.js";
+import { extractSubsidiariesFromExhibit21 } from "../lib/hotel-intelligence/sec-edgar/ex21-subsidiary-extractor-v24.js";
 import {
   extractRelationshipsFromDocument,
   reconcileRelationshipFindings,
@@ -162,6 +166,71 @@ test("identity_gate_still_blocks_uncertain_as_verified", () => {
       .identityClass,
     IDENTITY_CLASS.VERIFIED_PROPERTY,
   );
+});
+
+test("hotel_specific_ex10_filter_skips_employment_and_credit", () => {
+  const employment = scoreHotelSpecificExhibit(
+    { fileName: "ex10-1.htm", exhibitType: "EX-10_OTHER", description: "Employment Agreement" },
+    "EMPLOYMENT AGREEMENT between the Company and the CEO",
+  );
+  assert.equal(employment.skip, true);
+  assert.match(employment.reason, /non_hotel/);
+
+  const credit = scoreHotelSpecificExhibit(
+    { fileName: "ex10-22.htm", exhibitType: "EX-10_OTHER" },
+    "SECOND AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+  );
+  assert.equal(credit.skip, true);
+
+  const hma = scoreHotelSpecificExhibit(
+    { fileName: "ex10-3.htm", exhibitType: "EX-10_MANAGEMENT", description: "Hotel Management Agreement" },
+    "HOTEL MANAGEMENT AGREEMENT dated as of January 1, 2012 between Owner SPE LLC and Marriott Hotel Services, Inc.",
+  );
+  assert.equal(hma.hotelRelevant, true);
+  assert.equal(hma.skip, false);
+
+  const filtered = filterHotelRelevantExhibits([
+    { fileName: "ex10-1.htm", exhibitType: "EX-10_OTHER", description: "Employment Agreement" },
+    { fileName: "ex21.htm", exhibitType: "EX-21_SUBSIDIARIES", description: "List of Subsidiaries" },
+    { fileName: "ex10-3.htm", exhibitType: "EX-10_MANAGEMENT", description: "Hotel Management Agreement" },
+  ]);
+  assert.ok(filtered.exhibits.some((e) => e.fileName === "ex21.htm"));
+  assert.ok(filtered.exhibits.some((e) => e.fileName === "ex10-3.htm"));
+  assert.ok(filtered.skipped.some((e) => e.fileName === "ex10-1.htm"));
+});
+
+test("exhibit_index_parses_hotel_management_ibr_rows", () => {
+  const text = `
+    EXHIBIT INDEX
+    10.2 Form of Master Agreement with Management Company (incorporated by reference to Exhibit 10.2 to the registration statement on Form S-11 (File No. 333-117141) filed by the Company).
+    10.3 Form of Hotel Management Agreement (incorporated by reference to Exhibit 10.3 to Form S-11).
+    10.8 Employment Agreement with Chief Executive Officer.
+    10.12 Credit Agreement dated as of June 1, 2015.
+  `;
+  const rows = parseHotelAgreementsFromExhibitIndex(text, {
+    cik: "0001295810",
+    accessionNumber: "0001193125-08-035335",
+    companyName: "sunstone",
+  });
+  assert.ok(rows.some((r) => /Hotel Management Agreement/i.test(r.description)));
+  assert.ok(rows.every((r) => !/Employment|Credit Agreement/i.test(r.description)));
+});
+
+test("ex21_marks_hotel_named_entities_as_spe_candidates_without_ownership_inference", () => {
+  const out = extractSubsidiariesFromExhibit21(
+    {
+      text: `
+        DiamondRock Chicago Hotel LLC Delaware
+        DiamondRock Hospitality Limited Partnership Maryland
+        DRH Finance Corp. Delaware
+      `,
+    },
+    { cik: "0001298946", accessionNumber: "0001298946-19-000025" },
+  );
+  assert.ok(out.entityCount >= 2);
+  const spe = out.entities.filter((e) => e.roleHint === "PROPERTY_SPE_CANDIDATE");
+  assert.ok(spe.some((e) => /Chicago Hotel/i.test(e.entityName)));
+  assert.ok(out.entities.every((e) => e.inferredOwnershipOfNamedHotel === false));
 });
 
 console.log(`\n${passed} tests passed`);
