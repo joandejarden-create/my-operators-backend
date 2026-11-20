@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
   <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
-  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1-1" />
+  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1-2" />
   <script>
     (function () {
       if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
@@ -37,12 +37,12 @@
         <div>
           <h1>Surfe Usage</h1>
           <p class="adr-subtitle">
-            Monitor on-demand contact enrichment, lookup activity, and provider costs across Dealality.
+            Monitor on-demand contact enrichment by opportunity hotel, request origin, opportunity, and cost — without storing returned contact details.
           </p>
         </div>
       </div>
       <p class="asu-history-note" id="asuHistoryNote">
-        Metrics reflect events recorded after Surfe Usage Tracking V1. Pre-tracking history is not fabricated.
+        Metrics reflect events recorded after Surfe Usage Tracking V1. Fixture/test rows are labeled and are not customer adoption. Pre-tracking history is not fabricated.
       </p>
     </header>
 
@@ -56,10 +56,18 @@
         <input type="date" id="asuTo" />
       </label>
       <label>
-        Hotel
+        Opportunity hotel
         <select id="asuHotel">
           <option value="">All hotels</option>
         </select>
+      </label>
+      <label>
+        Requesting organization
+        <input type="text" id="asuRequestingOrg" placeholder="Org / portfolio" autocomplete="off" />
+      </label>
+      <label>
+        Opportunity
+        <input type="text" id="asuOpportunity" placeholder="Opportunity ID" autocomplete="off" />
       </label>
       <label>
         Portfolio
@@ -74,6 +82,20 @@
           <option value="no_match">No match</option>
           <option value="error">Error</option>
         </select>
+      </label>
+      <label>
+        Environment
+        <select id="asuEnvironment">
+          <option value="">All environments</option>
+          <option value="production">Production</option>
+          <option value="staging">Staging</option>
+          <option value="development">Development</option>
+          <option value="test">Test / fixture</option>
+        </select>
+      </label>
+      <label class="asu-check">
+        <input type="checkbox" id="asuHideFixtures" />
+        Hide fixture/test
       </label>
       <button type="button" class="adr-btn" id="asuApplyFilters">Apply</button>
       <button type="button" class="adr-btn adr-btn--secondary" id="asuClearFilters">Clear filters</button>
@@ -109,27 +131,59 @@
       </div>
     </section>
 
-    <section class="asu-panel">
-      <div class="asu-panel__head">
-        <h2>Hotel performance</h2>
-      </div>
-      <div class="adr-table-wrap asu-table-wrap">
-        <table class="adr-table asu-table" id="asuHotelsTable">
-          <thead>
-            <tr>
-              <th>Hotel</th>
-              <th>Portfolio</th>
-              <th>Total lookups</th>
-              <th>Email searches</th>
-              <th>Phone searches</th>
-              <th>Successful lookups</th>
-              <th>Credits consumed</th>
-              <th>Estimated cost</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <section class="asu-panel-grid asu-panel-grid--3">
+      <section class="asu-panel">
+        <div class="asu-panel__head"><h2>Usage by opportunity hotel</h2></div>
+        <div class="adr-table-wrap asu-table-wrap">
+          <table class="adr-table asu-table" id="asuHotelsTable">
+            <thead>
+              <tr>
+                <th>Opportunity hotel</th>
+                <th>Class</th>
+                <th>Lookups</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Success</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="asu-panel">
+        <div class="asu-panel__head"><h2>Usage by requesting organization</h2></div>
+        <div class="adr-table-wrap asu-table-wrap">
+          <table class="adr-table asu-table" id="asuOrgsTable">
+            <thead>
+              <tr>
+                <th>Requesting organization</th>
+                <th>Lookups</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="asu-panel">
+        <div class="asu-panel__head"><h2>Most researched opportunities</h2></div>
+        <div class="adr-table-wrap asu-table-wrap">
+          <table class="adr-table asu-table" id="asuOppsTable">
+            <thead>
+              <tr>
+                <th>Opportunity</th>
+                <th>Hotel</th>
+                <th>Lookups</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
     <section class="asu-panel-grid">
@@ -142,13 +196,14 @@
             <thead>
               <tr>
                 <th>Date/time</th>
-                <th>Hotel</th>
+                <th>Opportunity hotel</th>
+                <th>Requesting org / office</th>
                 <th>Opportunity</th>
                 <th>Lookup type</th>
                 <th>Result</th>
                 <th>Credits</th>
-                <th>Certainty</th>
                 <th>Est. cost</th>
+                <th>Environment</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -195,6 +250,6 @@
 
   <script src="/js/memberstack-auth.js"></script>
   <script src="/js/support-admin-gate.js"></script>
-  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v1-1"></script>
+  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v1-2"></script>
 </body>
 </html>

@@ -47,13 +47,27 @@
     var to = document.getElementById("asuTo").value;
     var hotelId = document.getElementById("asuHotel").value;
     var portfolioId = document.getElementById("asuPortfolio").value.trim();
+    var opportunityId = document.getElementById("asuOpportunity").value.trim();
+    var requestingOrganization = document
+      .getElementById("asuRequestingOrg")
+      .value.trim();
     var outcome = document.getElementById("asuOutcome").value;
+    var environment = document.getElementById("asuEnvironment").value;
+    var hideFixtures = document.getElementById("asuHideFixtures").checked;
     var q = [];
     if (from) q.push("from=" + encodeURIComponent(from));
     if (to) q.push("to=" + encodeURIComponent(to + "T23:59:59.999Z"));
     if (hotelId) q.push("hotelId=" + encodeURIComponent(hotelId));
     if (portfolioId) q.push("portfolioId=" + encodeURIComponent(portfolioId));
+    if (opportunityId) q.push("opportunityId=" + encodeURIComponent(opportunityId));
+    if (requestingOrganization) {
+      q.push(
+        "requestingOrganization=" + encodeURIComponent(requestingOrganization),
+      );
+    }
     if (outcome) q.push("status=" + encodeURIComponent(outcome));
+    if (environment) q.push("environment=" + encodeURIComponent(environment));
+    if (hideFixtures) q.push("hideFixtures=1");
     return q.length ? "?" + q.join("&") : "";
   }
 
@@ -62,7 +76,11 @@
     document.getElementById("asuTo").value = "";
     document.getElementById("asuHotel").value = "";
     document.getElementById("asuPortfolio").value = "";
+    document.getElementById("asuOpportunity").value = "";
+    document.getElementById("asuRequestingOrg").value = "";
     document.getElementById("asuOutcome").value = "";
+    document.getElementById("asuEnvironment").value = "";
+    document.getElementById("asuHideFixtures").checked = false;
   }
 
   function renderKpis(totals, remainingCredits) {
@@ -98,6 +116,14 @@
       {
         label: "Accounting failures",
         value: num(totals.accountingFailureCount),
+      },
+      {
+        label: "Fixture / test (not adoption)",
+        value: num(totals.fixtureTestCount),
+      },
+      {
+        label: "Production class lookups",
+        value: num(totals.productionCount),
       },
     ];
     var root = document.getElementById("asuKpis");
@@ -183,11 +209,13 @@
           Number(h.phoneSearches || 0) + Number(h.bothSearches || 0);
         var emailSearches =
           Number(h.emailSearches || 0) + Number(h.bothSearches || 0);
+        var name = h.hotelName || "UNKNOWN";
         return (
           "<tr><td>" +
-          esc(h.hotelName || h.hotelId) +
+          esc(name) +
+          (h.hotelId ? '<div class="asu-muted">' + esc(h.hotelId) + "</div>" : "") +
           "</td><td>" +
-          esc(h.portfolioId || "—") +
+          esc(h.usageClass || "—") +
           "</td><td>" +
           esc(h.lookups) +
           "</td><td>" +
@@ -200,6 +228,66 @@
           esc(h.creditsConsumed) +
           "</td><td>" +
           esc(money(h.costEstimateUsd)) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+  }
+
+  function renderOrgs(orgs) {
+    var tbody = document.querySelector("#asuOrgsTable tbody");
+    if (!tbody) return;
+    if (!orgs || !orgs.length) {
+      tbody.innerHTML = emptyRow(4, "No requesting-organization attribution yet.");
+      return;
+    }
+    tbody.innerHTML = orgs
+      .map(function (o) {
+        return (
+          "<tr><td>" +
+          esc(o.requestingOrganizationName || "UNKNOWN") +
+          "</td><td>" +
+          esc(o.lookups) +
+          "</td><td>" +
+          esc(o.creditsConsumed) +
+          "</td><td>" +
+          esc(money(o.costEstimateUsd)) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+  }
+
+  function renderTopOpps(rows) {
+    var tbody = document.querySelector("#asuOppsTable tbody");
+    if (!tbody) return;
+    if (!rows || !rows.length) {
+      tbody.innerHTML = emptyRow(4, "No opportunity-level usage yet.");
+      return;
+    }
+    tbody.innerHTML = rows
+      .map(function (o) {
+        var title = o.opportunityTitle || "UNKNOWN";
+        var link =
+          o.drawerHref && title !== "UNKNOWN"
+            ? '<a class="asu-link" href="' +
+              esc(o.drawerHref) +
+              '" target="_top">' +
+              esc(title) +
+              "</a>"
+            : esc(title);
+        return (
+          "<tr><td>" +
+          link +
+          (o.opportunityId
+            ? '<div class="asu-muted">' + esc(o.opportunityId) + "</div>"
+            : "") +
+          "</td><td>" +
+          esc(o.hotelName || "UNKNOWN") +
+          "</td><td>" +
+          esc(o.lookups) +
+          "</td><td>" +
+          esc(money(o.costEstimateUsd)) +
           "</td></tr>"
         );
       })
@@ -226,7 +314,7 @@
     var tbody = document.querySelector("#asuLatestTable tbody");
     if (!rows || !rows.length) {
       tbody.innerHTML = emptyRow(
-        8,
+        9,
         "No lookup activity recorded yet for these filters.",
       );
       return;
@@ -238,20 +326,44 @@
             ? "—"
             : String(r.creditsCharged) +
               (r.creditCertainty ? " (" + r.creditCertainty + ")" : "");
+        var oppTitle = r.opportunityTitle || "UNKNOWN";
+        var oppCell =
+          r.opportunityDrawerHref && oppTitle !== "UNKNOWN"
+            ? '<a class="asu-link" href="' +
+              esc(r.opportunityDrawerHref) +
+              '" target="_top">' +
+              esc(oppTitle) +
+              "</a>"
+            : esc(oppTitle);
+        if (r.opportunityId) {
+          oppCell +=
+            '<div class="asu-muted">' + esc(r.opportunityId) + "</div>";
+        }
+        var origin =
+          (r.requestingOrganizationName || "UNKNOWN") +
+          (r.requestingHotelOrOfficeId &&
+          r.requestingHotelOrOfficeId !== "UNKNOWN"
+            ? " · " + r.requestingHotelOrOfficeId
+            : "");
+        var envLabel =
+          (r.dataEnvironment || "—") +
+          (r.usageClass ? " · " + r.usageClass : "");
         return (
           "<tr><td>" +
           esc(r.at) +
           "</td><td>" +
-          esc(r.hotelName || r.hotelId) +
+          esc(r.hotelName || "UNKNOWN") +
           "</td><td>" +
-          esc(r.opportunityId || "—") +
+          esc(origin) +
+          "</td><td>" +
+          oppCell +
           "</td><td>" +
           esc(r.lookupType || "—") +
           "</td><td>" +
           statusPill(r.status) +
           "</td><td>" +
           esc(creditsDisplay) +
-          "</td><td>" +
+          " " +
           certaintyPill(r.creditCertainty) +
           "</td><td>" +
           esc(
@@ -260,6 +372,8 @@
               : money(r.costEstimateUsd) +
                   (r.costCertainty ? " (" + r.costCertainty + ")" : ""),
           ) +
+          "</td><td>" +
+          esc(envLabel) +
           "</td></tr>"
         );
       })
@@ -298,6 +412,29 @@
         esc(durability.store || "filesystem") +
         "</strong> · " +
         esc(durability.mechanism || "lock + atomic write"),
+      "Airtable sync: <strong>" +
+        esc(
+          (summaryData.airtableSyncHealth &&
+            summaryData.airtableSyncHealth.tableStatus) ||
+            "PROPOSED",
+        ) +
+        "</strong> · pending " +
+        esc(
+          summaryData.airtableSyncHealth
+            ? summaryData.airtableSyncHealth.pending
+            : "—",
+        ) +
+        " · synced " +
+        esc(
+          summaryData.airtableSyncHealth
+            ? summaryData.airtableSyncHealth.synced
+            : "—",
+        ),
+      esc(
+        summaryData.totals && summaryData.totals.adoptionNote
+          ? summaryData.totals.adoptionNote
+          : "Fixture/test usage is labeled and is not customer adoption.",
+      ),
       "Personal contact details are not stored in this ledger.",
     ]
       .map(function (html) {
@@ -372,6 +509,8 @@
     fillHotelFilter(data.hotels || []);
     renderTrends();
     renderHotels(data.hotels || []);
+    renderOrgs(data.requestingOrganizations || []);
+    renderTopOpps(data.topOpportunities || []);
     renderLatest(data.latestActivity || []);
     renderOps(data);
     setStatus("Updated " + (data.generatedAt || ""));
