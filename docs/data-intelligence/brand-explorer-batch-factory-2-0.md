@@ -33,6 +33,8 @@ npm run be-factory-2-batch4               # Tapestry / Tempo / Design / Aloft / 
 npm run be-factory-2-batch5               # JW / W / Le Méridien / Waldorf / Conrad / LXR / Park Hyatt / Grand Hyatt / Andaz / Hyatt Place
 npm run be-factory-2-batch6               # Ritz / St. Regis / EDITION / Luxury Collection / Renaissance / Signia / Alila / Hyatt House / InterContinental / Six Senses
 npm run be-factory-2-batch7               # Garner / Sleep Inn / Econo / Rodeway / MainStay / Days Inn / Super 8 / Microtel / Baymont / Travelodge
+npm run be-factory-2-confirm-batch8-ids   # Wyndham / BWH / Sonesta identity confirm
+npm run be-factory-2-batch8               # Batch 8 — 20 economy/midscale/extended-stay
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
 npm run test:be-factory-2-master-queue-reconcile-v1
@@ -81,6 +83,13 @@ Review package: `reports/brand-explorer/factory-2-0/51-batch6-consolidated-revie
 Economy / midscale / affordable extended-stay: Garner, Sleep Inn, Econo Lodge, Rodeway Inn, MainStay Suites, Days Inn, Super 8, Microtel, Baymont, Travelodge.  
 Choice Privileges + Wyndham Rewards loyalty-six; FDD disclosure language only (no invented fees).  
 Review package: `reports/brand-explorer/factory-2-0/61-batch7-consolidated-review.md`.
+
+## Batch 8 (2026-11-20)
+
+Twenty economy / midscale / extended-stay brands across Wyndham, BWH, and Sonesta (La Quinta → Americas Best Value Inn).  
+All EXISTING_CANONICAL (0 Basics creates). Brand-specific exact-six Demand Scenario Fit; Wyndham Rewards / Best Western Rewards / Sonesta Travel Pass loyalty-six; FDD disclosure language only.  
+Empty Presentation → Autograph slot-parity completion.  
+Review package: `reports/brand-explorer/factory-2-0/81-batch8-founder-dashboard.md`.
 
 ## Durable storage
 
