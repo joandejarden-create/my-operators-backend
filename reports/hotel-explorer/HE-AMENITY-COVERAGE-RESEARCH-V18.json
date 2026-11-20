@@ -1,0 +1,161 @@
+{
+  "version": "he-amenity-coverage-research-v18",
+  "generatedAt": "2026-11-19T21:27:41.523Z",
+  "previousBethDisplayed": 9,
+  "diagnosis": "Thin ADP guest-amenity catalog (9 after geo/brand filter) + exclusive verified-only UI merge; parking/pets/accessibility blocked as UNVERIFIED despite Marriott.com evidence.",
+  "recoveredFromOfficialMarriottOverview": [
+    "business_center",
+    "concierge",
+    "room_service",
+    "free_wifi",
+    "pet_friendly",
+    "on_site_parking",
+    "metro_shuttle",
+    "room_accessibility"
+  ],
+  "airtableApplyAuthorized": false,
+  "persistence": {
+    "classification": "PERSISTENCE_DESIGNED",
+    "destination": "ADP property profile fixture (canonical for founder preview) + proposed HPC amenity structured tags dry-run",
+    "mutations": [
+      {
+        "action": "UPDATE_FIXTURE",
+        "path": "fixtures/ai-demand-positioning/bethesda-marriott-property-profile.json",
+        "fields": [
+          "attributes",
+          "attributeEvidence",
+          "notes"
+        ],
+        "applyAuthorized": false
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "Hotel Property Census",
+        "recordId": "recLuxvwwxID7U2B8",
+        "note": "Proposed structured amenity tags / amenities text refresh from Marriott.com WASBT — dry-run only; no production write",
+        "applyAuthorized": false
+      }
+    ]
+  },
+  "hotels": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "enrichmentOk": true,
+      "rawVerifiedAmenities": 23,
+      "displayed": [
+        "Ballroom",
+        "Meeting & Event Space",
+        "Cooper's Mill Restaurant",
+        "Outdoor Pool",
+        "24-Hour Fitness Center",
+        "Peloton Fitness",
+        "M Club / Concierge Level",
+        "Concierge Service",
+        "Business Center",
+        "On-Site Parking",
+        "Complimentary Metro Shuttle",
+        "Washington DC Metro Access",
+        "NIH Access",
+        "Accessible Rooms & Facilities",
+        "Room Service",
+        "Complimentary Wi-Fi",
+        "Pet-Friendly"
+      ],
+      "coverage": {
+        "verifiedCount": 17,
+        "displayedCount": 17,
+        "overflowCount": 0,
+        "targetMin": 12,
+        "max": 20,
+        "belowTargetMin": false,
+        "shortfall": 0
+      },
+      "research": {
+        "version": "he-amenity-coverage-research-v1",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "hotelName": "Bethesda Marriott",
+        "verifiedCount": 17,
+        "targetMin": 12,
+        "max": 20,
+        "belowTargetMin": false,
+        "shortfall": 0,
+        "researchTrigger": false,
+        "status": "COVERAGE_OK",
+        "customerFacingCompletenessIndicator": false,
+        "guidance": "Verified amenity coverage meets the research target minimum."
+      }
+    },
+    {
+      "hotelId": "recUNycnMwOVFX0hc",
+      "hotelName": "Krystal Grand Puerto Vallarta",
+      "enrichmentOk": true,
+      "rawVerifiedAmenities": 0,
+      "displayed": [],
+      "coverage": {
+        "verifiedCount": 0,
+        "displayedCount": 0,
+        "overflowCount": 0,
+        "targetMin": 12,
+        "max": 20,
+        "belowTargetMin": true,
+        "shortfall": 12
+      },
+      "research": {
+        "version": "he-amenity-coverage-research-v1",
+        "hotelId": "recUNycnMwOVFX0hc",
+        "hotelName": "Krystal Grand Puerto Vallarta",
+        "verifiedCount": 0,
+        "targetMin": 12,
+        "max": 20,
+        "belowTargetMin": true,
+        "shortfall": 12,
+        "researchTrigger": true,
+        "status": "RESEARCH_GAP",
+        "customerFacingCompletenessIndicator": false,
+        "guidance": "Investigate ADP catalog, HPC amenities, and first-party brand materials for additional verified guest attributes. Do not invent amenities to meet the minimum."
+      }
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotelName": "Third validation hotel",
+      "enrichmentOk": true,
+      "rawVerifiedAmenities": 12,
+      "displayed": [
+        "Ballroom",
+        "Large Ballroom",
+        "Meeting & Event Space",
+        "Outdoor Event Space",
+        "Panoramic Views",
+        "Private Balconies",
+        "Suite Inventory",
+        "Upscale Positioning",
+        "Waterfront Location",
+        "Wedding Venue"
+      ],
+      "coverage": {
+        "verifiedCount": 10,
+        "displayedCount": 10,
+        "overflowCount": 0,
+        "targetMin": 12,
+        "max": 20,
+        "belowTargetMin": true,
+        "shortfall": 2
+      },
+      "research": {
+        "version": "he-amenity-coverage-research-v1",
+        "hotelId": "recnPB3Q02NO8Ma1o",
+        "hotelName": "Third validation hotel",
+        "verifiedCount": 10,
+        "targetMin": 12,
+        "max": 20,
+        "belowTargetMin": true,
+        "shortfall": 2,
+        "researchTrigger": true,
+        "status": "RESEARCH_GAP",
+        "customerFacingCompletenessIndicator": false,
+        "guidance": "Investigate ADP catalog, HPC amenities, and first-party brand materials for additional verified guest attributes. Do not invent amenities to meet the minimum."
+      }
+    }
+  ]
+}

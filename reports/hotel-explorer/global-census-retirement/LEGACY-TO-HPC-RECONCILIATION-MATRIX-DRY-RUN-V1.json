@@ -1,0 +1,53 @@
+{
+    "version":  "reconcile-legacy-census-to-hpc-dry-run-v1",
+    "generatedAt":  "2026-11-19T23:26:52.327Z",
+    "applyAuthorized":  false,
+    "airtableWrites":  0,
+    "hpcTable":  "Hotel Property Census",
+    "matrix":  [
+                   {
+                       "LEGACY_ID":  "recyX1wLsHBJYRPw7",
+                       "CANONICAL_HPC_ID":  null,
+                       "MATCH_STATUS":  "NEW_HPC_CANDIDATE",
+                       "FIELD_ACTIONS":  [
+                                             "PROPOSE_CREATE_AFTER_FOUNDER_APPROVAL",
+                                             "LEGACY_PROVENANCE_ONLY:recyX1wLsHBJYRPw7"
+                                         ],
+                       "EVIDENCE":  {
+                                        "hotelName":  "Secrets Papagayo Costa Rica",
+                                        "hpcCollisionOutcome":  "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+                                        "candidates":  [
+
+                                                       ]
+                                    }
+                   },
+                   {
+                       "LEGACY_ID":  null,
+                       "CANONICAL_HPC_ID":  "recLuxvwwxID7U2B8",
+                       "MATCH_STATUS":  "MATCHED_HPC",
+                       "FIELD_ACTIONS":  [
+                                             "PRESERVE_HPC",
+                                             "NO_LEGACY_OVERWRITE"
+                                         ],
+                       "EVIDENCE":  {
+                                        "hotelName":  "Bethesda Marriott",
+                                        "hpcCollisionOutcome":  "HPC_EXISTING_RECORD_VERIFIED",
+                                        "candidates":  [
+                                                           {
+                                                               "id":  "recLuxvwwxID7U2B8",
+                                                               "name":  "Bethesda Marriott",
+                                                               "score":  1
+                                                           }
+                                                       ]
+                                    }
+                   }
+               ],
+    "legacySample":  {
+                         "attempted":  false,
+                         "note":  "migration read not enabled"
+                     },
+    "certificationNote":  "HPC_DATA_RECONCILED remains false until full-table matrix + founder-approved field actions complete.",
+    "deprecatedBanner":  "DEPRECATED — PROHIBITED LEGACY DATA SOURCE",
+    "pipelineUseProhibited":  true,
+    "founderCorrection":  "2026-11-20-hpc-only-zero-legacy-data"
+}

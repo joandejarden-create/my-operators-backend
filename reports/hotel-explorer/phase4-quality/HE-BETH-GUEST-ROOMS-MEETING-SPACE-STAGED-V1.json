@@ -1,0 +1,133 @@
+{
+  "hpcId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "persisted": false,
+  "writeOnGet": false,
+  "generatedAt": "2026-11-19T17:15:00.000Z",
+  "guestRooms": {
+    "totalGuestrooms": {
+      "value": 407,
+      "verificationStatus": "VERIFIED",
+      "source": "Hotel Property Census / brand-presence",
+      "note": "Canonical rooms count"
+    },
+    "singleBedRooms": {
+      "value": 171,
+      "verificationStatus": "BRAND_MATERIALS_REFERENCE",
+      "source": "Founder-supplied Marriott inventory reference",
+      "note": "Not yet independently re-counted in live brand DOM; do not treat as Airtable-persisted"
+    },
+    "doubleBedRooms": {
+      "value": 236,
+      "verificationStatus": "BRAND_MATERIALS_REFERENCE",
+      "source": "Founder-supplied Marriott inventory reference",
+      "note": "171 + 236 = 407; suites are not added on top of this total"
+    },
+    "suites": {
+      "value": 8,
+      "verificationStatus": "BRAND_MATERIALS_REFERENCE",
+      "source": "Founder-supplied Marriott inventory reference",
+      "note": "Suite count is a subset classification — do not add to 407"
+    },
+    "aggregationRule": "TOTAL_IS_CANONICAL; ROOM_TYPE_COUNTS_ARE_PARTITION_OF_TOTAL; SUITES_NOT_ADDITIVE"
+  },
+  "meetingSpaceSummary": {
+    "totalMeetingSpaceSqFt": {
+      "value": 18719,
+      "verificationStatus": "VERIFIED",
+      "sourceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+      "source": "Marriott capacity chart / HI meeting-space enrichment",
+      "note": "Sum of listed capacity-chart areas is not used; published aggregate used"
+    },
+    "privateSpaceMarketingSqFt": {
+      "value": 19000,
+      "verificationStatus": "MARKETING_FIGURE",
+      "sourceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+      "note": "Overview copy says ~19,000 sq ft — distinct from capacity-chart aggregate 18,719; do not merge"
+    },
+    "meetingRoomCount": {
+      "value": 27,
+      "verificationStatus": "VERIFIED",
+      "sourceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+      "note": "Published meeting-room count; divisible salons listed separately in inventory and excluded from additive totals"
+    },
+    "largestRoom": {
+      "name": "Grand Ballroom",
+      "areaSqFt": 4592,
+      "dimensions": "112 × 41 × 14 ft",
+      "ceilingFt": 14,
+      "theater": 425,
+      "banquet": 320,
+      "reception": 450,
+      "verificationStatus": "VERIFIED",
+      "sourceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/"
+    },
+    "outdoorEventSpace": {
+      "value": null,
+      "verificationStatus": "NOT_YET_VERIFIED"
+    },
+    "floorPlanUrl": {
+      "value": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+      "verificationStatus": "VERIFIED",
+      "label": "Official Marriott meeting & events page (capacity chart / floor-plan materials)"
+    }
+  },
+  "meetingRooms": [
+    {"name": "Grand Ballroom", "dimensions": "112×41×14", "areaSqFt": 4592, "ceilingFt": 14, "theater": 425, "classroom": 260, "conference": null, "uShape": null, "reception": 450, "banquet": 320, "kind": "ballroom_combined", "includeInAggregate": true},
+    {"name": "Grand Ballroom (Salon A)", "dimensions": "22×41×14", "areaSqFt": 902, "ceilingFt": 14, "theater": 90, "classroom": 48, "conference": 32, "uShape": 30, "reception": 70, "banquet": 70, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Grand Ballroom (Salon B)", "dimensions": "22×41×14", "areaSqFt": 902, "ceilingFt": 14, "theater": 90, "classroom": 48, "conference": 32, "uShape": 30, "reception": 70, "banquet": 60, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Grand Ballroom (Salon C)", "dimensions": "22×41×14", "areaSqFt": 902, "ceilingFt": 14, "theater": 90, "classroom": 48, "conference": 32, "uShape": 30, "reception": 70, "banquet": 60, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Grand Ballroom (Salon D)", "dimensions": "22×41×14", "areaSqFt": 902, "ceilingFt": 14, "theater": 90, "classroom": 48, "conference": 32, "uShape": 30, "reception": 70, "banquet": 60, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Grand Ballroom (Salon E)", "dimensions": "22×41×14", "areaSqFt": 902, "ceilingFt": 14, "theater": 90, "classroom": 48, "conference": 32, "uShape": 30, "reception": 70, "banquet": 70, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Maryland Suites", "dimensions": "93×24×11", "areaSqFt": 2232, "ceilingFt": 11, "theater": 180, "classroom": 112, "conference": null, "uShape": null, "reception": 250, "banquet": 180, "kind": "suite_combined", "includeInAggregate": true},
+    {"name": "Rockville", "dimensions": "24×24×11", "areaSqFt": 576, "ceilingFt": 11, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Chevy Chase", "dimensions": "24×24×11", "areaSqFt": 576, "ceilingFt": 11, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Bethesda", "dimensions": "24×24×11", "areaSqFt": 576, "ceilingFt": 11, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Potomac", "dimensions": "24×24×11", "areaSqFt": 576, "ceilingFt": 11, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Kenwood Suites", "dimensions": "72×24×10", "areaSqFt": 1728, "ceilingFt": 10, "theater": null, "classroom": null, "conference": null, "uShape": null, "reception": 120, "banquet": 120, "kind": "suite_combined", "includeInAggregate": true},
+    {"name": "Great Falls", "dimensions": "24×24×10", "areaSqFt": 576, "ceilingFt": 10, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Kenwood", "dimensions": "24×24×10", "areaSqFt": 576, "ceilingFt": 10, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Montrose", "dimensions": "24×24×10", "areaSqFt": 576, "ceilingFt": 10, "theater": 40, "classroom": 24, "conference": 18, "uShape": 18, "reception": 40, "banquet": 40, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Pooks Hill", "dimensions": "24×24×10", "areaSqFt": 576, "ceilingFt": 10, "theater": 40, "classroom": 24, "conference": 16, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Kensington", "dimensions": "24×24×10", "areaSqFt": 576, "ceilingFt": 10, "theater": 40, "classroom": 24, "conference": 16, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Gaithersburg", "dimensions": "24×24×10", "areaSqFt": 576, "ceilingFt": 10, "theater": 40, "classroom": 24, "conference": 16, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Pooks Hill, Kensington (combined)", "dimensions": "24×48×10", "areaSqFt": 1152, "ceilingFt": 10, "theater": 70, "classroom": 48, "conference": 30, "uShape": 30, "reception": 80, "banquet": 60, "kind": "combined_config", "includeInAggregate": false},
+    {"name": "Congressional Ballroom", "dimensions": "44×78×13", "areaSqFt": 3432, "ceilingFt": 13, "theater": 300, "classroom": 200, "conference": null, "uShape": null, "reception": 350, "banquet": 240, "kind": "ballroom_combined", "includeInAggregate": true},
+    {"name": "Congressional Ballroom (Salon I)", "dimensions": "44×26×13", "areaSqFt": 1144, "ceilingFt": 13, "theater": 100, "classroom": 60, "conference": 30, "uShape": 32, "reception": 140, "banquet": 80, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Congressional Ballroom (Salon II)", "dimensions": "44×26×13", "areaSqFt": 1144, "ceilingFt": 13, "theater": 100, "classroom": 60, "conference": 30, "uShape": 32, "reception": 140, "banquet": 80, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Congressional Ballroom (Salon III)", "dimensions": "44×26×13", "areaSqFt": 1144, "ceilingFt": 13, "theater": 100, "classroom": 60, "conference": 30, "uShape": 32, "reception": 140, "banquet": 80, "kind": "ballroom_salon", "includeInAggregate": false},
+    {"name": "Senate Suites (combined)", "dimensions": "76×24×9", "areaSqFt": 1990, "ceilingFt": 9, "theater": null, "classroom": null, "conference": null, "uShape": null, "reception": 250, "banquet": 130, "kind": "suite_combined", "includeInAggregate": true},
+    {"name": "Hart", "dimensions": "24×33×9", "areaSqFt": 792, "ceilingFt": 9, "theater": 50, "classroom": 36, "conference": 24, "uShape": 24, "reception": 50, "banquet": 60, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Dirksen", "dimensions": "24×19×9", "areaSqFt": 456, "ceilingFt": 9, "theater": 20, "classroom": 18, "conference": 12, "uShape": 12, "reception": 30, "banquet": 20, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Russell", "dimensions": "26×25×9", "areaSqFt": 650, "ceilingFt": 9, "theater": 40, "classroom": 30, "conference": 18, "uShape": 18, "reception": 40, "banquet": 50, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Annapolis / Chesapeake (combined)", "dimensions": "34×29×9", "areaSqFt": 986, "ceilingFt": 9, "theater": 60, "classroom": 40, "conference": 24, "uShape": 26, "reception": 70, "banquet": 60, "kind": "combined_config", "includeInAggregate": false},
+    {"name": "Annapolis", "dimensions": "29×17×9", "areaSqFt": 493, "ceilingFt": 9, "theater": 30, "classroom": 20, "conference": 16, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Chesapeake", "dimensions": "29×17×9", "areaSqFt": 493, "ceilingFt": 9, "theater": 30, "classroom": 20, "conference": 16, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Montgomery / Democracy (combined)", "dimensions": "54×19×9", "areaSqFt": 1026, "ceilingFt": 9, "theater": 80, "classroom": 50, "conference": 30, "uShape": 32, "reception": 80, "banquet": 60, "kind": "combined_config", "includeInAggregate": false},
+    {"name": "Montgomery", "dimensions": "24×19×9", "areaSqFt": 456, "ceilingFt": 9, "theater": 40, "classroom": 25, "conference": 15, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Democracy", "dimensions": "24×19×9", "areaSqFt": 456, "ceilingFt": 9, "theater": 40, "classroom": 25, "conference": 15, "uShape": 16, "reception": 40, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true},
+    {"name": "Boardroom", "dimensions": "24×25×9", "areaSqFt": 600, "ceilingFt": 9, "theater": null, "classroom": null, "conference": 12, "uShape": null, "reception": null, "banquet": null, "kind": "boardroom", "includeInAggregate": true},
+    {"name": "Merle Thorpe", "dimensions": "36.5×17×8", "areaSqFt": 620.5, "ceilingFt": 8, "theater": 40, "classroom": 20, "conference": 20, "uShape": 22, "reception": 50, "banquet": 30, "kind": "meeting_room", "includeInAggregate": true}
+  ],
+  "sources": [
+    {
+      "title": "Marriott — Bethesda Marriott Meeting & Events capacity chart",
+      "url": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+      "supports": ["meeting_room_inventory", "largest_ballroom", "meeting_space_aggregate_18719", "capacities"],
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "title": "Marriott — Bethesda Marriott Overview (marketing private space figure)",
+      "url": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+      "supports": ["private_space_marketing_19000", "product_amenities_context"],
+      "verificationStatus": "MARKETING_FIGURE",
+      "does_not": "Does not replace the capacity-chart aggregate of 18,719 sq ft"
+    },
+    {
+      "title": "Hotel Property Census — Rooms",
+      "url": null,
+      "supports": ["total_guestrooms_407"],
+      "verificationStatus": "VERIFIED"
+    }
+  ]
+}

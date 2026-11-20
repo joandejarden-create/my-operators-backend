@@ -1,0 +1,112 @@
+{
+  "version": "he-beth-stakeholder-upserts-dry-run-v1",
+  "generatedAt": "2026-11-19T22:00:00.000Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "applyAuthorized": false,
+  "execute": false,
+  "surfeDerivedIncluded": false,
+  "policy": "Reuse HI Organizations / Rel / Evidence / Org Contacts. No duplicate orgs or people. Historical ≠ current. Do not overwrite stronger verified with weaker.",
+  "researchCoverage": {
+    "legal_ownership": "VERIFIED_RESEARCH_PERSIST_BLOCKED",
+    "economic_ownership": "SPONSOR_VERIFIED_UBO_UNRESOLVED",
+    "asset_management": "FIRM_VERIFIED_PROPERTY_ASSIGNMENT_GAP",
+    "financing": "HISTORICAL_VERIFIED_CURRENT_GAP",
+    "equity_jv": "NO_PUBLIC_CURRENT_RESULT",
+    "operator": "LIVE_VERIFIED",
+    "brand": "LIVE_VERIFIED",
+    "development": "NOT_APPLICABLE_OPEN_HOTEL",
+    "advisors": "HISTORICAL_VERIFIED_CURRENT_GAP",
+    "key_people": "IDENTITY_VERIFIED_CHANNELS_GAP",
+    "related_hotels": "PARTIAL_PROPOSED_PORTFOLIO"
+  },
+  "upserts": [
+    {
+      "action": "UPSERT_PROPOSED_DRY_RUN",
+      "target": "HI Organizations",
+      "dedupeKey": "mullen hospitality management|asset manager",
+      "fields": {
+        "legalName": "Mullen Hospitality Management",
+        "organizationType": "Asset Manager",
+        "website": "https://mullenhospitality.com/",
+        "relationshipToHotel": "ASSET_MANAGED_BY",
+        "temporal": "CURRENT",
+        "verificationStatus": "PROPOSED",
+        "confidence": "MEDIUM",
+        "sourceUrls": ["https://mullenhospitality.com/portfolio", "https://mullenhospitality.com/about/team/"],
+        "lastVerifiedDate": "2026-11-19",
+        "note": "Ops/investment supervision affiliate posture — not proof of named property AM assignment"
+      },
+      "execute": false
+    },
+    {
+      "action": "UPSERT_PROPOSED_DRY_RUN",
+      "target": "HI Organizations + HI Graph Evidence (historical financing)",
+      "dedupeKey": "ramsfield hospitality finance|historical lender|bethesda marriott",
+      "fields": {
+        "legalName": "Ramsfield Hospitality Finance",
+        "organizationType": "Lender",
+        "relationshipToHotel": "FINANCED_BY",
+        "temporal": "HISTORICAL",
+        "amountUsd": 63000000,
+        "amountNote": "Stretch senior first mortgage acquisition financing per Ramsfield case study; alternate index note cites $63,750,000 — not asserted as current balance",
+        "financingDateApprox": "2018",
+        "borrower": "Unnamed on lender marketing page (post-sale PropCo Marbeth Acquisition LLC)",
+        "verificationStatus": "HISTORICAL_PUBLIC",
+        "current": false,
+        "sourceUrls": [
+          "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+          "https://www.ramsfieldrealestate.com/projects-index/2018/6/14/bethesda-marriott"
+        ],
+        "lastVerifiedDate": "2026-11-19",
+        "note": "Historical financing announcement is NOT proof of the hotel's current lender"
+      },
+      "execute": false
+    },
+    {
+      "action": "UPSERT_PROPOSED_DRY_RUN",
+      "target": "HI Organizations + HI Graph Evidence (historical advisor)",
+      "dedupeKey": "hodges ward elliott|historical broker|bethesda marriott 2018 sale",
+      "fields": {
+        "legalName": "Hodges Ward Elliott",
+        "organizationType": "Advisor",
+        "relationshipToHotel": "ADVISED_BY",
+        "temporal": "HISTORICAL",
+        "roleDetail": "Represented former owner in Dec 2018 sale; capital markets also assisted purchaser financing",
+        "effectiveDate": "2018-12-03",
+        "verificationStatus": "HISTORICAL_PUBLIC",
+        "current": false,
+        "sourceUrls": [
+          "https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland/"
+        ],
+        "lastVerifiedDate": "2026-11-19",
+        "note": "Do not depict HWE as a current decision-maker"
+      },
+      "execute": false
+    },
+    {
+      "action": "UPSERT_PROPOSED_DRY_RUN",
+      "target": "HI Hotel–Org Relationship",
+      "dedupeKey": "recLuxvwwxID7U2B8|ASSET_MANAGED_BY|mullen hospitality management",
+      "fields": {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organization": "Mullen Hospitality Management",
+        "relationshipType": "Asset Manager",
+        "direction": "hotel→org",
+        "temporal": "CURRENT",
+        "confidence": "MEDIUM",
+        "verificationStatus": "PROPOSED",
+        "sourceUrls": ["https://mullenhospitality.com/portfolio"]
+      },
+      "execute": false
+    }
+  ],
+  "explicitNonWrites": [
+    "Do not create FINANCED_BY as CURRENT for Ramsfield",
+    "Do not assign Katherine Button or Patrick Reece as Bethesda property asset managers",
+    "Do not invent equity/JV parties",
+    "Do not create duplicate MREC / Marbeth / Marriott orgs",
+    "Do not persist Surfe-derived channels"
+  ],
+  "note": "Phase 3 / HE production Airtable apply remains blocked until founder authorization."
+}

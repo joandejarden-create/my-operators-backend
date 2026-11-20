@@ -46,7 +46,10 @@ export async function getGoldenDemoHotelOwnership(req, res) {
       console.warn("[golden-demo-ownership] hi-graph overlay skipped", graphErr?.message || graphErr);
     }
 
-    if (airtableGraph?.ok && airtableGraph.relationshipCount > 0) {
+    if (
+      airtableGraph?.ok &&
+      (airtableGraph.relationshipCount > 0 || (airtableGraph.evidenceCount || 0) > 0)
+    ) {
       const proj = airtableGraph.projection || {};
       const report = payload.report || {};
       const control = report.ownership_and_control || {};
@@ -83,19 +86,23 @@ export async function getGoldenDemoHotelOwnership(req, res) {
       }
       const portfolioHotels = [...portfolioByHotel.values()];
 
+      const graphSources = airtableGraph.sourcesForUi || [];
       payload.airtable_graph = {
         source: "HI_AIRTABLE_GRAPH",
         baseId: airtableGraph.baseId,
         relationshipCount: airtableGraph.relationshipCount,
+        evidenceCount: airtableGraph.evidenceCount || 0,
         control_status: proj.control_status,
         relationships: airtableGraph.relationships,
         organizations: airtableGraph.organizations,
+        evidence: airtableGraph.evidence || [],
         primaryOrganization: primaryOrg,
         portfolioCount: portfolioHotels.length,
         provenance: {
           class: "LIVE_HI_GRAPH_AIRTABLE",
           verified: true,
-          note: "HI Organizations + HI Hotel–Org Relationships on appCCUsuGsE1ifoLk",
+          note:
+            "HI Organizations + HI Hotel–Org Relationships + HI Graph Evidence on appCCUsuGsE1ifoLk",
         },
       };
 
@@ -265,9 +272,27 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             ...(report.research_status || {}),
             airtable_graph: true,
             economic_owner_resolved: economicResolved,
+            evidence_count: airtableGraph.evidenceCount || 0,
             message: economicResolved
               ? "HI graph includes validated economic owner."
               : "HI graph partial — operator/brand may be present; economic owner unresolved.",
+          },
+          // Sources tab SoT: HI Graph Evidence projected into existing citation shape.
+          evidence: {
+            ...(report.evidence || {}),
+            claim:
+              (report.evidence && report.evidence.claim) ||
+              (economicResolved
+                ? `Validated HI graph ownership edges for ${payload.hotel?.name || recordId}`
+                : `HI graph evidence and relationship edges for ${payload.hotel?.name || recordId}`),
+            sources: graphSources.length
+              ? graphSources
+              : (report.evidence && report.evidence.sources) || [],
+            what_it_proves:
+              "Source documents persisted in HI Graph Evidence and linked to this hotel.",
+            what_it_does_not_prove:
+              "Does not invent ultimate beneficial ownership; historical sources remain historical.",
+            source: "HI_GRAPH_EVIDENCE",
           },
           field_provenance: {
             operator: { class: operatorName ? "VERIFIED_HI_REL" : "EMPTY", source: "HI Hotel–Org Relationships" },
@@ -282,6 +307,10 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             portfolio_preview: {
               class: "VERIFIED_DERIVED",
               source: "HI Hotel–Org Relationships portfolio query",
+            },
+            sources: {
+              class: graphSources.length ? "VERIFIED_HI_EVIDENCE" : "EMPTY",
+              source: "HI Graph Evidence",
             },
           },
         };

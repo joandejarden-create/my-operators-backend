@@ -1,6 +1,7 @@
 /**
  * Operator Intelligence
- * Uses Hotel Census (ALT base): Property–Brand–Operator dataset.
+ * Uses Hotel Property Census (ALT base): Property–Brand–Operator dataset.
+ * Legacy Hotel Census is not queried on this path.
  * Ranks 3rd-party operators by keys, then hotel count, then segment match.
  */
 
@@ -40,25 +41,25 @@ function setCache(key, data) {
 }
 
 const F = {
-  table: "Hotel Census",
-  name: "name",
-  brand: "Affiliation",
+  table: "Hotel Property Census",
+  tableId: "tbl9aY5ijiuIzzWam",
+  name: "Property Name",
+  brand: "Current Brand",
   parentCompany: "Parent Company",
-  status: "status",
-  city: "city",
-  country: "country",
-  region: "Region",
-  locationType: "Location",
-  rooms: "rooms",
-  chainScale: "Chain Scale",
+  status: "Radar Status",
+  city: "City",
+  country: "Country",
+  region: "Continent",
+  locationType: "Asset Context",
+  rooms: "Rooms / Keys",
+  chainScale: "Hotel Class / Segment",
   lat: "Latitude",
   lng: "Longitude",
-  managementCompany: "Management Company",
+  managementCompany: "Operator / Management Company",
   operationType: "Operation Type",
-  // Optional – use if present in your base
   openDate: "Open Date",
   lastRenovation: "Last Renovation",
-  sourceUrl: "Source URL",
+  sourceUrl: "Official Property URL",
 };
 
 // Region filter: map UI regions to countries (matches Radar dropdown)

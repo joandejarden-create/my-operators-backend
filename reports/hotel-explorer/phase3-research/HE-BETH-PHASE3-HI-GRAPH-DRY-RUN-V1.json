@@ -1,0 +1,1198 @@
+{
+  "dryRun": true,
+  "applyAuthorized": false,
+  "stopBeforeProductionApply": true,
+  "generatedAt": "2026-11-19T15:14:20.438Z",
+  "hpcId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "sourcesTabContract": {
+    "retrieval": "GET golden-demo ownership → report.evidence.sources",
+    "airtableSoT": "HI Graph Evidence (tblc9JhKT1edr4grE)",
+    "reader": "listEvidenceForHotel + projectEvidenceToSourcesCitations",
+    "ui": "hotel-intelligence-workspace.js renderSourcesTab / buildCitations",
+    "noParallelStore": true
+  },
+  "spendUsdActual": 0,
+  "applyGate": {
+    "ok": true,
+    "mode": "DRY_RUN",
+    "write_guarantees": {
+      "contract": "HOTEL_INTELLIGENCE_RESEARCH_ENGINE_V1",
+      "contract_version": "1.0.0-p1",
+      "graph_contract": "HOTEL_INTELLIGENCE_AIRTABLE_GRAPH_V1",
+      "graph_contract_version": "1.0.1-p2-hpc-base",
+      "graph_base_id": "appCCUsuGsE1ifoLk",
+      "forbidden_base_id": "appa2cE7FTRmIbB32",
+      "hpc_table_id": "tbl9aY5ijiuIzzWam",
+      "canonical_writes": false,
+      "bulk_research_data_writes": false,
+      "airtable_schema_create": true,
+      "paid_providers": false,
+      "surfe": false,
+      "customer_publication": "BLOCKED",
+      "hpc_owner_operator_overwrite": false,
+      "radar_status_mutation": false,
+      "research_complete_claim_allowed": false
+    }
+  },
+  "staged": {
+    "hpc_id": "recLuxvwwxID7U2B8",
+    "case_id": "he_beth_phase3_sources_20261119",
+    "execution_mode": "MANUAL_FREE_FIRST",
+    "cost": {
+      "usd": 0,
+      "usd_status": "ACTUAL",
+      "credits": 0,
+      "note": "W0 free SDAT + public web; W1/W2 unused"
+    },
+    "organizations": [
+      {
+        "legal_name": "Marbeth Acquisition LLC",
+        "trading_name": "Marbeth Acquisition",
+        "jurisdiction": "US-PA",
+        "organization_type": "PropCo",
+        "confidence": "HIGH",
+        "note": "SDAT legal titleholder — evidence EV SDAT"
+      },
+      {
+        "legal_name": "Mullen Real Estate Capital",
+        "trading_name": "Mullen Real Estate Capital",
+        "jurisdiction": "US-PA",
+        "organization_type": "Owner Sponsor",
+        "official_website": "https://mullencap.com/",
+        "confidence": "HIGH",
+        "note": "Economic sponsor — portfolio + mailing match; UBO unresolved"
+      },
+      {
+        "legal_name": "Mullen Hospitality Management",
+        "trading_name": "Mullen Hospitality Management",
+        "jurisdiction": "US-PA",
+        "organization_type": "Asset Manager",
+        "official_website": "https://mullenhospitality.com/",
+        "confidence": "MEDIUM",
+        "note": "Ops & Investment Supervision"
+      }
+    ],
+    "relationships": [
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "relationship_type": "Legal Owner",
+        "org_dedupe_key": "org::marbeth_acquisition_llc::us_pa",
+        "confidence": "HIGH",
+        "verification_status": "Validated",
+        "note": "Supported by SDAT evidence document"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "relationship_type": "Economic Owner",
+        "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+        "confidence": "MEDIUM",
+        "verification_status": "Validated",
+        "note": "Sponsor attribution — distinct evidence from legal title; UBO unresolved"
+      }
+    ],
+    "persons": [
+      {
+        "display_name": "Jeff Mullen",
+        "title": "President and CEO",
+        "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+        "role_group": "Ownership / Decision Authority",
+        "confidence": "HIGH"
+      },
+      {
+        "display_name": "Katherine Button",
+        "title": "VP, Asset Management and Investments",
+        "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+        "role_group": "Asset Management",
+        "confidence": "HIGH"
+      },
+      {
+        "display_name": "Patrick Reece",
+        "title": "Director, Asset Management",
+        "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+        "role_group": "Asset Management",
+        "confidence": "MEDIUM"
+      }
+    ],
+    "channels": [
+      {
+        "kind": "email",
+        "value": "info@mullencap.com",
+        "subject_id": "org:org::mullen_real_estate_capital::us_pa",
+        "classification": "official_org",
+        "verification_status": "Verified Direct"
+      },
+      {
+        "kind": "address",
+        "value": "7 Campus Blvd., Suite 300, Newtown Square, PA 19073",
+        "subject_id": "org:org::mullen_real_estate_capital::us_pa",
+        "classification": "official_org",
+        "verification_status": "Verified Direct"
+      }
+    ],
+    "evidence": [
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Maryland SDAT Real Property — Montgomery County acct 03547343",
+        "source_url": "https://sdat.dat.maryland.gov/RealProperty/Pages/default.aspx",
+        "source_type": "Government Record",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Hotel–Org Relationship",
+        "field_name": "property_company / Legal Owner",
+        "value_observed": "Marbeth Acquisition LLC",
+        "evidence_snippet": "Supports: property_company = Marbeth Acquisition LLC (legal title / PropCo) | Legal Owner relationship (Validated) | property_history: 2019-01-09 transfer $69,500,415 from Bethesda Hotel Acquisition LLC (deed /57084/00234) | property_history: 2013-10-10 transfer $35,636,141 from CMG Bethesda Owner LLC (historical) | source_coverage / sources (primary government authority)",
+        "claims_supported": [
+          "property_company = Marbeth Acquisition LLC (legal title / PropCo)",
+          "Legal Owner relationship (Validated)",
+          "property_history: 2019-01-09 transfer $69,500,415 from Bethesda Hotel Acquisition LLC (deed /57084/00234)",
+          "property_history: 2013-10-10 transfer $35,636,141 from CMG Bethesda Owner LLC (historical)",
+          "source_coverage / sources (primary government authority)"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": true,
+        "notes": "Account District 07 / 03547343; Hotel Unit Bethesda Land Codm. SDAT mailing 7 Campus Blvd Newton Square PA 19073. Historical transfers on same record remain historical.",
+        "publisher": "Maryland Department of Assessments and Taxation",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://sdat.dat.maryland.gov/realproperty/pages/default.aspx"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Mullen Real Estate Capital — Portfolio",
+        "source_url": "https://mullencap.com/portfolio/",
+        "source_type": "Company Website",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Hotel–Org Relationship",
+        "field_name": "economic_owner",
+        "value_observed": "Mullen Real Estate Capital",
+        "evidence_snippet": "Supports: economic_owner sponsor association = Mullen Real Estate Capital (portfolio listing) | what_we_know[]: MREC lists Bethesda Marriott as active US hospitality asset",
+        "claims_supported": [
+          "economic_owner sponsor association = Mullen Real Estate Capital (portfolio listing)",
+          "what_we_know[]: MREC lists Bethesda Marriott as active US hospitality asset"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": true,
+        "notes": "Sponsor association from owner website portfolio. Distinct from SDAT legal title. Does NOT prove natural-person UBO.",
+        "publisher": "Mullen Real Estate Capital",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/portfolio"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Mullen Real Estate Capital — Contact",
+        "source_url": "https://mullencap.com/contact/",
+        "source_type": "Company Website",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Contact Channel",
+        "field_name": "emails_phones / org channels",
+        "value_observed": "info@mullencap.com; 7 Campus Blvd Suite 300 Newtown Square PA 19073",
+        "evidence_snippet": "Supports: emails_phones org channel = info@mullencap.com | org HQ address linkage supporting Marbeth↔MREC mailing match",
+        "claims_supported": [
+          "emails_phones org channel = info@mullencap.com",
+          "org HQ address linkage supporting Marbeth↔MREC mailing match"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": true,
+        "notes": "Supports organization contact channel and mailing-address linkage to PropCo SDAT record. Separate from legal-title claim.",
+        "publisher": "Mullen Real Estate Capital",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/contact"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Mullen Real Estate Capital — About / Team",
+        "source_url": "https://mullencap.com/about/",
+        "source_type": "Company Website",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Org Contact",
+        "field_name": "decision_authority.people / key_people",
+        "value_observed": "Jeff Mullen; Katherine Button; Patrick Reece",
+        "evidence_snippet": "Supports: decision_authority.people: Jeff Mullen (President and CEO) | people_groups / key_people: Katherine Button (VP Asset Management and Investments) | people_groups: Patrick Reece (Director, Asset Management)",
+        "claims_supported": [
+          "decision_authority.people: Jeff Mullen (President and CEO)",
+          "people_groups / key_people: Katherine Button (VP Asset Management and Investments)",
+          "people_groups: Patrick Reece (Director, Asset Management)"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": true,
+        "notes": "Supports named executive roles at MREC. Does not establish qualified signatory authority or UBO.",
+        "publisher": "Mullen Real Estate Capital",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/about"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Mullen Hospitality Management — Portfolio",
+        "source_url": "https://mullenhospitality.com/portfolio/",
+        "source_type": "Company Website",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Organization",
+        "field_name": "asset_agreement_profile",
+        "value_observed": "Ops & Investment Supervision; brand-managed (Marriott)",
+        "evidence_snippet": "Supports: asset_agreement_profile: MHM Ops & Investment Supervision with asterisk brand-managed",
+        "claims_supported": [
+          "asset_agreement_profile: MHM Ops & Investment Supervision with asterisk brand-managed"
+        ],
+        "confidence": "MEDIUM",
+        "evidence_strength": "MEDIUM",
+        "current": true,
+        "notes": "Agreement posture context — not a franchise contract text.",
+        "publisher": "Mullen Hospitality Management",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullenhospitality.com/portfolio"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Hodges Ward Elliott — Bethesda Marriott sale (Dec 2018)",
+        "source_url": "https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland/",
+        "source_type": "Transaction Announcement",
+        "source_published_date": "2018-12-03",
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Other",
+        "field_name": "property_history / asset_agreement_profile",
+        "value_observed": "Sale announced; continues managed by Marriott International",
+        "evidence_snippet": "Supports: property_history: 2018 brokerage sale announcement (buyer unnamed in release) | asset_agreement_profile: hotel will continue to be managed by Marriott International",
+        "claims_supported": [
+          "property_history: 2018 brokerage sale announcement (buyer unnamed in release)",
+          "asset_agreement_profile: hotel will continue to be managed by Marriott International"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": false,
+        "notes": "HISTORICAL / CONTEXTUAL. Does not name the 2018/19 buyer. Management continuity ≠ economic ownership.",
+        "publisher": "Hodges Ward Elliott / PR Newswire",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Hotel Online — Northview/Oaktree acquire Bethesda Marriott (2013)",
+        "source_url": "https://www.hotel-online.com/news/northview-hotel-group-affiliate-of-oaktree-capital-management-acquire-the-b",
+        "source_type": "Transaction Announcement",
+        "source_published_date": "2013-10-14",
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Other",
+        "field_name": "property_history",
+        "value_observed": "Northview Hotel Group + Oaktree affiliate acquisition",
+        "evidence_snippet": "Supports: property_history: 2013 Northview/Oaktree acquisition (historical only)",
+        "claims_supported": [
+          "property_history: 2013 Northview/Oaktree acquisition (historical only)"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": false,
+        "notes": "HISTORICAL only — superseded by 2019 Marbeth title. Not current economic owner.",
+        "publisher": "Hotel Online",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.hotel-online.com/news/northview-hotel-group-affiliate-of-oaktree-capital-management-acquire-the-b"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Ramsfield Hospitality Finance — Bethesda Marriott loan",
+        "source_url": "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+        "source_type": "Lender Case Study",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Other",
+        "field_name": "property_history",
+        "value_observed": "$63,000,000 stretch senior acquisition financing",
+        "evidence_snippet": "Supports: property_history: Ramsfield $63M acquisition financing for new buyer (unnamed on lender page)",
+        "claims_supported": [
+          "property_history: Ramsfield $63M acquisition financing for new buyer (unnamed on lender page)"
+        ],
+        "confidence": "MEDIUM",
+        "evidence_strength": "MEDIUM",
+        "current": false,
+        "notes": "HISTORICAL / CONTEXTUAL financing corroboration. Buyer not named here.",
+        "publisher": "Ramsfield Hospitality Finance",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.ramsfieldrealestate.com/projects/bethesda-marriott"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Washington Business Journal — related headline (Mullen family sale)",
+        "source_url": "https://www.bizjournals.com/washington/news/2019/06/11/bethesda-north-marriott-completes-25m-renovation.html",
+        "source_type": "Trade Press (headline corroboration)",
+        "source_published_date": "2019-06-11",
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Other",
+        "field_name": "economic_owner corroboration",
+        "value_observed": "Related article headline: Bethesda Marriott sold to Mullen family",
+        "evidence_snippet": "Supports: economic_owner corroboration via related-article headline (body paywalled)",
+        "claims_supported": [
+          "economic_owner corroboration via related-article headline (body paywalled)"
+        ],
+        "confidence": "MEDIUM",
+        "evidence_strength": "MEDIUM",
+        "current": true,
+        "notes": "LIMITATION: full article body not retrieved. Corroborative only — SDAT + MREC portfolio remain primary. UBO still UNRESOLVED.",
+        "publisher": "Washington Business Journal",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.bizjournals.com/washington/news/2019/06/11/bethesda-north-marriott-completes-25m-renovation.html"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "SAM / OpenGovUS — Marriott Hotel Services LLC DBA Bethesda Marriott",
+        "source_url": "https://opengovus.com/sam-entity/M8CAG8UV6174",
+        "source_type": "Government Registry",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Organization",
+        "field_name": "operator_not_owner",
+        "value_observed": "Marriott Hotel Services, LLC (operator)",
+        "evidence_snippet": "Supports: Operator entity identity (NOT economic owner)",
+        "claims_supported": [
+          "Operator entity identity (NOT economic owner)"
+        ],
+        "confidence": "HIGH",
+        "evidence_strength": "HIGH",
+        "current": true,
+        "notes": "Explicitly NOT an ownership claim. Prevents brand/operator→owner inference.",
+        "publisher": "GSA SAM (via OpenGovUS)",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://opengovus.com/sam-entity/m8cag8uv6174"
+      },
+      {
+        "hpc_id": "recLuxvwwxID7U2B8",
+        "source_name": "Trivago — Bethesda Marriott 4-star listing",
+        "source_url": "https://www.trivago.com/en-US/oar/hotel-bethesda-marriott?search=100-214526",
+        "source_type": "OTA / Aggregator",
+        "source_published_date": null,
+        "retrieved_at": "2026-11-19",
+        "entity_type": "Other",
+        "field_name": "starRating",
+        "value_observed": "4 Stars",
+        "evidence_snippet": "Supports: starRating VERIFIED_DERIVED (~4★ OTA consensus)",
+        "claims_supported": [
+          "starRating VERIFIED_DERIVED (~4★ OTA consensus)"
+        ],
+        "confidence": "MEDIUM",
+        "evidence_strength": "MEDIUM",
+        "current": true,
+        "notes": "Derived / steward-optional for HPC. Not AAA certificate.",
+        "publisher": "Trivago",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.trivago.com/en-us/oar/hotel-bethesda-marriott?search=100-214526"
+      }
+    ]
+  },
+  "plan": {
+    "ok": true,
+    "run_id": "ownrun_06GZ8QVTJ8NEXKRWNCJTJP34XN",
+    "operations": [
+      {
+        "op": "CREATE",
+        "table": "HI Organizations",
+        "dedupe_key": "org::marbeth_acquisition_llc::us_pa",
+        "record": {
+          "legal_name": "Marbeth Acquisition LLC",
+          "trading_name": "Marbeth Acquisition",
+          "jurisdiction": "US-PA",
+          "organization_type": "PropCo",
+          "confidence": "HIGH",
+          "note": "SDAT legal titleholder — evidence EV SDAT",
+          "org_id": "dle_06GZ8QVTJCMYN033KP0JQ900Y4",
+          "dedupe_key": "org::marbeth_acquisition_llc::us_pa",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Organizations",
+        "dedupe_key": "org::mullen_real_estate_capital::us_pa",
+        "record": {
+          "legal_name": "Mullen Real Estate Capital",
+          "trading_name": "Mullen Real Estate Capital",
+          "jurisdiction": "US-PA",
+          "organization_type": "Owner Sponsor",
+          "official_website": "https://mullencap.com/",
+          "confidence": "HIGH",
+          "note": "Economic sponsor — portfolio + mailing match; UBO unresolved",
+          "org_id": "dle_06GZ8QVTJC618RPC1YB5STS874",
+          "dedupe_key": "org::mullen_real_estate_capital::us_pa",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Organizations",
+        "dedupe_key": "org::mullen_hospitality_management::us_pa",
+        "record": {
+          "legal_name": "Mullen Hospitality Management",
+          "trading_name": "Mullen Hospitality Management",
+          "jurisdiction": "US-PA",
+          "organization_type": "Asset Manager",
+          "official_website": "https://mullenhospitality.com/",
+          "confidence": "MEDIUM",
+          "note": "Ops & Investment Supervision",
+          "org_id": "dle_06GZ8QVTJCD68SC0SQ4PMZ9GGA",
+          "dedupe_key": "org::mullen_hospitality_management::us_pa",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Hotel–Org Relationships",
+        "dedupe_key": "rel::recLuxvwwxID7U2B8::legal_owner::dle_06GZ8QVTJCMYN033KP0JQ900Y4",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "relationship_type": "Legal Owner",
+          "org_dedupe_key": "org::marbeth_acquisition_llc::us_pa",
+          "confidence": "HIGH",
+          "verification_status": "Validated",
+          "note": "Supported by SDAT evidence document",
+          "relationship_id": "dor_06GZ8QVTJC7JSZ59H5XWSFZ5J3",
+          "org_id": "dle_06GZ8QVTJCMYN033KP0JQ900Y4",
+          "dedupe_key": "rel::recLuxvwwxID7U2B8::legal_owner::dle_06GZ8QVTJCMYN033KP0JQ900Y4",
+          "conflict_status": "None",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Hotel–Org Relationships",
+        "dedupe_key": "rel::recLuxvwwxID7U2B8::economic_owner::dle_06GZ8QVTJC618RPC1YB5STS874",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "relationship_type": "Economic Owner",
+          "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+          "confidence": "MEDIUM",
+          "verification_status": "Validated",
+          "note": "Sponsor attribution — distinct evidence from legal title; UBO unresolved",
+          "relationship_id": "dor_06GZ8QVTJCE93QBBP1M906GDKA",
+          "org_id": "dle_06GZ8QVTJC618RPC1YB5STS874",
+          "dedupe_key": "rel::recLuxvwwxID7U2B8::economic_owner::dle_06GZ8QVTJC618RPC1YB5STS874",
+          "conflict_status": "None",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Org Contacts",
+        "dedupe_key": "person::jeff_mullen::org::mullen_real_estate_capital::us_pa",
+        "record": {
+          "display_name": "Jeff Mullen",
+          "title": "President and CEO",
+          "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+          "role_group": "Ownership / Decision Authority",
+          "confidence": "HIGH",
+          "person_id": "dlp_E3C6091AFA54FC689BC28AF5C4",
+          "affiliation_dedupe_key": "person::jeff_mullen::org::mullen_real_estate_capital::us_pa",
+          "person_dedupe_key": "person::jeff_mullen::identity",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Org Contacts",
+        "dedupe_key": "person::katherine_button::org::mullen_real_estate_capital::us_pa",
+        "record": {
+          "display_name": "Katherine Button",
+          "title": "VP, Asset Management and Investments",
+          "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+          "role_group": "Asset Management",
+          "confidence": "HIGH",
+          "person_id": "dlp_304EB0E55AD8453A2345797261",
+          "affiliation_dedupe_key": "person::katherine_button::org::mullen_real_estate_capital::us_pa",
+          "person_dedupe_key": "person::katherine_button::identity",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Org Contacts",
+        "dedupe_key": "person::patrick_reece::org::mullen_real_estate_capital::us_pa",
+        "record": {
+          "display_name": "Patrick Reece",
+          "title": "Director, Asset Management",
+          "org_dedupe_key": "org::mullen_real_estate_capital::us_pa",
+          "role_group": "Asset Management",
+          "confidence": "MEDIUM",
+          "person_id": "dlp_47E1736620BB1AEE23CFEA6C88",
+          "affiliation_dedupe_key": "person::patrick_reece::org::mullen_real_estate_capital::us_pa",
+          "person_dedupe_key": "person::patrick_reece::identity",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Contact Channels",
+        "dedupe_key": "ch::org:org::mullen_real_estate_capital::us_pa::email::info_mullencap_com",
+        "record": {
+          "kind": "email",
+          "value": "info@mullencap.com",
+          "subject_id": "org:org::mullen_real_estate_capital::us_pa",
+          "classification": "official_org",
+          "verification_status": "Verified Direct",
+          "channel_id": "dlc_374A63C158C47268006CB73530",
+          "dedupe_key": "ch::org:org::mullen_real_estate_capital::us_pa::email::info_mullencap_com",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "CUSTOMER_BLOCKED",
+          "access_restriction": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Contact Channels",
+        "dedupe_key": "ch::org:org::mullen_real_estate_capital::us_pa::address::7_campus_blvd_suite_300_newtown_square_pa_19073",
+        "record": {
+          "kind": "address",
+          "value": "7 Campus Blvd., Suite 300, Newtown Square, PA 19073",
+          "subject_id": "org:org::mullen_real_estate_capital::us_pa",
+          "classification": "official_org",
+          "verification_status": "Verified Direct",
+          "channel_id": "dlc_485022BC1CACEE7AAE4B017BE6",
+          "dedupe_key": "ch::org:org::mullen_real_estate_capital::us_pa::address::7_campus_blvd_suite_300_newtown_square_pa_19073",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "CUSTOMER_BLOCKED",
+          "access_restriction": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://sdat.dat.maryland.gov/realproperty/pages/default.aspx",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Maryland SDAT Real Property — Montgomery County acct 03547343",
+          "source_url": "https://sdat.dat.maryland.gov/RealProperty/Pages/default.aspx",
+          "source_type": "Government Record",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Hotel–Org Relationship",
+          "field_name": "property_company / Legal Owner",
+          "value_observed": "Marbeth Acquisition LLC",
+          "evidence_snippet": "Supports: property_company = Marbeth Acquisition LLC (legal title / PropCo) | Legal Owner relationship (Validated) | property_history: 2019-01-09 transfer $69,500,415 from Bethesda Hotel Acquisition LLC (deed /57084/00234) | property_history: 2013-10-10 transfer $35,636,141 from CMG Bethesda Owner LLC (historical) | source_coverage / sources (primary government authority)",
+          "claims_supported": [
+            "property_company = Marbeth Acquisition LLC (legal title / PropCo)",
+            "Legal Owner relationship (Validated)",
+            "property_history: 2019-01-09 transfer $69,500,415 from Bethesda Hotel Acquisition LLC (deed /57084/00234)",
+            "property_history: 2013-10-10 transfer $35,636,141 from CMG Bethesda Owner LLC (historical)",
+            "source_coverage / sources (primary government authority)"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": true,
+          "notes": "Account District 07 / 03547343; Hotel Unit Bethesda Land Codm. SDAT mailing 7 Campus Blvd Newton Square PA 19073. Historical transfers on same record remain historical.",
+          "publisher": "Maryland Department of Assessments and Taxation",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://sdat.dat.maryland.gov/realproperty/pages/default.aspx",
+          "evidence_id": "dle_AFE17A4650A0752CEC211ACF82",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/portfolio",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Mullen Real Estate Capital — Portfolio",
+          "source_url": "https://mullencap.com/portfolio/",
+          "source_type": "Company Website",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Hotel–Org Relationship",
+          "field_name": "economic_owner",
+          "value_observed": "Mullen Real Estate Capital",
+          "evidence_snippet": "Supports: economic_owner sponsor association = Mullen Real Estate Capital (portfolio listing) | what_we_know[]: MREC lists Bethesda Marriott as active US hospitality asset",
+          "claims_supported": [
+            "economic_owner sponsor association = Mullen Real Estate Capital (portfolio listing)",
+            "what_we_know[]: MREC lists Bethesda Marriott as active US hospitality asset"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": true,
+          "notes": "Sponsor association from owner website portfolio. Distinct from SDAT legal title. Does NOT prove natural-person UBO.",
+          "publisher": "Mullen Real Estate Capital",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/portfolio",
+          "evidence_id": "dle_0A82D4F3AC973FF75B37CAE073",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/contact",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Mullen Real Estate Capital — Contact",
+          "source_url": "https://mullencap.com/contact/",
+          "source_type": "Company Website",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Contact Channel",
+          "field_name": "emails_phones / org channels",
+          "value_observed": "info@mullencap.com; 7 Campus Blvd Suite 300 Newtown Square PA 19073",
+          "evidence_snippet": "Supports: emails_phones org channel = info@mullencap.com | org HQ address linkage supporting Marbeth↔MREC mailing match",
+          "claims_supported": [
+            "emails_phones org channel = info@mullencap.com",
+            "org HQ address linkage supporting Marbeth↔MREC mailing match"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": true,
+          "notes": "Supports organization contact channel and mailing-address linkage to PropCo SDAT record. Separate from legal-title claim.",
+          "publisher": "Mullen Real Estate Capital",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/contact",
+          "evidence_id": "dle_352D3ACEEA5B8C597B8468AAFF",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/about",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Mullen Real Estate Capital — About / Team",
+          "source_url": "https://mullencap.com/about/",
+          "source_type": "Company Website",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Org Contact",
+          "field_name": "decision_authority.people / key_people",
+          "value_observed": "Jeff Mullen; Katherine Button; Patrick Reece",
+          "evidence_snippet": "Supports: decision_authority.people: Jeff Mullen (President and CEO) | people_groups / key_people: Katherine Button (VP Asset Management and Investments) | people_groups: Patrick Reece (Director, Asset Management)",
+          "claims_supported": [
+            "decision_authority.people: Jeff Mullen (President and CEO)",
+            "people_groups / key_people: Katherine Button (VP Asset Management and Investments)",
+            "people_groups: Patrick Reece (Director, Asset Management)"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": true,
+          "notes": "Supports named executive roles at MREC. Does not establish qualified signatory authority or UBO.",
+          "publisher": "Mullen Real Estate Capital",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullencap.com/about",
+          "evidence_id": "dle_CE0A84C209C1AA307EE9F71D8B",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullenhospitality.com/portfolio",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Mullen Hospitality Management — Portfolio",
+          "source_url": "https://mullenhospitality.com/portfolio/",
+          "source_type": "Company Website",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Organization",
+          "field_name": "asset_agreement_profile",
+          "value_observed": "Ops & Investment Supervision; brand-managed (Marriott)",
+          "evidence_snippet": "Supports: asset_agreement_profile: MHM Ops & Investment Supervision with asterisk brand-managed",
+          "claims_supported": [
+            "asset_agreement_profile: MHM Ops & Investment Supervision with asterisk brand-managed"
+          ],
+          "confidence": "MEDIUM",
+          "evidence_strength": "MEDIUM",
+          "current": true,
+          "notes": "Agreement posture context — not a franchise contract text.",
+          "publisher": "Mullen Hospitality Management",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://mullenhospitality.com/portfolio",
+          "evidence_id": "dle_4FE59A693B2D92AB3114BF6138",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Hodges Ward Elliott — Bethesda Marriott sale (Dec 2018)",
+          "source_url": "https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland/",
+          "source_type": "Transaction Announcement",
+          "source_published_date": "2018-12-03",
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Other",
+          "field_name": "property_history / asset_agreement_profile",
+          "value_observed": "Sale announced; continues managed by Marriott International",
+          "evidence_snippet": "Supports: property_history: 2018 brokerage sale announcement (buyer unnamed in release) | asset_agreement_profile: hotel will continue to be managed by Marriott International",
+          "claims_supported": [
+            "property_history: 2018 brokerage sale announcement (buyer unnamed in release)",
+            "asset_agreement_profile: hotel will continue to be managed by Marriott International"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": false,
+          "notes": "HISTORICAL / CONTEXTUAL. Does not name the 2018/19 buyer. Management continuity ≠ economic ownership.",
+          "publisher": "Hodges Ward Elliott / PR Newswire",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland",
+          "evidence_id": "dle_A6948C0BE4EC6C18DEBCB8E0BE",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.hotel-online.com/news/northview-hotel-group-affiliate-of-oaktree-capital-management-acquire-the-b",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Hotel Online — Northview/Oaktree acquire Bethesda Marriott (2013)",
+          "source_url": "https://www.hotel-online.com/news/northview-hotel-group-affiliate-of-oaktree-capital-management-acquire-the-b",
+          "source_type": "Transaction Announcement",
+          "source_published_date": "2013-10-14",
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Other",
+          "field_name": "property_history",
+          "value_observed": "Northview Hotel Group + Oaktree affiliate acquisition",
+          "evidence_snippet": "Supports: property_history: 2013 Northview/Oaktree acquisition (historical only)",
+          "claims_supported": [
+            "property_history: 2013 Northview/Oaktree acquisition (historical only)"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": false,
+          "notes": "HISTORICAL only — superseded by 2019 Marbeth title. Not current economic owner.",
+          "publisher": "Hotel Online",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.hotel-online.com/news/northview-hotel-group-affiliate-of-oaktree-capital-management-acquire-the-b",
+          "evidence_id": "dle_14C7FBAEB78E035F10D7C128D8",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Ramsfield Hospitality Finance — Bethesda Marriott loan",
+          "source_url": "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+          "source_type": "Lender Case Study",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Other",
+          "field_name": "property_history",
+          "value_observed": "$63,000,000 stretch senior acquisition financing",
+          "evidence_snippet": "Supports: property_history: Ramsfield $63M acquisition financing for new buyer (unnamed on lender page)",
+          "claims_supported": [
+            "property_history: Ramsfield $63M acquisition financing for new buyer (unnamed on lender page)"
+          ],
+          "confidence": "MEDIUM",
+          "evidence_strength": "MEDIUM",
+          "current": false,
+          "notes": "HISTORICAL / CONTEXTUAL financing corroboration. Buyer not named here.",
+          "publisher": "Ramsfield Hospitality Finance",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+          "evidence_id": "dle_20843DBC676EF1371E896904C7",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.bizjournals.com/washington/news/2019/06/11/bethesda-north-marriott-completes-25m-renovation.html",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Washington Business Journal — related headline (Mullen family sale)",
+          "source_url": "https://www.bizjournals.com/washington/news/2019/06/11/bethesda-north-marriott-completes-25m-renovation.html",
+          "source_type": "Trade Press (headline corroboration)",
+          "source_published_date": "2019-06-11",
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Other",
+          "field_name": "economic_owner corroboration",
+          "value_observed": "Related article headline: Bethesda Marriott sold to Mullen family",
+          "evidence_snippet": "Supports: economic_owner corroboration via related-article headline (body paywalled)",
+          "claims_supported": [
+            "economic_owner corroboration via related-article headline (body paywalled)"
+          ],
+          "confidence": "MEDIUM",
+          "evidence_strength": "MEDIUM",
+          "current": true,
+          "notes": "LIMITATION: full article body not retrieved. Corroborative only — SDAT + MREC portfolio remain primary. UBO still UNRESOLVED.",
+          "publisher": "Washington Business Journal",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.bizjournals.com/washington/news/2019/06/11/bethesda-north-marriott-completes-25m-renovation.html",
+          "evidence_id": "dle_D4F063BF2E17D251E070B3547F",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://opengovus.com/sam-entity/m8cag8uv6174",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "SAM / OpenGovUS — Marriott Hotel Services LLC DBA Bethesda Marriott",
+          "source_url": "https://opengovus.com/sam-entity/M8CAG8UV6174",
+          "source_type": "Government Registry",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Organization",
+          "field_name": "operator_not_owner",
+          "value_observed": "Marriott Hotel Services, LLC (operator)",
+          "evidence_snippet": "Supports: Operator entity identity (NOT economic owner)",
+          "claims_supported": [
+            "Operator entity identity (NOT economic owner)"
+          ],
+          "confidence": "HIGH",
+          "evidence_strength": "HIGH",
+          "current": true,
+          "notes": "Explicitly NOT an ownership claim. Prevents brand/operator→owner inference.",
+          "publisher": "GSA SAM (via OpenGovUS)",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://opengovus.com/sam-entity/m8cag8uv6174",
+          "evidence_id": "dle_3853E122AB6B7AD952A00A80A4",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Graph Evidence",
+        "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.trivago.com/en-us/oar/hotel-bethesda-marriott?search=100-214526",
+        "record": {
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "source_name": "Trivago — Bethesda Marriott 4-star listing",
+          "source_url": "https://www.trivago.com/en-US/oar/hotel-bethesda-marriott?search=100-214526",
+          "source_type": "OTA / Aggregator",
+          "source_published_date": null,
+          "retrieved_at": "2026-11-19",
+          "entity_type": "Other",
+          "field_name": "starRating",
+          "value_observed": "4 Stars",
+          "evidence_snippet": "Supports: starRating VERIFIED_DERIVED (~4★ OTA consensus)",
+          "claims_supported": [
+            "starRating VERIFIED_DERIVED (~4★ OTA consensus)"
+          ],
+          "confidence": "MEDIUM",
+          "evidence_strength": "MEDIUM",
+          "current": true,
+          "notes": "Derived / steward-optional for HPC. Not AAA certificate.",
+          "publisher": "Trivago",
+          "dedupe_key": "ev::recLuxvwwxID7U2B8::https://www.trivago.com/en-us/oar/hotel-bethesda-marriott?search=100-214526",
+          "evidence_id": "dle_4F791A76CB859468DF86FBFB37",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "publication_state": "INTERNAL_ONLY"
+        }
+      },
+      {
+        "op": "CREATE",
+        "table": "HI Ownership Research Runs",
+        "dedupe_key": "ownrun_06GZ8QVTJ8NEXKRWNCJTJP34XN",
+        "record": {
+          "run_id": "ownrun_06GZ8QVTJ8NEXKRWNCJTJP34XN",
+          "case_id": "he_beth_phase3_sources_20261119",
+          "contract_id": "HOTEL_INTELLIGENCE_RESEARCH_ENGINE_V1",
+          "contract_version": "1.0.0-p1",
+          "graph_contract": "HOTEL_INTELLIGENCE_AIRTABLE_GRAPH_V1",
+          "graph_contract_version": "1.0.1-p2-hpc-base",
+          "hpc_id": "recLuxvwwxID7U2B8",
+          "execution_mode": "MANUAL_FREE_FIRST",
+          "current_stage": "PHASE3_SOURCES_DRY_RUN",
+          "run_status": "STAGED",
+          "research_complete": false,
+          "publication_state": "INTERNAL_ONLY",
+          "schema_version": "he_intel_airtable_graph_v1",
+          "cost_usd": 0,
+          "cost_usd_status": "ACTUAL",
+          "credits": 0
+        }
+      }
+    ],
+    "held_for_review": []
+  },
+  "counts": {
+    "create": 22,
+    "update": 0,
+    "heldForReview": 0,
+    "evidenceCreate": 11,
+    "unchangedExistingBrandOperator": 2
+  },
+  "byTable": {
+    "HI Organizations": {
+      "CREATE": 3,
+      "UPDATE": 0
+    },
+    "HI Hotel–Org Relationships": {
+      "CREATE": 2,
+      "UPDATE": 0
+    },
+    "HI Org Contacts": {
+      "CREATE": 3,
+      "UPDATE": 0
+    },
+    "HI Contact Channels": {
+      "CREATE": 2,
+      "UPDATE": 0
+    },
+    "HI Graph Evidence": {
+      "CREATE": 11,
+      "UPDATE": 0
+    },
+    "HI Ownership Research Runs": {
+      "CREATE": 1,
+      "UPDATE": 0
+    }
+  },
+  "idempotencyReplay": {
+    "secondPassCreates": 0,
+    "secondPassUpdates": 22,
+    "note": "Replay against indexed first-pass records must prefer UPDATE (0 CREATE for same keys)"
+  },
+  "claimCoverage": {
+    "verifiedClaimFamilies": [
+      "property_company / Legal Owner",
+      "economic_owner (sponsor)",
+      "decision_authority / key_people",
+      "emails_phones org channels",
+      "asset_agreement_profile",
+      "property_history",
+      "starRating derived",
+      "operator_not_owner"
+    ],
+    "evidenceDocuments": 11,
+    "claimFactOps": 10,
+    "allClaimsAttachedToEvidence": 20,
+    "orphanedClaims": [],
+    "uboStatus": "UNRESOLVED"
+  },
+  "sourcesTabPreview": {
+    "citationCount": 11,
+    "citations": [
+      {
+        "title": "Maryland SDAT Real Property — Montgomery County acct 03547343",
+        "url": "https://sdat.dat.maryland.gov/RealProperty/Pages/default.aspx",
+        "provider": "Government Record",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: property_company = Marbeth Acquisition LLC (legal title / PropCo) | Legal Owner relationship (Validated) | property_history: 2019-01-09 transfer $69,500,415 from Bethesda Hotel Acquisition LLC (deed /57084/00234) | property_history: 2013-10-10 transfer $35,636,141 from CMG Bethesda Owner LLC (historical) | source_coverage / sources (primary government authority)",
+        "claim": "property_company / Legal Owner: Marbeth Acquisition LLC",
+        "claims": [
+          "property_company / Legal Owner: Marbeth Acquisition LLC"
+        ],
+        "proves": "Supports: property_company = Marbeth Acquisition LLC (legal title / PropCo) | Legal Owner relationship (Validated) | property_history: 2019-01-09 transfer $69,500,415 from Bethesda Hotel Acquisition LLC (deed /57084/00234) | property_history: 2013-10-10 transfer $35,636,141 from CMG Bethesda Owner LLC (historical) | source_coverage / sources (primary government authority)",
+        "does_not": "Does not independently prove ultimate beneficial ownership unless explicitly stated.",
+        "supports": "ownership",
+        "source_type": "Government Record",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_AFE17A4650A0752CEC211ACF82",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Mullen Real Estate Capital — Portfolio",
+        "url": "https://mullencap.com/portfolio/",
+        "provider": "Company Website",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: economic_owner sponsor association = Mullen Real Estate Capital (portfolio listing) | what_we_know[]: MREC lists Bethesda Marriott as active US hospitality asset",
+        "claim": "economic_owner: Mullen Real Estate Capital",
+        "claims": [
+          "economic_owner: Mullen Real Estate Capital"
+        ],
+        "proves": "Supports: economic_owner sponsor association = Mullen Real Estate Capital (portfolio listing) | what_we_know[]: MREC lists Bethesda Marriott as active US hospitality asset",
+        "does_not": "Sponsor association from owner website portfolio. Distinct from SDAT legal title. Does NOT prove natural-person UBO.",
+        "supports": "ownership",
+        "source_type": "Company Website",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_0A82D4F3AC973FF75B37CAE073",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Mullen Real Estate Capital — Contact",
+        "url": "https://mullencap.com/contact/",
+        "provider": "Company Website",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: emails_phones org channel = info@mullencap.com | org HQ address linkage supporting Marbeth↔MREC mailing match",
+        "claim": "emails_phones / org channels: info@mullencap.com; 7 Campus Blvd Suite 300 Newtown Square PA 19073",
+        "claims": [
+          "emails_phones / org channels: info@mullencap.com; 7 Campus Blvd Suite 300 Newtown Square PA 19073"
+        ],
+        "proves": "Supports: emails_phones org channel = info@mullencap.com | org HQ address linkage supporting Marbeth↔MREC mailing match",
+        "does_not": "Does not independently prove ultimate beneficial ownership unless explicitly stated.",
+        "supports": "ownership",
+        "source_type": "Company Website",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_352D3ACEEA5B8C597B8468AAFF",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Mullen Real Estate Capital — About / Team",
+        "url": "https://mullencap.com/about/",
+        "provider": "Company Website",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: decision_authority.people: Jeff Mullen (President and CEO) | people_groups / key_people: Katherine Button (VP Asset Management and Investments) | people_groups: Patrick Reece (Director, Asset Management)",
+        "claim": "decision_authority.people / key_people: Jeff Mullen; Katherine Button; Patrick Reece",
+        "claims": [
+          "decision_authority.people / key_people: Jeff Mullen; Katherine Button; Patrick Reece"
+        ],
+        "proves": "Supports: decision_authority.people: Jeff Mullen (President and CEO) | people_groups / key_people: Katherine Button (VP Asset Management and Investments) | people_groups: Patrick Reece (Director, Asset Management)",
+        "does_not": "Supports named executive roles at MREC. Does not establish qualified signatory authority or UBO.",
+        "supports": "ownership",
+        "source_type": "Company Website",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_CE0A84C209C1AA307EE9F71D8B",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Mullen Hospitality Management — Portfolio",
+        "url": "https://mullenhospitality.com/portfolio/",
+        "provider": "Company Website",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: asset_agreement_profile: MHM Ops & Investment Supervision with asterisk brand-managed",
+        "claim": "asset_agreement_profile: Ops & Investment Supervision; brand-managed (Marriott)",
+        "claims": [
+          "asset_agreement_profile: Ops & Investment Supervision; brand-managed (Marriott)"
+        ],
+        "proves": "Supports: asset_agreement_profile: MHM Ops & Investment Supervision with asterisk brand-managed",
+        "does_not": "Does not independently prove ultimate beneficial ownership unless explicitly stated.",
+        "supports": "ownership",
+        "source_type": "Company Website",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_4FE59A693B2D92AB3114BF6138",
+        "confidence": "MEDIUM",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Hodges Ward Elliott — Bethesda Marriott sale (Dec 2018)",
+        "url": "https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland/",
+        "provider": "Transaction Announcement",
+        "observed_date": "2018-12-03",
+        "evidence_excerpt": "Supports: property_history: 2018 brokerage sale announcement (buyer unnamed in release) | asset_agreement_profile: hotel will continue to be managed by Marriott International",
+        "claim": "property_history / asset_agreement_profile: Sale announced; continues managed by Marriott International",
+        "claims": [
+          "property_history / asset_agreement_profile: Sale announced; continues managed by Marriott International"
+        ],
+        "proves": "Supports: property_history: 2018 brokerage sale announcement (buyer unnamed in release) | asset_agreement_profile: hotel will continue to be managed by Marriott International",
+        "does_not": "Historical / contextual only — does not by itself establish current ownership.",
+        "supports": "history",
+        "source_type": "Transaction Announcement",
+        "current": false,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_A6948C0BE4EC6C18DEBCB8E0BE",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Hotel Online — Northview/Oaktree acquire Bethesda Marriott (2013)",
+        "url": "https://www.hotel-online.com/news/northview-hotel-group-affiliate-of-oaktree-capital-management-acquire-the-b",
+        "provider": "Transaction Announcement",
+        "observed_date": "2013-10-14",
+        "evidence_excerpt": "Supports: property_history: 2013 Northview/Oaktree acquisition (historical only)",
+        "claim": "property_history: Northview Hotel Group + Oaktree affiliate acquisition",
+        "claims": [
+          "property_history: Northview Hotel Group + Oaktree affiliate acquisition"
+        ],
+        "proves": "Supports: property_history: 2013 Northview/Oaktree acquisition (historical only)",
+        "does_not": "Historical / contextual only — does not by itself establish current ownership.",
+        "supports": "history",
+        "source_type": "Transaction Announcement",
+        "current": false,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_14C7FBAEB78E035F10D7C128D8",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Ramsfield Hospitality Finance — Bethesda Marriott loan",
+        "url": "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+        "provider": "Lender Case Study",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: property_history: Ramsfield $63M acquisition financing for new buyer (unnamed on lender page)",
+        "claim": "property_history: $63,000,000 stretch senior acquisition financing",
+        "claims": [
+          "property_history: $63,000,000 stretch senior acquisition financing"
+        ],
+        "proves": "Supports: property_history: Ramsfield $63M acquisition financing for new buyer (unnamed on lender page)",
+        "does_not": "Historical / contextual only — does not by itself establish current ownership.",
+        "supports": "history",
+        "source_type": "Lender Case Study",
+        "current": false,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_20843DBC676EF1371E896904C7",
+        "confidence": "MEDIUM",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Washington Business Journal — related headline (Mullen family sale)",
+        "url": "https://www.bizjournals.com/washington/news/2019/06/11/bethesda-north-marriott-completes-25m-renovation.html",
+        "provider": "Trade Press (headline corroboration)",
+        "observed_date": "2019-06-11",
+        "evidence_excerpt": "Supports: economic_owner corroboration via related-article headline (body paywalled)",
+        "claim": "economic_owner corroboration: Related article headline: Bethesda Marriott sold to Mullen family",
+        "claims": [
+          "economic_owner corroboration: Related article headline: Bethesda Marriott sold to Mullen family"
+        ],
+        "proves": "Supports: economic_owner corroboration via related-article headline (body paywalled)",
+        "does_not": "LIMITATION: full article body not retrieved. Corroborative only — SDAT + MREC portfolio remain primary. UBO still UNRESOLVED.",
+        "supports": "ownership",
+        "source_type": "Trade Press (headline corroboration)",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_D4F063BF2E17D251E070B3547F",
+        "confidence": "MEDIUM",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "SAM / OpenGovUS — Marriott Hotel Services LLC DBA Bethesda Marriott",
+        "url": "https://opengovus.com/sam-entity/M8CAG8UV6174",
+        "provider": "Government Registry",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: Operator entity identity (NOT economic owner)",
+        "claim": "operator_not_owner: Marriott Hotel Services, LLC (operator)",
+        "claims": [
+          "operator_not_owner: Marriott Hotel Services, LLC (operator)"
+        ],
+        "proves": "Supports: Operator entity identity (NOT economic owner)",
+        "does_not": "Does not independently prove ultimate beneficial ownership unless explicitly stated.",
+        "supports": "ownership",
+        "source_type": "Government Registry",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_3853E122AB6B7AD952A00A80A4",
+        "confidence": "HIGH",
+        "source": "HI_GRAPH_EVIDENCE"
+      },
+      {
+        "title": "Trivago — Bethesda Marriott 4-star listing",
+        "url": "https://www.trivago.com/en-US/oar/hotel-bethesda-marriott?search=100-214526",
+        "provider": "OTA / Aggregator",
+        "observed_date": "2026-11-19",
+        "evidence_excerpt": "Supports: starRating VERIFIED_DERIVED (~4★ OTA consensus)",
+        "claim": "starRating: 4 Stars",
+        "claims": [
+          "starRating: 4 Stars"
+        ],
+        "proves": "Supports: starRating VERIFIED_DERIVED (~4★ OTA consensus)",
+        "does_not": "Does not independently prove ultimate beneficial ownership unless explicitly stated.",
+        "supports": "ownership",
+        "source_type": "OTA / Aggregator",
+        "current": true,
+        "airtable_evidence_id": null,
+        "evidence_id": "dle_4F791A76CB859468DF86FBFB37",
+        "confidence": "MEDIUM",
+        "source": "HI_GRAPH_EVIDENCE"
+      }
+    ]
+  },
+  "syntheticApplyPreview": {
+    "ok": true,
+    "mode": "APPLY",
+    "writes": 22,
+    "customer_published": true
+  },
+  "founderGate": "STOP — production Airtable apply requires explicit founder approval"
+}
