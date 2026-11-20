@@ -1,0 +1,126 @@
+{
+  "module": "HOTEL_CONTRACT_TIMING_V4_SCHEMA",
+  "status": "FOUNDER_APPROVED_PENDING_META_APPLY",
+  "inspectedAt": "2026-11-20T22:19:00.000Z",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "gate": {
+    "pr495MustMergeFirst": true,
+    "pr495StateAtPrep": "OPEN",
+    "pr495Head": "d548828738364f4bc553b1a4760bf3a4897037a8",
+    "doNotExtendPr495": true,
+    "metaApplyAuthorized": false,
+    "hpcBulkCreateAuthorized": false
+  },
+  "liveComparison": {
+    "Hotel Property Census": { "tableId": "tbl9aY5ijiuIzzWam", "exists": true, "fieldCount": 154 },
+    "HI Organizations": { "tableId": "tbliXEfUOWk32AN9y", "exists": true },
+    "HI Hotel–Org Relationships": { "tableId": "tblGiwN0foXXDESvZ", "exists": true },
+    "HI Graph Evidence": { "tableId": "tblc9JhKT1edr4grE", "exists": true },
+    "HI Hotel Discovery Inventory": { "tableId": "tblx77Nmh56h4xa9z", "exists": true, "fieldCount": 32 },
+    "HI Discovery Findings": { "tableId": "tblGjTWNm8G4UOF1e", "exists": true, "fieldCount": 21 },
+    "HI Hotel Contracts": { "exists": false },
+    "HI Contract Milestones": { "exists": false }
+  },
+  "diff": {
+    "createTables": [
+      {
+        "name": "HI Hotel Contracts",
+        "purpose": "Stable global hotel agreement identity (ctr_…)",
+        "requiredLinks": [
+          "Discovery Property → HI Hotel Discovery Inventory",
+          "HPC Hotel → Hotel Property Census (optional)",
+          "Counterparty Org → HI Organizations (optional)",
+          "Supersedes/Superseded By → self"
+        ],
+        "publicationStateDefault": "CUSTOMER_BLOCKED"
+      },
+      {
+        "name": "HI Contract Milestones",
+        "purpose": "Dated contractual events (ms_…)",
+        "requiredLinks": [
+          "Contract → HI Hotel Contracts",
+          "Discovery Property → HI Hotel Discovery Inventory",
+          "HPC Hotel → Hotel Property Census (optional)",
+          "Related Finding → HI Discovery Findings (optional)"
+        ],
+        "publicationStateDefault": "CUSTOMER_BLOCKED",
+        "publicationStateFieldRequired": true
+      }
+    ],
+    "addFields": [
+      {
+        "table": "HI Hotel Discovery Inventory",
+        "tableId": "tblx77Nmh56h4xa9z",
+        "fields": [
+          {
+            "name": "Geographic Processing Class",
+            "type": "singleSelect",
+            "options": [
+              "PRIORITY_HPC_ENRICHMENT",
+              "GLOBAL_RESEARCH_STANDARD",
+              "EXISTING_HPC_OPPORTUNISTIC"
+            ]
+          },
+          {
+            "name": "Continent / Macro Region",
+            "type": "singleSelect",
+            "optionsSuggested": [
+              "NORTH_AMERICA",
+              "CENTRAL_AMERICA",
+              "SOUTH_AMERICA",
+              "CARIBBEAN",
+              "EUROPE",
+              "MIDDLE_EAST",
+              "AFRICA",
+              "ASIA",
+              "OCEANIA",
+              "OTHER_UNKNOWN"
+            ]
+          }
+        ]
+      },
+      {
+        "table": "HI Discovery Findings",
+        "tableId": "tblGjTWNm8G4UOF1e",
+        "fields": [
+          {
+            "name": "Linked Contract",
+            "type": "multipleRecordLinks",
+            "linkedTable": "HI Hotel Contracts"
+          },
+          {
+            "name": "Linked Milestone",
+            "type": "multipleRecordLinks",
+            "linkedTable": "HI Contract Milestones"
+          }
+        ]
+      }
+    ],
+    "explicitNonChanges": [
+      "No second Airtable base",
+      "No HPC schema redesign in this apply",
+      "HI Graph Evidence remains post-HPC-match promotion only",
+      "No automatic bulk HPC hotel creation"
+    ]
+  },
+  "hpcCreationPolicy": {
+    "mode": "VERIFIED_DISCOVERY_TO_HPC_CREATION",
+    "absoluteProhibitionRevoked": true,
+    "approvedPathwayModules": [
+      "lib/hotel-census/hpc-authorized-create-reuse-v1.js",
+      "lib/hotel-census/hpc-live-identity-collision-v1.js",
+      "lib/hotel-census/hpc-full-onboarding-contract-v1.js",
+      "docs/ai-build-system/HE_HPC_POPULATION_WORKFLOW_V1.md"
+    ],
+    "pilot": {
+      "size": "25-50",
+      "geography": "US high-confidence SEC/CMBS discoveries",
+      "dryRunRequired": true,
+      "founderManifestApprovalRequiredBeforeApply": true
+    }
+  },
+  "docs": [
+    "docs/ai-build-system/HOTEL_CONTRACT_TIMING_V4_GEOGRAPHIC_ARCHITECTURE.md",
+    "docs/ai-build-system/HOTEL_CONTRACT_TIMING_V4_HPC_CREATION_WORKFLOW.md"
+  ]
+}
