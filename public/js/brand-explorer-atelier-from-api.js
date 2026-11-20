@@ -3529,11 +3529,19 @@
     return parts.length ? parts.join('<br><br>') : '—';
   }
 
-  function buildStandardsOwnerTableHtml(requirementRows) {
+  function buildStandardsOwnerTableHtml(requirementRows, brand) {
     if (!requirementRows.length) return '';
     var bodyRows = requirementRows
       .map(function (row) {
-        var area = hasVal(row.title) ? String(row.title).trim() : 'Requirement Area';
+        var areaRaw = hasVal(row.title) ? String(row.title).trim() : 'Requirement Area';
+        // Permanent Factory rule: Requirement Area white titles = Proper Case + & (not "and")
+        var area = proposedHeading(brand, areaRaw) || areaRaw;
+        if (
+          globalThis.BeEditorialTitleCase &&
+          typeof globalThis.BeEditorialTitleCase.toEditorialTitleCase === 'function'
+        ) {
+          area = globalThis.BeEditorialTitleCase.toEditorialTitleCase(area);
+        }
         var parsed = parseRequirementBody(row.body);
         var typical = standardsOwnerTableCell(parsed.typical);
         var owner = standardsOwnerTableCell(parsed.owner);
@@ -3598,7 +3606,7 @@
       ? '<p class="be-standards-meta">' + metaBits.join(' · ') + '</p>'
       : '';
 
-    var tableHtml = buildStandardsOwnerTableHtml(requirementRows);
+    var tableHtml = buildStandardsOwnerTableHtml(requirementRows, brand);
     var introHint = hasVal(intro)
       ? '<p class="oe-section-hint be-standards-intro">' + escapeHtml(intro).replace(/\n/g, '<br>') + '</p>'
       : '<p class="oe-section-hint">Confirm each row with brand disclosure and your agreement. Status labels are illustrative, not a property audit.</p>';
