@@ -333,6 +333,36 @@
       }
     }
 
+    // Key Benefits & Program Strengths (loyalty.proof): EXACT 6 cards.
+    if (/^loyalty\.proof$/i.test(nz(slotKey))) {
+      var REQUIRED_LOYALTY_PROOF = 6;
+      if (pq.substantiveCount > 0 && pq.substantiveCount < REQUIRED_LOYALTY_PROOF) {
+        return {
+          provenance:
+            cq.substantiveCount >= REQUIRED_LOYALTY_PROOF
+              ? PROVENANCE.RETAINED_FROM_CURRENT
+              : PROVENANCE.INCOMPLETE_DRAFT,
+          applyCandidate: false,
+          reason: 'loyalty_proof_requires_exact_six_cards',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
+      if (
+        cq.substantiveCount >= REQUIRED_LOYALTY_PROOF &&
+        pq.substantiveCount > 0 &&
+        pq.substantiveCount !== REQUIRED_LOYALTY_PROOF
+      ) {
+        return {
+          provenance: PROVENANCE.INCOMPLETE_DRAFT,
+          applyCandidate: false,
+          reason: 'loyalty_proof_cardinality_regression',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
+    }
+
     if (/^materials\.gallery\.\d+$/.test(nz(slotKey))) {
       var g = decideGallerySlotApply(slotKey, currentBlocks[0] || null, candidateBlocks[0] || null);
       if (!g.applyCandidate) {

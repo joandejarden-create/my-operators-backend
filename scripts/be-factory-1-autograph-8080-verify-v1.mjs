@@ -115,6 +115,13 @@ const proof = await frame.evaluate(() => {
         (li.textContent || "").trim()
       )
     : [];
+  openTab("atelier-loyalty");
+  const loyaltyPanel = root && root.querySelector(".be-atelier-tab-panel.active");
+  const benefitHeadlines = loyaltyPanel
+    ? [...loyaltyPanel.querySelectorAll(".proof-point-card__headline")].map((h) =>
+        (h.textContent || "").trim()
+      )
+    : [];
   openTab("atelier-overview");
   const overviewPanel = root && root.querySelector(".be-atelier-tab-panel.active");
   const why = overviewPanel
@@ -127,6 +134,13 @@ const proof = await frame.evaluate(() => {
         t: (li.textContent || "").trim().slice(0, 100),
         strong: !!li.querySelector("strong"),
       }))
+    : [];
+  openTab("atelier-footprint");
+  const footprintPanel = root && root.querySelector(".be-atelier-tab-panel.active");
+  const footprintHeadings = footprintPanel
+    ? [...footprintPanel.querySelectorAll("h3, .proof-point-card__headline, .oe-cluster h3")].map(
+        (h) => (h.textContent || "").trim()
+      )
     : [];
   return {
     mode: brand && brand.beProfileMode,
@@ -141,6 +155,12 @@ const proof = await frame.evaluate(() => {
     whyLeadStrongCount: whyLeads.filter((x) => x.strong).length,
     whyLeads,
     feeLisSample: feeLis.slice(0, 8),
+    benefitHeadlines,
+    benefitCount: benefitHeadlines.length,
+    hasProofPointStub: benefitHeadlines.some((t) => /^Proof Point$/i.test(t)),
+    footprintHeadings: footprintHeadings.filter((t) => /apac|emea|cala|mea|americas|europe/i.test(t)),
+    apacBadHeading: footprintHeadings.some((t) => /^Apac$/i.test(t) && t !== "APAC"),
+    apacOkHeading: footprintHeadings.some((t) => t === "APAC"),
   };
 });
 
@@ -161,6 +181,9 @@ const pass = {
   feeThousandSep: proof.feeJoinHas100000,
   noFeeOrphans: proof.feeOrphans.length === 0,
   whyBold: proof.whyLeadStrongCount >= 3,
+  sixBenefits: proof.benefitCount === 6,
+  noProofPointStub: !proof.hasProofPointStub,
+  apacNotTitleCased: !proof.apacBadHeading,
 };
 const report = {
   at: new Date().toISOString(),

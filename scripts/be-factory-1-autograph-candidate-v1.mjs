@@ -271,12 +271,48 @@ function buildGapFillBlocks() {
       "Marriott property and reservation systems integration is required for Bonvoy participation—budget cutover and training in the conversion plan.",
       next()
     ),
+    // Key Benefits & Program Strengths — EXACT 6 cards (never a single "Proof Point" stub).
     block(
       "loyalty.proof",
-      "Proof Point",
-      "Marriott discloses Autograph Collection as a Premium soft brand with 362 properties / 76,399 rooms at year-end 2025—scale that supports Bonvoy relevance without homogenizing each hotel's story.",
+      "Repeat Guest Capture",
+      "Marriott Bonvoy earn and recognition increase the probability of second and third Autograph stays where the hotel already competes on distinctive experience—not on a standardized hard-brand prototype.",
       next(),
-      { source: sources.tenK }
+      { source: sources.bonvoy }
+    ),
+    block(
+      "loyalty.proof",
+      "Direct Channel & Member Pricing",
+      "Bonvoy member rates and Marriott direct paths help Autograph hotels defend contribution against high-commission intermediaries while keeping each property's individual narrative intact.",
+      next(),
+      { source: sources.bonvoy }
+    ),
+    block(
+      "loyalty.proof",
+      "Elite Member Value",
+      "Elite recognition (upgrades where available, late checkout, milestone rewards) supports contribution at Autograph hotels; amenity delivery still varies by property capability and design.",
+      next(),
+      { source: sources.bonvoy }
+    ),
+    block(
+      "loyalty.proof",
+      "Cross-Brand Traveler Flow",
+      "Bonvoy recognition across Marriott sister brands matters for guests who split stays within the network—Autograph remains the character-hotel node inside that earn/redeem graph.",
+      next(),
+      { source: sources.bonvoy }
+    ),
+    block(
+      "loyalty.proof",
+      "Cobrand & Payment Scale",
+      "Bonvoy co-branded cards, Moments, and bonus-point campaigns lift acquisition and keep the program top-of-wallet; model hotel-level contribution after loyalty chargebacks—not portfolio vanity metrics.",
+      next(),
+      { source: sources.bonvoy }
+    ),
+    block(
+      "loyalty.proof",
+      "Corporate & Small Meetings",
+      "Marriott account linkage and negotiated transient patterns support midweek compression where corporate and SMERF mix fits the Autograph asset—confirm for this hotel's source markets.",
+      next(),
+      { source: sources.bonvoy }
     ),
 
     // --- Economics fee buckets (FDD-attributed; ranges, not invented) ---

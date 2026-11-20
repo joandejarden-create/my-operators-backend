@@ -41,8 +41,9 @@
 | Images verified | CURRENT gallery retained (no regressive image overwrite) |
 | Founder lessons passed | Ampersand titles; why-value colon leads; fee bucket parse; soft-default Proposed for NOT_APPROVED; no Curio/Ascend mutation |
 
-**Candidate content hash:** `c2208e43811211029eaabe02c0355b146bf72f54d9d18d1186439b31c44244e5`  
-**Assembled preview hash:** `456b9577133ebcb0e720cfb2843eb8eaa5f6c552df86458a3e5888fb8ce85bc0`
+**Candidate content hash:** `d7510b9b6844e46c66dbf40f06cb14bd85b164983388024a956673d698e90979`  
+**Assembled preview hash:** `a48356a2411f40272c0998dd7ef60776bd17d45edaf0a6798b29ff6fdaaed772`  
+**Follow-up (2026-11-20):** Key Benefits always exact 6 (`loyalty.proof`); APAC/EMEA/CALA all-caps in Title Case.
 
 ---
 
