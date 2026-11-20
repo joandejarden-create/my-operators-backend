@@ -317,8 +317,23 @@
         '</div></div>'
       );
     }
-    var img = nz(item.imageUrl)
-      ? '<div class="becs-card-media"><img src="' + escapeHtml(item.imageUrl) + '" alt="" loading="lazy" /></div>'
+    var renderImg = nz(item.imageDeliveryUrl) || nz(item.imageUrl);
+    if (
+      renderImg &&
+      /airtableusercontent\.com/i.test(renderImg) &&
+      nz(item.recordId) &&
+      /^rec[a-zA-Z0-9]+$/.test(item.recordId)
+    ) {
+      renderImg = '/api/brand-library/presentation-image/' + encodeURIComponent(item.recordId);
+    }
+    var img = nz(renderImg)
+      ? '<div class="becs-card-media"><img src="' +
+        escapeHtml(renderImg) +
+        '" alt="" loading="lazy" data-be-record-id="' +
+        escapeHtml(nz(item.recordId)) +
+        '" data-be-slot="' +
+        escapeHtml(nz(item.slotKey)) +
+        '" /></div>'
       : '';
     return (
       '<article class="becs-card becs-card-' +

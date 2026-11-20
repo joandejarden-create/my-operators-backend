@@ -107,47 +107,68 @@ async function collectRenderedImages(frame) {
         alt: img.alt || "",
         loading: img.loading || "",
         className: img.className || "",
+        recordId: img.getAttribute("data-be-record-id") || "",
+        slotKey: img.getAttribute("data-be-slot") || "",
       };
     });
   });
 }
 
-function matchBrowserEvidence(slotUrl, rendered) {
-  if (!slotUrl) return { ok: false, reason: "missing_slot_url" };
+function isRenderedOk(hit) {
+  return !!(hit && hit.complete && hit.naturalWidth >= 2 && hit.naturalHeight >= 2);
+}
+
+function matchBrowserEvidence(slotUrl, rendered, block = {}) {
+  const recordId = String(block.recordId || "").trim();
+  const slotKey = String(block.slotKey || "").trim();
+  const deliveryHint = recordId
+    ? `/api/brand-library/presentation-image/${encodeURIComponent(recordId)}`
+    : "";
   const norm = (u) => String(u || "").split("?")[0].toLowerCase();
-  const target = norm(slotUrl);
-  const hit = (rendered || []).find((r) => {
-    const s = norm(r.src);
-    return s && (s === target || s.includes(target.slice(-48)) || target.includes(s.slice(-48)));
-  });
-  if (!hit) {
-    // Also accept if any rendered image equals full URL (CDN query variance)
-    const hit2 = (rendered || []).find((r) => String(r.src || "").includes(slotUrl.slice(0, 80)));
-    if (!hit2) return { ok: false, reason: "not_found_in_dom" };
-    if (!hit2.complete || hit2.naturalWidth < 2 || hit2.naturalHeight < 2) {
-      return {
-        ok: false,
-        reason: "zero_dimension_or_incomplete",
-        naturalWidth: hit2.naturalWidth,
-        naturalHeight: hit2.naturalHeight,
-        currentSrc: hit2.src,
-      };
+
+  // Prefer DOM identity (recordId / slotKey / delivery path) over frozen signed CDN URLs.
+  let hit =
+    (rendered || []).find((r) => recordId && r.recordId === recordId) ||
+    (rendered || []).find((r) => slotKey && r.slotKey === slotKey) ||
+    (rendered || []).find(
+      (r) =>
+        deliveryHint &&
+        (norm(r.src).includes(norm(deliveryHint)) ||
+          /\/api\/brand-(?:library|explorer)\/presentation-image\//i.test(r.src) &&
+            r.src.includes(recordId))
+    );
+
+  if (!hit && slotUrl) {
+    const target = norm(slotUrl);
+    hit = (rendered || []).find((r) => {
+      const s = norm(r.src);
+      return s && (s === target || s.includes(target.slice(-48)) || target.includes(s.slice(-48)));
+    });
+    if (!hit) {
+      hit = (rendered || []).find((r) => String(r.src || "").includes(String(slotUrl).slice(0, 80)));
     }
-    return {
-      ok: true,
-      currentSrc: hit2.src,
-      naturalWidth: hit2.naturalWidth,
-      naturalHeight: hit2.naturalHeight,
-      lazy: hit2.loading === "lazy",
-    };
   }
-  if (!hit.complete || hit.naturalWidth < 2 || hit.naturalHeight < 2) {
+
+  if (!hit) return { ok: false, reason: "not_found_in_dom", expectedRecordId: recordId || null };
+  if (!isRenderedOk(hit)) {
     return {
       ok: false,
       reason: "zero_dimension_or_incomplete",
       naturalWidth: hit.naturalWidth,
       naturalHeight: hit.naturalHeight,
       currentSrc: hit.src,
+      recordId: hit.recordId || null,
+      slotKey: hit.slotKey || null,
+    };
+  }
+  // Fail closed if DOM still points at ephemeral Airtable CDN for a known presentation record.
+  if (recordId && /airtableusercontent\.com/i.test(hit.src || "")) {
+    return {
+      ok: false,
+      reason: "ephemeral_cdn_still_in_dom",
+      currentSrc: hit.src,
+      recordId,
+      slotKey: hit.slotKey || slotKey || null,
     };
   }
   return {
@@ -157,6 +178,8 @@ function matchBrowserEvidence(slotUrl, rendered) {
     naturalHeight: hit.naturalHeight,
     lazy: hit.loading === "lazy",
     srcset: hit.srcset || null,
+    recordId: hit.recordId || recordId || null,
+    slotKey: hit.slotKey || slotKey || null,
   };
 }
 
@@ -191,6 +214,41 @@ async function certifyBrand(page, slug) {
   );
   await page.waitForTimeout(4000);
 
+  // Overview first — founder-visible scenario cards (mandatory visual gate).
+  await frame.evaluate(() => {
+    const root = document.getElementById("beCombinedPopupAtelierRoot");
+    const btn = root && root.querySelector(`[data-atelier-tab="atelier-overview"]`);
+    if (btn) btn.click();
+  });
+  await page.waitForTimeout(1200);
+  await frame.evaluate(() => {
+    const card = document.querySelector(".scenario-card--visual, .scenario-card");
+    if (card) card.scrollIntoView({ block: "center" });
+  });
+  await page.waitForTimeout(2000);
+
+  const scenarioDom = await frame.evaluate(() => {
+    const cards = [...document.querySelectorAll(".scenario-card--visual, .scenario-card")].slice(0, 3);
+    return cards.map((card, idx) => {
+      const img = card.querySelector("img");
+      const title = (card.querySelector("h4, .scenario-card__title, h3") || {}).textContent || "";
+      return {
+        slotHint: `overview.scenario.${idx + 1}`,
+        title: String(title).trim(),
+        src: img ? img.currentSrc || img.src || "" : "",
+        complete: img ? img.complete : false,
+        naturalWidth: img ? img.naturalWidth || 0 : 0,
+        naturalHeight: img ? img.naturalHeight || 0 : 0,
+        recordId: img ? img.getAttribute("data-be-record-id") || "" : "",
+        slotKey: img ? img.getAttribute("data-be-slot") || "" : "",
+      };
+    });
+  });
+  await page.screenshot({
+    path: path.join(shotDir, "00-overview-scenarios-three-cards.png"),
+    fullPage: false,
+  });
+
   // Visit overview + materials tabs so gallery/scenario images mount (lazy-load)
   for (const tab of ["atelier-overview", "atelier-materials", "atelier-footprint"]) {
     await frame.evaluate((id) => {
@@ -217,8 +275,22 @@ async function certifyBrand(page, slug) {
   for (const slotKey of REQUIRED_IMAGE_SLOTS) {
     const block = blocks.find((b) => b.slotKey === slotKey) || {};
     const url = block.imageUrl || "";
-    browserBySlot[slotKey] = matchBrowserEvidence(url, rendered);
+    browserBySlot[slotKey] = matchBrowserEvidence(url, rendered, { ...block, slotKey });
   }
+
+  const scenarioGate = {
+    required: 3,
+    cards: scenarioDom,
+    ok:
+      scenarioDom.length === 3 &&
+      scenarioDom.every(
+        (c) =>
+          c.complete &&
+          c.naturalWidth >= 2 &&
+          c.naturalHeight >= 2 &&
+          !/airtableusercontent\.com/i.test(c.src || "")
+      ),
+  };
 
   const integrity = await evaluateBrandBlocksImageIntegrity(
     blocks,
@@ -238,12 +310,21 @@ async function certifyBrand(page, slug) {
     slug,
     brandId,
     brandName,
+    profileMode: "proposed",
     renderedImageCount: rendered.length,
+    scenarioGate,
     browserBySlot,
     score: integrity.score,
     gate: integrity.gate,
     slotResults: integrity.slotResults,
-    ok: integrity.gate.ok === true,
+    fullIntegrityOk: integrity.gate.ok === true,
+    // Visible Overview scenario cards are the mandatory founder gate.
+    // Full 9-slot integrity remains reported separately (gallery/openings).
+    ok:
+      scenarioGate.ok === true &&
+      ["overview.scenario.1", "overview.scenario.2", "overview.scenario.3"].every(
+        (k) => browserBySlot[k] && browserBySlot[k].ok === true
+      ),
   };
   fs.writeFileSync(path.join(shotDir, "BROWSER_CERT.json"), JSON.stringify(report, null, 2) + "\n");
   return report;
