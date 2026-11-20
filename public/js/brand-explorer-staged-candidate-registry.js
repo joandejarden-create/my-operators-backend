@@ -2360,6 +2360,110 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '8ce8dc9eb8141deaae943f512e40aa28155bd5ceac1d5f1d593191e1b41e367b'
+    },
+    {
+      id: 'recJPlQbmat5KZDPe',
+      slug: 'anantara-hotels-resorts',
+      name: 'Anantara Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/anantara-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3f2cf7a7c8e15e7a89a5b5c8d6e7e22c61d991774a17154f35e42503767318a7'
+    },
+    {
+      id: 'recXVvsweIigv064m',
+      slug: 'tivoli-hotels-resorts',
+      name: 'Tivoli Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/tivoli-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9e67a79d8d397c3dc01d2e6bdc4f02413518b800953f5f9e417a08bdfadf993d'
+    },
+    {
+      id: 'recZZlLvzB7NDs8yB',
+      slug: 'nh-hotels-resorts',
+      name: 'NH Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/nh-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '080555a38747d745d1d5a292456735623b1fdba17a299c58d3710167b835fcfb'
+    },
+    {
+      id: 'recSAUYLDhZPmEita',
+      slug: 'oaks-hotels-resorts-suites',
+      name: 'Oaks Hotels, Resorts & Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/oaks-hotels-resorts-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c0fae091bec80bed82b1a84811216a42ec9b7fd674844695d962f8cf79a6f890'
+    },
+    {
+      id: 'recm6hadfIlOVdszS',
+      slug: 'gran-melia-hotels-resorts',
+      name: 'Gran Meliá Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/gran-melia-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '7437a08db245f18eda09e880ff06dbd8a36947e90b9565978bff66224bace720'
+    },
+    {
+      id: 'recoMzqIJuI2du3VS',
+      slug: 'me-by-melia',
+      name: 'ME by Meliá',
+      overlayUrl: '/brand-explorer-phase2e-preview/me-by-melia-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'dad516456e24a1e4059caf9a062582947936db300d96b5089f04eb649320bd54'
+    },
+    {
+      id: 'recR7im3gU3xoddBM',
+      slug: 'melia-hotels-resorts',
+      name: 'Meliá Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/melia-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '1535c62bcad19dd0a994669afb5112585ebf379c730fc76767a2043c93cbf32c'
+    },
+    {
+      id: 'rec5dHX0hHSdA8nbd',
+      slug: 'barcelo-hotels-resorts',
+      name: 'Barceló Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/barcelo-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-15-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f164d7d881ec0db58b65402eec0538f586c0a1b7f7e25876d88cbee783ed4e5f'
     }
   ];
 
@@ -2588,6 +2692,26 @@
     if (/\belement\b/i.test(name) && /westin|hotel/i.test(name)) return bySlug('element-hotels');
     if (/\bprotea\b/i.test(name)) return bySlug('protea-hotels-by-marriott');
     if (/four\s*points\s*flex/i.test(name)) return bySlug('four-points-flex-by-sheraton');
+    if (/\banantara\b/i.test(name)) return bySlug('anantara-hotels-resorts');
+    if (/\btivoli\b/i.test(name)) return bySlug('tivoli-hotels-resorts');
+    if (/nh\s*collection/i.test(name)) return bySlug('nh-collection-hotels-resorts');
+    if (/^nh\b/i.test(name) && !/collection|nhow/i.test(name)) return bySlug('nh-hotels-resorts');
+    if (/\bnhow\b/i.test(name)) return bySlug('nhow-hotels-resorts');
+    if (/\bavani\b/i.test(name)) return bySlug('avani-hotels-resorts');
+    if (/\boaks\b/i.test(name)) return bySlug('oaks-hotels-resorts-suites');
+    if (/\belewana\b/i.test(name)) return bySlug('elewana-collection');
+    if (/gran\s*meli/i.test(name)) return bySlug('gran-melia-hotels-resorts');
+    if (/\bme\b.*meli|meli.*\bme\b/i.test(name)) return bySlug('me-by-melia');
+    if (/meli[aá]\s*collection|the\s*meli[aá]\s*collection/i.test(name)) return bySlug('the-melia-collection');
+    if (/\bparadisus\b/i.test(name)) return bySlug('paradisus-by-melia');
+    if (/^meli[aá]\b/i.test(name) && !/gran|collection|paradisus|innside|\bme\b|\bzel\b|\bsol\b/i.test(name)) return bySlug('melia-hotels-resorts');
+    if (/innside/i.test(name)) return bySlug('innside-by-melia');
+    if (/\bzel\b/i.test(name)) return bySlug('zel');
+    if (/\bsol\b.*meli|meli.*\bsol\b/i.test(name)) return bySlug('sol-by-melia');
+    if (/royal\s*hideaway/i.test(name)) return bySlug('royal-hideaway-hotels-resorts');
+    if (/barcel/i.test(name) && !/royal\s*hideaway|occidental|allegro/i.test(name)) return bySlug('barcelo-hotels-resorts');
+    if (/\boccidental\b/i.test(name)) return bySlug('occidental-hotels-resorts');
+    if (/\ballegro\b/i.test(name)) return bySlug('allegro-hotels');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
