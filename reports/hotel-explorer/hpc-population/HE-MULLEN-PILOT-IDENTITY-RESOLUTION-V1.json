@@ -1,0 +1,1225 @@
+{
+  "contract": "MULLEN_PILOT_IDENTITY_RESOLUTION_V1",
+  "version": "he-mullen-hpc-population-pilot-v1",
+  "phase": "PHASE_1_IDENTITY_RESOLUTION",
+  "applyAuthorized": false,
+  "dryRun": true,
+  "airtableWrites": 0,
+  "canonicalBaseId": "appCCUsuGsE1ifoLk",
+  "hpcTableId": "tbl9aY5ijiuIzzWam",
+  "startedAt": "2026-11-19T19:17:53.372Z",
+  "completedAt": "2026-11-19T19:18:28.467Z",
+  "summary": {
+    "total": 8,
+    "MATCHED_HPC": 3,
+    "MATCHED_EXISTING_ALIAS": 0,
+    "MATCHED_HOTEL_CENSUS": 1,
+    "NEW_HPC_CANDIDATE": 4,
+    "AMBIGUOUS_MATCH": 0,
+    "IDENTITY_UNRESOLVED": 0
+  },
+  "results": [
+    {
+      "pilotKey": "bethesda_marriott",
+      "hotelName": "Bethesda Marriott",
+      "identityOutcome": "MATCHED_HPC",
+      "hpcRecordId": "recLuxvwwxID7U2B8",
+      "hotelCensusRecordIds": [],
+      "matchScore": 1,
+      "matchMethod": "known_hpc_id_fetch",
+      "hpcCollisionOutcome": "HPC_EXISTING_RECORD_VERIFIED",
+      "hpcCandidates": [
+        {
+          "id": "recLuxvwwxID7U2B8",
+          "name": "Bethesda Marriott",
+          "brand": "Marriott Hotels",
+          "city": "Bethesda",
+          "country": "United States",
+          "score": 1
+        }
+      ],
+      "hotelCensusHits": [],
+      "founderPreviewUrl": "http://127.0.0.1:8091/hotel-explorer-preview.html?hotelExplorer=recLuxvwwxID7U2B8&previewMode=proposed",
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "Canonical HPC already known from Bethesda Phase 3/4.",
+      "checkedAt": "2026-11-19T19:17:53.376Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": null,
+        "censusQueryLog": [
+          {
+            "label": "census_name:Bethesda Marriott",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Bethesda Marriott",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Bethesda Marriott Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Bethesda Marriott Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Marriott Bethesda",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Marriott Bethesda",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_city_brand",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "ac_hotel_newtown_square",
+      "hotelName": "AC Hotel Newtown Square",
+      "identityOutcome": "NEW_HPC_CANDIDATE",
+      "hpcRecordId": null,
+      "hotelCensusRecordIds": [],
+      "matchScore": null,
+      "matchMethod": null,
+      "hpcCollisionOutcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+      "hpcCandidates": [],
+      "hotelCensusHits": [],
+      "founderPreviewUrl": null,
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "US current portfolio listing — pending HPC match.",
+      "checkedAt": "2026-11-19T19:17:55.394Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:AC Hotel Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:AC Hotel Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:AC Hotel by Marriott Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:AC Hotel by Marriott Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:AC Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:AC Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "city_tokens:Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "brand_city",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:AC Hotel Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:AC Hotel by Marriott Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:AC Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:AC Hotel Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:AC Hotel Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:AC Hotel by Marriott Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:AC Hotel by Marriott Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:AC Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:AC Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_city_brand",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "carton_house_fairmont",
+      "hotelName": "Carton House, a Fairmont Hotel",
+      "identityOutcome": "NEW_HPC_CANDIDATE",
+      "hpcRecordId": null,
+      "hotelCensusRecordIds": [],
+      "matchScore": null,
+      "matchMethod": null,
+      "hpcCollisionOutcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+      "hpcCandidates": [],
+      "hotelCensusHits": [],
+      "founderPreviewUrl": null,
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "Ireland current portfolio listing.",
+      "checkedAt": "2026-11-19T19:17:59.098Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:Carton House, a Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Carton House, a Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Carton House Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Carton House Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Fairmont Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Fairmont Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Carton House Fairmont",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Carton House Fairmont",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Carton House A Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Carton House A Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Carton House, a Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Carton House Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Fairmont Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Carton House Fairmont",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Carton House A Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:Carton House, a Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Carton House, a Fairmont Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Carton House Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Carton House Hotel",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Fairmont Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Fairmont Carton House",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Carton House Fairmont",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Carton House Fairmont",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_city_brand",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "hgi_newtown_square_radnor",
+      "hotelName": "Hilton Garden Inn Newtown Square Radnor",
+      "identityOutcome": "NEW_HPC_CANDIDATE",
+      "hpcRecordId": null,
+      "hotelCensusRecordIds": [],
+      "matchScore": null,
+      "matchMethod": null,
+      "hpcCollisionOutcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+      "hpcCandidates": [],
+      "hotelCensusHits": [],
+      "founderPreviewUrl": null,
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "US current portfolio listing.",
+      "checkedAt": "2026-11-19T19:18:04.949Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:Hilton Garden Inn Newtown Square Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Hilton Garden Inn Newtown Square Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Hilton Garden Inn Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Hilton Garden Inn Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Hilton Garden Inn Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Hilton Garden Inn Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:HGI Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:HGI Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "city_tokens:Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "brand_city",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Hilton Garden Inn Newtown Square Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Hilton Garden Inn Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Hilton Garden Inn Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:HGI Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:Hilton Garden Inn Newtown Square Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Hilton Garden Inn Newtown Square Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Hilton Garden Inn Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Hilton Garden Inn Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Hilton Garden Inn Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Hilton Garden Inn Radnor",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:HGI Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:HGI Newtown Square",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_city_brand",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "jw_marriott_costa_elena",
+      "hotelName": "JW Marriott Costa Elena Resort All-Inclusive",
+      "identityOutcome": "MATCHED_HPC",
+      "hpcRecordId": "recq9KWr8UE7z2549",
+      "hotelCensusRecordIds": [
+        "recAF96C86DfTQ4zD",
+        "rec2bHwe2BgY78G1w"
+      ],
+      "matchScore": 0.925,
+      "matchMethod": "live_name_alias_score",
+      "hpcCollisionOutcome": "HPC_EXISTING_RECORD_VERIFIED",
+      "hpcCandidates": [
+        {
+          "id": "recq9KWr8UE7z2549",
+          "name": "JW Marriott Costa Elena Resort & Spa, All-Inclusive",
+          "brand": "JW Marriott",
+          "city": "La Cruz",
+          "country": "Costa Rica",
+          "score": 0.925
+        }
+      ],
+      "hotelCensusHits": [
+        {
+          "id": "recAF96C86DfTQ4zD",
+          "name": "JW Marriott Guanacaste Resort & Spa",
+          "brand": "JW Marriott",
+          "city": "Pinilla",
+          "country": "Costa Rica",
+          "rooms": 310,
+          "market": "Costa Rica",
+          "managementCompany": "Grupo Real Turismo",
+          "table": "Hotel Census",
+          "score": 1
+        },
+        {
+          "id": "rec2bHwe2BgY78G1w",
+          "name": "Dreams Las Mareas Costa Rica",
+          "brand": "Dreams Resorts & Spas",
+          "city": "El Jobo",
+          "country": "Costa Rica",
+          "rooms": 447,
+          "market": "Costa Rica",
+          "managementCompany": "Apple Leisure Group",
+          "table": "Hotel Census",
+          "score": 1
+        }
+      ],
+      "founderPreviewUrl": "http://127.0.0.1:8091/hotel-explorer-preview.html?hotelExplorer=recq9KWr8UE7z2549&previewMode=proposed",
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "MREC notes formerly Dreams Las Mareas — alias search required.",
+      "checkedAt": "2026-11-19T19:18:09.568Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:JW Marriott Costa Elena Resort All-Inclusive",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:JW Marriott Costa Elena Resort All-Inclusive",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:JW Marriott Guanacaste Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:JW Marriott Guanacaste Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Dreams Las Mareas",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Dreams Las Mareas",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Dreams Las Mareas Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Dreams Las Mareas Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Costa Elena Resort",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "canonical:Costa Elena Resort",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:JW Marriott Costa Elena",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "canonical:JW Marriott Costa Elena",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "shared_search:JW Marriott Costa Elena Resort All-Inclusive",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:JW Marriott Guanacaste Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Dreams Las Mareas",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Dreams Las Mareas Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Costa Elena Resort",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "shared_search:JW Marriott Costa Elena",
+            "hitCount": 1,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:JW Marriott Costa Elena Resort All-Inclusive",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:JW Marriott Costa Elena Resort All-Inclusive",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:JW Marriott Guanacaste Resort & Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:JW Marriott Guanacaste Resort & Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_name:Dreams Las Mareas",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Dreams Las Mareas",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Dreams Las Mareas Costa Rica",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Dreams Las Mareas Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Costa Elena Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Costa Elena Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:JW Marriott Costa Elena",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:JW Marriott Costa Elena",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "secrets_cap_cana",
+      "hotelName": "Secrets Cap Cana Resort & Spa",
+      "identityOutcome": "MATCHED_HPC",
+      "hpcRecordId": "recd7XAM6tLjzQhaI",
+      "hotelCensusRecordIds": [
+        "reccawqT33X5s2Stv"
+      ],
+      "matchScore": 1,
+      "matchMethod": "exact_name_amid_neighbors",
+      "hpcCollisionOutcome": "HPC_IDENTITY_COLLISION_REQUIRES_REVIEW",
+      "hpcCandidates": [
+        {
+          "id": "recd7XAM6tLjzQhaI",
+          "name": "Secrets Cap Cana Resort & Spa",
+          "brand": "Secrets (Hyatt Inclusive Collection)",
+          "city": "Cap Cana",
+          "country": "Dominican Republic",
+          "score": 1
+        },
+        {
+          "id": "reclS16CMUS6eJgpC",
+          "name": "Dreams Cap Cana Resort & Spa",
+          "brand": "Dreams (Hyatt Inclusive Collection)",
+          "city": "Cap Cana",
+          "country": "Dominican Republic",
+          "score": 0.7467
+        },
+        {
+          "id": "recFP9eslejVXbyuR",
+          "name": "secrets cap cana resort spa adults all inclusive",
+          "brand": null,
+          "city": "Cap Cana",
+          "country": "Dominican Republic",
+          "score": 0.705
+        },
+        {
+          "id": "recMVSh0GTZqUtYYn",
+          "name": "Margaritaville Reserve Resort Cap Cana Wave",
+          "brand": null,
+          "city": "Cap Cana",
+          "country": "Dominican Republic",
+          "score": 0.5086
+        },
+        {
+          "id": "recN76iEE6yAaPh8H",
+          "name": "The St. Regis Cap Cana Resort",
+          "brand": "St. Regis",
+          "city": "Cap Cana",
+          "country": "Dominican Republic",
+          "score": 0.5086
+        }
+      ],
+      "hotelCensusHits": [
+        {
+          "id": "reccawqT33X5s2Stv",
+          "name": "Secrets Cap Cana Resorts & Spa",
+          "brand": "Secrets Resorts & Spas",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "rooms": 457,
+          "market": "Dominican Republic",
+          "managementCompany": "Apple Leisure Group",
+          "table": "Hotel Census",
+          "score": 0.7667
+        }
+      ],
+      "founderPreviewUrl": "http://127.0.0.1:8091/hotel-explorer-preview.html?hotelExplorer=recd7XAM6tLjzQhaI&previewMode=proposed",
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "DR current portfolio listing.",
+      "checkedAt": "2026-11-19T19:18:15.409Z",
+      "exactNamePromotion": {
+        "promotedFrom": "AMBIGUOUS_MATCH",
+        "reason": "exact_or_near_exact_property_name",
+        "nearNeighbors": [
+          {
+            "id": "reclS16CMUS6eJgpC",
+            "name": "Dreams Cap Cana Resort & Spa",
+            "score": 0.7467
+          },
+          {
+            "id": "recFP9eslejVXbyuR",
+            "name": "secrets cap cana resort spa adults all inclusive",
+            "score": 0.705
+          },
+          {
+            "id": "recMVSh0GTZqUtYYn",
+            "name": "Margaritaville Reserve Resort Cap Cana Wave",
+            "score": 0.5086
+          }
+        ]
+      },
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:Secrets Cap Cana Resort & Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Cap Cana Resort & Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets Cap Cana",
+            "hitCount": 2,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Cap Cana",
+            "hitCount": 2,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets Cap Cana Resort",
+            "hitCount": 2,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Cap Cana Resort",
+            "hitCount": 2,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets Cap Cana Resort Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Cap Cana Resort Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "city_tokens:Cap Cana",
+            "hitCount": 10,
+            "ok": true
+          },
+          {
+            "label": "brand_city",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Cap Cana Resort & Spa",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Cap Cana",
+            "hitCount": 2,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Cap Cana Resort",
+            "hitCount": 2,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Cap Cana Resort Spa",
+            "hitCount": 1,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:Secrets Cap Cana Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Cap Cana Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets Cap Cana",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Cap Cana",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets Cap Cana Resort",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Cap Cana Resort",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_city_brand",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "secrets_papagayo",
+      "hotelName": "Secrets Papagayo Costa Rica",
+      "identityOutcome": "MATCHED_HOTEL_CENSUS",
+      "hpcRecordId": null,
+      "hotelCensusRecordIds": [
+        "recyX1wLsHBJYRPw7"
+      ],
+      "matchScore": 1,
+      "matchMethod": null,
+      "hpcCollisionOutcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+      "hpcCandidates": [],
+      "hotelCensusHits": [
+        {
+          "id": "recyX1wLsHBJYRPw7",
+          "name": "Secrets Papagayo Costa Rica",
+          "brand": "Secrets Resorts & Spas",
+          "city": "Guanacaste Province",
+          "country": "Costa Rica",
+          "rooms": 202,
+          "market": "Costa Rica",
+          "managementCompany": "Apple Leisure Group",
+          "table": "Hotel Census",
+          "score": 1
+        }
+      ],
+      "founderPreviewUrl": null,
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "Costa Rica current portfolio listing.",
+      "checkedAt": "2026-11-19T19:18:19.685Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:Secrets Papagayo Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Papagayo Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets Resort Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Resort Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Papagayo Secrets",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Papagayo Secrets",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Papagayo Costa Rica",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Resort Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Papagayo Secrets",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:Secrets Papagayo Costa Rica",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Papagayo Costa Rica",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets Papagayo",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Papagayo",
+            "hitCount": 1,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets Resort Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Resort Papagayo",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Papagayo Secrets",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Papagayo Secrets",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    },
+    {
+      "pilotKey": "secrets_st_lucia",
+      "hotelName": "Secrets St. Lucia",
+      "identityOutcome": "NEW_HPC_CANDIDATE",
+      "hpcRecordId": null,
+      "hotelCensusRecordIds": [],
+      "matchScore": null,
+      "matchMethod": null,
+      "hpcCollisionOutcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+      "hpcCandidates": [],
+      "hotelCensusHits": [],
+      "founderPreviewUrl": null,
+      "writeBlocked": true,
+      "applyAuthorized": false,
+      "notes": "St. Lucia listing — confirm operating vs announced name.",
+      "checkedAt": "2026-11-19T19:18:23.542Z",
+      "exactNamePromotion": null,
+      "evidence": {
+        "hpcQueryLog": [
+          {
+            "label": "exact_or_find:Secrets St. Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets St. Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets St Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets St Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets St. Lucia Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets St. Lucia Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets Halcyon",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets Halcyon",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "exact_or_find:Secrets St Lucia Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "canonical:Secrets St Lucia Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets St. Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets St Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets St. Lucia Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets Halcyon",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "shared_search:Secrets St Lucia Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusQueryLog": [
+          {
+            "label": "census_name:Secrets St. Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets St. Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets St Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets St Lucia",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets St. Lucia Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets St. Lucia Resort",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets Halcyon",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets Halcyon",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_name:Secrets St Lucia Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          },
+          {
+            "label": "census_affiliation_token:Secrets St Lucia Resort & Spa",
+            "hitCount": 0,
+            "ok": true
+          }
+        ],
+        "censusError": null
+      }
+    }
+  ],
+  "nextPhaseGate": "STOP before production Airtable apply — complete Phase 2–4 dry-run packet for founder review."
+}

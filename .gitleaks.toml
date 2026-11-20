@@ -76,6 +76,10 @@ regexes = [
   '''(?i)"identity_key"\s*:''',
   '''(?i)Identity Key"\s*:''',
 
+  # Hotel Explorer session preference storage id (not a credential). Historical STORAGE_KEY= and SESSION_PREF_ID= lines.
+  '''(?i)(?:STORAGE_KEY|SESSION_PREF_ID)\s*=\s*"he_measurement_prefs_v1"''',
+  '''he_measurement_prefs_v1''',
+
   # Proven false positives: generated census/research identifier values.
   '''"key"\s*:\s*"(?:ind|dfs|rb|osm)[-_:][A-Za-z0-9._:-]+"''',
   '''"key"\s*:\s*"[A-Fa-f0-9]{40}"''',
@@ -118,6 +122,8 @@ regexes = [
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
   '''(?i)const bannedKeys = \["email", "phone", "mobile", "linkedinUrl", "linkedInUrl", "providerPersonId", "emails", "phones"\];''',
+  # Boolean gate / comment text next to public LinkedIn URL field — not a LinkedIn OAuth client secret (PR #463).
+  '''linkedinUrl:\s*linkedinVerified''',
   '''https://v5\.airtableusercontent\.com/v3/u/''',
 
   # Public client-side IHG config captured from HTML.

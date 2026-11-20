@@ -1,0 +1,440 @@
+{
+  "version": "hotel-explorer-founder-quality-lessons-v1.29",
+  "updated": "2026-11-20",
+  "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
+  "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
+  "npmScript": "test:he-product-quality-gates-v1",
+  "additionalGates": [
+    "test:he-owner-portfolio-operator-view-v1",
+    "test:he-ownership-control-network-v1",
+    "test:he-hotel-news-from-market-alerts-v1",
+    "test:he-guest-sentiment-brand-operator-v1",
+    "test:he-market-alerts-closeout-v1",
+    "test:he-async-section-loading-v1",
+    "test:he-contact-intelligence-directory-ux-v1",
+    "test:he-loading-ux-toast-v1",
+    "test:he-public-contact-channel-hierarchy-v1",
+    "test:he-5-0-full-e2e-pilot-v1",
+    "test:he-5-0-autonomous-reconciliation-v1",
+    "test:he-mullen-pilot-hpc-population-v1",
+    "test:he-legacy-hotel-census-independence-v1",
+    "test:he-5-0-controlled-apply-v1",
+    "test:dealality-legacy-hotel-census-retirement-gate-v1"
+  ],
+  "referenceHotels": {
+    "uxGolden": {
+      "id": "recUNycnMwOVFX0hc",
+      "name": "Krystal Grand Puerto Vallarta",
+      "role": "KGPV_GOLDEN_UX"
+    },
+    "airtablePilot": {
+      "id": "recLuxvwwxID7U2B8",
+      "name": "Bethesda Marriott",
+      "role": "AIRTABLE_FIRST_PILOT"
+    },
+    "generalizationProbe": {
+      "id": "auto",
+      "name": "Third hotel with different coverage",
+      "role": "GENERALIZATION_PROBE",
+      "note": "Selected from golden-demo / live ownership without new paid research"
+    }
+  },
+  "lessons": [
+    {
+      "id": "HE-QL-001",
+      "originalProblem": "Keyword / fact-list hotel descriptions",
+      "rootCause": "Thin template synthesis from census tokens without commercial rubric",
+      "approvedStandard": "Evidence-grounded commercial narrative via hotel-commercial-description-v1",
+      "sharedComponent": "lib/hotel-intelligence/hotel-commercial-description-v1.js; public/js/hotel-detail-panel.js",
+      "regressionTest": "rejects_keyword_stuffed_and_id_leaking_descriptions",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-overview-desc.png"
+    },
+    {
+      "id": "HE-QL-002",
+      "originalProblem": "Missing Year Built / Last Renovated",
+      "rootCause": "Fields omitted when null instead of explicit unresolved state",
+      "approvedStandard": "Always show facts; Not yet verified when unknown; never invent",
+      "sharedComponent": "public/js/hotel-detail-panel.js",
+      "regressionTest": "overview_exposes_year_built_and_renovated_slots",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-overview-desc.png"
+    },
+    {
+      "id": "HE-QL-003",
+      "originalProblem": "Crowded amenity icon strip with raw tokens",
+      "rootCause": "Direct DB token render without taxonomy / grid",
+      "approvedStandard": "Amenity grid with human labels, SVG icons, verified state, reusable IDs",
+      "sharedComponent": "public/js/hotel-detail-panel.js; public/css/hotel-detail-panel.css",
+      "regressionTest": "amenities_forbid_raw_db_tokens",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-amenities.png"
+    },
+    {
+      "id": "HE-QL-004",
+      "originalProblem": "Flat ownership text; relationship tables showed dle_ IDs",
+      "rootCause": "Org display name unresolved; hierarchy not rendered",
+      "approvedStandard": "KGPV-quality hierarchy + human org names; Proposed badges for staged overlays",
+      "sharedComponent": "public/js/hotel-intelligence-workspace.js",
+      "regressionTest": "forbids_internal_graph_ids_in_relationship_markup",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-relationships-fixed.png"
+    },
+    {
+      "id": "HE-QL-005",
+      "originalProblem": "No Guest Rooms & Meeting Space tab; crowded unsorted inventory table",
+      "rootCause": "Tab missing from shell; table not using Dealality sortable pattern",
+      "approvedStandard": "Tab after Overview; DealalitySortableTable with high-contrast headers and numeric sort; no double-count",
+      "sharedComponent": "public/js/hotel-explorer.js; public/js/hotel-explorer-rooms-meeting-space.js; public/js/dealality-sortable-table.js",
+      "regressionTest": "rooms_tab_after_overview_and_sortable_inventory",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-meeting-inventory.png"
+    },
+    {
+      "id": "HE-QL-006",
+      "originalProblem": "Contact cards with dash placeholders; identity vs contact details conflated; Surfe nonfunctional button",
+      "rootCause": "Always-render KV rows; enrich button only rendered when disabled",
+      "approvedStandard": "Omit empty rows; unresolved notes; identity≠contact details; user-initiated Surfe with honest unavailable state",
+      "sharedComponent": "public/js/hotel-contact-intelligence.js; api/contact-intelligence.js#postContactIntelligencePersonReveal",
+      "regressionTest": "contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "KGPV Contact Intelligence + Bethesda proposed contacts"
+    },
+    {
+      "id": "HE-QL-007",
+      "originalProblem": "Proposed research presented as persisted Airtable truth",
+      "rootCause": "Missing preview_state labeling on overlays",
+      "approvedStandard": "Proposed · not persisted badges; Sources distinguish staged vs live",
+      "sharedComponent": "api/hotel-explorer-founder-preview.js; hotel-intelligence-workspace.js",
+      "regressionTest": "proposed_overlay_never_marked_live_persisted",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-sources.png"
+    },
+    {
+      "id": "HE-QL-008",
+      "originalProblem": "Inserted Rooms tab distorted navigation",
+      "rootCause": "Uneven flex / label overflow without clamp",
+      "approvedStandard": "Even flex distribution, fixed icon size, clamped labels, horizontal overflow",
+      "sharedComponent": "public/css/hotel-explorer.css; public/js/hotel-explorer.js",
+      "regressionTest": "hex_tabs_even_flex_and_rooms_present",
+      "browserEvidence": "Founder Preview tab strip"
+    },
+    {
+      "id": "HE-QL-009",
+      "originalProblem": "Mechanical short hotel descriptions repeating Property Facts",
+      "rootCause": "Rubric v1 used template fact sentences",
+      "approvedStandard": "Executive multi-paragraph summary (v2); reject mechanical phrases and short fact dumps",
+      "sharedComponent": "lib/hotel-intelligence/hotel-commercial-description-v1.js; public/js/hotel-detail-panel.js",
+      "regressionTest": "rejects_mechanical_fact_dump_descriptions",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-executive-desc.png"
+    },
+    {
+      "id": "HE-QL-010",
+      "originalProblem": "Meeting table truncated room names; non-Dealality header styling; mid-page Marriott URL",
+      "rootCause": "Custom light headers + too many columns + floor-plan link in overview metrics",
+      "approvedStandard": "ada-table dark headers; primary columns only; full room names; Supporting Documentation at bottom with styled links",
+      "sharedComponent": "dealality-sortable-table.js; hotel-explorer-rooms-meeting-space.js; hotel-explorer.css",
+      "regressionTest": "meeting_table_readable_room_names_no_forced_min_width",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-meeting-table.png"
+    },
+    {
+      "id": "HE-QL-011",
+      "originalProblem": "Ownership labels inconsistent / Surfe unavailable / Dev diagnostic JSON visible",
+      "rootCause": "Mixed casing; enrichAction disabled in VM; full VM dump in HCI render",
+      "approvedStandard": "Proper-case ownership terms; capability endpoint + user-initiated Surfe; no diagnostics in UI",
+      "sharedComponent": "hotel-intelligence-workspace.js; hotel-contact-intelligence.js; api/contact-intelligence.js",
+      "regressionTest": "ownership_hierarchy_proper_case_labels; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-ownership.png; quality-v2-surfe-action.png"
+    },
+    {
+      "id": "HE-QL-012",
+      "originalProblem": "Contact cards lacked LinkedIn/public channels; Surfe treated as default; CEO auto-primary; empty placeholders",
+      "rootCause": "No property-to-person ranking engine; contacts staged without free-source LinkedIn research; UI grouped peers equally",
+      "approvedStandard": "Free-source research first; decision-oriented recommendation with honesty labels; LinkedIn as identity channels; Surfe user-initiated fallback; staged Airtable dry-run only until apply auth",
+      "sharedComponent": "property-decision-maker-engine-v1.js; hotel-contact-intelligence.js; hotel-explorer-founder-preview.js",
+      "regressionTest": "owner_decision_maker_ranking_and_surfe_fallback",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v3-contacts-recommend.png"
+    },
+    {
+      "id": "HE-QL-013",
+      "originalProblem": "Amenities rendered as bordered card grid instead of KGPV horizontal icon strip; no ADP display cap",
+      "rootCause": "Phase 4 grid CSS/HTML replaced carousel; missing shared max-20 priority selector",
+      "approvedStandard": "KGPV carousel (no card borders); ADP/HPC verified attributes; target 12 / max 20; arrows on overflow only",
+      "sharedComponent": "he-amenity-display-v1.js; hotel-detail-panel.js; hotel-detail-panel.css; hilton-amenity-icons.js",
+      "regressionTest": "amenities_kgpv_strip_and_display_cap",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v3-amenities-strip.png"
+    },
+    {
+      "id": "HE-QL-014",
+      "originalProblem": "Mixed area/distance units; sorting on formatted strings; no session preference",
+      "rootCause": "Hardcoded sq ft / km labels without shared conversion prefs",
+      "approvedStandard": "Shared he-measurement-prefs-v1; presentation-only conversion; sort on source numerics; inclusion independent of display units",
+      "sharedComponent": "public/js/he-measurement-prefs-v1.js; lib/hotel-intelligence/he-measurement-prefs-v1.js; hotel-explorer-rooms-meeting-space.js; hotel-detail-panel.js",
+      "regressionTest": "measurement_prefs_conversion_and_sort_keys",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v4-units.png"
+    },
+    {
+      "id": "HE-QL-015",
+      "originalProblem": "Meeting/Submarket tables and tab backgrounds mismatched My Deals; uneven top tabs; generic amenity icons; empty Bethesda submarket/area hotels",
+      "rootCause": "Custom footprint table theme; flex content-driven tabs; incomplete icon map; map-only census with no Scout fallback",
+      "approvedStandard": "ada-table #0d152c surfaces; equal hex-tabs grid; canonical amenity icon map; Scout census read-only fallback + coverage honesty; location-type radii",
+      "sharedComponent": "hotel-detail-panel.css; hotel-explorer.css; he-amenity-icon-map-v1.js; hilton-amenity-icons.js; hotel-detail-panel.js",
+      "regressionTest": "he_universal_design_hpc_geo_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v4-submarket.png"
+    },
+    {
+      "id": "HE-QL-016",
+      "originalProblem": "Organization & Portfolio confused ownership with managed hotels; mismatched section totals; proposed candidates shown as verified; missing HPC facts; non-reusable hotel-specific portfolio JSON",
+      "rootCause": "Operator-centric lists mixed into ownership tables; no shared reconciliation or verified/proposed scope; incomplete HPC join; per-hotel research duplication",
+      "approvedStandard": "Owner-centric Owned/Controlled + Who Manages These Hotels? over the same scope-filtered hotel set; verified vs proposed vs historical vs unresolved-match classes; Pending HPC Match for unmatched; room-coverage honesty; Operator Not Verified + Owner-Operated; HI/HPC graph reuse; dry-run only until founder apply",
+      "sharedComponent": "lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js; public/js/he-owner-portfolio-operator-view-v1.js; hotel-intelligence-workspace.js",
+      "regressionTest": "owner_portfolio_operator_reconciliation_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v5-org-scope-verified-plus-proposed.png"
+    },
+    {
+      "id": "HE-QL-017",
+      "originalProblem": "Patchy navy backgrounds across HE tabs; Organization & Portfolio nested shades; Founder Preview vs Radar visual drift",
+      "rootCause": "Third navy --panel-soft #0c132c plus translucent rgba overlays and duplicated surface systems (--panel/--hdp/--runbook/--hiw)",
+      "approvedStandard": "Canonical .hex-root surface hierarchy: canvas #080f25 → section #101935 → table #0d152c; no intermediate navy; no translucent navy fills on content; shared CSS for Preview and Radar",
+      "sharedComponent": "public/css/hotel-explorer.css; public/css/hotel-detail-panel.css",
+      "regressionTest": "he_surface_hierarchy_consistency_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v6-surface-org-portfolio.png"
+    },
+    {
+      "id": "HE-QL-018",
+      "originalProblem": "Global Area + Distance measurement toolbar on every Hotel Explorer tab cluttered unrelated surfaces",
+      "rootCause": "Shell-level hex-meas-prefs-slot-host rendered both dimensions for all tabs instead of contextual placement",
+      "approvedStandard": "No global measurement bar; Area Sq. Ft./Sq. M. only in Guest Rooms & Meeting Space; Distance mi/km only in Area Hotels + Demand Drivers via he-measurement-prefs-v1 contextual renderers; shared session prefs; exact label capitalization",
+      "sharedComponent": "public/js/he-measurement-prefs-v1.js; hotel-explorer-rooms-meeting-space.js; hotel-detail-panel.js; hotel-explorer.js",
+      "regressionTest": "he_contextual_measurement_toggle_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v7-meas-overview.png; quality-v7-meas-rooms.png; quality-v7-meas-area.png; quality-v7-meas-demand.png"
+    },
+    {
+      "id": "HE-QL-019",
+      "originalProblem": "Risk of duplicate HPC records and parallel hotel DBs when expanding beyond Bethesda previews",
+      "rootCause": "Portfolio listings treated as create-ready without live HPC + Hotel Census collision search and founder-gated apply",
+      "approvedStandard": "Reuse HPC_LIVE_IDENTITY_COLLISION_V1 + shared upsert; HPC-only identity by default (HE-QL-041); MATCHED_HOTEL_CENSUS only under explicit migration read; STOP before apply; HI graph for ownership — never free-text HPC ownership dumps",
+      "sharedComponent": "lib/hotel-intelligence/hpc-population/*; lib/hotel-census/hpc-live-identity-collision-v1.js; docs/ai-build-system/HE_HPC_POPULATION_WORKFLOW_V1.md",
+      "regressionTest": "test:he-mullen-pilot-hpc-population-v1",
+      "browserEvidence": "reports/hotel-explorer/hpc-population/HE-MULLEN-PILOT-IDENTITY-RESOLUTION-V1.md"
+    },
+    {
+      "id": "HE-QL-020",
+      "originalProblem": "Ownership Intelligence used a linear hierarchy that implied operator/brand as ownership and duplicated technical text below the chart",
+      "rootCause": "Static org-chart chain without typed edges, verification styling, or on-demand expansion; property contact + hierarchy prose repeated in-tab",
+      "approvedStandard": "Interactive Ownership & Control Network with typed edges; hierarchical SVG; verified≠proposed≠historical; bounded expand; Executive Summary + Network + compact Decision-Makers + Relationship Detail ↔ graph + Sources; no HPC contact fallback in ownership narrative; no raw IDs/enums",
+      "sharedComponent": "lib/hotel-intelligence/ownership/ownership-control-network-v1.js; public/js/he-ownership-control-network-v1.js; hotel-intelligence-workspace.js",
+      "regressionTest": "he_ownership_control_network_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v8-ocn-beth-default.png; quality-v8-ocn-beth-expanded.png; quality-v8-ocn-beth-person.png"
+    },
+    {
+      "id": "HE-QL-021",
+      "originalProblem": "Hotel Explorer lacked property-specific news; risk of showing brand-level Market Alerts as hotel news or inventing a parallel news store",
+      "rootCause": "No HE read-model over Market Alerts with property-evidence matching and empty-state hide rules",
+      "approvedStandard": "Reuse MarketAlerts as SoT; hotel-specific/multi-hotel matches only; hide subsection when empty; Tags hpc:<recId> associations idempotent; GET-only news API; no brand/sponsor contamination",
+      "sharedComponent": "lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js; api/hotel-explorer-news-articles.js; hotel-intelligence-workspace.js Brand/Operator",
+      "regressionTest": "he_hotel_news_from_market_alerts_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v9-news-beth-hidden.png; quality-v9-news-loews-visible.png"
+    },
+    {
+      "id": "HE-QL-022",
+      "originalProblem": "Risk of a ratings-only widget or new HE tab that scrapes/averages review platforms without rights, invents trends, or mis-matches hotels",
+      "rootCause": "No HE guest-sentiment model, taxonomy, rights gate, or Brand/Operator subsection contract",
+      "approvedStandard": "Guest Sentiment inside Brand/Operator only; platform-native scales; hide unless authorized (founder proposed may show rights-gated staged metadata); taxonomy themes with evidence; no fabricated trends; no paid/scrape calls from HE API; Airtable dry-run only until approved",
+      "sharedComponent": "lib/hotel-intelligence/guest-sentiment/*; api/hotel-explorer-guest-sentiment.js; hotel-intelligence-workspace.js Brand/Operator",
+      "regressionTest": "he_guest_sentiment_brand_operator_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v10-sentiment-beth-proposed.png; quality-v10-sentiment-beth-live-hidden.png; quality-v10-sentiment-kgpv-hidden.png"
+    },
+    {
+      "id": "HE-QL-023",
+      "originalProblem": "Market Alerts hotel news preview lacked durable multi-hotel association design, Sources & Evidence reuse, and explicit no-write-on-read refresh rules",
+      "rootCause": "News matching shipped before association field design, evidence citation merge, and closeout validation for one-article-many-hotels / empty-state / GET-only behavior",
+      "approvedStandard": "One canonical MarketAlerts row; Tags hpc:<recId> (+ designed HPC Hotel Record IDs) for multi-hotel links without duplicates; Sources & Evidence citations reuse MA id/URL/publisher/date/fact/verification via GET evidenceCitations; no Airtable writes or paid research on tab open; association apply remains MARKET_ALERTS_HOTEL_LINK_APPLY gated",
+      "sharedComponent": "hotel-news-from-market-alerts-v1.js; market-alerts-hotel-association-sync-v1.js; market-alerts-evidence-citations-v1.js; api/hotel-explorer-news-articles.js; hotel-intelligence-workspace.js Sources",
+      "regressionTest": "he_market_alerts_closeout_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v11-ma-beth-news-hidden.png; quality-v11-ma-beth-sources-no-ma.png"
+    },
+    {
+      "id": "HE-QL-024",
+      "originalProblem": "Risk of whole-tab blocking spinners or competing loaders as HE subsections multiply (News, Sentiment, OCN, Surfe)",
+      "rootCause": "No shared independent-section loading contract reusing DealalityWaveLoader",
+      "approvedStandard": "Canonical Dealality wave only (compact/inline variants OK); independent IDLE/LOADING/READY/EMPTY/ERROR/STALE sections; Brand overview not blocked by News/Sentiment; cancel/ignore stale hotel fetches; Surfe wave per-person only; no GET writes / no new spinner systems",
+      "sharedComponent": "dealality-wave-loader.js/css; he-async-section-v1.js; hotel-intelligence-workspace.js; hotel-contact-intelligence.js; he-ownership-control-network-v1.js",
+      "regressionTest": "he_async_section_loading_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v12-async-brand-loading.png; quality-v12-async-news-empty.png; quality-v12-async-sentiment-error.png; quality-v12-async-contacts-ready.png; reports/hotel-explorer/HE-ASYNC-INDEPENDENT-LOADING-V12.md"
+    },
+    {
+      "id": "HE-QL-025",
+      "originalProblem": "Guest Sentiment subsection was flat, text-heavy, and mislabeled platform category scores as frequently praised themes",
+      "rootCause": "Table + long narrative presentation without scorecards, category bars, or structured executive insights; category aggregates conflated with review-theme frequency",
+      "approvedStandard": "Guest Reputation & Experience dashboard inside Brand/Operator: platform scorecards (native scales, no averages), Category Performance bars with platform switcher, 3–5 executive insight cards, hide unsupported themes/trends, collapsed Sources & Methodology; independent wave loading preserved",
+      "sharedComponent": "guest-sentiment-model-v1.js; hotel-intelligence-workspace.js renderGuestSentimentSection; hotel-explorer.css hiw-rep-*",
+      "regressionTest": "he_guest_sentiment_brand_operator_gates / test:he-guest-sentiment-brand-operator-v1",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v13-rep-scorecards.png; quality-v13-rep-category.png; quality-v13-rep-insights.png; quality-v13-rep-methodology.png; quality-v13-rep-empty-kgpv.png; reports/hotel-explorer/HE-GUEST-REPUTATION-DASHBOARD-V13.md"
+    },
+    {
+      "id": "HE-QL-026",
+      "originalProblem": "Ownership network showed overflowing node text, crossed edges, auto-loaded people/portfolio, and unreadable Show All expansion",
+      "rootCause": "Fixed small node boxes with truncated labels, straight-line edges through clusters, default includePeople=true, and unbounded sponsor hotel dump",
+      "approvedStandard": "Hotel-centered default (hotel/legal/economic/operator/brand; UBO when known); content-measured wrapped nodes ≥13px; ownership above / ops-brand below; progressive Explore Key People / Related Hotels with caps; short edge tags + detail panel; Brand Development filter; no invented capital/financing nodes; no Expand sponsor hotels unbounded dump",
+      "sharedComponent": "ownership-control-network-v1.js; he-ownership-control-network-v1.js; hotel-explorer.css ocn-*",
+      "regressionTest": "test:he-ownership-control-network-v1 / he_ownership_control_network_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v14-ocn-default.png; quality-v14-ocn-people.png; quality-v14-ocn-hotels.png; quality-v14-ocn-detail.png; reports/hotel-explorer/HE-STAKEHOLDER-NETWORK-READABILITY-V14.md"
+    },
+    {
+      "id": "HE-QL-027",
+      "originalProblem": "Contact Intelligence presented oversized research cards, duplicated corporate fallbacks, buried Surfe actions, and reported Surfe unavailable without a usable mock path",
+      "rootCause": "Report-style layout with empty channel boxes and enum dumps; Find Contact Details gated only on live SURFE_API_KEY; enrich buried in provenance panel",
+      "approvedStandard": "Compact directory: Recommended First Contact + Alternative Decision-Makers + Organization Contact Channels + collapsed Research gaps; Find Email & Phone on each eligible person; LinkedIn/Company/email/phone actions; Surfe via authorized reveal only (mock/dry-run for no-cost QA); no auto paid calls; provider results unreviewed until approved Airtable persistence; shared hotel-contact-intelligence.js across hotels",
+      "sharedComponent": "public/js/hotel-contact-intelligence.js; public/css/hotel-contact-intelligence.css; api/contact-intelligence.js#postContactIntelligencePersonReveal; property-decision-maker-engine-v1.js",
+      "regressionTest": "contact_cards_omit_dash_placeholders_and_surfe_not_on_get; test:he-contact-intelligence-directory-ux-v1",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v15-ci-default.png; quality-v15-ci-expanded.png; reports/hotel-explorer/HE-CONTACT-INTELLIGENCE-DIRECTORY-UX-V15.md"
+    },
+    {
+      "id": "HE-QL-028",
+      "originalProblem": "Contact Intelligence and other HE async loads showed a full-width dark loading bar that felt like a system alert",
+      "rootCause": "dealality-wave-loader--compact used width:100% inside section hosts; no shared toast mode for short HE fetches",
+      "approvedStandard": "Shared HeLoadingUx adapter: toast (centered compact Dealality toast chrome) for short loads, wave for sustained sections, inline for Surfe/OCN actions; never full-width black banners; independent section loading preserved; auto-dismiss on ready/empty/error; reduced-motion honored",
+      "sharedComponent": "dealality-wave-loader.js/css (toastHtml); he-loading-ux-v1.js; he-async-section-v1.js; hotel-contact-intelligence.js; hotel-intelligence-workspace.js; he-ownership-control-network-v1.js",
+      "regressionTest": "test:he-loading-ux-toast-v1; he_async_section_loading_gates; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v16-loading-toast-ci.png; quality-v16-loading-toast-news.png; quality-v16-loading-inline-surfe.png; reports/hotel-explorer/HE-LOADING-UX-TOAST-V16.md"
+    },
+    {
+      "id": "HE-QL-029",
+      "originalProblem": "Guest Reputation used bright cyan accents inconsistent with Dealality, dense insight boxes, and hid unsupported review platforms instead of showing dimmed unavailable cards",
+      "rootCause": "Reputation CSS introduced #38bdf8 independently of Chain Scale / My Deals tokens; overview only rendered populated platforms; executive cards repeated long methodology text",
+      "approvedStandard": "Seven-platform overview (3 populated + 4 dimmed unavailable for Bethesda; never invent zeros); Dealality accent #6c72ff / gold hover; compact executive insights (Relative Strengths / Areas to Investigate / Recommended Management Follow-Up / Trend & Data Confidence); methodology collapsed below; preserve analytical distinctions (relative soft score ≠ complaint proof); independent toast/wave loading",
+      "sharedComponent": "guest-sentiment-model-v1.js REPUTATION_OVERVIEW_PLATFORMS_V1; hotel-intelligence-workspace.js renderGuestSentimentSection; hotel-explorer.css hiw-rep-*",
+      "regressionTest": "test:he-guest-sentiment-brand-operator-v1 / he_guest_sentiment_brand_operator_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v17-rep-seven-platforms.png; quality-v17-rep-insights.png; quality-v17-rep-methodology.png; quality-v17-rep-sparse.png; quality-v17-rep-empty.png; reports/hotel-explorer/HE-GUEST-REPUTATION-VISUAL-QUALITY-V17.md"
+    },
+    {
+      "id": "HE-QL-030",
+      "originalProblem": "Bethesda Marriott showed only 9 amenities despite ≥12 research target; undercoverage was silently accepted without investigating recoverable verified attributes",
+      "rootCause": "ADP profile omitted guest amenities already published on Marriott.com WASBT; notes blocked parking/pets/accessibility as UNVERIFIED; UI used exclusive verified-only selection that could ignore HPC amenitiesDisplay; gates checked max-20 but not research-gap trigger",
+      "approvedStandard": "Target ≥12 verified guest amenities when first-party evidence permits; hard max 20 displayed; never invent; union verified+HPC sources with dedupe; flag RESEARCH_GAP when below 12 (no customer completeness badge); persist recovered attributes into ADP catalog with source URLs; dry-run Airtable mutations only until apply authorized",
+      "sharedComponent": "he-amenity-display-v1.js (mergeAmenityDisplaySources, assessAmenityCoverageResearchNeed); hotel-detail-panel.js resolveAmenitiesDisplay; ADP property profile attributes + ATTRIBUTE_DEFINITIONS; he-amenity-icon-map-v1.js",
+      "regressionTest": "amenities_kgpv_strip_and_display_cap; amenities_verified_coverage_research_trigger",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v18-amenities-beth-coverage.png; reports/hotel-explorer/HE-AMENITY-COVERAGE-RESEARCH-V18.md"
+    },
+    {
+      "id": "HE-QL-031",
+      "originalProblem": "Oversized white Open Contact Intelligence / Open Sources & Evidence buttons and a duplicate Sources and Verification table on Ownership outside the canonical Sources tab",
+      "rootCause": "Cross-tab navigation used hiw-btn action cards; Ownership rendered a local sources strip instead of deep-linking into the unified Sources register; publication and verification dates were conflated via observed_date",
+      "approvedStandard": "One deduplicated Sources & Evidence register with category filters and distinct Published vs Verified/Accessed columns; compact header-right View Contacts / View Sources navlinks (hiw-navlink) with deep-link highlight; no Ownership Sources and Verification table; preserve LinkedIn/article contextual links; no second Airtable copy of canonical evidence",
+      "sharedComponent": "hotel-intelligence-workspace.js (sectionHeadHtml, navLinkHtml, renderSourcesList, normalizeCitationDates); hotel-explorer.css hiw-navlink / hiw-section__head; market-alerts-evidence-citations-v1.js publication_date; he-ownership-control-network-v1.js View Contacts",
+      "regressionTest": "sources_evidence_consolidated_nav_and_dates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v19-sources-nav-beth.png; quality-v19-sources-register-beth.png; reports/hotel-explorer/HE-SOURCES-EVIDENCE-CONSOLIDATED-NAV-V19.md"
+    },
+    {
+      "id": "HE-QL-032",
+      "originalProblem": "Contact Intelligence needed the same public-first hierarchy as GDI: labeled direct vs organizational channels, Surfe only for missing directs, and no Surfe persistence",
+      "rootCause": "HE used a single Find Email & Phone CTA that hid when any channel existed, unlabeled Email/Phone rows, and insufficient session-only Surfe / Sources wiring for public contact evidence",
+      "approvedStandard": "Shared Direct Business Email / Direct Business Phone / Organizational Contact Route labels with GDI; Find Email|Phone|Both by missing channel; public research first; Surfe explicit-click session-only never persisted or indexed in Sources; dry-run canonical upserts only; reject invented emails; never claim property assignment without evidence",
+      "sharedComponent": "he-public-contact-channel-hierarchy-v1.js; hotel-contact-intelligence.js; api/contact-intelligence.js reveal; hotel-explorer-founder-preview.js; GDI gdi-public-contact-channel-hierarchy-v1 (label parity)",
+      "regressionTest": "test:he-public-contact-channel-hierarchy-v1; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v20-contacts-hierarchy-beth.png; reports/hotel-explorer/HE-PUBLIC-CONTACT-HIERARCHY-V20.md"
+    },
+    {
+      "id": "HE-QL-033",
+      "originalProblem": "Stakeholder network remained cluttered when expanded and missing researched categories (financing, advisors, AM firm, related-hotel clustering); graph rendering was treated as research completeness",
+      "rootCause": "OCN focused on layout/progressive disclosure without completing free-first stakeholder coverage, historical vs current classification, relationship-group focus, or bounded Related Hotels clusters; research coverage was not measured separately from visualization coverage",
+      "approvedStandard": "Complete stakeholder research coverage matrix before further graph work; historical Ramsfield/HWE only in Capital/Advisors groups as Historical; MHM asset manager when supported without inventing property AM assignment; Default + six relationship-group selectors; Related Hotels (N) cluster with detail list; person nodes titled with org relevance; research-status messages for empty categories; dual Research vs Visualization coverage measures; dry-run HI upserts only",
+      "sharedComponent": "ownership-control-network-v1.js; he-ownership-control-network-v1.js; hotel-explorer-founder-preview.js stakeholder_research_coverage; HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md",
+      "regressionTest": "test:he-ownership-control-network-v1; he_ownership_control_network_gates; he_stakeholder_research_vs_viz_coverage",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-033-ocn-*.png; reports/hotel-explorer/HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md"
+    },
+    {
+      "id": "HE-QL-034",
+      "originalProblem": "Relationships & Structure showed a redundant radial Organization Network that was hard to read and duplicated Ownership Intelligence / relationship tables",
+      "rootCause": "On-demand Show Organization Network mini-graph (neighbors API + ofg-* SVG) was retained after the Stakeholder/OCN network became the canonical interactive exploration surface",
+      "approvedStandard": "Remove Organization Network control, heading, container, loadOrgNetwork/drawMiniNetwork, and unused ofg-* Relationships styling; keep Hotel Structure + Relationship Detail + sources; preserve Ownership OCN and Organization & Portfolio; do not delete shared HI graph APIs",
+      "sharedComponent": "hotel-intelligence-workspace.js renderRelationships; hotel-explorer.js click handlers; hotel-intelligence-workspace.css",
+      "regressionTest": "he_relationships_no_radial_org_network",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-034-relationships-no-org-network.png"
+    },
+    {
+      "id": "HE-QL-035",
+      "originalProblem": "Organization & Portfolio Key People showed empty relevance/title/LinkedIn/verification fields for people who already had verified intelligence in Contact Intelligence; Strategic Context was generic pipeline copy",
+      "rootCause": "decision_authority.people was a thin Phase 3 persons overlay disconnected from the shared owner decision-maker / Contact Intelligence view model; Strategic Context fell back to why_this_matters workflow boilerplate instead of an evidence-based executive assessment",
+      "approvedStandard": "One shared contact intelligence model for Key People + Contacts; display name/title/org/relevance/commercial role/property responsibility/verified LinkedIn/verification; names link to Contact Intelligence; no dashes when shared model has values; no invented property responsibility; Strategic Context with Asset & Market, Ownership & Portfolio, Strengths, Investment Considerations, Priority Follow-Ups; no pipeline jargon or unsupported investment conclusions; dry-run persistence only",
+      "sharedComponent": "he-org-portfolio-key-people-v1.js; hotel-explorer-founder-preview.js buildSharedProposedPeople; hotel-intelligence-workspace.js collectOrgKeyPeople + renderStrategicContext",
+      "regressionTest": "he_org_portfolio_key_people_strategic_context_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-035-org-key-people-strategic-*.png"
+    },
+    {
+      "id": "HE-QL-036",
+      "originalProblem": "Bethesda Marriott Submarket Snapshot showed an empty Scout/Hotel Census table even though the hotel is a canonical HPC record with Market/Submarket assigned",
+      "rootCause": "Submarket Snapshot preferred Radar map then Scout Hotel Census market-coverage; Founder Preview had an empty map pool and Scout returned zero Hotel Census rows, so the UI treated HPC absence as no hotels without ever querying Hotel Property Census",
+      "approvedStandard": "HPC is Submarket Snapshot source of truth; always include selected HPC hotel; Scout/Radar enrich only; verified Submarket→Market→city/selected-only grouping without inventing geography; dedupe by HPC id; known rooms only; label partial coverage; GET-only API; dry-run geo-gap research",
+      "sharedComponent": "he-hpc-submarket-snapshot-v1.js; api/hotel-explorer-submarket-snapshot.js; hotel-detail-panel.js resolveCensusHotelPool",
+      "regressionTest": "he_hpc_submarket_snapshot_canonical_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-036-submarket-*.png"
+    },
+    {
+      "id": "HE-QL-037",
+      "originalProblem": "Demand Drivers and Access & Connectivity tabs were empty/incomplete and appeared disconnected from existing Airtable intelligence and research code",
+      "rootCause": "HE relied on Radar client modules without hotel-scoped HPC hydration or dedicated GET read APIs; US Demand Anchors / Travel Infrastructure tables were unpopulated while MX had data; Access invented drive times from straight-line distance",
+      "approvedStandard": "Recover Demand Anchors + Travel Infrastructure Data; HPC hotel identity; reusable geographic entities; GET-only demand-drivers and access-connectivity APIs; straight-line distance only unless Airtable has verified Estimated Drive Time; mi/km on Access tab only; honest empty states; no GET writes or paid calls on tab open; auto-populate after canonical writes",
+      "sharedComponent": "he-demand-access-read-v1.js; api/hotel-explorer-demand-access.js; hotel-detail-panel.js; lib/demand-anchors/*; lib/travel-infrastructure/*",
+      "regressionTest": "he_demand_access_airtable_read_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-037-demand-access-*.png"
+    },
+    {
+      "id": "HE-QL-038",
+      "originalProblem": "Brand / Operator mixed redundant franchise/operator tables with reputation UI; accents were not consistently Chain Scale-driven; insights still exposed provider IDs; Market Alerts news placement needed a focused Guest Sentiment tab",
+      "rootCause": "Tab remained labeled Brand / Operator with Franchise & Current Operator sections; reputation CSS pinned #6c72ff instead of dynamic Chain Scale vars; default follow-ups emphasized platform ID reconciliation; Bethesda Market Alerts had no property-specific rows",
+      "approvedStandard": "Rename tab to Guest Sentiment with brand deep-link aliases; remove Franchise & Current Operator; dynamic Chain Scale accents on bars/links/selectors; seven platforms; category selectors only for platforms with category data; compact executive insight items without provider IDs; Hotel News from Market Alerts hidden when empty; independent loading; no GET writes/paid calls",
+      "sharedComponent": "hotel-explorer.js; hotel-intelligence-workspace.js; guest-sentiment-model-v1.js; hotel-explorer.css; dealality-chain-scale-theme.js; hotel-news-from-market-alerts-v1.js",
+      "regressionTest": "he_guest_sentiment_tab_restructure_gates; he_guest_sentiment_brand_operator_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-038-guest-sentiment-*.png"
+    },
+    {
+      "id": "HE-QL-039",
+      "originalProblem": "Hotel Explorer needed a reusable research-to-Airtable-to-UI Full E2E population engine, not one-off hotel research reports; paid spend and production writes risked unbounded cost and unverified holdings",
+      "rootCause": "Research, identity matching, budget ledgers, and dry-run persistence existed as separate pilots without a shared eight-hotel supervisor, $50 hard cap, 12-tab field gap matrix, or founder STOP gate before apply",
+      "approvedStandard": "HE 5.0 engine: AUDIT→REUSE→free-first RESEARCH→VERIFY→MAP→DRY_RUN→STOP awaiting founder apply; shared $50 paid ceiling with reserve/settle ledger; reuse HPC population + HI graph; never auto-mark Mullen portfolio candidates as verified holdings; no Surfe persistence; no production Airtable writes without separate founder auth; second run must be idempotent",
+      "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/*; hpc-population/mullen-pilot-*; research-engine-v1 budget ledgers; HE_HPC_POPULATION_WORKFLOW_V1.md",
+      "regressionTest": "he_5_0_full_e2e_pilot_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-FOUNDER-COMPLETION-REPORT.md"
+    },
+    {
+      "id": "HE-QL-040",
+      "originalProblem": "Research engine stopped for founder review on routine ambiguities (room-count conflicts, property-name near-neighbors, renovation date pairs, missing identity fields) instead of investigating them",
+      "rootCause": "Reconciliation treated ordinary factual disagreements as founder gates; no autonomous detect→research→adjudicate→continue loop with resolution classes and budget-aware escalation",
+      "approvedStandard": "Autonomous reconciliation supervisor investigates conflicts with reuse→free→bounded paid (within authorized ceiling); resolve only when evidence supports; preserve dual historical events; escalate REQUIRES_FOUNDER_DECISION only for governance/authorization; continue remaining gaps when one field stays unresolved; STOP only before production Airtable apply / budget / schema / subscription",
+      "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/autonomous-reconciliation-v1.js; pilot-budget-ledger.js; mutation-reconciliation-v1.js",
+      "regressionTest": "he_5_0_autonomous_reconciliation_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-AUTONOMOUS-RECONCILIATION-V1.md"
+    },
+    {
+      "id": "HE-QL-041",
+      "originalProblem": "Hotel Explorer identity resolution and HE 5.0 pilot still read legacy Hotel Census (tblgj2qEwxjTcg6q0) for matching/promotion (e.g. Secrets Papagayo), blocking safe table retirement and creating dual SoT risk",
+      "rootCause": "HPC-first collision existed but Census search remained a silent fallback; Papagayo was staged as STEWARD_PROMOTE_FROM_CENSUS with census record id as canonical bridge; brand-presence/Scout/BE still query Census for other products",
+      "approvedStandard": "LEGACY_HOTEL_CENSUS_INDEPENDENCE_GATE: HE production-intended paths block all access to tblgj2qEwxjTcg6q0 via legacy-hotel-census-access-guard-v1; identity is HPC-only (collision + aliases); Papagayo is HPC-native CREATE with historical provenance only; migration reads require HE_LEGACY_HOTEL_CENSUS_MIGRATION_READ=1; keep gate after table deletion; global retirement blocked until Scout/BE/operators-by-brand migrate",
+      "sharedComponent": "lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js; hotel-census-identity-search-v1.js; mullen-pilot-identity-resolution-v1.js; property-census-identity-v1.js; he-5-0-full-e2e/*",
+      "regressionTest": "he_legacy_hotel_census_independence_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-LEGACY-HOTEL-CENSUS-INDEPENDENCE-AUDIT-V1.md"
+    },
+    {
+      "id": "HE-QL-042",
+      "originalProblem": "HE 5.0 stopped after every dry-run for founder mutation approval even when evidence, destination, identity, and safety gates were already satisfied inside the authorized eight-hotel pilot",
+      "rootCause": "Default pipeline was RESEARCH→DRY_RUN→STOP awaiting separate apply auth; READY labels alone were treated as founder gates without a standing conditional allowlist executor",
+      "approvedStandard": "Standing conditional authorization: classify mutations AUTO_APPROVED_* / SKIPPED / QUARANTINED / BLOCKED / FOUNDER_REQUIRED; auto-apply only when allowlist+evidence+identity+null-fill/CREATE safety+idempotency pass; quarantine exceptions and continue; $50 shared paid ceiling; no legacy Census; no Surfe persistence; no schema/destructive/out-of-cohort writes; read-back required before claiming CANONICAL_PERSISTED",
+      "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/standing-authorization-v1.js; conditional-approval-v1.js; controlled-apply-executor-v1.js",
+      "regressionTest": "he_5_0_controlled_apply_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-CONTROLLED-APPLY-RESULT-V1.md"
+    },
+    {
+      "id": "HE-QL-043",
+      "originalProblem": "Global Hotel Census retirement blocked: enrichment CLIs still wrote legacy Census; reconciliation treated legacy record ids as HPC ids; linked-record migration and full-table matrix incomplete",
+      "rootCause": "Phase-1 migrated product runtime only; fields.js still defaulted CLIs to Hotel Census; resolveCanonicalHotelId identity-passthrough false-matched every legacy id as EXACT_HPC_ID without HPC fetch proof",
+      "approvedStandard": "DEALALITY_LEGACY_HOTEL_CENSUS_RETIREMENT_GATE: CLI HOTEL_CENSUS_TABLE/CENSUS_FIELDS → HPC; platform-base Proxy blocks legacy writes; full recon never passes legacy ids as hotelKey and requires live collision; linked-record dry-run keeps AIRTABLE_LINKS_MIGRATED=false until founder apply; GLOBAL_RETIREMENT_READY only after full-table recon + link apply + cross-product UI proof; never delete Census without separate approval",
+      "sharedComponent": "lib/hotel-census/dealality-census-cli-migration-v1.js; dealality-legacy-hpc-reconciliation-v1.js; fields.js; platform-base.js; dealality-hpc-identity-resolver-v1.js",
+      "regressionTest": "dealality_legacy_hotel_census_retirement_gate",
+      "browserEvidence": "reports/hotel-explorer/global-census-retirement/DEALALITY-GLOBAL-HOTEL-CENSUS-RETIREMENT-PHASE2-FOUNDER-REPORT-V1.md"
+    },
+    {
+      "id": "HE-QL-044",
+      "originalProblem": "Phase 2 incorrectly pursued full legacy Hotel Census → HPC reconciliation and migration-read exceptions, risking contamination of canonical HPC with untrusted legacy inventory",
+      "rootCause": "Retirement framed as data migration/parity instead of dependency elimination; migration-read flags and recon jobs treated Census as an allowable input",
+      "approvedStandard": "HOTEL CENSUS IS NOT A TRUSTED DATA SOURCE. Zero record reads/writes/searches/matches/fallbacks; disable reconcile/import/compare jobs; ignore migration-read env for data access; deprecate recon artifacts as PROHIBITED LEGACY DATA SOURCE; HPC + independent evidence only; never inflate HPC to match legacy counts; Papagayo and other HPC ids must not depend on Census record ids",
+      "sharedComponent": "legacy-hotel-census-access-guard-v1.js (v2 HPC-only); disabled reconcile scripts; dealality-legacy-hpc-reconciliation-v1.js DISABLED; property-census-identity-v1.js HPC-only",
+      "regressionTest": "dealality_legacy_hotel_census_retirement_gate",
+      "browserEvidence": "reports/hotel-explorer/global-census-retirement/DEALALITY-HPC-ONLY-ZERO-LEGACY-FOUNDER-CORRECTION-V1.md"
+    }
+  ]
+}

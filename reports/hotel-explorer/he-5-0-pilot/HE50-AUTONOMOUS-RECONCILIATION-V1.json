@@ -1,0 +1,867 @@
+{
+  "contract": "HE_5_0_AUTONOMOUS_RECONCILIATION_RESULT_V1",
+  "version": "he-5-0-autonomous-reconciliation-v1",
+  "pilotVersion": "he-5-0-full-e2e-pilot-v1",
+  "runId": "he50_mullen_eight_hotel_2026_11_19",
+  "generatedAt": "2026-11-19T23:10:03.521Z",
+  "applyGate": {
+    "applyAuthorized": false,
+    "airtableWritesAllowed": false,
+    "surfeAutomatic": false,
+    "productionDeploy": false,
+    "stopMessage": "STOP — AWAITING SEPARATE FOUNDER AUTHORIZATION FOR PRODUCTION AIRTABLE APPLY."
+  },
+  "issuesDetected": 14,
+  "issuesInvestigated": 14,
+  "byClass": {
+    "RESOLVED_VERIFIED": 8,
+    "RESOLVED_WITH_HISTORICAL_CONTEXT": 3,
+    "UNRESOLVED_INSUFFICIENT_EVIDENCE": 2,
+    "UNRESOLVED_PROVIDER_RESTRICTED": 1
+  },
+  "resolvedCount": 11,
+  "unresolvedCount": 3,
+  "founderDecisionCount": 0,
+  "results": [
+    {
+      "issueId": "cap_cana_vs_dreams_identity",
+      "hotelKey": "secrets_cap_cana",
+      "claim": "HPC match might be Dreams Cap Cana neighbor",
+      "priority": 66,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_VERIFIED"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": {
+        "secretsHpcId": "recd7XAM6tLjzQhaI",
+        "dreamsHpcId": "reclS16CMUS6eJgpC",
+        "distinct": true
+      },
+      "rationale": "Live HPC read: exact Secrets name + Secrets brand + coords ≈ external Secrets location; Dreams is a separate HPC record with Dreams brand and distinct coordinates.",
+      "sources": [
+        "live HPC probe",
+        "Hyatt Inclusive Secrets vs Dreams pages"
+      ],
+      "mutationHint": {
+        "opId": "M-UPD-secrets_cap_cana",
+        "action": "NO_OP"
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "mullen_holdings_vs_proposed",
+      "hotelKey": "cohort",
+      "claim": "Portfolio listing implies verified current ownership",
+      "priority": 64,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_WITH_HISTORICAL_CONTEXT"
+        }
+      ],
+      "resolutionClass": "RESOLVED_WITH_HISTORICAL_CONTEXT",
+      "resolvedValue": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING",
+      "rationale": "Public mullencap.com portfolio association ≠ independently verified current legal ownership",
+      "sources": [
+        "mullencap.com/portfolio",
+        "founder pilot rules"
+      ],
+      "mutationHint": {
+        "forbidAutoOwnedBy": true
+      },
+      "founderDecision": false,
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "papagayo_census_to_hpc",
+      "hotelKey": "secrets_papagayo",
+      "claim": "Hotel Census match needs duplicate-safe HPC promotion",
+      "priority": 61,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_VERIFIED"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": {
+        "hotelCensusId": "recyX1wLsHBJYRPw7",
+        "rooms": 202,
+        "promote": true,
+        "doNotDuplicate": true
+      },
+      "rationale": "Use hpc-authorized-create-reuse / steward promote — never CREATE a second HPC while census match exists; Carry rooms=202 + official website; Preserve census record id as source relationship; Owner Website=mullencap on census is a signal, not automatic OWNED_BY graph edge",
+      "sources": [
+        "Hotel Census live read",
+        "Hyatt Inclusive rooms page"
+      ],
+      "mutationHint": {
+        "opId": "M-PROMOTE-secrets_papagayo",
+        "promote": true
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "ac_rooms_140_vs_146",
+      "hotelKey": "ac_hotel_newtown_square",
+      "claim": "Guest room inventory is either 140 or 146",
+      "priority": 58,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_VERIFIED"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": 140,
+      "discardedAlt": 146,
+      "rationale": "Opening press + Cvent + Hotel Business converge on 140 (86 king + 50 queen + 4 suites). 146 was an outdated OTA listing — not staged as confident alternate.",
+      "sources": [
+        "https://www.delcotimes.com/2024/09/27/ac-hotel-by-marriott-at-ellis-preserve-holds-grand-opening/",
+        "https://www.cvent.com/venues/newtown-square/hotel/ac-hotel-newtown-square/venue-bbfcb889-1474-4e7c-afda-54dfadd1e929",
+        "https://hotelbusiness.com/equus-capital-opens-philadelphia-area-ac-hotel/"
+      ],
+      "mutationHint": {
+        "opId": "M-NEW-ac_hotel_newtown_square",
+        "field": "rooms",
+        "value": 140,
+        "confidence": "HIGH"
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "cap_cana_rooms",
+      "hotelKey": "secrets_cap_cana",
+      "claim": "Room / suite inventory unknown on matched HPC",
+      "priority": 54,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_hpc_identity",
+          "result": "matched_secrets"
+        },
+        {
+          "pass": 2,
+          "action": "official_hyatt_inclusive_rooms_page",
+          "result": "457_suites"
+        },
+        {
+          "pass": 2,
+          "action": "meetings_fast_facts_corroboration",
+          "result": "457"
+        },
+        {
+          "pass": 2,
+          "action": "census_prior_hit_rooms",
+          "result": "457_aligned"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": 457,
+      "rationale": "Official Hyatt Inclusive Collection rooms + meetings pages state 457 suites; aligns with prior Hotel Census hit rooms=457 for Secrets Cap Cana. Not Dreams inventory.",
+      "sources": [
+        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/",
+        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/"
+      ],
+      "mutationHint": {
+        "opId": "M-UPD-secrets_cap_cana-rooms",
+        "action": "UPDATE",
+        "field": "Rooms / Keys",
+        "value": 457,
+        "confidence": "HIGH",
+        "note": "Identity NO_OP retained; rooms null-fill is a separate READY mutation"
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "jw_rooms_alias",
+      "hotelKey": "jw_marriott_costa_elena",
+      "claim": "Confirm 415 rooms + Dreams Las Mareas alias",
+      "priority": 52,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_WITH_HISTORICAL_CONTEXT"
+        }
+      ],
+      "resolutionClass": "RESOLVED_WITH_HISTORICAL_CONTEXT",
+      "resolvedValue": {
+        "rooms": 415,
+        "formerName": "Dreams Las Mareas"
+      },
+      "rationale": "Marriott news: 415 rooms; property formerly Dreams Las Mareas — alias historical context",
+      "sources": [
+        "https://news.marriott.com/news/2026/10/06/jw-marriott-debuts-its-first-all-inclusive-resort-with-the-opening-of-jw-marriott-costa-elena-resort-and-spa"
+      ],
+      "mutationHint": {
+        "opId": "M-UPD-jw_marriott_costa_elena",
+        "rooms": 415
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "beth_year_built",
+      "hotelKey": "bethesda_marriott",
+      "claim": "Year Built missing on HPC",
+      "priority": 51,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_VERIFIED"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": 1979,
+      "rationale": "Travel Weekly / CMBS / Cvent convergent Year Built 1979",
+      "sources": [
+        "https://www.travelweekly.com/Hotels/Bethesda-MD/Bethesda-Marriott-p55149814",
+        "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+      ],
+      "mutationHint": {
+        "opId": "M-BETH-001",
+        "field": "Year Built",
+        "value": 1979
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "hgi_rooms_confidence",
+      "hotelKey": "hgi_newtown_square_radnor",
+      "claim": "Rooms 138 only MEDIUM (Ellis Preserve)",
+      "priority": 47,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_ellis_preserve",
+          "result": "138"
+        },
+        {
+          "pass": 2,
+          "action": "cvent_guest_rooms",
+          "result": "138"
+        },
+        {
+          "pass": 2,
+          "action": "hilton_events_page",
+          "result": "138_guest_rooms"
+        },
+        {
+          "pass": 2,
+          "action": "expedia_all_138_rooms",
+          "result": "138"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": 138,
+      "rationale": "Cvent (138 total; 66/66/5 mix), Hilton meetings page (138 guest rooms), Expedia, Ellis Preserve, and IMC construction (138) converge — upgrade MEDIUM→HIGH.",
+      "sources": [
+        "https://www.cvent.com/venues/newtown-square/hotel/hilton-garden-inn-newtown-square-radnor/venue-80f98513-8db5-4046-a20c-7881d33eb20a",
+        "https://www.hilton.com/en-gb/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/events/",
+        "https://newtownsquarehotels.com/hotels/hilton-garden-inn/"
+      ],
+      "mutationHint": {
+        "opId": "M-NEW-hgi_newtown_square_radnor",
+        "field": "rooms",
+        "value": 138,
+        "confidence": "HIGH"
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "carton_rooms",
+      "hotelKey": "carton_house_fairmont",
+      "claim": "Confirm 169 bedrooms for NEW_HPC CREATE",
+      "priority": 47,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_VERIFIED"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": 169,
+      "rationale": "Official Carton House / Accor ALL: 169 bedrooms (18 in The House)",
+      "sources": [
+        "https://www.cartonhouse.com/the-resort",
+        "https://all.accor.com/hotel/B7D0/index.en.shtml"
+      ],
+      "mutationHint": {
+        "opId": "M-NEW-carton_house_fairmont",
+        "rooms": 169
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "st_lucia_rooms",
+      "hotelKey": "secrets_st_lucia",
+      "claim": "Confirm 355 rooms for NEW_HPC CREATE",
+      "priority": 47,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_VERIFIED"
+        }
+      ],
+      "resolutionClass": "RESOLVED_VERIFIED",
+      "resolvedValue": 355,
+      "rationale": "Official Hyatt Inclusive Secrets St Lucia: 355 rooms and suites",
+      "sources": [
+        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/accommodations/rooms-suites/"
+      ],
+      "mutationHint": {
+        "opId": "M-NEW-secrets_st_lucia",
+        "rooms": 355
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "beth_renovation_2015_vs_2017",
+      "hotelKey": "bethesda_marriott",
+      "claim": "Last renovation year is 2015 or 2017",
+      "priority": 45,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "RESOLVED_WITH_HISTORICAL_CONTEXT"
+        }
+      ],
+      "resolutionClass": "RESOLVED_WITH_HISTORICAL_CONTEXT",
+      "resolvedValue": [
+        {
+          "year": 2015,
+          "role": "major_renovation_near_complete",
+          "evidence": "Bethesda Magazine 2015-10-08; Travel Weekly Year Last Renovated 2015; CMBS renovated 2015"
+        },
+        {
+          "year": 2017,
+          "role": "contemporary_guestroom_unveil_press",
+          "evidence": "EIN/Marketwired 2017-01-23 guestroom + public-space unveil; Cvent lists Renovated 2017"
+        }
+      ],
+      "rationale": "2015 and 2017 describe different public milestones of the same renovation program — preserve both event facts; do not collapse to one unsupported year.",
+      "sources": [
+        "Bethesda Magazine 2015",
+        "EIN 2017",
+        "Travel Weekly",
+        "CMBS",
+        "Cvent"
+      ],
+      "mutationHint": {
+        "opId": "M-BETH-002",
+        "preserveDualEvents": true
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "beth_current_lender",
+      "hotelKey": "bethesda_marriott",
+      "claim": "Current lender / mortgagee identity",
+      "priority": 40,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "UNRESOLVED_INSUFFICIENT_EVIDENCE"
+        }
+      ],
+      "resolutionClass": "UNRESOLVED_INSUFFICIENT_EVIDENCE",
+      "resolvedValue": null,
+      "rationale": "Free sources establish historical Ramsfield acquisition financing and current CMBS loan terms, but do not independently name today's mortgagee for an HI FINANCED_BY edge. Paid escalation deferred: low resolveLikelihood vs identity-critical gaps already resolved; evidence-only CMBS note remains staged.",
+      "sources": [
+        "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+        "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+      ],
+      "paidEscalation": {
+        "considered": true,
+        "executed": false,
+        "reason": "diminishing_return_after_free_exhaustion_identity_priority_complete"
+      },
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "beth_market_alerts_news",
+      "hotelKey": "bethesda_marriott",
+      "claim": "Hotel News & Articles empty",
+      "priority": 28,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "UNRESOLVED_INSUFFICIENT_EVIDENCE"
+        }
+      ],
+      "resolutionClass": "UNRESOLVED_INSUFFICIENT_EVIDENCE",
+      "resolvedValue": null,
+      "rationale": "Genuine absence of property-linked Market Alerts — not a filter bug. Discovery optional; not blocking dry-run.",
+      "sources": [
+        "HE-QL-038 Market Alerts diagnosis"
+      ],
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    },
+    {
+      "issueId": "guest_sentiment_licensing",
+      "hotelKey": "bethesda_marriott",
+      "claim": "Live Guest Sentiment ratings persistence",
+      "priority": 27,
+      "researchActions": [
+        {
+          "pass": 1,
+          "action": "reuse_existing_dealality",
+          "result": "inspected"
+        },
+        {
+          "pass": 2,
+          "action": "free_authoritative_adjudication",
+          "result": "UNRESOLVED_PROVIDER_RESTRICTED"
+        }
+      ],
+      "resolutionClass": "UNRESOLVED_PROVIDER_RESTRICTED",
+      "resolvedValue": null,
+      "rationale": "Live reputation persistence gated by licensing; staged founder-preview only. Not a routine factual ambiguity.",
+      "sources": [
+        "HE-QL-038"
+      ],
+      "paidSpendUsd": 0,
+      "requiresFounderDecision": false
+    }
+  ],
+  "mutationAmendments": [
+    {
+      "id": "M-UPD-secrets_cap_cana-rooms",
+      "action": "UPDATE",
+      "canonicalEntityId": "recd7XAM6tLjzQhaI",
+      "field": "Rooms / Keys",
+      "existingValue": "empty_or_unenriched",
+      "proposedValue": 457,
+      "verificationStatus": "VERIFIED_FREE_AUTONOMOUS",
+      "founderRecommendation": "READY",
+      "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/ | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/",
+      "reason": "Autonomous free pass: official 457 suites after identity verified ≠ Dreams"
+    }
+  ],
+  "budget": {
+    "version": "he-5-0-pilot-budget-ledger-v1",
+    "pilotVersion": "he-5-0-full-e2e-pilot-v1",
+    "runId": "he50_mullen_eight_hotel_2026_11_19",
+    "globalUsdCap": 50,
+    "categoryCeilings": {
+      "property_identity_physical": 12,
+      "ownership_stakeholders": 18,
+      "portfolio_hpc_matching": 10,
+      "demand_access_news_gaps": 10
+    },
+    "confirmedActualUsd": 0,
+    "reservedUnreconciledUsd": 0,
+    "totalCommittedUsd": 0,
+    "remainingAuthorizedUsd": 50,
+    "byProvider": [],
+    "byHotel": [],
+    "byCategory": [],
+    "verifiedFindingsAttributed": 11,
+    "costPerVerifiedUsefulField": 0,
+    "entries": [
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_cap_cana_vs_dreams_identity",
+        "hotel_id": "secrets_cap_cana",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.513Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "cap_cana_vs_dreams_identity"
+        ],
+        "evidence_refs": [
+          "live HPC probe",
+          "Hyatt Inclusive Secrets vs Dreams pages"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_mullen_holdings_vs_proposed",
+        "hotel_id": "cohort",
+        "research_category": "ownership_stakeholders",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.514Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "mullen_holdings_vs_proposed"
+        ],
+        "evidence_refs": [
+          "mullencap.com/portfolio",
+          "founder pilot rules"
+        ],
+        "result_class": "RESOLVED_WITH_HISTORICAL_CONTEXT"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_papagayo_census_to_hpc",
+        "hotel_id": "secrets_papagayo",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.515Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "papagayo_census_to_hpc"
+        ],
+        "evidence_refs": [
+          "Hotel Census live read",
+          "Hyatt Inclusive rooms page"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_ac_rooms_140_vs_146",
+        "hotel_id": "ac_hotel_newtown_square",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.515Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "ac_rooms_140_vs_146"
+        ],
+        "evidence_refs": [
+          "https://www.delcotimes.com/2024/09/27/ac-hotel-by-marriott-at-ellis-preserve-holds-grand-opening/",
+          "https://www.cvent.com/venues/newtown-square/hotel/ac-hotel-newtown-square/venue-bbfcb889-1474-4e7c-afda-54dfadd1e929",
+          "https://hotelbusiness.com/equus-capital-opens-philadelphia-area-ac-hotel/"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_cap_cana_rooms",
+        "hotel_id": "secrets_cap_cana",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.516Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "cap_cana_rooms"
+        ],
+        "evidence_refs": [
+          "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/",
+          "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_jw_rooms_alias",
+        "hotel_id": "jw_marriott_costa_elena",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.517Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "jw_rooms_alias"
+        ],
+        "evidence_refs": [
+          "https://news.marriott.com/news/2026/10/06/jw-marriott-debuts-its-first-all-inclusive-resort-with-the-opening-of-jw-marriott-costa-elena-resort-and-spa"
+        ],
+        "result_class": "RESOLVED_WITH_HISTORICAL_CONTEXT"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_beth_year_built",
+        "hotel_id": "bethesda_marriott",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.517Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "beth_year_built"
+        ],
+        "evidence_refs": [
+          "https://www.travelweekly.com/Hotels/Bethesda-MD/Bethesda-Marriott-p55149814",
+          "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_hgi_rooms_confidence",
+        "hotel_id": "hgi_newtown_square_radnor",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.517Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "hgi_rooms_confidence"
+        ],
+        "evidence_refs": [
+          "https://www.cvent.com/venues/newtown-square/hotel/hilton-garden-inn-newtown-square-radnor/venue-80f98513-8db5-4046-a20c-7881d33eb20a",
+          "https://www.hilton.com/en-gb/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/events/",
+          "https://newtownsquarehotels.com/hotels/hilton-garden-inn/"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_carton_rooms",
+        "hotel_id": "carton_house_fairmont",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.518Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "carton_rooms"
+        ],
+        "evidence_refs": [
+          "https://www.cartonhouse.com/the-resort",
+          "https://all.accor.com/hotel/B7D0/index.en.shtml"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_st_lucia_rooms",
+        "hotel_id": "secrets_st_lucia",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.519Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "st_lucia_rooms"
+        ],
+        "evidence_refs": [
+          "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/accommodations/rooms-suites/"
+        ],
+        "result_class": "RESOLVED_VERIFIED"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_beth_renovation_2015_vs_2017",
+        "hotel_id": "bethesda_marriott",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.520Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [
+          "beth_renovation_2015_vs_2017"
+        ],
+        "evidence_refs": [
+          "Bethesda Magazine 2015",
+          "EIN 2017",
+          "Travel Weekly",
+          "CMBS",
+          "Cvent"
+        ],
+        "result_class": "RESOLVED_WITH_HISTORICAL_CONTEXT"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_beth_current_lender",
+        "hotel_id": "bethesda_marriott",
+        "research_category": "ownership_stakeholders",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.520Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [],
+        "evidence_refs": [
+          "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+          "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+        ],
+        "result_class": "UNRESOLVED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_beth_market_alerts_news",
+        "hotel_id": "bethesda_marriott",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.520Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [],
+        "evidence_refs": [
+          "HE-QL-038 Market Alerts diagnosis"
+        ],
+        "result_class": "UNRESOLVED_INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "run_id": "he50_mullen_eight_hotel_2026_11_19",
+        "operation_id": "auto_recon_guest_sentiment_licensing",
+        "hotel_id": "bethesda_marriott",
+        "research_category": "property_identity_physical",
+        "provider": "autonomous_reconciliation_free",
+        "request_type": "free_source",
+        "timestamp": "2026-11-19T23:10:03.521Z",
+        "estimated_max_usd": 0,
+        "actual_usd": 0,
+        "status": "FREE",
+        "fields_researched": [],
+        "verified_findings": [],
+        "evidence_refs": [
+          "HE-QL-038"
+        ],
+        "result_class": "UNRESOLVED_PROVIDER_RESTRICTED"
+      }
+    ],
+    "sharedSnapshot": {
+      "version": "he-intel-p3b-m1-shared-budget-v1",
+      "parent": "he-intel-budget-ledger-v1",
+      "runUsdCap": 50,
+      "perHotelUsdCap": 50,
+      "runReservedUsd": 0,
+      "runSettledProviderUsd": 0,
+      "runSettledModelTokenUsd": 0,
+      "runSettledOrchestrationUsd": 0,
+      "totalSettledUsd": 0,
+      "costBreakdown": [],
+      "parentSnapshot": {
+        "version": "he-intel-budget-ledger-v1",
+        "caps": {
+          "per_hotel_usd": 50,
+          "per_org_usd": null,
+          "per_hotel_credits": null
+        },
+        "hotels": [],
+        "orgs": [],
+        "entries": [],
+        "operations": []
+      },
+      "canParallelBypassSharedBudget": false
+    },
+    "note": "Never report reserved estimates as confirmed actual charges."
+  },
+  "paidPolicy": {
+    "enablePaid": false,
+    "globalCapUsd": 50,
+    "note": "Paid only when free exhausted, cost-bounded, commercially justified, and budget remains"
+  },
+  "stopReason": "apply_gate_only",
+  "note": "Routine factual ambiguities were adjudicated autonomously; founder gate is Airtable apply only."
+}

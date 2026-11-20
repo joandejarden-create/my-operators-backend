@@ -1,0 +1,2393 @@
+{
+  "version": "dealality-legacy-hotel-census-inventory-v1",
+  "generatedAt": "2026-11-19T23:26:51.119Z",
+  "canonicalHpc": {
+    "baseId": "appCCUsuGsE1ifoLk",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "tableName": "Hotel Property Census"
+  },
+  "legacy": {
+    "tableId": "tblgj2qEwxjTcg6q0",
+    "tableName": "Hotel Census",
+    "deleteAuthorized": false
+  },
+  "fileCount": 259,
+  "byStatus": {
+    "MIGRATED_HPC": 6,
+    "INACTIVE": 11,
+    "REVIEW": 100,
+    "MIGRATION_REQUIRED_CLI": 95,
+    "AUDIT_HPC_ALIASES": 2,
+    "HE_LEGACY_INDEPENDENT": 6,
+    "DEPRECATED_FOR_RUNTIME": 3,
+    "TEST": 36
+  },
+  "byProduct": {
+    "Brand Presence / Radar / HE": 1,
+    "tmp": 5,
+    "shared": 100,
+    "Scout/Radar": 5,
+    "census-enrichment-cli": 95,
+    "ADP": 2,
+    "reports": 6,
+    "Hotel Explorer": 6,
+    "shared-legacy-field-map": 3,
+    "probes": 28,
+    "tests": 8
+  },
+  "rows": [
+    {
+      "file": ".\\api\\brand-presence.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "READ",
+      "product": "Brand Presence / Radar / HE",
+      "migrationStatus": "MIGRATED_HPC",
+      "responsibleWorkstream": "he+radar"
+    },
+    {
+      "file": ".\\tmp\\reconcile-hpc-radar-status-population-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "tmp",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\tmp\\reconcile-hpc-legacy-dupe-and-correlation-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "tmp",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\tmp\\probe-hpc-vs-census-ids.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "tmp",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\tmp\\legacy-census-name-probe-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "tmp",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\tmp\\he50-identity-conflict-probe-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "tmp",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\brand-operator-validation-audit\\expected-brand-operator-validation-registry.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\brand-match-same-brand-density.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\brand-explorer\\be-hpc-footprint-summary-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\brand-explorer\\be-airtable-integration-sot-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\scout\\scout-signal-watchlist.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "READ",
+      "product": "Scout/Radar",
+      "migrationStatus": "MIGRATED_HPC",
+      "responsibleWorkstream": "he+radar"
+    },
+    {
+      "file": ".\\lib\\scout\\market-map.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "READ",
+      "product": "Scout/Radar",
+      "migrationStatus": "MIGRATED_HPC",
+      "responsibleWorkstream": "he+radar"
+    },
+    {
+      "file": ".\\lib\\scout\\market-insights.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "READ",
+      "product": "Scout/Radar",
+      "migrationStatus": "MIGRATED_HPC",
+      "responsibleWorkstream": "he+radar"
+    },
+    {
+      "file": ".\\lib\\scout\\insight-calibration.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "READ",
+      "product": "Scout/Radar",
+      "migrationStatus": "MIGRATED_HPC",
+      "responsibleWorkstream": "he+radar"
+    },
+    {
+      "file": ".\\lib\\scout\\census-read-cache.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "READ",
+      "product": "Scout/Radar",
+      "migrationStatus": "MIGRATED_HPC",
+      "responsibleWorkstream": "he+radar"
+    },
+    {
+      "file": ".\\scripts\\analyze-str-import-remaining.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\apply-accor-steward-urls-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-accor-steward-geo-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-accor-ibis-styles-gap-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-accor-ibis-styles-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-accor-catalog-destination-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-accor-amenities-from-directory-cache.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-wave3-open-blanks.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-wave3-active-only.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-straggler-urls-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-steward-urls-batch.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-census-manual-additions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-cala-affiliation-normalize.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-choice-amenities-from-html.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-census-steward-fixes.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-census-affiliation-to-brand-setup.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-hotel-census-market-submarket-fallback.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-hotel-census-market-submarket-consistency.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-hilton-wave2-cala-directory-creates.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-hilton-enrichment-amenities-blank.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-hilton-census-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-hilton-census-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-he-cala-census.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-he-cala-census-room-corrections.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-he-cala-census-property-type.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-handwritten-cala-census-affiliation.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-census-property-id-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-census-name-normalize.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-census-marriott-amenities-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-census-manual-additions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-census-geocode.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-census-content-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-design-hotels-cala-census-affiliation.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-curio-census-location-type.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-wave9-bwh-pilot-pass.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-vignette-cala-census-directory-creates.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-str-import-remaining.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-str-census-market-submarket-fill-blank.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-str-census-import.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-slh-census-manual-additions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-slh-census-amenities-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-slh-cala-census-affiliation.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-mgallery-cala-census-amenities-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-mgallery-cala-census-affiliation.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-marriott-subpage-content.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\apply-marriott-census-record-force.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\audit-airtable-base-record-counts.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\research-engine-v2\\production-census-v11-post-apply-review.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\research-engine-v2\\production-census-source-of-truth.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\research-engine-v2\\production-census-schema-v111-cleanup-plan.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\research-engine-v2\\production-census-schema-create.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-dealality-legacy-hotel-census-inventory-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\research-engine-v2\\production-census-and-be-patch-plan.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-census-parent-company-mismatches.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-census-amenities-by-parent.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-census-affiliations.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-census-affiliation-vs-brand-setup.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-cala-regional-submarkets.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-brand-alias-coverage-all-brands.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-marriott-census-urls.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-marriott-census-field-gaps.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-ihg-census-post-apply.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-hilton-year-from-open-date.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-hilton-parent-wrong-brand.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-hilton-census-status.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-hilton-census-field-gaps.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\audit-design-hotels-cala-census-coverage.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\ai-demand-positioning\\airtable-schema-proposal.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LINK",
+      "product": "ADP",
+      "migrationStatus": "AUDIT_HPC_ALIASES",
+      "responsibleWorkstream": "adp"
+    },
+    {
+      "file": ".\\scripts\\audit-sibling-parent-brand-cala-gaps.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\census-backed-alias-proposals.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\reports\\adp-hotel-explorer-baseline-audit\\phase-1.3\\evidence\\probe-bethesda-two-tables.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "reports",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\reports\\adp-hotel-explorer-baseline-audit\\phase-1.3\\evidence\\probe-bethesda-schema-diff.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "reports",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\reports\\adp-hotel-explorer-baseline-audit\\phase-1.3\\evidence\\probe-bethesda-meta.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "reports",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\reports\\adp-hotel-explorer-baseline-audit\\phase-1.2\\evidence\\probe-bethesda-select.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "reports",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\reports\\adp-hotel-explorer-baseline-audit\\phase-1.2\\evidence\\probe-bethesda-rest.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "reports",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\reports\\adp-hotel-explorer-baseline-audit\\phase-1.2\\evidence\\probe-bethesda-map-fields.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "reports",
+      "migrationStatus": "INACTIVE",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\backfill-hilton-wave7-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-hilton-wave4-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-hilton-census-website.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-hilton-census-fields.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-design-tribute-wave6-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-design-hotels-wave5-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-design-hotels-property-id.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-choice-wave4-from-html.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-bwh-wave6-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-bwh-wave10-puppeteer.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-accor-wave7-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-accor-wave5-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-accor-sibling-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-wyndham-wave6-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-wyndham-wave1-jsonld.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-vignette-cala-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-slh-wave6-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-slh-cala-property-id.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-marriott-wave5-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-marriott-wave5-bazaarvoice-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-marriott-sibling-bazaarvoice.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-marriott-census-descriptions-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-marriott-census-all.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-ihg-wave6-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-ihg-wave5-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-ihg-sibling-descriptions.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\backfill-ihg-census-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\lib\\research-engine-v2\\cala-census-benchmark-coverage-reconciliation-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\independent-census\\fields.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\independent-census\\match-current-census.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\mgallery-census-enrichment.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-intelligence\\he-5-0-full-e2e\\contract.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "Hotel Explorer",
+      "migrationStatus": "HE_LEGACY_INDEPENDENT",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-intelligence\\he-5-0-full-e2e\\autonomous-reconciliation-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "Hotel Explorer",
+      "migrationStatus": "HE_LEGACY_INDEPENDENT",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\compare-product-vs-backup.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\diagnose-active-footprint-census-alias-gaps.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\ensure-ai-demand-positioning-schema.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LINK",
+      "product": "ADP",
+      "migrationStatus": "AUDIT_HPC_ALIASES",
+      "responsibleWorkstream": "adp"
+    },
+    {
+      "file": ".\\scripts\\ensure-independent-census-tables.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\ensure-hotel-census-governance-fields.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "shared-legacy-field-map",
+      "migrationStatus": "DEPRECATED_FOR_RUNTIME",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\export-choice-amenities-steward-worklist.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\export-choice-amenities-pilot-worklist.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\export-active-brand-cala-steward-worklist.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\export-active-brand-cala-enrichment-coverage.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\export-accor-open-amenity-blanks.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-intelligence\\property-census-identity-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "Hotel Explorer",
+      "migrationStatus": "HE_LEGACY_INDEPENDENT",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\extract-choice-mexico-regional-page.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\gate1-he-tabs-1-5-runtime-provenance-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\gate1-he-tabs-1-5-kgpv-gold-beth-airtable-metrics-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\gate1-he-tabs-1-5-field-airtable-mapping-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\probe-census-enrichment-fields.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\platform-base.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-wyndham-census-sitemap-match.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-slh-census-manual-additions.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-slh-census-amenities-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-marriott-census-subpage-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-marriott-census-enrichment.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-marriott-census-content-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-marriott-census-bazaarvoice-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-ihg-census-directory-match.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hyatt-census-enrichment.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hilton-website-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hilton-city-gap-descriptions.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hilton-census-property-id-sync.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hilton-census-field-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hilton-census-descriptions.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-hilton-census-amenities-sync.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-design-hotels-census-property-id-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-design-hotels-census-marriott-amenities-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-design-hotels-census-content-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-choice-census-sitemap-match.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\harvest-one-marriott-overview.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-choice-affiliation-normalize.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-census-parent-company-cleanup.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-census-brand-service-model-backfill.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\harvest-marriott-overview-pages.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-bwh-census-directory-match.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-brand-census-directory-match.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\plan-accor-census-sitemap-match.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\match-brand-directory-to-census.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\marriott-census-field-backfill-contract.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\map-hotel-dto.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\geocode-he-cala-census.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\harvest-choice-amenity-pages.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\import-marriott-overview-export.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\hilton-property-id-contract.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\import-str-census-dry-run.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\hilton-ts-hpc-search.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\hilton-description-enrichment-contract.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\import-marriott-search-export.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\hilton-census-field-backfill-contract.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\inventory-hotel-census-for-str-import.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\mark-str-import-census-rows.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\he-cala-census-apply.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\fields.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "shared-legacy-field-map",
+      "migrationStatus": "DEPRECATED_FOR_RUNTIME",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\design-hotels-census-manual-additions.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-both-blank-match.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\choice-census-manual-additions.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-blanks-quick.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-intelligence\\hpc-population\\mullen-pilot-cohort-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "Hotel Explorer",
+      "migrationStatus": "HE_LEGACY_INDEPENDENT",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-intelligence\\hpc-population\\legacy-hotel-census-access-guard-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "Hotel Explorer",
+      "migrationStatus": "HE_LEGACY_INDEPENDENT",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-amenities-counts.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-intelligence\\hpc-population\\hotel-census-identity-search-v1.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "Hotel Explorer",
+      "migrationStatus": "HE_LEGACY_INDEPENDENT",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\census-governance.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "INACTIVE",
+      "product": "shared-legacy-field-map",
+      "migrationStatus": "DEPRECATED_FOR_RUNTIME",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-choice-missing-census-rows.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\build-operator-census-footprint.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-choice-census-websites.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-independent-parent.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-choice-census-by-country.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\lib\\hotel-census\\audit-hilton-census-status.js",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\plan-hotel-census-location-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-choice-bolivia-match.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\plan-hotel-census-geography-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-choice-blank-web-by-country.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\plan-hotel-census-dealality-submarket.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-census-italy-coverage.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-brand-presence-hotel-fields.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\persist-he-tabs-bethesda-hi-graph-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-hilton-property-id-field.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-remaining-blanks.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-fiesta-inn-parent.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-pid-web-gap.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-missing-examples.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-open-blanks.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-marriott-open-match-fast.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-w-rome-multi-base.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-parent-census-websites.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-pujac-airtable-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-sdqal-match-score.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-parent-census-identity.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\probe-rome-census-w.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "probes",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\read-census-record.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\propose-census-backed-brand-aliases.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\refetch-accor-census-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\reconcile-legacy-census-to-hpc-dry-run-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\resolve-w-rome-census.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\run-accor-census-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-accor-catalog-open-gap-pass.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-accor-catalog-gap-pass.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-accor-catalog-cala-countries.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\revert-choice-census-apply.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\run-accor-continent-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-accor-census-geo-auto-apply.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-brand-census-match-expansion.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-choice-census-amenities-overnight.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-choice-census-amenities-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-choice-census-regional-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-bwh-census-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\sync-census-parent-company.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\sync-census-brand-service-model.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-ihg-wave2-census-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-wyndham-census-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-hyatt-census-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-ihg-wave2-forced-match.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-marriott-wave3-autograph-enrichment.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\run-marriott-census-scale-backfill.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\sync-hilton-census-property-id.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\sync-ihg-census-from-directory.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\sync-hilton-census-amenities.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\sync-marriott-census-from-sitemap.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "IMPORT",
+      "product": "census-enrichment-cli",
+      "migrationStatus": "MIGRATION_REQUIRED_CLI",
+      "responsibleWorkstream": "integration+census"
+    },
+    {
+      "file": ".\\scripts\\test-census-autopilot.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-dealality-hpc-runtime-migration-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-be-airtable-integration-sot-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-he-legacy-hotel-census-independence-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-he-mullen-pilot-hpc-population-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-he-property-census-identity-v1.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-scout-signal-watchlist.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\test-scout-market-map.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "TEST",
+      "product": "tests",
+      "migrationStatus": "TEST",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\triage-ihg-census-unmatched-steward.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    },
+    {
+      "file": ".\\scripts\\update-hyatt-enrichment-summary.mjs",
+      "legacyTableId": "tblgj2qEwxjTcg6q0",
+      "hpcEquivalent": "tbl9aY5ijiuIzzWam",
+      "operationClass": "LOOKUP",
+      "product": "shared",
+      "migrationStatus": "REVIEW",
+      "responsibleWorkstream": "he"
+    }
+  ],
+  "runtimeMigrationsThisWave": [
+    "lib/scout/census-read-cache.js → HPC",
+    "api/brand-presence.js list/search → HPC",
+    "api/operators-by-brand-region.js → HPC",
+    "api/brand-fit-analyzer.js → HPC",
+    "lib/hotel-census/aggregate-presence-summary.js → HPC"
+  ],
+  "remainingBlockers": [
+    "Enrichment/import CLIs still target Hotel Census (IMPORT) — retarget to HPC Autopilot pipelines via Integration Controller",
+    "Linked-record Airtable migration dry-run for HI graph edges pointing at legacy census ids — founder apply later",
+    "Population denominator shifts (Census Open vs HPC Radar Status Open|Pipeline) require before/after comparison evidence",
+    "ADP/GDI alias map coverage for non-HPC keys — validate, do not rewrite opportunities"
+  ],
+  "certification": {
+    "DEPENDENCY_INVENTORY_COMPLETE": true,
+    "HPC_DATA_RECONCILED": false,
+    "SHARED_RESOLVER_VALIDATED": true,
+    "PRODUCT_MIGRATIONS_COMPLETE": false,
+    "LEGACY_RUNTIME_ACCESS_ZERO": false,
+    "AIRTABLE_LINKS_MIGRATED": false,
+    "GLOBAL_RETIREMENT_READY": false
+  }
+}

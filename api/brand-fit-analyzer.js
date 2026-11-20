@@ -45,18 +45,19 @@ const F = {
     architecture: "Brand Architecture"
   },
   hotels: {
-    table: "Hotel Census",
-    name: "name",
-    brand: "Affiliation",
+    table: "Hotel Property Census",
+    tableId: "tbl9aY5ijiuIzzWam",
+    name: "Property Name",
+    brand: "Current Brand",
     parentCompany: "Parent Company",
-    status: "status",
-    city: "city",
-    country: "country",
-    region: "Region",
-    rooms: "rooms",
-    chainScale: "Chain Scale",
-    propertyType: "Chain Scale"
-  }
+    status: "Radar Status",
+    city: "City",
+    country: "Country",
+    region: "Continent",
+    rooms: "Rooms / Keys",
+    chainScale: "Hotel Class / Segment",
+    propertyType: "Property Type",
+  },
 };
 
 // Main Brand Fit Analyzer function

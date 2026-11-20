@@ -10,6 +10,7 @@
   var CAMBRIDGE_DHL = "dhl_06G6TRD5N8Q1YVXKSFD1A5E2NT";
   var SHERATON_GDL_ID = "recsYJb2R1jarPpK3";
   var REAL_INN_CANCUN_ID = "recTYaiA4S6fR6ixx";
+  var BETHESDA_MARRIOTT_ID = "recLuxvwwxID7U2B8";
 
   var DEMO_SLUGS = {
     kgpv: KGPV_ID,
@@ -24,6 +25,8 @@
     "real-inn-cancun": REAL_INN_CANCUN_ID,
     "voco-cancun": REAL_INN_CANCUN_ID,
     "voco-real-inn-cancun": REAL_INN_CANCUN_ID,
+    "bethesda-marriott": BETHESDA_MARRIOTT_ID,
+    bethesda: BETHESDA_MARRIOTT_ID,
   };
 
   var HOTEL_SEEDS = {};
@@ -111,6 +114,28 @@
       "Outdoor swimming pool, Fitness center, Free WiFi, Free on-site parking, Restaurant (Stock Cafe), Bar / lounge, Room service, 24-hour front desk, Meeting rooms, Business center, Terrace / garden, Laundry facilities, Air conditioning, Non-smoking rooms, Facilities for disabled guests, Near Langosta / Tortuga beach corridor",
     latitude: 21.1430049,
     longitude: -86.7778885,
+    status: "Open",
+  };
+  HOTEL_SEEDS[BETHESDA_MARRIOTT_ID] = {
+    id: BETHESDA_MARRIOTT_ID,
+    recordId: BETHESDA_MARRIOTT_ID,
+    name: "Bethesda Marriott",
+    city: "Bethesda",
+    market: "Washington DC",
+    submarket: "Bethesda / Montgomery County",
+    country: "United States",
+    rooms: 407,
+    chainScale: "Upper Upscale Chain",
+    chain_scale: "Upper Upscale Chain",
+    brand: "Marriott",
+    parentCompany: "Marriott International",
+    managementCompany: "Marriott International",
+    website:
+      "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+    hotelDescription:
+      "Upper Upscale Chain hotel affiliated with Marriott in Bethesda, Maryland (Montgomery County).",
+    latitude: 38.9847,
+    longitude: -77.0947,
     status: "Open",
   };
 
@@ -227,6 +252,7 @@
     CAMBRIDGE_DHL: CAMBRIDGE_DHL,
     SHERATON_GDL_ID: SHERATON_GDL_ID,
     REAL_INN_CANCUN_ID: REAL_INN_CANCUN_ID,
+    BETHESDA_MARRIOTT_ID: BETHESDA_MARRIOTT_ID,
     DEMO_SLUGS: DEMO_SLUGS,
     resolveDemoSlug: resolveDemoSlug,
     resolveRequestedHotelId: resolveRequestedHotelId,
