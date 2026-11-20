@@ -305,6 +305,14 @@
         setLoadingToast(true, "Retrieving contact details…");
       }
 
+      // Stable per-click idempotency id — transport retries reuse it; a later
+      // intentional user click gets a new id (legitimate repeat is counted).
+      var clientRequestId =
+        (typeof crypto !== "undefined" &&
+          crypto.randomUUID &&
+          crypto.randomUUID()) ||
+        "cr_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+
       var useMock = wantsMock();
       var revealUrl =
         "/api/group-demand-intelligence/hotels/" +
@@ -325,6 +333,7 @@
           useMock: useMock,
           mockScenario: "hit",
           comparisonPanel: panel,
+          clientRequestId: clientRequestId,
         }),
       };
 

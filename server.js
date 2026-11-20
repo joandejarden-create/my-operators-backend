@@ -644,6 +644,10 @@ import { requireAdminAccess } from "./middleware/requireAdminAccess.js";
 import { requireAdpMonthlyReviewAdminAccess } from "./middleware/requireAdpMonthlyReviewAdminAccess.js";
 import { requireInternalRunbookAdmin } from "./middleware/requireInternalRunbookAdmin.js";
 import {
+  getAdminSurfeUsageSummary,
+  getAdminSurfeUsageEvents,
+} from "./api/admin-surfe-usage.js";
+import {
   postAcquisitionConnectionsPreview,
   postAcquisitionConnectionsImport,
   getAcquisitionImportBatches,
@@ -1677,6 +1681,10 @@ app.get(
   requireAdpShareCapability({ allowMemberstack: true }),
   getAiDemandPositioningCostEstimate
 );
+
+// GDI Surfe Usage — admin-only non-PII usage telemetry (on-demand reveal accounting)
+app.get("/api/admin/surfe-usage/summary", ...adminAuth, getAdminSurfeUsageSummary);
+app.get("/api/admin/surfe-usage/events", ...adminAuth, getAdminSurfeUsageEvents);
 
 // AI Demand Leak Audit — free diagnostic (sample + client report + admin)
 const adpLeakAuditAdminAuth = adminAuth;
