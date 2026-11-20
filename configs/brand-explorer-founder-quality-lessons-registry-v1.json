@@ -672,14 +672,19 @@
       "correctExpectedBehavior": "For brands with a conventional loyalty program, Key Benefits & Program Strengths always renders exactly six distinct benefit cards. Never apply a candidate with fewer than six loyalty.proof cards. Never replace the six-card static/CURRENT grid with a thin Proof Point stub. Scale/system facts belong in KPIs or overview proof—not as a one-card loyalty.proof substitute. Enforce in assembler + atelier going forward for every brand.",
       "failingExampleRef": "public/brand-explorer-phase2e-preview/autograph-collection-phase2h-candidate.json (pre-fix single loyalty.proof Proof Point)",
       "associatedContract": "configs/brand-explorer-collection-cardinality-contract.json#loyaltyBenefits",
-      "automatedRegressionTest": "test:be-cumulative-proposal-assembler-v1",
+      "automatedRegressionTest": "test:be-factory-permanent-loyalty-region-standards-v1",
       "browserValidationEvidence": "reports/brand-explorer/factory-1-0/",
-      "status": "ENCODED",
+      "status": "TESTED",
       "supersededRule": "Allowing incomplete loyalty.proof overlays (1 Proof Point) to replace the six-card Key Benefits grid",
       "linkedRequirementIds": [],
       "curioAscendApproval": "NOT_APPROVED",
       "publicationVerified": false,
-      "implementationModule": "lib/brand-explorer/be-cumulative-proposal-assembler-v1.js"
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-loyalty-region-standards-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-proof-single-stub.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-proof-partial-three.json"
+      ]
     },
     {
       "lessonId": "BE-QL-REGION-ACRONYM-001",
@@ -690,19 +695,24 @@
         "footprint.region.*",
         "editorial Title Case",
         "white card headings",
-        "APAC / EMEA / CALA / LATAM / MEA"
+        "APAC / EMEA / CALA / LATAM / MEA",
+        "Factory 1.0 / 2.0 batch research"
       ],
-      "correctExpectedBehavior": "Editorial Title Case preserves and normalizes regional acronyms to all caps: APAC, EMEA, CALA, LATAM, MEA. Never Title-Case them as Apac/Emea/Cala.",
-      "failingExampleRef": "founder screenshot Apac heading vs APAC body",
+      "correctExpectedBehavior": "Editorial Title Case preserves and normalizes regional acronyms to all caps: APAC, EMEA, CALA, LATAM, MEA. Never Title-Case them as Apac/Emea/Cala. Enforced in assembly, rendering, browser verification, and publication gates for every brand.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-region-acronym-title-case.json",
       "associatedContract": "configs/brand-explorer-permanent-content-standards-contract-v1.json#typographyAndWriting.cardHeadings",
-      "automatedRegressionTest": "test:be-editorial-title-case-v1",
+      "automatedRegressionTest": "test:be-factory-permanent-loyalty-region-standards-v1",
       "browserValidationEvidence": "reports/brand-explorer/factory-1-0/",
-      "status": "ENCODED",
+      "status": "TESTED",
       "supersededRule": "Title-casing regional acronyms as proper nouns (Apac)",
       "linkedRequirementIds": ["BE-QL-TITLECASE-001"],
       "curioAscendApproval": "NOT_APPROVED",
       "publicationVerified": false,
-      "implementationModule": "lib/brand-explorer/be-editorial-title-case-v1.js"
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-loyalty-region-standards-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-region-acronym-title-case.json"
+      ]
     },
     {
       "lessonId": "BE-QL-FOUNDER-PRODUCT-PREVIEW-001",
