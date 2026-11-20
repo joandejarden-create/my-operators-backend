@@ -28,4 +28,11 @@ Permanent rules (independent):
 - `BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1` — Elite Tiers = actual official tier count
 - `BE_FACTORY_PERMANENT_LOYALTY_GLANCE_KPI_V1` — Loyalty at a Glance = four meaningful KPIs (Estimated Loyalty Mix authorized when labeled)
 
-Verdict: see `05-founder-dashboard.md`. `LOYALTY_TIER_AUDIT_COMPLETE` / `LOYALTY_GLANCE_KPI_AUDIT_COMPLETE` = **NO** until :8080 certification.
+| `19-image-remediation-priority-queue.json` | Prioritized image gap queue |
+| `20-phase2-closure-summary.json` | Phase 2 machine summary |
+| `21-fee-disclosure-classification.json` | Fee classes A–E |
+| `22-permanent-rules-compliance.json` | Independent permanent-rule scores |
+| `23-near-certification-queue.json` | Brands ≤2 blockers from cert |
+| `24-phase2-founder-dashboard.md` | Phase 2 cumulative founder report |
+
+Verdict: see `24-phase2-founder-dashboard.md`. `PORTFOLIO_AUDIT_COMPLETE` = **NO** until image/fee/:8080 exceptions resolved or documented.
