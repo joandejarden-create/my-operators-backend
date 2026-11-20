@@ -11,9 +11,14 @@ import {
   classifyPublicPhoneKind,
   mergeCandidateSourceUrls,
   MARITZA_PUBLIC_CONTACT_FIXTURE_V1 as FIX,
+  ALEJANDRA_PUBLIC_CONTACT_FIXTURE_V1 as ALEJ,
   PUBLIC_PHONE_KIND,
   GDI_PUBLIC_CONTACT_DISCOVERY_V1,
 } from "../lib/group-demand-intelligence/presentation/gdi-public-contact-discovery-v1.js";
+import {
+  inspectPublicContactSearchCredentials,
+  createPublicContactSearchProvider,
+} from "../lib/group-demand-intelligence/presentation/gdi-public-contact-search-providers-v1.js";
 
 const ROOT = process.cwd();
 
@@ -93,6 +98,43 @@ assert.match(hier, /recoverPublicContactChannels/);
 assert.match(hier, /collectPublicContactSourceUrls/);
 
 assert.ok(existsSync(join(ROOT, "scripts/gdi-maritza-public-contact-discovery-cert-v1.mjs")));
+assert.ok(existsSync(join(ROOT, "scripts/gdi-two-case-public-contact-discovery-cert-v1.mjs")));
+
+const alejPlan = buildPublicPersonContactQueryPlan(
+  { name: ALEJ.personName, title: ALEJ.title, organization: "IGECO" },
+  { name: "IGECO" },
+);
+assert.ok(
+  alejPlan.queries.some((q) =>
+    /Alejandra Vazquez Sales Manager IGECO/i.test(q.query),
+  ),
+  "founder Google-style query required",
+);
+assert.ok(
+  alejPlan.queries.some((q) => /IGECO contact/i.test(q.query)),
+  "name+org+contact query required for Exa yield",
+);
+
+const creds = inspectPublicContactSearchCredentials({
+  EXA_API_KEY: "test",
+  SERPER_API_KEY: "",
+});
+assert.equal(creds.chosenMode, "EXA_ONLY");
+const hybrid = inspectPublicContactSearchCredentials({
+  EXA_API_KEY: "test",
+  SERPER_API_KEY: "test",
+});
+assert.equal(hybrid.chosenMode, "HYBRID_SERPER_THEN_EXA");
+assert.equal(typeof createPublicContactSearchProvider().search, "function");
+
+const scoreMod = readFileSync(
+  join(
+    ROOT,
+    "lib/group-demand-intelligence/presentation/gdi-public-contact-channel-hierarchy-v1.js",
+  ),
+  "utf8",
+);
+assert.match(scoreMod, /contacto\|directorio\|directory\|organigrama/);
 
 console.log(
   JSON.stringify(
@@ -101,6 +143,8 @@ console.log(
       passed: true,
       queriesPlanned: plan.queries.length,
       fixture: FIX.personName,
+      alejandraFixture: ALEJ.personName,
+      providerModes: { exaOnly: creds.chosenMode, hybrid: hybrid.chosenMode },
     },
     null,
     2,
