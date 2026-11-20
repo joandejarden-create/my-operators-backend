@@ -19,7 +19,8 @@
       manifestUrl: '/brand-explorer-phase2e-preview/curio-collection-staged-candidate-manifest-v1.json',
       candidateVersion: 'phase2h-component-parity',
       source: 'phase2h-cumulative-staged',
-      founderApprovalStatus: 'NOT_APPROVED'
+      // Presentation writeback applied 2026-11-20 — Current Saved is authoritative.
+      founderApprovalStatus: 'FOUNDER_APPROVED_WRITEBACK'
     },
     {
       id: 'reclkgOzvAcBheUSo',
@@ -31,7 +32,7 @@
       manifestUrl: '/brand-explorer-phase2e-preview/ascend-staged-candidate-manifest-v1.json',
       candidateVersion: 'phase2h-component-parity',
       source: 'phase2h-cumulative-staged',
-      founderApprovalStatus: 'NOT_APPROVED'
+      founderApprovalStatus: 'FOUNDER_APPROVED_WRITEBACK'
     }
   ];
 

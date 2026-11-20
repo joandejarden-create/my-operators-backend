@@ -1,0 +1,104 @@
+{
+  "ok": true,
+  "mode": "DRY_RUN",
+  "version": "he50-hpc-geography-nullfill-recovery-v1",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "tableId": "tbl9aY5ijiuIzzWam",
+  "neverCreate": true,
+  "legacyHotelCensusBlocked": true,
+  "operations": [
+    {
+      "pilotKey": "ac_hotel_newtown_square",
+      "hpcId": "recF7DQBPDW5aUDoC",
+      "propertyName": "AC Hotel Newtown Square",
+      "sources": [
+        "Address Pennsylvania 19073",
+        "fixtures/demand-anchors-newtown-square-pa-v1.json market label",
+        "parentBrand Marriott International (free research packet)"
+      ],
+      "patch": {
+        "State / Region": "Pennsylvania",
+        "Market": "Newtown Square / Delaware County",
+        "Submarket": "Newtown Square / Radnor",
+        "Brand Family": "Marriott International"
+      },
+      "skipped": {},
+      "class": "DRY_RUN_CANONICAL_UPDATE"
+    },
+    {
+      "pilotKey": "hgi_newtown_square_radnor",
+      "hpcId": "recgaBAwa24wsl3xF",
+      "propertyName": "Hilton Garden Inn Newtown Square Radnor",
+      "sources": [
+        "Address Pennsylvania 19073",
+        "fixtures/demand-anchors-newtown-square-pa-v1.json market label",
+        "parentBrand Hilton (free research packet)"
+      ],
+      "patch": {
+        "State / Region": "Pennsylvania",
+        "Market": "Newtown Square / Delaware County",
+        "Submarket": "Newtown Square / Radnor",
+        "Brand Family": "Hilton"
+      },
+      "skipped": {},
+      "class": "DRY_RUN_CANONICAL_UPDATE"
+    },
+    {
+      "pilotKey": "carton_house_fairmont",
+      "hpcId": "recYf7HZWmCdWPaSd",
+      "propertyName": "Carton House, A Fairmont Hotel",
+      "sources": [
+        "Address Co. Kildare / Maynooth",
+        "Fairmont / Accor official property pages",
+        "parentBrand Accor / Fairmont (free research packet)"
+      ],
+      "patch": {
+        "State / Region": "County Kildare",
+        "Market": "Greater Dublin / Maynooth",
+        "Submarket": "Maynooth / Carton Demesne",
+        "Brand Family": "Accor"
+      },
+      "skipped": {},
+      "class": "DRY_RUN_CANONICAL_UPDATE"
+    },
+    {
+      "pilotKey": "secrets_papagayo",
+      "hpcId": "recFQ0WvGLbfK5Gpa",
+      "propertyName": "Secrets Papagayo Costa Rica",
+      "sources": [
+        "Address Guanacaste / Papagayo Gulf",
+        "Peer HPC JW Costa Elena Market Guanacaste / Papagayo",
+        "parentBrand Hyatt Inclusive Collection"
+      ],
+      "patch": {
+        "State / Region": "Guanacaste",
+        "Market": "Guanacaste / Papagayo",
+        "Submarket": "Papagayo / Playa Arenilla",
+        "Brand Family": "Hyatt Inclusive Collection"
+      },
+      "skipped": {},
+      "class": "DRY_RUN_CANONICAL_UPDATE"
+    },
+    {
+      "pilotKey": "secrets_st_lucia",
+      "hpcId": "recwZJuMcx6kA7f7I",
+      "propertyName": "Secrets St. Lucia Resort & Spa",
+      "sources": [
+        "Address Choc Bay / Castries–Gros Islet Highway",
+        "parentBrand Hyatt Inclusive Collection"
+      ],
+      "patch": {
+        "Market": "Castries / Gros Islet",
+        "Submarket": "Choc Bay",
+        "Brand Family": "Hyatt Inclusive Collection"
+      },
+      "skipped": {},
+      "class": "DRY_RUN_CANONICAL_UPDATE"
+    }
+  ],
+  "counts": {
+    "dryRunOrApplied": 5,
+    "wouldWrite": 5,
+    "skippedNoChange": 0
+  }
+}
