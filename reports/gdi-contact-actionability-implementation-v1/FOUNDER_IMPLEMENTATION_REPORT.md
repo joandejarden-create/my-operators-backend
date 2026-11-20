@@ -105,6 +105,15 @@ Gates covered: no STRICT publication gate; unverified person_specific email; SAL
 3. Optionally run a **relevance enrichment** pass on the ~20 soft-phone contacts so REACHABLE can rise honestly without weakening the commercial-relevance rule.
 4. Merge/deploy only after founder review of this PR.
 
+## PR reference
+
+- PR: https://github.com/joandejarden-create/my-operators-backend/pull/484 (`OPEN`)
+- Head: `39d0d2be5`
+- Commits: `69a81d09a` (framework + reports), `39d0d2be5` (UTF-8 package.json scripts)
+- Note: shipped on the existing GDI contact feature branch (no second conflicting product stream). Integration Controller owns merge.
+
 ## STOP
 
 No merge. No deploy. No customer publication pointer changes. Awaiting founder review.
+
+**AWAITING_INTEGRATION_CONTROLLER** (after founder review of this implementation report)
