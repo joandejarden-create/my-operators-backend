@@ -432,15 +432,16 @@ function validateStaging(args) {
 
   let surfeNav = false;
   try {
-    const navPath = path.join(
-      stagingPath,
-      "public/js/support-admin-gate.js",
-    );
-    if (fs.existsSync(navPath)) {
-      const txt = fs.readFileSync(navPath, "utf8");
+    const appJs = path.join(stagingPath, "public/app.js");
+    const surfeHtml = path.join(stagingPath, "public/app/admin/surfe-usage.html");
+    if (fs.existsSync(appJs) && fs.existsSync(surfeHtml)) {
+      const txt = fs.readFileSync(appJs, "utf8");
       surfeNav =
-        txt.includes("admin/surfe-usage") &&
-        txt.includes('internalRunbookOnly: false');
+        txt.includes("/admin/surfe-usage") &&
+        txt.includes("Surfe Usage") &&
+        (txt.includes("internalRunbookOnly: false") ||
+          txt.includes("navId: 'surfe-usage'") ||
+          txt.includes('navId: "surfe-usage"'));
     }
   } catch {
     surfeNav = false;
@@ -451,7 +452,7 @@ function validateStaging(args) {
     ["gdi", "public/js/group-demand-intelligence"],
     ["adp", "public/js"],
     ["hotel_explorer", "public"],
-    ["brand_explorer", "public/js/brand-explorer"],
+    ["brand_explorer", "public/js/brand-explorer-atelier-from-api.js"],
   ];
   for (const [id, rel] of apps) {
     push(`surface_${id}`, fs.existsSync(path.join(stagingPath, rel)), rel);
