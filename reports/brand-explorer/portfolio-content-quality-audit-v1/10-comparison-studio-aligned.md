@@ -1,6 +1,6 @@
 # Comparison Studio registration reconciliation
 
-Generated: 2026-11-20T09:57:47.626Z
+Generated: 2026-11-20T15:12:04.716Z
 
 - Registry entries: 233
 - Candidates with artifacts: 233

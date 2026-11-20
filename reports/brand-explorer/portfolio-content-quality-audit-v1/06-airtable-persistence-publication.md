@@ -1,6 +1,6 @@
 # Airtable persistence & publication status
 
-Generated: 2026-11-20T09:57:47.626Z
+Generated: 2026-11-20T15:12:04.716Z
 
 | Status | Count |
 |---|---:|
