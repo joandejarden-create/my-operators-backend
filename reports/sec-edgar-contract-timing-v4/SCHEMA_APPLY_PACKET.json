@@ -1,0 +1,95 @@
+{
+  "inspectedAt": "2026-11-20T22:48:33.525Z",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "mode": "DRY_RUN_PACKET",
+  "schemaApplyAuthorized": false,
+  "live": {
+    "contractsExists": false,
+    "milestonesExists": false,
+    "inventoryId": "tblx77Nmh56h4xa9z",
+    "findingsId": "tblGjTWNm8G4UOF1e",
+    "inventoryHasGeoClass": false,
+    "inventoryHasContinent": false,
+    "findingsHasLinkedContract": false,
+    "findingsHasLinkedMilestone": false
+  },
+  "proposed": {
+    "createTables": [
+      {
+        "name": "HI Hotel Contracts",
+        "fieldCount": 26
+      },
+      {
+        "name": "HI Contract Milestones",
+        "fieldCount": 18
+      }
+    ],
+    "addInventoryFields": [
+      "Geographic Processing Class",
+      "Continent / Macro Region"
+    ],
+    "addFindingsFields": [
+      "Linked Contract",
+      "Linked Milestone"
+    ],
+    "selfLinksOnContracts": [
+      "Supersedes Contract",
+      "Superseded By Contract"
+    ],
+    "contractLinkOnMilestones": "Contract",
+    "publicationStateDefault": "CUSTOMER_BLOCKED"
+  },
+  "stop": {
+    "schemaApply": "REQUIRES_EXPLICIT_FOUNDER_META_API_AUTHORIZATION",
+    "hpcCreate": "REQUIRES_PER_ROW_FOUNDER_MANIFEST_APPROVAL"
+  },
+  "fieldBlueprints": {
+    "contracts": [
+      "Contract ID",
+      "Discovery Property",
+      "HPC Hotel",
+      "Agreement Type",
+      "Agreement Role",
+      "Counterparty Org",
+      "Counterparty Name Raw",
+      "Brand Family",
+      "Brand Label",
+      "Governing Law / Jurisdiction",
+      "Hotel Country",
+      "Hotel State / Region",
+      "Hotel City",
+      "Geographic Processing Class",
+      "Contract Status",
+      "Commencement Date",
+      "Scheduled Expiration Date",
+      "Term Years",
+      "Renewal Options Summary",
+      "Termination Rights Summary",
+      "Primary Source URL",
+      "Primary SEC Accession",
+      "Evidence Confidence",
+      "Publication State",
+      "Schema Version",
+      "Notes / Quarantine"
+    ],
+    "milestones": [
+      "Milestone ID",
+      "Discovery Property",
+      "HPC Hotel",
+      "Milestone Type",
+      "Milestone Date",
+      "Date Meaning Precision",
+      "Reporting Date",
+      "Current Status Class",
+      "Status Corroborated",
+      "Commercial Relevance Score",
+      "Source URL",
+      "SEC Accession",
+      "Evidence Snippet",
+      "Related Finding",
+      "Publication State",
+      "Schema Version",
+      "Notes"
+    ]
+  }
+}
