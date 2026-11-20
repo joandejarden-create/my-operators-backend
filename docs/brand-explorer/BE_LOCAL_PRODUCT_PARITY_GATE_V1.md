@@ -15,6 +15,22 @@ No Brand Explorer profile may be published (production Airtable writeback or cus
 
 This applies to initial population, updates, and future automated refreshes.
 
+## Permanent pre-publication product preview
+
+Every brand and refresh must support:
+
+**Research → Stage → Validate → Compare → Preview in Actual Product → Founder Approve → Airtable Writeback → Publish → Verify**
+
+Founder-only modes inside the real `/app#/brand-explorer-combined` product (requires `beInternalPreview=1`):
+
+- **CURRENT SAVED** — canonical Airtable Presentation  
+- **PROPOSED UPDATE** — latest cumulative staged candidate via the same product atelier renderer (must match Comparison Studio RIGHT for the same brand / candidate version / payload)
+
+No profile may be published without validating that the proposed content renders correctly inside the actual product — Comparison Studio alone is not sufficient. Proposed preview is read-only (no Airtable writes). Customer sessions without internal preview continue to load CURRENT SAVED until publication is approved.
+
+Wiring gate: `npm run test:brand-explorer-founder-product-preview-v1`  
+Lesson: `BE-QL-FOUNDER-PRODUCT-PREVIEW-001`
+
 ## Insufficient proof
 
 - HTTP 200 alone  

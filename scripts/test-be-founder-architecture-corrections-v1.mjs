@@ -78,6 +78,7 @@ check("lessons_registry_phase2c_through_arch", () => {
     "BE-QL-ARCH-005",
     "BE-QL-ARCH-006",
     "BE-QL-LOCAL-PRODUCT-PARITY-001",
+    "BE-QL-FOUNDER-PRODUCT-PREVIEW-001",
   ]) {
     assert.ok(ids.has(id), `missing ${id}`);
   }

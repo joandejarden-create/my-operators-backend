@@ -577,6 +577,29 @@
       "curioAscendApproval": "NOT_APPROVED",
       "publicationVerified": false,
       "implementationModule": "lib/brand-explorer/be-local-product-parity-gate-v1.js"
+    },
+    {
+      "lessonId": "BE-QL-FOUNDER-PRODUCT-PREVIEW-001",
+      "date": "2026-11-20",
+      "phase": "FOUNDER-PRODUCT-PREVIEW",
+      "founderObservation": "Even when local servers share the same code commit, Brand Explorer continues reading the old live Airtable Presentation. Staged/saved content hashes differ. Founders must preview the proposed cumulative profile inside the actual /app#/brand-explorer-combined product — not only Comparison Studio — before approving publication.",
+      "affected": [
+        "brand-explorer-combined product atelier",
+        "Comparison Studio RIGHT",
+        "All future Brand Explorer publications and refreshes",
+        "Curio / Ascend staged candidates"
+      ],
+      "correctExpectedBehavior": "With beInternalPreview=1, founder can switch CURRENT SAVED vs PROPOSED UPDATE using the real product renderer. Proposed uses the latest cumulative Phase 2H staged candidate from BrandExplorerStagedCandidateRegistry + BeCumulativeProposalAssembler (same as Compare RIGHT). Display brand id, candidate version, content hash, source, and founder approval status. Read-only; never auto-publish or write Airtable. No silent Phase 2D/2F/2G fallback. Customer sessions without internal preview keep CURRENT SAVED until approved writeback.",
+      "failingExampleRef": "docs/brand-explorer/BE_FOUNDER_PRODUCT_PREVIEW_V1.md",
+      "associatedContract": "docs/brand-explorer/BE_FOUNDER_PRODUCT_PREVIEW_V1.md",
+      "automatedRegressionTest": "test:brand-explorer-founder-product-preview-v1",
+      "browserValidationEvidence": "reports/brand-explorer/founder-product-preview-v1/",
+      "status": "ENCODED",
+      "supersededRule": "Treating Comparison Studio alone or code-commit parity as proof that founders can see staged Presentation content in the real app",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "public/js/brand-explorer-founder-profile-mode.js"
     }
   ]
 }
