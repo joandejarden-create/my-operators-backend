@@ -103,6 +103,11 @@ All EXISTING_ACTIVE with live Presentation (97–166 blocks); 0 Basics creates. 
 Brand-specific exact-six Demand Scenario Fit (17 unique sets); Bonvoy / Honors / World of Hyatt loyalty-six; FDD disclosure language only. CURRENT preserved; Proposed enrichment staged.  
 Review package: `reports/brand-explorer/factory-2-0/91-batch9-founder-dashboard.md`.
 
+## Key Differentiator bar (permanent)
+
+`overview.differentiators.identity` and `overview.differentiators.commercial` must each carry **exactly four newline bullets** (Curio / Ascend / WoodSpring bar). Factory emits this via `buildCurioBarDifferentiatorBodies`; assembler upgrades thin CURRENT (`<4` bullets) when the candidate meets the bar.  
+Remediate staged payloads: `npm run be-factory-2-remediate-differentiator-bar`.
+
 ## Durable storage
 
 - `data/brand-explorer/factory-2-0/queue.json`
