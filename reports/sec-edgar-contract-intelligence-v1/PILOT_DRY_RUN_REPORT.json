@@ -1,8 +1,13 @@
 {
   "contract": "SEC_EDGAR_CONTRACT_INTELLIGENCE_V1",
   "version": "1.0.0",
-  "generatedAt": "2026-11-20T06:23:32.143Z",
+  "generatedAt": "2026-11-20T06:36:45.111Z",
   "mode": "DRY_RUN",
+  "stages": [
+    "1_DISCOVER_HOTELS",
+    "2_EXTRACT_VERIFY_CONTRACTS",
+    "3_MATCH_HPC"
+  ],
   "writeGuarantees": {
     "contract": "SEC_EDGAR_CONTRACT_INTELLIGENCE_V1",
     "version": "1.0.0",
@@ -32,8 +37,37 @@
     {
       "gap": "No dedicated CIK registry table",
       "mitigation": "Pilot CIK map in lib + HI Organizations Registry / Identifier."
+    },
+    {
+      "gap": "No Airtable table for unmatched SEC-discovered hotels",
+      "mitigation": "Filesystem inventory at data/sec-edgar/discovery-inventory (hotels.json). Do not auto-create HPC. Founder approval required before adding an Airtable discovery-inventory table."
     }
   ],
+  "discoveryInventory": {
+    "destination": {
+      "kind": "FILESYSTEM_RESEARCH_INVENTORY",
+      "rootRelative": "data/sec-edgar/discovery-inventory",
+      "airtableReuse": "HI Ownership Research Runs (run ledger) + HI Graph Evidence (only when HPC matched)",
+      "schemaGap": "No dedicated Airtable table for unmatched discovered hotels. Do not auto-create HPC records. Founder approval required for a durable Airtable discovery-inventory table if filesystem retention is insufficient."
+    },
+    "summary": {
+      "totalHotels": 290,
+      "withContractFindings": 14,
+      "matchedHpc": 0,
+      "notInHpc": 290,
+      "contractVerifiedPendingHpc": 0,
+      "ambiguous": 0,
+      "byStatus": {
+        "DISCOVERED_MATCHED_HPC": 0,
+        "DISCOVERED_NOT_IN_HPC": 290,
+        "CONTRACT_VERIFIED_PENDING_HPC": 0,
+        "MATCH_AMBIGUOUS": 0,
+        "PORTFOLIO_ONLY_EVIDENCE": 0,
+        "UNATTRIBUTED_CONTRACT_LANGUAGE": 0
+      }
+    },
+    "path": "data\\sec-edgar\\discovery-inventory\\hotels.json"
+  },
   "internationalReadiness": {
     "version": "sec-edgar-intl-readiness-v1",
     "requiredCapabilities": [
@@ -136,7 +170,7 @@
   },
   "clientStats": {
     "requests": 0,
-    "cacheHits": 44,
+    "cacheHits": 50,
     "retries": 0,
     "errors": 0,
     "status403": 0,
@@ -187,6 +221,7 @@
   "companyReports": [
     {
       "slug": "marriott-international",
+      "companyKey": "marriott-international",
       "legalName": "Marriott International, Inc.",
       "ticker": "MAR",
       "cik": "0001048286",
@@ -203,7 +238,8 @@
           "expiration": 1,
           "termination": 2,
           "renewal": 0,
-          "characters": 105742
+          "characters": 105742,
+          "hotelsDiscovered": 2
         },
         {
           "accession": "0001048286-26-000040",
@@ -213,7 +249,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 3429
+          "characters": 3429,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001193125-26-401051",
@@ -223,7 +260,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 5494
+          "characters": 5494,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001193125-26-349395",
@@ -233,7 +271,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 7343
+          "characters": 7343,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001048286-26-000035",
@@ -243,7 +282,8 @@
           "expiration": 1,
           "termination": 2,
           "renewal": 0,
-          "characters": 98256
+          "characters": 98256,
+          "hotelsDiscovered": 2
         },
         {
           "accession": "0001048286-26-000033",
@@ -253,10 +293,27 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 3407
+          "characters": 3407,
+          "hotelsDiscovered": 0
         }
       ],
+      "failedAttributionReasons": [],
       "errors": [],
+      "discoveredHotelCount": 2,
+      "sampleHotels": [
+        {
+          "hotelName": "Marriott Bonvoy SM",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Marriott Bonvoy",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ],
       "sampleFindings": [
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -280,7 +337,7 @@
             "primaryDocument": "mar-20260930.htm",
             "companyName": "Marriott International, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.423Z"
+          "extractedAt": "2026-11-20T06:36:39.981Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -304,7 +361,7 @@
             "primaryDocument": "mar-20260930.htm",
             "companyName": "Marriott International, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.424Z"
+          "extractedAt": "2026-11-20T06:36:39.982Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -328,7 +385,7 @@
             "primaryDocument": "mar-20260930.htm",
             "companyName": "Marriott International, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.424Z"
+          "extractedAt": "2026-11-20T06:36:39.982Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -352,7 +409,7 @@
             "primaryDocument": "mar-20260930.htm",
             "companyName": "Marriott International, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.424Z"
+          "extractedAt": "2026-11-20T06:36:39.982Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -376,19 +433,20 @@
             "primaryDocument": "mar-20260930.htm",
             "companyName": "Marriott International, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.424Z"
+          "extractedAt": "2026-11-20T06:36:39.982Z"
         }
       ]
     },
     {
       "slug": "sunstone-hotel-investors",
+      "companyKey": "sunstone-hotel-investors",
       "legalName": "Sunstone Hotel Investors, Inc.",
       "ticker": "SHO",
       "cik": "0001295810",
       "cikSource": "sec_company_tickers",
-      "filingsReviewed": 10,
-      "documentsProcessed": 10,
-      "findings": 95,
+      "filingsReviewed": 12,
+      "documentsProcessed": 12,
+      "findings": 145,
       "keywordSummaries": [
         {
           "accession": "0001295810-26-000009",
@@ -398,7 +456,8 @@
           "expiration": 0,
           "termination": 1,
           "renewal": 0,
-          "characters": 5426
+          "characters": 5426,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001295810-26-000007",
@@ -408,7 +467,8 @@
           "expiration": 2,
           "termination": 7,
           "renewal": 2,
-          "characters": 233443
+          "characters": 233443,
+          "hotelsDiscovered": 22
         },
         {
           "accession": "0001295810-26-000005",
@@ -418,7 +478,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4614
+          "characters": 4614,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001193125-26-342819",
@@ -428,7 +489,8 @@
           "expiration": 0,
           "termination": 3,
           "renewal": 0,
-          "characters": 12839
+          "characters": 12839,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001104659-26-091907",
@@ -438,7 +500,8 @@
           "expiration": 2,
           "termination": 7,
           "renewal": 2,
-          "characters": 226066
+          "characters": 226066,
+          "hotelsDiscovered": 18
         },
         {
           "accession": "0001104659-26-091645",
@@ -448,7 +511,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 5093
+          "characters": 5093,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001104659-26-076640",
@@ -458,7 +522,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 5133
+          "characters": 5133,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001104659-26-068568",
@@ -468,7 +533,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4890
+          "characters": 4890,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001104659-26-055508",
@@ -478,7 +544,8 @@
           "expiration": 2,
           "termination": 7,
           "renewal": 2,
-          "characters": 184116
+          "characters": 184116,
+          "hotelsDiscovered": 9
         },
         {
           "accession": "0001104659-26-055280",
@@ -488,10 +555,85 @@
           "expiration": 0,
           "termination": 1,
           "renewal": 0,
-          "characters": 9188
+          "characters": 9188,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001104659-26-021440",
+          "form": "10-K",
+          "franchise_agreement": 30,
+          "management_agreement": 28,
+          "expiration": 4,
+          "termination": 32,
+          "renewal": 4,
+          "characters": 492007,
+          "hotelsDiscovered": 37
+        },
+        {
+          "accession": "0001104659-26-020996",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 5126,
+          "hotelsDiscovered": 0
         }
       ],
+      "failedAttributionReasons": [],
       "errors": [],
+      "discoveredHotelCount": 50,
+      "sampleHotels": [
+        {
+          "hotelName": "Renaissance Orlando at SeaWorld",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hyatt Regency San Francisco",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Hilton Key West Resort & Marina",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Andaz Miami Beach",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Hilton New Orleans St. Charles",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Four Seasons Resort Napa Valley",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "Marriott Boston Long Wharf",
+          "city": "The Westin Washington",
+          "stateRegion": "DC",
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The Westin Washington",
+          "city": "The Westin Washington",
+          "stateRegion": "DC",
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ],
       "sampleFindings": [
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -515,7 +657,7 @@
             "primaryDocument": "sho-20261118.htm",
             "companyName": "Sunstone Hotel Investors, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.438Z"
+          "extractedAt": "2026-11-20T06:36:40.024Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -541,7 +683,7 @@
             "primaryDocument": "sho-20260930.htm",
             "companyName": "Sunstone Hotel Investors, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.457Z"
+          "extractedAt": "2026-11-20T06:36:40.089Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -565,7 +707,7 @@
             "primaryDocument": "sho-20260930.htm",
             "companyName": "Sunstone Hotel Investors, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.457Z"
+          "extractedAt": "2026-11-20T06:36:40.089Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -589,7 +731,7 @@
             "primaryDocument": "sho-20260930.htm",
             "companyName": "Sunstone Hotel Investors, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.457Z"
+          "extractedAt": "2026-11-20T06:36:40.089Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -615,18 +757,19 @@
             "primaryDocument": "sho-20260930.htm",
             "companyName": "Sunstone Hotel Investors, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.457Z"
+          "extractedAt": "2026-11-20T06:36:40.089Z"
         }
       ]
     },
     {
       "slug": "ashford-hospitality-trust",
+      "companyKey": "ashford-hospitality-trust",
       "legalName": "Ashford Hospitality Trust, Inc.",
       "ticker": "AHT",
       "cik": "0001232582",
       "cikSource": "sec_company_tickers",
-      "filingsReviewed": 10,
-      "documentsProcessed": 10,
+      "filingsReviewed": 12,
+      "documentsProcessed": 12,
       "findings": 109,
       "keywordSummaries": [
         {
@@ -637,7 +780,8 @@
           "expiration": 3,
           "termination": 40,
           "renewal": 2,
-          "characters": 389355
+          "characters": 389355,
+          "hotelsDiscovered": 130
         },
         {
           "accession": "0001232582-26-000214",
@@ -647,7 +791,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4431
+          "characters": 4431,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001104659-26-125247",
@@ -657,7 +802,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 5941
+          "characters": 5941,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001104659-26-117508",
@@ -667,7 +813,8 @@
           "expiration": 0,
           "termination": 8,
           "renewal": 0,
-          "characters": 12510
+          "characters": 12510,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001232582-26-000207",
@@ -677,7 +824,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4533
+          "characters": 4533,
+          "hotelsDiscovered": 2
         },
         {
           "accession": "0001232582-26-000199",
@@ -687,7 +835,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4524
+          "characters": 4524,
+          "hotelsDiscovered": 2
         },
         {
           "accession": "0001232582-26-000188",
@@ -697,7 +846,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4517
+          "characters": 4517,
+          "hotelsDiscovered": 2
         },
         {
           "accession": "0001232582-26-000183",
@@ -707,7 +857,8 @@
           "expiration": 3,
           "termination": 30,
           "renewal": 2,
-          "characters": 379212
+          "characters": 379212,
+          "hotelsDiscovered": 122
         },
         {
           "accession": "0001232582-26-000181",
@@ -717,7 +868,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4395
+          "characters": 4395,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001232582-26-000172",
@@ -727,10 +879,85 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4575
+          "characters": 4575,
+          "hotelsDiscovered": 1
+        },
+        {
+          "accession": "0001232582-26-000166",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4561,
+          "hotelsDiscovered": 1
+        },
+        {
+          "accession": "0001232582-26-000160",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4541,
+          "hotelsDiscovered": 2
         }
       ],
+      "failedAttributionReasons": [],
       "errors": [],
+      "discoveredHotelCount": 147,
+      "sampleHotels": [
+        {
+          "hotelName": "Courtyard Boston Downtown",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Residence Inn Evansville",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton NASA Clear Lake",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Residence Inn San Diego",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Embassy Suites Houston",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Embassy Suites Austin",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton St. Petersburg Bayfront",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        },
+        {
+          "hotelName": "Hilton Alexandria Old Town",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "SCHEDULE_LINE_BRAND"
+        }
+      ],
       "sampleFindings": [
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -754,7 +981,7 @@
             "primaryDocument": "aht-20260930.htm",
             "companyName": "Ashford Hospitality Trust, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.510Z"
+          "extractedAt": "2026-11-20T06:36:40.324Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -778,7 +1005,7 @@
             "primaryDocument": "aht-20260930.htm",
             "companyName": "Ashford Hospitality Trust, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.510Z"
+          "extractedAt": "2026-11-20T06:36:40.324Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -802,7 +1029,7 @@
             "primaryDocument": "aht-20260930.htm",
             "companyName": "Ashford Hospitality Trust, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.510Z"
+          "extractedAt": "2026-11-20T06:36:40.324Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -826,7 +1053,7 @@
             "primaryDocument": "aht-20260930.htm",
             "companyName": "Ashford Hospitality Trust, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.510Z"
+          "extractedAt": "2026-11-20T06:36:40.324Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -850,19 +1077,20 @@
             "primaryDocument": "aht-20260930.htm",
             "companyName": "Ashford Hospitality Trust, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.510Z"
+          "extractedAt": "2026-11-20T06:36:40.324Z"
         }
       ]
     },
     {
       "slug": "host-hotels-resorts",
+      "companyKey": "host-hotels-resorts",
       "legalName": "Host Hotels & Resorts, Inc.",
       "ticker": "HST",
       "cik": "0001070750",
       "cikSource": "sec_company_tickers",
-      "filingsReviewed": 10,
-      "documentsProcessed": 10,
-      "findings": 26,
+      "filingsReviewed": 12,
+      "documentsProcessed": 12,
+      "findings": 76,
       "keywordSummaries": [
         {
           "accession": "0001628280-26-073508",
@@ -872,7 +1100,8 @@
           "expiration": 0,
           "termination": 2,
           "renewal": 0,
-          "characters": 12281
+          "characters": 12281,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001070750-26-000156",
@@ -882,7 +1111,8 @@
           "expiration": 0,
           "termination": 5,
           "renewal": 4,
-          "characters": 222008
+          "characters": 222008,
+          "hotelsDiscovered": 17
         },
         {
           "accession": "0001070750-26-000152",
@@ -892,7 +1122,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4041
+          "characters": 4041,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001070750-26-000150",
@@ -902,7 +1133,8 @@
           "expiration": 0,
           "termination": 2,
           "renewal": 0,
-          "characters": 12464
+          "characters": 12464,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001070750-26-000126",
@@ -912,7 +1144,8 @@
           "expiration": 0,
           "termination": 3,
           "renewal": 4,
-          "characters": 209591
+          "characters": 209591,
+          "hotelsDiscovered": 13
         },
         {
           "accession": "0001070750-26-000122",
@@ -922,7 +1155,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4033
+          "characters": 4033,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001070750-26-000109",
@@ -932,7 +1166,8 @@
           "expiration": 1,
           "termination": 2,
           "renewal": 0,
-          "characters": 6242
+          "characters": 6242,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001070750-26-000086",
@@ -942,7 +1177,8 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4728
+          "characters": 4728,
+          "hotelsDiscovered": 0
         },
         {
           "accession": "0001070750-26-000080",
@@ -952,7 +1188,8 @@
           "expiration": 0,
           "termination": 2,
           "renewal": 4,
-          "characters": 174511
+          "characters": 174511,
+          "hotelsDiscovered": 12
         },
         {
           "accession": "0001070750-26-000077",
@@ -962,10 +1199,85 @@
           "expiration": 0,
           "termination": 0,
           "renewal": 0,
-          "characters": 4022
+          "characters": 4022,
+          "hotelsDiscovered": 0
+        },
+        {
+          "accession": "0001070750-26-000054",
+          "form": "10-K",
+          "franchise_agreement": 10,
+          "management_agreement": 17,
+          "expiration": 1,
+          "termination": 42,
+          "renewal": 25,
+          "characters": 561696,
+          "hotelsDiscovered": 79
+        },
+        {
+          "accession": "0001070750-26-000038",
+          "form": "8-K",
+          "franchise_agreement": 0,
+          "management_agreement": 0,
+          "expiration": 0,
+          "termination": 0,
+          "renewal": 0,
+          "characters": 4046,
+          "hotelsDiscovered": 0
         }
       ],
+      "failedAttributionReasons": [],
       "errors": [],
+      "discoveredHotelCount": 91,
+      "sampleHotels": [
+        {
+          "hotelName": "Marriott at Metro Center",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "St. Regis Houston",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "the Four Seasons Resort and Residences Jackson Hole",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "the Sheraton Parsippany Hotel",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The Westin Kierland Resort & Spa",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The Ritz-Carlton Naples",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "The St. Regis Houston",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        },
+        {
+          "hotelName": "the 1 Hotel Brooklyn Bridge",
+          "city": null,
+          "stateRegion": null,
+          "discoveryMethod": "PROSE_MENTION"
+        }
+      ],
       "sampleFindings": [
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -992,7 +1304,7 @@
             "primaryDocument": "hst-20261112.htm",
             "companyName": "Host Hotels & Resorts, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.541Z"
+          "extractedAt": "2026-11-20T06:36:40.406Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -1018,7 +1330,7 @@
             "primaryDocument": "hst-20261112.htm",
             "companyName": "Host Hotels & Resorts, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.541Z"
+          "extractedAt": "2026-11-20T06:36:40.406Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -1044,7 +1356,7 @@
             "primaryDocument": "hst-20261112.htm",
             "companyName": "Host Hotels & Resorts, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.541Z"
+          "extractedAt": "2026-11-20T06:36:40.406Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -1068,7 +1380,7 @@
             "primaryDocument": "hst-20260930.htm",
             "companyName": "Host Hotels & Resorts, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.554Z"
+          "extractedAt": "2026-11-20T06:36:40.447Z"
         },
         {
           "extractorVersion": "sec-edgar-contract-extractor-v1",
@@ -1092,20 +1404,91 @@
             "primaryDocument": "hst-20260930.htm",
             "companyName": "Host Hotels & Resorts, Inc."
           },
-          "extractedAt": "2026-11-20T06:23:31.554Z"
+          "extractedAt": "2026-11-20T06:36:40.448Z"
         }
       ]
     }
   ],
   "verification": {
-    "total": 252,
+    "total": 352,
     "persistable": 6,
-    "rejectedEstimates": 246,
+    "rejectedEstimates": 346,
     "quarantined": 0
   },
   "attribution": {
     "matched": 0,
-    "quarantined": 252
+    "quarantined": 352
+  },
+  "yieldPrioritization": {
+    "version": "sec-edgar-yield-prioritization-v1",
+    "ranked": [
+      {
+        "companyKey": "ashford-hospitality-trust",
+        "companyName": "Ashford Hospitality Trust, Inc.",
+        "cik": "0001232582",
+        "namedHotels": 147,
+        "verifiedContractualMilestones": 0,
+        "relevantAgreementsPer10Filings": 0,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [],
+        "yieldScore": 49,
+        "recommendation": "PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+      },
+      {
+        "companyKey": "host-hotels-resorts",
+        "companyName": "Host Hotels & Resorts, Inc.",
+        "cik": "0001070750",
+        "namedHotels": 91,
+        "verifiedContractualMilestones": 0,
+        "relevantAgreementsPer10Filings": 0,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [],
+        "yieldScore": 30.333,
+        "recommendation": "PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+      },
+      {
+        "companyKey": "sunstone-hotel-investors",
+        "companyName": "Sunstone Hotel Investors, Inc.",
+        "cik": "0001295810",
+        "namedHotels": 50,
+        "verifiedContractualMilestones": 6,
+        "relevantAgreementsPer10Filings": 9.17,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [
+          "no_hpc_candidate_above_threshold"
+        ],
+        "yieldScore": 24.25,
+        "recommendation": "PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+      },
+      {
+        "companyKey": "marriott-international",
+        "companyName": "Marriott International, Inc.",
+        "cik": "0001048286",
+        "namedHotels": 2,
+        "verifiedContractualMilestones": 0,
+        "relevantAgreementsPer10Filings": 0,
+        "hotelLevelExtractionCostUsd": 0,
+        "costPerNamedHotelUsd": 0,
+        "failedAttributionReasons": [],
+        "yieldScore": 1.333,
+        "recommendation": "PRIORITIZE_EX_10_PROPERTY_AGREEMENTS"
+      }
+    ],
+    "nextCohortGuidance": "Next research focus: ashford-hospitality-trust — PRIORITIZE_EXHIBITS_AND_SCHEDULES"
+  },
+  "reconciliationDryRun": {
+    "counts": {
+      "inventoryHotels": 290,
+      "newlyMatchable": 0,
+      "stillUnmatched": 290,
+      "ambiguous": 0,
+      "unchangedMatched": 0,
+      "plannedEvidenceWrites": 0
+    },
+    "note": "Reconciliation uses stored discovery inventory — no SEC re-download required."
   },
   "persistencePlan": {
     "version": "sec-edgar-persistence-planner-v1",
@@ -1122,7 +1505,7 @@
       "organizations": 1,
       "hpcNullFills": 0,
       "quarantined": 6,
-      "rejectedEstimates": 246
+      "rejectedEstimates": 346
     },
     "evidenceRows": [],
     "relationshipRows": [],
@@ -1176,7 +1559,7 @@
         "snippet": "entary for Series I preferred stock (incorporated by reference to Exhibit 3.3 to the registration statement on Form 8-A, filed by the company on July 15, 2021). &#8203; &#8203; &#8203; &#8203; 3.7 &#8"
       }
     ],
-    "rejectedEstimates": 246
+    "rejectedEstimates": 346
   },
   "applyResult": {
     "version": "sec-edgar-persistence-apply-v1",
@@ -1193,35 +1576,41 @@
   },
   "changeDiff": {
     "counts": {
-      "NEW": 9,
-      "UPDATED": 1,
-      "UNCHANGED": 85,
-      "SUPERSEDED": 13,
+      "NEW": 0,
+      "UPDATED": 0,
+      "UNCHANGED": 109,
+      "SUPERSEDED": 0,
       "CONFLICTED": 0
     }
   },
   "metrics": {
     "companiesResearched": 4,
-    "secFilingsReviewed": 36,
-    "documentsAndExhibitsProcessed": 36,
-    "hotelPropertiesIdentified": 1,
-    "hotelPropertiesMatchedToHpc": 0,
+    "secFilingsReviewed": 42,
+    "documentsAndExhibitsProcessed": 42,
+    "hotelsDiscoveredIndependentOfHpc": 290,
+    "hotelsMatchedToHpc": 0,
+    "hotelsNotInHpc": 290,
+    "contractVerifiedPendingHpc": 0,
+    "matchAmbiguous": 0,
+    "hotelInventoryRows": 631,
     "verifiedSigningDates": 0,
     "verifiedManagementExpirations": 0,
     "verifiedFranchiseExpirations": 0,
     "verifiedRenewals": 0,
     "verifiedTerminations": 0,
     "amendmentsAndExtensions": 6,
+    "verifiedPropertyLevelContractFindings": 0,
     "ownershipAndOperatorRelationships": 0,
-    "existingHpcMatches": 0,
     "successfullyPersistedHpcUpdates": 0,
     "successfulReadbacks": 0,
-    "duplicateRecordsPrevented": 0,
-    "conflictsAndQuarantinedFindings": 258,
+    "conflictsAndQuarantinedFindings": 358,
     "potentialConversionOpportunities": 0,
-    "estimatedOrUnsupportedDatesRejected": 246,
-    "actualResearchSpendUsd": 0
+    "estimatedOrUnsupportedDatesRejected": 346,
+    "actualResearchSpendUsd": 0,
+    "yieldNextCohortGuidance": "Next research focus: ashford-hospitality-trust — PRIORITIZE_EXHIBITS_AND_SCHEDULES",
+    "discoveryInventoryDestination": "data/sec-edgar/discovery-inventory",
+    "reconciliationNewlyMatchable": 0
   },
-  "classificationNote": "PERSISTENCE_DESIGNED for architecture; PERSISTED_VERIFIED only when --apply + read-back pass. Customer publication BLOCKED.",
+  "classificationNote": "PERSISTENCE_DESIGNED for architecture; PERSISTED_VERIFIED only when --apply + read-back pass. Unmatched discoveries retained in filesystem inventory. Customer publication BLOCKED.",
   "airtablePersistenceGate": "PERSISTENCE_DESIGNED"
 }

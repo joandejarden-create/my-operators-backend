@@ -8,6 +8,8 @@ import {
   isPersistableVerifiedClass,
   VERIFICATION_CLASS,
   writeGuarantees,
+  DISCOVERY_STATUS,
+  DISCOVERY_INVENTORY_DESTINATION,
 } from "../lib/hotel-intelligence/sec-edgar/contract.js";
 import { normalizeCik, listPilotCompanies } from "../lib/hotel-intelligence/sec-edgar/cik-registry-v1.js";
 import { loadSecEdgarConfig } from "../lib/hotel-intelligence/sec-edgar/edgar-client-v1.js";
@@ -24,6 +26,20 @@ import { createSecEdgarBudgetGuard } from "../lib/hotel-intelligence/sec-edgar/b
 import { diffContractFindings, documentUnchanged } from "../lib/hotel-intelligence/sec-edgar/change-detection-v1.js";
 import { internationalSourceAdapterContract } from "../lib/hotel-intelligence/sec-edgar/intl-readiness-v1.js";
 import { applyContractPersistencePlan } from "../lib/hotel-intelligence/sec-edgar/persistence-apply-v1.js";
+import {
+  discoverHotelsFromDocument,
+  dedupeDiscoveredHotels,
+} from "../lib/hotel-intelligence/sec-edgar/hotel-discovery-v1.js";
+import {
+  upsertDiscoveredHotels,
+  inventorySummary,
+} from "../lib/hotel-intelligence/sec-edgar/discovery-inventory-v1.js";
+import { reconcileDiscoveryInventoryToHpc } from "../lib/hotel-intelligence/sec-edgar/hpc-reconciliation-v1.js";
+import {
+  buildHotelInventoryRows,
+  hotelInventoryToCsv,
+} from "../lib/hotel-intelligence/sec-edgar/hotel-inventory-report-v1.js";
+import { buildYieldPrioritizationReport } from "../lib/hotel-intelligence/sec-edgar/yield-prioritization-v1.js";
 
 let passed = 0;
 function test(name, fn) {
@@ -221,6 +237,170 @@ test("intl_readiness_no_paid_sources", () => {
   const intl = internationalSourceAdapterContract();
   assert.equal(intl.paidSourcesAuthorizedThisPhase, false);
   assert.ok(intl.jurisdictions.length >= 5);
+});
+
+test("hotel_discovery_independent_of_hpc_and_contracts", () => {
+  const doc = {
+    text: `
+      Westin Chicago River North, Chicago, IL 407
+      Courtyard San Diego Downtown, San Diego, CA 245
+      Management Agreement expires December 31, 2028 for Grand Example Hotel.
+    `,
+  };
+  const out = discoverHotelsFromDocument(doc, {
+    cik: "0001295810",
+    companyName: "Sunstone",
+    form: "10-K",
+  });
+  assert.ok(out.hotelCount >= 2, `expected >=2 hotels, got ${out.hotelCount}`);
+  assert.ok(out.hotels.every((h) => h.discoveryId && h.hotelName));
+  const deduped = dedupeDiscoveredHotels([...out.hotels, ...out.hotels]);
+  assert.equal(deduped.length, out.hotels.length);
+});
+
+test("discovery_inventory_retains_unmatched_hotels", () => {
+  const hotels = [
+    {
+      discoveryId: "disc_sec_test1",
+      hotelName: "Westin Chicago River North",
+      city: "Chicago",
+      stateRegion: "IL",
+      country: "United States",
+      cik: "0001295810",
+      hpcMatchStatus: DISCOVERY_STATUS.DISCOVERED_NOT_IN_HPC,
+      mentionCount: 1,
+    },
+  ];
+  const inv = upsertDiscoveredHotels({ hotels: [] }, hotels);
+  assert.equal(inv.hotels.length, 1);
+  assert.equal(inv.hotels[0].hpcMatchStatus, DISCOVERY_STATUS.DISCOVERED_NOT_IN_HPC);
+  const withContract = upsertDiscoveredHotels(inv, [], {
+    contractLinks: [
+      {
+        hotelName: "Westin Chicago River North",
+        verified: true,
+        finding: {
+          verificationClass: VERIFICATION_CLASS.VERIFIED_EXPIRATION,
+          primaryDate: "December 31, 2028",
+          evidenceFieldName: "Management Agreement Expiration Date",
+          source: { accessionNumber: "a" },
+        },
+      },
+    ],
+  });
+  assert.equal(
+    withContract.hotels[0].hpcMatchStatus,
+    DISCOVERY_STATUS.CONTRACT_VERIFIED_PENDING_HPC,
+  );
+  const summary = inventorySummary(withContract);
+  assert.equal(summary.totalHotels, 1);
+  assert.equal(summary.contractVerifiedPendingHpc, 1);
+  assert.equal(DISCOVERY_INVENTORY_DESTINATION.kind, "FILESYSTEM_RESEARCH_INVENTORY");
+});
+
+test("hpc_reconciliation_dry_run_no_redownload", () => {
+  const inventory = {
+    hotels: [
+      {
+        discoveryId: "disc_sec_recon1",
+        hotelName: "Bethesda Marriott",
+        city: "Bethesda",
+        hpcMatchStatus: DISCOVERY_STATUS.CONTRACT_VERIFIED_PENDING_HPC,
+        hpcRecordId: null,
+        contractFindings: [
+          {
+            verificationClass: VERIFICATION_CLASS.VERIFIED_EXPIRATION,
+            primaryDate: "December 31, 2028",
+            evidenceFieldName: "Management Agreement Expiration Date",
+            agreementType: "MANAGEMENT_AGREEMENT",
+            source: {
+              accessionNumber: "x",
+              documentUrl: "https://www.sec.gov/x",
+              formType: "10-K",
+              filingDate: "2025-02-01",
+              cik: "0001048286",
+            },
+          },
+        ],
+      },
+    ],
+  };
+  const recon = reconcileDiscoveryInventoryToHpc(
+    inventory,
+    [{ id: "recLuxvwwxID7U2B8", name: "Bethesda Marriott", city: "Bethesda" }],
+    { apply: false },
+  );
+  assert.equal(recon.dryRun, true);
+  assert.ok(recon.counts.newlyMatchable >= 1);
+  assert.ok(String(recon.note).includes("no SEC re-download"));
+});
+
+test("hotel_inventory_report_csv_json", () => {
+  const inventory = {
+    hotels: [
+      {
+        discoveryId: "disc_sec_r1",
+        hotelName: "Grand Example Hotel",
+        city: "Miami",
+        stateRegion: "FL",
+        country: "United States",
+        registrant: "Example REIT",
+        cik: "0001",
+        sourceFiling: "10-K",
+        sourceUrl: "https://www.sec.gov/x",
+        hpcMatchStatus: DISCOVERY_STATUS.DISCOVERED_NOT_IN_HPC,
+        contractFindings: [],
+        mentionCount: 2,
+      },
+    ],
+  };
+  const report = buildHotelInventoryRows(inventory);
+  assert.equal(report.rowCount, 1);
+  assert.ok(report.columns.includes("hpcMatchStatus"));
+  const csv = hotelInventoryToCsv(report);
+  assert.ok(csv.includes("Grand Example Hotel"));
+  assert.ok(csv.includes("DISCOVERED_NOT_IN_HPC"));
+});
+
+test("yield_prioritization_ranks_companies", () => {
+  const y = buildYieldPrioritizationReport([
+    {
+      companyKey: "marriott",
+      companyName: "Marriott",
+      cik: "0001048286",
+      filingsProcessed: 10,
+      namedHotels: 0,
+      verifiedMilestones: 0,
+      relevantAgreements: 1,
+      estimatedCostUsd: 0,
+      failedAttributionReasons: ["no_hpc_candidate_above_threshold"],
+    },
+    {
+      companyKey: "sunstone",
+      companyName: "Sunstone",
+      cik: "0001295810",
+      filingsProcessed: 8,
+      namedHotels: 12,
+      verifiedMilestones: 2,
+      relevantAgreements: 6,
+      estimatedCostUsd: 0,
+    },
+  ]);
+  assert.equal(y.ranked[0].companyKey, "sunstone");
+  assert.ok(y.ranked.some((r) => r.recommendation === "DEPRIORITIZE_BROAD_CORPORATE"));
+});
+
+test("discovery_status_vocabulary_complete", () => {
+  for (const key of [
+    "DISCOVERED_MATCHED_HPC",
+    "DISCOVERED_NOT_IN_HPC",
+    "CONTRACT_VERIFIED_PENDING_HPC",
+    "MATCH_AMBIGUOUS",
+    "PORTFOLIO_ONLY_EVIDENCE",
+    "UNATTRIBUTED_CONTRACT_LANGUAGE",
+  ]) {
+    assert.equal(DISCOVERY_STATUS[key], key);
+  }
 });
 
 console.log(`\n${passed} tests passed`);
