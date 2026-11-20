@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import {
   assembleCumulativeProposal,
   buildCumulativeProposedBrand,
+  rehydrateEphemeralImageUrls,
   PROVENANCE,
 } from "../lib/brand-explorer/be-cumulative-proposal-assembler-v1.js";
 
@@ -89,6 +90,95 @@ assert.ok(
   "incomplete loyalty.proof must stay out of publication blocks"
 );
 
+// Display-only: ephemeral Airtable CDN proposed URLs must yield to CURRENT delivery.
+const hydrated = rehydrateEphemeralImageUrls(
+  [
+    {
+      slotKey: "overview.scenario.1",
+      recordId: "recFROZEN1",
+      imageUrl:
+        "https://v5.airtableusercontent.com/v3/u/59/59/expired/signature/photo.jpg",
+    },
+    {
+      slotKey: "overview.scenario.2",
+      recordId: "recFROZEN2",
+      imageUrl: "https://cache.marriott.com/is/image/marriottsitespecials/ac-ok",
+    },
+  ],
+  [
+    {
+      slotKey: "overview.scenario.1",
+      recordId: "recCURRENT1",
+      imageUrl: "/api/brand-library/presentation-image/recCURRENT1",
+      imageDeliveryUrl: "/api/brand-library/presentation-image/recCURRENT1",
+      imageAttachmentId: "attABC",
+    },
+    {
+      slotKey: "overview.scenario.2",
+      recordId: "recCURRENT2",
+      imageUrl: "/api/brand-library/presentation-image/recCURRENT2",
+      imageDeliveryUrl: "/api/brand-library/presentation-image/recCURRENT2",
+    },
+  ]
+);
+assert.strictEqual(
+  hydrated[0].imageUrl,
+  "/api/brand-library/presentation-image/recCURRENT1",
+  "expired CDN must rehydrate to CURRENT delivery"
+);
+assert.strictEqual(hydrated[0].recordId, "recCURRENT1");
+assert.ok(hydrated[0].imageRehydratedFromCurrent);
+assert.strictEqual(
+  hydrated[1].imageUrl,
+  "https://cache.marriott.com/is/image/marriottsitespecials/ac-ok",
+  "durable non-Airtable proposed URLs must be preserved"
+);
+
+const frozenBuilt = buildCumulativeProposedBrand(
+  {
+    id: "recBrand",
+    name: "AC Hotels by Marriott",
+    brandExplorer: {
+      version: 1,
+      blocks: [
+        {
+          slotKey: "overview.scenario.1",
+          recordId: "recSFmj7OjAMaNpRR",
+          title: "Urban Lifestyle",
+          body: "Scenario body retained.",
+          imageUrl: "/api/brand-library/presentation-image/recSFmj7OjAMaNpRR",
+          imageDeliveryUrl: "/api/brand-library/presentation-image/recSFmj7OjAMaNpRR",
+        },
+      ],
+    },
+  },
+  {
+    contract: "FROZEN_APPROVAL_PAYLOAD_V1",
+    approvalContentHash: "frozen-hash-keep",
+    brandExplorer: {
+      blocks: [
+        {
+          slotKey: "overview.scenario.1",
+          recordId: "recOLD",
+          title: "Urban Lifestyle",
+          body: "Scenario body retained.",
+          imageUrl:
+            "https://v5.airtableusercontent.com/v3/u/59/59/expired/signature/scenario1.jpg",
+        },
+      ],
+    },
+  }
+);
+assert.strictEqual(
+  frozenBuilt.brand.brandExplorer.blocks[0].imageUrl,
+  "/api/brand-library/presentation-image/recSFmj7OjAMaNpRR"
+);
+assert.strictEqual(
+  frozenBuilt.brand.beCandidateOverlayMeta.contentHash,
+  "frozen-hash-keep",
+  "frozen approval hash must remain immutable after image rehydration"
+);
+
 console.log(
   JSON.stringify(
     {
@@ -97,6 +187,8 @@ console.log(
       identityBullets: String(identity.body).split(/\n+/).filter(Boolean).length,
       commercialBullets: String(commercial.body).split(/\n+/).filter(Boolean).length,
       provenanceCounts: assembly.provenanceCounts,
+      rehydrateEphemeralImageUrls: true,
+      frozenImageRehydrate: true,
     },
     null,
     2,
