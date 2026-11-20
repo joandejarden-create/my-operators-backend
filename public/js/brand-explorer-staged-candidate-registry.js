@@ -969,6 +969,266 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: 'a2b1e91e1384eef7335c59d833c1f812e6866f6bfa68b3f2badc10d6cd6864ec'
+    },
+    {
+      id: 'recucEzAS6724tOYA',
+      slug: 'city-express-by-marriott',
+      name: 'City Express by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/city-express-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '5c4bb5361d03960995d1e9351eff47603fcd909dcdff71bd329594ec346e03ef'
+    },
+    {
+      id: 'recBzdGfkMUN9fYsv',
+      slug: 'springhill-suites-by-marriott',
+      name: 'SpringHill Suites by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/springhill-suites-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '07c07d9211cffd0339e34b64a50ffa3a59d290c847ad709ca43328050db9945f'
+    },
+    {
+      id: 'recDM0LAD8jVRA2x3',
+      slug: 'studiores',
+      name: 'StudioRes',
+      overlayUrl: '/brand-explorer-phase2e-preview/studiores-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ae4840c2a1784c0bd5668445565c2ae62277646e1e66e4f7ee2d48678f40c027'
+    },
+    {
+      id: 'recUPiPDivkhNUogr',
+      slug: 'towneplace-suites-by-marriott',
+      name: 'TownePlace Suites by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/towneplace-suites-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '687bb8738b6b79f667ca00601594e4c7973e26be96daa42baef7baced570b185'
+    },
+    {
+      id: 'recpUTDtwt1wPMDPj',
+      slug: 'fairfield-by-marriott',
+      name: 'Fairfield by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/fairfield-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '102f95762fff0b7df5a789c2367021400834b331f3256ad4d9c99b2ca3143d63'
+    },
+    {
+      id: 'recH5ZF9V6ivz9p5h',
+      slug: 'four-points-by-sheraton',
+      name: 'Four Points by Sheraton',
+      overlayUrl: '/brand-explorer-phase2e-preview/four-points-by-sheraton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8869ce818d410d306938baeed43410c3bbe9f30d6d950c5522b9e157f698348d'
+    },
+    {
+      id: 'rec9Ufbpa0GxJGzt8',
+      slug: 'residence-inn-by-marriott',
+      name: 'Residence Inn by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/residence-inn-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd1cbcc2439f3529b89aadbfef1495725ace242d47e3161e2c0d98d0b7da5e57c'
+    },
+    {
+      id: 'recn59UtkyyoYwzSz',
+      slug: 'marriott-hotels',
+      name: 'Marriott Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/marriott-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c024aeeb4e9c9e1204d03968cfa49085fc7684da17785cb2a1a3bf3e2407573b'
+    },
+    {
+      id: 'recg8HjT5Bky7NXeV',
+      slug: 'sheraton',
+      name: 'Sheraton',
+      overlayUrl: '/brand-explorer-phase2e-preview/sheraton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9925c4a62e537b5ca7536aa743a6798b73b9a6ebcd7bc78fd7ec3a93022894f0'
+    },
+    {
+      id: 'recWubG3rhiS1BaWi',
+      slug: 'hilton-hotels-resorts',
+      name: 'Hilton Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/hilton-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '82b84135f62aea1622087bf8ca59d76938bfdce48b9827f7f0df38f1dcb3ebad'
+    },
+    {
+      id: 'rechVYWQ5ikRnr99B',
+      slug: 'doubletree-by-hilton',
+      name: 'DoubleTree by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/doubletree-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '67eb43b3257c7a8068a2f2b930ca4e05e57b99ac1ec2ffa6a30530c4683f73fd'
+    },
+    {
+      id: 'rectRvOWQPaL6FkzZ',
+      slug: 'hampton-by-hilton',
+      name: 'Hampton by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/hampton-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3699732d438bb1ce1978250effb131886f1362272b033112922b0accf50f1f60'
+    },
+    {
+      id: 'recrvdAjRlXxPvPPF',
+      slug: 'hilton-garden-inn',
+      name: 'Hilton Garden Inn',
+      overlayUrl: '/brand-explorer-phase2e-preview/hilton-garden-inn-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f5d9a67602ad0bdeed8d565a13c26d9dd2b77cb41ce7b5c27399ead8a9ce09ca'
+    },
+    {
+      id: 'reccZ4zV6wMav7a2i',
+      slug: 'home2-suites-by-hilton',
+      name: 'Home2 Suites by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/home2-suites-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '698bbdc1afe054e50139d5dd9c707bbdd37103c5ce3cdb73a6b2b8e3513ec161'
+    },
+    {
+      id: 'recZjYI4nYflGHFNR',
+      slug: 'homewood-suites-by-hilton',
+      name: 'Homewood Suites by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/homewood-suites-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c8d4a1358d3fb451dd734c4d55441317f80e90a85fbda9c81aa12b62cacc18bd'
+    },
+    {
+      id: 'recfv66er4Ch2vJDO',
+      slug: 'spark-by-hilton',
+      name: 'Spark by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/spark-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'b296767d2a5182d4ad2224e2819dffd55b4ca5db65623ae86ab3f78887bc1815'
+    },
+    {
+      id: 'recJLiMTv4W8VgO9L',
+      slug: 'tru-by-hilton',
+      name: 'Tru by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/tru-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '1938eec7d202e207a9fc61ba51a68eac7e1ef64443dc2b431866e265b8ad82d3'
+    },
+    {
+      id: 'recP9SqDootMrzaU1',
+      slug: 'hyatt-regency',
+      name: 'Hyatt Regency',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-regency-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '27a9c7a05a3ef26dee31e10fc47dcf4abf67e07f1edb671654c1257dd0cc0260'
+    },
+    {
+      id: 'rec4Mga6ejz3L1M3P',
+      slug: 'thompson-hotels',
+      name: 'Thompson Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/thompson-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '79d952fe46e7337ca6def78c54e401b8ab2431b0f4970e66dc5ff9770fd94cb6'
+    },
+    {
+      id: 'rec50qkCj6yt9fMPg',
+      slug: 'delta-hotels-by-marriott',
+      name: 'Delta Hotels by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/delta-hotels-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-9-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3c94517f446301534c93c7eb36d25d88f23fe5ba131ac3a9f8a2f06bd7b25065'
     }
   ];
 
@@ -1090,6 +1350,26 @@
     if (/red\s*lion/i.test(name)) return bySlug('red-lion-hotels');
     if (/signature\s*inn/i.test(name)) return bySlug('signature-inn');
     if (/americas?\s*best\s*value|\babvi\b/i.test(name)) return bySlug('americas-best-value-inn');
+    if (/city\s*express/i.test(name)) return bySlug('city-express-by-marriott');
+    if (/spring\s*hill|springhill/i.test(name)) return bySlug('springhill-suites-by-marriott');
+    if (/studio\s*res|studiores/i.test(name)) return bySlug('studiores');
+    if (/towne\s*place|towneplace/i.test(name)) return bySlug('towneplace-suites-by-marriott');
+    if (/fairfield/i.test(name)) return bySlug('fairfield-by-marriott');
+    if (/four\s*points/i.test(name)) return bySlug('four-points-by-sheraton');
+    if (/residence\s*inn/i.test(name)) return bySlug('residence-inn-by-marriott');
+    if (/^marriott\s*hotels?\b/i.test(name) && !/bonvoy|city express|fairfield|spring|towne|residence|delta|autograph|tribute|aloft|moxy|ac hotels|courtyard|westin|sheraton|renaissance|design|bunkhouse|edition|ritz|st\.?\s*regis|jw|w hotels|le m/i.test(name)) return bySlug('marriott-hotels');
+    if (/^sheraton\b/i.test(name) && !/four\s*points/i.test(name)) return bySlug('sheraton');
+    if (/hilton\s*hotels|hilton\s*&\s*resorts/i.test(name)) return bySlug('hilton-hotels-resorts');
+    if (/double\s*tree|doubletree/i.test(name)) return bySlug('doubletree-by-hilton');
+    if (/^hampton\b/i.test(name)) return bySlug('hampton-by-hilton');
+    if (/hilton\s*garden/i.test(name)) return bySlug('hilton-garden-inn');
+    if (/home\s*2|home2/i.test(name)) return bySlug('home2-suites-by-hilton');
+    if (/homewood/i.test(name)) return bySlug('homewood-suites-by-hilton');
+    if (/\bspark\b/i.test(name) && /hilton/i.test(name)) return bySlug('spark-by-hilton');
+    if (/^tru\b|tru by hilton/i.test(name)) return bySlug('tru-by-hilton');
+    if (/hyatt\s*regency/i.test(name)) return bySlug('hyatt-regency');
+    if (/thompson/i.test(name)) return bySlug('thompson-hotels');
+    if (/delta\s*hotels/i.test(name)) return bySlug('delta-hotels-by-marriott');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;

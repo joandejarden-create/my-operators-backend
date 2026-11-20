@@ -35,6 +35,8 @@ npm run be-factory-2-batch6               # Ritz / St. Regis / EDITION / Luxury 
 npm run be-factory-2-batch7               # Garner / Sleep Inn / Econo / Rodeway / MainStay / Days Inn / Super 8 / Microtel / Baymont / Travelodge
 npm run be-factory-2-confirm-batch8-ids   # Wyndham / BWH / Sonesta identity confirm
 npm run be-factory-2-batch8               # Batch 8 — 20 economy/midscale/extended-stay
+npm run be-factory-2-confirm-batch9-ids   # EXISTING Active Marriott/Hilton/Hyatt identity confirm
+npm run be-factory-2-batch9               # Batch 9 — 20 EXISTING Active enrichment
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
 npm run test:be-factory-2-master-queue-reconcile-v1
@@ -44,7 +46,10 @@ npm run test:be-factory-2-batch4-v1
 npm run test:be-factory-2-batch5-v1
 npm run test:be-factory-2-batch6-v1
 npm run test:be-factory-2-batch7-v1
+npm run test:be-factory-2-batch8-v1
+npm run test:be-factory-2-batch9-v1
 ```
+
 
 ## Named batch five (2026-11-20)
 
@@ -90,6 +95,13 @@ Twenty economy / midscale / extended-stay brands across Wyndham, BWH, and Sonest
 All EXISTING_CANONICAL (0 Basics creates). Brand-specific exact-six Demand Scenario Fit; Wyndham Rewards / Best Western Rewards / Sonesta Travel Pass loyalty-six; FDD disclosure language only.  
 Empty Presentation → Autograph slot-parity completion.  
 Review package: `reports/brand-explorer/factory-2-0/81-batch8-founder-dashboard.md`.
+
+## Batch 9 (2026-11-20)
+
+Twenty **EXISTING Active** brands (Marriott / Hilton / Hyatt select-service, extended-stay, full-service, lifestyle).  
+All EXISTING_ACTIVE with live Presentation (97–166 blocks); 0 Basics creates. Delta Hotels by Marriott resolved to `rec50qkCj6yt9fMPg`.  
+Brand-specific exact-six Demand Scenario Fit (17 unique sets); Bonvoy / Honors / World of Hyatt loyalty-six; FDD disclosure language only. CURRENT preserved; Proposed enrichment staged.  
+Review package: `reports/brand-explorer/factory-2-0/91-batch9-founder-dashboard.md`.
 
 ## Durable storage
 

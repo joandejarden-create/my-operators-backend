@@ -1,7 +1,7 @@
 # Factory 2.0 — Consolidated Portfolio Dashboard
 
 **Contract:** `BE_FACTORY_2_0_MASTER_QUEUE_RECONCILE_V1`
-**Generated:** 2026-11-20T06:45:16.033Z
+**Generated:** 2026-11-20T07:55:01.562Z
 
 ## Reconciliation
 
@@ -30,7 +30,7 @@
 | Blocked | 0 |
 | Protected (skip) | 2 |
 | Research spend USD | 0 |
-| Expected publication writes | 5362 |
+| Expected publication writes | 7587 |
 
 ## Authorized batches accounted for
 
