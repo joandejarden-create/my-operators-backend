@@ -190,14 +190,17 @@
       // Legacy overlay flag without explicit mode → proposed.
       beProfileMode = 'proposed';
     } else if (beInternalPreview && brandId) {
-      // Soft default: staged Curio/Ascend founder preview → PROPOSED UPDATE so
-      // ampersand headings + cumulative why-value are visible without manual mode.
+      // Soft default Proposed only while staged candidate is not yet written back.
+      // After FOUNDER_APPROVED_WRITEBACK, Current Saved (Airtable) is authoritative.
       try {
         var reg =
           typeof globalThis !== 'undefined' ? globalThis.BrandExplorerStagedCandidateRegistry : null;
         if (reg && typeof reg.resolveForBrand === 'function') {
           var staged = reg.resolveForBrand({ id: brandId, recordId: brandId });
-          if (staged) beProfileMode = 'proposed';
+          var st = staged && String(staged.founderApprovalStatus || '');
+          if (staged && st !== 'FOUNDER_APPROVED_WRITEBACK' && st !== 'FOUNDER_APPROVED') {
+            beProfileMode = 'proposed';
+          }
         }
       } catch (_eStaged) {
         /* ignore */

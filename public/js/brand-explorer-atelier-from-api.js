@@ -620,20 +620,24 @@
     if (raw === 'proposed' || raw === 'proposed_update' || raw === 'update') return 'proposed';
     if (raw === 'saved' || raw === 'current' || raw === 'current_saved') return 'saved';
     if (isCandidateOverlayFlag() && isInternalPreviewRequest()) return 'proposed';
-    // Founder internal preview with a registered staged candidate defaults to
-    // PROPOSED UPDATE so finalized cumulative content is visible without a
-    // hidden CURRENT SAVED "And" heading regressing the review.
+    // Soft-default Proposed only when staged candidate is not yet writeback-approved.
+    // After FOUNDER_APPROVED_WRITEBACK, Airtable Current Saved is the product source.
     if (isInternalPreviewRequest()) {
       try {
+        function wantsProposedSoft(cfg) {
+          if (!cfg) return false;
+          var st = String(cfg.founderApprovalStatus || '');
+          return st !== 'FOUNDER_APPROVED_WRITEBACK' && st !== 'FOUNDER_APPROVED';
+        }
         var liveHint = window.__BE_ATELIER_ACTIVE_BRAND__ || null;
-        if (resolveStagedCandidateConfig(liveHint || {})) return 'proposed';
+        if (wantsProposedSoft(resolveStagedCandidateConfig(liveHint || {}))) return 'proposed';
         var idHint = String(
           params.get('id') ||
             params.get('brandId') ||
             (st && st.brandId) ||
             ''
         ).trim();
-        if (idHint && resolveStagedCandidateConfig({ id: idHint, recordId: idHint })) {
+        if (idHint && wantsProposedSoft(resolveStagedCandidateConfig({ id: idHint, recordId: idHint }))) {
           return 'proposed';
         }
       } catch (_eMode) {
@@ -948,6 +952,20 @@
   function internalPreviewBannerHtml(brand) {
     var mode = getProfileMode();
     var meta = (brand && brand.beCandidateOverlayMeta) || {};
+    var stagedCfg = null;
+    try {
+      stagedCfg = resolveStagedCandidateConfig(brand || {});
+    } catch (_eBanner) {
+      stagedCfg = null;
+    }
+    var writebackDone =
+      stagedCfg &&
+      (String(stagedCfg.founderApprovalStatus || '') === 'FOUNDER_APPROVED_WRITEBACK' ||
+        String(stagedCfg.founderApprovalStatus || '') === 'FOUNDER_APPROVED');
+    // After Airtable writeback, Current Saved is the product profile — no Proposed staging chrome.
+    if (mode !== 'proposed' && writebackDone) {
+      return '';
+    }
     var modeLabel = mode === 'proposed' ? 'PROPOSED UPDATE' : 'CURRENT SAVED';
     var extra =
       mode === 'proposed'
