@@ -73,9 +73,15 @@
       (cfg && cfg.id) ||
       (live && (live.id || live.recordId)) ||
       '—';
+    var brandName =
+      (live && (live.name || live.brandName)) ||
+      (cfg && cfg.name) ||
+      (brand && (brand.name || brand.brandName)) ||
+      '—';
     if (mode !== 'proposed') {
       return {
         brandId: brandId,
+        brandName: brandName,
         candidateVersion: '— (current saved Presentation)',
         contentHash: '—',
         source: 'airtable-presentation',
@@ -84,12 +90,38 @@
     }
     return {
       brandId: brandId,
+      brandName: brandName,
       candidateVersion: overlayMeta.candidateVersion || (cfg && cfg.candidateVersion) || '—',
       contentHash: overlayMeta.contentHash || '—',
       source: overlayMeta.source || (cfg && cfg.source) || 'phase2h-cumulative-staged',
       founderApprovalStatus:
         overlayMeta.founderApprovalStatus || (cfg && cfg.founderApprovalStatus) || 'NOT_APPROVED'
     };
+  }
+
+  function compareStudioHref(brandId) {
+    var id = String(brandId || '').trim();
+    var q = 'beInternalPreview=1';
+    if (id && id !== '—') q += '&brand=' + encodeURIComponent(id);
+    // Prefer app-shell Admin Resources route on the active origin.
+    try {
+      if (window.parent && window.parent !== window) {
+        var parentLoc = window.parent.location;
+        if (/^\/app(?:\.html)?\/?$/i.test(parentLoc.pathname || '')) {
+          return parentLoc.pathname + '#/brand-explorer-compare?' + q;
+        }
+      }
+    } catch (e) {
+      /* fall through */
+    }
+    try {
+      if (/^\/app(?:\.html)?\/?$/i.test(window.location.pathname || '')) {
+        return window.location.pathname + '#/brand-explorer-compare?' + q;
+      }
+    } catch (e2) {
+      /* fall through */
+    }
+    return '/app#/brand-explorer-compare?' + q;
   }
 
   function renderToolbar() {
@@ -112,22 +144,38 @@
         ? !!api.resolveStagedCandidateConfig(api.getLastLiveSavedBrand && api.getLastLiveSavedBrand())
         : false;
 
+    var compareHref = compareStudioHref(meta.brandId);
     toolbar.innerHTML =
       '<div class="be-founder-profile-mode__row">' +
       '<div class="be-founder-profile-mode__label">Founder profile mode</div>' +
       '<div class="be-founder-profile-mode__modes" role="group" aria-label="Profile mode">' +
       '<button type="button" class="be-founder-profile-mode__btn' +
       (mode === 'saved' ? ' is-active' : '') +
-      '" data-be-profile-mode-btn="saved">CURRENT SAVED</button>' +
+      '" data-be-profile-mode-btn="saved" aria-pressed="' +
+      (mode === 'saved' ? 'true' : 'false') +
+      '">CURRENT SAVED</button>' +
       '<button type="button" class="be-founder-profile-mode__btn' +
       (mode === 'proposed' ? ' is-active' : '') +
-      '" data-be-profile-mode-btn="proposed"' +
+      '" data-be-profile-mode-btn="proposed" aria-pressed="' +
+      (mode === 'proposed' ? 'true' : 'false') +
+      '"' +
       (hasCandidate ? '' : ' disabled title="No staged candidate for this brand"') +
       '>PROPOSED UPDATE</button>' +
       '</div>' +
+      '<a class="be-founder-profile-mode__compare" href="' +
+      escapeHtml(compareHref) +
+      '" target="_top" rel="noopener" data-be-compare-changes="1">Compare Changes</a>' +
       '</div>' +
-      '<p class="be-founder-profile-mode__note">Read-only product preview. Switching modes does not publish or write Airtable. Customer sessions without <code>beInternalPreview=1</code> always see CURRENT SAVED.</p>' +
+      '<p class="be-founder-profile-mode__brandline"><strong>' +
+      escapeHtml(meta.brandName) +
+      '</strong> · mode <strong>' +
+      (mode === 'proposed' ? 'PROPOSED UPDATE' : 'CURRENT SAVED') +
+      '</strong></p>' +
+      '<p class="be-founder-profile-mode__note">Read-only product preview. Switching modes does not publish or write Airtable. Customer sessions without <code>beInternalPreview=1</code> always see CURRENT SAVED. Use Compare Changes for CURRENT vs PROPOSED side-by-side (Admin Resources).</p>' +
       '<dl class="be-founder-profile-mode__meta">' +
+      '<div><dt>Brand</dt><dd>' +
+      escapeHtml(meta.brandName) +
+      '</dd></div>' +
       '<div><dt>Brand ID</dt><dd>' +
       escapeHtml(meta.brandId) +
       '</dd></div>' +
