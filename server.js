@@ -84,6 +84,17 @@ import {
   getGoldenDemoOwnershipGroup,
   getGoldenDemoOwnershipNeighbors,
 } from "./api/golden-demo-ownership.js";
+import {
+  getHotelExplorerFounderPreview,
+  getHotelExplorerFounderPreviewContacts,
+} from "./api/hotel-explorer-founder-preview.js";
+import { getHotelExplorerNewsArticles } from "./api/hotel-explorer-news-articles.js";
+import { getHotelExplorerGuestSentiment } from "./api/hotel-explorer-guest-sentiment.js";
+import { getHotelExplorerSubmarketSnapshot } from "./api/hotel-explorer-submarket-snapshot.js";
+import {
+  getHotelExplorerDemandDrivers,
+  getHotelExplorerAccessConnectivity,
+} from "./api/hotel-explorer-demand-access.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
@@ -105,6 +116,8 @@ import {
   getContactIntelligenceBenchmark100,
   getContactIntelligenceLiveSliceTen,
   postContactIntelligenceHotelRefresh,
+  postContactIntelligencePersonReveal,
+  getContactIntelligenceEnrichmentCapability,
 } from "./api/contact-intelligence.js";
 
 import {
@@ -987,6 +1000,40 @@ app.get(
   getGoldenDemoHotelOwnership
 );
 
+// Hotel Explorer Founder Preview — GET-only Live Airtable vs Phase 3 Proposed overlay
+app.get(
+  "/api/hotel-explorer/founder-preview/:recordId",
+  getHotelExplorerFounderPreview
+);
+app.get(
+  "/api/hotel-explorer/founder-preview/:recordId/contacts",
+  getHotelExplorerFounderPreviewContacts
+);
+// Hotel Explorer — hotel-specific news from Market Alerts (GET-only)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/news-articles",
+  getHotelExplorerNewsArticles
+);
+// Hotel Explorer — guest sentiment (GET-only; staged / rights-gated; no paid providers)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/guest-sentiment",
+  getHotelExplorerGuestSentiment
+);
+// Hotel Explorer — Submarket Snapshot from canonical HPC (GET-only; Scout is supporting only)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/submarket-snapshot",
+  getHotelExplorerSubmarketSnapshot
+);
+// Hotel Explorer — Demand Drivers + Access & Connectivity (GET-only; Demand Anchors / TI)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/demand-drivers",
+  getHotelExplorerDemandDrivers
+);
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/access-connectivity",
+  getHotelExplorerAccessConnectivity
+);
+
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)
 app.get("/api/he-airtable-graph/hotel/:recordId", getHeAirtableGraphHotel);
 
@@ -1021,6 +1068,10 @@ app.get(
 
 // Contact Intelligence V1 (Census + Hotel/Owner Explorer)
 app.get("/api/contact-intelligence/meta", getContactIntelligenceMeta);
+app.get(
+  "/api/contact-intelligence/enrichment-capability",
+  getContactIntelligenceEnrichmentCapability
+);
 app.get("/api/contact-intelligence/slice/ten", getContactIntelligenceSliceTen);
 app.get("/api/contact-intelligence/benchmark/100", getContactIntelligenceBenchmark100);
 app.get("/api/contact-intelligence/hotels/:hotelId", getContactIntelligenceHotel);
@@ -1031,6 +1082,13 @@ app.post(
   memberstackAuth,
   requireDealalityUser,
   postContactIntelligenceHotelRefresh
+);
+// User-initiated Surfe reveal for HE Contact Intelligence (ephemeral; never on GET).
+app.post(
+  "/api/contact-intelligence/hotels/:hotelId/people/:personId/reveal",
+  memberstackAuth,
+  requireDealalityUser,
+  postContactIntelligencePersonReveal
 );
 
 // HE-INTEL-001 Research Engine V1 (P1: dry-run / meta only — no Airtable apply, no paid providers)

@@ -6,22 +6,33 @@
   "use strict";
 
   var TABS = [
-    { id: "hotel", label: "Hotel<br>Overview" },
-    { id: "ownership", label: "Ownership<br>Intelligence" },
-    { id: "contacts", label: "Contact<br>Intelligence" },
-    { id: "organization", label: "Organization<br>&amp; Portfolio" },
-    { id: "relationships", label: "Relationships<br>&amp; Structure" },
-    { id: "submarket", label: "Submarket<br>Snapshot" },
-    { id: "area", label: "Area<br>Hotels" },
-    { id: "demand", label: "Demand<br>Drivers" },
-    { id: "access", label: "Access &amp;<br>Connectivity" },
-    { id: "brand", label: "Brand /<br>Operator" },
-    { id: "sources", label: "Sources &amp;<br>Evidence" },
+    { id: "hotel", label: "Hotel<br>Overview", shortLabel: "Overview" },
+    { id: "rooms", label: "Guest Rooms &amp;<br>Meeting Space", shortLabel: "Rooms" },
+    { id: "ownership", label: "Ownership<br>Intelligence", shortLabel: "Ownership" },
+    { id: "contacts", label: "Contact<br>Intelligence", shortLabel: "Contacts" },
+    { id: "organization", label: "Organization<br>&amp; Portfolio", shortLabel: "Org" },
+    { id: "relationships", label: "Relationships<br>&amp; Structure", shortLabel: "Relations" },
+    { id: "submarket", label: "Submarket<br>Snapshot", shortLabel: "Submarket" },
+    { id: "area", label: "Area<br>Hotels", shortLabel: "Area" },
+    { id: "demand", label: "Demand<br>Drivers", shortLabel: "Demand" },
+    { id: "access", label: "Access &amp;<br>Connectivity", shortLabel: "Access" },
+    { id: "sentiment", label: "Guest<br>Sentiment", shortLabel: "Sentiment" },
+    { id: "sources", label: "Sources &amp;<br>Evidence", shortLabel: "Sources" },
   ];
+
+  /** Legacy Brand / Operator deep links → Guest Sentiment (HE-QL-038). */
+  var TAB_ALIASES = {
+    brand: "sentiment",
+    "brand-operator": "sentiment",
+    "guest-sentiment": "sentiment",
+    guest: "sentiment",
+  };
 
   var TAB_ICONS = {
     hotel:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg>',
+    rooms:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3z"/><path d="M3 11h18"/><path d="M7 7V5h4v2"/><path d="M13 15h4"/></svg>',
     ownership:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v2"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3H7a2 2 0 0 1-2-2 2 2 0 0 1 2-2h16"/></svg>',
     contacts:
@@ -38,6 +49,8 @@
       '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
     access:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 16h20"/><path d="M5 16l2-8h10l2 8"/><path d="M12 8V4"/><path d="M9 4h6"/></svg>',
+    sentiment:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path d="M5 20h14"/></svg>',
     brand:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
     sources:
@@ -63,13 +76,26 @@
   }
 
   var HI_TABS = {
+    rooms: "rooms",
     ownership: "ownership",
     organization: "organization",
     relationships: "relationships",
-    brand: "brand",
+    sentiment: "sentiment",
+    brand: "sentiment",
     sources: "sources",
     contacts: "contacts",
   };
+
+  function normalizeHexTab(tabId) {
+    var raw = String(tabId || "").trim();
+    if (!raw) return "hotel";
+    if (TAB_ALIASES[raw]) return TAB_ALIASES[raw];
+    if (TABS.some(function (t) {
+      return t.id === raw;
+    }))
+      return raw;
+    return "hotel";
+  }
 
   var state = {
     open: false,
@@ -92,6 +118,12 @@
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function formatNumberSafe(n) {
+    var num = Number(n);
+    if (!Number.isFinite(num)) return "";
+    return Math.round(num).toLocaleString("en-US");
   }
 
   function recordId(hotel) {
@@ -445,6 +477,12 @@
     return (
       '<nav class="tabs-section hex-tabs" role="tablist" aria-label="Hotel Explorer sections">' +
       TABS.map(function (t) {
+        var plain = String(t.label || "")
+          .replace(/<br\s*\/?>/gi, " ")
+          .replace(/&amp;/g, "&")
+          .replace(/<[^>]+>/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
         return (
           '<button type="button" class="section-nav-item' +
           (state.tab === t.id ? " active" : "") +
@@ -452,6 +490,10 @@
           (state.tab === t.id ? "true" : "false") +
           '" data-hex-tab="' +
           t.id +
+          '" title="' +
+          esc(plain) +
+          '" aria-label="' +
+          esc(plain) +
           '"><div class="section-nav-icon" aria-hidden="true">' +
           (TAB_ICONS[t.id] || "") +
           '</div><div class="section-nav-label">' +
@@ -493,7 +535,60 @@
     var hi = (ownership && ownership.hotel) || {};
     var profile = propertyProfile(ownership) || {};
     var loc = (ownership && ownership.location) || hi.location || {};
+    var ctrl =
+      (ownership && ownership.report && ownership.report.ownership_and_control) ||
+      (ownership && ownership.ownership_and_control) ||
+      {};
     var next = Object.assign({}, hotel);
+    if (ownership && ownership.guestRoomsMeetingSpace) {
+      next.guestRoomsMeetingSpace = ownership.guestRoomsMeetingSpace;
+    } else if (hi.guestRoomsMeetingSpace) {
+      next.guestRoomsMeetingSpace = hi.guestRoomsMeetingSpace;
+    }
+    var rms = next.guestRoomsMeetingSpace || null;
+    if (rms && rms.meetingSpaceSummary) {
+      var sum = rms.meetingSpaceSummary;
+      next.totalMeetingSpace =
+        (sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value) || next.totalMeetingSpace;
+      next.meetingRooms =
+        (sum.meetingRoomCount && sum.meetingRoomCount.value) || next.meetingRooms;
+      next.meetingSpaceProvenance = {
+        totalSqFt: sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value,
+        meetingRooms: sum.meetingRoomCount && sum.meetingRoomCount.value,
+        largestRoom: sum.largestRoom
+          ? { name: sum.largestRoom.name, sqFt: sum.largestRoom.areaSqFt }
+          : null,
+        sourceUrl: sum.floorPlanUrl && sum.floorPlanUrl.value,
+      };
+      if (sum.largestRoom && sum.largestRoom.name) {
+        next.meetingSpaceDisplay =
+          formatNumberSafe(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value) +
+          " sq ft · " +
+          (sum.meetingRoomCount && sum.meetingRoomCount.value
+            ? sum.meetingRoomCount.value + " rooms · "
+            : "") +
+          "largest: " +
+          sum.largestRoom.name +
+          (sum.largestRoom.areaSqFt != null
+            ? ", " + formatNumberSafe(sum.largestRoom.areaSqFt) + " sq ft"
+            : "");
+      }
+    }
+    var econ = ctrl.economic_owner_or_group || ctrl.economic_owner || {};
+    var legal = ctrl.legal_property_owner_propco || ctrl.legal_owner || {};
+    next.ownershipContext = {
+      economicOwnerName: econ.name || econ.display_name || null,
+      legalOwnerName: legal.name || legal.display_name || null,
+      confidence: econ.confidence || legal.confidence || null,
+      preview_state:
+        econ.preview_state ||
+        legal.preview_state ||
+        (ownership && ownership.preview_mode) ||
+        null,
+      verified: Boolean(econ.known || legal.known),
+    };
+    if (econ.name) next.economicOwner = econ.name;
+    if (legal.name) next.legalOwner = legal.name;
     var rooms = next.rooms || profile.rooms_suites || hi.rooms || hi.room_count;
     if (rooms != null && rooms !== "" && Number(rooms) !== 0) next.rooms = rooms;
     next.city = preferKnown(next.city, hi.city || loc.city || loc.parish);
@@ -624,6 +719,20 @@
       if (state.tab === "contacts" && window.HotelContactIntelligence) {
         hiHost.innerHTML = window.HotelContactIntelligence.renderLoading();
         window.HotelContactIntelligence.mount(hiHost, recordId(state.hotel));
+      } else if (state.tab === "rooms" && window.HotelExplorerRoomsMeetingSpace) {
+        setTabRenderSource("ROOMS_MEETING");
+        if (typeof window.HotelExplorerRoomsMeetingSpace.mount === "function") {
+          window.HotelExplorerRoomsMeetingSpace.mount(
+            hiHost,
+            state.hotel,
+            state.ownership
+          );
+        } else {
+          hiHost.innerHTML = window.HotelExplorerRoomsMeetingSpace.render(
+            state.hotel,
+            state.ownership
+          );
+        }
       } else {
         var html = "";
         if (window.HotelIntelligenceWorkspace && window.HotelIntelligenceWorkspace.renderTabHtml) {
@@ -635,6 +744,37 @@
           );
         }
         hiHost.innerHTML = html || '<p class="hex-card">This section is not available yet.</p>';
+        if (
+          state.tab === "ownership" &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork === "function"
+        ) {
+          window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
+        }
+        if (
+          (state.tab === "sentiment" || state.tab === "brand") &&
+          window.HotelIntelligenceWorkspace
+        ) {
+          if (typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function") {
+            window.HotelIntelligenceWorkspace.mountHotelNewsArticles();
+          }
+          if (typeof window.HotelIntelligenceWorkspace.mountGuestSentiment === "function") {
+            window.HotelIntelligenceWorkspace.mountGuestSentiment();
+          }
+        }
+        if (
+          state.tab === "sources" &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.mountMarketAlertsEvidenceForSources ===
+            "function"
+        ) {
+          window.HotelIntelligenceWorkspace.mountMarketAlertsEvidenceForSources();
+          if (typeof window.HotelIntelligenceWorkspace.highlightFocusedSourceRow === "function") {
+            window.setTimeout(function () {
+              window.HotelIntelligenceWorkspace.highlightFocusedSourceRow();
+            }, 80);
+          }
+        }
       }
     }
     writeDeepLink();
@@ -656,6 +796,13 @@
     }
     if (hiHost) {
       hiHost.innerHTML = html || '<p class="hex-card">This section is not available yet.</p>';
+      if (
+        state.tab === "ownership" &&
+        window.HotelIntelligenceWorkspace &&
+        typeof window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork === "function"
+      ) {
+        window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
+      }
     }
   }
 
@@ -756,8 +903,28 @@
     var hiTab = e.target.closest("[data-hiw-tab]");
     if (hiTab) {
       var raw = hiTab.getAttribute("data-hiw-tab");
-      var mapped = { overview: "hotel", market: "hotel", demand: "demand", intelligence: "hotel" }[raw] || raw;
+      var mapped = normalizeHexTab(
+        { overview: "hotel", market: "hotel", demand: "demand", intelligence: "hotel", brand: "sentiment" }[
+          raw
+        ] || raw
+      );
+      if (window.HotelIntelligenceWorkspace && typeof window.HotelIntelligenceWorkspace.prepareTabNav === "function") {
+        window.HotelIntelligenceWorkspace.prepareTabNav({
+          sourceFilter: hiTab.getAttribute("data-hiw-source-filter") || undefined,
+          sourceFocus: hiTab.getAttribute("data-hiw-source-focus") || undefined,
+        });
+      }
       setTab(mapped);
+      return;
+    }
+    var sourceFilt = e.target.closest("[data-hiw-source-filter]");
+    if (sourceFilt && !sourceFilt.getAttribute("data-hiw-tab") && window.HotelIntelligenceWorkspace) {
+      if (typeof window.HotelIntelligenceWorkspace.setSourceFilter === "function") {
+        window.HotelIntelligenceWorkspace.setSourceFilter(
+          sourceFilt.getAttribute("data-hiw-source-filter") || "all"
+        );
+      }
+      paint();
       return;
     }
     if (e.target.closest("[data-hex-drawer-close]")) {
@@ -775,8 +942,45 @@
       paint();
       return;
     }
-    if (e.target.closest("[data-hiw-org-network]") && window.HotelIntelligenceWorkspace) {
-      window.HotelIntelligenceWorkspace.loadOrgNetwork();
+    var scopeBtn = e.target.closest("[data-hex-portfolio-scope]");
+    if (scopeBtn) {
+      var nextScope = scopeBtn.getAttribute("data-hex-portfolio-scope");
+      if (nextScope) {
+        try {
+          sessionStorage.setItem("he-owner-portfolio-scope-v1", nextScope);
+        } catch (_err) {
+          /* ignore */
+        }
+        paint();
+      }
+      return;
+    }
+    var opToggle = e.target.closest("[data-hex-op-toggle]");
+    if (opToggle) {
+      var group = opToggle.closest("[data-hex-op-group]");
+      if (group) {
+        var openNow = !group.classList.contains("is-open");
+        group.classList.toggle("is-open", openNow);
+        opToggle.setAttribute("aria-expanded", openNow ? "true" : "false");
+        var arrow = opToggle.querySelector(".hex-op-group__arrow");
+        if (arrow) arrow.textContent = openNow ? "▾" : "▸";
+        var body = group.querySelector(".hex-op-group__body");
+        if (body) {
+          if (openNow) body.removeAttribute("hidden");
+          else body.setAttribute("hidden", "");
+        }
+      }
+      return;
+    }
+    var portfolioHotel = e.target.closest("[data-hiw-hotel], [data-hex-open-hotel]");
+    if (portfolioHotel) {
+      var hid =
+        portfolioHotel.getAttribute("data-hex-open-hotel") ||
+        portfolioHotel.getAttribute("data-hiw-hotel");
+      if (hid) {
+        open({ id: hid, recordId: hid, name: portfolioHotel.textContent.trim() });
+      }
+      return;
     }
   }
 
@@ -1111,11 +1315,12 @@
   }
 
   function setTab(tabId) {
+    var normalized = normalizeHexTab(tabId);
     if (!TABS.some(function (t) {
-      return t.id === tabId;
+      return t.id === normalized;
     }))
       return;
-    state.tab = tabId;
+    state.tab = normalized;
     paint();
     var scroll = document.querySelector("#hexRoot .hex-scroll");
     if (scroll) scroll.scrollTop = 0;
@@ -1248,7 +1453,7 @@
 
     state.radarSnapshot = snapshotRadar();
     state.hotel = hotel;
-    var tab = opts.tab || "hotel";
+    var tab = normalizeHexTab(opts.tab || "hotel");
     if (tab === "intelligence" || tab === "overview") tab = "hotel";
     state.tab = tab;
     state.ownership = null;
@@ -1305,7 +1510,34 @@
       paint();
       return fetchOrg(orgSlug(ownership)).then(function (org) {
         if (!state.open || generation !== state.openGeneration) return;
-        state.org = org;
+        var ownedOverlay =
+          ownership &&
+          ownership.organization &&
+          Array.isArray(ownership.organization.owned_controlled_hotels) &&
+          ownership.organization.owned_controlled_hotels.length
+            ? ownership.organization
+            : null;
+        if (ownedOverlay) {
+          state.org = {
+            group: {
+              display_name: ownedOverlay.display_name,
+              legal_name: ownedOverlay.legal_name,
+              website: ownedOverlay.website,
+              known_hotel_relationships: ownedOverlay.owned_controlled_hotels.length,
+            },
+            portfolio: ownedOverlay.owned_controlled_hotels,
+            owned_controlled_hotels: ownedOverlay.owned_controlled_hotels,
+            portfolio_kpis: ownedOverlay.portfolio_kpis || null,
+            portfolio_source: ownedOverlay.portfolio_source || null,
+            why_this_matters: {
+              text:
+                "Proposed owner portfolio from organization-level research. Who Manages These Hotels? uses the same hotel set.",
+            },
+            _from_proposed_owner_portfolio: true,
+          };
+        } else {
+          state.org = org;
+        }
         paint();
         return embedRadarIfNeeded().then(function () {
           if (!state.open || generation !== state.openGeneration) return;
@@ -1350,6 +1582,27 @@
   }
 
   document.addEventListener("keydown", onKeydown);
+
+  document.addEventListener("he-measurement-prefs-change", function () {
+    if (!state.open || !state.hotel) return;
+    // Reload distance-sensitive HDP panels first so Area Hotels / Demand Drivers
+    // pick up the new unit even if paint() throws.
+    try {
+      if (
+        window.HotelDetailPanel &&
+        typeof window.HotelDetailPanel.reloadDistanceSensitiveTabs === "function"
+      ) {
+        window.HotelDetailPanel.reloadDistanceSensitiveTabs();
+      }
+    } catch (errReload) {
+      console.warn("[HotelExplorer] measurement reload failed", errReload);
+    }
+    try {
+      paint();
+    } catch (errPaint) {
+      console.warn("[HotelExplorer] measurement paint failed", errPaint);
+    }
+  });
 
   window.HotelExplorer = {
     open: open,

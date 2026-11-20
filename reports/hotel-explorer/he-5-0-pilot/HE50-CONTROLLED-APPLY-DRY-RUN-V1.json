@@ -1,0 +1,417 @@
+{
+  "contract": "HE50_CONTROLLED_APPLY_V1",
+  "approvalContract": "HE50_CONDITIONAL_APPROVAL_V1",
+  "standingAuth": {
+    "standingAuthorization": true,
+    "authorizationVersion": "he-5-0-standing-authorization-v1",
+    "grantedAt": "2026-11-20",
+    "pilotRunId": "he50_mullen_eight_hotel_2026_11_19",
+    "baseId": "appCCUsuGsE1ifoLk",
+    "globalUsdCap": 50,
+    "applyAuthorized": true,
+    "airtableWritesAllowed": true,
+    "surfeAutomatic": false,
+    "productionDeploy": false,
+    "schemaChangesAllowed": false,
+    "legacyHotelCensusWritesAllowed": false,
+    "legacyHotelCensusTableIdBlocked": "tblgj2qEwxjTcg6q0",
+    "ownershipProposedMustRemainProposed": true,
+    "stopMessage": "STANDING CONDITIONAL AUTHORIZATION — auto-apply only when all mutation gates pass; quarantine exceptions and continue.",
+    "reportStatuses": {
+      "FULL": "AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED",
+      "PARTIAL": "PARTIAL AUTO-APPLY — EXCEPTIONS QUARANTINED",
+      "OUT_OF_SCOPE": "FOUNDER APPROVAL REQUIRED — OUT-OF-SCOPE OPERATION"
+    }
+  },
+  "pilotRunId": "he50_mullen_eight_hotel_2026_11_19",
+  "startedAt": "2026-11-19T23:32:09.842Z",
+  "completedAt": "2026-11-19T23:32:18.810Z",
+  "dryRun": true,
+  "applyRequested": false,
+  "hpcTableId": "tbl9aY5ijiuIzzWam",
+  "schemaFieldCount": 153,
+  "classificationSummary": {
+    "total": 12,
+    "executable": 10,
+    "byClass": {
+      "AUTO_APPROVED_CANONICAL_UPDATE": 3,
+      "AUTO_APPROVED_CANONICAL_LINK": 2,
+      "SKIPPED_NO_CHANGE": 2,
+      "AUTO_APPROVED_CANONICAL_CREATE": 5
+    }
+  },
+  "results": [
+    {
+      "mutationId": "M-BETH-001",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "dryRun": true,
+          "recordId": "recLuxvwwxID7U2B8",
+          "wouldWrite": {
+            "Opening Date": "1979-01-01",
+            "Opening Date Source URL": "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+          },
+          "reason": "he50_standing_auth:Year Built",
+          "kind": "HPC_NULL_FILL",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-002",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_LINK",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_GRAPH_EVIDENCE_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Evidence ID": "he50:M-BETH-002:recLuxvwwxID7U2B8",
+            "HPC Hotel ID": "recLuxvwwxID7U2B8",
+            "Entity Type": "Other",
+            "Entity Record ID": "recLuxvwwxID7U2B8",
+            "Field Name": "renovation_evidence",
+            "Value Observed": "{\n  \"majorRenovationCompletedApprox\": 2015,\n  \"guestroomUnveilPress\": 2017,\n  \"scope\": \"Guest rooms, lobby, lounge, meeting spaces, Cooper's Mill restaurant (full-scale)\"\n}",
+            "Source Name": "HE 5.0 free research",
+            "Source Type": "public_web",
+            "Source URL": "https://dealality.local/evidence",
+            "Retrieved At": "2026-11-19T23:32:09.844Z",
+            "Confidence": "HIGH",
+            "Current?": true,
+            "Notes": "Preserve dual renovation dates; do not overwrite with single fabricated year",
+            "Schema Version": "HE50_CONDITIONAL_APPROVAL_V1",
+            "Hotel Property Census": [
+              "recLuxvwwxID7U2B8"
+            ]
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-003",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_LINK",
+      "pilotKey": "bethesda_marriott",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HI_GRAPH_EVIDENCE_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Evidence ID": "he50:M-BETH-003:recLuxvwwxID7U2B8",
+            "HPC Hotel ID": "recLuxvwwxID7U2B8",
+            "Entity Type": "Other",
+            "Entity Record ID": "recLuxvwwxID7U2B8",
+            "Field Name": "cmbs_financing_note",
+            "Value Observed": "{\n  \"loanUsd\": 39800000,\n  \"ratePct\": 7.472,\n  \"maturity\": \"2029-02-01\",\n  \"status\": \"current_as_of_oct_2026_servicer\"\n}",
+            "Source Name": "HE 5.0 free research",
+            "Source Type": "public_web",
+            "Source URL": "https://cmbs.news/property/bethesda-marriott-bethesda-md/",
+            "Retrieved At": "2026-11-19T23:32:09.844Z",
+            "Confidence": "HIGH",
+            "Current?": true,
+            "Notes": "Financing evidence without asserting current lender org edge",
+            "Schema Version": "HE50_CONDITIONAL_APPROVAL_V1",
+            "Hotel Property Census": [
+              "recLuxvwwxID7U2B8"
+            ]
+          },
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-BETH-REF-STAKEHOLDER",
+      "approvalClass": "SKIPPED_NO_CHANGE",
+      "applied": false,
+      "skipped": true,
+      "quarantineReason": "REFERENCE_PRIOR_DRY_RUN"
+    },
+    {
+      "mutationId": "M-NEW-ac_hotel_newtown_square",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "ac_hotel_newtown_square",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HPC_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Property Name": "AC Hotel Newtown Square",
+            "Canonical Property Name": "AC Hotel Newtown Square",
+            "Current Brand": "AC Hotels by Marriott",
+            "Country": "United States",
+            "City": "Newtown Square",
+            "Address": "200 Squire Drive, Newtown Square, Pennsylvania 19073, USA",
+            "Official Property URL": "https://www.marriott.com/en-us/hotels/phlqc-ac-hotel-newtown-square/overview/",
+            "Phone": "+1 484-424-6950",
+            "Rooms / Keys": 140,
+            "Rooms Confidence": "High",
+            "Radar Status": "Open",
+            "Affiliation Status": "Branded",
+            "Property Type": "Hotel",
+            "Identity Confidence": "High",
+            "Production Use Status": "Census Only / Not Owner-Facing",
+            "Enrichment Status": "Discovered — pending enrichment",
+            "Source URL": "https://www.marriott.com/en-us/hotels/phlqc-ac-hotel-newtown-square/overview/",
+            "Source Type": "official_property_page",
+            "Source Confidence": "High",
+            "Family / Source Family": "Marriott"
+          },
+          "idempotencyKey": "he50-create:ac_hotel_newtown_square:AC Hotel Newtown Square",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-NEW-carton_house_fairmont",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "carton_house_fairmont",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HPC_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Property Name": "Carton House, A Fairmont Hotel",
+            "Canonical Property Name": "Carton House, A Fairmont Hotel",
+            "Current Brand": "Fairmont",
+            "Country": "Ireland",
+            "City": "Maynooth",
+            "Address": "Carton Demesne, Maynooth, Co. Kildare, W23 TD98, Ireland",
+            "Official Property URL": "https://www.cartonhouse.com/",
+            "Phone": "+353 1 505 2000",
+            "Rooms / Keys": 169,
+            "Rooms Confidence": "High",
+            "Radar Status": "Open",
+            "Affiliation Status": "Branded",
+            "Property Type": "Hotel",
+            "Identity Confidence": "High",
+            "Production Use Status": "Census Only / Not Owner-Facing",
+            "Enrichment Status": "Discovered — pending enrichment",
+            "Source URL": "https://www.cartonhouse.com/the-resort",
+            "Source Type": "official_property_page",
+            "Source Confidence": "High",
+            "Family / Source Family": "Accor"
+          },
+          "idempotencyKey": "he50-create:carton_house_fairmont:Carton House, A Fairmont Hotel",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-NEW-hgi_newtown_square_radnor",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "hgi_newtown_square_radnor",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HPC_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Property Name": "Hilton Garden Inn Newtown Square Radnor",
+            "Canonical Property Name": "Hilton Garden Inn Newtown Square Radnor",
+            "Current Brand": "Hilton Garden Inn",
+            "Country": "United States",
+            "City": "Newtown Square",
+            "Address": "3743 West Chester Pike, Newtown Square, Pennsylvania 19073, USA",
+            "Official Property URL": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
+            "Phone": "+1 484-420-7500",
+            "Rooms / Keys": 138,
+            "Rooms Confidence": "High",
+            "Radar Status": "Open",
+            "Affiliation Status": "Branded",
+            "Property Type": "Hotel",
+            "Identity Confidence": "High",
+            "Production Use Status": "Census Only / Not Owner-Facing",
+            "Enrichment Status": "Discovered — pending enrichment",
+            "Source URL": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
+            "Source Type": "official_property_page",
+            "Source Confidence": "High",
+            "Family / Source Family": "Hilton"
+          },
+          "idempotencyKey": "he50-create:hgi_newtown_square_radnor:Hilton Garden Inn Newtown Square Radnor",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-UPD-jw_marriott_costa_elena",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
+      "pilotKey": "jw_marriott_costa_elena",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "dryRun": true,
+          "recordId": "recq9KWr8UE7z2549",
+          "wouldWrite": {
+            "Rooms / Keys": 415
+          },
+          "reason": "he50_standing_auth:null_fill",
+          "kind": "HPC_NULL_FILL",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-UPD-secrets_cap_cana-identity",
+      "approvalClass": "SKIPPED_NO_CHANGE",
+      "applied": false,
+      "skipped": true,
+      "quarantineReason": "NO_OP"
+    },
+    {
+      "mutationId": "M-UPD-secrets_cap_cana-rooms",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
+      "pilotKey": "secrets_cap_cana",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "dryRun": true,
+          "recordId": "recd7XAM6tLjzQhaI",
+          "wouldWrite": {
+            "Rooms / Keys": 457,
+            "Rooms Confidence": "High",
+            "Rooms Source URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/"
+          },
+          "reason": "he50_standing_auth:null_fill",
+          "kind": "HPC_NULL_FILL",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-NEW-secrets_papagayo",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "secrets_papagayo",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HPC_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Property Name": "Secrets Papagayo Costa Rica",
+            "Canonical Property Name": "Secrets Papagayo Costa Rica",
+            "Current Brand": "Secrets",
+            "Country": "Costa Rica",
+            "City": "Guanacaste Province",
+            "Address": "Papagayo Gulf, 3 Km North West from Panama Beach",
+            "Official Property URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/",
+            "Rooms / Keys": 202,
+            "Rooms Confidence": "High",
+            "Radar Status": "Open",
+            "Affiliation Status": "Branded",
+            "Property Type": "All-Inclusive",
+            "Identity Confidence": "High",
+            "Production Use Status": "Census Only / Not Owner-Facing",
+            "Enrichment Status": "Discovered — pending enrichment",
+            "Source URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/",
+            "Source Type": "official_property_page",
+            "Source Confidence": "High"
+          },
+          "idempotencyKey": "he50-create:secrets_papagayo:Secrets Papagayo Costa Rica",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    },
+    {
+      "mutationId": "M-NEW-secrets_st_lucia",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "pilotKey": "secrets_st_lucia",
+      "applied": false,
+      "dryRun": true,
+      "failed": false,
+      "opResults": [
+        {
+          "ok": true,
+          "kind": "HPC_CREATE",
+          "dryRun": true,
+          "wouldCreate": {
+            "Property Name": "Secrets St. Lucia Resort & Spa",
+            "Canonical Property Name": "Secrets St. Lucia Resort & Spa",
+            "Current Brand": "Secrets",
+            "Country": "Saint Lucia",
+            "City": "Castries / Choc Bay",
+            "Address": "Choc Bay, Castries–Gros Islet Highway, Saint Lucia",
+            "Official Property URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/",
+            "Rooms / Keys": 355,
+            "Rooms Confidence": "High",
+            "Radar Status": "Open",
+            "Affiliation Status": "Branded",
+            "Property Type": "All-Inclusive",
+            "Identity Confidence": "High",
+            "Production Use Status": "Census Only / Not Owner-Facing",
+            "Enrichment Status": "Discovered — pending enrichment",
+            "Source URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/accommodations/rooms-suites/",
+            "Source Type": "official_property_page",
+            "Source Confidence": "High"
+          },
+          "idempotencyKey": "he50-create:secrets_st_lucia:Secrets St. Lucia Resort & Spa",
+          "stages": [
+            "RESEARCH_VERIFIED"
+          ]
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "total": 12,
+    "applied": 0,
+    "quarantined": 0,
+    "skipped": 2,
+    "createdHpc": 0,
+    "updatedHpc": 0,
+    "evidenceCreated": 0
+  },
+  "reportStatus": "DRY_RUN — STANDING AUTH CLASSIFICATION COMPLETE (no writes)",
+  "legacyHotelCensusAccess": "BLOCKED_CONFIRMED"
+}

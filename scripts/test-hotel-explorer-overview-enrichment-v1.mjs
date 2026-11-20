@@ -171,9 +171,11 @@ function pass(msg) {
     enrichment.verifiedAmenities.some((a) => /meeting|ballroom|cooper|fitness|pool|metro|nih|m club/i.test(a.label)),
     "expected facility/access amenities"
   );
+  // Bethesda fixture notes mark parking / petPolicy / accessibility VERIFIED (Marriott.com WASBT).
+  // Themes still labeled unverified in profile notes must remain suppressed (see blockedThemes gate above).
   assert.ok(
-    !enrichment.verifiedAmenities.some((a) => /pet|parking|accessib/i.test(a.label)),
-    "unverified parking/pets/accessibility must not appear"
+    enrichment.verifiedAmenities.some((a) => /pet|parking|accessib/i.test(a.label)),
+    "verified parking/pets/accessibility from Marriott.com may appear"
   );
 
   const applied = applyOverviewEnrichmentToHotel(hotelDto, enrichment);
