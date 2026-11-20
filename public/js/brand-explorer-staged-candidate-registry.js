@@ -1957,6 +1957,201 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '928fcd5629ab35a86f55d95bed191c4931c8ad33e58a8b7324fae8a476fa02e1'
+    },
+    {
+      id: 'reckR3Txp5OzwVl5q',
+      slug: 'regent-hotels-resorts',
+      name: 'Regent Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/regent-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8c36e63136d4590f0f297ac1e1817d3a16c9fb9140a0f1c90e84a281150f09eb'
+    },
+    {
+      id: 'recaPiDEZ7K7IXhcZ',
+      slug: 'crowne-plaza',
+      name: 'Crowne Plaza Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/crowne-plaza-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e7557bb8af809b6bf956104f44526d1bc645f7e67018be1085b5ed453af7567a'
+    },
+    {
+      id: 'reccQERSltr3CcDgs',
+      slug: 'hualuxe-hotels-resorts',
+      name: 'HUALUXE Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/hualuxe-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f51458585a9a5e5342940b78f412e15e2632f61e3becca6cb932910fb2a30b31'
+    },
+    {
+      id: 'rechOYMLJ3tZI0y1P',
+      slug: 'staybridge-suites',
+      name: 'Staybridge Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/staybridge-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd4fe39bb6e5bccf8f361bf5feeabe7e6dc1e0bc8c867d62ee2bd8784ab0c0d16'
+    },
+    {
+      id: 'recTGrNzTA6DRe0LL',
+      slug: 'candlewood-suites',
+      name: 'Candlewood Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/candlewood-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'aa0728e28f37c9455942b8bf6065972cd3f487c89fd081d07148e2a86c021ee0'
+    },
+    {
+      id: 'rec2lJCTSYIwsQYMc',
+      slug: 'atwell-suites',
+      name: 'Atwell Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/atwell-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '805016825d68d3f1fc872f75f961f1c72903899afac44ac98a97d956872d3916'
+    },
+    {
+      id: 'recokU1aiTKb0bhgE',
+      slug: 'holiday-inn',
+      name: 'Holiday Inn',
+      overlayUrl: '/brand-explorer-phase2e-preview/holiday-inn-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '1564a69b61d4fa89191f3923a0b48ce47ad18454617b52dff022677758502409'
+    },
+    {
+      id: 'rec0sfR7SrVZUBm18',
+      slug: 'hyatt-ziva',
+      name: 'Hyatt Ziva',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-ziva-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'bd962f847d444374328fe9d3349ef721e02ad325a07387a9a5005ff2e68b7420'
+    },
+    {
+      id: 'rechIjRoVmm4bo8g1',
+      slug: 'hyatt-zilara',
+      name: 'Hyatt Zilara',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-zilara-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '5a33260345730879662a51a24c7252753ad5b168900ce38944f790e4d76e7577'
+    },
+    {
+      id: 'recNMxUhbOaIq3so5',
+      slug: 'secrets-resorts-spas',
+      name: 'Secrets Resorts & Spas',
+      overlayUrl: '/brand-explorer-phase2e-preview/secrets-resorts-spas-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'b414ebb1bb044c3064f9e110d7aab9f416fc1ed2d472a50933cd1dd1948de07a'
+    },
+    {
+      id: 'rec6iaZERtyk8Zxen',
+      slug: 'dreams-resorts-spas',
+      name: 'Dreams Resorts & Spas',
+      overlayUrl: '/brand-explorer-phase2e-preview/dreams-resorts-spas-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '260793492dfaadd660f3f2506188cf6d33ac62f8cecac386ab4b9b7fd7e98a71'
+    },
+    {
+      id: 'recY7MP8WBRiLyddc',
+      slug: 'breathless-resorts-spas',
+      name: 'Breathless Resorts & Spas',
+      overlayUrl: '/brand-explorer-phase2e-preview/breathless-resorts-spas-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '888877da98b8a3b2d8bce5a8184e0fb08a50a557758bb4556aef1081702d673e'
+    },
+    {
+      id: 'recI2FAEkY46LSx3m',
+      slug: 'sunscape-resorts-spas',
+      name: 'Sunscape Resorts & Spas',
+      overlayUrl: '/brand-explorer-phase2e-preview/sunscape-resorts-spas-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e41f2ce49c43cbaf891db12b2aef4bbfeac01a91c55668cffbeb7096abefd6e2'
+    },
+    {
+      id: 'recpl5pAKwA6buOat',
+      slug: 'hyatt-vivid',
+      name: 'Hyatt Vivid Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-vivid-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '09ec819c0b17d0a0aed7daecd8fd11927404e74e88d8e56e4264ae66b5340138'
+    },
+    {
+      id: 'recdgXCQU6GIc0l5Z',
+      slug: 'miraval-resorts-spas',
+      name: 'Miraval Resorts & Spas',
+      overlayUrl: '/brand-explorer-phase2e-preview/miraval-resorts-spas-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-13-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd377fc0ac6316196be8badf70ad55c6a4737972edb4d7fdd02f24659992c9c72'
     }
   ];
 
@@ -2154,6 +2349,21 @@
     if (/swissotel|swissôtel/i.test(name)) return bySlug('swissotel');
     if (/park\s*plaza/i.test(name)) return bySlug('park-plaza');
     if (/park\s*inn/i.test(name)) return bySlug('park-inn-by-radisson');
+    if (/^regent\b/i.test(name)) return bySlug('regent-hotels-resorts');
+    if (/crowne\s*plaza/i.test(name)) return bySlug('crowne-plaza');
+    if (/hualuxe/i.test(name)) return bySlug('hualuxe-hotels-resorts');
+    if (/staybridge/i.test(name)) return bySlug('staybridge-suites');
+    if (/candlewood/i.test(name)) return bySlug('candlewood-suites');
+    if (/atwell/i.test(name)) return bySlug('atwell-suites');
+    if (/^holiday\s*inn\b/i.test(name) && !/express|club/i.test(name)) return bySlug('holiday-inn');
+    if (/hyatt\s*ziva|^ziva\b/i.test(name)) return bySlug('hyatt-ziva');
+    if (/hyatt\s*zilara|^zilara\b/i.test(name)) return bySlug('hyatt-zilara');
+    if (/secrets\s*resorts|\bsecrets\b/i.test(name)) return bySlug('secrets-resorts-spas');
+    if (/dreams\s*resorts/i.test(name) || (/\bdreams\b/i.test(name) && /resort|spa|hyatt/i.test(name))) return bySlug('dreams-resorts-spas');
+    if (/breathless/i.test(name)) return bySlug('breathless-resorts-spas');
+    if (/sunscape/i.test(name)) return bySlug('sunscape-resorts-spas');
+    if (/hyatt\s*vivid|^vivid\b/i.test(name)) return bySlug('hyatt-vivid');
+    if (/miraval/i.test(name)) return bySlug('miraval-resorts-spas');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
