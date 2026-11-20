@@ -132,6 +132,50 @@ const recovered = await recoverPublicContactChannels(
 );
 assert.equal(String(recovered.found?.email || "").toLowerCase(), ISLAS.expectedEmail);
 
+// --- Permanent regression: Google candidate must beat lookalike alternate email ---
+// A page that also lists francisco.islas@jalisco.gob.mx must NOT override Google's
+// correctly identified fislas@hcg.gob.mx when that candidate is verified on-source.
+const lookalikeHtml = `
+  <h1>Lic. Francisco Javier Islas Godoy</h1>
+  <p>Coordinador General de Adquisiciones — Hospital Civil de Guadalajara</p>
+  <p>Also listed elsewhere: francisco.islas@jalisco.gob.mx</p>
+  <p>Official: fislas@hcg.gob.mx · Tel 33 3883 4400 Ext. 51621</p>
+`;
+const lookalikeRecovered = await recoverPublicContactChannels(
+  {
+    id: "disc_6ea16462392a",
+    primaryContact: { name: ISLAS.personName, title: ISLAS.title },
+    organizationName: ISLAS.organization,
+    sources: [{ url: "https://portal.hcg.gob.mx/hcg/directorioind/lookalike-regression" }],
+  },
+  {
+    maxUrls: 1,
+    skipDns: true,
+    googleCandidateHints: {
+      email: "fislas@hcg.gob.mx",
+      phone: "+52 33 3883 4400",
+      phoneExtensions: ["51621"],
+    },
+    fetchImpl: async (url) => ({
+      ok: true,
+      status: 200,
+      text: async () => lookalikeHtml,
+      arrayBuffer: async () => Buffer.from(lookalikeHtml),
+      headers: new Map([["content-type", "text/html"]]),
+      url,
+    }),
+  },
+);
+assert.equal(
+  String(lookalikeRecovered.found?.email || "").toLowerCase(),
+  "fislas@hcg.gob.mx",
+  "lookalike alternate must not override Google candidate",
+);
+assert.notEqual(
+  String(lookalikeRecovered.found?.email || "").toLowerCase(),
+  "francisco.islas@jalisco.gob.mx",
+);
+
 const li = classifyLinkedInProfileMatch({
   url: "https://www.linkedin.com/in/alejandra-vazquez-igeco",
   personName: "Alejandra Vázquez",
@@ -146,6 +190,7 @@ const offlineReport = {
   promptNaturalLanguage: true,
   candidateOnSourceVerify: true,
   wrapperDeprioritized: true,
+  lookalikePersonChannelAssociationBlocked: true,
 };
 
 writeFileSync(join(OUT, "OFFLINE_PARITY.json"), JSON.stringify(offlineReport, null, 2));
