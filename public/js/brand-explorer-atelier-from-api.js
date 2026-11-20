@@ -738,8 +738,33 @@
     });
   }
 
+  /**
+   * Normalize Presentation blocks the same way as server hashPresentationBlocks
+   * (BE founder approval / writeback). Browser banner hash must match approvalContentHash.
+   */
+  function normalizeBlocksForApprovalHash(blocks) {
+    return (blocks || [])
+      .map(function (b) {
+        return {
+          slotKey: String((b && b.slotKey) || '').trim(),
+          title: String((b && b.title) || '').trim(),
+          body: String((b && b.body) || '').trim(),
+          sort: typeof (b && b.sort) === 'number' ? b.sort : Number(b && b.sort) || 0,
+          imageUrl: (b && b.imageUrl) || null,
+          active: b && b.active === false ? false : true
+        };
+      })
+      .filter(function (b) {
+        return !!b.slotKey;
+      })
+      .sort(function (a, b) {
+        if (a.slotKey === b.slotKey) return a.sort - b.sort;
+        return a.slotKey < b.slotKey ? -1 : a.slotKey > b.slotKey ? 1 : 0;
+      });
+  }
+
   function hashBlocksSync(blocks) {
-    var payload = JSON.stringify(blocks || []);
+    var payload = JSON.stringify(normalizeBlocksForApprovalHash(blocks));
     var h = 2166136261;
     for (var i = 0; i < payload.length; i++) {
       h ^= payload.charCodeAt(i);
@@ -749,7 +774,7 @@
   }
 
   function hashBlocksAsync(blocks) {
-    var payload = JSON.stringify(blocks || []);
+    var payload = JSON.stringify(normalizeBlocksForApprovalHash(blocks));
     try {
       if (globalThis.crypto && crypto.subtle && typeof TextEncoder !== 'undefined') {
         return crypto.subtle.digest('SHA-256', new TextEncoder().encode(payload)).then(function (buf) {
@@ -803,21 +828,31 @@
       });
       var brand = built.brand;
       var blocks = blocksFromBrand(brand);
+      var frozenHash = String(overlay.approvalContentHash || '').trim();
+      var isFrozen = /FROZEN_APPROVAL_PAYLOAD/i.test(String(overlay.contract || ''));
       return hashBlocksAsync(blocks).then(function (contentHash) {
+        // Prefer immutable frozen approval hash when payload declares one.
+        var resolvedHash = isFrozen && frozenHash ? frozenHash : contentHash;
         brand.beCandidateOverlay = true;
         brand.beProfileMode = 'proposed';
         brand.beCandidateOverlayMeta = Object.assign({}, brand.beCandidateOverlayMeta || {}, {
-          phase: overlay.phase || null,
+          phase: overlay.phase || overlay.contract || null,
           candidateVersion: overlay.candidateVersion || cfg.candidateVersion || null,
-          contentHash: contentHash,
+          contentHash: resolvedHash,
+          computedNormalizedHash: contentHash,
+          approvalContentHash: frozenHash || null,
+          lockId: overlay.lockId || null,
           overlayUrl: url,
           source: cfg.source || 'phase2h-cumulative-staged',
           founderApprovalStatus: cfg.founderApprovalStatus || 'NOT_APPROVED',
           brandId: cfg.id || liveBrand.id || liveBrand.recordId || null,
           assembly: assembler.BE_CUMULATIVE_PROPOSAL_ASSEMBLER_V1,
-          note: 'Cumulative publication proposal (CURRENT + validated staged changes)',
+          note: isFrozen
+            ? 'Frozen approval payload (immutable assembled CURRENT+staged)'
+            : 'Cumulative publication proposal (CURRENT + validated staged changes)',
           readOnly: true,
-          airtableWrites: false
+          airtableWrites: false,
+          frozenApprovalPayload: isFrozen
         });
         brand._beProposedAssembly = built.assembly || null;
         return brand;

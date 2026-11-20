@@ -647,6 +647,42 @@
   function buildCumulativeProposedBrand(currentBrand, candidateOverlay, opts) {
     opts = opts || {};
     if (!currentBrand) throw new Error('currentBrand required');
+
+    // Immutable frozen approval payload: do not re-assemble against live CURRENT
+    // (avoids browser vs writeback hash divergence).
+    var frozenContract = String((candidateOverlay && candidateOverlay.contract) || '');
+    if (/FROZEN_APPROVAL_PAYLOAD/i.test(frozenContract)) {
+      var frozenBlocks =
+        (candidateOverlay.brandExplorer && candidateOverlay.brandExplorer.blocks) ||
+        candidateOverlay.blocks ||
+        [];
+      var brandFrozen = Object.assign({}, currentBrand, {
+        brandExplorer: { version: 1, blocks: frozenBlocks.slice() },
+        beCumulativeProposal: true,
+        beFrozenApprovalPayload: true,
+        beCandidateOverlayMeta: Object.assign({}, currentBrand.beCandidateOverlayMeta || {}, {
+          contentHash: candidateOverlay.approvalContentHash || null,
+          lockId: candidateOverlay.lockId || null,
+          frozenAt: candidateOverlay.frozenAt || null,
+          contract: frozenContract,
+          source: 'frozen-approval-payload'
+        })
+      });
+      return {
+        brand: brandFrozen,
+        assembly: {
+          summary: {
+            frozenApprovalPayload: true,
+            assembledBlockCount: frozenBlocks.length,
+            approvalContentHash: candidateOverlay.approvalContentHash || null
+          },
+          blocks: frozenBlocks.slice(),
+          provenanceBySlot: {},
+          incompleteDrafts: []
+        }
+      };
+    }
+
     var currentBlocks =
       (currentBrand.brandExplorer && currentBrand.brandExplorer.blocks) ||
       currentBrand.blocks ||

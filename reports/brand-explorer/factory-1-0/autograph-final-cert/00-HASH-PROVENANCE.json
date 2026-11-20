@@ -1,0 +1,42 @@
+{
+  "contract": "BE_FACTORY_1_0_HASH_PROVENANCE_V1",
+  "brandId": "recEJCTDj1zrsjPM6",
+  "supersededDoNotApprove": {
+    "note": "Early Factory 1.0 report hashes — superseded by six-benefit + APAC fix; DO NOT APPROVE",
+    "candidateOverlay_preSixBenefits": "c2208e43811211029eaabe02c0355b146bf72f54d9d18d1186439b31c44244e5",
+    "assembledPreview_preSixBenefits": "456b9577133ebcb0e720cfb2843eb8eaa5f6c552df86458a3e5888fb8ce85bc0"
+  },
+  "layers": [
+    {
+      "id": "overlayHash",
+      "algorithm": "sha256(hashPresentationBlocks normalized overlay-only blocks)",
+      "value": "d7510b9b6844e46c66dbf40f06cb14bd85b164983388024a956673d698e90979",
+      "means": "Gap-fill / staged candidate overlay file only (not full product profile)",
+      "approveForWriteback": false
+    },
+    {
+      "id": "approvalContentHash",
+      "algorithm": "sha256(hashPresentationBlocks normalized assembled CURRENT+overlay)",
+      "value": "43c473e65fa26df531ec4886a8f7373992fff0a335f2cc94c3205898cf9ba7e6",
+      "means": "IMMUTABLE assembled publication payload — CURRENT retained + complete non-regressive staged changes. This is the only hash founder may approve for Airtable Presentation writeback and readback.",
+      "approveForWriteback": true,
+      "lockId": "be-pub-lock-c3c9ea190834bf45bcdac610",
+      "frozenPayloadPath": "C:\\Dev\\dealality\\ws-brand-explorer\\reports\\brand-explorer\\factory-1-0\\autograph-final-cert\\AUTOGRAPH_FROZEN_APPROVAL_PAYLOAD.json",
+      "publicMirror": "brand-explorer-phase2e-preview/autograph-collection-frozen-approval-payload-v1.json"
+    },
+    {
+      "id": "browserRawJsonSha256",
+      "algorithm": "sha256(JSON.stringify(assembled.blocks)) without slot sort normalization",
+      "value": "26e5c432f51240bd2cb6d725ce55b0fddfdb15d4260cd87db0e77d89189868ab",
+      "means": "Diagnostic only — matches earlier browser crypto.subtle digest when subtle hashes raw brandExplorer.blocks. MUST NOT be used for approval; can diverge from approvalContentHash.",
+      "approveForWriteback": false
+    },
+    {
+      "id": "browserBannerLegacy",
+      "algorithm": "fnv1a or raw sha of unsorted blocks (atelier meta.contentHash)",
+      "means": "UI banner hash before alignment fix — explanatory only. Post-fix banner should display approvalContentHash / normalized hash.",
+      "approveForWriteback": false
+    }
+  ],
+  "rule": "Founder approves approvalContentHash only. Writeback + readback must equal that hash."
+}

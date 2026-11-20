@@ -1,0 +1,77 @@
+{
+  "contract": "BE_FACTORY_1_0_AUTOGRAPH_STRUCTURED_PERSISTENCE_PLAN_V1",
+  "brandId": "recEJCTDj1zrsjPM6",
+  "airtableWritesAuthorized": false,
+  "principle": "Map researched facts to existing Brand Setup child tables + Presentation; do not invent duplicate tables; HPC only via authorized HPC workflow.",
+  "destinations": [
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "action": "FOUNDER_APPROVED_WRITEBACK_ONLY",
+      "records": {
+        "update": 126,
+        "create": 42,
+        "deactivate": 0,
+        "unchangedSkipped": 0
+      },
+      "hashGate": "43c473e65fa26df531ec4886a8f7373992fff0a335f2cc94c3205898cf9ba7e6"
+    },
+    {
+      "table": "Brand Setup - Fee Structure",
+      "action": "PLAN_ONLY_NO_WRITE",
+      "fieldsPlanned": [
+        "Initial / application fee paths (new vs conversion vs existing)",
+        "Royalty % on GRS",
+        "Program services contribution components",
+        "Loyalty assessment base + temporary reduction",
+        "Source: FDD edition + geography + verification date"
+      ],
+      "ownership": "brand_setup_child / system_owned_no_factory_silent_write"
+    },
+    {
+      "table": "Brand Setup - Loyalty & Commercial",
+      "action": "PLAN_ONLY_NO_WRITE",
+      "fieldsPlanned": [
+        "Program name: Marriott Bonvoy",
+        "Six benefit themes (loyalty.proof)",
+        "Earn / redeem / elite narrative pointers",
+        "Source URLs + last verified"
+      ]
+    },
+    {
+      "table": "Brand Setup - Brand Footprint",
+      "action": "PLAN_ONLY_NO_WRITE",
+      "fieldsPlanned": [
+        "Company-reported YE2025 open hotels 362 / rooms 76,399 (10-K attributed)",
+        "Separate from HPC observed inventory"
+      ]
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "action": "RETAIN_IDENTITY_ONLY",
+      "note": "Do not mutate Brand Status / Parent Company / identity anchors in this cycle"
+    },
+    {
+      "table": "Hotel Property Census",
+      "action": "NO_WRITE_THIS_CYCLE",
+      "note": "HPC corrections only through authorized census/HPC ownership workflow"
+    }
+  ],
+  "brandSetupChildTablesKnown": [
+    "Brand Setup - Brand Footprint",
+    "Brand Setup - Project Fit",
+    "Brand Setup - Portfolio & Performance",
+    "Brand Setup - Brand Standards",
+    "Brand Setup - Fee Structure",
+    "Brand Setup - Deal Terms",
+    "Brand Setup - Operational Support",
+    "Brand Setup - Legal Terms",
+    "Brand Setup - Loyalty & Commercial",
+    "Brand Setup - Sustainability & ESG"
+  ],
+  "schemaExtensionProposals": [
+    {
+      "ifNeeded": "Fee Structure lacks edition/geography/provenance fields",
+      "proposal": "Add optional Source Document, Source Edition Date, Geography Scope, Verification Date, Confidence — reuse existing fields first; founder approval before schema change"
+    }
+  ]
+}
