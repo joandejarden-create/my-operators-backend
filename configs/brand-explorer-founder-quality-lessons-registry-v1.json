@@ -453,6 +453,31 @@
       "implementationModule": "public/js/brand-explorer-property-image-integrity.js"
     },
     {
+      "lessonId": "BE-QL-FINAL-TEN-TAB-PRODUCT-CERT-001",
+      "date": "2026-11-20",
+      "phase": "FINAL-TEN-TAB-PRODUCT-CERTIFICATION",
+      "founderObservation": "PR #476 fixed Royal Palm popup visual defects, but full customer-facing readiness still requires certifying ALL TEN tabs in the actual authenticated product popup under Proposed Update — not Compare Studio alone, not hash parity alone, and not a single-tab regression.",
+      "affected": [
+        "brand-detail-popup",
+        "beCombinedPopupAtelierRoot",
+        "all ten atelier tabs",
+        "Current Saved | Proposed Update",
+        "BE_LOCAL_PRODUCT_PARITY_GATE",
+        "publication readiness"
+      ],
+      "correctExpectedBehavior": "Before controlled Airtable publication, Curio and Ascend must pass subsection-level browser certification on the actual 8080 popup in Proposed Update: content, styling, images, layout, functionality, and independent visual quality. Hash/parity PASS is insufficient. Wrong profile mode mounts, mastheads-as-hotels, orphan half-width 2-col cards, ALL-CAPS body prose, N/A numeric placeholders, and internal research leaks must fail. Publication requires BOTH FULL_10_TAB_PRODUCT_QUALITY_CERTIFIED and local product parity.",
+      "failingExampleRef": "reports/brand-explorer/final-ten-tab-product-certification-v1/00-certification-report.md",
+      "associatedContract": "configs/brand-explorer-canonical-subsection-inventory-v1.json",
+      "automatedRegressionTest": "test:be-final-ten-tab-product-cert-gate-v1",
+      "browserValidationEvidence": "reports/brand-explorer/final-ten-tab-product-certification-v1/",
+      "status": "IMPLEMENTED",
+      "supersededRule": "Declaring product complete from PR #476 / ten tab icons / matching LEFT-RIGHT hashes without full popup subsection browser certification",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "scripts/verify-be-final-ten-tab-product-popup-cert-v1.mjs"
+    },
+    {
       "lessonId": "BE-QL-DEALALITY-INSIGHT-001",
       "date": "2026-11-19",
       "phase": "DEALALITY-INSIGHT-ADVISORY",
