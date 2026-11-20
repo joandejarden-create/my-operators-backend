@@ -9,7 +9,7 @@
     { "id": "operatingModel", "label": "Operating Model", "mode": "MINIMUM", "count": 8, "slotPattern": "operations.model." },
     { "id": "lifecycle", "label": "Owner Lifecycle", "mode": "EXACT", "count": 6, "slotPattern": "valueOwners.lifecycle." },
     { "id": "similarBrands", "label": "Similar Brands", "mode": "MINIMUM", "count": 2, "childRule": "one child = one comparison brand" },
-    { "id": "commercialThemes", "label": "Commercial themes", "mode": "MINIMUM", "count": 3, "slot": "commercial.demand" },
+    { "id": "commercialThemes", "label": "Demand Scenario Fit", "mode": "EXACT", "count": 6, "countMode": "EXACT", "slot": "commercial.demand", "note": "BE_FACTORY_PERMANENT_DEMAND_SCENARIOS_SIX_V1 / BE-QL-DEMAND-SCENARIOS-SIX-001 — exactly six distinct Demand Scenario Fit assessments" },
     { "id": "economicsItems", "label": "Opening path", "mode": "EXACT", "count": 5, "slotPattern": "economics.opening.step." },
     { "id": "loyaltyBenefits", "label": "Loyalty Benefits / Key Benefits & Program Strengths", "mode": "CONDITIONAL", "when": "conventionalLoyaltyProgram", "count": 6, "countMode": "EXACT", "note": "BE_PERMANENT_CONTENT_STANDARDS_V1 — participating brands require exactly six distinct benefit cards" },
     { "id": "loyaltyTiers", "label": "Loyalty Tiers", "mode": "CONDITIONAL", "when": "conventionalLoyaltyProgram", "countMode": "ALL_SOURCE_MEMBERS" },

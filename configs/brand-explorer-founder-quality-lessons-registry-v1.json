@@ -736,6 +736,41 @@
       "curioAscendApproval": "NOT_APPROVED",
       "publicationVerified": false,
       "implementationModule": "public/js/brand-explorer-founder-profile-mode.js"
+    },
+    {
+      "lessonId": "BE-QL-DEMAND-SCENARIOS-SIX-001",
+      "date": "2026-11-20",
+      "phase": "FACTORY-2-0",
+      "founderObservation": "Demand Scenario Fit rendered seven cards. Every Brand Explorer profile must contain exactly six distinct Demand Scenario Fit assessments for owner/investment evaluation — not a list of generic demand generators.",
+      "affected": [
+        "commercial.demand",
+        "Demand Scenario View",
+        "Commercial Engine",
+        "Comparison Studio RIGHT",
+        "atelier product renderer",
+        "cumulative proposal assembler",
+        "Factory 1.0 / 2.0",
+        "batch research",
+        "Airtable publication gate"
+      ],
+      "correctExpectedBehavior": "Demand Scenario Fit always contains exactly six distinct brand-specific assessments. Fit labels are only Strong Fit, Moderate Fit, Limited Fit, or Not a Fit. Never silently truncate seven→six without scored selection, never pad incomplete research with generic cards, never pass synonym duplicates. If six credible assessments cannot be identified, mark NEEDS_REMEDIATION. Enforce in research, assembly, renderer, Comparison Studio, certification, and publication for every brand.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-seven.json",
+      "associatedContract": "configs/brand-explorer-collection-cardinality-contract.json#commercialThemes",
+      "automatedRegressionTest": "test:be-factory-permanent-demand-scenarios-six-v1",
+      "browserValidationEvidence": "reports/brand-explorer/factory-2-0/",
+      "status": "TESTED",
+      "supersededRule": "MINIMUM 3 / target 6 / Tribute writer EXPECTED_ROW_COUNT=7 for commercial.demand",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-demand-scenarios-six-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-five.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-seven.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-duplicate.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-invalid-fit.json"
+      ]
     }
   ]
 }

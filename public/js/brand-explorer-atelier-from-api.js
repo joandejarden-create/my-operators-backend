@@ -2809,11 +2809,121 @@
     );
   }
 
+  /** Permanent Demand Scenario Fit labels (BE-QL-DEMAND-SCENARIOS-SIX-001). */
+  var DEMAND_FIT_CANONICAL = {
+    STRONG_FIT: 'Strong Fit',
+    MODERATE_FIT: 'Moderate Fit',
+    LIMITED_FIT: 'Limited Fit',
+    NOT_A_FIT: 'Not a Fit'
+  };
+
+  function normalizeDemandFitLabel(raw) {
+    var s = hasVal(raw) ? String(raw).trim() : '';
+    if (!s) return { label: '', level: '', ok: false };
+    var k = s
+      .toLowerCase()
+      .replace(/[–—]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (/^(strong fit|strong|very strong)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.STRONG_FIT, level: 'strong', ok: true };
+    }
+    if (/very\s*strong|moderate\s*[-–—]?\s*strong|moderate\s+to\s+strong|medium\s*[-–—]?\s*high|weak\s*[-–—]?\s*moderate/.test(k)) {
+      if (/very\s*strong/.test(k)) {
+        return { label: DEMAND_FIT_CANONICAL.STRONG_FIT, level: 'strong', ok: true };
+      }
+      if (/weak/.test(k)) {
+        return { label: DEMAND_FIT_CANONICAL.LIMITED_FIT, level: 'limited', ok: true };
+      }
+      return { label: DEMAND_FIT_CANONICAL.MODERATE_FIT, level: 'moderate', ok: true };
+    }
+    if (/^(moderate fit|moderate|selective|medium)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.MODERATE_FIT, level: 'moderate', ok: true };
+    }
+    if (/^(limited fit|limited|weak|low)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.LIMITED_FIT, level: 'limited', ok: true };
+    }
+    if (/^(not a fit|no fit|unsuitable)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.NOT_A_FIT, level: 'not-a-fit', ok: true };
+    }
+    if (DEMAND_FIT_CANONICAL[s]) {
+      var lvl =
+        s === 'STRONG_FIT'
+          ? 'strong'
+          : s === 'MODERATE_FIT'
+            ? 'moderate'
+            : s === 'LIMITED_FIT'
+              ? 'limited'
+              : 'not-a-fit';
+      return { label: DEMAND_FIT_CANONICAL[s], level: lvl, ok: true };
+    }
+    return { label: s, level: '', ok: false };
+  }
+
   function demandCell(label, statusText) {
-    var pill = hasVal(statusText)
-      ? '<span class="status-pill">' + escapeHtml(statusText) + '</span>'
+    var fit = normalizeDemandFitLabel(statusText);
+    var pillClass =
+      'status-pill' +
+      (fit.level ? ' status-pill--' + fit.level : '') +
+      (fit.ok ? '' : hasVal(statusText) ? '' : ' status-pill--empty');
+    var pill = hasVal(fit.label || statusText)
+      ? '<span class="' + pillClass + '">' + escapeHtml(fit.label || statusText) + '</span>'
       : '<span class="status-pill status-pill--empty">&nbsp;</span>';
-    return '<div class="demand-cell"><strong>' + escapeHtml(label) + '</strong> ' + pill + '</div>';
+    return (
+      '<div class="demand-cell">' +
+      '<strong>' +
+      escapeHtml(label) +
+      '</strong> ' +
+      pill +
+      '</div>'
+    );
+  }
+
+  /** Exact-six Demand Scenario Fit — never render 5/7 or pad inventively. */
+  function demandScenarioExactSixHtml(brand) {
+    var demandRows = explorerCardRowsForSlot(brand, 'commercial.demand').filter(function (x) {
+      return hasVal(x.title) || hasVal(x.body);
+    });
+    if (demandRows.length === 6) {
+      return demandRows
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    }
+    if (demandRows.length > 6) {
+      // Prefer first six distinct titles (server/assembler should already enforce;
+      // client never invents — keep strongest unique titles in order).
+      var seen = {};
+      var picked = [];
+      demandRows.forEach(function (dr) {
+        var t = String(dr.title || '')
+          .trim()
+          .toLowerCase();
+        if (!t || seen[t]) return;
+        seen[t] = true;
+        picked.push(dr);
+      });
+      return picked
+        .slice(0, 6)
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    }
+    if (demandRows.length > 0 && demandRows.length < 6) {
+      // Incomplete — render what exists; Factory marks NEEDS_REMEDIATION (no invented pads).
+      return demandRows
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    }
+    // Empty CURRENT — no silent generic six (founder: never pad incomplete research).
+    return (
+      '<div class="demand-cell demand-cell--empty"><strong>Demand Scenario Fit</strong> ' +
+      '<span class="status-pill status-pill--empty">Needs remediation</span></div>'
+    );
   }
 
   var COMMERCIAL_LEVER_KEYS = [
@@ -3657,29 +3767,7 @@
         '<li><strong style="color:var(--text,#fff);font-weight:600;">Repeat and higher-quality guests</strong> — loyalty, corporate accounts, and recognition that increase lifetime value versus one-off OTA transactions.</li>' +
         '<li><strong style="color:var(--text,#fff);font-weight:600;">Commercial systems, not just a logo</strong> — pricing, sales support, and analytics that should earn the fee in your pro forma.</li>';
     }
-    var demandRows = explorerCardRowsForSlot(brand, 'commercial.demand').filter(function (x) {
-      return hasVal(x.title) || hasVal(x.body);
-    });
-    var demandHtml;
-    if (demandRows.length) {
-      demandHtml = demandRows
-        .map(function (dr) {
-          return demandCell(dr.title || 'Scenario', dr.body || '');
-        })
-        .join('');
-    } else {
-      var COMM_DEMAND = [
-        ['Gateway Urban', 'Strong'],
-        ['Regional & Secondary Upscale', 'Moderate–strong'],
-        ['Corporate-Led Urban', 'Strong'],
-        ['Resort / Coastal Leisure', 'Strong'],
-        ['Conversion / Repositioning', 'Strong'],
-        ['Pure Economy / Highway', 'Not a fit']
-      ];
-      demandHtml = COMM_DEMAND.map(function (pair) {
-        return demandCell(pair[0], pair[1]);
-      }).join('');
-    }
+    var demandHtml = demandScenarioExactSixHtml(brand);
     var diffBlock = explorerFirstBlock(brand, 'commercial.differentiator');
     var diffHtml = '';
     if (diffBlock && (hasVal(diffBlock.body) || hasVal(diffBlock.title))) {
