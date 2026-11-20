@@ -1,0 +1,921 @@
+{
+  "module": "HOTEL_CONTRACT_TIMING_INTELLIGENCE_V3",
+  "version": "3.0.0",
+  "started": "2026-11-20T21:16:29.819Z",
+  "finished": "2026-11-20T21:40:55.027Z",
+  "mode": "APPLY",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "mergeStatus": "DO_NOT_MERGE_WITHOUT_IC",
+  "priorWavesExcluded": {
+    "baselineAccession": "0001539497-20-000579",
+    "v2Accessions": [
+      "0001539497-20-000579",
+      "0001539497-18-000207",
+      "0001539497-18-000531",
+      "0001539497-18-000821",
+      "0001539497-19-002159"
+    ],
+    "v2FindingKeysExcluded": 19
+  },
+  "targets": {
+    "batchSize": 100,
+    "maxBatches": 5,
+    "targetDocs": 500
+  },
+  "discovery": {
+    "queriesRun": 72,
+    "uniqueHits": 1526,
+    "queryStats": {
+      "franchise_agreement_expiration_date": {
+        "queries": 8,
+        "hits": 414,
+        "agreementFamily": "FRANCHISE"
+      },
+      "mortgaged_property_franchise_agreement": {
+        "queries": 12,
+        "hits": 643,
+        "agreementFamily": "FRANCHISE",
+        "lastError": "SEC_API_IO_REQUEST_FAILED"
+      },
+      "franchise_expiration_date": {
+        "queries": 6,
+        "hits": 42,
+        "agreementFamily": "FRANCHISE"
+      },
+      "management_agreement_expiration": {
+        "queries": 6,
+        "hits": 5,
+        "agreementFamily": "MANAGEMENT"
+      },
+      "hotel_management_agreement_ex10": {
+        "queries": 6,
+        "hits": 337,
+        "agreementFamily": "MANAGEMENT"
+      },
+      "franchise_term_and_renewal": {
+        "queries": 6,
+        "hits": 461,
+        "agreementFamily": "RENEWAL_EXTENSION"
+      },
+      "hma_initial_term": {
+        "queries": 6,
+        "hits": 398,
+        "agreementFamily": "MANAGEMENT"
+      },
+      "license_agreement_expiration": {
+        "queries": 6,
+        "hits": 24,
+        "agreementFamily": "LICENSE"
+      },
+      "hotel_franchise_agreement_ex10": {
+        "queries": 6,
+        "hits": 63,
+        "agreementFamily": "FRANCHISE"
+      },
+      "hotel_collateral_schedule": {
+        "queries": 6,
+        "hits": 137,
+        "agreementFamily": "FRANCHISE"
+      },
+      "termination_right_franchise": {
+        "queries": 4,
+        "hits": 0,
+        "agreementFamily": "TERMINATION_RIGHT",
+        "lastError": "SEC_API_IO_REQUEST_FAILED"
+      }
+    }
+  },
+  "documents": {
+    "processed": 500,
+    "ok": 500,
+    "independentDeals": 50,
+    "byForm": {
+      "424B2": 178,
+      "424H": 180,
+      "424B3": 9,
+      "424B5": 31,
+      "424B4": 2,
+      "10-K": 100
+    }
+  },
+  "incrementalVsPriorWaves": {
+    "newUniqueDates": 405,
+    "newUniqueHotels": 357,
+    "newFranchiseDates": 405,
+    "newManagementDates": 0,
+    "newLicenseDates": 0,
+    "future2027_2035": 5,
+    "datesPer100Docs": 81,
+    "datesPer100DocsExclTopDeal": 68.6,
+    "topDeal": {
+      "accession": "0001539497-17-001773",
+      "count": 62
+    },
+    "dealConcentration": [
+      {
+        "accession": "0001539497-17-001773",
+        "count": 62
+      },
+      {
+        "accession": "0001539497-20-000474",
+        "count": 61
+      },
+      {
+        "accession": "0001539497-17-001152",
+        "count": 45
+      },
+      {
+        "accession": "0001539497-16-002844",
+        "count": 19
+      },
+      {
+        "accession": "0001539497-19-001289",
+        "count": 17
+      },
+      {
+        "accession": "0001539497-17-001169",
+        "count": 14
+      },
+      {
+        "accession": "0001539497-20-000454",
+        "count": 12
+      },
+      {
+        "accession": "0001539497-16-003529",
+        "count": 12
+      },
+      {
+        "accession": "0001539497-19-000807",
+        "count": 8
+      },
+      {
+        "accession": "0001539497-18-001977",
+        "count": 8
+      },
+      {
+        "accession": "0001539497-18-001853",
+        "count": 8
+      },
+      {
+        "accession": "0001539497-18-001206",
+        "count": 8
+      }
+    ],
+    "byBrand": {
+      "UNKNOWN": 28,
+      "MARRIOTT": 174,
+      "HILTON": 126,
+      "IHG": 62,
+      "CHOICE": 10,
+      "HYATT": 5
+    },
+    "byYear": {
+      "1995": 7,
+      "1996": 10,
+      "1997": 36,
+      "1998": 15,
+      "1999": 17,
+      "2000": 26,
+      "2001": 10,
+      "2002": 16,
+      "2003": 5,
+      "2004": 11,
+      "2005": 13,
+      "2006": 7,
+      "2007": 24,
+      "2008": 32,
+      "2009": 39,
+      "2010": 14,
+      "2011": 5,
+      "2012": 3,
+      "2013": 7,
+      "2014": 15,
+      "2015": 8,
+      "2016": 14,
+      "2017": 8,
+      "2018": 5,
+      "2019": 1,
+      "2025": 52,
+      "2032": 4,
+      "2035": 1
+    },
+    "duplicatesPrevented": 48
+  },
+  "horizons": {
+    "next6m": 0,
+    "next12m": 0,
+    "next24m": 0,
+    "next36m": 0,
+    "historicalNeedRevalidation": 400
+  },
+  "agreementSplit": {
+    "franchise": 405,
+    "management": 0,
+    "license": 0,
+    "terminationRights": 0,
+    "byDiscoveryFamily": {
+      "FRANCHISE": 405
+    }
+  },
+  "currentStatusCounts": {
+    "EXPIRED_STATUS_UNCONFIRMED": 400,
+    "SUPERSEDED": 1,
+    "HISTORICALLY_VERIFIED": 4
+  },
+  "statusValidation": {
+    "secFollowUpQueries": 57,
+    "exaSelectiveQueries": 5,
+    "note": "Silence is not corroboration; EXPIRED_STATUS_UNCONFIRMED / REQUIRES_REVALIDATION used when no later evidence"
+  },
+  "batches": [
+    {
+      "batchNo": 1,
+      "docsOk": 100,
+      "docsTried": 100,
+      "newDates": 97,
+      "future2027_2035": 5,
+      "yieldByQueryFamily": {
+        "mortgaged_property_franchise_agreement": 84,
+        "franchise_agreement_expiration_date": 16
+      },
+      "verification": {
+        "input": 97,
+        "verifiedHotelContractDates": 0,
+        "probable": 97,
+        "rejected": 0,
+        "loanMaturityExcluded": 0,
+        "historicalNeedRevalidation": 92,
+        "uniqueHotels": 97,
+        "horizon6": 0,
+        "horizon12": 0,
+        "horizon24": 0,
+        "horizon36": 0,
+        "franchise": 97,
+        "management": 0,
+        "terminationRights": 0,
+        "hpcMatched": 0
+      },
+      "summarize": {
+        "uniqueDates": 97,
+        "uniqueHotels": 97,
+        "uniqueDeals": 11,
+        "uniqueIssuers": 6,
+        "topDeal": {
+          "accession": "0001539497-20-000474",
+          "count": 61
+        },
+        "dealConcentration": [
+          {
+            "accession": "0001539497-20-000474",
+            "count": 61
+          },
+          {
+            "accession": "0001539497-20-000454",
+            "count": 12
+          },
+          {
+            "accession": "0001539497-20-000149",
+            "count": 6
+          },
+          {
+            "accession": "0001539497-19-001837",
+            "count": 6
+          },
+          {
+            "accession": "0001539497-19-002029",
+            "count": 4
+          },
+          {
+            "accession": "0001539497-19-001849",
+            "count": 2
+          },
+          {
+            "accession": "0001539497-19-001586",
+            "count": 2
+          },
+          {
+            "accession": "0001539497-20-000850",
+            "count": 1
+          },
+          {
+            "accession": "0001539497-20-000828",
+            "count": 1
+          },
+          {
+            "accession": "0001539497-19-001943",
+            "count": 1
+          },
+          {
+            "accession": "0001539497-19-001750",
+            "count": 1
+          }
+        ],
+        "byAgreement": {
+          "FRANCHISE": 97
+        },
+        "byBrand": {
+          "UNKNOWN": 8,
+          "MARRIOTT": 66,
+          "HILTON": 13,
+          "IHG": 8,
+          "CHOICE": 2
+        },
+        "byYear": {
+          "1996": 1,
+          "1997": 3,
+          "1999": 2,
+          "2000": 1,
+          "2002": 1,
+          "2003": 1,
+          "2004": 2,
+          "2006": 1,
+          "2008": 6,
+          "2009": 3,
+          "2010": 3,
+          "2014": 4,
+          "2015": 1,
+          "2016": 5,
+          "2017": 1,
+          "2018": 4,
+          "2019": 1,
+          "2025": 52,
+          "2032": 4,
+          "2035": 1
+        },
+        "future2027_2035": 5,
+        "exclTopCount": 36
+      }
+    },
+    {
+      "batchNo": 2,
+      "docsOk": 100,
+      "docsTried": 100,
+      "newDates": 48,
+      "future2027_2035": 0,
+      "yieldByQueryFamily": {
+        "mortgaged_property_franchise_agreement": 27,
+        "franchise_agreement_expiration_date": 21
+      },
+      "verification": {
+        "input": 48,
+        "verifiedHotelContractDates": 0,
+        "probable": 48,
+        "rejected": 0,
+        "loanMaturityExcluded": 0,
+        "historicalNeedRevalidation": 48,
+        "uniqueHotels": 48,
+        "horizon6": 0,
+        "horizon12": 0,
+        "horizon24": 0,
+        "horizon36": 0,
+        "franchise": 48,
+        "management": 0,
+        "terminationRights": 0,
+        "hpcMatched": 0
+      },
+      "summarize": {
+        "uniqueDates": 48,
+        "uniqueHotels": 48,
+        "uniqueDeals": 8,
+        "uniqueIssuers": 4,
+        "topDeal": {
+          "accession": "0001539497-19-001289",
+          "count": 17
+        },
+        "dealConcentration": [
+          {
+            "accession": "0001539497-19-001289",
+            "count": 17
+          },
+          {
+            "accession": "0001539497-19-000807",
+            "count": 8
+          },
+          {
+            "accession": "0001539497-18-001977",
+            "count": 8
+          },
+          {
+            "accession": "0001539497-19-000757",
+            "count": 5
+          },
+          {
+            "accession": "0001539497-19-000320",
+            "count": 3
+          },
+          {
+            "accession": "0001539497-19-000170",
+            "count": 3
+          },
+          {
+            "accession": "0001539497-19-000139",
+            "count": 2
+          },
+          {
+            "accession": "0001539497-18-001928",
+            "count": 2
+          }
+        ],
+        "byAgreement": {
+          "FRANCHISE": 48
+        },
+        "byBrand": {
+          "MARRIOTT": 15,
+          "HILTON": 16,
+          "IHG": 9,
+          "UNKNOWN": 6,
+          "HYATT": 2
+        },
+        "byYear": {
+          "1995": 1,
+          "1996": 3,
+          "1997": 5,
+          "1999": 4,
+          "2000": 5,
+          "2001": 3,
+          "2002": 1,
+          "2006": 2,
+          "2007": 5,
+          "2008": 1,
+          "2009": 2,
+          "2010": 1,
+          "2012": 2,
+          "2013": 1,
+          "2014": 3,
+          "2016": 3,
+          "2017": 5,
+          "2018": 1
+        },
+        "future2027_2035": 0,
+        "exclTopCount": 31
+      }
+    },
+    {
+      "batchNo": 3,
+      "docsOk": 100,
+      "docsTried": 100,
+      "newDates": 101,
+      "future2027_2035": 0,
+      "yieldByQueryFamily": {
+        "mortgaged_property_franchise_agreement": 29,
+        "hotel_collateral_schedule": 1,
+        "franchise_agreement_expiration_date": 72
+      },
+      "verification": {
+        "input": 101,
+        "verifiedHotelContractDates": 0,
+        "probable": 101,
+        "rejected": 0,
+        "loanMaturityExcluded": 0,
+        "historicalNeedRevalidation": 101,
+        "uniqueHotels": 101,
+        "horizon6": 0,
+        "horizon12": 0,
+        "horizon24": 0,
+        "horizon36": 0,
+        "franchise": 101,
+        "management": 0,
+        "terminationRights": 0,
+        "hpcMatched": 0
+      },
+      "summarize": {
+        "uniqueDates": 101,
+        "uniqueHotels": 101,
+        "uniqueDeals": 9,
+        "uniqueIssuers": 5,
+        "topDeal": {
+          "accession": "0001539497-17-001773",
+          "count": 62
+        },
+        "dealConcentration": [
+          {
+            "accession": "0001539497-17-001773",
+            "count": 62
+          },
+          {
+            "accession": "0001539497-18-001853",
+            "count": 8
+          },
+          {
+            "accession": "0001539497-18-001206",
+            "count": 8
+          },
+          {
+            "accession": "0001539497-18-000566",
+            "count": 8
+          },
+          {
+            "accession": "0001539497-18-001578",
+            "count": 7
+          },
+          {
+            "accession": "0001539497-18-000769",
+            "count": 5
+          },
+          {
+            "accession": "0001539497-18-001757",
+            "count": 1
+          },
+          {
+            "accession": "0001539497-18-000911",
+            "count": 1
+          },
+          {
+            "accession": "0001539497-18-000456",
+            "count": 1
+          }
+        ],
+        "byAgreement": {
+          "FRANCHISE": 101
+        },
+        "byBrand": {
+          "UNKNOWN": 5,
+          "HILTON": 40,
+          "MARRIOTT": 35,
+          "IHG": 17,
+          "HYATT": 1,
+          "CHOICE": 3
+        },
+        "byYear": {
+          "1995": 1,
+          "1996": 2,
+          "1997": 14,
+          "1998": 4,
+          "1999": 2,
+          "2000": 7,
+          "2001": 2,
+          "2002": 3,
+          "2004": 3,
+          "2005": 5,
+          "2006": 2,
+          "2007": 5,
+          "2008": 11,
+          "2009": 18,
+          "2010": 6,
+          "2011": 3,
+          "2013": 1,
+          "2014": 3,
+          "2015": 1,
+          "2016": 6,
+          "2017": 2
+        },
+        "future2027_2035": 0,
+        "exclTopCount": 39
+      }
+    },
+    {
+      "batchNo": 4,
+      "docsOk": 100,
+      "docsTried": 100,
+      "newDates": 118,
+      "future2027_2035": 0,
+      "yieldByQueryFamily": {
+        "mortgaged_property_franchise_agreement": 58,
+        "franchise_agreement_expiration_date": 71
+      },
+      "verification": {
+        "input": 118,
+        "verifiedHotelContractDates": 0,
+        "probable": 118,
+        "rejected": 0,
+        "loanMaturityExcluded": 0,
+        "historicalNeedRevalidation": 118,
+        "uniqueHotels": 118,
+        "horizon6": 0,
+        "horizon12": 0,
+        "horizon24": 0,
+        "horizon36": 0,
+        "franchise": 118,
+        "management": 0,
+        "terminationRights": 0,
+        "hpcMatched": 0
+      },
+      "summarize": {
+        "uniqueDates": 118,
+        "uniqueHotels": 118,
+        "uniqueDeals": 15,
+        "uniqueIssuers": 7,
+        "topDeal": {
+          "accession": "0001539497-17-001152",
+          "count": 45
+        },
+        "dealConcentration": [
+          {
+            "accession": "0001539497-17-001152",
+            "count": 45
+          },
+          {
+            "accession": "0001539497-17-001169",
+            "count": 14
+          },
+          {
+            "accession": "0001539497-16-003529",
+            "count": 12
+          },
+          {
+            "accession": "0001539497-17-000409",
+            "count": 8
+          },
+          {
+            "accession": "0001539497-17-000120",
+            "count": 7
+          },
+          {
+            "accession": "0001539497-16-003518",
+            "count": 5
+          },
+          {
+            "accession": "0001539497-17-000798",
+            "count": 4
+          },
+          {
+            "accession": "0001539497-17-000298",
+            "count": 4
+          },
+          {
+            "accession": "0001539497-16-003832",
+            "count": 4
+          },
+          {
+            "accession": "0001539497-16-003802",
+            "count": 4
+          },
+          {
+            "accession": "0001539497-17-001379",
+            "count": 3
+          },
+          {
+            "accession": "0001539497-17-000036",
+            "count": 3
+          }
+        ],
+        "byAgreement": {
+          "FRANCHISE": 118
+        },
+        "byBrand": {
+          "HILTON": 38,
+          "UNKNOWN": 4,
+          "MARRIOTT": 47,
+          "IHG": 23,
+          "CHOICE": 5,
+          "HYATT": 1
+        },
+        "byYear": {
+          "1995": 4,
+          "1996": 4,
+          "1997": 12,
+          "1998": 6,
+          "1999": 2,
+          "2000": 6,
+          "2001": 3,
+          "2002": 7,
+          "2003": 3,
+          "2004": 5,
+          "2005": 6,
+          "2006": 2,
+          "2007": 13,
+          "2008": 13,
+          "2009": 15,
+          "2010": 2,
+          "2011": 1,
+          "2012": 1,
+          "2013": 4,
+          "2014": 4,
+          "2015": 5
+        },
+        "future2027_2035": 0,
+        "exclTopCount": 73
+      }
+    },
+    {
+      "batchNo": 5,
+      "docsOk": 100,
+      "docsTried": 100,
+      "newDates": 41,
+      "future2027_2035": 0,
+      "yieldByQueryFamily": {
+        "franchise_agreement_expiration_date": 6,
+        "mortgaged_property_franchise_agreement": 49
+      },
+      "verification": {
+        "input": 41,
+        "verifiedHotelContractDates": 0,
+        "probable": 41,
+        "rejected": 0,
+        "loanMaturityExcluded": 0,
+        "historicalNeedRevalidation": 41,
+        "uniqueHotels": 40,
+        "horizon6": 0,
+        "horizon12": 0,
+        "horizon24": 0,
+        "horizon36": 0,
+        "franchise": 41,
+        "management": 0,
+        "terminationRights": 0,
+        "hpcMatched": 0
+      },
+      "summarize": {
+        "uniqueDates": 41,
+        "uniqueHotels": 41,
+        "uniqueDeals": 7,
+        "uniqueIssuers": 4,
+        "topDeal": {
+          "accession": "0001539497-16-002844",
+          "count": 19
+        },
+        "dealConcentration": [
+          {
+            "accession": "0001539497-16-002844",
+            "count": 19
+          },
+          {
+            "accession": "0001539497-16-003380",
+            "count": 6
+          },
+          {
+            "accession": "0001539497-16-002466",
+            "count": 6
+          },
+          {
+            "accession": "0001539497-15-002167",
+            "count": 6
+          },
+          {
+            "accession": "0001539497-16-002354",
+            "count": 2
+          },
+          {
+            "accession": "0001539497-16-003276",
+            "count": 1
+          },
+          {
+            "accession": "0001539497-16-002782",
+            "count": 1
+          }
+        ],
+        "byAgreement": {
+          "FRANCHISE": 41
+        },
+        "byBrand": {
+          "MARRIOTT": 11,
+          "IHG": 5,
+          "UNKNOWN": 5,
+          "HILTON": 19,
+          "HYATT": 1
+        },
+        "byYear": {
+          "1995": 1,
+          "1997": 2,
+          "1998": 5,
+          "1999": 7,
+          "2000": 7,
+          "2001": 2,
+          "2002": 4,
+          "2003": 1,
+          "2004": 1,
+          "2005": 2,
+          "2007": 1,
+          "2008": 1,
+          "2009": 1,
+          "2010": 2,
+          "2011": 1,
+          "2013": 1,
+          "2014": 1,
+          "2015": 1
+        },
+        "future2027_2035": 0,
+        "exclTopCount": 22
+      }
+    }
+  ],
+  "adaptiveWeightsFinal": {
+    "franchise_expiration_date": 0.472,
+    "franchise_agreement_expiration_date": 3.898,
+    "franchise_term_and_renewal": 0.35,
+    "management_agreement_expiration": 0.472,
+    "hotel_management_agreement_ex10": 0.472,
+    "hma_initial_term": 0.35,
+    "license_agreement_expiration": 0.35,
+    "hotel_franchise_agreement_ex10": 0.35,
+    "hotel_collateral_schedule": 0.751,
+    "mortgaged_property_franchise_agreement": 4.566,
+    "termination_right_franchise": 0.35,
+    "lease_expiration_hotel": 0.35,
+    "amendment_franchise_management": 0.35
+  },
+  "budget": {
+    "ceilingUsd": 25,
+    "spentUsd": 0.024,
+    "remainingUsd": 24.976,
+    "byProvider": {
+      "EXA": 0.024,
+      "SEC_API_IO": 0,
+      "FREE_SEC": 0
+    },
+    "requestCounts": {
+      "EXA": 6,
+      "SEC_API_IO": 98,
+      "FREE_SEC": 1539
+    }
+  },
+  "persistence": {
+    "persisted": 14,
+    "dryRun": 0,
+    "duplicatesPrevented": 132,
+    "readBackOk": 80,
+    "errors": 0
+  },
+  "examples": [
+    {
+      "hotelName": "The Westin Book Cadillac",
+      "city": "The Westin Book Cadillac",
+      "stateRegion": null,
+      "primaryDate": "2032-12-31",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "currentStatus": "SUPERSEDED",
+      "company": "JP MORGAN CHASE COMMERCIAL MORTGAGE SECURITIES CORP (Filer)",
+      "accession": "0001539497-20-000474",
+      "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "snippet": "11 | CREFI | The Westin Book Cadillac | 38,738,364 | 28,954,151 | 9,784,213 | 1,549,535 | 8,234,678 | 2.12 | 1.78 | 12.7% | 10.7%"
+    },
+    {
+      "hotelName": "Homewood Suites Mobile East Bay Daphne",
+      "city": "Mobile East Bay Daphne",
+      "stateRegion": null,
+      "primaryDate": "2032-03-31",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "currentStatus": "HISTORICALLY_VERIFIED",
+      "company": "JP MORGAN CHASE COMMERCIAL MORTGAGE SECURITIES CORP (Filer)",
+      "accession": "0001539497-20-000474",
+      "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "snippet": "25.01 | CREFI | Homewood Suites Mobile East Bay Daphne | 3,361,972 | 2,076,767 | 1,285,205 | 134,479 | 1,150,726 | Fee | 03/31/2032"
+    },
+    {
+      "hotelName": "Hampton Inn Mobile East Bay Daphne",
+      "city": "Mobile East Bay Daphne",
+      "stateRegion": null,
+      "primaryDate": "2032-03-31",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "currentStatus": "HISTORICALLY_VERIFIED",
+      "company": "JP MORGAN CHASE COMMERCIAL MORTGAGE SECURITIES CORP (Filer)",
+      "accession": "0001539497-20-000474",
+      "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "snippet": "25.02 | CREFI | Hampton Inn Mobile East Bay Daphne | 3,691,543 | 2,497,846 | 1,193,697 | 147,662 | 1,046,036 | Fee | 03/31/2032"
+    },
+    {
+      "hotelName": "Hilton Garden Inn Mobile East Bay Daphne",
+      "city": "Mobile East Bay Daphne",
+      "stateRegion": null,
+      "primaryDate": "2032-03-31",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "currentStatus": "HISTORICALLY_VERIFIED",
+      "company": "JP MORGAN CHASE COMMERCIAL MORTGAGE SECURITIES CORP (Filer)",
+      "accession": "0001539497-20-000474",
+      "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "snippet": "25.03 | CREFI | Hilton Garden Inn Mobile East Bay Daphne | 3,626,841 | 2,568,959 | 1,057,882 | 145,074 | 912,808 | Fee | 03/31/2032"
+    },
+    {
+      "hotelName": "Holiday Inn Express Trinidad",
+      "city": "Trinidad",
+      "stateRegion": null,
+      "primaryDate": "2035-01-10",
+      "dateMeaning": "FRANCHISE_EXPIRATION",
+      "currentStatus": "HISTORICALLY_VERIFIED",
+      "company": "JP MORGAN CHASE COMMERCIAL MORTGAGE SECURITIES CORP (Filer)",
+      "accession": "0001539497-20-000474",
+      "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "snippet": "28 | JPMCB | Holiday Inn Express Trinidad | 3,071,137 | 1,838,410 | 1,232,727 | 0 | 1,232,727 | 2.23 | 2.23 | 14.9% | 14.9%"
+    }
+  ],
+  "scalability": {
+    "assessment": "PROMISING_REPEATABLE — multiple independent deals beyond V2 concentration",
+    "recommendation": "Keep PR #495 mergeable for V1–V3 foundation; run further scale waves as sequential PRs after IC merge to avoid an indefinitely growing branch."
+  },
+  "clientStats": {
+    "secApiIo": {
+      "requests": 256,
+      "cacheHits": 65,
+      "errors": 64,
+      "status403": 0,
+      "status429": 256,
+      "fullText": 256,
+      "filingQuery": 0
+    },
+    "exa": {
+      "requests": 0,
+      "cacheHits": 5,
+      "errors": 0,
+      "status429": 0,
+      "search": 0,
+      "contents": 0
+    },
+    "edgar": {
+      "requests": 186,
+      "cacheHits": 314,
+      "retries": 0,
+      "errors": 0,
+      "status403": 0,
+      "status429": 0
+    }
+  }
+}
