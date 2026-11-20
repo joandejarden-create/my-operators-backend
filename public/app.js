@@ -2312,6 +2312,13 @@
                 var path = getPath(currentRole);
                 if (!canNavigateToRoute(path)) {
                     navigate(redirectRouteWhenBlocked(path), currentRole, true);
+                } else if (
+                    path === '/brand-explorer-combined' &&
+                    shouldEnableBeFounderProductPreview()
+                ) {
+                    // Re-enter route after /api/me so founder preview injects even if an
+                    // earlier silent navigate ran before admin context was available.
+                    navigate(path, currentRole, true);
                 }
             }
             broadcastJwtToActiveFrames();
