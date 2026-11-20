@@ -39,13 +39,17 @@
     var el = $("bebrSummary");
     if (!el || !summary) return;
     var items = [
-      ["Queued", summary.totalQueued],
-      ["Ready", summary.readyForReview],
-      ["Remediation", summary.needsRemediation],
-      ["In progress", summary.researchInProgress],
-      ["Approved", summary.approved],
-      ["Published", summary.published],
-      ["Blocked", summary.blocked],
+      ["Master queue", summary.totalBrandsInMasterQueue != null ? summary.totalBrandsInMasterQueue : summary.totalQueued],
+      ["Existing queued", summary.existingBrandsQueued != null ? summary.existingBrandsQueued : "—"],
+      ["Canonical in queue", summary.existingCanonicalInQueue != null ? summary.existingCanonicalInQueue : "—"],
+      ["New proposed", summary.newBrandsProposed != null ? summary.newBrandsProposed : 0],
+      ["Researching", summary.brandsResearching != null ? summary.brandsResearching : summary.researchInProgress],
+      ["Certified", summary.brandsCertified != null ? summary.brandsCertified : summary.readyForReview],
+      ["Awaiting approval", summary.brandsAwaitingApproval != null ? summary.brandsAwaitingApproval : summary.readyForReview],
+      ["Remediation", summary.brandsNeedsRemediation != null ? summary.brandsNeedsRemediation : summary.needsRemediation],
+      ["Persisted", summary.brandsPersisted != null ? summary.brandsPersisted : 0],
+      ["Published", summary.brandsPublished != null ? summary.brandsPublished : summary.published],
+      ["Blocked", summary.brandsBlocked != null ? summary.brandsBlocked : summary.blocked],
       ["Protected", summary.skippedProtected],
       ["Spend $", summary.researchSpendUsdTotal],
       ["Exp. writes", summary.expectedPublicationWritesTotal],
@@ -84,7 +88,10 @@
     }
     body.innerHTML = rows
       .map(function (r) {
-        var canSelect = r.factoryStatus === "READY_FOR_REVIEW" && r.candidateHash;
+        var canSelect =
+          (r.factoryStatus === "READY_FOR_REVIEW" ||
+            r.factoryStatus === "CERTIFIED_READY_FOR_REVIEW") &&
+          r.candidateHash;
         var checked = state.selected[r.brandId] ? " checked" : "";
         var gaps = Array.isArray(r.researchGaps) ? r.researchGaps.slice(0, 3).join("; ") : "";
         return (

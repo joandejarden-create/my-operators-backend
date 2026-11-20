@@ -5,7 +5,9 @@
 
 ## Purpose
 
-Stop per-brand founder interruption during research. Queue all Active/Live Brand Basics brands, research/stage/certify automatically, then review the portfolio together in Admin Resources → **Brand Explorer Batch Review**.
+Stop per-brand founder interruption during research. Maintain a **durable master queue** that accounts for every founder-authorized research batch (Active/Live **and** EXISTING_CANONICAL Draft/Under Review), research/stage/certify automatically, then review the portfolio together in Admin Resources → **Brand Explorer Batch Review**.
+
+An Active/Live-only cohort (or a six-brand execution slice) must **never** discard pending authorized brands.
 
 ## Hard rules
 
@@ -14,12 +16,14 @@ Stop per-brand founder interruption during research. Queue all Active/Live Brand
 - No generic approval token — each brand requires its exact `candidateHash`.
 - Approval records tokens + write-plan fingerprints only; **does not** write production Presentation.
 - Paid research budget defaults to `$0` until explicitly raised per brand.
-- Missing-brand creation is out of scope until the existing inventory is processed.
+- New Brand Basics creates require identity + creation approval; reuse EXISTING_CANONICAL IDs first.
+- Master queue reconcile merges Active/Live inventory + all authorized batches + staged folders.
 
 ## Commands
 
 ```bash
-npm run be-factory-2-queue-build          # Airtable Active/Live → durable queue
+npm run be-factory-2-queue-build          # Airtable Active/Live → durable queue seed
+npm run be-factory-2-master-queue-reconcile  # merge all authorized batches into master queue + dashboard
 npm run be-factory-2-process-batch -- --limit 5
 npm run be-factory-2-process-batch -- --force --brand rec…
 npm run be-factory-2-confirm-batch-ids
@@ -31,6 +35,7 @@ npm run be-factory-2-batch6               # Ritz / St. Regis / EDITION / Luxury 
 npm run be-factory-2-batch7               # Garner / Sleep Inn / Econo / Rodeway / MainStay / Days Inn / Super 8 / Microtel / Baymont / Travelodge
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
+npm run test:be-factory-2-master-queue-reconcile-v1
 npm run test:be-factory-2-named-batch-five-v1
 npm run test:be-factory-2-batch3-v1
 npm run test:be-factory-2-batch4-v1
@@ -93,6 +98,30 @@ Review package: `reports/brand-explorer/factory-2-0/61-batch7-consolidated-revie
 
 ## Status vocabulary
 
-`QUEUED` · `RESEARCH_IN_PROGRESS` · `READY_FOR_REVIEW` · `NEEDS_REMEDIATION` · `APPROVED` · `PUBLISHED` · `SKIPPED_PROTECTED` · `BLOCKED`
+Master queue:
 
-CURRENT Presentation baselines are staged as `NEEDS_REMEDIATION` until a Factory-depth candidate closes gaps. Only Autograph (exact candidate + permanent standards) and future Curio-parity candidates reach `READY_FOR_REVIEW`.
+`QUEUED` · `RESEARCHING` · `NEEDS_REMEDIATION` · `CERTIFIED_READY_FOR_REVIEW` · `APPROVED_FOR_WRITEBACK` · `PERSISTED_VERIFIED` · `PUBLISHED` · `SKIPPED_PROTECTED` · `BLOCKED`
+
+Legacy aliases (`RESEARCH_IN_PROGRESS`, `READY_FOR_REVIEW`, `APPROVED`) normalize into the master vocabulary.
+
+Separate axes (not collapsed into one status):
+
+- **structuredResearch** — staging / structured persistence
+- **presentationWriteback** — exact-candidate authorization → verified Presentation write
+- **customerPublication** — customer-visible publication
+
+CURRENT Presentation baselines are staged as `NEEDS_REMEDIATION` until a Factory-depth candidate closes gaps. Only Autograph (exact candidate + permanent standards) and future Curio-parity candidates reach `CERTIFIED_READY_FOR_REVIEW`.
+
+## Master queue reconcile
+
+```bash
+npm run be-factory-2-master-queue-reconcile
+```
+
+Writes:
+
+- `data/brand-explorer/factory-2-0/queue.json` (kind: `MASTER_QUEUE`)
+- `reports/brand-explorer/factory-2-0/70-master-queue-reconcile.md`
+- refreshed `portfolio-dashboard.json` + founder dashboard
+
+Authorized batch registry: `lib/brand-explorer/factory-2/be-factory-2-authorized-batches-v1.js`.

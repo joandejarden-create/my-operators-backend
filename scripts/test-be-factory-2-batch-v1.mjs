@@ -136,7 +136,11 @@ function main() {
   assert(good.ok && good.approvedCount === 1, "exact candidate approval recorded");
   assert(good.productionWritebackExecuted === undefined || good.productionWritebackExecuted === false, "no production write");
   const stage = loadBrandStage(ROOT, "recTESTREADY001");
-  assert(stage.factoryStatus === FACTORY_2_STATUSES.APPROVED, "stage marked APPROVED");
+  assert(
+    stage.factoryStatus === FACTORY_2_STATUSES.APPROVED_FOR_WRITEBACK ||
+      stage.factoryStatus === FACTORY_2_STATUSES.APPROVED,
+    "stage marked APPROVED_FOR_WRITEBACK"
+  );
   assert(stage.writebackAuthorized === false, "writeback still false after approval record");
   assert(stage.approval?.tokenId?.startsWith("be-f2-appr-"), "per-candidate token minted");
 
