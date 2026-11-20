@@ -4,41 +4,40 @@ Generated: 2026-11-20T10:10:25.177Z
 
 ## Authorization respected
 
-- PDL ≤ 10 successful credits (consumed: **2**)
-- Prospeo ≤ 10 email credits (consumed est: **3**; account Δ remaining: **3**)
+- PDL ≤ 10 successful credits (consumed: **2**; remaining header ~**697**)
+- Prospeo ≤ 10 email credits (consumed: **3**; remaining **97** / was 100)
 - Mobile / FullEnrich / Surfe enrich / Apollo: **not used**
 
-## Balances
+## Corrected metrics (post-hoc quarantine)
 
-- Prospeo before: plan=FREE remaining=100 used=0
-- Prospeo after: remaining=97 used=3
-- PDL: no free balance API; successful-match credits counted = 2
+| Measure | Raw | Corrected |
+|---|---:|---:|
+| PARTIAL → READY | 0 | **0** |
+| PDL HTTP 200 matches | 2 | 2 |
+| PDL identity accepted (strict employer) | 2 | **0** |
+| PDL LinkedIn verified usable | 0 | **0** |
+| Prospeo named emails accepted | 2 | **0** |
+| Quarantined | — | **10** |
 
-## Metrics
+### Critical findings
+1. **Prospeo parser bug:** email sometimes returned as object → serialized as `[object Object]`. Two false accepts (Daryl Simon, Andrew Bartucci) quarantined. Parser fixed in `lib/prospeo/client.js` for future runs — **no re-bill**.
+2. **PDL wrong-employer matches:** Abbas → Az Digital Health Consulting (not U of Toronto IHPME); Agathe → Idyom Translations (not OENOVITI). Quarantined under strict employer gate.
+3. **Abbas Prospeo:** 1 credit spent, result quarantined (employer/domain mismatch).
+4. **Surfe readiness:** no PARTIAL→READY movement; do not claim higher Surfe match rate.
 
-| Measure | Value |
-|---|---:|
-| PARTIAL → READY | 0 |
-| PDL matches | 2 |
-| PDL identity accepted | 2 |
-| PDL LinkedIn verified | 0 |
-| Prospeo named emails accepted | 2 |
-| Quarantined | 8 |
-| PDL∩Prospeo same email | 0 |
-| Surfe input fields improved | 2 |
+## Credits consumed
+- PDL: **2** successful enrich credits (headers show ~697–698 remaining)
+- Prospeo: **3** credits (100 → 97)
 
 ## Recommendations
-
-- **PDL:** YES_OPTIONAL — use when LinkedIn/employer unresolved after public research; gate on identity_match_accepted
-- **Prospeo:** YES_SELECTIVE — email-only after public+PDL miss; keep provider-derived / non-customer until Order permits
-- **FullEnrich:** HOLD — not tested; revisit only if PDL+Prospeo miss rate stays high on larger PARTIAL set
-- **Surfe Search:** HOLD — zero search credits; Search is org/role discovery not exact-person; Enrich remains on-click
-- **Customer-facing:** Public-verified only by default. PDL embedded permission needs counsel check for hotel disclosure. Prospeo standard ToS does not authorize customer disclosure without Schedule 5/Order.
+- **PDL:** WEAK_THIS_COHORT_FOR_IDENTITY — 2 raw matches both failed strict employer corroboration; keep as optional probe only
+- **Prospeo:** ADAPTER_FIXED_PARSER — this cohort yielded 0 safely parsed accepted emails after quarantine; 3 credits spent (2 false-positive object emails + 1 employer-mismatch). Re-test parser on 1–2 contacts before broader use.
+- **FullEnrich:** HOLD — not tested; revisit only if public+PDL+Prospeo miss rate stays high
+- **Surfe Search:** HOLD — zero search credits; org/role discovery not exact-person
+- **Customer-facing:** Public-verified only by default. No provider-derived channels from this pilot enter customer-visible records. PDL embedded permission still needs counsel check before hotel disclosure. Prospeo standard ToS blocks customer disclosure without Order.
 
 ## Persistence
-
 INTERNAL_EVALUATION_REPORT_ONLY — no canonical public-source writes; no STAGED→CURRENT.
 
 ## STOP
-
 STOP after ten-contact evaluation. No full-database backfill. No mobile. No Surfe/FullEnrich/Apollo.

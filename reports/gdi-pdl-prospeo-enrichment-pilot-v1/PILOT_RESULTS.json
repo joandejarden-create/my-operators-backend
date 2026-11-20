@@ -135,20 +135,24 @@
     "cohortSize": 10,
     "skippedEntirely": 0,
     "pdlMatched": 2,
-    "pdlIdentityAccepted": 2,
+    "pdlIdentityAccepted": 0,
     "pdlLinkedInVerified": 0,
-    "prospeoNamedEmailsAccepted": 2,
-    "quarantined": 8,
+    "prospeoNamedEmailsAccepted": 0,
+    "quarantined": 10,
     "movedPartialToReady": 0,
     "pdlProspeoEmailOverlap": 0,
-    "surfeInputsImproved": 2
+    "surfeInputsImproved": 2,
+    "postHocCorrectionsApplied": true,
+    "note": "Prospeo email object-serialization false positives quarantined; PDL cross-employer matches quarantined (Abbas→Az Digital Health; Agathe→Idyom Translations)."
   },
   "costPerValidIncrementalRecovery": {
     "pdlCredits": 2,
     "prospeoCredits": 3,
-    "acceptedProspeoEmails": 2,
-    "acceptedPdlIdentity": 2,
-    "note": "Provider-derived — not customer-publishable without license confirmation"
+    "acceptedProspeoEmails": 0,
+    "acceptedPdlIdentityStrict": 0,
+    "costPerValidProspeoEmail": null,
+    "costPerValidPdlIdentity": null,
+    "note": "Zero valid Prospeo emails after correction; PDL successful credits=2 with 0 strict employer-accepted identities"
   },
   "licensing": {
     "persistenceMode": "INTERNAL_EVALUATION_REPORT_ONLY",
@@ -158,11 +162,11 @@
     "prospeo": "Standard ToS = internal B2B use; provider-derived emails must NOT auto-enter customer-visible research records"
   },
   "recommendations": {
-    "pdlAsOptionalIdentityProvider": "YES_OPTIONAL — use when LinkedIn/employer unresolved after public research; gate on identity_match_accepted",
-    "prospeoAsSelectiveEmailFallback": "YES_SELECTIVE — email-only after public+PDL miss; keep provider-derived / non-customer until Order permits",
-    "fullenrichStillNeeded": "HOLD — not tested; revisit only if PDL+Prospeo miss rate stays high on larger PARTIAL set",
-    "surfeSearchPeople": "HOLD — zero search credits; Search is org/role discovery not exact-person; Enrich remains on-click",
-    "customerFacingLawfulUse": "Public-verified only by default. PDL embedded permission needs counsel check for hotel disclosure. Prospeo standard ToS does not authorize customer disclosure without Schedule 5/Order."
+    "pdlAsOptionalIdentityProvider": "WEAK_THIS_COHORT_FOR_IDENTITY — 2 raw matches both failed strict employer corroboration; keep as optional probe only",
+    "prospeoAsSelectiveEmailFallback": "ADAPTER_FIXED_PARSER — this cohort yielded 0 safely parsed accepted emails after quarantine; 3 credits spent (2 false-positive object emails + 1 employer-mismatch). Re-test parser on 1–2 contacts before broader use.",
+    "fullenrichStillNeeded": "HOLD — not tested; revisit only if public+PDL+Prospeo miss rate stays high",
+    "surfeSearchPeople": "HOLD — zero search credits; org/role discovery not exact-person",
+    "customerFacingLawfulUse": "Public-verified only by default. No provider-derived channels from this pilot enter customer-visible records. PDL embedded permission still needs counsel check before hotel disclosure. Prospeo standard ToS blocks customer disclosure without Order."
   },
   "results": [
     {
@@ -293,11 +297,12 @@
           "company": "ihpme.utoronto.ca",
           "profile": "https://www.linkedin.com/in/abbaszavar/"
         },
-        "identityAccepted": true,
+        "identityAccepted": false,
         "affiliationAccepted": false,
-        "quarantined": false,
+        "quarantined": true,
         "dataOrigin": "PDL_PROVIDER_DERIVED",
-        "independentlyVerifiedPublic": false
+        "independentlyVerifiedPublic": false,
+        "linkedInVerified": false
       },
       "prospeo": {
         "skipped": false,
@@ -430,9 +435,19 @@
           "message": "Surfe input prepared with verified LinkedIn + name/company context (no paid call)."
         },
         "movedPartialToReady": false,
-        "prospeoEmailAccepted": false
+        "prospeoEmailAccepted": false,
+        "note": "Corrected after employer/email validation"
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {
+        "pdl": {
+          "originalAccepted": true,
+          "employerCorroboratedStrict": false,
+          "pdlCompany": "Az Digital Health Consulting",
+          "correctedAccepted": false,
+          "quarantine": true
+        }
+      }
     },
     {
       "personName": "Daryl Simon",
@@ -560,9 +575,9 @@
       "prospeo": {
         "skipped": false,
         "reason": null,
-        "ok": true,
+        "ok": false,
         "miss": false,
-        "quarantined": false,
+        "quarantined": true,
         "creditsConsumed": 1,
         "verification": {
           "accepted": true,
@@ -575,7 +590,7 @@
           "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
           "independentlyVerifiedPublic": false
         },
-        "email": "[object object]",
+        "email": null,
         "free_enrichment": false,
         "request_sanitized": {
           "only_verified_email": true,
@@ -683,9 +698,18 @@
           "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
         },
         "movedPartialToReady": false,
-        "prospeoEmailAccepted": false
+        "prospeoEmailAccepted": false,
+        "note": "Corrected after employer/email validation"
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {
+        "prospeo": {
+          "originalOk": true,
+          "correctedOk": false,
+          "reason": "EMAIL_FIELD_WAS_OBJECT_PARSER_BUG_QUARANTINED",
+          "creditsStillConsumed": 1
+        }
+      }
     },
     {
       "personName": "Ariela Kiradjian",
@@ -941,7 +965,8 @@
         "movedPartialToReady": false,
         "prospeoEmailAccepted": false
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {}
     },
     {
       "personName": "Francesco Francavilla",
@@ -1197,7 +1222,8 @@
         "movedPartialToReady": false,
         "prospeoEmailAccepted": false
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {}
     },
     {
       "personName": "Olivia Jallits",
@@ -1453,7 +1479,8 @@
         "movedPartialToReady": false,
         "prospeoEmailAccepted": false
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {}
     },
     {
       "personName": "Aimee Welsh",
@@ -1708,7 +1735,8 @@
         "movedPartialToReady": false,
         "prospeoEmailAccepted": false
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {}
     },
     {
       "personName": "Agathe Lairy",
@@ -1837,11 +1865,12 @@
           "last_name": "Lairy",
           "company": "oenoviti.u-bordeaux.fr"
         },
-        "identityAccepted": true,
+        "identityAccepted": false,
         "affiliationAccepted": true,
-        "quarantined": false,
+        "quarantined": true,
         "dataOrigin": "PDL_PROVIDER_DERIVED",
-        "independentlyVerifiedPublic": false
+        "independentlyVerifiedPublic": false,
+        "linkedInVerified": false
       },
       "prospeo": {
         "skipped": false,
@@ -1972,9 +2001,19 @@
           "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
         },
         "movedPartialToReady": false,
-        "prospeoEmailAccepted": false
+        "prospeoEmailAccepted": false,
+        "note": "Corrected after employer/email validation"
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {
+        "pdl": {
+          "originalAccepted": true,
+          "employerCorroboratedStrict": false,
+          "pdlCompany": "Idyom Translations",
+          "correctedAccepted": false,
+          "quarantine": true
+        }
+      }
     },
     {
       "personName": "Alexandre Catton",
@@ -2229,7 +2268,8 @@
         "movedPartialToReady": false,
         "prospeoEmailAccepted": false
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {}
     },
     {
       "personName": "Andrew Bartucci",
@@ -2357,9 +2397,9 @@
       "prospeo": {
         "skipped": false,
         "reason": null,
-        "ok": true,
+        "ok": false,
         "miss": false,
-        "quarantined": false,
+        "quarantined": true,
         "creditsConsumed": 1,
         "verification": {
           "accepted": true,
@@ -2372,7 +2412,7 @@
           "dataOrigin": "PROSPEO_PROVIDER_DERIVED",
           "independentlyVerifiedPublic": false
         },
-        "email": "[object object]",
+        "email": null,
         "free_enrichment": false,
         "request_sanitized": {
           "only_verified_email": true,
@@ -2480,9 +2520,18 @@
           "message": "Surfe input prepared with verified name + employer/domain fallback (no paid call)."
         },
         "movedPartialToReady": false,
-        "prospeoEmailAccepted": false
+        "prospeoEmailAccepted": false,
+        "note": "Corrected after employer/email validation"
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {
+        "prospeo": {
+          "originalOk": true,
+          "correctedOk": false,
+          "reason": "EMAIL_FIELD_WAS_OBJECT_PARSER_BUG_QUARANTINED",
+          "creditsStillConsumed": 1
+        }
+      }
     },
     {
       "personName": "Ben Hawkins",
@@ -2737,7 +2786,8 @@
         "movedPartialToReady": false,
         "prospeoEmailAccepted": false
       },
-      "skippedEntirely": false
+      "skippedEntirely": false,
+      "corrections": {}
     }
   ],
   "stop": "STOP after ten-contact evaluation. No full-database backfill. No mobile. No Surfe/FullEnrich/Apollo."
