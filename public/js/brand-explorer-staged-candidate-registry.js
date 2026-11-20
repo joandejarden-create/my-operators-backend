@@ -449,6 +449,136 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: 'b317d06e90df190fb5804078e9f9b93e71b69cf60c6429631be4f64150b0e728'
+    },
+    {
+      id: 'recX9RJcmafZxWdXx',
+      slug: 'ritz-carlton',
+      name: 'The Ritz-Carlton',
+      overlayUrl: '/brand-explorer-phase2e-preview/ritz-carlton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '659b46483a83bfe8777d28df45b5e269cdbc3d1fc612c1ebf97d4c52bc9e8107'
+    },
+    {
+      id: 'recYsUrz4Po7Tg48T',
+      slug: 'st-regis',
+      name: 'St. Regis Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/st-regis-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '75ffb9606fd3fd01281256da3d2f895287590771bb6dfbbc9ca0af8697e750c9'
+    },
+    {
+      id: 'rec66ikTdLlT49Vkh',
+      slug: 'edition-hotels',
+      name: 'EDITION Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/edition-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '5e0c1a86e39447c2a22f5a9b0be2583ab785d35e3d96df38361e8b15a4a6c7bb'
+    },
+    {
+      id: 'recpKmYbyFr8ScGTi',
+      slug: 'luxury-collection',
+      name: 'The Luxury Collection',
+      overlayUrl: '/brand-explorer-phase2e-preview/luxury-collection-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '7385b4995f5c508e86ac0bac5663d845c022ee1d00422064793a10625edfb4b8'
+    },
+    {
+      id: 'recmj7cNIUbYPKVJl',
+      slug: 'renaissance-hotels',
+      name: 'Renaissance Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/renaissance-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '7847806e0566639e125fcf15b59973399531886768030e06012e1a748fdf6c86'
+    },
+    {
+      id: 'recJUualJaqReVHLO',
+      slug: 'signia-by-hilton',
+      name: 'Signia by Hilton',
+      overlayUrl: '/brand-explorer-phase2e-preview/signia-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '07cabdbd707656155a25992bcfc7ff836f52ed5c49c3c8faee1c88e090a0fa3f'
+    },
+    {
+      id: 'reczor3qV3qAXFydD',
+      slug: 'alila',
+      name: 'Alila',
+      overlayUrl: '/brand-explorer-phase2e-preview/alila-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '22026b685e8f3ab78b673a3a7f452f285dd28e2d31aa86e85473466075bf72ce'
+    },
+    {
+      id: 'recumPNYZZkNdbTXF',
+      slug: 'hyatt-house',
+      name: 'Hyatt House',
+      overlayUrl: '/brand-explorer-phase2e-preview/hyatt-house-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3b60eebb1ad9fd84a62a5f40d53367099c6e9f3b19cf6a57b81a29a233cd9b62'
+    },
+    {
+      id: 'recC3w95Hgi9SzXzD',
+      slug: 'intercontinental',
+      name: 'InterContinental Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/intercontinental-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '61b4b001b12875fdcf18f8cd14615ce4a956fd1bef2780a7490ac6b0c91a0c82'
+    },
+    {
+      id: 'rec4ckn09CLLmppCe',
+      slug: 'six-senses',
+      name: 'Six Senses Hotels Resorts Spas',
+      overlayUrl: '/brand-explorer-phase2e-preview/six-senses-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-6-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3bdae3d0e9cd0027d08ca93d5001a70adcf678d7337741b7cefb854853364760'
     }
   ];
 
@@ -531,6 +661,16 @@
     if (/park hyatt/i.test(name)) return bySlug('park-hyatt');
     if (/grand hyatt/i.test(name)) return bySlug('grand-hyatt');
     if (/^andaz\b/i.test(name)) return bySlug('andaz');
+    if (/ritz[- ]?carlton/i.test(name)) return bySlug('ritz-carlton');
+    if (/st\.?\s*regis/i.test(name)) return bySlug('st-regis');
+    if (/\bedition\b/i.test(name)) return bySlug('edition-hotels');
+    if (/luxury collection/i.test(name)) return bySlug('luxury-collection');
+    if (/renaissance/i.test(name)) return bySlug('renaissance-hotels');
+    if (/signia/i.test(name)) return bySlug('signia-by-hilton');
+    if (/^alila\b/i.test(name)) return bySlug('alila');
+    if (/hyatt house/i.test(name)) return bySlug('hyatt-house');
+    if (/intercontinental/i.test(name)) return bySlug('intercontinental');
+    if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
   }

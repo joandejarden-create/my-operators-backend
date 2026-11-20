@@ -27,12 +27,14 @@ npm run be-factory-2-named-batch-five     # AC / Moxy / Vignette / Canopy / EVEN
 npm run be-factory-2-batch3               # voco / Motto / avid / Tribute / Indigo
 npm run be-factory-2-batch4               # Tapestry / Tempo / Design / Aloft / Kimpton / Bunkhouse / Centric / Courtyard / Westin / HI Express
 npm run be-factory-2-batch5               # JW / W / Le Méridien / Waldorf / Conrad / LXR / Park Hyatt / Grand Hyatt / Andaz / Hyatt Place
+npm run be-factory-2-batch6               # Ritz / St. Regis / EDITION / Luxury Collection / Renaissance / Signia / Alila / Hyatt House / InterContinental / Six Senses
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
 npm run test:be-factory-2-named-batch-five-v1
 npm run test:be-factory-2-batch3-v1
 npm run test:be-factory-2-batch4-v1
 npm run test:be-factory-2-batch5-v1
+npm run test:be-factory-2-batch6-v1
 ```
 
 ## Named batch five (2026-11-20)
@@ -60,6 +62,12 @@ Review package: `reports/brand-explorer/factory-2-0/31-batch4-consolidated-revie
 Ten brands previously absent from Active/Live Factory inventory but **already present** as Draft/Under Review Brand Basics (no new Basics creates): JW Marriott, W Hotels, Le Méridien, Waldorf Astoria, Conrad, LXR, Park Hyatt, Grand Hyatt, Andaz, Hyatt Place.  
 Empty Presentation → staged create plans; fee exhibits + verified gallery CDN remain READY blockers ($0 paid).  
 Review package: `reports/brand-explorer/factory-2-0/41-batch5-consolidated-review.md`.
+
+## Batch 6 (2026-11-20)
+
+Ten brands: Ritz-Carlton, St. Regis, EDITION, Luxury Collection, Renaissance, Signia by Hilton, Alila, Hyatt House, InterContinental, Six Senses.  
+All EXISTING_CANONICAL Draft/Under Review (no Basics creates). Management-led luxury fee language does not invent franchise percentages.  
+Review package: `reports/brand-explorer/factory-2-0/51-batch6-consolidated-review.md`.
 
 ## Durable storage
 
