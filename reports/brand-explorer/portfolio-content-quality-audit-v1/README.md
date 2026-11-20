@@ -20,7 +20,12 @@ Generated: 2026-11-20T15:12:04.716Z
 | `13-loyalty-tier-audit-summary.json` | Loyalty Elite Tier audit summary |
 | `14-loyalty-tier-brand-matrix.json` | Brand × program × tier matrix |
 | `15-loyalty-tier-audit-dashboard.md` | Founder loyalty tier dashboard |
+| `16-loyalty-glance-kpi-audit-summary.json` | Loyalty at a Glance KPI summary |
+| `17-loyalty-glance-kpi-brand-matrix.json` | Brand × four KPI matrix |
+| `18-loyalty-glance-kpi-audit-dashboard.md` | Founder loyalty KPI dashboard |
 
-Permanent: `BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1` / `BE-QL-LOYALTY-TIER-COMPLETENESS-001` — Elite Tiers show actual official tier count (distinct from Key Benefits exact-six).
+Permanent rules (independent):
+- `BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1` — Elite Tiers = actual official tier count
+- `BE_FACTORY_PERMANENT_LOYALTY_GLANCE_KPI_V1` — Loyalty at a Glance = four meaningful KPIs (Estimated Loyalty Mix authorized when labeled)
 
-Verdict: see `05-founder-dashboard.md`. `LOYALTY_TIER_AUDIT_COMPLETE` = **NO** until :8080 Comparison Studio certification.
+Verdict: see `05-founder-dashboard.md`. `LOYALTY_TIER_AUDIT_COMPLETE` / `LOYALTY_GLANCE_KPI_AUDIT_COMPLETE` = **NO** until :8080 certification.

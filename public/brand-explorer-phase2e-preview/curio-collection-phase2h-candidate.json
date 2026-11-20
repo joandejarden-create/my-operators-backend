@@ -948,46 +948,6 @@
         "source": "phase2d-independent-candidate"
       },
       {
-        "slotKey": "loyalty.kpi.hotels",
-        "title": "",
-        "body": "Curio Collection by Hilton · loyalty KPI (hotels): request current Hilton Honors network figures from Hilton Worldwide development — Use disclosure/scorecards only.",
-        "sort": 96,
-        "active": true,
-        "imageUrl": null,
-        "externalDisplayStatus": "Internal Preview",
-        "source": "phase2d-independent-candidate"
-      },
-      {
-        "slotKey": "loyalty.kpi.markets",
-        "title": "",
-        "body": "Curio Collection by Hilton · loyalty KPI (markets): request current Hilton Honors network figures from Hilton Worldwide development — Use disclosure/scorecards only.",
-        "sort": 97,
-        "active": true,
-        "imageUrl": null,
-        "externalDisplayStatus": "Internal Preview",
-        "source": "phase2d-independent-candidate"
-      },
-      {
-        "slotKey": "loyalty.kpi.members",
-        "title": "",
-        "body": "Curio Collection by Hilton · loyalty KPI (members): request current Hilton Honors network figures from Hilton Worldwide development — Use disclosure/scorecards only.",
-        "sort": 98,
-        "active": true,
-        "imageUrl": null,
-        "externalDisplayStatus": "Internal Preview",
-        "source": "phase2d-independent-candidate"
-      },
-      {
-        "slotKey": "loyalty.kpi.mix",
-        "title": "",
-        "body": "Curio Collection by Hilton · loyalty KPI (mix): request current Hilton Honors network figures from Hilton Worldwide development — Use disclosure/scorecards only.",
-        "sort": 99,
-        "active": true,
-        "imageUrl": null,
-        "externalDisplayStatus": "Internal Preview",
-        "source": "phase2d-independent-candidate"
-      },
-      {
         "slotKey": "loyalty.owner_lens",
         "title": "Owner Lens",
         "body": "Model loyalty as net room revenue after member discounts, elite benefits, and program chargebacks.\nHilton Honors drives member demand to Curio Collection by Hilton properties through earn/redeem interoperability across the Hilton Worldwide portfolio.\nRequest current contribution / reimbursement mechanics before underwriting RevPAR lift.",
@@ -1006,6 +966,62 @@
         "imageUrl": null,
         "externalDisplayStatus": "Internal Preview",
         "source": "phase2d-independent-candidate"
+      },
+      {
+        "slotKey": "loyalty.kpi.members",
+        "title": "Members",
+        "body": "235M+",
+        "kpiNote": "program-wide · as of 2025-10 · Hilton Q3 2025 Fact Sheet",
+        "sort": 3200,
+        "active": true,
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyKpiKind": "verified",
+        "loyaltyKpiAsOf": "2025-10",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyMixConfidence": null,
+        "loyaltyMixMethodology": null
+      },
+      {
+        "slotKey": "loyalty.kpi.hotels",
+        "title": "Participating Hotels",
+        "body": "9,000+",
+        "kpiNote": "Hilton system (incl. timeshare/strategic partners as disclosed) · as of 2025-10 · Hilton Q3 2025 Fact Sheet",
+        "sort": 3201,
+        "active": true,
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyKpiKind": "verified",
+        "loyaltyKpiAsOf": "2025-10",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyMixConfidence": null,
+        "loyaltyMixMethodology": null
+      },
+      {
+        "slotKey": "loyalty.kpi.markets",
+        "title": "Markets",
+        "body": "141",
+        "kpiNote": "Hilton system footprint · as of 2025-10 · Hilton Q3 2025 Fact Sheet",
+        "sort": 3202,
+        "active": true,
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyKpiKind": "verified",
+        "loyaltyKpiAsOf": "2025-10",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyMixConfidence": null,
+        "loyaltyMixMethodology": null
+      },
+      {
+        "slotKey": "loyalty.kpi.mix",
+        "title": "Estimated Loyalty Mix",
+        "body": "48–63%",
+        "kpiNote": "Estimated share of occupied room nights from loyalty members. Dealality estimate based on brand positioning (luxury), loyalty-program reach and comparable hotel benchmarks.",
+        "sort": 3203,
+        "active": true,
+        "source": "https://www.hilton.com/en/hilton-honors/",
+        "loyaltyKpiKind": "estimated",
+        "loyaltyKpiAsOf": "2026-11-20",
+        "loyaltyProgramId": "hilton_honors",
+        "loyaltyMixConfidence": "Medium",
+        "loyaltyMixMethodology": "dealality_loyalty_mix_estimate_v1"
       },
       {
         "slotKey": "loyalty.proof",
@@ -2268,11 +2284,21 @@
   "phase2hContract": "BE_PHASE2H_DEPTH_COMPOSITION_V1",
   "enrichedAt": "2026-11-19T15:09:19.087Z",
   "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
-  "approvalContentHash": "1a6f954b649e15d7fb63ee94e88c32e67ca8d73296226f91bdb267f7d09d93b8",
+  "approvalContentHash": "2bb70e3f307cb0ce67e0cbcf42daec704990a0ace3020d732fe00daf9b64ed6e",
   "loyaltyTierCompletenessRemediation": {
     "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
     "remediatedAt": "2026-11-20T15:23:11.981Z",
     "programId": "hilton_honors",
     "note": "phase2h golden candidate remediated for elite tier completeness"
+  },
+  "loyaltyGlanceKpiRemediation": {
+    "contract": "BE_FACTORY_PERMANENT_LOYALTY_GLANCE_KPI_V1",
+    "lesson": "BE-QL-LOYALTY-GLANCE-KPI-001",
+    "remediatedAt": "2026-11-20T15:31:55.257Z",
+    "programId": "hilton_honors",
+    "researchSpendUsd": 0,
+    "mixKind": "estimated",
+    "beforeVerified": 0,
+    "afterVerified": 4
   }
 }

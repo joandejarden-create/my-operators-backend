@@ -803,6 +803,42 @@
         "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-collapsed-four-to-one.json",
         "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-removes-valid-tier.json"
       ]
+    },
+    {
+      "lessonId": "BE-QL-LOYALTY-GLANCE-KPI-001",
+      "date": "2026-11-20",
+      "phase": "FACTORY-2-0",
+      "founderObservation": "SureStay Plus by Best Western rendered four Loyalty at a Glance KPI cards all as N/A in both CURRENT and PROPOSED. Four empty containers are not four completed KPIs — owners need meaningful, evidence-backed loyalty metrics.",
+      "affected": [
+        "loyalty.kpi.members",
+        "loyalty.kpi.hotels",
+        "loyalty.kpi.markets",
+        "loyalty.kpi.mix",
+        "Loyalty at a Glance",
+        "Comparison Studio",
+        "Factory 2.0 depth candidate builder",
+        "canonical program KPI registry",
+        "atelier loyalty renderer"
+      ],
+      "correctExpectedBehavior": "Participating brands show exactly four meaningful Loyalty at a Glance KPI cards with verified program-level Members / Participating Hotels / Markets where available, and Typical Loyalty Mix as a verified actual OR a clearly labeled evidence-informed Estimated Loyalty Mix range. Never certify all-N/A panels. Reuse shared program KPI intelligence across participating brands with explicit scope labels. Preserve stronger CURRENT values against weaker PROPOSED.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-glance-all-na-surestay.json",
+      "associatedContract": "BE_FACTORY_PERMANENT_LOYALTY_GLANCE_KPI_V1",
+      "automatedRegressionTest": "test:be-factory-permanent-loyalty-glance-kpi-v1",
+      "browserValidationEvidence": "reports/brand-explorer/portfolio-content-quality-audit-v1/18-loyalty-glance-kpi-audit-dashboard.md",
+      "status": "TESTED",
+      "supersededRule": "Treating four rendered Loyalty at a Glance KPI shells (including all N/A) as complete; forbidding evidence-informed Estimated Loyalty Mix",
+      "linkedRequirementIds": [
+        "BE-QL-LOYALTY-SIX-001",
+        "BE-QL-LOYALTY-TIER-COMPLETENESS-001"
+      ],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-loyalty-glance-kpi-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-glance-all-na-surestay.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-glance-regression-na-over-current.json"
+      ]
     }
   ]
 }

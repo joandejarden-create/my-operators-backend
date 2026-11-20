@@ -5039,11 +5039,21 @@
             lbl = String(r.title).trim();
           }
           var blockVal = r && hasVal(r.body) ? String(r.body).trim() : '';
-          // Prefer compact presentation values; reject diligence prose in KPI slots
-          if (blockVal && isCompactKpiValue(blockVal) && !/^not disclosed$/i.test(blockVal)) {
+          var blockNote =
+            (r && hasVal(r.kpiNote) && String(r.kpiNote).trim()) ||
+            (r && hasVal(r.note) && String(r.note).trim()) ||
+            '';
+          var isNaBlock = /^(n\/?a|not disclosed|unavailable|—|-)$/i.test(blockVal);
+          // Prefer compact presentation values; reject diligence prose and empty N/A shells
+          if (
+            blockVal &&
+            isCompactKpiValue(blockVal) &&
+            !isNaBlock &&
+            !/^not disclosed$/i.test(blockVal)
+          ) {
             return kpiCard(lbl, blockVal, {
               role: structured.role,
-              note: structured.note,
+              note: blockNote || structured.note,
               unavailable: false
             });
           }
@@ -5055,10 +5065,10 @@
               unavailable: false
             });
           }
-          if (blockVal && /^not disclosed$/i.test(blockVal)) {
+          if (blockVal && (isNaBlock || /^not disclosed$/i.test(blockVal))) {
             return kpiCard(lbl, 'N/A', {
               role: structured.role || 'number',
-              note: structured.note || 'Not disclosed in available materials',
+              note: blockNote || structured.note || 'Not disclosed in available materials',
               unavailable: true
             });
           }

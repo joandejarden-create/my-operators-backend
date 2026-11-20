@@ -48,7 +48,7 @@
       source: 'phase2h-factory-1-0-frozen-approval',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash:
-        '43c473e65fa26df531ec4886a8f7373992fff0a335f2cc94c3205898cf9ba7e6'
+        '82312419db2f4118c45ff71306e533fcf34ae216c7c3360bb0c6233e0e239c98'
     },
     {
       id: 'rec9aZp7GHtzUEg0c',
@@ -62,7 +62,7 @@
       candidateVersion: 'factory-2-0-depth-batch-five-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'a6a3d188f4ec7937e6a7a81ac5bd9b525e9058db65c59cc403dc1bdae1c5a72a'
+      approvalContentHash: '5bad6e765dc37aae40a196f866a2c805a255cd22188eacb6f7de5dad51229779'
     },
     {
       id: 'recahVIW4aCx0Ao84',
@@ -76,7 +76,7 @@
       candidateVersion: 'factory-2-0-depth-batch-five-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '56ddf490d08f4f43d3d0b144b1e3f1dce93876577e8d361051f8abe5c6836b34'
+      approvalContentHash: '773141cf77faa6c51c4b1c4bd0995dffff037ec4c9e9affe8c8b3ea442e297cc'
     },
     {
       id: 'recDwzv86TWnz2gGB',
@@ -90,7 +90,7 @@
       candidateVersion: 'factory-2-0-depth-batch-five-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '720302e62e22fd935fc2ff45becb472b2456180c3891ff29c00a13b8698c21ec'
+      approvalContentHash: 'f75be4d7abf35b1b9cddf4d9cf3a9e1edd2c51644913c922f366f89351bd364f'
     },
     {
       id: 'recsggfbKlJbjeRP9',
@@ -118,7 +118,7 @@
       candidateVersion: 'factory-2-0-depth-batch-five-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'aac8348e1e6eee92ed4ce2fd798be63c7f06c235903c204e35ddbc5bbaca79f1'
+      approvalContentHash: '4f0823f6b8df5751098934c6bf9451ce9e7b04369fcf1129d0930766d8b3c77d'
     },
     {
       id: 'recwONQTqGU1jHCsM',
@@ -132,7 +132,7 @@
       candidateVersion: 'factory-2-0-batch-3-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '44f02c5480205fd1828f40c34ef462ee5c7addaf59e5a771df029f31bb41b82d'
+      approvalContentHash: '45dc42d8f7b3f84a5c007e42e50bafc6b19fc6bf2b0d4dcd854f380fdc997d25'
     },
     {
       id: 'reclt44apoi8co0e6',
@@ -146,7 +146,7 @@
       candidateVersion: 'factory-2-0-batch-3-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '94d407e5c5cd9ebc8606213fde7a5393179483ac10aedf84f7d0b9f1fd8938c0'
+      approvalContentHash: 'febddbc0cda0abbec8fdd937139c78751148936bb29ae3d7991abf2292a8b875'
     },
     {
       id: 'recoEarnE8T6sDjZq',
@@ -160,7 +160,7 @@
       candidateVersion: 'factory-2-0-batch-3-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'aa7e867e7e8634be2ee2473336fce02412884e391a264a81204e502e449161a3'
+      approvalContentHash: '4d57a4d340a24d9e48c315974b4f5cacd848bb8e930dce51d6e0e1820c8a3e1e'
     },
     {
       id: 'recCvV0PuZOi8c3hC',
@@ -174,7 +174,7 @@
       candidateVersion: 'factory-2-0-batch-3-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '75a9a65d7bb129327924a0b5c965a97345f4920dde67364ea049bf61449222d0'
+      approvalContentHash: '4a9aa6d267645655c73c5abab46c24fef49780823c35e648deba65f354962100'
     },
     {
       id: 'recegXrqaPiSLGCIe',
@@ -188,7 +188,7 @@
       candidateVersion: 'factory-2-0-batch-3-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '018c4c0143741ed0817bb28b5ff91d72b6763d20a06ffd2abc15c11acac007c4'
+      approvalContentHash: 'b5e7cc0256ff63a7a5236edd292649460f944004b68566d3d303ece5ebb02f6c'
     },
     {
       id: 'reccXxMHEh7NNRhIE',
@@ -201,7 +201,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e8dbc4e3db9666f2de4911228d0436b6b5298b2e478645d2a979704b72ec82dd'
+      approvalContentHash: '09bec1594c443d219261b1b2088a293a712e464ab21244139145c520d2f47124'
     },
     {
       id: 'recqiHq3GHKMj8Meo',
@@ -214,7 +214,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'f675515f19d26b7027d2376cbe8398835e3fb07200a0a7d2064549ceb6c18653'
+      approvalContentHash: 'efb23b1856ee3b435dc0803667b1ac7eabf47075740e08605d77254c56e0d7c9'
     },
     {
       id: 'rec02zPClpWUTCyXM',
@@ -227,7 +227,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'be8a61c49129a293822275f496a5f2e34ddcdeff3a4daeedcb6db0a9244b5418'
+      approvalContentHash: 'd4351ba88c9cfa708676534a82b9641b225c178abf1f56a3508c05a8b4f6cf49'
     },
     {
       id: 'recJ1GZQpttX7qHgw',
@@ -240,7 +240,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '3b6218b8cd7844493a8fe5bac4852fdc23a8ca2053de8557ac8ba2303c3e92a4'
+      approvalContentHash: 'a4e817dcc8daa88ab3743e5f1c39721800918148b4f58e69f3f9e4b6af106d07'
     },
     {
       id: 'recCKuXCmGvxHPfb3',
@@ -253,7 +253,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '7e530a42515a669c69f8a8bca85775e188cfcaa42d8672ea8da4b1df18b4b93b'
+      approvalContentHash: 'fb99fa8fadc15fc5734a81cefd2509a00fd28a0361f17d4cafaf5218bd834ed7'
     },
     {
       id: 'recGv268Wda31PlSZ',
@@ -266,7 +266,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'ee5a527a1cbc7b36e2f6165edf89b90cf328911a36b20d7c837516e7eab557c1'
+      approvalContentHash: '0bc54855e4d5a34823766edee8d2c919405d1e48e830ba0ff7f53bffe00ccc67'
     },
     {
       id: 'recNy2efMm4N1JtgC',
@@ -279,7 +279,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'ed46cc0d0a8a410bd3260e61ef0f873c0ee27aad5886b203e36cf5427d37678b'
+      approvalContentHash: 'c979898dfb028fda194f605e7cbbcfd80ee90a37c2852b66eee9dc8cd2e3720f'
     },
     {
       id: 'rec6hye5H8zJmAGv3',
@@ -292,7 +292,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '97a4f7d3b31c1c592d52461d9a2658ae0f60075bf2a24aae42e4d1277c9c6f91'
+      approvalContentHash: '1e59c573f69a60c443cea7d2a245d0d072b1941458579580531e2dcdf67ec64a'
     },
     {
       id: 'recIPuBC50fv13zRR',
@@ -305,7 +305,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '00cf67072b29b9a355ddce281bf7994ba3fe75f29f95cf2d5b6c9d81f5e79645'
+      approvalContentHash: '9b21c1fc0dd3513f30f93f22f9faacbddac6faea3abfbb59b9d8edcc20736d82'
     },
     {
       id: 'recmGmiIqDtAsm01f',
@@ -318,7 +318,7 @@
       candidateVersion: 'factory-2-0-batch-4-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5b814817561437d2acbf2041f0ad15af921b4f263f782deaf356269cb9b2745c'
+      approvalContentHash: '883130e19accbf8d7915882ce3b02ae0ce53a87b69bff4bdc11ccd066dcca0a7'
     },
     {
       id: 'recj5BCSpWqMEEBDg',
@@ -331,7 +331,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'f661c492b3fd06498d512763c7840159e4ce7b02b0c71bc0fd5e45e45f4194f3'
+      approvalContentHash: 'ff3f1ec79153cef5e1d7d1cf6299fd29319c07df04475d0f08c6924b57aa0704'
     },
     {
       id: 'recqBiokz5ePxbFTE',
@@ -344,7 +344,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9fc1dad57cfe92947127d898343a618588d33ec169e9991d5f1c15d9d7d11497'
+      approvalContentHash: 'faf624ee285b4532b193fbf8a7e1ea282a7712bc52cc6c8f7595a810801d356f'
     },
     {
       id: 'recN6sas0Km17O2Yn',
@@ -357,7 +357,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e1ef42247fef9496631e376d2fd40cffb10222a80128a1fbcedf6efd1d1e6df7'
+      approvalContentHash: '80f0b8c18350926785fc6d4e898de328685a0c57f397e56cbe2df8569495b199'
     },
     {
       id: 'recXopdFodrD3IyIR',
@@ -370,7 +370,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'be361c9f0a2dabe2ba0506bc67e840d47cbbbd4a99d05e811a2864a3ae740131'
+      approvalContentHash: 'fc736165f329f790ab9977784ba41d3edd8524d3de04a54aa05db97fedb90090'
     },
     {
       id: 'rec90n1dSVVyoEOto',
@@ -383,7 +383,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c4b0735f5b7c63e879bcf8b3e52eb76db43e3f9bf7db9fd9d83503f8f7d0e3d8'
+      approvalContentHash: '131e3ed94d5e589d7b1b0892bb406310ef15555fe8df34e886fe3991067aa878'
     },
     {
       id: 'recUsZOxtqIpeA5ZW',
@@ -396,7 +396,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '45f541912ae65665ea561c3eec20a8ae459213b4387cf7fadc95948f028b7c32'
+      approvalContentHash: '2e44365f16a6abfb91123696ca4332fe57f105be41a3f9655107e5557f341d9e'
     },
     {
       id: 'recswdE1mhwDvXtBi',
@@ -409,7 +409,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'dda50f5c4fca84922a02b942ead9f1c2780de2a18f01701158914486ae213cd6'
+      approvalContentHash: '601e392a6ec33261ed3607d584b6159b7d56ac0a841fa12e0f28ec5fb48c4e5a'
     },
     {
       id: 'recGCWhkeEvsQxuez',
@@ -422,7 +422,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '88932bdc1db6b93c9150f7467503399662f371f6c698cd27636be7eddeb5a568'
+      approvalContentHash: 'e6fe7a461aafc8ca5820ab815e4b24dcd840cf05f4f8ccac8b043d147f3a65bd'
     },
     {
       id: 'recbtJoMub5wcankK',
@@ -435,7 +435,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '89839023d24fe7539d8e3f7a97c5f7ce5140a1b6bad9b6093205e638772ff703'
+      approvalContentHash: '34c709ffb100e1c4a12f7765d262d7d1d13c02bacbab3696fc28f6466400f5d9'
     },
     {
       id: 'recgwxli5IsoPKCOY',
@@ -448,7 +448,7 @@
       candidateVersion: 'factory-2-0-batch-5-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '95233f851eb16b556d2491edb0d39ef18ed5f3f57d58ebbe78d63cb1cc7737cd'
+      approvalContentHash: 'fc3a61865deec1668b2d92a73f0cb830688dd7d09fec7b4e06eaf165e72d0f16'
     },
     {
       id: 'recX9RJcmafZxWdXx',
@@ -461,7 +461,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '96779d8244170bd1b4204e6d580a27a7ae6c5d397b4984b8f984a7d8184450d6'
+      approvalContentHash: 'd1e103556f05fa706d5c4f7cce4d1a25c083caa2b1e4e71ec1df2c1d59e545ae'
     },
     {
       id: 'recYsUrz4Po7Tg48T',
@@ -474,7 +474,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e1390999f610353ca7c2209a169ff6eb73762cf022fd51df20e5ccdb6f5d5705'
+      approvalContentHash: '052d17a63e6dca097403fa2957b016e9879ea6e40101876d6a65a430544d8790'
     },
     {
       id: 'rec66ikTdLlT49Vkh',
@@ -487,7 +487,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e9352aa5025634d4bad6f2109f199e5cfe025b99b4fea6e6b73e29697309f39e'
+      approvalContentHash: '6c90d4aaf2b20bcdefb09d359e15c18e5853baf23511418ea84809f4c948e560'
     },
     {
       id: 'recpKmYbyFr8ScGTi',
@@ -500,7 +500,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '73a9eaee4efe8a936d29ec2d62ae5d79322fc25e8a72af55fc01367041f80e3c'
+      approvalContentHash: '4ebbd62b9a5c4c30932b49525e6c7462245f59d968626a04de08efc33113aca8'
     },
     {
       id: 'recmj7cNIUbYPKVJl',
@@ -513,7 +513,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5765b91b9828abc0d2ebcb6c5c8667763e3b2ec8d168a7b69dc33034a6d96df4'
+      approvalContentHash: '350b2abd1af496af7f3045cc573639cc846127774dc8b68dc48c2fdaafd61ef6'
     },
     {
       id: 'recJUualJaqReVHLO',
@@ -526,7 +526,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4a1bb0ca2be181938b70a92fc9aca72d106b7c6e414500705ed3367097ceb913'
+      approvalContentHash: 'b9c4b76f6cba3458397fb778e8d96eb3ec1c530b907d25621ff00355b027d95d'
     },
     {
       id: 'reczor3qV3qAXFydD',
@@ -539,7 +539,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '64d488c7c7b69e44dccdcbc2f4dcf1f4127971a81cc7f683b9760bb88637f018'
+      approvalContentHash: 'bf3001b3b2c63fc161f6c259a87d31d13f608f46a919e07762627a37cc659c7f'
     },
     {
       id: 'recumPNYZZkNdbTXF',
@@ -552,7 +552,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'de73a1989bc0a295a0c445ee7d3f61b1dfb41cb0e087d1c40b76dc2109ad4aae'
+      approvalContentHash: '9c898bd4d8e5b4c3d447a80eeeab862bcfc39fb93d34537dd5b12d22d91bd833'
     },
     {
       id: 'recC3w95Hgi9SzXzD',
@@ -578,7 +578,7 @@
       candidateVersion: 'factory-2-0-batch-6-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '81a40796fcc7c1ffe056466aea65a05885e0987ca42147d3fc84712daaba08d2'
+      approvalContentHash: '9a22f4d63e13709328e819420a083087165fec47515f2b9398eec0cdc257aed7'
     },
     {
       id: 'rec4y33IpMYdmWAqS',
@@ -591,7 +591,7 @@
       candidateVersion: 'factory-2-0-batch-7-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '8cfc65d9ea033a68d246478aa8ae3d2c5e4a6886fe8bd3868f162f127769bda1'
+      approvalContentHash: '077a9aadc071a28f24edd9858f45426352316cec0e3843459c01dad26b5184ea'
     },
     {
       id: 'recXWQe2uMx69bQDL',
@@ -656,7 +656,7 @@
       candidateVersion: 'factory-2-0-batch-7-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '8c7b2f760e9ed443980c3710fdcc3442cbb399233a2cea3b7e108fd8faf937b7'
+      approvalContentHash: '23126375476b5184fdee4c2895af4ceaafc5873bcb52ce364ade74d34437efef'
     },
     {
       id: 'recBmtjThn1HgNX9d',
@@ -669,7 +669,7 @@
       candidateVersion: 'factory-2-0-batch-7-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'cce8b547f8d35a58c17ab625dc8cfee9e88d2b952d0f637d6402f83f2fa43474'
+      approvalContentHash: '578b139b6e0a6bc99fe29d83aac99409f767fde0266580a0b4903f39ed28081b'
     },
     {
       id: 'recIjv1h6tQPQTRXI',
@@ -682,7 +682,7 @@
       candidateVersion: 'factory-2-0-batch-7-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '64385ca01594aa80bcbc2b24481c361c5e98cda423d84a19b89b66563dd3a60b'
+      approvalContentHash: '43aa60f3ddc5ea5b850cc8aa8a0e2a6fe8bb6a8ad163ecf357d572548c4b26f2'
     },
     {
       id: 'recaORoZYBbFXyuCs',
@@ -695,7 +695,7 @@
       candidateVersion: 'factory-2-0-batch-7-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5be388088c8e090d5468848a562e133824acbf9c3f02b76599f6d49935f7d4a4'
+      approvalContentHash: 'f4648cb592e9b5a3520822e9662e9760f49b89cac2ad4f426edac67d889267ff'
     },
     {
       id: 'recgrfnefkcrkZtEa',
@@ -708,7 +708,7 @@
       candidateVersion: 'factory-2-0-batch-7-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '24a40d5d7d74233b22e22fefd383b60362bb26f9aa052a89c57f93475a8762be'
+      approvalContentHash: '1a6d90fcad323cbf50edfc1135c7221196e5cb7e1a3a3e03817f18f8af6524ed'
     },
     {
       id: 'recRHZlHTXBkVySUC',
@@ -721,7 +721,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'bd03a8914b4d2c3bc5b6886694dd8204a0348a721659e962067ee8698e3e0e9b'
+      approvalContentHash: 'ff774fd7a409d7a6154aca2ab86c0ea38e4bdc1daeed452f44ecc2c3dfb267c3'
     },
     {
       id: 'recvCgmyT7vBpJmcE',
@@ -734,7 +734,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b5a22da077387ac407bedcf97b19a0682b9b421c26de91d4cf939fdc431c3c1e'
+      approvalContentHash: '5641900b77448614b7a90e9ee9dc83899ba343a850621325c96da8260079753e'
     },
     {
       id: 'recrMPYs4pOsA6Nys',
@@ -747,7 +747,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '66dee91996eab541d49be0f25574286f4738e9d6c939d847de8b9c750bc49335'
+      approvalContentHash: 'f3b1415fb90e27d071f64c5e4a82faca79695a51e9b2dbf8c09e4927ba17b6a4'
     },
     {
       id: 'reczvWzz6ugk5IzFc',
@@ -760,7 +760,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'ff441e24011489d8b3bb9a3423851a093fb931f148b489ae1c3d51d38484ebf1'
+      approvalContentHash: '6d91d6dd5a11e8595135a654473c66b6507c07f02e1ebdc7b1fe24b717bb738d'
     },
     {
       id: 'rec0wIg8ie5ZfPY1f',
@@ -773,7 +773,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '975b19b17d776db58e2780246dbd765430bdc5d79899bb508446e17d3b9804d8'
+      approvalContentHash: '0dc758392a58866742f5c38283e62dfc716eebf3e59796a9d9dd0f2373d0580b'
     },
     {
       id: 'recyggm1Bif6Mk0a2',
@@ -786,7 +786,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5b1be6930fb26ec8a7e14501ab3ffcf58e826ae501dd4da545e0bb5c2f4c1952'
+      approvalContentHash: '459c43d1ae5d071cf730656db5ef59b02b6e9f4a68fb191071329304316b5f9f'
     },
     {
       id: 'recTDqjhN6rXWoC07',
@@ -799,7 +799,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '12062e60a7b545bee40918e9d357c04caf024846d83b53ed6634a48ec9e86c70'
+      approvalContentHash: '5e87f316bdafca76d1a52ab30b11f5411b58604e4700670b39aae563c8bf296d'
     },
     {
       id: 'rec5RhdBK4iNCQF4u',
@@ -812,7 +812,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '02a6c1215cc8da8d5fec9afce64fce5cae5cb63d0a3b4029863d051af1148164'
+      approvalContentHash: '0461232a64e591f9fa1a9cc0256e85acff85a37e0d4d65637a9e3fdc9fe32ed7'
     },
     {
       id: 'rec5KPgalPPAFl7UZ',
@@ -825,7 +825,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'db149aee5f8722fb44e2d8d04fa0c16c1490a946c34ceb1992d60874756ee064'
+      approvalContentHash: '60eb80e0a1713070fdd8906a3dcaaccb62dbb8440ecd889dbb7837088b0d750b'
     },
     {
       id: 'rec9ViCcmQBA55vGA',
@@ -838,7 +838,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5bb1768e90b7a2e77bf03967f03072bf619e01316e7fba3f2a3b4649ddd18cde'
+      approvalContentHash: '8b83112258fe97538d38c04544ac51529def5c5b2f33676c014e41cb1378357b'
     },
     {
       id: 'recpmv6vrM9ztGedL',
@@ -851,7 +851,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '0955b3f619640ff0e6b1dc714812f51ec3b1f47fec371338c3ffd8b8afafc2f5'
+      approvalContentHash: 'ad469eebc8e2a0e544f2c44265096dd97aaa5651554461fae201f5f4a4ae38e7'
     },
     {
       id: 'recTsfe9nlEMqLE3j',
@@ -864,7 +864,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'cf4dd32651db42b81789f7005668d615b4da56e313cedcefc3b0ca4d87845385'
+      approvalContentHash: 'e4037f55980be05ad45020ca532a156562533c1c8eb8cb3914ab9760e8fcd507'
     },
     {
       id: 'recLOEXjnKYZdxuEb',
@@ -877,7 +877,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '40116dd66722e21275c6145ce81357b8f45db3e1f461c23fe1b7826ea4992603'
+      approvalContentHash: '72b0a3a5e113b56fe2812f73a2d470ffd7eabe0bc07af69ccc0289e95bc4927a'
     },
     {
       id: 'rectk6HIVra7oyoDP',
@@ -890,7 +890,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4c8f75c233dea6ffc9b2aa1d75147ef531afaf807e0d861432fd4736840ce254'
+      approvalContentHash: 'af482a6cb67a1fe47cfbb924f31a5ac315a61f36528c1d566d7d41d913b1f722'
     },
     {
       id: 'recPpLc3gOsPOwtCJ',
@@ -903,7 +903,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '35a65a2b9f01b42e81b890c9db46b509bb49b449a883378bd4ce61e2cf76409b'
+      approvalContentHash: 'ed0566136df67528a20ad6ec2cfcef49f6c08c3d7fc58a9fb0732a420daa4430'
     },
     {
       id: 'rec4ztolqpD1uYrsG',
@@ -916,7 +916,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '3a136ab28a68d4c8d4eeb110f2b90953bba626b4b322e20d1f7f4fe8521d015a'
+      approvalContentHash: 'f8bd391be00df7b49a22a71085ea762e0d82229da22f837ed19d7ac1bdc1e929'
     },
     {
       id: 'recEaNmmaNdbWvipS',
@@ -929,7 +929,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'a82b7b28dc8cc06606e026b6618fd03e67fa72556c2aa3a180bfda89a74ec612'
+      approvalContentHash: '8c5d58f4b0925a26925277ffa2f4eedc9b5e982291f7b592defb60e31bce6e68'
     },
     {
       id: 'rechMdsQxPPhet6rV',
@@ -942,7 +942,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '60d99b1646cf4cff2b0bc1ecacdb2fa6ef71fd0e91eadf16ca6da4f033a72b16'
+      approvalContentHash: 'c05ddb938bfcf594b4b0e775adb45aafeda0fa07ec716e3dee112b4c9d62edbb'
     },
     {
       id: 'recgYprNavH0rgb7z',
@@ -955,7 +955,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'cd6559a86b62a3403497e241826fcb757ccf1829623449a1d0f5d6d1ca767bd4'
+      approvalContentHash: '04c71d0191100e705814578dfb0ce06c996b6a5701ba01fab1b4f50dd1b89775'
     },
     {
       id: 'recgMqPkLsfaMU9vA',
@@ -968,7 +968,7 @@
       candidateVersion: 'factory-2-0-batch-8-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'cb339edab1e0ae417f461200c1ba7c8858d82b7021afd58e9dbe3ef307eb4323'
+      approvalContentHash: '0e83cb67ce09e3c63e30742a5b230bd30821a695990645c6faa014a99b6462fc'
     },
     {
       id: 'recucEzAS6724tOYA',
@@ -994,7 +994,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '0f9bea84077b231407b675de9a86d408e2bca100020817dc27fd23223b91b9a0'
+      approvalContentHash: '7d7fc1f759d934f136dae0eda85ce9d9d5b426823101e4ec7d552185e5c0c8b4'
     },
     {
       id: 'recDM0LAD8jVRA2x3',
@@ -1007,7 +1007,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '0a182f0674dca4e4fcd0261d5a98057ccc82e9fd5c0027937ff57fa21cce5ccd'
+      approvalContentHash: 'c4f7453e33cfd3979bcab5fae14d8272af38c40cf47eb68a7082cda6bd785325'
     },
     {
       id: 'recUPiPDivkhNUogr',
@@ -1020,7 +1020,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '57f476dd12644182622549452ce02b2a413eeb5513600bb9b892a8e9c32ae35c'
+      approvalContentHash: '6d1a363005b02028f7a2a025e8dd97299d35972b6b77d67d88b2ac2e6bf950ff'
     },
     {
       id: 'recpUTDtwt1wPMDPj',
@@ -1033,7 +1033,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4cd60d64a0ac3996eb45b71d95ce07e78dd8375985452bebe444156e8c58947d'
+      approvalContentHash: 'ebf1367ae1e22d6e556305b2b0e3fc245f4457303e01d736ccbd1cde4ebf3bb1'
     },
     {
       id: 'recH5ZF9V6ivz9p5h',
@@ -1046,7 +1046,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9bb2504d73e8e5cbeb4dc4034323c9ad7a3256018d94085f7edd9eab572f23b6'
+      approvalContentHash: 'affa46804cfec0964cc0dbe9a9493533f0c5b349f945728a47179e0676d4210d'
     },
     {
       id: 'rec9Ufbpa0GxJGzt8',
@@ -1059,7 +1059,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'd1cbcc2439f3529b89aadbfef1495725ace242d47e3161e2c0d98d0b7da5e57c'
+      approvalContentHash: '02ffbf8ace1071ae74166a22a45aae5843d3b883db7be935af33f34049ffabd8'
     },
     {
       id: 'recn59UtkyyoYwzSz',
@@ -1072,7 +1072,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c024aeeb4e9c9e1204d03968cfa49085fc7684da17785cb2a1a3bf3e2407573b'
+      approvalContentHash: '723081e65e445be48c3469b29c758c8055c0fd5130b96ed27334b97864b6f95f'
     },
     {
       id: 'recg8HjT5Bky7NXeV',
@@ -1085,7 +1085,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9925c4a62e537b5ca7536aa743a6798b73b9a6ebcd7bc78fd7ec3a93022894f0'
+      approvalContentHash: '8fd80110c4211bda9b6f700bc4c813997cb56d09ba0d3500d28d2317777ab605'
     },
     {
       id: 'recWubG3rhiS1BaWi',
@@ -1098,7 +1098,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9c6959ca94a6eb88cc953a2d570266924ec307aa814a010d860a420623265a85'
+      approvalContentHash: '767e3bd8c2686b07ef052419a7f21a18b95b7198f4af1681af864c31020d6230'
     },
     {
       id: 'rechVYWQ5ikRnr99B',
@@ -1111,7 +1111,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '6d46a6ef122a5fdb44f3a033f5241e59c2058dd1e7636ff96e82f0092189ff8c'
+      approvalContentHash: 'a104692cbefd23d4c7005ccf72b4c3232d29ee8177a268098aa533b9f7a7f7d5'
     },
     {
       id: 'rectRvOWQPaL6FkzZ',
@@ -1124,7 +1124,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '14e39e18509538fc897771a00d7cd6c33ae39f5c0f0036b4a9df70d0acb37c98'
+      approvalContentHash: 'ca7360dd7004bdd5162296e61cdc2a0339a697c99dd5701d8ddeca810e5eafc8'
     },
     {
       id: 'recrvdAjRlXxPvPPF',
@@ -1137,7 +1137,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4cede539294d1e18323a3e84a2a08666ace6f0d14b45b0ddf2000b595bbd8c9b'
+      approvalContentHash: '974f8377ebbaaaf09e1777edd682837fc13fcc4c68cfafe345f5c2a64e423ef0'
     },
     {
       id: 'reccZ4zV6wMav7a2i',
@@ -1150,7 +1150,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'ced3800663ae6a562f432eaabd4056737dbdf0e37b915fc93740b8151e7d8f69'
+      approvalContentHash: '2126f886c850175ef9671d7913b48b9bbc3c0bce01a613add4de9bce57a48f02'
     },
     {
       id: 'recZjYI4nYflGHFNR',
@@ -1163,7 +1163,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '7d33599abba5e271ef586d226ad98e0359497a3cddf61244782299afee924175'
+      approvalContentHash: 'c5c3cf19c7f694fe6b93bc158b2f7db20326ffb53667556719ec5a9f0ed0004d'
     },
     {
       id: 'recfv66er4Ch2vJDO',
@@ -1176,7 +1176,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b2ea4172170145401031e9f328f03500a78d85a12d3ea71d847125db982abdc7'
+      approvalContentHash: 'a90794f5ad290e100118c5749fa78799a07de8d9df392fd60936bb6a7a22b3c5'
     },
     {
       id: 'recJLiMTv4W8VgO9L',
@@ -1189,7 +1189,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2054712d1b99cef8f8507077209838f7bca0aee84d3ae782891e34150e8943b6'
+      approvalContentHash: '09b1978bc925d6451bd12b7841747df5a433c0fc0672898456adb2a4a38cc700'
     },
     {
       id: 'recP9SqDootMrzaU1',
@@ -1202,7 +1202,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '625dba4f2c6a1f59f9722903128d39294493f30e5dae0d8ebfa37b12282502b6'
+      approvalContentHash: '4afeb5bbeb6da9308640bcf1b54dedfd119f0238d765a9b1541948d43553b826'
     },
     {
       id: 'rec4Mga6ejz3L1M3P',
@@ -1215,7 +1215,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '89d89a5c59eb697e937c65596cf890dd764cf4c0c0ca346d9fe16e384513f53d'
+      approvalContentHash: '3b40ccf8900ad41ad46f9e58f9331553624c4a0be38ad3dbfdb124b96977ca11'
     },
     {
       id: 'rec50qkCj6yt9fMPg',
@@ -1228,7 +1228,7 @@
       candidateVersion: 'factory-2-0-batch-9-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '3c94517f446301534c93c7eb36d25d88f23fe5ba131ac3a9f8a2f06bd7b25065'
+      approvalContentHash: 'd5b603f632f12d21764cd6b5f62fa05680aac422ce3564f0f3c101f0e357b7ea'
     },
     {
       id: 'rec7hTXwMRC81EPqz',
@@ -1241,7 +1241,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '3ba271410ac9b260d7643132a8b713987d51b914300163adac5f5c4f363c1fb1'
+      approvalContentHash: '66e621bae07b26fc2dee8089d95d34238bca05e15caf1b36b5a9d335bfffeb20'
     },
     {
       id: 'recrWCD1LMqu864oU',
@@ -1254,7 +1254,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b80187075947731ab0bb1748c8b47725355c6dbe8483780eb14b4872721d3b7e'
+      approvalContentHash: '922736bd1a517008bee6fa5a2af4d024e1e98362106bcc6f2f7cc857991135bc'
     },
     {
       id: 'recFW9kfqKfOjv7Z1',
@@ -1267,7 +1267,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'bd22de81186e42d046f52b5f67bd1b512dce4a05ceea2be61d860cd7dc75b6d1'
+      approvalContentHash: 'd31c04d3c1bba0af029b5faa5c0f3a31e2cecd04f39b07ca1d3a29d5834f9ad1'
     },
     {
       id: 'recJhPaDVU3YUDQUt',
@@ -1280,7 +1280,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '15623d5b7b63256cf4f33e1e706a2ca4c2b4445e80671e492cd6f6226cd1b522'
+      approvalContentHash: 'cf8ddc696be3dd4a77001a786a12f44234a1f05e4ea73d2021fe6e0d5f4e94f2'
     },
     {
       id: 'recevrLJ3m6rIug3S',
@@ -1293,7 +1293,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'cda817bc43c29aa330d035749f13c15d372296de93437165380b512d07677c8c'
+      approvalContentHash: '0cb0e128e83ef5072ce634322311f069a70990cc8ae116e0e0ecbdd22a009d84'
     },
     {
       id: 'reclFXbpZ5XzLWbGP',
@@ -1319,7 +1319,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'eeac143348438a13e14f257ed82e608ca6014731fb9a993e708b729ed172d3f8'
+      approvalContentHash: '5ff32c96147f8369bf462168dcb128be554e4bde36d9c84c9823d4adc00f191a'
     },
     {
       id: 'recQE2lSSSSyuUrMQ',
@@ -1332,7 +1332,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'ef45ffffbd22f54237b0439d6421effed0c7ffff4867283b516ca09df499f4af'
+      approvalContentHash: '2b6b4f2d791c71b435435b7829e2d7fc5cb72151a271c4fa6435cb8c0ee4d7cb'
     },
     {
       id: 'recTJdPlr4mDs9app',
@@ -1345,7 +1345,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '11e522dc570c4ac2764eb496ac222764189d2fa05f5bbc6a57d49795846bdbc1'
+      approvalContentHash: '3e0b1f9497d60a5c8e051a827d66778d56d5c7cd323085d46654a0bb3b65dd17'
     },
     {
       id: 'recwXZ5gVZ8ZH8ekA',
@@ -1358,7 +1358,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '7f8101ec6eb21bf198a669564e7ecdbcf4163d53d3ff106a1f71bfdab3721e93'
+      approvalContentHash: 'e0e556401d32dc7af388dd13b145349a2b90c2de91f751da46e099c860e3ec81'
     },
     {
       id: 'recdeh1NsP4gjrv80',
@@ -1371,7 +1371,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'eb27adcc693ce59b0571fcbc575df7a3e9f6d74aae743c8ac4fe52dc52071fea'
+      approvalContentHash: 'be4955f441b7ba0f25e3c10112df2fccaedd54f54c5f34ae967a17fef192cc0a'
     },
     {
       id: 'recob7tgHRryRSbeO',
@@ -1384,7 +1384,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'cddc95bfa42e39e87111382c7433259ead11ba0d39ef48c1089f5349c4e13911'
+      approvalContentHash: 'f7adb579233738ed7a582e5bddce877014d902826d62cca47eeab6baa5441f7c'
     },
     {
       id: 'rec5CNMM4ZUD7ZHlM',
@@ -1397,7 +1397,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'd410f1a37b11fd83fb25b9437900be3cebae604a954c4b92b2d3c40788fc8514'
+      approvalContentHash: 'd243c5d4d6420fe1848be4aae53d50b4e31db13f1b772d80b995fe5cabbfd319'
     },
     {
       id: 'reclcjg5Foa9Vs5TC',
@@ -1410,7 +1410,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '607d120fcb05fa3d8263835ea9eea610cd59bd4a6efbd1b5ee2af4c34a044374'
+      approvalContentHash: '8811701acc394a9bcf861f5f8369c8d0ab52c59b6b88a46d90a0c7de163e1234'
     },
     {
       id: 'recqkkrsevi4r9ibj',
@@ -1423,7 +1423,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'bc4fbfe3bdc6ef052d3053ee5959cabc987bb23aacb25e38fd13b5bb1e23e997'
+      approvalContentHash: 'eeffae9123b9ac99e4868d6461ec4bee5d65f6c63946744167943436caf8d577'
     },
     {
       id: 'recd8o4k1JddhkRWW',
@@ -1449,7 +1449,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '733e1771d41cb192d8a2445a98c4fb44e135b3f3625bb8d67719e14c10914ade'
+      approvalContentHash: 'f7319510ab653e31b2b8911de5b53d18d07fe6c5d168a9e067d081503d35d6d5'
     },
     {
       id: 'recywbx1YQSTCPqW1',
@@ -1462,7 +1462,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2d9822eaa32c2f469ee3e2bfc77bb6bbd74d44492ac36297a22b6ae59a2da05e'
+      approvalContentHash: 'a82e563b364ff6a68ae3042db6902d3cd801d5eed6cbbdeb0d010b9dfe772c12'
     },
     {
       id: 'recwl5JOYxlChuCAr',
@@ -1475,7 +1475,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9750ab381b302d416f6c3eeb6f920b81cae1044851c4c12473894b298e66deef'
+      approvalContentHash: '555efcf51f9eaea9e07e63adf0196328cf76f22f1c71257bda549d015c64987b'
     },
     {
       id: 'recjjSnY2opb8P4DG',
@@ -1488,7 +1488,7 @@
       candidateVersion: 'factory-2-0-batch-10-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b958d77c754d387bd46a59d380d8b3ab5950e7aa782811e32b10c08ff5db6116'
+      approvalContentHash: 'e53384b2bc5235fc80b3cb0ed803d8adb9184907a3788da8ed108c876d983d5b'
     },
     {
       id: 'recWPEvxBQxVVzSq3',
@@ -1501,7 +1501,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '1182042be1a582b1adbea618efb7481859a09259bada315a196c576a8d669629'
+      approvalContentHash: '486e8a86c5c1d472f51b5374f318cf19c06b984804717cfbb01a0d0c83ded4ab'
     },
     {
       id: 'recOzH5iAE1xEjyD0',
@@ -1514,7 +1514,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'd25fe766858d72644e8ee71fbecaa8ed79916f251e2a2ce7dc2c0bf0ff8725c6'
+      approvalContentHash: '677ed68c1620cfc825a5340e03b09489f898a0ede6a599f872fbaa91ae4ec77d'
     },
     {
       id: 'recRyvM8OmLlDj9G7',
@@ -1527,7 +1527,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '419fb582613e17b89923f77a2ff0167ec338a88d93f48027acfbf1f9d3d50a4a'
+      approvalContentHash: 'd87d6044252009897a8d8bbcfdc12ae2fefdad91bce2209532d3b53fa8c67eca'
     },
     {
       id: 'recaayt9u7YYg8h7Y',
@@ -1553,7 +1553,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'f42e9aac95a71f73c6ca5b1222525d5f448d099f53a321b157a176ef9db5af7c'
+      approvalContentHash: '3040f0ef4602732b328e884e2e53f413895aaf1b24b742fac675ef9eea9d32e2'
     },
     {
       id: 'recAT3p3d7LAZZNkb',
@@ -1605,7 +1605,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'dafb737a880ac28c1d38bf14bb401070ec8711a02ed91df319b3d8a6bf12a9eb'
+      approvalContentHash: '3e941dd080ebedf1cda2b1750f60ece293a43e2981d3b434057efe8c1db2c14f'
     },
     {
       id: 'rec4w2XsL3yDUsv2C',
@@ -1618,7 +1618,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'a04525d964062ea8c995153ce911f5cc79a6e7a3a378189e8bd753c34b405747'
+      approvalContentHash: '956446195aaf44e87c398eab23d25dc0f89881c2e79976a6d5bb02c096a87b36'
     },
     {
       id: 'recXIwHYrvJ89a1yK',
@@ -1631,7 +1631,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2e06959753d4aaf1620b9e297f798218610238c4fbe091c3ad300f840d8fddb7'
+      approvalContentHash: '0228a3225103e6d28dec7c0ab84d698e76f2209f8c2404a0d1a83bcb3d695bd6'
     },
     {
       id: 'recE5LoJH1EaszkqG',
@@ -1644,7 +1644,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'f8b2fbf69b101fc830a4e3cf69e4c1a109d47cf8cedb443a1785395b7e3c31d1'
+      approvalContentHash: '34878458968d24925bf78a6c9406de66c816aaccca20c78627142aed9833084c'
     },
     {
       id: 'rec72kWHpqp5awuZY',
@@ -1657,7 +1657,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '619832252827baeccbfe17b58c7cd9b578db376c1bed44709ae5414c666697e0'
+      approvalContentHash: '1a124a91cc80758b093b51447cd211185d61a7314f4442ea7f2c160c94651bbd'
     },
     {
       id: 'recSgIQ0bhRpPXZbU',
@@ -1696,7 +1696,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '49b45e2fe0f368e2642077ab4fde322486bff65baed9ef09b0660a62ba9eecac'
+      approvalContentHash: 'f5e3e9a560344eb85614b0ab6f9262915562f85e65df417d46a81f9f9f7a050b'
     },
     {
       id: 'recmK2PWDTHW6Y6tx',
@@ -1709,7 +1709,7 @@
       candidateVersion: 'factory-2-0-batch-11-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '7351813f6738995da03bf9d5b66843189b52c8b532b43512759ac3c3a8b42965'
+      approvalContentHash: 'd49129fb66e28fe637778b3d0723714cfcee72fac8d7a2158573e3a2487b76b1'
     },
     {
       id: 'recQxUKKgH0Pq1VgR',
@@ -1722,7 +1722,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5cd155ca150af047df7e2704a7a1e32d55719cdfccc70bf15bddf2d12f36048e'
+      approvalContentHash: 'd3f59fd3518c14a98dbba879aebba8178f6d49493f0f4d3ee3335cf787d8733d'
     },
     {
       id: 'recVAnsCsz4ifaAw2',
@@ -1735,7 +1735,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2bd9c12eac509d596a1ab8d079b11b4c994b1fcd7ea6cba253efaf6c525b366d'
+      approvalContentHash: '5697bbfd2d0ad6e12427e01ba9fadfdc799ad9e3793c07a0138002d6f0231711'
     },
     {
       id: 'recjvESTY8tYZjlAJ',
@@ -1748,7 +1748,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '30fdd048da63d750ca3e8d0a1dfec12afae491d421edc065d9c8c5ff27a81418'
+      approvalContentHash: '6e904773448a0510d224e74e0c116ca37f9406ed4d0a78e8fa342058576b4d12'
     },
     {
       id: 'recqsodgJLUzsdCED',
@@ -1761,7 +1761,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '28b89e9faabe423c9e08f7348bc89f6241f8b8d260f0ad2d61b27cad30778678'
+      approvalContentHash: 'ede414d259c5b9ef810e900206db77a0acd4d0035034267c17b3f61f224d4859'
     },
     {
       id: 'recF9TQzTd3wwEiKa',
@@ -1800,7 +1800,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '66f5b0a874abbcfc89e66d9691d8f8bb508ce76a0b9eaa3e06910239c3a1c49c'
+      approvalContentHash: '261930b4b5a903f6ec51c87804ffa8d202fcf627cfa50a29ebd5389a7521bfa4'
     },
     {
       id: 'rec9Q89yzK4QZKnal',
@@ -1813,7 +1813,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5432c106e2c2587eafeefe84517521f98952cf85fadeed4f59c3e6c8ba096c8e'
+      approvalContentHash: 'a0d059597d39274bbaf8df81dbdceac6431fa67be928ac8bdb60bedf8a91b25e'
     },
     {
       id: 'rechyrQmHmeR1ovme',
@@ -1826,7 +1826,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '00cab43b2b07a9557276259c439d96b25bb0e14265cfff85eb49f7ecf437e6eb'
+      approvalContentHash: 'd8a51e02bdd7b9b4e297a7130ea17f5374754884bba392e4bad0cd70e9e01a1c'
     },
     {
       id: 'reck9Gq60El13HG5Z',
@@ -1839,7 +1839,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5bf268cd9d306bfa5a1821c93689011042f481c6ef1bc9d3f25e68b04584b8bb'
+      approvalContentHash: '5fb453ea7a08ecf528b49b5bcdad992eda6f2f01988c8cb059b630863bb25dfe'
     },
     {
       id: 'recSAVQWVAnn0NKYg',
@@ -1852,7 +1852,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e5e2ab7c10aa5cade702ae43661ba324cbcfd19e7d2ab50be7103c22af86986d'
+      approvalContentHash: '5d51ec7e8368f6cdda6108d55b9f91efd4b4acd1d6a32c88e2794bd1c3072a98'
     },
     {
       id: 'recKPpUCq9EZlSSYx',
@@ -1865,7 +1865,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4a21315f8c9d8d0e6abe7a69413340ccdf84bf9d052306953ec2bf50c37f41f9'
+      approvalContentHash: 'f00c210ae4b3d9c5cc8434df8d77beefe2a6cafa6efc97743f88871fcc48f012'
     },
     {
       id: 'recXmadOxgzU6Ug5l',
@@ -1878,7 +1878,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e1f34e0d3cfcb26e844cd36f9ee50e503f258adc65163ba9f95b39011835819c'
+      approvalContentHash: 'a30dc1c79ca030b023ced2aa21722218b0e4fea525f3ea758708c64183e281a9'
     },
     {
       id: 'recPF5NM9kDZwkNmS',
@@ -1891,7 +1891,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5cd801162b0cf0ba121360606a36f53b5e175a5c49f8e5d3c653147481f76b2f'
+      approvalContentHash: 'e4e7df73e97b55e34182cc49a35d71a62366b06bb9103b21ad3154b7fa0b8757'
     },
     {
       id: 'recharEz6EaOg9AiP',
@@ -1917,7 +1917,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'a758d8143a2d43d2554a0dfe273ca6151125b0b76be90bcf56afcff76a45e2f2'
+      approvalContentHash: 'acd5a7c0452702fde83c45c2e9cc4a11e1b88a4e992a48231418665e0cf07681'
     },
     {
       id: 'rect7iv1y3mGFadqL',
@@ -1930,7 +1930,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '01ae79394a115b1c1a4cff41e7dbf8087ebabf39d0e9bfce56abfbb33153c444'
+      approvalContentHash: '36ab000fc7062d665361addbb0beebc3294def735a9747c0b5ff7db4b22885b7'
     },
     {
       id: 'reclu1Fgv5Leq25qn',
@@ -1943,7 +1943,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9f634546b940cb758a360f8e7d5bdd594141f3750a745698fc9ba42d4bcd397a'
+      approvalContentHash: '8e38d250f9d927df6d91cc9f51fff76d8bf006ae11bf0432cc79af9a9c46eed6'
     },
     {
       id: 'recyI1O61Or7LXwXl',
@@ -1956,7 +1956,7 @@
       candidateVersion: 'factory-2-0-batch-12-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '7eda81323762a7e6ddf086350bc42f170f4bf6c7fb2609904f19171128478a28'
+      approvalContentHash: '83288484c0f52a9743eeed7fed28094403a3171b035ab02f6f226ca7d3a6be38'
     },
     {
       id: 'reckR3Txp5OzwVl5q',
@@ -1969,7 +1969,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '430dece30445e06837c0598331b68e39e39793e7ac9df7061827bbe89b66232b'
+      approvalContentHash: '489dfaaefdc30d8c8dc141bafaacf18a23b80132e8e18bad82a96d652756625d'
     },
     {
       id: 'recaPiDEZ7K7IXhcZ',
@@ -1982,7 +1982,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2d6e4ea9d86b6c4a9e271b86e0c3676ad7334e305c316c8815c86a34cb7203cc'
+      approvalContentHash: 'f376245cdbbfde02a6326abc7336c10be9cf9e3cd111b75abe98a97b1a7736ce'
     },
     {
       id: 'reccQERSltr3CcDgs',
@@ -1995,7 +1995,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2c35973445995004456d785a9dc0b96599dd7d1c1fdc0fee505107237738124c'
+      approvalContentHash: '655f3be7f271902aebb743acf3827de22c87195208bb4868a40b7ca4e3ec1f02'
     },
     {
       id: 'rechOYMLJ3tZI0y1P',
@@ -2008,7 +2008,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'fb9d6d1160df301463fa4f04e793261b7f8bba7dc4c67ede9a9f7a29e700a09a'
+      approvalContentHash: '215cf11700be9dd4f8e0548e33fa22d56fd42fa4105eeebecf0c4b47bb7d7d65'
     },
     {
       id: 'recTGrNzTA6DRe0LL',
@@ -2021,7 +2021,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '1ce468416dbc32b66b61826dcd1b5e99390aa513b21c4e3e36fe635ca4b646f9'
+      approvalContentHash: '23c4ae5b831f2b43c2a3b6dcc2600b4ffb3789be070102c43402b210a774af88'
     },
     {
       id: 'rec2lJCTSYIwsQYMc',
@@ -2034,7 +2034,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9df1e20cc4238af73e840f9e28e4c982e13e8aef75e2bede6c7dca48d7ffec2d'
+      approvalContentHash: 'e05ea31f55e0e0cd7186f7f38de9dfe01dfe0001d268b9f05cc6eee3654f47ef'
     },
     {
       id: 'recokU1aiTKb0bhgE',
@@ -2047,7 +2047,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c0ce3f7af0e1382ee6a27b1924934d1b2568d85b830521a8906df5d8bcdda737'
+      approvalContentHash: '879af05dd92bdb313ed0cc38d7f01335da5e1e624269aa7603e0ec2f5c299464'
     },
     {
       id: 'rec0sfR7SrVZUBm18',
@@ -2073,7 +2073,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'da059f62b7b452fbf149ffcabe78c2f07d6e116823c936f1d037dab9dddf7490'
+      approvalContentHash: '5d8891fc78741092a5e26e708153e72704ce002de0f95e58b4a5d048a1d751ba'
     },
     {
       id: 'recNMxUhbOaIq3so5',
@@ -2086,7 +2086,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '127f6667f17da13da3d44025cffb09e16d53fc6e6ae1cc1ec160c203bddce07d'
+      approvalContentHash: 'c8ff6754131986ccf64f9d66f4637bce7ba9268e5f73655fd82e5288e4dbd4c7'
     },
     {
       id: 'rec6iaZERtyk8Zxen',
@@ -2099,7 +2099,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '295a206b977e8f2cf4d9cbb5357a5c2be878699275c9b61185551bf0d4932837'
+      approvalContentHash: 'dee3fc05886fe80d56699929bf025b8fe7c56f739af88986dfcd7d26dbd23755'
     },
     {
       id: 'recY7MP8WBRiLyddc',
@@ -2112,7 +2112,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '888877da98b8a3b2d8bce5a8184e0fb08a50a557758bb4556aef1081702d673e'
+      approvalContentHash: 'b5cb835c25e628ef26d5b251b321b52a6cdc9e8d6bad4b22d63b49507c064db0'
     },
     {
       id: 'recI2FAEkY46LSx3m',
@@ -2125,7 +2125,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5fa8b2c159780f727ba6253200532a46de374ee4fe692658fe9a1938cd1ad824'
+      approvalContentHash: '7e0b57fc72aeeed2e12640092a474da6560f2130c9f0f8f23a6a7bff6329453a'
     },
     {
       id: 'recpl5pAKwA6buOat',
@@ -2138,7 +2138,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'dddae1c21a1bd3f7f2a70cf6ea2989df079ddc7427832aac51a16a574d1ee5d8'
+      approvalContentHash: '4241b64fd4f52b46f269f2cd9f599954ce9f80e48fb7fac2253a5b7a7ae28dfc'
     },
     {
       id: 'recdgXCQU6GIc0l5Z',
@@ -2151,7 +2151,7 @@
       candidateVersion: 'factory-2-0-batch-13-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '9b27c7833f73495b8750839b052a7c11083752f0ef0af47172944b6773d7d526'
+      approvalContentHash: 'b2666e7933173bdf649649e400bf641b03521ff74e10b8d235e21f00fecada86'
     },
     {
       id: 'recJgviX5z4tLcMom',
@@ -2164,7 +2164,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '387d863bcc7a2fa6bcf184448b360cd92e960c0b4f7dda6b68b77fb7d8d68252'
+      approvalContentHash: 'b40ba79d88d32b87948bfae1a0bbf2241243a9120831c75b5f10849af2505ae9'
     },
     {
       id: 'recxAGLjrBt8PF3IT',
@@ -2177,7 +2177,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c1a44ff1db350d477c8f5ef65fd307008b33221d1b7671f432a03f0945d37a06'
+      approvalContentHash: '5b75b1065b6e526f2a6801cbfdbfcf535cdf5682679a9fea6e223deb7e11c6b0'
     },
     {
       id: 'recjYuYOLjL4zusI6',
@@ -2190,7 +2190,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '095316ed37ba6a2bce990fee78279c7768f7785bd32d7f9db12c578145c7c494'
+      approvalContentHash: 'cf401ff3a329b6fe10021c23a8522de5972c1e4623cb1a5153f4d2992f2dc9e2'
     },
     {
       id: 'recfG3hikZOMqDEb0',
@@ -2203,7 +2203,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'fd45d3e853fe1bf16fd2ee68094e858e531b2de70c4668fbe8d9db3627bdcc67'
+      approvalContentHash: '2af93b652e783c44d42574dcbe138d6be55ba28f28c646360e66a5fb677324bd'
     },
     {
       id: 'recnRlPoQjNlDFVJn',
@@ -2216,7 +2216,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '10bf67c7c13b8a56a6722129e1b14fb5aec35d7492b8848bafcca6a0ff89db85'
+      approvalContentHash: '781ea836dc93eacd38dde3ababa01b375e9616e51c00bf53ad5823025138cc99'
     },
     {
       id: 'rec7F80S01oyTADN2',
@@ -2229,7 +2229,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b88f6aa7813f6867712235d74979a51a31d9e178f5122e2626b51dfc003e9705'
+      approvalContentHash: '0e3f5effea5fccf171d88be31934114cde88704e35a3ffeabad7bb9d67ddff5e'
     },
     {
       id: 'receSUBBbaxgbenTd',
@@ -2242,7 +2242,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e50f66fe84445639cb4b4817eea131a87845f3d69bf1b22813de681bf17e737d'
+      approvalContentHash: 'f14955180c576f9363a114b887b25c4c998b587b7356a44640ca028784ce6872'
     },
     {
       id: 'recjRHpf0a0ylJbXQ',
@@ -2255,7 +2255,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c37536788a2accd7793c34f33fce1ac67eabdc65b993e355db90725486fc1b5d'
+      approvalContentHash: '9d143874528a75dc07673f507dce47accbc930c44e3aca003772d850c903ccc0'
     },
     {
       id: 'recilV5oDDP3wtKJn',
@@ -2268,7 +2268,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '7bf3761dc79ac6d182f338e1f862326312cae35c2aee28475e7844f7b400f04b'
+      approvalContentHash: '1257bb847f598560a5b80e56c616e0049a50ccdee87ef8370d5e49d4ecfb7010'
     },
     {
       id: 'recNabpDL7arkX5mi',
@@ -2281,7 +2281,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '802977e22a84241648fcaca7b2903a875867da541c2e817c7811d06176f0fd70'
+      approvalContentHash: '8f12db3af3198927a0b3c12eb58563d350d0daca582e9d81434371dba8d59a4c'
     },
     {
       id: 'recR1DWI8QIecWQDl',
@@ -2294,7 +2294,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e255745eacb06cd9f01d10fbd02fad24e6ca1efc375e56a53115ea1312aa491d'
+      approvalContentHash: 'e388c96428aec005ed0f0791445f2e8f0de143340d3baf3669a6ebb0db5ad2ab'
     },
     {
       id: 'recmkvmV84vr5LNwi',
@@ -2307,7 +2307,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b56941cc5fea9a7233aa5fd771d3d7a41036c1ae3c3d5f08c1e1941cd3887a6b'
+      approvalContentHash: '6dc11a5c2794169a9cec50b3f172dfc36982399e317047a3202cecdb10965670'
     },
     {
       id: 'recpJ13Fo4nxXmEzD',
@@ -2333,7 +2333,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '675537c6fca036eba03310ab95e8d61273378f0728187b034e06a1e21478620c'
+      approvalContentHash: '903fe462e9fe0c531ce6c42f39a6f3e4b503c58137e1121c4d42fba4f7f39501'
     },
     {
       id: 'rec5SgAtIKEAC9Jgr',
@@ -2346,7 +2346,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e07d54ea97265143811bcce4ddb85c0878bcee454b0b5ee74e7f17b3e403ead2'
+      approvalContentHash: '378711424e68564bcb25a71ec3ad2792d9b1f86a87d9a8b99b317f5c051de91d'
     },
     {
       id: 'recgaMzDn2GKkpUsi',
@@ -2359,7 +2359,7 @@
       candidateVersion: 'factory-2-0-batch-14-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '118976dbef15ac16afc5dfb9bff8e2195dbe222a0515c7e54fb682974de79d0d'
+      approvalContentHash: '46e8d7a9ad6fef43f4c77dd43df277e0ac4da1050730254878a7503f18480e2c'
     },
     {
       id: 'recJPlQbmat5KZDPe',
@@ -2372,7 +2372,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '1330e5551320ab6991e8c52727d85abd6dba411e8a75cd9ecdc34db40b7a08ed'
+      approvalContentHash: '4d4386e160bd4b0f854ddcc7d050e9e05626ea4d14eb7e9bda492bb24288cd34'
     },
     {
       id: 'recXVvsweIigv064m',
@@ -2385,7 +2385,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'ed0db3caca45a17a2de5f26ec3f80a7541194d9af5d8ad8cc41b9df510e42a59'
+      approvalContentHash: '5bc35a8aed44c958406414736c786dab559c4b17c695517993cbfec65960bbdb'
     },
     {
       id: 'recZZlLvzB7NDs8yB',
@@ -2398,7 +2398,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '87e554d1cd3d96f0cb9f49ea9d68856c681e408bd1f2c04ea9d6d27e3c981cda'
+      approvalContentHash: '9ad2d7f79e1f6cf5b7db8f82f882979b3898ed002d03677ac9b6b5983a542e4a'
     },
     {
       id: 'recSAUYLDhZPmEita',
@@ -2411,7 +2411,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c81f419a7b06d8f0c42fd0eb20e11450fd0519a4bd34aa122ac19081d18eed2d'
+      approvalContentHash: '0f3bfd8e62e80ae1d5e2362b02cfc068abe223b70eba4ac5841b8692ce90e2e7'
     },
     {
       id: 'recm6hadfIlOVdszS',
@@ -2424,7 +2424,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e0f52b2fe1b75e62370179e75967653a306728cee7c770998b066fc9cf53776f'
+      approvalContentHash: '3d1015b007c666e43258712fc391ed6747bf716a46d059686b3d4afbcf1aa124'
     },
     {
       id: 'recoMzqIJuI2du3VS',
@@ -2437,7 +2437,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'f9e590f5df40372841903e8e9924b52f2d3c38d32a77fef1632664cc01b96ca4'
+      approvalContentHash: 'fcac892f06ff4e960a27623bb4355564d49346746783a616b998272015726ae4'
     },
     {
       id: 'recR7im3gU3xoddBM',
@@ -2450,7 +2450,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2ecd6f8401c2fe995959afba953fed63f759ed75a96a51f40e5d49899096e285'
+      approvalContentHash: '46d7b3db035d8b829db782a05329f66237d0633e7537064a3e280440d78cee98'
     },
     {
       id: 'rec5dHX0hHSdA8nbd',
@@ -2463,7 +2463,7 @@
       candidateVersion: 'factory-2-0-batch-15-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '74b790cf59748b86eaef5b212107930e81e37800573a529094c0ea6d5f2445cf'
+      approvalContentHash: '58df84e3930e103b90c1b1b5aa1e6362ab7a36bc76d522090039db67ccace15c'
     },
     {
       id: 'recRqHJW2SbKY0N2v',
@@ -2476,7 +2476,7 @@
       candidateVersion: 'factory-2-0-batch-16-v1',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '0a26c0f405306228eaaa223785229befdfb78d31d84d75ce872025ef6fabf9c4'
+      approvalContentHash: '235ce055ac02798e9d0bb67fc0bcb7fc4b6cbfaa6902f3184e495aa0af16fff6'
     },
     {
       id: 'NEW_allegro',
@@ -2489,7 +2489,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'afedc242beb11f5a6bd538d98959007c87dffd18eec5859ac80d9a33bbd30bd5',
+      approvalContentHash: 'c4a0ca744dc321b9348f58805cd7e10b975e0cbfc3fefd0e0d6a2d23c2edc8ef',
       parentCompany: 'Barceló Hotel Group',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2506,7 +2506,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'bf7a9aadd98ad2024ef327141c5dd9ea60d8970e99b06a7ff9cefa22519885cf',
+      approvalContentHash: '915a3694a666a630968244bfe215ebcb6302b2c32856dd8542b2cd8a2fb8d768',
       parentCompany: 'Hyatt Hotels Corporation',
       batchTag: 'batch-13',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2523,7 +2523,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '828454bb80ad00189265226e8c038fb24caaf2e9d658021e1e364df65ac2b85f',
+      approvalContentHash: 'fe329c9653b6222b300061c25a07de9a0cbd7727e231495d08bb879faef7a7d8',
       parentCompany: 'Rotana',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2540,7 +2540,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '871e585a087d333b00eed79e3beccaffeaae9f7a64c084a2a74dbf5eaa71251b',
+      approvalContentHash: '6c009ca3a0f6dcd7d24fd60892de20cc1218f73233193b79abcd2cb8be3ed98a',
       parentCompany: 'Dusit International',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2557,7 +2557,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e917047ccfcc1b82bc8b79c7f80a049b2204011bdb04ad3a3290f08af62680a9',
+      approvalContentHash: '46abfece8b4e1650edd8591113ad5c6968f5c4794a4f84d0cbc4a906a216bf7b',
       parentCompany: 'Minor Hotels',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2608,7 +2608,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '89b6cf1ed4c3936fadf3bab91f0f693dac2f07e8a18c0aa95689c915c80e6604',
+      approvalContentHash: '0c08c596141cc7e807bdbef090d727652bfb2bfe8ce8760a6655b15ffaba97f0',
       parentCompany: 'Dusit International',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2625,7 +2625,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5ad04c4ac11d32dad231cffe0ae991f149a98408609b4bde52a23533982bd874',
+      approvalContentHash: '9026d6894c6bd6bf1af9b98881279cb7c8c2e361e0c90c9c7bc7b4a09c5f3bd1',
       parentCompany: 'Dusit International',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2642,7 +2642,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'a41360c2fcae2beb227a5ca9ed1a329c99695a45894b960f284b96cdf0a88363',
+      approvalContentHash: '8c133373c9625b28799349bb9e8cf35650d9134ffdf16b5a807938ebbdabba22',
       parentCompany: 'Dusit International',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2659,7 +2659,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'db6a2fbdda5a3e913c5fa97aecde71edc8edfddab7e572beab9c20719c4dea74',
+      approvalContentHash: 'fb7da3a1fc219c31db5f3cbdc4e6d182d02d61e15e262c37c3056b8ff7749a9c',
       parentCompany: 'Dusit International',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2676,7 +2676,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4b167cf4fc1fa9bd6c90200d5e53b88ded719b4cc1369b91764f5468471d4a02',
+      approvalContentHash: '819afe9ee4d78aacd90e69342c57df42593f96057c975f87bbeda4753380c586',
       parentCompany: 'Wyndham Hotels & Resorts',
       batchTag: 'batch-14',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2693,7 +2693,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'f0bfdd4ea0ad9555ec54cbfb51b3e611e8bbec68bd986f6c08fe239c92dc3013',
+      approvalContentHash: '16cfa9442a31a4de4bdcd76682eefcf5e75939d85a96556b96d5bc47360b9dac',
       parentCompany: 'Minor Hotels',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2710,7 +2710,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'de31b091f152903a5da4fc0b466fdc191c79fb429d2c1fe6f8572782c1db1fe3',
+      approvalContentHash: '9c3a0243a244c8d6c97ca3a3ac90e7bb287f4d147095dfc8662bbdad961149a9',
       parentCompany: 'InterContinental Hotels Group',
       batchTag: 'batch-13',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2727,7 +2727,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '94c4b9ff4afd876c007195738a9eec6c8f9166613a136bc214b1d2e1f38f7f7d',
+      approvalContentHash: 'be0fd229c42011a236b90510227ef15feba1426a105f2f1d8e9a4b99c2881709',
       parentCompany: 'Hyatt Hotels Corporation',
       batchTag: 'batch-11',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2744,7 +2744,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '250fcfe7ba4ac2e449cb8b01d2434e478c313629f91d298f9c6c08cb39f073a8',
+      approvalContentHash: 'f8c88867b56a837600350dcd92313d1628dd0b451f5c3ad4c9ec4079a2e9f92b',
       parentCompany: 'Hyatt Hotels Corporation',
       batchTag: 'batch-11',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2778,7 +2778,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '725b696bdcc2dc839636b157849347373a3a2fad0506113b1d53a557a7a5bc98',
+      approvalContentHash: 'bd88afac9d9e0c157d8f96a4121033c94861d0acd312dd74849bafe38e210bab',
       parentCompany: 'Shangri-La Group',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2795,7 +2795,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b1af0f1957b440fdd37127ef1dfa3709044d9be944c712d4ba311a6ae377c4aa',
+      approvalContentHash: 'b9afc42f232f036644fda29f3efd2af5d16a1a5a87cb7db79348acdf444152f4',
       parentCompany: 'Shangri-La Group',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2812,7 +2812,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '637cfedeb1d04891ac7888132e14744bbe786a0263466c755ae6fecadefc644d',
+      approvalContentHash: '0e00d23d2189775ca34490f3ccad177d71054a478ea1b5b0e59761220583b9e0',
       parentCompany: 'The Ascott Limited',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2829,7 +2829,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '0202aa1b0d8b468f5f15dd3f33451be344969608a782712f856a55673daa5bd7',
+      approvalContentHash: '0a0e18be9d12b45f26a1c9de1b6a8de56e1580c0254541683df99ca6ff08abd4',
       parentCompany: 'Marriott International',
       batchTag: 'batch-14',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2846,7 +2846,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4a2a6569810f6b95f04542fe6b82200fd00dead8534546a129fc48c687fc651f',
+      approvalContentHash: '1b649b726ee458cdbf8a39c5bdf3a57ab63e85e767c45990a32d507c084ffce0',
       parentCompany: 'Minor Hotels',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2863,7 +2863,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'e41d705aeefcbe7eb19d581cc2b345ad4fe9a97d11af8dfce75408723bfe6193',
+      approvalContentHash: '8ddb0fdd3a51d6a339e8191e6a65d6f7e06643d13c6192b2a309f8db3a443d08',
       parentCompany: 'Minor Hotels',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2880,7 +2880,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '8a49dbe7ae461764841e3de7cf245aaec03c9df8d64e9b4b3b213b1bbfefe426',
+      approvalContentHash: 'b6aa15bd90d0e0e0a608167e1185ce1276c9e46f686bad604c53ca94b6c6afef',
       parentCompany: 'InterContinental Hotels Group',
       batchTag: 'batch-13',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2897,7 +2897,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'fc7ae1dbb321d8f9552d2f81b4a0202f211a0cc936cfb142f3a875577ca024dc',
+      approvalContentHash: 'd19dacadb7999c919811a8987876eb41bc582e009be718922b7a6fa10c6bd70d',
       parentCompany: 'The Ascott Limited',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2914,7 +2914,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '34289d59d777150fe8ec3c399503d405d5e09a178ec05cc7fb1fbce384f669fe',
+      approvalContentHash: '3cb3396874638d296e8f76c5227c2caf136316173ce99688d0225078216f02d4',
       parentCompany: 'Barceló Hotel Group',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2931,7 +2931,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b7b6ff193a3399c4af06589e45899f954e4d01001776cf02e4fee3d9a8cdfa7b',
+      approvalContentHash: 'a880d5001f21210f20df0830ef579ad7814c8467c7103c1aa41d4d4b2c8810f9',
       parentCompany: 'Hilton Worldwide',
       batchTag: 'batch-12',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2948,7 +2948,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '0d0beee2ac5b7801012c5f9abc08052f2edf02242d8a6a9951ea6f659f7d0dd0',
+      approvalContentHash: '72632329f8800c0bcc4fb333f8fd516768a3dd535907fc5b3362edd65f01238e',
       parentCompany: 'Pan Pacific Hotels Group',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2965,7 +2965,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '2faf4655de639aa666be02a5b0d45f3044f8a0144f5aa784de850b002f6a65ed',
+      approvalContentHash: 'da40fb3fe14d205704a2e2d00b1ca383ac89f473542eb29cfdda4b69e80f1a69',
       parentCompany: 'Meliá Hotels International',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2982,7 +2982,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '983a80ab74f06a4a7113032064d73ee2df9cce7dc565457c0b3aa53eb0d34873',
+      approvalContentHash: '84ebeac6e3e6ea4bda1f50b553a7bb4e7bf1181f91ad92aa14e0b1320193153c',
       parentCompany: 'Pan Pacific Hotels Group',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -2999,7 +2999,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '95c8236e11f94d8241954dab59358e78bdd6c20490894bb06f387bc6a4f873e4',
+      approvalContentHash: '73685481c3b303849a4d8a1f70acaaf6e9b2c925272d34fe92e470321586ead2',
       parentCompany: 'Pan Pacific Hotels Group',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3016,7 +3016,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '3c142668cdf6de28ed18e2aa299a0d79abb1dd3f1768904503b742a306e429a0',
+      approvalContentHash: '4c37c7d0413e194ae4340fe0e83f10ccdebd6e6f8b92fb93200c10015abae472',
       parentCompany: 'Rotana',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3033,7 +3033,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'bef7ae4c2a4155c123259e7ce23a57e23ccd66ac37bcc71382e8568afdfc6467',
+      approvalContentHash: '0359b482ca379741e8a1055d564acda4cf11e43d4941af0e17f2ea76a08c6095',
       parentCompany: 'Rotana',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3050,7 +3050,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '6c0ee0cfdb7e610d1fdd667d02eeb07b2ed97fcbdd7add1a640f1a9d19d8332f',
+      approvalContentHash: '7a7c1339816a0b404283cb426cbec0ab5b3d25726bd16381b65a318facf4d092',
       parentCompany: 'Barceló Hotel Group',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3067,7 +3067,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '34932e629b13fc921ede3672d9351315a18c6c2cdcee1161bb07235d0c7ba262',
+      approvalContentHash: '447263a8a1de02ced97137929dbed75f330d81fca79341ada3ddbb306a72fe6d',
       parentCompany: 'InterContinental Hotels Group',
       batchTag: 'batch-13',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3084,7 +3084,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5d99c1fa119641dee3a18e69352d4492b58cd603f32032802a7e1976c495fe8e',
+      approvalContentHash: 'd0c4759221975116e901bdb49c5b1a6c868d210c774d5fc49fe19356a6ef5af3',
       parentCompany: 'Meliá Hotels International',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3101,7 +3101,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '183400539ef0a74e2e6e31a65ed96ccbf6b11e35022ff6be4162e5400c457568',
+      approvalContentHash: 'd0d5f0844ac24d6842a344ad20ea0110d5e2c2c524f64dee50d10cf80ee867b2',
       parentCompany: 'The Ascott Limited',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3118,7 +3118,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '57ef523900692961bf38b115017cddd84b1d087e66a129c1a65621069ce73291',
+      approvalContentHash: 'f18c6dee79ccd2320b925dc3a626b56db643eba7fe46487bc87ee546864d509b',
       parentCompany: 'Sonesta International Hotels Corporation',
       batchTag: 'batch-11',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3135,7 +3135,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'c9830e273968d253b941d0d28124a45464d843ad29fec836f3102aef873b7241',
+      approvalContentHash: '7c4550e2526f4fec19621bba95e8ae2e8bcf5aceab74f41cce433010a2b5ab55',
       parentCompany: 'Shangri-La Group',
       batchTag: 'batch-16',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3152,7 +3152,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '4a73cbb0bed2c77c970b32e337092e2b6321c4f56c1317483d1312b38f939fa3',
+      approvalContentHash: '034339aecb3507c256d5535055a408e44efbba97427f3c8de0f3a6672ce1b13d',
       parentCompany: 'Wyndham Hotels & Resorts',
       batchTag: 'batch-14',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3169,7 +3169,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: '5522ac5919e33c54117a5997e8b9aea9a77f7b81b83b274102efe6539cfd34dd',
+      approvalContentHash: '90336535571fe84165667d5e8cab0c83e13cbb67ac8ece9d3e898e236757ed35',
       parentCompany: 'Wyndham Hotels & Resorts',
       batchTag: 'batch-14',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3186,7 +3186,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'da9782f79fc90b8b1cd2312297cc611e00337f4627423834e9c17ee5881e5263',
+      approvalContentHash: 'dc0dd651bb5e2d51e8edba514289662119d6798c49623c3536b397e43b53b975',
       parentCompany: 'Meliá Hotels International',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3203,7 +3203,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b4d17411fe3e7b3b814d1c8a5939511919e10143414b53826aac67594a5fcc78',
+      approvalContentHash: '9c534f5401b3de02de6f967ce144ab6646f78e7a6021cd3a8f26459cfb2a07e0',
       parentCompany: 'Hyatt Hotels Corporation',
       batchTag: 'batch-13',
       factoryStatus: 'NEEDS_REMEDIATION',
@@ -3220,7 +3220,7 @@
       candidateVersion: 'factory-2-0-depth',
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
-      approvalContentHash: 'b60a67d44956657c0a97a52dd15d29ef5ae5f5e560b32a084928f28b02839af2',
+      approvalContentHash: 'dd783bb4e46eb62ca95cd11e9fad630f665480dd404344d2f5cb244d0b369c7b',
       parentCompany: 'Meliá Hotels International',
       batchTag: 'batch-15',
       factoryStatus: 'NEEDS_REMEDIATION',
