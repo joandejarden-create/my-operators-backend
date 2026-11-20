@@ -333,6 +333,36 @@
       }
     }
 
+    // Key Benefits & Program Strengths (loyalty.proof): EXACT 6 cards.
+    if (/^loyalty\.proof$/i.test(nz(slotKey))) {
+      var REQUIRED_LOYALTY_PROOF = 6;
+      if (pq.substantiveCount > 0 && pq.substantiveCount < REQUIRED_LOYALTY_PROOF) {
+        return {
+          provenance:
+            cq.substantiveCount >= REQUIRED_LOYALTY_PROOF
+              ? PROVENANCE.RETAINED_FROM_CURRENT
+              : PROVENANCE.INCOMPLETE_DRAFT,
+          applyCandidate: false,
+          reason: 'loyalty_proof_requires_exact_six_cards',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
+      if (
+        cq.substantiveCount >= REQUIRED_LOYALTY_PROOF &&
+        pq.substantiveCount > 0 &&
+        pq.substantiveCount !== REQUIRED_LOYALTY_PROOF
+      ) {
+        return {
+          provenance: PROVENANCE.INCOMPLETE_DRAFT,
+          applyCandidate: false,
+          reason: 'loyalty_proof_cardinality_regression',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
+    }
+
     if (/^materials\.gallery\.\d+$/.test(nz(slotKey))) {
       var g = decideGallerySlotApply(slotKey, currentBlocks[0] || null, candidateBlocks[0] || null);
       if (!g.applyCandidate) {
@@ -451,6 +481,31 @@
         applyCandidate: true,
         reason: 'candidate_complete_non_regressive_change'
       };
+    }
+
+    // Why Value Is Strongest: prefer better "Lead: explanation" structure.
+    if (/^overview\.why_value$/i.test(nz(slotKey))) {
+      var curLeads = countColonInsightLeads(
+        (currentBlocks || []).map(bodyOf).join('\n')
+      );
+      var candLeads = countColonInsightLeads(
+        (candidateBlocks || []).map(bodyOf).join('\n')
+      );
+      if (
+        candLeads >= 3 &&
+        candLeads > curLeads &&
+        pq.placeholderCount === 0 &&
+        pq.substantiveCount > 0 &&
+        !isProseDiligenceRegression(slotKey, currentBlocks, candidateBlocks)
+      ) {
+        return {
+          provenance: PROVENANCE.MODIFIED_EXISTING,
+          applyCandidate: true,
+          reason: 'why_value_colon_insight_upgrade',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
     }
 
     return {

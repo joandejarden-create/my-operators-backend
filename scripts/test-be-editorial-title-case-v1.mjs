@@ -48,6 +48,11 @@ assert.equal(toEditorialTitleCase("Support Across the Lifecycle"), "Support Acro
 assert.equal(toEditorialTitleCase("Opening & Conversion Path"), "Opening & Conversion Path");
 assert.equal(toEditorialTitleCase("distribution & retail reach"), "Distribution & Retail Reach");
 assert.equal(toEditorialTitleCase("F&B as Differentiator"), "F&B as Differentiator");
+assert.equal(toEditorialTitleCase("Apac"), "APAC");
+assert.equal(toEditorialTitleCase("apac"), "APAC");
+assert.equal(toEditorialTitleCase("APAC"), "APAC");
+assert.equal(toEditorialTitleCase("Emea"), "EMEA");
+assert.equal(toEditorialTitleCase("Cala"), "CALA");
 assert.equal(toEditorialTitleCase("GDS and OTA Reach"), "GDS & OTA Reach");
 assert.equal(toEditorialTitleCase("GDS And OTA Reach"), "GDS & OTA Reach");
 assert.equal(

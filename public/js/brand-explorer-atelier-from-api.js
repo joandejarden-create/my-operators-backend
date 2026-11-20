@@ -1223,6 +1223,17 @@
   function parseFootprintRegionBlock(block, defaultName) {
     var name =
       block && hasVal(block.title) ? String(block.title).trim() : defaultName || 'Region';
+    // Regional acronyms must stay all-caps (APAC / EMEA / CALA / MEA / LATAM) — never "Apac".
+    if (
+      globalThis.BeEditorialTitleCase &&
+      typeof globalThis.BeEditorialTitleCase.toEditorialTitleCase === 'function'
+    ) {
+      name = globalThis.BeEditorialTitleCase.toEditorialTitleCase(name);
+    } else {
+      name = name.replace(/\b(apac|emea|cala|latam|mea)\b/gi, function (m) {
+        return m.toUpperCase();
+      });
+    }
     var raw = block && hasVal(block.body) ? String(block.body).trim() : '';
     var paras = raw
       .split(/\n\n+/)
@@ -4959,9 +4970,12 @@
     var proofRows = explorerCardRowsForSlot(brand, 'loyalty.proof').filter(function (x) {
       return hasVal(x.title) || hasVal(x.body);
     });
+    // Permanent rule: Key Benefits & Program Strengths always renders exactly six cards.
+    // Never replace the six-card grid with a thin/incomplete loyalty.proof set (e.g. one "Proof Point").
     var proofGrid =
-      proofRows.length > 0
+      proofRows.length >= 6
         ? proofRows
+            .slice(0, 6)
             .map(function (x) {
               var h = proposedHeading(brand, hasVal(x.title) ? x.title : 'Proof');
               var b = x.body || '';
