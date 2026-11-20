@@ -564,7 +564,33 @@
     return n === 'hotel indigo' || n === 'mgallery collection';
   }
 
+  function getBrandExplorerRouteStateSafe() {
+    try {
+      if (
+        window.BrandExplorerRouteState &&
+        typeof window.BrandExplorerRouteState.getBrandExplorerRouteState === 'function'
+      ) {
+        return window.BrandExplorerRouteState.getBrandExplorerRouteState();
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    return null;
+  }
+
+  function getRouteParams() {
+    var st = getBrandExplorerRouteStateSafe();
+    if (st && st.params) return st.params;
+    try {
+      return new URLSearchParams(String(window.location.search || ''));
+    } catch (e) {
+      return new URLSearchParams('');
+    }
+  }
+
   function isInternalPreviewRequest() {
+    var st = getBrandExplorerRouteStateSafe();
+    if (st) return !!st.isInternalPreviewRequest;
     try {
       return /(?:\?|&)beInternalPreview=1(?:&|$)/.test(String(window.location.search || ''));
     } catch (e) {
@@ -572,8 +598,31 @@
     }
   }
 
-  /** Phase 2D: mount independent candidate blocks into real atelier (not standalone HTML). */
-  function isCandidateOverlayRequest() {
+  /**
+   * Founder profile mode inside the real product atelier.
+   * - saved: canonical Airtable Presentation
+   * - proposed: latest cumulative staged candidate (Compare Studio RIGHT)
+   */
+  function getProfileMode() {
+    var st = getBrandExplorerRouteStateSafe();
+    if (st && st.beProfileMode) return st.beProfileMode === 'proposed' ? 'proposed' : 'saved';
+    var params = getRouteParams();
+    var raw = String(params.get('beProfileMode') || '')
+      .trim()
+      .toLowerCase();
+    if (raw === 'proposed' || raw === 'proposed_update' || raw === 'update') return 'proposed';
+    if (raw === 'saved' || raw === 'current' || raw === 'current_saved') return 'saved';
+    if (isCandidateOverlayFlag() && isInternalPreviewRequest()) return 'proposed';
+    return 'saved';
+  }
+
+  function isProposedProfileModeRequest() {
+    return isInternalPreviewRequest() && getProfileMode() === 'proposed';
+  }
+
+  function isCandidateOverlayFlag() {
+    var st = getBrandExplorerRouteStateSafe();
+    if (st && typeof st.beCandidateOverlay === 'boolean') return st.beCandidateOverlay;
     try {
       return /(?:\?|&)beCandidateOverlay=1(?:&|$)/.test(String(window.location.search || ''));
     } catch (e) {
@@ -581,15 +630,31 @@
     }
   }
 
-  function candidateOverlayUrl() {
+  /** True when product should mount proposed/cumulative overlay (not customer path). */
+  function isCandidateOverlayRequest() {
+    return isProposedProfileModeRequest() || (isInternalPreviewRequest() && isCandidateOverlayFlag());
+  }
+
+  function resolveStagedCandidateConfig(brand) {
     try {
-      var params = new URLSearchParams(String(window.location.search || ''));
-      var custom = String(params.get('beCandidateOverlayUrl') || '').trim();
-      if (custom && custom.indexOf('..') === -1 && custom.charAt(0) === '/') return custom;
+      var reg = window.BrandExplorerStagedCandidateRegistry;
+      if (reg && typeof reg.resolveForBrand === 'function') {
+        return reg.resolveForBrand(brand);
+      }
     } catch (e) {
       /* ignore */
     }
-    return '/brand-explorer-phase2d-preview/curio-candidate.json';
+    return null;
+  }
+
+  function candidateOverlayUrl(brand) {
+    var params = getRouteParams();
+    var custom = String(params.get('beCandidateOverlayUrl') || '').trim();
+    if (custom && custom.indexOf('..') === -1 && custom.charAt(0) === '/') return custom;
+    var cfg = resolveStagedCandidateConfig(brand);
+    if (cfg && cfg.overlayUrl) return cfg.overlayUrl;
+    // Never silently fall back to Phase 2D / 2F / 2G for proposed mode.
+    return '';
   }
 
   function applyCandidateOverlayToBrand(brand, overlay) {
@@ -631,12 +696,102 @@
     return brand;
   }
 
-  function fetchCandidateOverlay() {
-    return fetch(candidateOverlayUrl(), { credentials: 'same-origin' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('candidate overlay HTTP ' + res.status);
-        return res.json();
+  function fetchCandidateOverlay(url) {
+    var target = String(url || '').trim();
+    if (!target) {
+      return Promise.reject(new Error('No staged candidate overlay URL for this brand'));
+    }
+    return fetch(target, { credentials: 'same-origin' }).then(function (res) {
+      if (!res.ok) throw new Error('candidate overlay HTTP ' + res.status + ' for ' + target);
+      return res.json();
+    });
+  }
+
+  function hashBlocksSync(blocks) {
+    var payload = JSON.stringify(blocks || []);
+    var h = 2166136261;
+    for (var i = 0; i < payload.length; i++) {
+      h ^= payload.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return 'fnv1a:' + ('00000000' + (h >>> 0).toString(16)).slice(-8);
+  }
+
+  function hashBlocksAsync(blocks) {
+    var payload = JSON.stringify(blocks || []);
+    try {
+      if (globalThis.crypto && crypto.subtle && typeof TextEncoder !== 'undefined') {
+        return crypto.subtle.digest('SHA-256', new TextEncoder().encode(payload)).then(function (buf) {
+          return Array.from(new Uint8Array(buf))
+            .map(function (b) {
+              return b.toString(16).padStart(2, '0');
+            })
+            .join('');
+        });
+      }
+    } catch (e) {
+      /* fallback */
+    }
+    return Promise.resolve(hashBlocksSync(blocks));
+  }
+
+  function blocksFromBrand(brand) {
+    if (!brand) return [];
+    if (brand.brandExplorer && Array.isArray(brand.brandExplorer.blocks)) {
+      return brand.brandExplorer.blocks;
+    }
+    if (Array.isArray(brand.blocks)) return brand.blocks;
+    return [];
+  }
+
+  /**
+   * Build Compare Studio RIGHT equivalent: CURRENT saved + cumulative staged changes.
+   * Never substitutes saved Presentation merely to make a parity test pass.
+   */
+  function buildCumulativeProposedBrandAsync(liveBrand) {
+    var cfg = resolveStagedCandidateConfig(liveBrand) || {};
+    var url = candidateOverlayUrl(liveBrand);
+    if (!url) {
+      return Promise.reject(
+        new Error(
+          'No latest cumulative staged candidate registered for this brand. Silent Phase 2F/2G/2D fallback is forbidden.'
+        )
+      );
+    }
+    var assembler = window.BeCumulativeProposalAssembler;
+    if (!assembler || typeof assembler.buildCumulativeProposedBrand !== 'function') {
+      return Promise.reject(
+        new Error(
+          'Cumulative proposal assembler unavailable — cannot mount PROPOSED UPDATE without Compare Studio parity'
+        )
+      );
+    }
+    return fetchCandidateOverlay(url).then(function (overlay) {
+      var built = assembler.buildCumulativeProposedBrand(liveBrand, overlay, {
+        candidateVersion: overlay.candidateVersion || cfg.candidateVersion
       });
+      var brand = built.brand;
+      var blocks = blocksFromBrand(brand);
+      return hashBlocksAsync(blocks).then(function (contentHash) {
+        brand.beCandidateOverlay = true;
+        brand.beProfileMode = 'proposed';
+        brand.beCandidateOverlayMeta = Object.assign({}, brand.beCandidateOverlayMeta || {}, {
+          phase: overlay.phase || null,
+          candidateVersion: overlay.candidateVersion || cfg.candidateVersion || null,
+          contentHash: contentHash,
+          overlayUrl: url,
+          source: cfg.source || 'phase2h-cumulative-staged',
+          founderApprovalStatus: cfg.founderApprovalStatus || 'NOT_APPROVED',
+          brandId: cfg.id || liveBrand.id || liveBrand.recordId || null,
+          assembly: assembler.BE_CUMULATIVE_PROPOSAL_ASSEMBLER_V1,
+          note: 'Cumulative publication proposal (CURRENT + validated staged changes)',
+          readOnly: true,
+          airtableWrites: false
+        });
+        brand._beProposedAssembly = built.assembly || null;
+        return brand;
+      });
+    });
   }
 
   /** Built-in factory candidate allowlist (mirrors server module; API may also set factoryPreview.eligible). */
@@ -647,6 +802,8 @@
   };
 
   function isFactoryPreviewRequest() {
+    var st = getBrandExplorerRouteStateSafe();
+    if (st) return !!(st.beInternalPreview && st.factoryPreview);
     try {
       var q = String(window.location.search || '');
       return (
@@ -761,11 +918,32 @@
     return isExternalQualityLocked(brand);
   }
 
-  function internalPreviewBannerHtml() {
+  function internalPreviewBannerHtml(brand) {
+    var mode = getProfileMode();
+    var meta = (brand && brand.beCandidateOverlayMeta) || {};
+    var modeLabel = mode === 'proposed' ? 'PROPOSED UPDATE' : 'CURRENT SAVED';
+    var extra =
+      mode === 'proposed'
+        ? ' Showing the latest cumulative staged candidate in the real product renderer. Read-only — no Airtable writes.'
+        : ' Showing the canonical Airtable Presentation. Switch to Proposed Update to review staged publication content.';
+    var hashBit = meta.contentHash
+      ? ' · hash ' + String(meta.contentHash).slice(0, 12)
+      : '';
+    var verBit = meta.candidateVersion ? ' · ' + String(meta.candidateVersion) : '';
     return (
-      '<div class="be-atelier-internal-preview-banner" role="note" data-be-display-gate="internal_preview">' +
-      '<strong>Founder Preview</strong>' +
-      '<span> This profile is visible for internal review. Some active-profile gates may still be pending.</span>' +
+      '<div class="be-atelier-internal-preview-banner' +
+      (mode === 'proposed' ? ' be-atelier-internal-preview-banner--proposed' : '') +
+      '" role="note" data-be-display-gate="internal_preview" data-be-profile-mode="' +
+      mode +
+      '">' +
+      '<strong>Founder Preview — ' +
+      modeLabel +
+      '</strong>' +
+      '<span>' +
+      extra +
+      verBit +
+      hashBit +
+      '</span>' +
       '</div>'
     );
   }
@@ -6972,8 +7150,8 @@
 
     if (canRenderFactoryPreview(brand) && isExternalQualityLocked(brand)) {
       htmlStr = factoryPreviewBannerHtml() + htmlStr;
-    } else if (isInternalPreviewRequest() && isExternalQualityLocked(brand)) {
-      htmlStr = internalPreviewBannerHtml() + htmlStr;
+    } else if (isInternalPreviewRequest()) {
+      htmlStr = internalPreviewBannerHtml(brand) + htmlStr;
     }
 
     return {
@@ -7130,37 +7308,97 @@
   }
 
   var lastAtelierBrand = null;
+  var lastLiveSavedBrand = null;
+  var lastProposedBrand = null;
+  var lastProposedError = null;
+
+  function finishMount(resolvedBrand) {
+    lastAtelierBrand = resolvedBrand;
+    mountAtelierFromBrand(resolvedBrand);
+    try {
+      window.dispatchEvent(
+        new CustomEvent('brand-explorer-profile-mode-mounted', {
+          detail: {
+            mode: getProfileMode(),
+            brand: resolvedBrand,
+            liveSavedBrand: lastLiveSavedBrand,
+            proposedError: lastProposedError
+          }
+        })
+      );
+    } catch (e) {
+      /* ignore */
+    }
+    var root = document.getElementById('brandRoot');
+    if (isExportPdfMode()) {
+      waitForExportImages(root).then(function () {
+        notifyExportReady();
+      });
+      return;
+    }
+    notifyExportReady();
+  }
+
+  function mountProposedFromLive(liveBrand) {
+    lastProposedError = null;
+    return buildCumulativeProposedBrandAsync(liveBrand)
+      .then(function (proposed) {
+        lastProposedBrand = proposed;
+        finishMount(proposed);
+        return proposed;
+      })
+      .catch(function (err) {
+        lastProposedError = err && err.message ? err.message : String(err || 'proposed mount failed');
+        try {
+          console.error('[BrandExplorer] PROPOSED UPDATE failed — not substituting CURRENT SAVED', err);
+        } catch (e) {
+          /* ignore */
+        }
+        try {
+          window.dispatchEvent(
+            new CustomEvent('brand-explorer-profile-mode-error', {
+              detail: { mode: 'proposed', error: lastProposedError, brand: liveBrand }
+            })
+          );
+        } catch (e2) {
+          /* ignore */
+        }
+        // Fail closed: keep saved visible but surface the error; never pretend proposed == saved.
+        finishMount(liveBrand);
+        return null;
+      });
+  }
+
+  function remountProfileMode(mode, opts) {
+    if (!lastLiveSavedBrand) return Promise.resolve(null);
+    var next = mode === 'proposed' ? 'proposed' : 'saved';
+    opts = opts || {};
+    if (next === 'saved') {
+      lastProposedError = null;
+      finishMount(lastLiveSavedBrand);
+      return Promise.resolve(lastLiveSavedBrand);
+    }
+    if (
+      !opts.forceRebuild &&
+      lastProposedBrand &&
+      String(lastProposedBrand.id || '') === String(lastLiveSavedBrand.id || '')
+    ) {
+      finishMount(lastProposedBrand);
+      return Promise.resolve(lastProposedBrand);
+    }
+    lastProposedBrand = null;
+    return mountProposedFromLive(lastLiveSavedBrand);
+  }
 
   function onDetailLoaded(ev) {
     var brand = ev.detail && ev.detail.brand;
     if (!brand) return;
-
-    function finishMount(resolvedBrand) {
-      lastAtelierBrand = resolvedBrand;
-      mountAtelierFromBrand(resolvedBrand);
-      var root = document.getElementById('brandRoot');
-      if (isExportPdfMode()) {
-        waitForExportImages(root).then(function () {
-          notifyExportReady();
-        });
-        return;
-      }
-      notifyExportReady();
-    }
+    lastLiveSavedBrand = brand;
+    lastProposedBrand = null;
+    lastProposedError = null;
 
     if (isCandidateOverlayRequest() && isInternalPreviewRequest()) {
-      fetchCandidateOverlay()
-        .then(function (overlay) {
-          finishMount(applyCandidateOverlayToBrand(brand, overlay));
-        })
-        .catch(function (err) {
-          try {
-            console.warn('[BrandExplorer] beCandidateOverlay failed; mounting live Presentation', err);
-          } catch (e) {
-            /* ignore */
-          }
-          finishMount(brand);
-        });
+      mountProposedFromLive(brand);
       return;
     }
 
@@ -7326,6 +7564,23 @@
     isInternalPreviewRequest: isInternalPreviewRequest,
     isFactoryPreviewRequest: isFactoryPreviewRequest,
     isCandidateOverlayRequest: isCandidateOverlayRequest,
+    isProposedProfileModeRequest: isProposedProfileModeRequest,
+    getProfileMode: getProfileMode,
+    resolveStagedCandidateConfig: resolveStagedCandidateConfig,
+    buildCumulativeProposedBrandAsync: buildCumulativeProposedBrandAsync,
+    remountProfileMode: remountProfileMode,
+    getLastLiveSavedBrand: function () {
+      return lastLiveSavedBrand;
+    },
+    getLastProposedBrand: function () {
+      return lastProposedBrand;
+    },
+    getLastProposedError: function () {
+      return lastProposedError;
+    },
+    getLastAtelierBrand: function () {
+      return lastAtelierBrand;
+    },
     canRenderFactoryPreview: canRenderFactoryPreview,
     applyCandidateOverlayToBrand: applyCandidateOverlayToBrand,
     activateAtelierTab: activateAtelierTab,

@@ -6,29 +6,34 @@
 (function () {
   'use strict';
 
-  var BRANDS = [
-    {
-      id: 'receQkxgjlezsc1xg',
-      slug: 'curio-collection',
-      name: 'Curio Collection by Hilton',
-      overlayUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2h-candidate.json',
-      scorecardUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2h-scorecard.json',
-      baselineUrl: '/brand-explorer-phase2e-preview/curio-frozen-baseline-snapshot.json',
-      manifestUrl: '/brand-explorer-phase2e-preview/curio-collection-staged-candidate-manifest-v1.json',
-      candidateVersion: 'phase2h-component-parity'
-      // No silent 2G fallback — older candidates must never replace latest staged without explicit founder intent
-    },
-    {
-      id: 'reclkgOzvAcBheUSo',
-      slug: 'ascend',
-      name: 'Ascend Hotel Collection',
-      overlayUrl: '/brand-explorer-phase2e-preview/ascend-phase2h-candidate.json',
-      scorecardUrl: '/brand-explorer-phase2e-preview/ascend-phase2h-scorecard.json',
-      baselineUrl: null,
-      manifestUrl: '/brand-explorer-phase2e-preview/ascend-staged-candidate-manifest-v1.json',
-      candidateVersion: 'phase2h-component-parity'
-    }
-  ];
+  // Prefer shared staged-candidate registry (same source as product PROPOSED UPDATE).
+  var BRANDS =
+    (globalThis.BrandExplorerStagedCandidateRegistry &&
+      typeof globalThis.BrandExplorerStagedCandidateRegistry.list === 'function' &&
+      globalThis.BrandExplorerStagedCandidateRegistry.list()) ||
+    [
+      {
+        id: 'receQkxgjlezsc1xg',
+        slug: 'curio-collection',
+        name: 'Curio Collection by Hilton',
+        overlayUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2h-candidate.json',
+        scorecardUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2h-scorecard.json',
+        baselineUrl: '/brand-explorer-phase2e-preview/curio-frozen-baseline-snapshot.json',
+        manifestUrl: '/brand-explorer-phase2e-preview/curio-collection-staged-candidate-manifest-v1.json',
+        candidateVersion: 'phase2h-component-parity'
+        // No silent 2G fallback — older candidates must never replace latest staged without explicit founder intent
+      },
+      {
+        id: 'reclkgOzvAcBheUSo',
+        slug: 'ascend',
+        name: 'Ascend Hotel Collection',
+        overlayUrl: '/brand-explorer-phase2e-preview/ascend-phase2h-candidate.json',
+        scorecardUrl: '/brand-explorer-phase2e-preview/ascend-phase2h-scorecard.json',
+        baselineUrl: null,
+        manifestUrl: '/brand-explorer-phase2e-preview/ascend-staged-candidate-manifest-v1.json',
+        candidateVersion: 'phase2h-component-parity'
+      }
+    ];
 
   var REGISTRY_INDEX_URL = '/brand-explorer-phase2e-preview/founder-requirements-studio-index-v1.json';
 

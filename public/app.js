@@ -1372,14 +1372,50 @@
         try {
             var hashQs = getHashQueryParams();
             var u = new URL(url, window.location.origin);
-            ['recordId', 'operatorId', 'id', 'tab', 'propertyId', 'hotelId', 'preview', 'live', 'publicationPackage', 'inventory', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
+            [
+                'recordId',
+                'operatorId',
+                'id',
+                'tab',
+                'propertyId',
+                'hotelId',
+                'preview',
+                'live',
+                'publicationPackage',
+                'inventory',
+                'gdiDiag',
+                'inventoryAudience',
+                'beInternalPreview',
+                'beProfileMode',
+                'beCandidateOverlay',
+                'beCandidateOverlayUrl',
+                'factoryPreview',
+                'exportPdf',
+                'refresh',
+                'spacious',
+                'share',
+                'pack'
+            ].forEach(function (key) {
                 var v = hashQs.get(key);
                 if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
             });
             // Also forward parent /app?preview=staged#/route query params into the embed.
             try {
                 var parentQs = new URLSearchParams(window.location.search || '');
-                ['hotelId', 'preview', 'live', 'publicationPackage', 'inventory', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
+                [
+                    'hotelId',
+                    'preview',
+                    'live',
+                    'publicationPackage',
+                    'inventory',
+                    'gdiDiag',
+                    'inventoryAudience',
+                    'beInternalPreview',
+                    'beProfileMode',
+                    'beCandidateOverlay',
+                    'beCandidateOverlayUrl',
+                    'factoryPreview'
+                ].forEach(function (key) {
                     var v = parentQs.get(key);
                     if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
                 });

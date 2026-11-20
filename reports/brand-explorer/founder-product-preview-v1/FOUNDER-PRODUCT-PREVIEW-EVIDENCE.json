@@ -1,0 +1,52 @@
+{
+  "contract": "BE_FOUNDER_PRODUCT_PREVIEW_V1",
+  "generatedAt": "2026-11-20T00:00:00.000Z",
+  "server": "http://127.0.0.1:8082 (ws-brand-explorer feature branch)",
+  "airtableWrites": false,
+  "note": "Port 8080 is reserved for canonical my-operators-backend; feature verified on 8082. After IC merge + post-merge sync, same URLs work on localhost:8080.",
+  "urls": {
+    "curioCurrentSaved": "http://localhost:8082/app#/brand-explorer-combined?id=receQkxgjlezsc1xg&beInternalPreview=1&beProfileMode=saved",
+    "curioProposedProduct": "http://localhost:8082/app#/brand-explorer-combined?id=receQkxgjlezsc1xg&beInternalPreview=1&beProfileMode=proposed",
+    "curioProposedDirect": "http://localhost:8082/brand-explorer-combined.html?id=receQkxgjlezsc1xg&beInternalPreview=1&beProfileMode=proposed",
+    "curioCompareStudio": "http://localhost:8082/brand-explorer-compare.html?beInternalPreview=1&brand=receQkxgjlezsc1xg",
+    "ascendProposedProduct": "http://localhost:8082/app#/brand-explorer-combined?id=reclkgOzvAcBheUSo&beInternalPreview=1&beProfileMode=proposed",
+    "ascendProposedDirect": "http://localhost:8082/brand-explorer-combined.html?id=reclkgOzvAcBheUSo&beInternalPreview=1&beProfileMode=proposed",
+    "ascendCompareStudio": "http://localhost:8082/brand-explorer-compare.html?beInternalPreview=1&brand=reclkgOzvAcBheUSo"
+  },
+  "brands": {
+    "curio": {
+      "brandId": "receQkxgjlezsc1xg",
+      "candidateVersion": "phase2h-component-parity",
+      "overlayUrl": "/brand-explorer-phase2e-preview/curio-collection-phase2h-candidate.json",
+      "productProposedContentHash": "55a13b6c5fd59cbec19ab4fceb36465e37e51f2bc38f70c7960bcfdc238caff3",
+      "compareStudioRightContentHash": "55a13b6c5fd59cbec19ab4fceb36465e37e51f2bc38f70c7960bcfdc238caff3",
+      "hashMatch": true,
+      "blockCount": 262,
+      "tabs": 10,
+      "founderApprovalStatus": "NOT_APPROVED"
+    },
+    "ascend": {
+      "brandId": "reclkgOzvAcBheUSo",
+      "candidateVersion": "phase2h-component-parity",
+      "overlayUrl": "/brand-explorer-phase2e-preview/ascend-phase2h-candidate.json",
+      "productProposedContentHash": "8b8a73b7c8c492cd93cc1f2014f10d8102e5630787780cdd64e0a18cec56b876",
+      "compareStudioRightContentHash": "8b8a73b7c8c492cd93cc1f2014f10d8102e5630787780cdd64e0a18cec56b876",
+      "hashMatch": true,
+      "blockCount": 258,
+      "tabs": 10,
+      "founderApprovalStatus": "NOT_APPROVED"
+    }
+  },
+  "screenshots": [
+    "screenshots/curio-product-current-saved.png",
+    "screenshots/curio-product-proposed-update.png",
+    "screenshots/curio-compare-studio-right.png",
+    "screenshots/ascend-product-proposed-update.png"
+  ],
+  "safeguards": {
+    "readOnlyPreview": true,
+    "noSilentPhase2dFallback": true,
+    "customerWithoutInternalPreviewSeesSavedOnly": true,
+    "curioAscendUnpublished": true
+  }
+}
