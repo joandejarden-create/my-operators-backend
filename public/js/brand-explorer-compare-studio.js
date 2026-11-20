@@ -1307,7 +1307,10 @@
     var report = {
       contract: 'BE_COMPARISON_STUDIO_FOUNDER_WORKSPACE_V1',
       exportedAt: new Date().toISOString(),
-      canonicalUrl: 'http://127.0.0.1:8082/brand-explorer-compare.html?beInternalPreview=1',
+      canonicalUrl:
+        (typeof location !== 'undefined' && location.origin
+          ? location.origin
+          : '') + '/brand-explorer-compare.html?beInternalPreview=1',
       brand: { id: state.brand.id, slug: state.brand.slug, name: state.brand.name },
       candidateVersion: state.brand.candidateVersion,
       leftMeta: state.leftMeta,
@@ -2472,6 +2475,8 @@
   }
 
   function boot() {
+    if (state._booted) return;
+    state._booted = true;
     if (!/[?&]beInternalPreview=1/.test(location.search)) {
       var u = new URL(location.href);
       u.searchParams.set('beInternalPreview', '1');
@@ -2502,6 +2507,35 @@
     loadBrand(cfg);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
+  // Access-gated pages call boot after SupportAdminGate.requireInternalRunbook succeeds.
+  // Ungated/legacy harnesses may set window.__BECS_SKIP_ACCESS_GATE__ = true before this script.
+  globalThis.BrandExplorerCompareStudioBoot = boot;
+  function startWhenAllowed() {
+    if (globalThis.__BECS_ACCESS_ALLOWED__ || globalThis.__BECS_SKIP_ACCESS_GATE__) {
+      boot();
+      return;
+    }
+    // Wait briefly for the HTML gate bootstrap; fall back only when explicitly skipped.
+    var tries = 0;
+    var timer = setInterval(function () {
+      tries += 1;
+      if (globalThis.__BECS_ACCESS_ALLOWED__ || globalThis.__BECS_SKIP_ACCESS_GATE__) {
+        clearInterval(timer);
+        boot();
+      } else if (tries >= 40) {
+        clearInterval(timer);
+        // Gate script missing — deny silent customer exposure by not auto-booting.
+        try {
+          console.warn(
+            '[BrandExplorerCompare] Waiting for SupportAdminGate; studio boot deferred until access is granted.'
+          );
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    }, 100);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startWhenAllowed);
+  else startWhenAllowed();
 })();

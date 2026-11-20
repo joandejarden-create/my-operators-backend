@@ -25,14 +25,25 @@ for (const rel of mustExist) {
 const html = readFileSync(join(root, "public/brand-explorer-compare.html"), "utf8");
 assert.ok(html.includes("brand-explorer-compare-studio.js"));
 assert.ok(html.includes("becsPairedDoc"), "Phase 2G paired-subsection document root required");
+assert.ok(html.includes("support-admin-gate.js"), "admin access gate required");
+assert.ok(html.includes("requireInternalRunbook"), "internal runbook gate required");
+assert.ok(!html.includes("127.0.0.1:8082"), "must not hardcode BE preview host in compare HTML");
 
 const appJs = readFileSync(join(root, "public/app.js"), "utf8");
 assert.ok(appJs.includes("Brand Explorer Comparison"));
 assert.ok(appJs.includes("/brand-explorer-compare"));
+assert.ok(appJs.includes("beInternalPreview: '1'"), "compare route must default to internal preview");
+assert.equal(
+  (appJs.match(/label:\s*'Brand Explorer Comparison'/g) || []).length,
+  1,
+  "exactly one Admin Resources nav label"
+);
 
 const compareJs = readFileSync(join(root, "public/js/brand-explorer-compare-studio.js"), "utf8");
 assert.ok(compareJs.includes("becs-pair-cols"));
 assert.ok(compareJs.includes("matchItems"));
+assert.ok(compareJs.includes("location.origin"), "export canonicalUrl must be origin-relative");
+assert.ok(!compareJs.includes("http://127.0.0.1:8082/brand-explorer-compare"));
 
 const server = readFileSync(join(root, "server.js"), "utf8");
 assert.ok(server.includes("postBrandExplorerCompareReview"));
