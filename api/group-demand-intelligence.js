@@ -1835,7 +1835,11 @@ export async function getGdiOpportunityDetail(req, res) {
     // Inventory audience parity with list/CSV: unpublished Bethesda rows require
     // hotel-scoped sales-team inventory authorization (not pilot-unauth alone
     // for non-allowlisted hotels / cross-hotel-scoped users / share surfaces).
-    {
+    // Founder Research Preview (?live=1 / publicationPackage=0) must match the
+    // live list (FOUNDER_RESEARCH_INVENTORY): do not 404 detail for rows already
+    // returned on the research list solely because published-audience denies
+    // unpublished customerVisible=false inventory.
+    if (!forceLiveDetail) {
       const inventoryAudience = resolveGdiInventoryAudience(req, { hotelId });
       const readable = assertOpportunityReadableForInventoryAudience(
         req,
