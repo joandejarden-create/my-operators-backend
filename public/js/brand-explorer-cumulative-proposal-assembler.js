@@ -453,6 +453,31 @@
       };
     }
 
+    // Why Value Is Strongest: prefer better "Lead: explanation" structure.
+    if (/^overview\.why_value$/i.test(nz(slotKey))) {
+      var curLeads = countColonInsightLeads(
+        (currentBlocks || []).map(bodyOf).join('\n')
+      );
+      var candLeads = countColonInsightLeads(
+        (candidateBlocks || []).map(bodyOf).join('\n')
+      );
+      if (
+        candLeads >= 3 &&
+        candLeads > curLeads &&
+        pq.placeholderCount === 0 &&
+        pq.substantiveCount > 0 &&
+        !isProseDiligenceRegression(slotKey, currentBlocks, candidateBlocks)
+      ) {
+        return {
+          provenance: PROVENANCE.MODIFIED_EXISTING,
+          applyCandidate: true,
+          reason: 'why_value_colon_insight_upgrade',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
+    }
+
     return {
       provenance: PROVENANCE.INCOMPLETE_DRAFT,
       applyCandidate: false,
