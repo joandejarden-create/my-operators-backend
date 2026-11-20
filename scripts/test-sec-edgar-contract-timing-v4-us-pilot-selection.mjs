@@ -5,6 +5,7 @@ import {
   scoreUsPilotCandidate,
   classifyPreHpc,
   classifyAfterCollision,
+  meetsCreateReadyEvidenceGates,
   aggregateFindingsToHotels,
   selectUsPilotCandidates,
   PILOT_DISPOSITION,
@@ -75,18 +76,59 @@ test("strong_candidate_pending_collision", () => {
   assert.equal(classifyPreHpc(hotel, scored), "CREATE_READY_PENDING_COLLISION");
 });
 
-test("collision_verified_absent_promotes_create_ready", () => {
+test("collision_absent_without_corroboration_is_pending_verification", () => {
   assert.equal(
     classifyAfterCollision("CREATE_READY_PENDING_COLLISION", {
       outcome: "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+      candidates: [],
     }),
-    PILOT_DISPOSITION.CREATE_READY,
+    PILOT_DISPOSITION.CREATE_CANDIDATE_PENDING_VERIFICATION,
   );
   assert.equal(
     classifyAfterCollision("CREATE_READY_PENDING_COLLISION", {
       outcome: "HPC_EXISTING_RECORD_VERIFIED",
+      candidates: [{ id: "recX", name: "Hampton Inn Daphne" }],
     }),
     PILOT_DISPOSITION.LINK_EXISTING,
+  );
+});
+
+test("create_ready_requires_independent_corroboration", () => {
+  const hotel = {
+    hotelName: "Hampton Inn Daphne",
+    city: "Daphne",
+    stateRegion: "AL",
+    addressHint: "123 Main St",
+    accessions: ["0001539497-20-000850"],
+    sourceUrls: ["https://www.sec.gov/Archives/edgar/data/1/x.htm"],
+  };
+  const collision = {
+    outcome: "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
+    candidatesReviewed: [],
+  };
+  const gatesFail = meetsCreateReadyEvidenceGates(hotel, collision, null);
+  assert.equal(gatesFail.ok, false);
+  assert.ok(gatesFail.missing.includes("independent_current_property_evidence"));
+
+  const corroboration = {
+    independentCurrentEvidence: true,
+    operatingStatus: "OPERATING",
+    streetAddress: "123 Main St",
+    city: "Daphne",
+    stateRegion: "AL",
+    sourceUrls: ["https://www.hilton.com/en/hotels/example/"],
+    filingAccessions: ["0001539497-20-000850"],
+  };
+  const gatesOk = meetsCreateReadyEvidenceGates(hotel, collision, corroboration);
+  assert.equal(gatesOk.ok, true);
+  assert.equal(
+    classifyAfterCollision("CREATE_READY_PENDING_COLLISION", collision, {
+      ...hotel,
+      corroboration,
+      independentCurrentEvidence: true,
+      operatingStatus: "OPERATING",
+    }),
+    PILOT_DISPOSITION.CREATE_READY,
   );
 });
 

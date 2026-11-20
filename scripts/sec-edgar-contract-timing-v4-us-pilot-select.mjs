@@ -69,19 +69,23 @@ async function maybeCollisionCheck(queue) {
         country: "United States",
         brand: c.brandLabel || c.brandFamily || undefined,
       });
+      const candidatesReviewed = (collision?.candidates || []).slice(0, 8).map((x) => ({
+        id: x.id || x.recordId || null,
+        name: x.name || x.canonicalName || null,
+      }));
       results.push({
         propertyKey: c.propertyKey,
         outcome: collision?.outcome || HPC_LIVE_OUTCOME.HPC_LIVE_LOOKUP_UNAVAILABLE,
         hpcRecordId: collision?.hpcRecordId || null,
-        candidates: (collision?.candidates || []).slice(0, 3).map((x) => ({
-          id: x.id || x.recordId,
-          name: x.name || x.canonicalName,
-        })),
+        candidates: candidatesReviewed,
+        candidatesReviewed,
       });
     } catch (err) {
       results.push({
         propertyKey: c.propertyKey,
         outcome: "HPC_LIVE_LOOKUP_UNAVAILABLE",
+        candidates: [],
+        candidatesReviewed: [],
         error: String(err.message || err).slice(0, 200),
       });
     }
@@ -110,15 +114,17 @@ async function main() {
       const c = byKey.get(row.propertyKey);
       if (!c) continue;
       row.collision = c;
-      row.disposition = classifyAfterCollision(row.preDisposition, c);
+      // Pass hotel so SEC sourceUrls/accessions are visible; CREATE_READY still needs corroboration
+      row.disposition = classifyAfterCollision(row.preDisposition, c, row);
+      row.createReadyGates = null;
       await sleep(80);
     }
   } else {
     // Without HPC check, never claim CREATE_READY or LINK_EXISTING
     for (const row of selection.ranked) {
       if (row.preDisposition === "CREATE_READY_PENDING_COLLISION") {
-        row.disposition = PILOT_DISPOSITION.RESEARCH_REQUIRED;
-        row.dispositionNote = "Pending live HPC collision (--hpc-check)";
+        row.disposition = PILOT_DISPOSITION.CREATE_CANDIDATE_PENDING_VERIFICATION;
+        row.dispositionNote = "Pending live HPC collision (--hpc-check) + current-property corroboration";
       }
     }
   }
@@ -128,18 +134,24 @@ async function main() {
       .length,
     CREATE_READY: selection.ranked.filter((r) => r.disposition === PILOT_DISPOSITION.CREATE_READY)
       .length,
+    CREATE_CANDIDATE_PENDING_VERIFICATION: selection.ranked.filter(
+      (r) => r.disposition === PILOT_DISPOSITION.CREATE_CANDIDATE_PENDING_VERIFICATION,
+    ).length,
     RESEARCH_REQUIRED: selection.ranked.filter(
       (r) => r.disposition === PILOT_DISPOSITION.RESEARCH_REQUIRED,
     ).length,
     REJECT_AMBIGUOUS: selection.ranked.filter(
       (r) => r.disposition === PILOT_DISPOSITION.REJECT_AMBIGUOUS,
     ).length,
+    HISTORICAL_ONLY: selection.ranked.filter(
+      (r) => r.disposition === PILOT_DISPOSITION.HISTORICAL_ONLY,
+    ).length,
     CREATE_READY_PENDING_COLLISION: selection.ranked.filter(
       (r) => r.preDisposition === "CREATE_READY_PENDING_COLLISION",
     ).length,
   };
 
-  // Pilot shortlist: top RESEARCH_REQUIRED / CREATE_READY / LINK_EXISTING by score, max 50, no padding
+  // Pilot shortlist: prefer pending-verification / research / link; never pad CREATE_READY
   const shortlist = selection.ranked
     .filter((r) => r.disposition !== PILOT_DISPOSITION.REJECT_AMBIGUOUS)
     .slice(0, 50);
@@ -184,6 +196,10 @@ async function main() {
       scorePenalties: r.scorePenalties,
       collision: r.collision || null,
       findingIds: r.findingIds.slice(0, 5),
+      sourceUrls: (r.sourceUrls || r.secDocumentUrls || []).slice(0, 5),
+      filingAccessions: (r.accessions || []).slice(0, 5),
+      operatingStatus: r.operatingStatus || "UNKNOWN_REQUIRES_CORROBORATION",
+      independentCurrentEvidence: false,
     })),
     criteriaDoc: "docs/ai-build-system/HOTEL_CONTRACT_TIMING_V4_HPC_CREATION_WORKFLOW.md",
     selectionModule: "lib/hotel-intelligence/sec-edgar/contract-timing-v4-us-pilot-selection-v1.js",

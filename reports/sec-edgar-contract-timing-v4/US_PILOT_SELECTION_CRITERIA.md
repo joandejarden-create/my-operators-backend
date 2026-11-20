@@ -31,7 +31,7 @@
 | Findings loaded | 481 |
 | US hotels aggregated | 305 |
 | LINK_EXISTING | 0 |
-| CREATE_READY | 50 |
+| CREATE_READY | 0 |
 | RESEARCH_REQUIRED | 87 |
 | REJECT_AMBIGUOUS | 8 |
 | Pending collision (pre) | 210 |
@@ -42,21 +42,21 @@ Shortlist capped at 50; CREATE_READY only after collision + founder manifest app
 
 ## Top 15 shortlist
 
-1. **Fairfield Inn & Suites Lebanon** (Lebanon, TN) · score 78 · CREATE_READY
-2. **Home2 Suites - Lithia Springs, GA** (Lithia Springs, GA) · score 78 · CREATE_READY
-3. **Residence Inn - Lynchburg** (Lynchburg, VA) · score 78 · CREATE_READY
-4. **Springhill Suites - New Smyrna Beach** (New Smyrna Beach, FL) · score 78 · CREATE_READY
-5. **SpringHill Suites Newark** (Newark, DE) · score 78 · CREATE_READY
-6. **Anaheim Marriott Suites** (Garden Grove, CA) · score 75 · CREATE_READY
-7. **AVR Embassy Suites Fort Worth** (Fort Worth, TX) · score 75 · CREATE_READY
-8. **Candlewood Suites - Terre Haute IN** (Terre Haute, IN) · score 75 · CREATE_READY
-9. **Candlewood Suites Sayre** (Sayre, PA) · score 75 · CREATE_READY
-10. **Candlewood Suites Texarkana** (Texarkana, TX) · score 75 · CREATE_READY
-11. **Candlewood Suites Watertown** (Evans Mills, NY) · score 75 · CREATE_READY
-12. **Comfort Inn & Suites Paris** (Paris, TX) · score 75 · CREATE_READY
-13. **Comfort Suites Buda Austin South** (Buda, TX) · score 75 · CREATE_READY
-14. **Comfort Suites Gastonia** (Gastonia, NC) · score 75 · CREATE_READY
-15. **Comfort Suites Raleigh-Durham Airport** (Durham, NC) · score 75 · CREATE_READY
+1. **Fairfield Inn & Suites Lebanon** (Lebanon, TN) · score 78 · CREATE_CANDIDATE_PENDING_VERIFICATION
+2. **Home2 Suites - Lithia Springs, GA** (Lithia Springs, GA) · score 78 · CREATE_CANDIDATE_PENDING_VERIFICATION
+3. **Residence Inn - Lynchburg** (Lynchburg, VA) · score 78 · CREATE_CANDIDATE_PENDING_VERIFICATION
+4. **Springhill Suites - New Smyrna Beach** (New Smyrna Beach, FL) · score 78 · CREATE_CANDIDATE_PENDING_VERIFICATION
+5. **SpringHill Suites Newark** (Newark, DE) · score 78 · CREATE_CANDIDATE_PENDING_VERIFICATION
+6. **Anaheim Marriott Suites** (Garden Grove, CA) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+7. **AVR Embassy Suites Fort Worth** (Fort Worth, TX) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+8. **Candlewood Suites - Terre Haute IN** (Terre Haute, IN) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+9. **Candlewood Suites Sayre** (Sayre, PA) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+10. **Candlewood Suites Texarkana** (Texarkana, TX) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+11. **Candlewood Suites Watertown** (Evans Mills, NY) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+12. **Comfort Inn & Suites Paris** (Paris, TX) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+13. **Comfort Suites Buda Austin South** (Buda, TX) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+14. **Comfort Suites Gastonia** (Gastonia, NC) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
+15. **Comfort Suites Raleigh-Durham Airport** (Durham, NC) · score 75 · CREATE_CANDIDATE_PENDING_VERIFICATION
 
 ## Next after #495 merge
 

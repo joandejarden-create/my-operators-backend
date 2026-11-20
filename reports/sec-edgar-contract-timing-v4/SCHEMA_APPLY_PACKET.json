@@ -1,50 +1,26 @@
 {
-  "inspectedAt": "2026-11-20T22:48:33.525Z",
+  "module": "HI_HOTEL_CONTRACTS_MILESTONES_SCHEMA_V4_CORRECTED",
+  "inspectedAt": "2026-11-20T23:04:46.246Z",
   "baseId": "appCCUsuGsE1ifoLk",
-  "mode": "DRY_RUN_PACKET",
+  "mode": "DRY_RUN_CORRECTED_PACKET",
   "schemaApplyAuthorized": false,
-  "live": {
-    "contractsExists": false,
-    "milestonesExists": false,
-    "inventoryId": "tblx77Nmh56h4xa9z",
-    "findingsId": "tblGjTWNm8G4UOF1e",
-    "inventoryHasGeoClass": false,
-    "inventoryHasContinent": false,
-    "findingsHasLinkedContract": false,
-    "findingsHasLinkedMilestone": false
-  },
-  "proposed": {
-    "createTables": [
-      {
-        "name": "HI Hotel Contracts",
-        "fieldCount": 26
-      },
-      {
-        "name": "HI Contract Milestones",
-        "fieldCount": 18
-      }
-    ],
-    "addInventoryFields": [
-      "Geographic Processing Class",
-      "Continent / Macro Region"
-    ],
-    "addFindingsFields": [
-      "Linked Contract",
-      "Linked Milestone"
-    ],
-    "selfLinksOnContracts": [
-      "Supersedes Contract",
-      "Superseded By Contract"
-    ],
-    "contractLinkOnMilestones": "Contract",
-    "publicationStateDefault": "CUSTOMER_BLOCKED"
-  },
-  "stop": {
-    "schemaApply": "REQUIRES_EXPLICIT_FOUNDER_META_API_AUTHORIZATION",
-    "hpcCreate": "REQUIRES_PER_ROW_FOUNDER_MANIFEST_APPROVAL"
-  },
-  "fieldBlueprints": {
-    "contracts": [
+  "priorPacketIssuesFixed": [
+    "Supersedes Contract / Superseded By Contract now in complete blueprint (step 2)",
+    "Superseded By Milestone now in complete blueprint (step 4)",
+    "Milestone Contract explicitly typed as multipleRecordLinks → HI Hotel Contracts",
+    "Field counts reconciled: contracts complete 28; milestones complete 19",
+    "Findings Linked Contract / Linked Milestone remain mandatory additive links",
+    "Publication State CUSTOMER_BLOCKED application-enforced for both tables"
+  ],
+  "blueprintValidation": {
+    "ok": true,
+    "errors": [],
+    "counts": {
+      "contractsComplete": 28,
+      "milestonesComplete": 19,
+      "linkGraphEdges": 12
+    },
+    "contractFieldNames": [
       "Contract ID",
       "Discovery Property",
       "HPC Hotel",
@@ -70,10 +46,13 @@
       "Evidence Confidence",
       "Publication State",
       "Schema Version",
-      "Notes / Quarantine"
+      "Notes / Quarantine",
+      "Supersedes Contract",
+      "Superseded By Contract"
     ],
-    "milestones": [
+    "milestoneFieldNames": [
       "Milestone ID",
+      "Contract",
       "Discovery Property",
       "HPC Hotel",
       "Milestone Type",
@@ -89,7 +68,1246 @@
       "Related Finding",
       "Publication State",
       "Schema Version",
-      "Notes"
+      "Notes",
+      "Superseded By Milestone"
     ]
+  },
+  "linkGraph": [
+    {
+      "from": "HI Hotel Contracts",
+      "field": "Discovery Property",
+      "to": "HI Hotel Discovery Inventory",
+      "required": true
+    },
+    {
+      "from": "HI Hotel Contracts",
+      "field": "HPC Hotel",
+      "to": "Hotel Property Census",
+      "required": false
+    },
+    {
+      "from": "HI Hotel Contracts",
+      "field": "Counterparty Org",
+      "to": "HI Organizations",
+      "required": false
+    },
+    {
+      "from": "HI Hotel Contracts",
+      "field": "Supersedes Contract",
+      "to": "HI Hotel Contracts",
+      "required": false
+    },
+    {
+      "from": "HI Hotel Contracts",
+      "field": "Superseded By Contract",
+      "to": "HI Hotel Contracts",
+      "required": false
+    },
+    {
+      "from": "HI Contract Milestones",
+      "field": "Contract",
+      "to": "HI Hotel Contracts",
+      "required": true,
+      "type": "multipleRecordLinks"
+    },
+    {
+      "from": "HI Contract Milestones",
+      "field": "Discovery Property",
+      "to": "HI Hotel Discovery Inventory",
+      "required": false
+    },
+    {
+      "from": "HI Contract Milestones",
+      "field": "HPC Hotel",
+      "to": "Hotel Property Census",
+      "required": false
+    },
+    {
+      "from": "HI Contract Milestones",
+      "field": "Related Finding",
+      "to": "HI Discovery Findings",
+      "required": false
+    },
+    {
+      "from": "HI Contract Milestones",
+      "field": "Superseded By Milestone",
+      "to": "HI Contract Milestones",
+      "required": false
+    },
+    {
+      "from": "HI Discovery Findings",
+      "field": "Linked Contract",
+      "to": "HI Hotel Contracts",
+      "required": false
+    },
+    {
+      "from": "HI Discovery Findings",
+      "field": "Linked Milestone",
+      "to": "HI Contract Milestones",
+      "required": false
+    }
+  ],
+  "liveLinkChecks": [],
+  "live": {
+    "contractsExists": false,
+    "milestonesExists": false,
+    "contractsTableId": null,
+    "milestonesTableId": null,
+    "inventoryId": "tblx77Nmh56h4xa9z",
+    "findingsId": "tblGjTWNm8G4UOF1e",
+    "hpcId": "tbl9aY5ijiuIzzWam",
+    "orgsId": "tbliXEfUOWk32AN9y",
+    "inventoryHasGeoClass": false,
+    "inventoryHasContinent": false,
+    "findingsHasLinkedContract": false,
+    "findingsHasLinkedMilestone": false,
+    "verifiedExistingTables": {
+      "Hotel Property Census": true,
+      "HI Organizations": true,
+      "HI Hotel Discovery Inventory": true,
+      "HI Discovery Findings": true
+    }
+  },
+  "proposed": {
+    "createTables": [
+      {
+        "name": "HI Hotel Contracts",
+        "fieldCountOnCreate": 26,
+        "fieldCountComplete": 28,
+        "fieldsOnCreate": [
+          {
+            "name": "Contract ID",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Discovery Property",
+            "type": "multipleRecordLinks",
+            "linkedTableId": "tblx77Nmh56h4xa9z"
+          },
+          {
+            "name": "HPC Hotel",
+            "type": "multipleRecordLinks",
+            "linkedTableId": "tbl9aY5ijiuIzzWam"
+          },
+          {
+            "name": "Agreement Type",
+            "type": "singleSelect",
+            "linkedTableId": null
+          },
+          {
+            "name": "Agreement Role",
+            "type": "singleSelect",
+            "linkedTableId": null
+          },
+          {
+            "name": "Counterparty Org",
+            "type": "multipleRecordLinks",
+            "linkedTableId": "tbliXEfUOWk32AN9y"
+          },
+          {
+            "name": "Counterparty Name Raw",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Brand Family",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Brand Label",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Governing Law / Jurisdiction",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Hotel Country",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Hotel State / Region",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Hotel City",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Geographic Processing Class",
+            "type": "singleSelect",
+            "linkedTableId": null
+          },
+          {
+            "name": "Contract Status",
+            "type": "singleSelect",
+            "linkedTableId": null
+          },
+          {
+            "name": "Commencement Date",
+            "type": "date",
+            "linkedTableId": null
+          },
+          {
+            "name": "Scheduled Expiration Date",
+            "type": "date",
+            "linkedTableId": null
+          },
+          {
+            "name": "Term Years",
+            "type": "number",
+            "linkedTableId": null
+          },
+          {
+            "name": "Renewal Options Summary",
+            "type": "multilineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Termination Rights Summary",
+            "type": "multilineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Primary Source URL",
+            "type": "url",
+            "linkedTableId": null
+          },
+          {
+            "name": "Primary SEC Accession",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Evidence Confidence",
+            "type": "singleSelect",
+            "linkedTableId": null
+          },
+          {
+            "name": "Publication State",
+            "type": "singleSelect",
+            "linkedTableId": null
+          },
+          {
+            "name": "Schema Version",
+            "type": "singleLineText",
+            "linkedTableId": null
+          },
+          {
+            "name": "Notes / Quarantine",
+            "type": "multilineText",
+            "linkedTableId": null
+          }
+        ],
+        "selfLinksAfterCreate": [
+          "Supersedes Contract",
+          "Superseded By Contract"
+        ]
+      },
+      {
+        "name": "HI Contract Milestones",
+        "fieldCountOnCreate": 18,
+        "fieldCountComplete": 19,
+        "contractField": {
+          "name": "Contract",
+          "type": "multipleRecordLinks",
+          "linkedTable": "HI Hotel Contracts",
+          "required": true
+        },
+        "selfLinksAfterCreate": [
+          "Superseded By Milestone"
+        ],
+        "fieldsOnCreateNames": [
+          "Milestone ID",
+          "Contract",
+          "Discovery Property",
+          "HPC Hotel",
+          "Milestone Type",
+          "Milestone Date",
+          "Date Meaning Precision",
+          "Reporting Date",
+          "Current Status Class",
+          "Status Corroborated",
+          "Commercial Relevance Score",
+          "Source URL",
+          "SEC Accession",
+          "Evidence Snippet",
+          "Related Finding",
+          "Publication State",
+          "Schema Version",
+          "Notes"
+        ]
+      }
+    ],
+    "addInventoryFields": [
+      "Geographic Processing Class",
+      "Continent / Macro Region"
+    ],
+    "addFindingsFields": [
+      "Linked Contract",
+      "Linked Milestone"
+    ],
+    "selfLinksOnContracts": [
+      "Supersedes Contract",
+      "Superseded By Contract"
+    ],
+    "selfLinksOnMilestones": [
+      "Superseded By Milestone"
+    ],
+    "contractLinkOnMilestones": {
+      "name": "Contract",
+      "type": "multipleRecordLinks",
+      "to": "HI Hotel Contracts",
+      "required": true
+    },
+    "publicationStateDefault": "CUSTOMER_BLOCKED",
+    "publicationEnforcement": "Writers must set Publication State=CUSTOMER_BLOCKED; fail-closed if unset. Airtable Meta singleSelect has no reliable server default — application-enforced."
+  },
+  "applySequence": {
+    "steps": [
+      {
+        "step": 1,
+        "action": "CREATE_TABLE",
+        "name": "HI Hotel Contracts",
+        "fields": [
+          {
+            "name": "Contract ID",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Discovery Property",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tblx77Nmh56h4xa9z"
+            }
+          },
+          {
+            "name": "HPC Hotel",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tbl9aY5ijiuIzzWam"
+            }
+          },
+          {
+            "name": "Agreement Type",
+            "type": "singleSelect",
+            "options": {
+              "choices": [
+                {
+                  "name": "FRANCHISE"
+                },
+                {
+                  "name": "MANAGEMENT"
+                },
+                {
+                  "name": "LEASE"
+                },
+                {
+                  "name": "LICENSE"
+                },
+                {
+                  "name": "OTHER"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Agreement Role",
+            "type": "singleSelect",
+            "options": {
+              "choices": [
+                {
+                  "name": "ORIGINAL"
+                },
+                {
+                  "name": "AMENDMENT"
+                },
+                {
+                  "name": "RENEWAL_EXTENSION"
+                },
+                {
+                  "name": "TERMINATION_INSTRUMENT"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Counterparty Org",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tbliXEfUOWk32AN9y"
+            }
+          },
+          {
+            "name": "Counterparty Name Raw",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Brand Family",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Brand Label",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Governing Law / Jurisdiction",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Hotel Country",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Hotel State / Region",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Hotel City",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Geographic Processing Class",
+            "type": "singleSelect",
+            "options": {
+              "choices": [
+                {
+                  "name": "PRIORITY_HPC_ENRICHMENT"
+                },
+                {
+                  "name": "GLOBAL_RESEARCH_STANDARD"
+                },
+                {
+                  "name": "EXISTING_HPC_OPPORTUNISTIC"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Contract Status",
+            "type": "singleSelect",
+            "options": {
+              "choices": [
+                {
+                  "name": "CURRENTLY_CORROBORATED"
+                },
+                {
+                  "name": "HISTORICALLY_VERIFIED"
+                },
+                {
+                  "name": "FUTURE_DATE_REQUIRES_REVALIDATION"
+                },
+                {
+                  "name": "EXPIRED_STATUS_UNCONFIRMED"
+                },
+                {
+                  "name": "SUPERSEDED"
+                },
+                {
+                  "name": "TERMINATED_VERIFIED"
+                },
+                {
+                  "name": "CONFLICTED"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Commencement Date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "Scheduled Expiration Date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "Term Years",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "Renewal Options Summary",
+            "type": "multilineText"
+          },
+          {
+            "name": "Termination Rights Summary",
+            "type": "multilineText"
+          },
+          {
+            "name": "Primary Source URL",
+            "type": "url"
+          },
+          {
+            "name": "Primary SEC Accession",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Evidence Confidence",
+            "type": "singleSelect",
+            "options": {
+              "choices": [
+                {
+                  "name": "HIGH"
+                },
+                {
+                  "name": "MEDIUM"
+                },
+                {
+                  "name": "LOW"
+                },
+                {
+                  "name": "UNVERIFIED"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Publication State",
+            "type": "singleSelect",
+            "options": {
+              "choices": [
+                {
+                  "name": "CUSTOMER_BLOCKED"
+                },
+                {
+                  "name": "INTERNAL_ONLY"
+                },
+                {
+                  "name": "DO_NOT_PUBLISH"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Schema Version",
+            "type": "singleLineText"
+          },
+          {
+            "name": "Notes / Quarantine",
+            "type": "multilineText"
+          }
+        ],
+        "fieldCount": 26,
+        "note": "Self-links Supersedes/Superseded By added in step 2 after table id known"
+      },
+      {
+        "step": 2,
+        "action": "ADD_FIELDS",
+        "table": "HI Hotel Contracts",
+        "fields": [
+          "Supersedes Contract",
+          "Superseded By Contract"
+        ],
+        "fieldBuilders": "buildContractSelfLinkFields(contractsTableId)",
+        "fieldCount": 2
+      },
+      {
+        "step": 3,
+        "action": "CREATE_TABLE",
+        "name": "HI Contract Milestones",
+        "requiredPrior": "HI Hotel Contracts table id",
+        "fieldsInclude": [
+          "Contract (multipleRecordLinks → HI Hotel Contracts) — REQUIRED",
+          "Milestone ID",
+          "Contract",
+          "Discovery Property",
+          "HPC Hotel",
+          "Milestone Type",
+          "Milestone Date",
+          "Date Meaning Precision",
+          "Reporting Date",
+          "Current Status Class",
+          "Status Corroborated",
+          "Commercial Relevance Score",
+          "Source URL",
+          "SEC Accession",
+          "Evidence Snippet",
+          "Related Finding",
+          "Publication State",
+          "Schema Version",
+          "Notes"
+        ],
+        "fieldCount": 18
+      },
+      {
+        "step": 4,
+        "action": "ADD_FIELDS",
+        "table": "HI Contract Milestones",
+        "fields": [
+          "Superseded By Milestone"
+        ],
+        "fieldCount": 1
+      },
+      {
+        "step": 5,
+        "action": "ADD_FIELDS",
+        "table": "HI Hotel Discovery Inventory",
+        "tableId": "tblx77Nmh56h4xa9z",
+        "fields": [
+          "Geographic Processing Class",
+          "Continent / Macro Region"
+        ],
+        "fieldCount": 2
+      },
+      {
+        "step": 6,
+        "action": "ADD_FIELDS",
+        "table": "HI Discovery Findings",
+        "tableId": "tblGjTWNm8G4UOF1e",
+        "fields": [
+          "Linked Contract",
+          "Linked Milestone"
+        ],
+        "fieldCount": 2,
+        "note": "Requires Contracts + Milestones table ids"
+      }
+    ],
+    "totals": {
+      "contractFieldsOnCreate": 26,
+      "contractSelfLinks": 2,
+      "contractFieldsComplete": 28,
+      "milestoneFieldsOnCreate": 18,
+      "milestoneSelfLinks": 1,
+      "milestoneFieldsComplete": 19,
+      "additiveInventory": 2,
+      "additiveFindings": 2
+    },
+    "publicationState": {
+      "contracts": "CUSTOMER_BLOCKED",
+      "milestones": "CUSTOMER_BLOCKED",
+      "enforcement": "Writers must set Publication State=CUSTOMER_BLOCKED; fail-closed if unset. Airtable Meta singleSelect has no reliable server default — application-enforced."
+    }
+  },
+  "exactMetaPayloads": {
+    "createContractsTable": {
+      "name": "HI Hotel Contracts",
+      "description": "Stable global hotel agreement identity (ctr_…); research-only until promotion",
+      "fields": [
+        {
+          "name": "Contract ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Discovery Property",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblx77Nmh56h4xa9z"
+          }
+        },
+        {
+          "name": "HPC Hotel",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbl9aY5ijiuIzzWam"
+          }
+        },
+        {
+          "name": "Agreement Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "FRANCHISE"
+              },
+              {
+                "name": "MANAGEMENT"
+              },
+              {
+                "name": "LEASE"
+              },
+              {
+                "name": "LICENSE"
+              },
+              {
+                "name": "OTHER"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Agreement Role",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "ORIGINAL"
+              },
+              {
+                "name": "AMENDMENT"
+              },
+              {
+                "name": "RENEWAL_EXTENSION"
+              },
+              {
+                "name": "TERMINATION_INSTRUMENT"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Counterparty Org",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbliXEfUOWk32AN9y"
+          }
+        },
+        {
+          "name": "Counterparty Name Raw",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Family",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Governing Law / Jurisdiction",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel State / Region",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Geographic Processing Class",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "PRIORITY_HPC_ENRICHMENT"
+              },
+              {
+                "name": "GLOBAL_RESEARCH_STANDARD"
+              },
+              {
+                "name": "EXISTING_HPC_OPPORTUNISTIC"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Contract Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "CURRENTLY_CORROBORATED"
+              },
+              {
+                "name": "HISTORICALLY_VERIFIED"
+              },
+              {
+                "name": "FUTURE_DATE_REQUIRES_REVALIDATION"
+              },
+              {
+                "name": "EXPIRED_STATUS_UNCONFIRMED"
+              },
+              {
+                "name": "SUPERSEDED"
+              },
+              {
+                "name": "TERMINATED_VERIFIED"
+              },
+              {
+                "name": "CONFLICTED"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Commencement Date",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        },
+        {
+          "name": "Scheduled Expiration Date",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        },
+        {
+          "name": "Term Years",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Renewal Options Summary",
+          "type": "multilineText"
+        },
+        {
+          "name": "Termination Rights Summary",
+          "type": "multilineText"
+        },
+        {
+          "name": "Primary Source URL",
+          "type": "url"
+        },
+        {
+          "name": "Primary SEC Accession",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Evidence Confidence",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "HIGH"
+              },
+              {
+                "name": "MEDIUM"
+              },
+              {
+                "name": "LOW"
+              },
+              {
+                "name": "UNVERIFIED"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Publication State",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "CUSTOMER_BLOCKED"
+              },
+              {
+                "name": "INTERNAL_ONLY"
+              },
+              {
+                "name": "DO_NOT_PUBLISH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Schema Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Notes / Quarantine",
+          "type": "multilineText"
+        }
+      ]
+    },
+    "addContractSelfLinks": {
+      "afterTableIdKnown": true,
+      "fields": [
+        {
+          "name": "Supersedes Contract",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "PENDING_CONTRACTS_TABLE_ID"
+          }
+        },
+        {
+          "name": "Superseded By Contract",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "PENDING_CONTRACTS_TABLE_ID"
+          }
+        }
+      ]
+    },
+    "createMilestonesTable": {
+      "name": "HI Contract Milestones",
+      "description": "Dated contractual events (ms_…); Publication State required",
+      "fields": [
+        {
+          "name": "Milestone ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Contract",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "PENDING_CONTRACTS_TABLE_ID"
+          }
+        },
+        {
+          "name": "Discovery Property",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblx77Nmh56h4xa9z"
+          }
+        },
+        {
+          "name": "HPC Hotel",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbl9aY5ijiuIzzWam"
+          }
+        },
+        {
+          "name": "Milestone Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "FRANCHISE_EXPIRATION"
+              },
+              {
+                "name": "MANAGEMENT_EXPIRATION"
+              },
+              {
+                "name": "COMMENCEMENT"
+              },
+              {
+                "name": "RENEWAL"
+              },
+              {
+                "name": "EXTENSION"
+              },
+              {
+                "name": "AMENDMENT_EFFECTIVE"
+              },
+              {
+                "name": "TERMINATION"
+              },
+              {
+                "name": "REFLAG"
+              },
+              {
+                "name": "OPTION_EXERCISE"
+              },
+              {
+                "name": "OTHER"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Milestone Date",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        },
+        {
+          "name": "Date Meaning Precision",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "EXACT_DAY"
+              },
+              {
+                "name": "MONTH_YEAR"
+              },
+              {
+                "name": "YEAR_ONLY"
+              },
+              {
+                "name": "NARRATIVE"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Reporting Date",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        },
+        {
+          "name": "Current Status Class",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "CURRENTLY_CORROBORATED"
+              },
+              {
+                "name": "HISTORICALLY_VERIFIED"
+              },
+              {
+                "name": "FUTURE_DATE_REQUIRES_REVALIDATION"
+              },
+              {
+                "name": "EXPIRED_STATUS_UNCONFIRMED"
+              },
+              {
+                "name": "SUPERSEDED"
+              },
+              {
+                "name": "TERMINATED_VERIFIED"
+              },
+              {
+                "name": "CONFLICTED"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Status Corroborated",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        },
+        {
+          "name": "Commercial Relevance Score",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Source URL",
+          "type": "url"
+        },
+        {
+          "name": "SEC Accession",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Evidence Snippet",
+          "type": "multilineText"
+        },
+        {
+          "name": "Related Finding",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGjTWNm8G4UOF1e"
+          }
+        },
+        {
+          "name": "Publication State",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "CUSTOMER_BLOCKED"
+              },
+              {
+                "name": "INTERNAL_ONLY"
+              },
+              {
+                "name": "DO_NOT_PUBLISH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Schema Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText"
+        }
+      ],
+      "note": "Replace PENDING_CONTRACTS_TABLE_ID with live Contracts table id before apply"
+    },
+    "addMilestoneSelfLinks": {
+      "fields": [
+        {
+          "name": "Superseded By Milestone",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "PENDING_MILESTONES_TABLE_ID"
+          }
+        }
+      ]
+    },
+    "addInventoryFields": [
+      {
+        "name": "Geographic Processing Class",
+        "type": "singleSelect",
+        "options": {
+          "choices": [
+            {
+              "name": "PRIORITY_HPC_ENRICHMENT"
+            },
+            {
+              "name": "GLOBAL_RESEARCH_STANDARD"
+            },
+            {
+              "name": "EXISTING_HPC_OPPORTUNISTIC"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Continent / Macro Region",
+        "type": "singleSelect",
+        "options": {
+          "choices": [
+            {
+              "name": "NORTH_AMERICA"
+            },
+            {
+              "name": "CENTRAL_AMERICA"
+            },
+            {
+              "name": "SOUTH_AMERICA"
+            },
+            {
+              "name": "CARIBBEAN"
+            },
+            {
+              "name": "EUROPE"
+            },
+            {
+              "name": "MIDDLE_EAST"
+            },
+            {
+              "name": "AFRICA"
+            },
+            {
+              "name": "ASIA"
+            },
+            {
+              "name": "OCEANIA"
+            },
+            {
+              "name": "OTHER_UNKNOWN"
+            }
+          ]
+        }
+      }
+    ],
+    "addFindingsLinkFields": {
+      "requires": [
+        "contractsTableId",
+        "milestonesTableId"
+      ],
+      "fieldsTemplate": [
+        {
+          "name": "Linked Contract",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "PENDING_CONTRACTS_TABLE_ID"
+          }
+        },
+        {
+          "name": "Linked Milestone",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "PENDING_MILESTONES_TABLE_ID"
+          }
+        }
+      ]
+    }
+  },
+  "idempotencySimulation": {
+    "wouldNoOpIfReapplied": false,
+    "alreadyPresent": [],
+    "stillPending": [
+      "CREATE HI Hotel Contracts",
+      "CREATE HI Contract Milestones",
+      "ADD Inventory.Geographic Processing Class",
+      "ADD Inventory.Continent / Macro Region",
+      "ADD Findings.Linked Contract",
+      "ADD Findings.Linked Milestone"
+    ]
+  },
+  "stop": {
+    "schemaApply": "REQUIRES_EXPLICIT_FOUNDER_META_API_AUTHORIZATION_OF_CORRECTED_PACKET",
+    "hpcCreate": "REQUIRES_PER_ROW_FOUNDER_MANIFEST_APPROVAL",
+    "fullMigration": "BLOCKED_UNTIL_RESEARCH_MODE_PILOT_PASSES"
+  },
+  "fieldBlueprints": {
+    "contractsComplete": [
+      "Contract ID",
+      "Discovery Property",
+      "HPC Hotel",
+      "Agreement Type",
+      "Agreement Role",
+      "Counterparty Org",
+      "Counterparty Name Raw",
+      "Brand Family",
+      "Brand Label",
+      "Governing Law / Jurisdiction",
+      "Hotel Country",
+      "Hotel State / Region",
+      "Hotel City",
+      "Geographic Processing Class",
+      "Contract Status",
+      "Commencement Date",
+      "Scheduled Expiration Date",
+      "Term Years",
+      "Renewal Options Summary",
+      "Termination Rights Summary",
+      "Primary Source URL",
+      "Primary SEC Accession",
+      "Evidence Confidence",
+      "Publication State",
+      "Schema Version",
+      "Notes / Quarantine",
+      "Supersedes Contract",
+      "Superseded By Contract"
+    ],
+    "milestonesComplete": [
+      "Milestone ID",
+      "Contract",
+      "Discovery Property",
+      "HPC Hotel",
+      "Milestone Type",
+      "Milestone Date",
+      "Date Meaning Precision",
+      "Reporting Date",
+      "Current Status Class",
+      "Status Corroborated",
+      "Commercial Relevance Score",
+      "Source URL",
+      "SEC Accession",
+      "Evidence Snippet",
+      "Related Finding",
+      "Publication State",
+      "Schema Version",
+      "Notes",
+      "Superseded By Milestone"
+    ],
+    "contractsCount": 28,
+    "milestonesCount": 19
   }
 }

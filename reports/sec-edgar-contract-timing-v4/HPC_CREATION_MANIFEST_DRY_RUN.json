@@ -1,46 +1,42 @@
 {
   "module": "VERIFIED_DISCOVERY_TO_HPC_CREATION_PILOT",
-  "version": "4.0.0-dry-run",
   "status": "DRY_RUN_MANIFEST_STOP_FOR_FOUNDER_REVIEW",
-  "generatedAt": "2026-11-20T22:50:23.894Z",
+  "generatedAt": "2026-11-20T23:08:09.419Z",
   "baseId": "appCCUsuGsE1ifoLk",
-  "hpcTableId": "tbl9aY5ijiuIzzWam",
-  "discoveryInventoryTableId": "tblx77Nmh56h4xa9z",
-  "sourceSelection": "US_PILOT_SELECTION_DRY_RUN.json",
   "policy": {
-    "dryRunOnly": true,
     "noHpcCreateApply": true,
-    "founderPerRowApprovalRequired": true,
-    "maxPilotCreates": 50,
-    "geography": "US",
-    "publicationStateDefault": "CUSTOMER_BLOCKED",
-    "queueHotelExplorerEnrichment": true,
-    "reusePathway": "hpc-authorized-create-reuse-v1",
-    "collisionModule": "hpc-live-identity-collision-v1"
+    "doNotPadCreateReady": true,
+    "createReadyRequiresIndependentCorroboration": true,
+    "maxSpendUsd": 3,
+    "spentUsd": 0
   },
   "selectionUniverseSummary": {
     "LINK_EXISTING": 0,
-    "CREATE_READY": 50,
+    "CREATE_READY": 0,
+    "CREATE_CANDIDATE_PENDING_VERIFICATION": 50,
     "RESEARCH_REQUIRED": 87,
     "REJECT_AMBIGUOUS": 8,
+    "HISTORICAL_ONLY": 0,
     "CREATE_READY_PENDING_COLLISION": 210
   },
-  "shortlistCounts": {
+  "enrichedCounts": {
     "LINK_EXISTING": 0,
-    "CREATE_READY": 50,
+    "CREATE_READY": 18,
+    "CREATE_CANDIDATE_PENDING_VERIFICATION": 7,
     "RESEARCH_REQUIRED": 0,
     "REJECT_AMBIGUOUS": 0,
     "HISTORICAL_ONLY": 0
   },
-  "shortlistCount": 50,
-  "meetsTargetBandWithoutPadding": true,
+  "enrichedCount": 25,
+  "meetsCreateReadyBandWithoutPadding": false,
+  "actualCreateReady": 18,
+  "note": "Only 18 CREATE_READY after corroboration — do not pad",
   "candidates": [
     {
       "candidateId": "hpc_pilot_001",
       "discoveryRecordIds": [
         "ctim_08d4b53814368f845824"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Fairfield Inn & Suites Lebanon",
       "physicalAddressLocation": {
         "address": "1145 Franklin Road",
@@ -49,23 +45,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/rooms/",
+            "title": "Rooms | Fairfield Inn & Suites Lebanon",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/experiences/",
+            "title": "Things To Do | Fairfield Inn & Suites Lebanon",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/events/",
+            "title": "Event & Meeting Spaces | Fairfield Inn & Suites Lebanon",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 78,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "post_2018_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Fairfield",
         "waves": [
@@ -75,32 +77,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites lebanon|lebanon|tn"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Lebanon",
-        "Country": "United States",
-        "City": "Lebanon",
-        "State / Region": "TN",
-        "Street Address": "1145 Franklin Road",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949720000149/n1968-x5_424h.htm",
+        "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/rooms/",
+        "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/experiences/",
+        "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/events/",
+        "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/photos/",
+        "https://3h.group/portfolio/fairfield-inn-suites-by-marriott-lebanon/"
+      ],
+      "filingAccessions": [
+        "0001539497-20-000149"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949720000149/n1968-x5_424h.htm",
+          "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/rooms/",
+          "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/experiences/",
+          "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/events/",
+          "https://www.marriott.com/en-us/hotels/bnalb-fairfield-inn-and-suites-lebanon/photos/",
+          "https://3h.group/portfolio/fairfield-inn-suites-by-marriott-lebanon/"
+        ],
+        "accessions": [
+          "0001539497-20-000149",
+          "0001539497-20-000149"
+        ],
+        "street": "1145 Franklin Road",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -111,7 +126,6 @@
       "discoveryRecordIds": [
         "ctim_b2fa3aa51f8aeed05392"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Home2 Suites - Lithia Springs, GA",
       "physicalAddressLocation": {
         "address": "115 Interstate West Parkway",
@@ -121,22 +135,28 @@
       },
       "currentOperatingStatusEvidence": {
         "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://exa.ai/library/places?ids=x1rqkwqlf5d%2Cc7zv3g1lg3w%2Cdlwp673yjjs%2C8jm93slg98z%2Cyrslx37qcsp%2Chlhkbhrw59h%2C0nfyly895f0%2Cwsl8w7l1cn8%2Cym80r6bh210%2C4s0cc4nsg35",
+            "title": "Home2 Suites - Lithia Springs, GA Lithia Springs GA hotel official Home2 Suites",
+            "score": null
+          },
+          {
+            "url": "https://cmbs.news/property/home2-suites-lithia-springs-ga-lithia-springs-ga/",
+            "title": "Home2 Suites - Lithia Springs GA, Lithia Springs, GA CMBS loan",
+            "score": null
+          },
+          {
+            "url": "https://property.compstak.com/115-Interstate-West-Parkway-Lithia-Springs/p/2337502",
+            "title": "115 Interstate West Parkway Lithia Springs, GA commercial lease comps and tenants.",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 78,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "post_2018_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "HILTON",
         "brandLabel": "Home2 Suites",
         "waves": [
@@ -146,32 +166,47 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "home2 suites lithia springs ga|lithia springs|ga"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Home2 Suites - Lithia Springs, GA",
-        "Country": "United States",
-        "City": "Lithia Springs",
-        "State / Region": "GA",
-        "Street Address": "115 Interstate West Parkway",
-        "Current Brand": "Home2 Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001837/n1846-x4_424h.htm",
+        "https://exa.ai/library/places?ids=x1rqkwqlf5d%2Cc7zv3g1lg3w%2Cdlwp673yjjs%2C8jm93slg98z%2Cyrslx37qcsp%2Chlhkbhrw59h%2C0nfyly895f0%2Cwsl8w7l1cn8%2Cym80r6bh210%2C4s0cc4nsg35",
+        "https://cmbs.news/property/home2-suites-lithia-springs-ga-lithia-springs-ga/",
+        "https://property.compstak.com/115-Interstate-West-Parkway-Lithia-Springs/p/2337502",
+        "https://news.kilambi.com/cmbs/deal-loans/bbcms-mortgage-trust-2019-c5/",
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001818/n1846-x3_anxa1.htm"
+      ],
+      "filingAccessions": [
+        "0001539497-19-001837"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001837/n1846-x4_424h.htm",
+          "https://exa.ai/library/places?ids=x1rqkwqlf5d%2Cc7zv3g1lg3w%2Cdlwp673yjjs%2C8jm93slg98z%2Cyrslx37qcsp%2Chlhkbhrw59h%2C0nfyly895f0%2Cwsl8w7l1cn8%2Cym80r6bh210%2C4s0cc4nsg35",
+          "https://cmbs.news/property/home2-suites-lithia-springs-ga-lithia-springs-ga/",
+          "https://property.compstak.com/115-Interstate-West-Parkway-Lithia-Springs/p/2337502",
+          "https://news.kilambi.com/cmbs/deal-loans/bbcms-mortgage-trust-2019-c5/",
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001818/n1846-x3_anxa1.htm"
+        ],
+        "accessions": [
+          "0001539497-19-001837",
+          "0001539497-19-001837"
+        ],
+        "street": "115 Interstate West Parkway",
+        "operating": "UNKNOWN_REQUIRES_CORROBORATION"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -182,7 +217,6 @@
       "discoveryRecordIds": [
         "ctim_4032f2c2bd4fd5bdf181"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Residence Inn - Lynchburg",
       "physicalAddressLocation": {
         "address": "2630 Wards Road",
@@ -191,23 +225,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/overview/",
+            "title": "Residence Inn Lynchburg | Long-Stay Hotel with In-room Kitchens",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/rooms/",
+            "title": "Rooms & Suites | Residence Inn Lynchburg",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/reviews/",
+            "title": "Reviews of Residence Inn by Marriott Lynchburg",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 78,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "post_2018_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Residence Inn",
         "waves": [
@@ -217,32 +257,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "residence inn lynchburg|lynchburg|va"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Residence Inn - Lynchburg",
-        "Country": "United States",
-        "City": "Lynchburg",
-        "State / Region": "VA",
-        "Street Address": "2630 Wards Road",
-        "Current Brand": "Residence Inn",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949719000807/n1623-x6_424h.htm",
+        "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/overview/",
+        "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/rooms/",
+        "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/reviews/",
+        "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/photos/",
+        "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/dining/"
+      ],
+      "filingAccessions": [
+        "0001539497-19-000807"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949719000807/n1623-x6_424h.htm",
+          "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/overview/",
+          "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/rooms/",
+          "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/reviews/",
+          "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/photos/",
+          "https://www.marriott.com/en-us/hotels/lyhri-residence-inn-lynchburg/dining/"
+        ],
+        "accessions": [
+          "0001539497-19-000807",
+          "0001539497-19-000807"
+        ],
+        "street": "2630 Wards Road",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -253,7 +306,6 @@
       "discoveryRecordIds": [
         "ctim_ab45d1f3df9d0e7f345d"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Springhill Suites - New Smyrna Beach",
       "physicalAddressLocation": {
         "address": "512 Flagler Avenue",
@@ -262,23 +314,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/overview/",
+            "title": "Springhill Suites New Smyrna Beach | Oceanfront Hotel with Pool",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/rooms/",
+            "title": "Suites | SpringHill Suites New Smyrna Beach",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/reviews/",
+            "title": "Reviews of SpringHill Suites by Marriott New Smyrna Beach",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 78,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "post_2018_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "SpringHill Suites",
         "waves": [
@@ -288,32 +346,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "springhill suites new smyrna beach|new smyrna beach|fl"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Springhill Suites - New Smyrna Beach",
-        "Country": "United States",
-        "City": "New Smyrna Beach",
-        "State / Region": "FL",
-        "Street Address": "512 Flagler Avenue",
-        "Current Brand": "SpringHill Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949720000149/n1968-x5_424h.htm",
+        "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/overview/",
+        "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/rooms/",
+        "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/reviews/",
+        "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/photos/",
+        "https://www.visitnsbfl.com/relax/springhill-suites-nsb"
+      ],
+      "filingAccessions": [
+        "0001539497-20-000149"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949720000149/n1968-x5_424h.htm",
+          "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/overview/",
+          "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/rooms/",
+          "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/reviews/",
+          "https://www.marriott.com/en-us/hotels/dabsh-springhill-suites-new-smyrna-beach/photos/",
+          "https://www.visitnsbfl.com/relax/springhill-suites-nsb"
+        ],
+        "accessions": [
+          "0001539497-20-000149",
+          "0001539497-20-000149"
+        ],
+        "street": "512 Flagler Avenue",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -324,7 +395,6 @@
       "discoveryRecordIds": [
         "ctim_ae691226bf3b405c88a7"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "SpringHill Suites Newark",
       "physicalAddressLocation": {
         "address": "402 Ogletown Road",
@@ -333,23 +403,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/overview/",
+            "title": "SpringHill Suites Newark Downtown | All-Suite Hotel",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/rooms/",
+            "title": "Suites | SpringHill Suites Newark Downtown",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/reviews/",
+            "title": "Reviews of SpringHill Suites by Marriott Newark Downtown",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 78,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "post_2018_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "SpringHill Suites",
         "waves": [
@@ -359,32 +435,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "springhill suites newark|newark|de"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "SpringHill Suites Newark",
-        "Country": "United States",
-        "City": "Newark",
-        "State / Region": "DE",
-        "Street Address": "402 Ogletown Road",
-        "Current Brand": "SpringHill Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001837/n1846-x4_424h.htm",
+        "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/overview/",
+        "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/rooms/",
+        "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/reviews/",
+        "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/photos/",
+        "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/experiences/"
+      ],
+      "filingAccessions": [
+        "0001539497-19-001837"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001837/n1846-x4_424h.htm",
+          "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/overview/",
+          "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/rooms/",
+          "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/reviews/",
+          "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/photos/",
+          "https://www.marriott.com/en-us/hotels/ilgss-springhill-suites-newark-downtown/experiences/"
+        ],
+        "accessions": [
+          "0001539497-19-001837",
+          "0001539497-19-001837"
+        ],
+        "street": "402 Ogletown Road",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -395,7 +484,6 @@
       "discoveryRecordIds": [
         "ctim_4bfdd438013b5466466a"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Anaheim Marriott Suites",
       "physicalAddressLocation": {
         "address": "12015 Harbor Boulevard",
@@ -404,22 +492,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/overview/",
+            "title": "Anaheim Marriott Suites | Hotel with Wonderful Hospitality",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/rooms/",
+            "title": "Rooms & Suites | Anaheim Marriott Suites",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/photos/",
+            "title": "Photo Gallery | Anaheim Marriott Suites",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Marriott (unspecified)",
         "waves": [
@@ -429,32 +524,47 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "anaheim marriott suites|garden grove|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Anaheim Marriott Suites",
-        "Country": "United States",
-        "City": "Garden Grove",
-        "State / Region": "CA",
-        "Street Address": "12015 Harbor Boulevard",
-        "Current Brand": "Marriott (unspecified)",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949717000120/n846_424h-x7.htm",
+        "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/overview/",
+        "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/rooms/",
+        "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/photos/",
+        "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/dining/",
+        "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/experiences/disney/"
+      ],
+      "filingAccessions": [
+        "0001539497-17-000120"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949717000120/n846_424h-x7.htm",
+          "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/overview/",
+          "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/rooms/",
+          "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/photos/",
+          "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/dining/",
+          "https://www.marriott.com/en-us/hotels/snaas-anaheim-marriott-suites/experiences/disney/"
+        ],
+        "accessions": [
+          "0001539497-17-000120",
+          "0001539497-17-000120"
+        ],
+        "street": "12015 Harbor Boulevard",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -465,7 +575,6 @@
       "discoveryRecordIds": [
         "ctim_4fb91b856a932759b7aa"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "AVR Embassy Suites Fort Worth",
       "physicalAddressLocation": {
         "address": "600 Commerce Street",
@@ -475,21 +584,28 @@
       },
       "currentOperatingStatusEvidence": {
         "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://exa.ai/library/places?ids=5vdxd5ysnxb%2C3gj8gtdc581%2Cy7lrnyk5rdb%2Cd53vhgdmp92%2Cw2p3lbsk629%2C7gy00172bjw%2C3q7byg70ytw%2C8v7bzmnf7k7%2Chhqjcd0cllr%2Cprl1624ldc8",
+            "title": "AVR Embassy Suites Fort Worth Fort Worth TX hotel official Embassy Suites",
+            "score": null
+          },
+          {
+            "url": "https://cmbs.news/property/avr-embassy-suites-fort-worth-fort-worth-tx/",
+            "title": "Avr Embassy Suites Fort Worth, Fort Worth, TX 76102 CMBS loan",
+            "score": null
+          },
+          {
+            "url": "https://verstavo.com/property/600-commerce-st-fort-worth-tx",
+            "title": "AVR Embassy Suites Fort Worth — Fort Worth, TX | CRE Debt, the Public Record | Verstavo",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "HILTON",
         "brandLabel": "Embassy Suites",
         "waves": [
@@ -499,32 +615,47 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "avr embassy suites fort worth|fort worth|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "AVR Embassy Suites Fort Worth",
-        "Country": "United States",
-        "City": "Fort Worth",
-        "State / Region": "TX",
-        "Street Address": "600 Commerce Street",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949718001853/n1428_424h-x5.htm",
+        "https://exa.ai/library/places?ids=5vdxd5ysnxb%2C3gj8gtdc581%2Cy7lrnyk5rdb%2Cd53vhgdmp92%2Cw2p3lbsk629%2C7gy00172bjw%2C3q7byg70ytw%2C8v7bzmnf7k7%2Chhqjcd0cllr%2Cprl1624ldc8",
+        "https://cmbs.news/property/avr-embassy-suites-fort-worth-fort-worth-tx/",
+        "https://verstavo.com/property/600-commerce-st-fort-worth-tx",
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949718001837/0001539497-18-001837.txt",
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949718001850/n1428-ts_x3.htm"
+      ],
+      "filingAccessions": [
+        "0001539497-18-001853"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949718001853/n1428_424h-x5.htm",
+          "https://exa.ai/library/places?ids=5vdxd5ysnxb%2C3gj8gtdc581%2Cy7lrnyk5rdb%2Cd53vhgdmp92%2Cw2p3lbsk629%2C7gy00172bjw%2C3q7byg70ytw%2C8v7bzmnf7k7%2Chhqjcd0cllr%2Cprl1624ldc8",
+          "https://cmbs.news/property/avr-embassy-suites-fort-worth-fort-worth-tx/",
+          "https://verstavo.com/property/600-commerce-st-fort-worth-tx",
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949718001837/0001539497-18-001837.txt",
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949718001850/n1428-ts_x3.htm"
+        ],
+        "accessions": [
+          "0001539497-18-001853",
+          "0001539497-18-001853"
+        ],
+        "street": "600 Commerce Street",
+        "operating": "UNKNOWN_REQUIRES_CORROBORATION"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -535,7 +666,6 @@
       "discoveryRecordIds": [
         "ctim_f466bed32e5d414cedcb"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Candlewood Suites - Terre Haute IN",
       "physicalAddressLocation": {
         "address": "721 Wabash Avenue",
@@ -544,22 +674,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/tr/tr/terre-haute/hufwb/hoteldetail",
+            "title": "Indiana, Plymouth oteli | Holiday Inn Express & Suites Plymouth",
+            "score": null
+          },
+          {
+            "url": "https://api.us.nextdoor.com/pages/candlewood-suites-terre-haute-terre-haute-in-1/",
+            "title": "Candlewood Suites Terre Haute by IHG - Terre Haute, IN - Nextdoor",
+            "score": null
+          },
+          {
+            "url": "https://www.aaa.com/travelinfo/indiana/terre-haute/hotels/candlewood-suites-163539.html",
+            "title": "Candlewood Suites",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "IHG",
         "brandLabel": "Candlewood Suites",
         "waves": [
@@ -569,32 +706,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "candlewood suites terre haute in|terre haute|in"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Candlewood Suites - Terre Haute IN",
-        "Country": "United States",
-        "City": "Terre Haute",
-        "State / Region": "IN",
-        "Street Address": "721 Wabash Avenue",
-        "Current Brand": "Candlewood Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "IHG",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001837/n1846-x4_424h.htm",
+        "https://www.ihg.com/candlewood/hotels/tr/tr/terre-haute/hufwb/hoteldetail",
+        "https://api.us.nextdoor.com/pages/candlewood-suites-terre-haute-terre-haute-in-1/",
+        "https://www.aaa.com/travelinfo/indiana/terre-haute/hotels/candlewood-suites-163539.html",
+        "https://www.agoda.com/candlewood-suites-terre-haute/hotel/terre-haute-in-us.html",
+        "https://dorahotelco.com/"
+      ],
+      "filingAccessions": [
+        "0001539497-19-001837"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001837/n1846-x4_424h.htm",
+          "https://www.ihg.com/candlewood/hotels/tr/tr/terre-haute/hufwb/hoteldetail",
+          "https://api.us.nextdoor.com/pages/candlewood-suites-terre-haute-terre-haute-in-1/",
+          "https://www.aaa.com/travelinfo/indiana/terre-haute/hotels/candlewood-suites-163539.html",
+          "https://www.agoda.com/candlewood-suites-terre-haute/hotel/terre-haute-in-us.html",
+          "https://dorahotelco.com/"
+        ],
+        "accessions": [
+          "0001539497-19-001837",
+          "0001539497-19-001837"
+        ],
+        "street": "721 Wabash Avenue",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -605,7 +755,6 @@
       "discoveryRecordIds": [
         "ctim_a151bfc406015031d360"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Candlewood Suites Sayre",
       "physicalAddressLocation": {
         "address": "2775 Elmira Street",
@@ -614,22 +763,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail",
+            "title": "Extended Stay Hotel in Sayre, PA near Towanda | Candlewood Suites Sayre",
+            "score": null
+          },
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/hotel-room-rates",
+            "title": "Candlewood Suites Sayre - Room Pictures & Amenities",
+            "score": null
+          },
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/amenities",
+            "title": "Candlewood Suites Sayre - Sayre Hotel with Full Kitchens & Free Internet",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "IHG",
         "brandLabel": "Candlewood Suites",
         "waves": [
@@ -639,32 +795,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "candlewood suites sayre|sayre|pa"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Candlewood Suites Sayre",
-        "Country": "United States",
-        "City": "Sayre",
-        "State / Region": "PA",
-        "Street Address": "2775 Elmira Street",
-        "Current Brand": "Candlewood Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "IHG",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001289/n1716-x3_424h.htm",
+        "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail",
+        "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/hotel-room-rates",
+        "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/amenities",
+        "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/directions",
+        "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/gallery"
+      ],
+      "filingAccessions": [
+        "0001539497-19-001289"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001289/n1716-x3_424h.htm",
+          "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail",
+          "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/hotel-room-rates",
+          "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/amenities",
+          "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/directions",
+          "https://www.ihg.com/candlewood/hotels/us/en/sayre/saycw/hoteldetail/gallery"
+        ],
+        "accessions": [
+          "0001539497-19-001289",
+          "0001539497-19-001289"
+        ],
+        "street": "2775 Elmira Street",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -676,7 +845,6 @@
         "ctim_7e848d307a02a98d7244",
         "ctim_7e848d307a02a98d7244"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Candlewood Suites Texarkana",
       "physicalAddressLocation": {
         "address": "2901 South Cowhorn Creek Loop",
@@ -685,22 +853,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail",
+            "title": "Pet-Friendly Hotel in Texarkana, TX | Candlewood Suites Texarkana",
+            "score": null
+          },
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/hotel-room-rates",
+            "title": "Candlewood Suites Texarkana - Room Pictures & Amenities",
+            "score": null
+          },
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/directions",
+            "title": "Candlewood Suites Texarkana Map & Driving Directions",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "IHG",
         "brandLabel": "Candlewood Suites",
         "waves": [
@@ -710,32 +885,50 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "candlewood suites texarkana|texarkana|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Candlewood Suites Texarkana",
-        "Country": "United States",
-        "City": "Texarkana",
-        "State / Region": "TX",
-        "Street Address": "2901 South Cowhorn Creek Loop",
-        "Current Brand": "Candlewood Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "IHG",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1258361/000153949717001169/n981_424h-x7.htm",
+        "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail",
+        "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/hotel-room-rates",
+        "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/directions",
+        "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/amenities",
+        "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/gallery"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001169"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1258361/000153949717001169/n981_424h-x7.htm",
+          "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail",
+          "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/hotel-room-rates",
+          "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/directions",
+          "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/amenities",
+          "https://www.ihg.com/candlewood/hotels/us/en/texarkana/txkcw/hoteldetail/gallery"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001169",
+          "0001539497-17-001773",
+          "0001539497-17-001169"
+        ],
+        "street": "2901 South Cowhorn Creek Loop",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -746,7 +939,6 @@
       "discoveryRecordIds": [
         "ctim_9f6947fa665260bf64a2"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Candlewood Suites Watertown",
       "physicalAddressLocation": {
         "address": "26513 Herrick Drive",
@@ -755,22 +947,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail",
+            "title": "Extended Stay Hotel near Fort Drum, NY | Candlewood Suites Watertown-Fort Drum",
+            "score": null
+          },
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/hotel-room-rates",
+            "title": "Candlewood Suites Watertown-Fort Drum - Room Pictures & Amenities",
+            "score": null
+          },
+          {
+            "url": "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/amenities",
+            "title": "Candlewood Suites Watertown-Fort Drum - Evans Mills Hotel with Full Kitchens & Free Internet",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "IHG",
         "brandLabel": "Candlewood Suites",
         "waves": [
@@ -780,32 +979,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "candlewood suites watertown|evans mills|ny"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Candlewood Suites Watertown",
-        "Country": "United States",
-        "City": "Evans Mills",
-        "State / Region": "NY",
-        "Street Address": "26513 Herrick Drive",
-        "Current Brand": "Candlewood Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "IHG",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001289/n1716-x3_424h.htm",
+        "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail",
+        "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/hotel-room-rates",
+        "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/amenities",
+        "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/directions",
+        "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/gallery"
+      ],
+      "filingAccessions": [
+        "0001539497-19-001289"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001289/n1716-x3_424h.htm",
+          "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail",
+          "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/hotel-room-rates",
+          "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/amenities",
+          "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/directions",
+          "https://www.ihg.com/candlewood/hotels/us/en/evans-mills/atrcw/hoteldetail/gallery"
+        ],
+        "accessions": [
+          "0001539497-19-001289",
+          "0001539497-19-001289"
+        ],
+        "street": "26513 Herrick Drive",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -817,7 +1029,6 @@
         "ctim_3fd3b1fa80b95643e0d4",
         "ctim_3fd3b1fa80b95643e0d4"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Comfort Inn & Suites Paris",
       "physicalAddressLocation": {
         "address": "3035 Northeast Loop 286",
@@ -826,22 +1037,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.choicehotels.com/texas/paris/comfort-inn-hotels/txc53",
+            "title": "Hotel in Paris, TX | Comfort Inn & Suites Paris",
+            "score": null
+          },
+          {
+            "url": "https://exa.ai/library/place/07p7wwnm7kq",
+            "title": "Comfort Inn & Suites Paris",
+            "score": null
+          },
+          {
+            "url": "https://www.linkedin.com/company/comfort-inn-suites-paris",
+            "title": "Comfort Inn & Suites Paris",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "CHOICE",
         "brandLabel": "Comfort Inn",
         "waves": [
@@ -851,32 +1069,50 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "comfort inn suites paris|paris|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Comfort Inn & Suites Paris",
-        "Country": "United States",
-        "City": "Paris",
-        "State / Region": "TX",
-        "Street Address": "3035 Northeast Loop 286",
-        "Current Brand": "Comfort Inn",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "CHOICE",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://www.choicehotels.com/texas/paris/comfort-inn-hotels/txc53",
+        "https://exa.ai/library/place/07p7wwnm7kq",
+        "https://www.linkedin.com/company/comfort-inn-suites-paris",
+        "https://www.booking.com/hotel/us/hotel-ne-loop-paris.html",
+        "https://www.chamberofcommerce.com/business-directory/texas/paris/hotel/23943742-comfort-inn-suites-paris"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001152"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://www.choicehotels.com/texas/paris/comfort-inn-hotels/txc53",
+          "https://exa.ai/library/place/07p7wwnm7kq",
+          "https://www.linkedin.com/company/comfort-inn-suites-paris",
+          "https://www.booking.com/hotel/us/hotel-ne-loop-paris.html",
+          "https://www.chamberofcommerce.com/business-directory/texas/paris/hotel/23943742-comfort-inn-suites-paris"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001152",
+          "0001539497-17-001773",
+          "0001539497-17-001152"
+        ],
+        "street": "3035 Northeast Loop 286",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -888,7 +1124,6 @@
         "ctim_dc48d528821e5d9a2507",
         "ctim_dc48d528821e5d9a2507"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Comfort Suites Buda Austin South",
       "physicalAddressLocation": {
         "address": "15295 South Interstate 35 Building 800",
@@ -897,22 +1132,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.choicehotels.com/texas/buda/comfort-suites-hotels/txc51",
+            "title": "Hotel in Buda, TX | Comfort Suites Buda - Austin South",
+            "score": null
+          },
+          {
+            "url": "https://www.booking.com/hotel/us/hotel-s-ih-thirty-five-buda.html",
+            "title": "Comfort Suites Buda - Austin South (Hotel) (US) Deals",
+            "score": null
+          },
+          {
+            "url": "https://exa.ai/library/places?ids=ck1zf18hm5h%2Cmj7bjkbrvgj%2Czmxcy57fc04%2Cvc5b0bdt5ch%2Csw8x33mdthl%2Cgdvylb4w1rt%2Cwzlkfs1nk7k%2C52d9kplfvvn%2C335h47smmfv%2C0nk22yq9cqb",
+            "title": "Comfort Suites Buda Austin South Buda TX hotel official Comfort Inn",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "CHOICE",
         "brandLabel": "Comfort Inn",
         "waves": [
@@ -922,32 +1164,50 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "comfort suites buda austin south|buda|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Comfort Suites Buda Austin South",
-        "Country": "United States",
-        "City": "Buda",
-        "State / Region": "TX",
-        "Street Address": "15295 South Interstate 35 Building 800",
-        "Current Brand": "Comfort Inn",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "CHOICE",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://www.choicehotels.com/texas/buda/comfort-suites-hotels/txc51",
+        "https://www.booking.com/hotel/us/hotel-s-ih-thirty-five-buda.html",
+        "https://exa.ai/library/places?ids=ck1zf18hm5h%2Cmj7bjkbrvgj%2Czmxcy57fc04%2Cvc5b0bdt5ch%2Csw8x33mdthl%2Cgdvylb4w1rt%2Cwzlkfs1nk7k%2C52d9kplfvvn%2C335h47smmfv%2C0nk22yq9cqb",
+        "https://www.cvent.com/venues/buda/hotel/comfort-suites-buda-austin-south/venue-06002487-0d7b-46e3-8bac-f67eb038784c",
+        "https://www.orbitz.com/Austin-Hotels-Comfort-Suites-Buda-Austin-South.h3003773.Hotel-Information"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001152"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://www.choicehotels.com/texas/buda/comfort-suites-hotels/txc51",
+          "https://www.booking.com/hotel/us/hotel-s-ih-thirty-five-buda.html",
+          "https://exa.ai/library/places?ids=ck1zf18hm5h%2Cmj7bjkbrvgj%2Czmxcy57fc04%2Cvc5b0bdt5ch%2Csw8x33mdthl%2Cgdvylb4w1rt%2Cwzlkfs1nk7k%2C52d9kplfvvn%2C335h47smmfv%2C0nk22yq9cqb",
+          "https://www.cvent.com/venues/buda/hotel/comfort-suites-buda-austin-south/venue-06002487-0d7b-46e3-8bac-f67eb038784c",
+          "https://www.orbitz.com/Austin-Hotels-Comfort-Suites-Buda-Austin-South.h3003773.Hotel-Information"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001152",
+          "0001539497-17-001773",
+          "0001539497-17-001152"
+        ],
+        "street": "15295 South Interstate 35 Building 800",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -958,7 +1218,6 @@
       "discoveryRecordIds": [
         "ctim_39174ecf186ae789485d"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Comfort Suites Gastonia",
       "physicalAddressLocation": {
         "address": "1874 Remount Road",
@@ -967,22 +1226,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.choicehotels.com/north-carolina/gastonia/comfort-suites-hotels/nc028",
+            "title": "Hotel in Gastonia, NC | Comfort Suites Gastonia - Charlotte",
+            "score": null
+          },
+          {
+            "url": "https://exa.ai/library/place/g2vgbppdx89",
+            "title": "Comfort Suites Gastonia",
+            "score": null
+          },
+          {
+            "url": "https://www.booking.com/hotel/us/hotel-remount-rd-gastonia.html",
+            "title": "Comfort Suites Gastonia - Charlotte (Hotel) (US) Deals",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "CHOICE",
         "brandLabel": "Comfort Inn",
         "waves": [
@@ -992,32 +1258,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "comfort suites gastonia|gastonia|nc"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Comfort Suites Gastonia",
-        "Country": "United States",
-        "City": "Gastonia",
-        "State / Region": "NC",
-        "Street Address": "1874 Remount Road",
-        "Current Brand": "Comfort Inn",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "CHOICE",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://www.choicehotels.com/north-carolina/gastonia/comfort-suites-hotels/nc028",
+        "https://exa.ai/library/place/g2vgbppdx89",
+        "https://www.booking.com/hotel/us/hotel-remount-rd-gastonia.html",
+        "https://exa.ai/library/places?ids=g2vgbppdx89%2C7f7kkpqx1n2%2Cwp6zn6h4qwv%2Czzyns87j4gj%2Cz1vvz9x5f8z%2Cwqnt13qktmp%2Cc7m6ps60f6r%2Cr9gbzph2mkh%2C7hvl3gnbvxc%2Cmx3vxkqp1sc",
+        "https://www.gogastonnc.org/places/comfort-suites-gastonia"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001152"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://www.choicehotels.com/north-carolina/gastonia/comfort-suites-hotels/nc028",
+          "https://exa.ai/library/place/g2vgbppdx89",
+          "https://www.booking.com/hotel/us/hotel-remount-rd-gastonia.html",
+          "https://exa.ai/library/places?ids=g2vgbppdx89%2C7f7kkpqx1n2%2Cwp6zn6h4qwv%2Czzyns87j4gj%2Cz1vvz9x5f8z%2Cwqnt13qktmp%2Cc7m6ps60f6r%2Cr9gbzph2mkh%2C7hvl3gnbvxc%2Cmx3vxkqp1sc",
+          "https://www.gogastonnc.org/places/comfort-suites-gastonia"
+        ],
+        "accessions": [
+          "0001539497-17-001152",
+          "0001539497-17-001152"
+        ],
+        "street": "1874 Remount Road",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1028,7 +1307,6 @@
       "discoveryRecordIds": [
         "ctim_c6bc09e21a993b31e940"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Comfort Suites Raleigh-Durham Airport",
       "physicalAddressLocation": {
         "address": "5219 Page Road",
@@ -1038,21 +1316,28 @@
       },
       "currentOperatingStatusEvidence": {
         "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://www.waze.com/live-map/directions/comfort-suites-raleigh-durham-airportrtp-page-rd-5219?to=place.w.184287591.1842613764.434741",
+            "title": "Driving directions to Comfort Suites Raleigh Durham Airport/RTP, 5219 Page Rd, Durham - Waze",
+            "score": null
+          },
+          {
+            "url": "https://travel.usnews.com/hotels/review-comfort_suites_raleigh_durham_airportrtp-durham-north_carolina-69037/",
+            "title": "Comfort Suites Raleigh Durham Airport/RTP Reviews & Prices | U.S. News Travel",
+            "score": null
+          },
+          {
+            "url": "https://hotel.tel/details/comfort-suites-raleigh-durham-airport-rtp-durham-north-carolina",
+            "title": "Comfort Suites Raleigh Durham Airport RTP - Durham,   North Carolina, United States | Hotel.tel",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "CHOICE",
         "brandLabel": "Comfort Inn",
         "waves": [
@@ -1062,32 +1347,47 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "comfort suites raleigh durham airport|durham|nc"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Comfort Suites Raleigh-Durham Airport",
-        "Country": "United States",
-        "City": "Durham",
-        "State / Region": "NC",
-        "Street Address": "5219 Page Road",
-        "Current Brand": "Comfort Inn",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "CHOICE",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949716003529/n728_424h-x4.htm",
+        "https://www.waze.com/live-map/directions/comfort-suites-raleigh-durham-airportrtp-page-rd-5219?to=place.w.184287591.1842613764.434741",
+        "https://travel.usnews.com/hotels/review-comfort_suites_raleigh_durham_airportrtp-durham-north_carolina-69037/",
+        "https://hotel.tel/details/comfort-suites-raleigh-durham-airport-rtp-durham-north-carolina",
+        "https://www.jetstar.com/au/en/hotels/properties/56906-comfort-suites-raleigh-durham-airport-research-triangle-park",
+        "https://www.hrs.com/en/hotel/133021"
+      ],
+      "filingAccessions": [
+        "0001539497-16-003529"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949716003529/n728_424h-x4.htm",
+          "https://www.waze.com/live-map/directions/comfort-suites-raleigh-durham-airportrtp-page-rd-5219?to=place.w.184287591.1842613764.434741",
+          "https://travel.usnews.com/hotels/review-comfort_suites_raleigh_durham_airportrtp-durham-north_carolina-69037/",
+          "https://hotel.tel/details/comfort-suites-raleigh-durham-airport-rtp-durham-north-carolina",
+          "https://www.jetstar.com/au/en/hotels/properties/56906-comfort-suites-raleigh-durham-airport-research-triangle-park",
+          "https://www.hrs.com/en/hotel/133021"
+        ],
+        "accessions": [
+          "0001539497-16-003529",
+          "0001539497-16-003529"
+        ],
+        "street": "5219 Page Road",
+        "operating": "UNKNOWN_REQUIRES_CORROBORATION"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1099,7 +1399,6 @@
         "ctim_8385b04a777ca45f1d7c",
         "ctim_8385b04a777ca45f1d7c"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Country Inn & Suites Houston Intercontinental Airport East",
       "physicalAddressLocation": {
         "address": "20611 Highway 59",
@@ -1109,21 +1408,28 @@
       },
       "currentOperatingStatusEvidence": {
         "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://a-better-place.com/country-inn-suites-houston-intercontinental-airport-east-i979439/",
+            "title": "Country Inn & Suites Houston Intercontinental Airport East - Humble",
+            "score": null
+          },
+          {
+            "url": "https://exa.ai/library/places?ids=f931w2xv6fp%2Cyl5dltg0z4v%2Cncjl1b4r437%2C3pk28wdclm3%2C2ynwk7qvnh3%2Cf5nlmzm9bps%2Ccwghzst3xf1%2Cjdpwj6gjfgd%2Csr546j68r4w%2C6h5jls8hyzb",
+            "title": "Country Inn & Suites Houston Intercontinental Airport East Humble TX hotel official InterContinental",
+            "score": null
+          },
+          {
+            "url": "https://tx.allpages.com/humble/travel-tourism/lodging/lodging-services/",
+            "title": "12+ Best Lodging Services in Humble, TX | AllPages.com",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "IHG",
         "brandLabel": "InterContinental",
         "waves": [
@@ -1133,32 +1439,52 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "country inn suites houston intercontinental airport east|humble|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Country Inn & Suites Houston Intercontinental Airport East",
-        "Country": "United States",
-        "City": "Humble",
-        "State / Region": "TX",
-        "Street Address": "20611 Highway 59",
-        "Current Brand": "InterContinental",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "IHG",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://a-better-place.com/country-inn-suites-houston-intercontinental-airport-east-i979439/",
+        "https://exa.ai/library/places?ids=f931w2xv6fp%2Cyl5dltg0z4v%2Cncjl1b4r437%2C3pk28wdclm3%2C2ynwk7qvnh3%2Cf5nlmzm9bps%2Ccwghzst3xf1%2Cjdpwj6gjfgd%2Csr546j68r4w%2C6h5jls8hyzb",
+        "https://tx.allpages.com/humble/travel-tourism/lodging/lodging-services/",
+        "https://www.hectindia.com/hotel/country-inn-suites-by-radisson-houston-intercontinental-airport-east-tx",
+        "https://www.hotelnewsresource.com/article136087.html"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001152"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://a-better-place.com/country-inn-suites-houston-intercontinental-airport-east-i979439/",
+          "https://exa.ai/library/places?ids=f931w2xv6fp%2Cyl5dltg0z4v%2Cncjl1b4r437%2C3pk28wdclm3%2C2ynwk7qvnh3%2Cf5nlmzm9bps%2Ccwghzst3xf1%2Cjdpwj6gjfgd%2Csr546j68r4w%2C6h5jls8hyzb",
+          "https://tx.allpages.com/humble/travel-tourism/lodging/lodging-services/",
+          "https://www.hectindia.com/hotel/country-inn-suites-by-radisson-houston-intercontinental-airport-east-tx",
+          "https://www.hotelnewsresource.com/article136087.html"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001152",
+          "0001539497-17-001773",
+          "0001539497-17-001152"
+        ],
+        "street": "20611 Highway 59",
+        "operating": "UNKNOWN_REQUIRES_CORROBORATION"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1170,7 +1496,6 @@
         "ctim_51eeda3bb8b88b45a71b",
         "ctim_51eeda3bb8b88b45a71b"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Akron Stow",
       "physicalAddressLocation": {
         "address": "4047 Bridgewater Parkway",
@@ -1179,22 +1504,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/overview/",
+            "title": "Akron Stow Hotels|Courtyard Akron Stow Hotel",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/rooms/",
+            "title": "Rooms | Courtyard by Marriott Akron Stow",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/reviews/",
+            "title": "Reviews of Courtyard by Marriott Akron Stow",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1204,32 +1536,50 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard akron stow|stow|oh"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Akron Stow",
-        "Country": "United States",
-        "City": "Stow",
-        "State / Region": "OH",
-        "Street Address": "4047 Bridgewater Parkway",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/overview/",
+        "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/rooms/",
+        "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/reviews/",
+        "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/events/",
+        "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/dining/"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001152"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/overview/",
+          "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/rooms/",
+          "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/reviews/",
+          "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/events/",
+          "https://www.marriott.com/en-us/hotels/cakcy-courtyard-akron-stow/dining/"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001152",
+          "0001539497-17-001773",
+          "0001539497-17-001152"
+        ],
+        "street": "4047 Bridgewater Parkway",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1240,7 +1590,6 @@
       "discoveryRecordIds": [
         "ctim_ccdd9facdb88b9accc36"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Baton Rouge Siegen Lane",
       "physicalAddressLocation": {
         "address": "10307 North Mall Drive",
@@ -1249,22 +1598,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/btrcy-courtyard-baton-rouge-south/overview/",
+            "title": "Courtyard by Marriott Baton Rouge South | Hotel with Modern Rooms & Flexible Workspaces",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/btrcy-courtyard-baton-rouge-south/dining/",
+            "title": "Restaurants & Dining | Courtyard by Marriott Baton Rouge South",
+            "score": null
+          },
+          {
+            "url": "https://pahmanagement.com/hotel/courtyard-by-marriott-baton-rouge-siegen-lane/",
+            "title": "Courtyard by Marriott Baton Rouge Siegen Lane Archives - PAH Management",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1274,32 +1630,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard baton rouge siegen lane|baton rouge|la"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Baton Rouge Siegen Lane",
-        "Country": "United States",
-        "City": "Baton Rouge",
-        "State / Region": "LA",
-        "Street Address": "10307 North Mall Drive",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.marriott.com/en-us/hotels/btrcy-courtyard-baton-rouge-south/overview/",
+        "https://www.marriott.com/en-us/hotels/btrcy-courtyard-baton-rouge-south/dining/",
+        "https://pahmanagement.com/hotel/courtyard-by-marriott-baton-rouge-siegen-lane/",
+        "https://exa.ai/library/places?ids=7dy9by9p7b5%2Cdsw1ks7y6lc%2C773gggng1hp%2C0wjj4rts22s%2C9yzdx1skdrb%2Ct2n47m1cbcx%2C2n8w0m1ktrq%2C3k3r0syv0lg%2Crx7by31bqzp%2C3ht0x42j7wc",
+        "https://en.planetofhotels.com/usa/baton-rouge/courtyard-baton-rouge-siegen-lane"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.marriott.com/en-us/hotels/btrcy-courtyard-baton-rouge-south/overview/",
+          "https://www.marriott.com/en-us/hotels/btrcy-courtyard-baton-rouge-south/dining/",
+          "https://pahmanagement.com/hotel/courtyard-by-marriott-baton-rouge-siegen-lane/",
+          "https://exa.ai/library/places?ids=7dy9by9p7b5%2Cdsw1ks7y6lc%2C773gggng1hp%2C0wjj4rts22s%2C9yzdx1skdrb%2Ct2n47m1cbcx%2C2n8w0m1ktrq%2C3k3r0syv0lg%2Crx7by31bqzp%2C3ht0x42j7wc",
+          "https://en.planetofhotels.com/usa/baton-rouge/courtyard-baton-rouge-siegen-lane"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001773"
+        ],
+        "street": "10307 North Mall Drive",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1310,7 +1679,6 @@
       "discoveryRecordIds": [
         "ctim_231e3396a5da4eecd004"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard by Marriott - Wall at Monmouth Shores",
       "physicalAddressLocation": {
         "address": "1302 Campus Parkway",
@@ -1319,22 +1687,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/overview/",
+            "title": "Courtyard by Marriott Wall at Monmouth Shores Corporate Park | Hotel with Modern Rooms & Flexible Workspaces",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/rooms/",
+            "title": "Rooms | Courtyard by Marriott Wall at Monmouth Shores Corporate Park",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/photos/",
+            "title": "Photo Gallery | Courtyard by Marriott Wall at Monmouth Shores Corporate Park",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1344,32 +1719,47 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard by marriott wall at monmouth shores|wall township|nj"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard by Marriott - Wall at Monmouth Shores",
-        "Country": "United States",
-        "City": "Wall Township",
-        "State / Region": "NJ",
-        "Street Address": "1302 Campus Parkway",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/overview/",
+        "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/rooms/",
+        "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/photos/",
+        "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/dining/",
+        "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/events/"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/overview/",
+          "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/rooms/",
+          "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/photos/",
+          "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/dining/",
+          "https://www.marriott.com/en-us/hotels/ewrwt-courtyard-wall-at-monmouth-shores-corporate-park/events/"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001773"
+        ],
+        "street": "1302 Campus Parkway",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1380,7 +1770,6 @@
       "discoveryRecordIds": [
         "ctim_f460880646c5c8101fe7"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard by Marriott McDonough",
       "physicalAddressLocation": {
         "address": "115 Mill Road",
@@ -1389,22 +1778,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/atlam-courtyard-atlanta-mcdonough/overview/",
+            "title": "Courtyard by Marriott McDonough, Hotel near McDonough, GA",
+            "score": null
+          },
+          {
+            "url": "https://exploregeorgia.org/mcdonough/places-to-stay/hotels-motels/courtyard-atlanta-mcdonough",
+            "title": "Courtyard Atlanta McDonough | Explore Georgia",
+            "score": null
+          },
+          {
+            "url": "https://maps.apple.com/place?place-id=IB9677931E024D5EA",
+            "title": "Courtyard by Marriott Atlanta McDonough in McDonough, GA United States - Apple Maps",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1414,32 +1810,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard by marriott mcdonough|mcdonough|ga"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard by Marriott McDonough",
-        "Country": "United States",
-        "City": "McDonough",
-        "State / Region": "GA",
-        "Street Address": "115 Mill Road",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949715002167/n602_prelim-x5.htm",
+        "https://www.marriott.com/en-us/hotels/atlam-courtyard-atlanta-mcdonough/overview/",
+        "https://exploregeorgia.org/mcdonough/places-to-stay/hotels-motels/courtyard-atlanta-mcdonough",
+        "https://maps.apple.com/place?place-id=IB9677931E024D5EA",
+        "https://visithenrycountygeorgia.com/stay/courtyard-by-marriott-atlantamcdonough/",
+        "https://www.kayak.com/McDonough-Hotels-Courtyard-by-Marriott-Atlanta-McDonough.371634.ksp"
+      ],
+      "filingAccessions": [
+        "0001539497-15-002167"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949715002167/n602_prelim-x5.htm",
+          "https://www.marriott.com/en-us/hotels/atlam-courtyard-atlanta-mcdonough/overview/",
+          "https://exploregeorgia.org/mcdonough/places-to-stay/hotels-motels/courtyard-atlanta-mcdonough",
+          "https://maps.apple.com/place?place-id=IB9677931E024D5EA",
+          "https://visithenrycountygeorgia.com/stay/courtyard-by-marriott-atlantamcdonough/",
+          "https://www.kayak.com/McDonough-Hotels-Courtyard-by-Marriott-Atlanta-McDonough.371634.ksp"
+        ],
+        "accessions": [
+          "0001539497-15-002167",
+          "0001539497-15-002167"
+        ],
+        "street": "115 Mill Road",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1450,7 +1859,6 @@
       "discoveryRecordIds": [
         "ctim_1ecad7a83ccc886c2139"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Carlsbad",
       "physicalAddressLocation": {
         "address": "5835 Owens Avenue",
@@ -1459,22 +1867,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sancs-courtyard-san-diego-carlsbad/overview/",
+            "title": "Courtyard by Marriott San Diego Carlsbad | Hotel with Modern Rooms & Flexible Workspaces",
+            "score": null
+          },
+          {
+            "url": "https://visitcarlsbad.com/directory/courtyard-by-marriott-carlsbad/",
+            "title": "Courtyard by Marriott Carlsbad | Visit Carlsbad",
+            "score": null
+          },
+          {
+            "url": "https://www.govisitsandiego.com/hotels/courtyard-marriott-san-diego-carlsbad/",
+            "title": "Courtyard by Marriott San Diego Carlsbad - Go Visit San Diego",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1484,32 +1899,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard carlsbad|carlsbad|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Carlsbad",
-        "Country": "United States",
-        "City": "Carlsbad",
-        "State / Region": "CA",
-        "Street Address": "5835 Owens Avenue",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949716002844/n663_424h-x4.htm",
+        "https://www.marriott.com/en-us/hotels/sancs-courtyard-san-diego-carlsbad/overview/",
+        "https://visitcarlsbad.com/directory/courtyard-by-marriott-carlsbad/",
+        "https://www.govisitsandiego.com/hotels/courtyard-marriott-san-diego-carlsbad/",
+        "https://www.trip.com/hotels/carlsbad-hotel-detail-2135311/courtyard-by-marriott-san-diego-carlsbad/",
+        "https://exa.ai/library/places?ids=r2rbcblmh30%2Cbm34nh88rdx%2Cl9h35922v0d%2Cz1bnnpmsj0q%2Cn2lf70jfzgz%2Ctctqqrmbkmq%2C4bdcvqpl4fk%2Cgbhntj6c0j8%2Czhjhfmnrj9j%2Cyf28t07zqvl"
+      ],
+      "filingAccessions": [
+        "0001539497-16-002844"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949716002844/n663_424h-x4.htm",
+          "https://www.marriott.com/en-us/hotels/sancs-courtyard-san-diego-carlsbad/overview/",
+          "https://visitcarlsbad.com/directory/courtyard-by-marriott-carlsbad/",
+          "https://www.govisitsandiego.com/hotels/courtyard-marriott-san-diego-carlsbad/",
+          "https://www.trip.com/hotels/carlsbad-hotel-detail-2135311/courtyard-by-marriott-san-diego-carlsbad/",
+          "https://exa.ai/library/places?ids=r2rbcblmh30%2Cbm34nh88rdx%2Cl9h35922v0d%2Cz1bnnpmsj0q%2Cn2lf70jfzgz%2Ctctqqrmbkmq%2C4bdcvqpl4fk%2Cgbhntj6c0j8%2Czhjhfmnrj9j%2Cyf28t07zqvl"
+        ],
+        "accessions": [
+          "0001539497-16-002844",
+          "0001539497-16-002844"
+        ],
+        "street": "5835 Owens Avenue",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1521,7 +1949,6 @@
         "ctim_034b8ef498bbdb673b93",
         "ctim_034b8ef498bbdb673b93"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Chico",
       "physicalAddressLocation": {
         "address": "2481 Carmichael Drive",
@@ -1530,22 +1957,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/overview/",
+            "title": "Courtyard by Marriott Chico | Hotel with Modern Rooms & Flexible Workspaces",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/rooms/",
+            "title": "Rooms | Courtyard by Marriott Chico",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/dining/",
+            "title": "Restaurants & Dining | Courtyard by Marriott Chico",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1555,32 +1989,50 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard chico|chico|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Chico",
-        "Country": "United States",
-        "City": "Chico",
-        "State / Region": "CA",
-        "Street Address": "2481 Carmichael Drive",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/overview/",
+        "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/rooms/",
+        "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/dining/",
+        "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/reviews/",
+        "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/photos/"
+      ],
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001152"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/overview/",
+          "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/rooms/",
+          "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/dining/",
+          "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/reviews/",
+          "https://www.marriott.com/en-us/hotels/ciccy-courtyard-chico/photos/"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001152",
+          "0001539497-17-001773",
+          "0001539497-17-001152"
+        ],
+        "street": "2481 Carmichael Drive",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1591,7 +2043,6 @@
       "discoveryRecordIds": [
         "ctim_7f68543c952beeb3ab47"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Dalton",
       "physicalAddressLocation": {
         "address": "785 College Drive",
@@ -1600,22 +2051,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/overview/",
+            "title": "Courtyard by Marriott Dalton | Hotel with Modern Rooms & Flexible Workspaces",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/rooms/",
+            "title": "Rooms | Courtyard by Marriott Dalton",
+            "score": null
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/events/",
+            "title": "Event & Meeting Spaces | Courtyard by Marriott Dalton",
+            "score": null
+          }
+        ],
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1625,32 +2083,45 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard dalton|dalton|ga"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Dalton",
-        "Country": "United States",
-        "City": "Dalton",
-        "State / Region": "GA",
-        "Street Address": "785 College Drive",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949716002844/n663_424h-x4.htm",
+        "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/overview/",
+        "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/rooms/",
+        "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/events/",
+        "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/photos/",
+        "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/dining/"
+      ],
+      "filingAccessions": [
+        "0001539497-16-002844"
+      ],
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949716002844/n663_424h-x4.htm",
+          "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/overview/",
+          "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/rooms/",
+          "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/events/",
+          "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/photos/",
+          "https://www.marriott.com/en-us/hotels/chadl-courtyard-dalton/dining/"
+        ],
+        "accessions": [
+          "0001539497-16-002844",
+          "0001539497-16-002844"
+        ],
+        "street": "785 College Drive",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1661,7 +2132,6 @@
       "discoveryRecordIds": [
         "ctim_191849fe264465e0fd5e"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Horseheads",
       "physicalAddressLocation": {
         "address": "202 Colonial Drive",
@@ -1671,21 +2141,28 @@
       },
       "currentOperatingStatusEvidence": {
         "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "independentCurrentEvidence": false,
+        "sources": [
+          {
+            "url": "https://visionshotels.com/about",
+            "title": "About Visions",
+            "score": null
+          },
+          {
+            "url": "https://www.hospitalityonline.com/courtyard-horseheads",
+            "title": "Courtyard Elmira Horseheads, Horseheads, NY Jobs  | Hospitality Online",
+            "score": null
+          },
+          {
+            "url": "https://www.linkedin.com/posts/visions-hotels_the-celebration-continues-at-courtyard-activity-7473728915526606848--Q9U",
+            "title": "🎉✨ The Celebration Continues at Courtyard Horseheads! ✨🎉 | Visions Hotels",
+            "score": null
+          }
+        ],
+        "note": "Exa returned results but independent current operating status not confirmed"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -1695,32 +2172,47 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard horseheads|horseheads|ny"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Horseheads",
-        "Country": "United States",
-        "City": "Horseheads",
-        "State / Region": "NY",
-        "Street Address": "202 Colonial Drive",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001289/n1716-x3_424h.htm",
+        "https://visionshotels.com/about",
+        "https://www.hospitalityonline.com/courtyard-horseheads",
+        "https://www.linkedin.com/posts/visions-hotels_the-celebration-continues-at-courtyard-activity-7473728915526606848--Q9U",
+        "https://hotelhuddle.com/directory/new-york/horseheads/courtyard-horseheads",
+        "https://bizity.com/business/courtyard-horseheads"
+      ],
+      "filingAccessions": [
+        "0001539497-19-001289"
+      ],
+      "classification": "CREATE_CANDIDATE_PENDING_VERIFICATION",
+      "createReadyGates": {
+        "ok": false,
+        "missing": [
+          "independent_current_property_evidence"
+        ],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1541480/000153949719001289/n1716-x3_424h.htm",
+          "https://visionshotels.com/about",
+          "https://www.hospitalityonline.com/courtyard-horseheads",
+          "https://www.linkedin.com/posts/visions-hotels_the-celebration-continues-at-courtyard-activity-7473728915526606848--Q9U",
+          "https://hotelhuddle.com/directory/new-york/horseheads/courtyard-horseheads",
+          "https://bizity.com/business/courtyard-horseheads"
+        ],
+        "accessions": [
+          "0001539497-19-001289",
+          "0001539497-19-001289"
+        ],
+        "street": "202 Colonial Drive",
+        "operating": "UNKNOWN_REQUIRES_CORROBORATION"
+      },
+      "approvalDisposition": "HOLD_RESEARCH",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -1732,7 +2224,6 @@
         "ctim_a6d3d05f4942871d35ab",
         "ctim_a6d3d05f4942871d35ab"
       ],
-      "discoveryPropertyKey": null,
       "proposedCanonicalHotelName": "Courtyard Lufkin",
       "physicalAddressLocation": {
         "address": "2130 South First Street",
@@ -1741,391 +2232,29 @@
         "country": "United States"
       },
       "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Courtyard",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard lufkin|lufkin|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Lufkin",
-        "Country": "United States",
-        "City": "Lufkin",
-        "State / Region": "TX",
-        "Street Address": "2130 South First Street",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_026",
-      "discoveryRecordIds": [
-        "ctim_aaef6229bd62fe05f719"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Courtyard Marriott Clemson",
-      "physicalAddressLocation": {
-        "address": "201 Canoy Lane",
-        "city": "Clemson",
-        "stateRegion": "SC",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Courtyard",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard marriott clemson|clemson|sc"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Marriott Clemson",
-        "Country": "United States",
-        "City": "Clemson",
-        "State / Region": "SC",
-        "Street Address": "201 Canoy Lane",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_027",
-      "discoveryRecordIds": [
-        "ctim_62dd45a6bddaa8ab654c"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Courtyard Marriott Richland",
-      "physicalAddressLocation": {
-        "address": "480 Columbia Point Drive",
-        "city": "Richland",
-        "stateRegion": "WA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Courtyard",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard marriott richland|richland|wa"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Marriott Richland",
-        "Country": "United States",
-        "City": "Richland",
-        "State / Region": "WA",
-        "Street Address": "480 Columbia Point Drive",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_028",
-      "discoveryRecordIds": [
-        "ctim_0df4fd70f66013b03b54"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Courtyard San Antonio Lackland",
-      "physicalAddressLocation": {
-        "address": "6738 Northwest Loop 410",
-        "city": "San Antonio",
-        "stateRegion": "TX",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Courtyard",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [
+        "class": "OPERATING",
+        "independentCurrentEvidence": true,
+        "sources": [
           {
-            "id": "recKXSYS8uxPgcw0u",
-            "name": "Hotel Casino San Antonio By Enjoy"
+            "url": "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/overview/",
+            "title": "Courtyard by Marriott Lufkin | Hotel with Modern Rooms & Flexible Workspaces",
+            "score": null
           },
           {
-            "id": "recnlPjayAV9zrzIP",
-            "name": "HOTEL VILLA CABO DE SAN ANTONIO"
-          }
-        ],
-        "propertyKey": "courtyard san antonio lackland|san antonio|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard San Antonio Lackland",
-        "Country": "United States",
-        "City": "San Antonio",
-        "State / Region": "TX",
-        "Street Address": "6738 Northwest Loop 410",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_029",
-      "discoveryRecordIds": [
-        "ctim_fc94e0dd1b1bab499a10"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Courtyard Tampa North I-75 Fletcher",
-      "physicalAddressLocation": {
-        "address": "13575 Cypress Glen Lane",
-        "city": "Tampa",
-        "stateRegion": "FL",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Courtyard",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [
-          {
-            "id": "recSM9ARs8U9UZ3AZ",
-            "name": "Tampa Airport Marriott"
+            "url": "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/rooms/",
+            "title": "Rooms | Courtyard by Marriott Lufkin",
+            "score": null
           },
           {
-            "id": "recdmo0CnhIZAwHGC",
-            "name": "The Westin Tampa Waterside"
+            "url": "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/events/",
+            "title": "Event & Meeting Spaces | Courtyard by Marriott Lufkin",
+            "score": null
           }
         ],
-        "propertyKey": "courtyard tampa north i 75 fletcher|tampa|fl"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Tampa North I-75 Fletcher",
-        "Country": "United States",
-        "City": "Tampa",
-        "State / Region": "FL",
-        "Street Address": "13575 Cypress Glen Lane",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_030",
-      "discoveryRecordIds": [
-        "ctim_d848e152117e97581e11",
-        "ctim_d848e152117e97581e11"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Courtyard Tyler",
-      "physicalAddressLocation": {
-        "address": "7424 South Broadway Avenue",
-        "city": "Tyler",
-        "stateRegion": "TX",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
+        "note": "Brand official hotel page treated as independent current-property evidence"
       },
       "identityVerificationEvidence": {
         "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
         "brandFamily": "MARRIOTT",
         "brandLabel": "Courtyard",
         "waves": [
@@ -2135,1435 +2264,50 @@
       "existingHpcCollisionSearch": {
         "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
         "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard tyler|tyler|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Tyler",
-        "Country": "United States",
-        "City": "Tyler",
-        "State / Region": "TX",
-        "Street Address": "7424 South Broadway Avenue",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
+        "candidatesReviewed": []
       },
       "relatedContractsAndMilestones": {
         "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
+        "futureMilestoneCount": 0
       },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_031",
-      "discoveryRecordIds": [
-        "ctim_7df66529a3bfb3937489",
-        "ctim_7df66529a3bfb3937489"
+      "sourceUrls": [
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+        "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+        "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/overview/",
+        "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/rooms/",
+        "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/events/",
+        "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/reviews/",
+        "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/photos/"
       ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Courtyard Wichita Falls",
-      "physicalAddressLocation": {
-        "address": "3800 Tarry Street",
-        "city": "Wichita Falls",
-        "stateRegion": "TX",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Courtyard",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "courtyard wichita falls|wichita falls|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Courtyard Wichita Falls",
-        "Country": "United States",
-        "City": "Wichita Falls",
-        "State / Region": "TX",
-        "Street Address": "3800 Tarry Street",
-        "Current Brand": "Courtyard",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_032",
-      "discoveryRecordIds": [
-        "ctim_89db478e7606cd460b25"
+      "filingAccessions": [
+        "0001539497-17-001773",
+        "0001539497-17-001152"
       ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Elk Grove Hampton Inn",
-      "physicalAddressLocation": {
-        "address": "2305 Longport Court",
-        "city": "Elk Grove",
-        "stateRegion": "CA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Hampton",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "elk grove hampton inn|elk grove|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Elk Grove Hampton Inn",
-        "Country": "United States",
-        "City": "Elk Grove",
-        "State / Region": "CA",
-        "Street Address": "2305 Longport Court",
-        "Current Brand": "Hampton",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "classification": "CREATE_READY",
+      "createReadyGates": {
+        "ok": true,
+        "missing": [],
+        "urls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001773/n1063_424h-x5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949717001152/n980_424h-x6.htm",
+          "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/overview/",
+          "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/rooms/",
+          "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/events/",
+          "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/reviews/",
+          "https://www.marriott.com/en-us/hotels/lfkcy-courtyard-lufkin/photos/"
+        ],
+        "accessions": [
+          "0001539497-17-001773",
+          "0001539497-17-001152",
+          "0001539497-17-001773",
+          "0001539497-17-001152"
+        ],
+        "street": "2130 South First Street",
+        "operating": "OPERATING"
+      },
+      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
       "publicationRestrictions": {
         "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_033",
-      "discoveryRecordIds": [
-        "ctim_92460636e1c72708c24b"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Anaheim",
-      "physicalAddressLocation": {
-        "address": "11767 South Harbor Boulevard",
-        "city": "Garden Grove",
-        "stateRegion": "CA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites anaheim|garden grove|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Anaheim",
-        "Country": "United States",
-        "City": "Garden Grove",
-        "State / Region": "CA",
-        "Street Address": "11767 South Harbor Boulevard",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_034",
-      "discoveryRecordIds": [
-        "ctim_2fdab1bc672698fdd96b"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Busch Gardens Hotel",
-      "physicalAddressLocation": {
-        "address": "3705 Spectrum Boulevard",
-        "city": "Tampa",
-        "stateRegion": "FL",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites busch gardens hotel|tampa|fl"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Busch Gardens Hotel",
-        "Country": "United States",
-        "City": "Tampa",
-        "State / Region": "FL",
-        "Street Address": "3705 Spectrum Boulevard",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_035",
-      "discoveryRecordIds": [
-        "ctim_44c35cc6cb8a816772ea"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Charleston",
-      "physicalAddressLocation": {
-        "address": "300 Court Street",
-        "city": "Charleston",
-        "stateRegion": "WV",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites charleston|charleston|wv"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Charleston",
-        "Country": "United States",
-        "City": "Charleston",
-        "State / Region": "WV",
-        "Street Address": "300 Court Street",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_036",
-      "discoveryRecordIds": [
-        "ctim_0687aecf6b9855e743fc"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Glendale",
-      "physicalAddressLocation": {
-        "address": "800 North Central Avenue",
-        "city": "Glendale",
-        "stateRegion": "CA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites glendale|glendale|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Glendale",
-        "Country": "United States",
-        "City": "Glendale",
-        "State / Region": "CA",
-        "Street Address": "800 North Central Avenue",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_037",
-      "discoveryRecordIds": [
-        "ctim_8b610c0dccf997d6c408"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Kennesaw",
-      "physicalAddressLocation": {
-        "address": "620 Chastain Road Northwest",
-        "city": "Kennesaw",
-        "stateRegion": "GA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites kennesaw|kennesaw|ga"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Kennesaw",
-        "Country": "United States",
-        "City": "Kennesaw",
-        "State / Region": "GA",
-        "Street Address": "620 Chastain Road Northwest",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_038",
-      "discoveryRecordIds": [
-        "ctim_b2357a8e6bba63bdd0d4"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Monterey Bay Seaside",
-      "physicalAddressLocation": {
-        "address": "1441 Canyon Del Rey Boulevard",
-        "city": "Seaside",
-        "stateRegion": "CA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites monterey bay seaside|seaside|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Monterey Bay Seaside",
-        "Country": "United States",
-        "City": "Seaside",
-        "State / Region": "CA",
-        "Street Address": "1441 Canyon Del Rey Boulevard",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_039",
-      "discoveryRecordIds": [
-        "ctim_07d2fc29d72857b5e048"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Embassy Suites Palmdale",
-      "physicalAddressLocation": {
-        "address": "39375 5th Street West",
-        "city": "Palmdale",
-        "stateRegion": "CA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "HILTON",
-        "brandLabel": "Embassy Suites",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "embassy suites palmdale|palmdale|ca"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Embassy Suites Palmdale",
-        "Country": "United States",
-        "City": "Palmdale",
-        "State / Region": "CA",
-        "Street Address": "39375 5th Street West",
-        "Current Brand": "Embassy Suites",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "HILTON",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_040",
-      "discoveryRecordIds": [
-        "ctim_f0eead02cee714610ac8"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn - Calhoun, GA",
-      "physicalAddressLocation": {
-        "address": "1002 Highway 53 East",
-        "city": "Calhoun",
-        "stateRegion": "GA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn calhoun ga|calhoun|ga"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn - Calhoun, GA",
-        "Country": "United States",
-        "City": "Calhoun",
-        "State / Region": "GA",
-        "Street Address": "1002 Highway 53 East",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_041",
-      "discoveryRecordIds": [
-        "ctim_a565efe7caadf1483551"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites by Marriott Troy",
-      "physicalAddressLocation": {
-        "address": "225 Stephenson Highway",
-        "city": "Troy",
-        "stateRegion": "MI",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites by marriott troy|troy|mi"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites by Marriott Troy",
-        "Country": "United States",
-        "City": "Troy",
-        "State / Region": "MI",
-        "Street Address": "225 Stephenson Highway",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_042",
-      "discoveryRecordIds": [
-        "ctim_16bf50b4c21531925e73"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Dunn",
-      "physicalAddressLocation": {
-        "address": "688 Jackson Road",
-        "city": "Dunn",
-        "stateRegion": "NC",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites dunn|dunn|nc"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Dunn",
-        "Country": "United States",
-        "City": "Dunn",
-        "State / Region": "NC",
-        "Street Address": "688 Jackson Road",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_043",
-      "discoveryRecordIds": [
-        "ctim_21944a3b8ed23373272c"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Hendersonville Flat Rock",
-      "physicalAddressLocation": {
-        "address": "836 Upward Road",
-        "city": "Flat Rock",
-        "stateRegion": "NC",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites hendersonville flat rock|flat rock|nc"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Hendersonville Flat Rock",
-        "Country": "United States",
-        "City": "Flat Rock",
-        "State / Region": "NC",
-        "Street Address": "836 Upward Road",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_044",
-      "discoveryRecordIds": [
-        "ctim_28cb154f9189f9929b4b"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Jonesboro",
-      "physicalAddressLocation": {
-        "address": "3408 Access Road",
-        "city": "Jonesboro",
-        "stateRegion": "AR",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites jonesboro|jonesboro|ar"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Jonesboro",
-        "Country": "United States",
-        "City": "Jonesboro",
-        "State / Region": "AR",
-        "Street Address": "3408 Access Road",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_045",
-      "discoveryRecordIds": [
-        "ctim_ff7db4b1271ca7732145"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Orlando Ocoee",
-      "physicalAddressLocation": {
-        "address": "10971 West Colonial Drive",
-        "city": "Ocoee",
-        "stateRegion": "FL",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites orlando ocoee|ocoee|fl"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Orlando Ocoee",
-        "Country": "United States",
-        "City": "Ocoee",
-        "State / Region": "FL",
-        "Street Address": "10971 West Colonial Drive",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_046",
-      "discoveryRecordIds": [
-        "ctim_0ccf2f14a2a2beeb456e"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Smithfield",
-      "physicalAddressLocation": {
-        "address": "809 Venture Drive",
-        "city": "Smithfield",
-        "stateRegion": "NC",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites smithfield|smithfield|nc"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Smithfield",
-        "Country": "United States",
-        "City": "Smithfield",
-        "State / Region": "NC",
-        "Street Address": "809 Venture Drive",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_047",
-      "discoveryRecordIds": [
-        "ctim_12f14b4bcb4662d2fd5a"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Springdale",
-      "physicalAddressLocation": {
-        "address": "1043 Rieff Street",
-        "city": "Springdale",
-        "stateRegion": "AR",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites springdale|springdale|ar"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Springdale",
-        "Country": "United States",
-        "City": "Springdale",
-        "State / Region": "AR",
-        "Street Address": "1043 Rieff Street",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_048",
-      "discoveryRecordIds": [
-        "ctim_df3cffb5dd8959914087",
-        "ctim_df3cffb5dd8959914087"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn & Suites Weatherford",
-      "physicalAddressLocation": {
-        "address": "175 Alford Drive",
-        "city": "Weatherford",
-        "stateRegion": "TX",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn suites weatherford|weatherford|tx"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn & Suites Weatherford",
-        "Country": "United States",
-        "City": "Weatherford",
-        "State / Region": "TX",
-        "Street Address": "175 Alford Drive",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_049",
-      "discoveryRecordIds": [
-        "ctim_fcc3142eaead60eb789f"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn and Suites Commerce",
-      "physicalAddressLocation": {
-        "address": "137 Frontage Road",
-        "city": "Commerce",
-        "stateRegion": "GA",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn and suites commerce|commerce|ga"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn and Suites Commerce",
-        "Country": "United States",
-        "City": "Commerce",
-        "State / Region": "GA",
-        "Street Address": "137 Frontage Road",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 1,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
-        "createApplyAuthorized": false
-      },
-      "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
-      "founderCreateAuthorized": false
-    },
-    {
-      "candidateId": "hpc_pilot_050",
-      "discoveryRecordIds": [
-        "ctim_91ad9b5c77a2a5d2ec95",
-        "ctim_91ad9b5c77a2a5d2ec95"
-      ],
-      "discoveryPropertyKey": null,
-      "proposedCanonicalHotelName": "Fairfield Inn Bloomington",
-      "physicalAddressLocation": {
-        "address": "120 South Fairfield Drive",
-        "city": "Bloomington",
-        "stateRegion": "IN",
-        "country": "United States"
-      },
-      "currentOperatingStatusEvidence": {
-        "class": "UNKNOWN_REQUIRES_CORROBORATION",
-        "note": "SEC/CMBS disclosure is historical evidence; live operating status not independently verified in this dry-run"
-      },
-      "identityVerificationEvidence": {
-        "score": 75,
-        "scoreReasons": [
-          "name_and_city",
-          "us_state",
-          "brand_hint",
-          "address_from_evidence",
-          "distinctive_city",
-          "has_contract_milestone",
-          "brand_family",
-          "he_enrichment_potential"
-        ],
-        "scorePenalties": [],
-        "brandFamily": "MARRIOTT",
-        "brandLabel": "Fairfield",
-        "waves": [
-          "V3"
-        ]
-      },
-      "existingHpcCollisionSearch": {
-        "outcome": "HPC_NEW_RECORD_PROPOSED_VERIFIED_ABSENT",
-        "hpcRecordId": null,
-        "candidatesReviewed": [],
-        "propertyKey": "fairfield inn bloomington|bloomington|in"
-      },
-      "intendedHpcFieldPayload": {
-        "Property Name": "Fairfield Inn Bloomington",
-        "Country": "United States",
-        "City": "Bloomington",
-        "State / Region": "IN",
-        "Street Address": "120 South Fairfield Drive",
-        "Current Brand": "Fairfield",
-        "Affiliation Status": "Branded",
-        "Family / Source Family": "MARRIOTT",
-        "Publication State": "CUSTOMER_BLOCKED"
-      },
-      "relatedContractsAndMilestones": {
-        "milestoneCount": 2,
-        "futureMilestoneCount": 0,
-        "milestones": []
-      },
-      "sourceUrls": [],
-      "filingAccessions": [],
-      "approvalDisposition": "PENDING_FOUNDER_CREATE_APPROVAL",
-      "classification": "CREATE_READY",
-      "publicationRestrictions": {
-        "publicationState": "CUSTOMER_BLOCKED",
-        "customerFacing": false,
         "createApplyAuthorized": false
       },
       "hotelExplorerEnrichmentQueueStatus": "QUEUED_PENDING_CREATE_OR_LINK",
@@ -3571,8 +2315,19 @@
     }
   ],
   "stop": {
-    "hpcCreate": "REQUIRES_PER_ROW_FOUNDER_MANIFEST_APPROVAL",
-    "note": "This file is not an authorization record. Canonical Promotion remains blocked."
+    "hpcCreate": "REQUIRES_PER_ROW_FOUNDER_MANIFEST_APPROVAL"
   },
-  "manifestSha256": "b4db8095bef8de35c7007208bb36575da972e4896dc9fa0ec90b33e3c169f1c7"
+  "manifestSha256": "0dbc136ad15e2f912e1d46a05aee2478f4c0d5fbe4bb0ce8df4b5b3abe226e64",
+  "version": "4.0.1-enriched-dry-run",
+  "source": "US_PILOT_ENRICHED_MANIFEST.json",
+  "shortlistCounts": {
+    "LINK_EXISTING": 0,
+    "CREATE_READY": 18,
+    "CREATE_CANDIDATE_PENDING_VERIFICATION": 7,
+    "RESEARCH_REQUIRED": 0,
+    "REJECT_AMBIGUOUS": 0,
+    "HISTORICAL_ONLY": 0
+  },
+  "shortlistCount": 25,
+  "createApplyAuthorized": false
 }
