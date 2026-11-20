@@ -4065,18 +4065,45 @@
       .join(' / ');
   }
 
+  /**
+   * Split fee-bucket summary bodies into owner-facing bullets.
+   * Prefer newlines / bullets / semicolons. Never treat thousand separators
+   * inside amounts ($85,000) as list delimiters — that produced orphan "000" lines.
+   */
   function econParseFeeBucketBullets(body) {
     if (!hasVal(body)) return [];
     var text = String(body).trim();
-    var dotMatch = text.match(/\.\s+/);
-    var listPart = dotMatch && dotMatch.index != null ? text.slice(0, dotMatch.index).trim() : text;
-    return listPart
-      .split(/;\s*|,\s*(?:and\s+)?/i)
-      .map(function (s) {
-        return s.trim().replace(/^and\s+/i, '');
-      })
-      .filter(hasVal)
-      .map(econFeeBucketBulletCase);
+    // Trailing diligence sentence after the fee list (keep list only).
+    var proseMatch = text.match(/\.\s+(?=[A-Z])/);
+    var listPart =
+      proseMatch && proseMatch.index != null ? text.slice(0, proseMatch.index).trim() : text;
+
+    function cleanParts(parts) {
+      return (parts || [])
+        .map(function (s) {
+          return String(s || '')
+            .trim()
+            .replace(/^[-*•]\s*/, '')
+            .replace(/^and\s+/i, '');
+        })
+        .filter(hasVal)
+        .map(econFeeBucketBulletCase);
+    }
+
+    if (/[\n•]/.test(listPart) || /^\s*[-*]\s+/m.test(listPart)) {
+      return cleanParts(listPart.split(/\n+|•/g));
+    }
+    if (listPart.indexOf(';') >= 0) {
+      return cleanParts(listPart.split(/;\s*/));
+    }
+
+    // Comma lists only when no semicolons: require ", and" or protect $1,234 groups.
+    var protectedText = listPart.replace(/(\$\d{1,3}(?:,\d{3})+|\b\d{1,3}(?:,\d{3})+\b)/g, function (m) {
+      return m.replace(/,/g, '\uE000');
+    });
+    return cleanParts(protectedText.split(/,\s+and\s+|,(?!\d)/i)).map(function (s) {
+      return String(s).replace(/\uE000/g, ',');
+    });
   }
 
   var ECON_FEE_BUCKET_THEME_BY_KEY = {
