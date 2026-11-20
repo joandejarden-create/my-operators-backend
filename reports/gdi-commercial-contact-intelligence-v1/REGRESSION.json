@@ -1,0 +1,96 @@
+{
+  "suite": "gdi-commercial-contact-intelligence-regression-v1",
+  "credentials": {
+    "version": "gdi-public-contact-search-providers-v1",
+    "serperConfigured": false,
+    "exaConfigured": true,
+    "chosenMode": "EXA_ONLY"
+  },
+  "exaSearch": false,
+  "surfeCalls": 0,
+  "searchCostUsd": 0,
+  "cases": {
+    "ecomondo": {
+      "primary": "Alejandra Vázquez",
+      "email": "alejandra.vazquez@igeco.mx",
+      "classification": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+      "salesFriendlyWhy": "Best available organizer / commercial contact (Sales Manager). Hotel accommodation responsibility not yet confirmed.",
+      "ecosystemTargets": [
+        "event_organizer_commercial",
+        "housing_coordinator",
+        "meeting_planner",
+        "hospitality_logistics",
+        "project_visitor_travel",
+        "operations_coordinator",
+        "corporate_travel_procurement",
+        "team_travel_coordinator",
+        "existing_verified_contact",
+        "organizational_meetings_route"
+      ],
+      "ecosystemUrls": [],
+      "qualificationGapPreserved": true,
+      "surfeCta": "Find Phone"
+    },
+    "maritza": {
+      "primary": "Maritza Jeanette Medina García",
+      "email": "maritza.medina@jalisco.gob.mx",
+      "phone": "+52 33 3819 2333",
+      "classification": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+      "salesFriendlyWhy": "Best available organizer / commercial contact (Directora de Recursos Materiales, SIOP). Hotel accommodation responsibility not yet confirmed.",
+      "ecosystemTargets": [
+        "event_organizer_commercial",
+        "housing_coordinator",
+        "meeting_planner",
+        "hospitality_logistics",
+        "project_visitor_travel",
+        "operations_coordinator",
+        "medical_research_coordinator",
+        "existing_verified_contact",
+        "organizational_meetings_route"
+      ]
+    },
+    "fixtures": [
+      {
+        "id": "verified_hotel_buyer",
+        "ok": true,
+        "class": "DIRECT_HOTEL_BUYER"
+      },
+      {
+        "id": "reachable_influencer_unknown_buyer",
+        "ok": true,
+        "class": "RELEVANT_COMMERCIAL_ENTRY_POINT"
+      },
+      {
+        "id": "direct_buyer_no_channels",
+        "ok": true,
+        "class": "VERIFIED_MEETINGS_OR_TRAVEL_BUYER"
+      },
+      {
+        "id": "organizer_several_sales",
+        "ok": true,
+        "primary": "Alejandra Vázquez"
+      },
+      {
+        "id": "official_housing_agency",
+        "ok": true,
+        "class": "ORGANIZATIONAL_HOUSING_OR_MEETINGS_ROUTE"
+      },
+      {
+        "id": "corporate_travel_procurement",
+        "ok": true,
+        "class": "VERIFIED_MEETINGS_OR_TRAVEL_BUYER"
+      },
+      {
+        "id": "project_workforce_coordinator",
+        "ok": true,
+        "class": "RELEVANT_COMMERCIAL_ENTRY_POINT"
+      },
+      {
+        "id": "shared_switchboard",
+        "ok": true,
+        "primary": "Person A"
+      }
+    ]
+  },
+  "passed": true
+}

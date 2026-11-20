@@ -1,0 +1,160 @@
+{
+  "suite": "gdi-maritza-public-contact-discovery-cert-v1",
+  "rootCause": "recoverPublicContactChannels only fetched opportunity-attached news/project URLs; no person-targeted public search reached info.jalisco.gob.mx / transparencia staff directories. Extraction works once those pages are candidates.",
+  "limitingStage": "1+2+4: no explicit person-channel search / insufficient query variation / missing authoritative staff-directory discovery (not extraction or DTO loss)",
+  "fixture": {
+    "personName": "Maritza Jeanette Medina García",
+    "title": "Directora de Recursos Materiales",
+    "organization": "Secretaría de Infraestructura y Obra Pública, Gobierno de Jalisco",
+    "expectedEmail": "maritza.medina@jalisco.gob.mx",
+    "expectedPhoneE164": "+52 33 3819 2333",
+    "expectedExtensions": [
+      "42333",
+      "47542"
+    ],
+    "expectedPhoneKind": "OFFICE_WITH_EXTENSION",
+    "authorityClass": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+    "notHotelBookingAuthority": true,
+    "candidateUrls": [
+      "https://info.jalisco.gob.mx/dependencia/secretaria-de-infraestructura-y-obra-publica?page=14",
+      "https://transparencia.info.jalisco.gob.mx/node/15546"
+    ],
+    "hotelId": "recCAGqkERSXgiku4",
+    "opportunityIds": [
+      "disc_b4661c17bd92",
+      "disc_cd6fe49dcccf"
+    ]
+  },
+  "newsOnlyControl": {
+    "status": "PUBLIC_RESEARCH_INCOMPLETE",
+    "email": null,
+    "phone": null,
+    "provesGap": true
+  },
+  "passed": true,
+  "surfeCalls": 0,
+  "paidSearchCalls": 0,
+  "results": [
+    {
+      "opportunityId": "disc_b4661c17bd92",
+      "title": "Distrito Urbano Expo Guadalajara – Nodo Expo, túnel vehicular y renovación del espacio público",
+      "before": {
+        "email": "maritza.medina@jalisco.gob.mx",
+        "phone": "+52 33 3819 2333",
+        "surfeCta": null
+      },
+      "after": {
+        "email": "maritza.medina@jalisco.gob.mx",
+        "phone": "+52 33 3819 2333",
+        "phoneKind": null,
+        "extensions": [],
+        "surfeCta": null,
+        "sourceUrl": "https://info.jalisco.gob.mx/dependencia/secretaria-de-infraestructura-y-obra-publica?page=14"
+      },
+      "status": "REUSED_EXISTING",
+      "emailOk": true,
+      "phoneOk": true,
+      "changed": false
+    },
+    {
+      "opportunityId": "disc_cd6fe49dcccf",
+      "title": "Línea 5 Macro Aeropuerto and integrated Carretera a Chapala intervention",
+      "before": {
+        "email": "maritza.medina@jalisco.gob.mx",
+        "phone": "+52 33 3819 2333",
+        "surfeCta": null
+      },
+      "after": {
+        "email": "maritza.medina@jalisco.gob.mx",
+        "phone": "+52 33 3819 2333",
+        "phoneKind": null,
+        "extensions": [],
+        "surfeCta": null,
+        "sourceUrl": "https://info.jalisco.gob.mx/puesto/directora-de-recursos-materiales"
+      },
+      "status": "REUSED_EXISTING",
+      "emailOk": true,
+      "phoneOk": true,
+      "changed": false
+    }
+  ],
+  "airtable": {
+    "mode": "dry-run",
+    "proposal": {
+      "action": "UPSERT_PROPOSED_DRY_RUN",
+      "execute": false,
+      "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+      "dedupeKey": "maritza jeanette medina garcia|secretaria de infraestructura y obra publica gobierno de jalisco|maritza.medina@jalisco.gob.mx",
+      "fields": {
+        "personName": "Maritza Jeanette Medina García",
+        "company": "Secretaría de Infraestructura y Obra Pública, Gobierno de Jalisco",
+        "role": "Directora de Recursos Materiales, SIOP",
+        "opportunityId": "disc_b4661c17bd92",
+        "opportunityTitle": "Distrito Urbano Expo Guadalajara – Nodo Expo, túnel vehicular y renovación del espacio público",
+        "classification": "NAMED_RELEVANT_INFLUENCER",
+        "publicBusinessEmail": "maritza.medina@jalisco.gob.mx",
+        "publicBusinessPhone": "+52 33 3819 2333",
+        "organizationalRouteEmail": null,
+        "organizationalRoutePhone": null,
+        "routeType": "DIRECT",
+        "sourceUrl": "https://info.jalisco.gob.mx/dependencia/secretaria-de-infraestructura-y-obra-publica?page=14",
+        "verificationStatus": "PUBLICLY_VERIFIED",
+        "lastVerifiedDate": "2026-11-20",
+        "provenance": "PUBLIC_SOURCE",
+        "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+        "surfeDerived": false
+      },
+      "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK"
+    },
+    "note": "Dry-run proposal only — no Airtable mutation"
+  },
+  "queryPlanSample": [
+    {
+      "query": "\"Maritza Jeanette Medina García\" correo",
+      "kind": "es_email"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" teléfono",
+      "kind": "es_phone"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" directorio",
+      "kind": "es_directory"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" contacto",
+      "kind": "es_contact"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina Garcia\" correo electrónico",
+      "kind": "es_email_no_accent"
+    },
+    {
+      "query": "\"Maritza Garcia\" Secretaría de Infraestructura y Obra Pública, Gobierno de Jalisco",
+      "kind": "name_org"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" Directora de Recursos Materiales",
+      "kind": "name_title"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" email",
+      "kind": "en_email"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" phone directory",
+      "kind": "en_phone"
+    },
+    {
+      "query": "\"Maritza Jeanette Medina García\" \"Secretaría de Infraestructura y Obra Pública, Gobierno de Jalisco\" directorio",
+      "kind": "name_org_directory"
+    }
+  ],
+  "measurement": {
+    "namedContactsResearched": 2,
+    "newPublicEmailsFound": 0,
+    "newPublicPhonesFound": 0,
+    "bothChannels": 2,
+    "surfeLookupsAvoided": 2
+  }
+}
