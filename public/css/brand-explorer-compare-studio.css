@@ -87,6 +87,75 @@ html.becs-page body {
   cursor: pointer;
 }
 
+/* Brand picker — match Dealality shell .filter-select (ADP/GDI/OE), not a pill chip */
+.becs-brand-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: min(320px, 42vw);
+  max-width: min(420px, 56vw);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--becs-muted);
+  letter-spacing: 0.01em;
+}
+
+.becs-controls select.becs-brand-select,
+.becs-controls select#becsBrand,
+select.becs-brand-select.filter-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 240px;
+  max-width: 100%;
+  height: 3rem;
+  min-height: 3rem;
+  max-height: 3rem;
+  margin: 0;
+  padding: 0 2.25rem 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background-color: #141b33;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23c5d0ea' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color-scheme: dark;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.becs-controls select.becs-brand-select:hover,
+.becs-controls select#becsBrand:hover,
+select.becs-brand-select.filter-select:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.becs-controls select.becs-brand-select:focus,
+.becs-controls select#becsBrand:focus,
+select.becs-brand-select.filter-select:focus {
+  outline: none;
+  border-color: #6c72ff;
+  box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+}
+
+.becs-controls select.becs-brand-select option,
+.becs-controls select#becsBrand option,
+select.becs-brand-select.filter-select option {
+  background: #141b33;
+  color: #ffffff;
+}
+
 .becs-tabbar {
   display: flex;
   flex-wrap: wrap;
@@ -756,6 +825,38 @@ body.becs-hl-off .becs-hl-legend {
 .becs-controls-founder {
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+.becs-brand-filter-label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.68rem;
+  color: var(--becs-muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.becs-brand-search,
+select.becs-filter-select.filter-select {
+  min-width: 140px;
+  max-width: 200px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--becs-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  padding: 4px 8px;
+  font-size: 0.78rem;
+}
+.becs-brand-search:focus,
+select.becs-filter-select.filter-select:focus {
+  outline: 2px solid rgba(120, 180, 255, 0.45);
+  outline-offset: 1px;
+}
+.becs-brand-filter-count {
+  font-size: 0.72rem;
+  color: var(--becs-muted);
+  white-space: nowrap;
 }
 .becs-modes-primary .becs-mode {
   font-size: 0.72rem;

@@ -2215,16 +2215,17 @@
             const BP_REGION_LABELS = { AM: 'Americas', CALA: 'CALA', EU: 'Europe', MEA: 'MEA', APAC: 'APAC' };
 
             function computeHeroTagline(brand) {
-                const pos = (brand.brandPositioning || brand.positioning || '').trim();
-                if (pos) {
-                    const m = pos.match(/^.{1,220}?(?:[.!?](?=\s|$)|$)/);
-                    const one = (m ? m[0] : pos).trim();
+                // Narrative description first — never replace card/hero blurb with short Brand Positioning.
+                const v = (brand.brandValueProposition || brand.valueProposition || '').trim();
+                if (v) {
+                    const m = v.match(/^.{1,220}?(?:[.!?](?=\s|$)|$)/);
+                    const one = (m ? m[0] : v).trim();
                     return one.length > 160 ? one.slice(0, 157) + '…' : one;
                 }
+                const cp = (brand.brandCustomerPromise || brand.customerPromise || '').trim();
+                if (cp) return cp.length > 160 ? cp.slice(0, 157) + '…' : cp;
                 const t = (brand.brandTaglineMotto || brand.tagline || '').trim();
                 if (t) return t.length > 160 ? t.slice(0, 157) + '…' : t;
-                const v = (brand.brandValueProposition || brand.valueProposition || '').trim();
-                if (v) return v.length > 160 ? v.slice(0, 157) + '…' : v;
                 return '';
             }
 

@@ -1,0 +1,18 @@
+{
+  "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+  "lessonId": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+  "description": "Proposed removes valid CURRENT named tiers without evidence — must retain CURRENT",
+  "expectBlocked": true,
+  "expectReason": "LOYALTY_TIER_REGRESSION",
+  "programId": "hilton_honors",
+  "currentBlocks": [
+    { "slotKey": "loyalty.elite", "title": "Member", "body": "Base Honors membership." },
+    { "slotKey": "loyalty.elite", "title": "Silver", "body": "Entry elite." },
+    { "slotKey": "loyalty.elite", "title": "Gold", "body": "Mid elite." },
+    { "slotKey": "loyalty.elite", "title": "Diamond", "body": "Top mainstream elite." }
+  ],
+  "candidateBlocks": [
+    { "slotKey": "loyalty.elite", "title": "Member", "body": "Base Honors membership." },
+    { "slotKey": "loyalty.elite", "title": "Gold", "body": "Mid elite only — Silver removed." }
+  ]
+}

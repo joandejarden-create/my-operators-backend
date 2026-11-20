@@ -1,0 +1,37 @@
+{
+  "contract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+  "lessonId": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+  "description": "Proposed collapses four verified Bonvoy tiers into one generic Elite Recognition card — must block and retain CURRENT",
+  "expectBlocked": true,
+  "expectReason": "LOYALTY_TIER_REGRESSION",
+  "programId": "marriott_bonvoy",
+  "currentBlocks": [
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Member",
+      "body": "Base Bonvoy earn on qualifying stays."
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Silver Elite",
+      "body": "Entry elite recognition."
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Gold Elite",
+      "body": "Stronger upgrade preference."
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Platinum Elite",
+      "body": "Upper elite lounge pathways where offered."
+    }
+  ],
+  "candidateBlocks": [
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Elite Recognition",
+      "body": "Elite status recognition (upgrades, late checkout, lounge access where offered) applies per property capability—delivery varies by hotel."
+    }
+  ]
+}

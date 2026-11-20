@@ -1962,7 +1962,13 @@
         card.style.borderLeftColor = 'transparent';
         var stripeBg = getChainScaleStripeBackground(brand.chainScale);
 
-        var summary = brand.positioning || brand.tagline || 'Learn more about this brand.';
+        // Card blurb = narrative description (Value Proposition / Customer Promise / Tagline).
+        // Do not use concise Brand Positioning (shown under Brand Positioning subsection).
+        var summary =
+            brand.valueProposition ||
+            brand.customerPromise ||
+            brand.tagline ||
+            'Learn more about this brand.';
         var truncatedSummary = summary.length > 160 ? summary.substring(0, 160) + '...' : summary;
         var initial = (brand.name || 'B').charAt(0).toUpperCase();
         var typeLabel = [brand.chainScale ? String(brand.chainScale).replace(' Chain', '') : '', brand.serviceModel].filter(Boolean).join(' · ') || 'Hotel Brand';
@@ -2362,8 +2368,10 @@
                 !searchText ||
                 (brand.name && brand.name.toLowerCase().indexOf(searchText) !== -1) ||
                 (brand.parentCompany && brand.parentCompany.toLowerCase().indexOf(searchText) !== -1) ||
-                (brand.positioning && String(brand.positioning).toLowerCase().indexOf(searchText) !== -1) ||
-                (brand.tagline && String(brand.tagline).toLowerCase().indexOf(searchText) !== -1);
+                (brand.valueProposition && String(brand.valueProposition).toLowerCase().indexOf(searchText) !== -1) ||
+                (brand.customerPromise && String(brand.customerPromise).toLowerCase().indexOf(searchText) !== -1) ||
+                (brand.tagline && String(brand.tagline).toLowerCase().indexOf(searchText) !== -1) ||
+                (brand.positioning && String(brand.positioning).toLowerCase().indexOf(searchText) !== -1);
             var okParent = !parentCompany || brand.parentCompany === parentCompany;
             var okChain = !chainScale || brand.chainScale === chainScale;
             var okModel = !brandModel || brand.brandModel === brandModel;

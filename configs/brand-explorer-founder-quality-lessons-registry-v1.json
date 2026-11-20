@@ -736,6 +736,109 @@
       "curioAscendApproval": "NOT_APPROVED",
       "publicationVerified": false,
       "implementationModule": "public/js/brand-explorer-founder-profile-mode.js"
+    },
+    {
+      "lessonId": "BE-QL-DEMAND-SCENARIOS-SIX-001",
+      "date": "2026-11-20",
+      "phase": "FACTORY-2-0",
+      "founderObservation": "Demand Scenario Fit rendered seven cards. Every Brand Explorer profile must contain exactly six distinct Demand Scenario Fit assessments for owner/investment evaluation — not a list of generic demand generators.",
+      "affected": [
+        "commercial.demand",
+        "Demand Scenario View",
+        "Commercial Engine",
+        "Comparison Studio RIGHT",
+        "atelier product renderer",
+        "cumulative proposal assembler",
+        "Factory 1.0 / 2.0",
+        "batch research",
+        "Airtable publication gate"
+      ],
+      "correctExpectedBehavior": "Demand Scenario Fit always contains exactly six distinct brand-specific assessments. Fit labels are only Strong Fit, Moderate Fit, Limited Fit, or Not a Fit. Never silently truncate seven→six without scored selection, never pad incomplete research with generic cards, never pass synonym duplicates. If six credible assessments cannot be identified, mark NEEDS_REMEDIATION. Enforce in research, assembly, renderer, Comparison Studio, certification, and publication for every brand.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-seven.json",
+      "associatedContract": "configs/brand-explorer-collection-cardinality-contract.json#commercialThemes",
+      "automatedRegressionTest": "test:be-factory-permanent-demand-scenarios-six-v1",
+      "browserValidationEvidence": "reports/brand-explorer/factory-2-0/",
+      "status": "TESTED",
+      "supersededRule": "MINIMUM 3 / target 6 / Tribute writer EXPECTED_ROW_COUNT=7 for commercial.demand",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-demand-scenarios-six-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-five.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-seven.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-duplicate.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-demand-scenarios-invalid-fit.json"
+      ]
+    },
+    {
+      "lessonId": "BE-QL-LOYALTY-TIER-COMPLETENESS-001",
+      "date": "2026-11-20",
+      "phase": "FACTORY-2-0",
+      "founderObservation": "Comparison Studio Proposed Update replaced several named loyalty elite tiers with one generic Elite Recognition card. Participating brands must show the complete official tier ladder — never collapse verified tiers into a single generic card.",
+      "affected": [
+        "loyalty.elite",
+        "Elite Tiers — Illustrative Benefits",
+        "Comparison Studio RIGHT",
+        "cumulative proposal assembler",
+        "Factory 2.0 depth candidate builder",
+        "canonical loyalty program registry",
+        "batch certification",
+        "portfolio content quality audit"
+      ],
+      "correctExpectedBehavior": "Elite Tiers display ALL applicable officially recognized membership/elite tiers in correct sequence. Card count equals the actual program (3/4/5/6…) — no artificial min/max. Distinct from Key Benefits exact-six (loyalty.proof). Never apply a candidate that collapses CURRENT named tiers into one generic card. Unverified participation blocks certification rather than inventing benefits. Shared program references remediate participating brands efficiently with brand-specific exceptions preserved.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-collapsed-four-to-one.json",
+      "associatedContract": "BE_FACTORY_PERMANENT_LOYALTY_TIER_COMPLETENESS_V1",
+      "automatedRegressionTest": "test:be-factory-permanent-loyalty-tier-completeness-v1",
+      "browserValidationEvidence": "reports/brand-explorer/portfolio-content-quality-audit-v1/15-loyalty-tier-audit-dashboard.md",
+      "status": "TESTED",
+      "supersededRule": "Emitting a single generic Elite Recognition loyalty.elite card for every Factory 2.0 depth brand",
+      "linkedRequirementIds": ["BE-QL-LOYALTY-SIX-001"],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-loyalty-tier-completeness-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-collapsed-four-to-one.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-elite-removes-valid-tier.json"
+      ]
+    },
+    {
+      "lessonId": "BE-QL-LOYALTY-GLANCE-KPI-001",
+      "date": "2026-11-20",
+      "phase": "FACTORY-2-0",
+      "founderObservation": "SureStay Plus by Best Western rendered four Loyalty at a Glance KPI cards all as N/A in both CURRENT and PROPOSED. Four empty containers are not four completed KPIs — owners need meaningful, evidence-backed loyalty metrics.",
+      "affected": [
+        "loyalty.kpi.members",
+        "loyalty.kpi.hotels",
+        "loyalty.kpi.markets",
+        "loyalty.kpi.mix",
+        "Loyalty at a Glance",
+        "Comparison Studio",
+        "Factory 2.0 depth candidate builder",
+        "canonical program KPI registry",
+        "atelier loyalty renderer"
+      ],
+      "correctExpectedBehavior": "Participating brands show exactly four meaningful Loyalty at a Glance KPI cards with verified program-level Members / Participating Hotels / Markets where available, and Typical Loyalty Mix as a verified actual OR a clearly labeled evidence-informed Estimated Loyalty Mix range. Never certify all-N/A panels. Reuse shared program KPI intelligence across participating brands with explicit scope labels. Preserve stronger CURRENT values against weaker PROPOSED.",
+      "failingExampleRef": "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-glance-all-na-surestay.json",
+      "associatedContract": "BE_FACTORY_PERMANENT_LOYALTY_GLANCE_KPI_V1",
+      "automatedRegressionTest": "test:be-factory-permanent-loyalty-glance-kpi-v1",
+      "browserValidationEvidence": "reports/brand-explorer/portfolio-content-quality-audit-v1/18-loyalty-glance-kpi-audit-dashboard.md",
+      "status": "TESTED",
+      "supersededRule": "Treating four rendered Loyalty at a Glance KPI shells (including all N/A) as complete; forbidding evidence-informed Estimated Loyalty Mix",
+      "linkedRequirementIds": [
+        "BE-QL-LOYALTY-SIX-001",
+        "BE-QL-LOYALTY-TIER-COMPLETENESS-001"
+      ],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-factory-permanent-loyalty-glance-kpi-v1.js",
+      "factoryInheritance": ["1.0", "2.0"],
+      "negativeFixtures": [
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-glance-all-na-surestay.json",
+        "fixtures/brand-explorer-factory-permanent-standards/failing-loyalty-glance-regression-na-over-current.json"
+      ]
     }
   ]
 }

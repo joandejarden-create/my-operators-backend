@@ -24,7 +24,7 @@ for (const r of rows) {
   if (!url) issues.push({ name, issue: "blank" });
   else if (/^https:\/\/www\./i.test(url)) issues.push({ name, issue: "www", url });
   else if (!/^https:\/\//i.test(url)) issues.push({ name, issue: "not-https", url });
-  else if (isParentCompanyHomepage(norm, r.get("Parent Company"))) {
+  else if (isParentCompanyHomepage(norm, r.get("Parent Company"), name)) {
     issues.push({ name, issue: "parent-homepage", url: norm });
   }
 }

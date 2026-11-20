@@ -1435,7 +1435,13 @@
                 var stripeBg = getChainScaleStripeBackground(brand.chainScale);
                 card.onclick = function() { openBrandProfile(brand.id, brand.name); };
 
-                var summary = brand.positioning || brand.tagline || 'Learn more about this brand.';
+                // Card blurb = narrative description (Value Proposition / Customer Promise / Tagline).
+                // Do not use concise Brand Positioning (Product & Segment attribute).
+                var summary =
+                    brand.valueProposition ||
+                    brand.customerPromise ||
+                    brand.tagline ||
+                    'Learn more about this brand.';
                 var truncatedSummary = summary.length > 160 ? summary.substring(0, 160) + '...' : summary;
                 var initial = (brand.name || 'B').charAt(0).toUpperCase();
                 var typeLabel = [brand.chainScale ? brand.chainScale.replace(' Chain', '') : '', brand.serviceModel].filter(Boolean).join(' ┬╖ ') || 'Hotel Brand';

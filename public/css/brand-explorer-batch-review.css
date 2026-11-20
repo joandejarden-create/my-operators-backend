@@ -1,0 +1,180 @@
+/* Brand Explorer Batch Review — Factory 2.0 portfolio dashboard */
+.bebr-page {
+  --bebr-ink: #1a2332;
+  --bebr-muted: #5b6575;
+  --bebr-line: #d8dee8;
+  --bebr-bg: #f3f5f8;
+  --bebr-card: #ffffff;
+  --bebr-accent: #0b6e4f;
+  --bebr-warn: #9a5b00;
+  --bebr-danger: #8b1e1e;
+  --bebr-info: #1d4f91;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  color: var(--bebr-ink);
+  background: linear-gradient(180deg, #eef2f6 0%, var(--bebr-bg) 40%);
+  min-height: 100vh;
+}
+
+.bebr-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 3rem;
+}
+
+.bebr-header h1 {
+  margin: 0 0 0.25rem;
+  font-family: "IBM Plex Serif", Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.bebr-header p {
+  margin: 0;
+  color: var(--bebr-muted);
+  max-width: 52rem;
+}
+
+.bebr-badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--bebr-line);
+  background: #fff;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.bebr-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.bebr-stat {
+  background: var(--bebr-card);
+  border: 1px solid var(--bebr-line);
+  padding: 0.75rem 0.9rem;
+}
+
+.bebr-stat strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.bebr-stat span {
+  color: var(--bebr-muted);
+  font-size: 0.78rem;
+}
+
+.bebr-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.bebr-toolbar label {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.bebr-toolbar select,
+.bebr-toolbar button {
+  font: inherit;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--bebr-line);
+  background: #fff;
+  cursor: pointer;
+}
+
+.bebr-toolbar button.primary {
+  background: var(--bebr-accent);
+  color: #fff;
+  border-color: var(--bebr-accent);
+}
+
+.bebr-toolbar button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.bebr-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--bebr-line);
+  background: var(--bebr-card);
+}
+
+.bebr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.bebr-table th,
+.bebr-table td {
+  border-bottom: 1px solid var(--bebr-line);
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.bebr-table th {
+  background: #f7f9fc;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bebr-status {
+  display: inline-block;
+  padding: 0.12rem 0.4rem;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.bebr-status.READY_FOR_REVIEW { background: #e5f6ee; color: var(--bebr-accent); }
+.bebr-status.NEEDS_REMEDIATION { background: #fde8e8; color: var(--bebr-danger); }
+.bebr-status.RESEARCH_IN_PROGRESS { background: #e8f0fb; color: var(--bebr-info); }
+.bebr-status.APPROVED { background: #e8f7e8; color: #1f6b2d; }
+.bebr-status.PUBLISHED { background: #efe8fb; color: #5a2d91; }
+.bebr-status.QUEUED,
+.bebr-status.SKIPPED_PROTECTED,
+.bebr-status.BLOCKED { background: #f1f3f6; color: var(--bebr-muted); }
+
+.bebr-links a {
+  display: inline-block;
+  margin-right: 0.45rem;
+  color: var(--bebr-info);
+}
+
+.bebr-gaps {
+  max-width: 16rem;
+  color: var(--bebr-warn);
+  font-size: 0.75rem;
+}
+
+.bebr-note {
+  margin-top: 1rem;
+  padding: 0.75rem 0.9rem;
+  border-left: 3px solid var(--bebr-accent);
+  background: #fff;
+  color: var(--bebr-muted);
+  font-size: 0.85rem;
+}
+
+.bebr-toast {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--bebr-line);
+  background: #fff;
+  font-size: 0.85rem;
+}
+
+.bebr-toast.error { border-color: #e2b4b4; background: #fdf5f5; }
+.bebr-toast.ok { border-color: #b7dfc8; background: #f3fbf6; }

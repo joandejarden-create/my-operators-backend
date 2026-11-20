@@ -720,7 +720,12 @@
       brand.hotelChainScale ||
       brand.parentCompany ||
       '';
-    var statement = brand.brandPositioning || '';
+    // Hero statement = narrative description — not concise Brand Positioning.
+    var statement =
+      brand.brandValueProposition ||
+      brand.brandCustomerPromise ||
+      brand.brandTaglineMotto ||
+      '';
     if (statement.length > 520) statement = statement.slice(0, 517) + '…';
 
     var meta = [];
@@ -924,12 +929,11 @@
     var logo = brand.logo && String(brand.logo).indexOf('http') === 0 ? brand.logo : '';
     var pid = brand.id != null && String(brand.id).trim() !== '' ? String(brand.id).trim() : '';
     var setupHref = pid ? '/brand-setup?id=' + encodeURIComponent(pid) : '/brand-setup';
-    var posRaw = brand.brandPositioning ? String(brand.brandPositioning) : '';
-    var positionLine = brand.brandTaglineMotto || (posRaw ? posRaw.slice(0, 140) + (posRaw.length > 140 ? '…' : '') : '');
+    // Tagline line may show motto; never substitute short Brand Positioning for the card/hero description.
+    var positionLine = brand.brandTaglineMotto ? String(brand.brandTaglineMotto) : '';
     var summaryRaw =
       brand.brandCustomerPromise ||
       brand.brandValueProposition ||
-      posRaw ||
       '';
     var summary = summaryRaw ? String(summaryRaw) : '';
     var isDemo = presentationIsDemoBrand(brand);

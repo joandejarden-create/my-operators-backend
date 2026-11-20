@@ -92,7 +92,9 @@
     provenanceBySlot: {},
     highlightChanges: true,
     highlightStats: null,
-    issuesFilter: 'all'
+    issuesFilter: 'all',
+    // Monotonic brand-load generation — ignore stale async completions after switch.
+    loadGeneration: 0
   };
 
   function $(sel, root) {
@@ -733,7 +735,11 @@
             '<div class="becs-col becs-col-left becs-col-product" data-side="left">' +
             (leftNorm
               ? '<div class="be-atelier-oe becs-product-mount">' + pair.leftHtml + '</div>'
-              : '<div class="becs-card becs-card-empty"><div class="becs-empty-label">Missing in existing</div></div>') +
+              : '<div class="becs-card becs-card-empty"><div class="becs-empty-label">' +
+                (state.leftSource === 'empty-live'
+                  ? 'Empty live Presentation (no CURRENT blocks yet)'
+                  : 'Missing in existing') +
+                '</div></div>') +
             '</div>' +
             '<div class="becs-col becs-col-right becs-col-product" data-side="right">' +
             (rightNorm
@@ -743,7 +749,10 @@
         );
       });
       root.innerHTML =
-        html.join('') || '<p class="becs-muted">No product sections for this tab.</p>';
+        html.join('') ||
+        (state.leftSource === 'empty-live' && !(state.rightBlocks && state.rightBlocks.length)
+          ? '<p class="becs-muted">Empty live Presentation and no staged Proposed blocks for this tab.</p>'
+          : '<p class="becs-muted">No product sections for this tab.</p>');
       window.__BE_COMPARE_STUDIO__ = {
         env: 'comparison-studio',
         mode: 'product-section-pairs',
@@ -1541,6 +1550,16 @@
     };
   }
 
+  function emptyLiveBrandShell(cfg, liveBrand) {
+    return Object.assign({}, liveBrand || {}, {
+      id: cfg.id,
+      name: (liveBrand && (liveBrand.name || liveBrand.brandName)) || cfg.name,
+      brandName: (liveBrand && (liveBrand.name || liveBrand.brandName)) || cfg.name,
+      brandExplorer: { version: 1, blocks: [] },
+      beEmptyLivePresentation: true
+    });
+  }
+
   async function loadLeftBrand(cfg) {
     var loadedAt = new Date().toISOString();
     try {
@@ -1549,14 +1568,34 @@
       );
       if (!data || !data.success || !data.brand) throw new Error('no brand');
       var blocks = blocksFromBrand(data.brand);
-      if (!blocks.length) throw new Error('empty presentation');
+      // Draft / Under Review Factory brands often have empty live Presentation.
+      // Do NOT abort the studio — keep an empty CURRENT shell so PROPOSED can still render.
+      if (!blocks.length) {
+        state.leftSource = 'empty-live';
+        state.leftBrand = emptyLiveBrandShell(cfg, data.brand);
+        state.leftMeta = {
+          label: 'CURRENT · SAVED PROFILE (empty live Presentation)',
+          source:
+            'Live Airtable Presentation has no blocks yet (common for Draft/Under Review Factory brands). Proposed column shows the staged Factory candidate.',
+          brandId: cfg.id,
+          brandName: data.brand.name || data.brand.brandName || cfg.name,
+          blockCount: 0,
+          snapshotTimestamp:
+            data.brand.activeProfileApprovedDate || data.brand.brandExplorerLastReviewed || null,
+          loadedAt: loadedAt,
+          readOnly: true,
+          writeGuard: 'never_overwrite_during_review',
+          emptyLivePresentation: true
+        };
+        return [];
+      }
       state.leftSource = 'live';
       state.leftBrand = data.brand;
       state.leftMeta = {
         label: 'CURRENT · SAVED PROFILE',
         source: 'Canonical live Presentation (Airtable via brand-library API)',
         brandId: cfg.id,
-        brandName: data.brand.name || cfg.name,
+        brandName: data.brand.name || data.brand.brandName || cfg.name,
         blockCount: blocks.length,
         snapshotTimestamp: data.brand.activeProfileApprovedDate || data.brand.brandExplorerLastReviewed || null,
         loadedAt: loadedAt,
@@ -1585,9 +1624,30 @@
         };
         return bb;
       }
-      state.leftSource = 'unavailable';
-      state.leftMeta = null;
-      throw err;
+      // Last resort: empty CURRENT shell so PROPOSED frozen payload can still load
+      // (includes NEW_* provisional brands awaiting Brand Basics create).
+      state.leftSource = 'empty-live';
+      state.leftBrand = emptyLiveBrandShell(cfg, null);
+      state.leftMeta = {
+        label: cfg.awaitingBrandBasicsCreate
+          ? 'CURRENT · NO AIRTABLE BASICS YET'
+          : 'CURRENT · SAVED PROFILE (unavailable)',
+        source: cfg.awaitingBrandBasicsCreate
+          ? 'Provisional NEW_* staging key — Brand Basics create not yet founder-authorized. RIGHT shows staged Factory candidate; LEFT has no saved Presentation.'
+          : 'Live Presentation could not be loaded (' +
+            (err.message || String(err)) +
+            '). Proposed column still attempts staged Factory candidate.',
+        brandId: cfg.id,
+        brandName: cfg.name,
+        blockCount: 0,
+        loadedAt: loadedAt,
+        readOnly: true,
+        writeGuard: 'never_overwrite_during_review',
+        emptyLivePresentation: true,
+        awaitingBrandBasicsCreate: Boolean(cfg.awaitingBrandBasicsCreate),
+        fallbackReason: err.message || String(err)
+      };
+      return [];
     }
   }
 
@@ -1626,6 +1686,37 @@
     return 'fnv1a:' + sha256HexSync(payload);
   }
 
+  function assertOverlayMatchesBrand(cfg, overlay, usedUrl) {
+    if (!overlay || typeof overlay !== 'object') {
+      throw new Error('Staged overlay at ' + usedUrl + ' is empty or invalid');
+    }
+    var overlayId = nz(overlay.brandId || overlay.id || overlay.recordId);
+    var overlaySlug = nz(overlay.slug || overlay.brandSlug).toLowerCase();
+    var overlayName = nz(overlay.brandName || overlay.name);
+    var cfgId = nz(cfg.id);
+    var cfgSlug = nz(cfg.slug).toLowerCase();
+    var idMismatch = overlayId && cfgId && overlayId !== cfgId;
+    var slugMismatch = overlaySlug && cfgSlug && overlaySlug !== cfgSlug;
+    if (idMismatch || slugMismatch) {
+      throw new Error(
+        'Staged overlay identity mismatch for ' +
+          (cfg.name || cfgSlug || cfgId) +
+          ': expected id/slug ' +
+          cfgId +
+          '/' +
+          cfgSlug +
+          ' but ' +
+          usedUrl +
+          ' has ' +
+          overlayId +
+          '/' +
+          overlaySlug +
+          (overlayName ? ' (' + overlayName + ')' : '') +
+          '. Refusing to render cross-brand leftover content.'
+      );
+    }
+  }
+
   async function loadRightBrand(cfg, leftBrand) {
     // Cumulative proposal: CURRENT baseline + only complete non-regressive staged changes.
     // Refuse silent older Phase 2F/2G fallback. Never replace complete content with weaker reconstruction.
@@ -1642,6 +1733,7 @@
           '). Silent fallback to older Phase 2F/2G is forbidden.'
       );
     }
+    assertOverlayMatchesBrand(cfg, overlay, usedUrl);
     if (cfg.manifestUrl) {
       try {
         state.manifest = await fetchJson(cfg.manifestUrl);
@@ -1666,6 +1758,10 @@
       candidateVersion: overlay.candidateVersion || cfg.candidateVersion
     });
     state.rightBrand = built.brand;
+    // Never inherit empty-CURRENT marker onto PROPOSED (frozen/assembled may be rich)
+    if (state.rightBrand) {
+      delete state.rightBrand.beEmptyLivePresentation;
+    }
     state.assembly = built.assembly;
     state.incompleteDrafts = (built.assembly && built.assembly.incompleteDrafts) || [];
     state.provenanceBySlot = (built.assembly && built.assembly.provenanceBySlot) || {};
@@ -2127,10 +2223,52 @@
     loadBrand(cfg);
   }
 
+  function clearBrandColumnsForLoad(cfg) {
+    // Immediately drop prior brand columns so a failed/slow switch cannot leave
+    // Choice/Sleep Inn (etc.) content visible under a different brand label.
+    state.leftBlocks = [];
+    state.rightBlocks = [];
+    state.leftBrand = null;
+    state.rightBrand = null;
+    state.leftMeta = null;
+    state.rightMeta = null;
+    state.rightOverlayUrl = null;
+    state.diffs = [];
+    state.assembly = null;
+    state.incompleteDrafts = [];
+    state.provenanceBySlot = {};
+    state.scorecard = null;
+    state.manifest = null;
+    state.highlightStats = null;
+    state.selectedSlot = null;
+    state.leftSource = 'pending';
+    var leftTag = $('#becsLeftTag');
+    var rightTag = $('#becsRightTag');
+    var leftMetaEl = $('#becsLeftMeta');
+    var rightMetaEl = $('#becsRightMeta');
+    if (leftTag) leftTag.textContent = 'Loading CURRENT for ' + (cfg.name || cfg.slug || cfg.id) + '…';
+    if (rightTag) rightTag.textContent = 'Loading PROPOSED for ' + (cfg.name || cfg.slug || cfg.id) + '…';
+    if (leftMetaEl) leftMetaEl.textContent = 'ID ' + cfg.id + ' · loading…';
+    if (rightMetaEl) {
+      rightMetaEl.textContent = 'staged ' + (cfg.overlayUrl || '—') + ' · loading…';
+      rightMetaEl.setAttribute('data-becs-base-meta', rightMetaEl.textContent);
+    }
+  }
+
+  function isStaleBrandLoad(loadGen, cfg) {
+    if (loadGen !== state.loadGeneration) return true;
+    if (!state.brand || state.brand.id !== cfg.id) return true;
+    var brandSel = $('#becsBrand');
+    if (brandSel && brandSel.value && brandSel.value !== cfg.id) return true;
+    return false;
+  }
+
   async function loadBrand(cfg) {
+    var loadGen = ++state.loadGeneration;
     state.brand = cfg;
+    clearBrandColumnsForLoad(cfg);
     var paired = $('#becsPairedDoc');
-    if (paired) paired.innerHTML = '<p class="becs-muted">Loading…</p>';
+    if (paired) paired.innerHTML = '<p class="becs-muted">Loading ' + escapeHtml(cfg.name || cfg.slug || '') + '…</p>';
     var subnav = $('#becsSubnav');
     if (subnav) subnav.innerHTML = '';
     loadReviews();
@@ -2139,8 +2277,10 @@
       if (!state.contract) {
         state.contract = await fetchJson('/brand-explorer-phase2e-preview/subsection-parity-contract-v1.json');
       }
+      if (isStaleBrandLoad(loadGen, cfg)) return;
       if (state.rendererParity) {
         await loadGate1Payload();
+        if (isStaleBrandLoad(loadGen, cfg)) return;
         document.body.classList.add('becs-gate1');
         setStudioBadge('gate1');
         syncModeButtons();
@@ -2181,8 +2321,9 @@
           state.registry = null;
         }
       }
+      if (isStaleBrandLoad(loadGen, cfg)) return;
       try {
-        state.scorecard = await fetchJson(cfg.scorecardUrl);
+        state.scorecard = cfg.scorecardUrl ? await fetchJson(cfg.scorecardUrl) : null;
       } catch (e) {
         state.scorecard = null;
       }
@@ -2190,19 +2331,32 @@
         var persisted = await fetchJson(
           '/api/brand-explorer-compare/review?brandId=' + encodeURIComponent(cfg.id)
         );
+        if (isStaleBrandLoad(loadGen, cfg)) return;
         if (persisted && persisted.reviews) state.reviews = persisted.reviews;
         if (persisted && persisted.brandDecision) state.brandDecision = persisted.brandDecision;
       } catch (pe) {
         /* localStorage already loaded */
       }
       state.leftBlocks = await loadLeftBrand(cfg);
+      if (isStaleBrandLoad(loadGen, cfg)) return;
       state.rightBlocks = await loadRightBrand(cfg, state.leftBrand);
+      if (isStaleBrandLoad(loadGen, cfg)) return;
+      if (state.rightOverlayUrl && state.rightOverlayUrl !== cfg.overlayUrl) {
+        throw new Error(
+          'Proposed overlay URL drifted from selected brand (' +
+            cfg.slug +
+            '): ' +
+            state.rightOverlayUrl
+        );
+      }
       state.diffs = buildDiffs();
       state.loadedAt = new Date().toISOString();
       $('#becsLeftTag').textContent =
         state.leftSource === 'baseline'
           ? 'Verified snapshot fallback (labeled) · read-only'
-          : 'Canonical live Presentation · read-only';
+          : state.leftSource === 'empty-live'
+            ? 'Empty live Presentation · Draft/Under Review · read-only'
+            : 'Canonical live Presentation · read-only';
       $('#becsRightTag').textContent =
         'Cumulative proposal · ' +
         (state.rightMeta && state.rightMeta.candidateVersion
@@ -2262,20 +2416,155 @@
           ' · airtableWrites=0'
       );
     } catch (err) {
+      if (isStaleBrandLoad(loadGen, cfg)) return;
+      // Do not keep the previous brand's paired columns on failure.
+      state.leftBlocks = [];
+      state.rightBlocks = [];
+      state.diffs = [];
+      state.rightOverlayUrl = null;
       setStatus('ERROR: ' + err.message);
+      var leftTag = $('#becsLeftTag');
+      var rightTag = $('#becsRightTag');
+      if (leftTag) leftTag.textContent = 'CURRENT unavailable';
+      if (rightTag) rightTag.textContent = 'PROPOSED unavailable';
       $('#becsPairedDoc').innerHTML =
         '<div class="becs-unavailable" role="alert">' + escapeHtml(err.message) + '</div>';
     }
   }
 
-  function wireUi() {
+  function brandFilterMeta(b) {
+    return {
+      parent: String(b.parentCompany || '').trim(),
+      batch: String(b.batchTag || '').trim(),
+      status: b.awaitingBrandBasicsCreate
+        ? 'AWAITING_BASICS'
+        : String(b.factoryStatus || b.founderApprovalStatus || 'NOT_APPROVED').trim(),
+      hay: [
+        b.name,
+        b.slug,
+        b.id,
+        b.parentCompany,
+        b.batchTag,
+        b.factoryStatus,
+        b.founderApprovalStatus
+      ]
+        .map(function (x) {
+          return String(x || '').toLowerCase();
+        })
+        .join(' ')
+    };
+  }
+
+  function filteredBrands() {
+    var q = (($('#becsBrandSearch') && $('#becsBrandSearch').value) || '').trim().toLowerCase();
+    var parent = (($('#becsParentFilter') && $('#becsParentFilter').value) || '').trim();
+    var batch = (($('#becsBatchFilter') && $('#becsBatchFilter').value) || '').trim();
+    var status = (($('#becsStatusFilter') && $('#becsStatusFilter').value) || '').trim();
+    return BRANDS.slice()
+      .filter(function (b) {
+        var m = brandFilterMeta(b);
+        if (q && m.hay.indexOf(q) === -1) return false;
+        if (parent && m.parent !== parent) return false;
+        if (batch && m.batch !== batch) return false;
+        if (status) {
+          if (status === 'AWAITING_BASICS' && !b.awaitingBrandBasicsCreate) return false;
+          if (status !== 'AWAITING_BASICS' && m.status !== status && b.founderApprovalStatus !== status)
+            return false;
+        }
+        return true;
+      })
+      .sort(function (a, b) {
+        return String(a.name || a.slug || '').localeCompare(String(b.name || b.slug || ''), undefined, {
+          sensitivity: 'base'
+        });
+      });
+  }
+
+  function rebuildBrandSelect(preferId) {
     var brandSel = $('#becsBrand');
-    BRANDS.forEach(function (b, i) {
+    if (!brandSel) return;
+    var keep = preferId || brandSel.value || (state.brand && state.brand.id) || '';
+    var brandsForSelect = filteredBrands();
+    brandSel.innerHTML = '';
+    brandsForSelect.forEach(function (b, i) {
       var opt = document.createElement('option');
       opt.value = b.id;
-      opt.textContent = b.name;
-      if (i === 0) opt.selected = true;
+      var suffix = b.awaitingBrandBasicsCreate
+        ? ' · awaiting Basics'
+        : b.factoryStatus === 'NEEDS_REMEDIATION'
+          ? ' · remediation'
+          : '';
+      opt.textContent = (b.name || b.slug || b.id) + suffix;
+      opt.setAttribute('data-becs-slug', b.slug || '');
+      opt.setAttribute('data-becs-overlay', b.overlayUrl || '');
+      if (b.parentCompany) opt.setAttribute('data-becs-parent', b.parentCompany);
+      if (b.batchTag) opt.setAttribute('data-becs-batch', b.batchTag);
       brandSel.appendChild(opt);
+      if (b.id === keep) opt.selected = true;
+      else if (!keep && i === 0) opt.selected = true;
+    });
+    var countEl = $('#becsBrandFilterCount');
+    if (countEl) {
+      countEl.textContent = brandsForSelect.length + ' / ' + BRANDS.length + ' brands';
+    }
+    if (!brandsForSelect.length) {
+      var empty = document.createElement('option');
+      empty.value = '';
+      empty.textContent = 'No brands match filters';
+      brandSel.appendChild(empty);
+    }
+  }
+
+  function populateBrandFilters() {
+    var parents = {};
+    var batches = {};
+    BRANDS.forEach(function (b) {
+      if (b.parentCompany) parents[b.parentCompany] = true;
+      if (b.batchTag) batches[b.batchTag] = true;
+    });
+    var parentSel = $('#becsParentFilter');
+    if (parentSel) {
+      Object.keys(parents)
+        .sort()
+        .forEach(function (p) {
+          var opt = document.createElement('option');
+          opt.value = p;
+          opt.textContent = p;
+          parentSel.appendChild(opt);
+        });
+    }
+    var batchSel = $('#becsBatchFilter');
+    if (batchSel) {
+      Object.keys(batches)
+        .sort()
+        .forEach(function (p) {
+          var opt = document.createElement('option');
+          opt.value = p;
+          opt.textContent = p;
+          batchSel.appendChild(opt);
+        });
+    }
+  }
+
+  function wireUi() {
+    var brandSel = $('#becsBrand');
+    populateBrandFilters();
+    rebuildBrandSelect();
+    function onFilterChange() {
+      var prev = brandSel.value;
+      rebuildBrandSelect(prev);
+      if (state.rendererParity) return;
+      if (brandSel.value && brandSel.value !== prev) {
+        var cfg = BRANDS.find(function (b) {
+          return b.id === brandSel.value;
+        });
+        if (cfg) loadBrand(cfg);
+      }
+    }
+    ['becsBrandSearch', 'becsParentFilter', 'becsBatchFilter', 'becsStatusFilter'].forEach(function (id) {
+      var el = $('#' + id);
+      if (!el) return;
+      el.addEventListener(id === 'becsBrandSearch' ? 'input' : 'change', onFilterChange);
     });
     brandSel.addEventListener('change', function () {
       if (state.rendererParity) return; // Gate 1 diagnostic locked to Curio saved payload

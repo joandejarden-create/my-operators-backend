@@ -500,6 +500,25 @@
       }
     }
 
+    // Key Differentiators Curio/Ascend bar: upgrade thin CURRENT (<4 bullets).
+    if (/^overview\.differentiators\.(identity|commercial)$/i.test(nz(slotKey))) {
+      if (
+        pq.bulletCount >= 4 &&
+        cq.bulletCount < 4 &&
+        pq.placeholderCount === 0 &&
+        pq.substantiveCount > 0 &&
+        !isProseDiligenceRegression(slotKey, currentBlocks, candidateBlocks)
+      ) {
+        return {
+          provenance: PROVENANCE.MODIFIED_EXISTING,
+          applyCandidate: true,
+          reason: 'differentiator_four_bullet_bar_upgrade',
+          currentQuality: cq,
+          candidateQuality: pq
+        };
+      }
+    }
+
     return {
       provenance: PROVENANCE.INCOMPLETE_DRAFT,
       applyCandidate: false,

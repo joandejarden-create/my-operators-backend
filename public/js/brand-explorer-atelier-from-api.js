@@ -1203,17 +1203,39 @@
     return sanitizeDisplayCopy(String(v));
   }
 
+  /**
+   * Permanent Founder rule: Brand Website must read as the brand page, not the
+   * parent-company homepage. Never label a brand-specific marriott.com/… path
+   * as bare "marriott.com" (same for Hilton/Hyatt/IHG/Accor/Wyndham roots).
+   */
+  function brandWebsiteDisplayLabel(val) {
+    var s = String(val || '').trim();
+    if (!s) return '';
+    try {
+      var u = new URL(s.indexOf('://') >= 0 ? s : 'https://' + s);
+      var host = String(u.hostname || '')
+        .toLowerCase()
+        .replace(/^www\./, '');
+      var path = String(u.pathname || '').replace(/\/+$/, '');
+      if (!host) return 'Official brand website';
+      if (!path || path === '/') return host;
+      var label = host + path;
+      if (label.length > 64) {
+        var parts = path.split('/').filter(Boolean);
+        var tail = parts.slice(-2).join('/');
+        label = host + '/…/' + tail;
+      }
+      return label;
+    } catch (e) {
+      return 'Official brand website';
+    }
+  }
+
   function linkIfUrl(val) {
     var s = String(val || '').trim();
     if (!s) return '';
     if (s.indexOf('http') !== 0) return escapeHtml(s);
-    var label = 'Official brand website';
-    try {
-      var u = new URL(s);
-      if (u && u.hostname) label = u.hostname.replace(/^www\./, '');
-    } catch (e) {
-      label = 'Official brand website';
-    }
+    var label = brandWebsiteDisplayLabel(s);
     return (
       '<a class="be-link" href="' +
       escapeHtml(s) +
@@ -2187,6 +2209,7 @@
           { k: 'Segment', v: brand.hotelChainScale },
           { k: 'Affiliation Model', v: brand.brandModelFormat },
           { k: 'Service / Operating Model', v: brand.hotelServiceModel }
+          // Brand Positioning lives only in the Brand Positioning subsection below — do not duplicate here.
         ],
         { suppressEmpty: suppressEmptySnapshot }
       ) +
@@ -2457,7 +2480,7 @@
 
     var featTitle = 'Featured Application · Conversion Example';
     var featLead = brand.brandTaglineMotto || '';
-    var featBody = brand.brandPositioning || brand.brandCustomerPromise || '';
+    var featBody = brand.brandCustomerPromise || brand.brandValueProposition || '';
     var featSlot = explorerFirstBlock(brand, 'overview.featured_application');
     var featSub = '';
     if (featSlot && (hasVal(featSlot.body) || hasVal(featSlot.title))) {
@@ -2809,11 +2832,121 @@
     );
   }
 
+  /** Permanent Demand Scenario Fit labels (BE-QL-DEMAND-SCENARIOS-SIX-001). */
+  var DEMAND_FIT_CANONICAL = {
+    STRONG_FIT: 'Strong Fit',
+    MODERATE_FIT: 'Moderate Fit',
+    LIMITED_FIT: 'Limited Fit',
+    NOT_A_FIT: 'Not a Fit'
+  };
+
+  function normalizeDemandFitLabel(raw) {
+    var s = hasVal(raw) ? String(raw).trim() : '';
+    if (!s) return { label: '', level: '', ok: false };
+    var k = s
+      .toLowerCase()
+      .replace(/[–—]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (/^(strong fit|strong|very strong)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.STRONG_FIT, level: 'strong', ok: true };
+    }
+    if (/very\s*strong|moderate\s*[-–—]?\s*strong|moderate\s+to\s+strong|medium\s*[-–—]?\s*high|weak\s*[-–—]?\s*moderate/.test(k)) {
+      if (/very\s*strong/.test(k)) {
+        return { label: DEMAND_FIT_CANONICAL.STRONG_FIT, level: 'strong', ok: true };
+      }
+      if (/weak/.test(k)) {
+        return { label: DEMAND_FIT_CANONICAL.LIMITED_FIT, level: 'limited', ok: true };
+      }
+      return { label: DEMAND_FIT_CANONICAL.MODERATE_FIT, level: 'moderate', ok: true };
+    }
+    if (/^(moderate fit|moderate|selective|medium)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.MODERATE_FIT, level: 'moderate', ok: true };
+    }
+    if (/^(limited fit|limited|weak|low)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.LIMITED_FIT, level: 'limited', ok: true };
+    }
+    if (/^(not a fit|no fit|unsuitable)$/.test(k)) {
+      return { label: DEMAND_FIT_CANONICAL.NOT_A_FIT, level: 'not-a-fit', ok: true };
+    }
+    if (DEMAND_FIT_CANONICAL[s]) {
+      var lvl =
+        s === 'STRONG_FIT'
+          ? 'strong'
+          : s === 'MODERATE_FIT'
+            ? 'moderate'
+            : s === 'LIMITED_FIT'
+              ? 'limited'
+              : 'not-a-fit';
+      return { label: DEMAND_FIT_CANONICAL[s], level: lvl, ok: true };
+    }
+    return { label: s, level: '', ok: false };
+  }
+
   function demandCell(label, statusText) {
-    var pill = hasVal(statusText)
-      ? '<span class="status-pill">' + escapeHtml(statusText) + '</span>'
+    var fit = normalizeDemandFitLabel(statusText);
+    var pillClass =
+      'status-pill' +
+      (fit.level ? ' status-pill--' + fit.level : '') +
+      (fit.ok ? '' : hasVal(statusText) ? '' : ' status-pill--empty');
+    var pill = hasVal(fit.label || statusText)
+      ? '<span class="' + pillClass + '">' + escapeHtml(fit.label || statusText) + '</span>'
       : '<span class="status-pill status-pill--empty">&nbsp;</span>';
-    return '<div class="demand-cell"><strong>' + escapeHtml(label) + '</strong> ' + pill + '</div>';
+    return (
+      '<div class="demand-cell">' +
+      '<strong>' +
+      escapeHtml(label) +
+      '</strong> ' +
+      pill +
+      '</div>'
+    );
+  }
+
+  /** Exact-six Demand Scenario Fit — never render 5/7 or pad inventively. */
+  function demandScenarioExactSixHtml(brand) {
+    var demandRows = explorerCardRowsForSlot(brand, 'commercial.demand').filter(function (x) {
+      return hasVal(x.title) || hasVal(x.body);
+    });
+    if (demandRows.length === 6) {
+      return demandRows
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    }
+    if (demandRows.length > 6) {
+      // Prefer first six distinct titles (server/assembler should already enforce;
+      // client never invents — keep strongest unique titles in order).
+      var seen = {};
+      var picked = [];
+      demandRows.forEach(function (dr) {
+        var t = String(dr.title || '')
+          .trim()
+          .toLowerCase();
+        if (!t || seen[t]) return;
+        seen[t] = true;
+        picked.push(dr);
+      });
+      return picked
+        .slice(0, 6)
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    }
+    if (demandRows.length > 0 && demandRows.length < 6) {
+      // Incomplete — render what exists; Factory marks NEEDS_REMEDIATION (no invented pads).
+      return demandRows
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    }
+    // Empty CURRENT — no silent generic six (founder: never pad incomplete research).
+    return (
+      '<div class="demand-cell demand-cell--empty"><strong>Demand Scenario Fit</strong> ' +
+      '<span class="status-pill status-pill--empty">Needs remediation</span></div>'
+    );
   }
 
   var COMMERCIAL_LEVER_KEYS = [
@@ -3419,11 +3552,19 @@
     return parts.length ? parts.join('<br><br>') : '—';
   }
 
-  function buildStandardsOwnerTableHtml(requirementRows) {
+  function buildStandardsOwnerTableHtml(requirementRows, brand) {
     if (!requirementRows.length) return '';
     var bodyRows = requirementRows
       .map(function (row) {
-        var area = hasVal(row.title) ? String(row.title).trim() : 'Requirement Area';
+        var areaRaw = hasVal(row.title) ? String(row.title).trim() : 'Requirement Area';
+        // Permanent Factory rule: Requirement Area white titles = Proper Case + & (not "and")
+        var area = proposedHeading(brand, areaRaw) || areaRaw;
+        if (
+          globalThis.BeEditorialTitleCase &&
+          typeof globalThis.BeEditorialTitleCase.toEditorialTitleCase === 'function'
+        ) {
+          area = globalThis.BeEditorialTitleCase.toEditorialTitleCase(area);
+        }
         var parsed = parseRequirementBody(row.body);
         var typical = standardsOwnerTableCell(parsed.typical);
         var owner = standardsOwnerTableCell(parsed.owner);
@@ -3488,7 +3629,7 @@
       ? '<p class="be-standards-meta">' + metaBits.join(' · ') + '</p>'
       : '';
 
-    var tableHtml = buildStandardsOwnerTableHtml(requirementRows);
+    var tableHtml = buildStandardsOwnerTableHtml(requirementRows, brand);
     var introHint = hasVal(intro)
       ? '<p class="oe-section-hint be-standards-intro">' + escapeHtml(intro).replace(/\n/g, '<br>') + '</p>'
       : '<p class="oe-section-hint">Confirm each row with brand disclosure and your agreement. Status labels are illustrative, not a property audit.</p>';
@@ -3657,29 +3798,7 @@
         '<li><strong style="color:var(--text,#fff);font-weight:600;">Repeat and higher-quality guests</strong> — loyalty, corporate accounts, and recognition that increase lifetime value versus one-off OTA transactions.</li>' +
         '<li><strong style="color:var(--text,#fff);font-weight:600;">Commercial systems, not just a logo</strong> — pricing, sales support, and analytics that should earn the fee in your pro forma.</li>';
     }
-    var demandRows = explorerCardRowsForSlot(brand, 'commercial.demand').filter(function (x) {
-      return hasVal(x.title) || hasVal(x.body);
-    });
-    var demandHtml;
-    if (demandRows.length) {
-      demandHtml = demandRows
-        .map(function (dr) {
-          return demandCell(dr.title || 'Scenario', dr.body || '');
-        })
-        .join('');
-    } else {
-      var COMM_DEMAND = [
-        ['Gateway Urban', 'Strong'],
-        ['Regional & Secondary Upscale', 'Moderate–strong'],
-        ['Corporate-Led Urban', 'Strong'],
-        ['Resort / Coastal Leisure', 'Strong'],
-        ['Conversion / Repositioning', 'Strong'],
-        ['Pure Economy / Highway', 'Not a fit']
-      ];
-      demandHtml = COMM_DEMAND.map(function (pair) {
-        return demandCell(pair[0], pair[1]);
-      }).join('');
-    }
+    var demandHtml = demandScenarioExactSixHtml(brand);
     var diffBlock = explorerFirstBlock(brand, 'commercial.differentiator');
     var diffHtml = '';
     if (diffBlock && (hasVal(diffBlock.body) || hasVal(diffBlock.title))) {
@@ -4920,11 +5039,21 @@
             lbl = String(r.title).trim();
           }
           var blockVal = r && hasVal(r.body) ? String(r.body).trim() : '';
-          // Prefer compact presentation values; reject diligence prose in KPI slots
-          if (blockVal && isCompactKpiValue(blockVal) && !/^not disclosed$/i.test(blockVal)) {
+          var blockNote =
+            (r && hasVal(r.kpiNote) && String(r.kpiNote).trim()) ||
+            (r && hasVal(r.note) && String(r.note).trim()) ||
+            '';
+          var isNaBlock = /^(n\/?a|not disclosed|unavailable|—|-)$/i.test(blockVal);
+          // Prefer compact presentation values; reject diligence prose and empty N/A shells
+          if (
+            blockVal &&
+            isCompactKpiValue(blockVal) &&
+            !isNaBlock &&
+            !/^not disclosed$/i.test(blockVal)
+          ) {
             return kpiCard(lbl, blockVal, {
               role: structured.role,
-              note: structured.note,
+              note: blockNote || structured.note,
               unavailable: false
             });
           }
@@ -4936,10 +5065,10 @@
               unavailable: false
             });
           }
-          if (blockVal && /^not disclosed$/i.test(blockVal)) {
+          if (blockVal && (isNaBlock || /^not disclosed$/i.test(blockVal))) {
             return kpiCard(lbl, 'N/A', {
               role: structured.role || 'number',
-              note: structured.note || 'Not disclosed in available materials',
+              note: blockNote || structured.note || 'Not disclosed in available materials',
               unavailable: true
             });
           }
