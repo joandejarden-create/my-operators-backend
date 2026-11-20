@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.27",
+  "version": "hotel-explorer-founder-quality-lessons-v1.28",
   "updated": "2026-11-20",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -18,7 +18,8 @@
     "test:he-5-0-autonomous-reconciliation-v1",
     "test:he-mullen-pilot-hpc-population-v1",
     "test:he-legacy-hotel-census-independence-v1",
-    "test:he-5-0-controlled-apply-v1"
+    "test:he-5-0-controlled-apply-v1",
+    "test:dealality-legacy-hotel-census-retirement-gate-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -416,6 +417,15 @@
       "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/standing-authorization-v1.js; conditional-approval-v1.js; controlled-apply-executor-v1.js",
       "regressionTest": "he_5_0_controlled_apply_gates",
       "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-CONTROLLED-APPLY-RESULT-V1.md"
+    },
+    {
+      "id": "HE-QL-043",
+      "originalProblem": "Global Hotel Census retirement blocked: enrichment CLIs still wrote legacy Census; reconciliation treated legacy record ids as HPC ids; linked-record migration and full-table matrix incomplete",
+      "rootCause": "Phase-1 migrated product runtime only; fields.js still defaulted CLIs to Hotel Census; resolveCanonicalHotelId identity-passthrough false-matched every legacy id as EXACT_HPC_ID without HPC fetch proof",
+      "approvedStandard": "DEALALITY_LEGACY_HOTEL_CENSUS_RETIREMENT_GATE: CLI HOTEL_CENSUS_TABLE/CENSUS_FIELDS → HPC; platform-base Proxy blocks legacy writes; full recon never passes legacy ids as hotelKey and requires live collision; linked-record dry-run keeps AIRTABLE_LINKS_MIGRATED=false until founder apply; GLOBAL_RETIREMENT_READY only after full-table recon + link apply + cross-product UI proof; never delete Census without separate approval",
+      "sharedComponent": "lib/hotel-census/dealality-census-cli-migration-v1.js; dealality-legacy-hpc-reconciliation-v1.js; fields.js; platform-base.js; dealality-hpc-identity-resolver-v1.js",
+      "regressionTest": "dealality_legacy_hotel_census_retirement_gate",
+      "browserEvidence": "reports/hotel-explorer/global-census-retirement/DEALALITY-GLOBAL-HOTEL-CENSUS-RETIREMENT-PHASE2-FOUNDER-REPORT-V1.md"
     }
   ]
 }
