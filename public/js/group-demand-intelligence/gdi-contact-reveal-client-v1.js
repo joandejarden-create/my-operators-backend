@@ -3,11 +3,35 @@
  * founder comparison preview. One implementation; explicit click required.
  * Mock via ?gdiContactRevealMock=1 or window.__GDI_CONTACT_REVEAL_MOCK__=true
  * (no paid provider). Live Surfe stays session-only.
+ *
+ * Failure states are distinct — never reuse "Please log in again" for
+ * provider / credits / miss failures.
  */
 (function (root) {
   "use strict";
 
   var inFlight = Object.create(null);
+
+  var MSG_SIGN_IN =
+    "Sign in to Dealality to look up email and phone. Open Group & Demand Intelligence from the Dealality app after signing in.";
+  var MSG_PERMISSIONS =
+    "Your account does not have permission to look up contact details for this hotel.";
+  var MSG_PROVIDER =
+    "Contact lookup provider is unavailable. Email and phone enrichment is not configured for this environment.";
+  var MSG_CREDITS =
+    "Insufficient credits for this contact lookup. Try again later or contact Dealality support.";
+  var MSG_MISS = "No matching email/phone found for this person.";
+  var MSG_GENERIC = "Contact lookup did not return a usable result.";
+
+  var STATUS_CLASSES = [
+    "gdi-contact-reveal-status--loading",
+    "gdi-contact-reveal-status--found",
+    "gdi-contact-reveal-status--miss",
+    "gdi-contact-reveal-status--auth",
+    "gdi-contact-reveal-status--credits",
+    "gdi-contact-reveal-status--provider",
+    "gdi-contact-reveal-status--error",
+  ];
 
   function text(v) {
     return String(v == null ? "" : v).trim();
@@ -24,12 +48,42 @@
     }
   }
 
+  function authorizedTestInjectionToken() {
+    try {
+      if (root.__GDI_CONTACT_REVEAL_TEST_TOKEN__) {
+        return String(root.__GDI_CONTACT_REVEAL_TEST_TOKEN__).trim();
+      }
+      var params = new URLSearchParams(
+        root.location && root.location.search ? root.location.search : "",
+      );
+      return text(params.get("gdiRevealTestToken") || "");
+    } catch (e) {
+      return "";
+    }
+  }
+
   function escHtml(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function clearStatusClasses(el) {
+    if (!el || !el.classList) return;
+    for (var i = 0; i < STATUS_CLASSES.length; i++) {
+      el.classList.remove(STATUS_CLASSES[i]);
+    }
+  }
+
+  function signInHref() {
+    try {
+      var origin = root.location && root.location.origin ? root.location.origin : "";
+      return origin + "/app#/group-demand-intelligence";
+    } catch (e) {
+      return "/app#/group-demand-intelligence";
+    }
   }
 
   /**
@@ -83,6 +137,64 @@
       var note = rootEl.querySelector(".gdi-contact-cta-note");
       if (note) note.hidden = true;
     }
+  }
+
+  function classifyRevealFailure(res) {
+    var status = Number(res && res.status) || 0;
+    var data = (res && res.data) || {};
+    var code = text(data.error || data.code || "");
+    var msg = text(data.message || "");
+
+    if (
+      status === 401 ||
+      code === "SIGN_IN_REQUIRED" ||
+      code === "AUTH_REQUIRED" ||
+      code === "authentication_required" ||
+      /please log in again/i.test(msg) ||
+      /sign in to dealality/i.test(msg)
+    ) {
+      return {
+        kind: "auth",
+        message: msg && !/please log in again/i.test(msg) ? msg : MSG_SIGN_IN,
+        signIn: true,
+      };
+    }
+    if (
+      status === 403 &&
+      (code === "INSUFFICIENT_PERMISSIONS" ||
+        code === "ACCESS_DENIED" ||
+        /permission/i.test(msg))
+    ) {
+      return { kind: "auth", message: msg || MSG_PERMISSIONS, signIn: false };
+    }
+    if (
+      status === 403 &&
+      (code === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
+        code === "SHARE_VIEWER_BLOCKED")
+    ) {
+      // Anonymous / share viewers hit this server gate — treat as sign-in.
+      return { kind: "auth", message: msg || MSG_SIGN_IN, signIn: true };
+    }
+    if (
+      status === 402 ||
+      code === "INSUFFICIENT_CREDITS"
+    ) {
+      return { kind: "credits", message: msg || MSG_CREDITS };
+    }
+    if (
+      status === 503 ||
+      code === "PROVIDER_UNAVAILABLE" ||
+      code === "SURFE_CREDITS_UNAVAILABLE" ||
+      code === "MISSING_SURFE_API_KEY" ||
+      code === "PROVIDER_ADAPTER_NOT_WIRED" ||
+      code === "CONTACT_ENRICHMENT_DISABLED"
+    ) {
+      return { kind: "provider", message: msg || MSG_PROVIDER };
+    }
+    if (data.miss || code === "NO_RESULT" || code === "NO_MATCHING_CONTACT") {
+      return { kind: "miss", message: msg || MSG_MISS };
+    }
+    return { kind: "error", message: msg || code || MSG_GENERIC };
   }
 
   /**
@@ -149,26 +261,35 @@
         ? rootEl.querySelector("[data-gdi-contact-reveal-status]")
         : null;
 
-      function setRevealStatus(msg, isError) {
+      function setRevealStatus(msg, kind) {
         if (!statusEl) return;
+        clearStatusClasses(statusEl);
         statusEl.hidden = false;
-        statusEl.textContent = msg || "";
-        statusEl.classList.toggle(
-          "gdi-contact-reveal-status--error",
-          !!isError,
-        );
+        var k = kind || "error";
+        statusEl.classList.add("gdi-contact-reveal-status--" + k);
+        statusEl.setAttribute("data-gdi-reveal-state", k);
+        if (k === "auth") {
+          statusEl.innerHTML =
+            '<span class="gdi-contact-reveal-status__text">' +
+            escHtml(msg || MSG_SIGN_IN) +
+            '</span> <a class="gdi-contact-reveal-signin" href="' +
+            escHtml(signInHref()) +
+            '">Sign in</a>';
+        } else {
+          statusEl.textContent = msg || "";
+        }
       }
 
       if (!opportunityId || !contactName) {
         setRevealStatus(
           "Select a named contact before retrieving details.",
-          true,
+          "error",
         );
         return;
       }
       var hotelId = getHotelId();
       if (!hotelId) {
-        setRevealStatus("Hotel context missing.", true);
+        setRevealStatus("Hotel context missing.", "error");
         return;
       }
 
@@ -185,24 +306,31 @@
       var prevLabel = surfeBtn.textContent;
       surfeBtn.disabled = true;
       surfeBtn.textContent = "Looking up…";
-      setRevealStatus("Retrieving contact details…", false);
+      setRevealStatus("Retrieving contact details…", "loading");
       if (setLoadingToast) {
         setLoadingToast(true, "Retrieving contact details…");
       }
 
       var useMock = wantsMock();
+      var testToken = authorizedTestInjectionToken();
       var revealUrl =
         "/api/group-demand-intelligence/hotels/" +
         encodeURIComponent(hotelId) +
         "/opportunities/" +
         encodeURIComponent(opportunityId) +
         "/contacts/reveal";
+      var headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      // Authorized test injection only — never a customer public-read bypass.
+      if (testToken) {
+        headers["X-Dealality-Gdi-Reveal-Test"] = testToken;
+        useMock = true;
+      }
       var revealOpts = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: headers,
         body: JSON.stringify({
           channel: channel,
           contactName: contactName,
@@ -213,15 +341,26 @@
         }),
       };
 
-      var revealFetch = useMock
-        ? plainFetch(revealUrl, revealOpts)
-        : fetchFn(revealUrl, revealOpts);
+      // Mock / authorized injection may use plainFetch; live always uses auth fetch.
+      var revealFetch =
+        useMock && !testToken
+          ? plainFetch(revealUrl, revealOpts)
+          : fetchFn(revealUrl, revealOpts);
 
       revealFetch
         .then(function (r) {
-          return r.json().then(function (data) {
-            return { okHttp: r.ok, status: r.status, data: data || {} };
-          });
+          return r.json().then(
+            function (data) {
+              return { okHttp: r.ok, status: r.status, data: data || {} };
+            },
+            function () {
+              return {
+                okHttp: r.ok,
+                status: r.status,
+                data: { error: "INVALID_JSON", message: MSG_GENERIC },
+              };
+            },
+          );
         })
         .then(function (res) {
           // Ignore if user switched cards / opportunities and this root is gone.
@@ -236,45 +375,33 @@
             setRevealStatus(
               bits.join(" · ") +
                 " (session only — not saved to Dealality records)",
-              false,
+              "found",
             );
             return;
           }
           if (data.miss || data.error === "NO_RESULT") {
-            setRevealStatus(
-              data.message ||
-                "No matching email/phone found for this person.",
-              false,
-            );
+            setRevealStatus(data.message || MSG_MISS, "miss");
             return;
           }
-          if (res.status === 401 || res.status === 403) {
-            setRevealStatus(
-              data.message ||
-                "Contact lookup requires a signed-in Dealality user.",
-              true,
-            );
-            return;
-          }
-          if (res.status === 402) {
-            setRevealStatus(
-              data.message || "Insufficient Surfe credits for this lookup.",
-              true,
-            );
-            return;
-          }
-          setRevealStatus(
-            data.message ||
-              data.error ||
-              "Contact lookup did not return a usable result.",
-            true,
-          );
+          var classified = classifyRevealFailure(res);
+          setRevealStatus(classified.message, classified.kind);
         })
         .catch(function (err) {
           if (!document.body.contains(surfeBtn)) return;
+          // Browser-side Memberstack helper throws AUTH_REQUIRED with LOGIN_MSG
+          // before the POST fires — map that to sign-in, never raw login-again copy.
+          if (
+            err &&
+            (err.code === "AUTH_REQUIRED" ||
+              err.authRequired ||
+              /please log in again/i.test(String(err.message || "")))
+          ) {
+            setRevealStatus(MSG_SIGN_IN, "auth");
+            return;
+          }
           setRevealStatus(
             (err && err.message) || "Contact lookup failed.",
-            true,
+            "error",
           );
         })
         .finally(function () {
@@ -292,6 +419,11 @@
     bindContactRevealClicks: bindContactRevealClicks,
     applySessionDetailsToCard: applySessionDetailsToCard,
     wantsMock: wantsMock,
+    classifyRevealFailure: classifyRevealFailure,
+    MSG_SIGN_IN: MSG_SIGN_IN,
+    MSG_PROVIDER: MSG_PROVIDER,
+    MSG_CREDITS: MSG_CREDITS,
+    MSG_MISS: MSG_MISS,
   };
 
   if (root.DealalityGdiUi) {

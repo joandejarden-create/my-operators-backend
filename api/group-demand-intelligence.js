@@ -2906,6 +2906,9 @@ export async function postGdiContactReveal(req, res) {
   // worktree preview servers (never enables live Surfe / never spends credits).
   // Production customer hosts must never honor fixture contact values — even if
   // GDI_CONTACT_REVEAL_MOCK is accidentally set on the deploy host.
+  // Authorized test injection: signed-in Dealality user + matching
+  // X-Dealality-Gdi-Reveal-Test header vs GDI_CONTACT_REVEAL_TEST_INJECTION_TOKEN
+  // (never public-read / never anonymous).
   const isProductionCustomerHost =
     process.env.NODE_ENV === "production" &&
     process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1";
@@ -2913,17 +2916,45 @@ export async function postGdiContactReveal(req, res) {
     !isProductionCustomerHost &&
     (process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
       process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1");
+  const signedIn = Boolean(req.dealalityUser || req.memberstackMemberId);
+  const expectedTestToken = String(
+    process.env.GDI_CONTACT_REVEAL_TEST_INJECTION_TOKEN || "",
+  ).trim();
+  const gotTestToken = String(
+    req.headers["x-dealality-gdi-reveal-test"] || "",
+  ).trim();
+  const allowAuthorizedTestInjection =
+    signedIn &&
+    expectedTestToken.length > 0 &&
+    gotTestToken.length > 0 &&
+    gotTestToken === expectedTestToken &&
+    (body.useMock === true || body.useMock === "1");
   const useMock =
-    allowLocalMock &&
-    (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1");
+    (allowLocalMock &&
+      (body.useMock === true ||
+        process.env.GDI_CONTACT_REVEAL_MOCK === "1")) ||
+    allowAuthorizedTestInjection;
   // Live Surfe requires an explicit button authorize flag AND a signed-in user.
   // Mock mode never calls Surfe and never persists PII.
   const authorizeLive =
-    body.authorizeLiveProvider === true &&
-    Boolean(req.dealalityUser || req.memberstackMemberId) &&
-    !useMock;
+    body.authorizeLiveProvider === true && signedIn && !useMock;
 
   if (!useMock && !authorizeLive) {
+    if (!signedIn) {
+      return res.status(401).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        error: "SIGN_IN_REQUIRED",
+        message:
+          "Sign in to Dealality to look up email and phone. Open Group & Demand Intelligence from the Dealality app after signing in.",
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+        signInHref: "/app#/group-demand-intelligence",
+      });
+    }
     return res.status(403).json({
       ok: false,
       ephemeral: true,
@@ -2931,11 +2962,30 @@ export async function postGdiContactReveal(req, res) {
       surfePiiPersisted: false,
       error: "LIVE_PROVIDER_NOT_AUTHORIZED",
       message:
-        "Contact lookup requires a signed-in Dealality user. Live Surfe is never called for anonymous or share viewers. For local smoke use ?gdiContactRevealMock=1 on a worktree preview server.",
+        "Contact lookup is not authorized for this session. Live Surfe is never called for share or anonymous viewers.",
       contactDetails: null,
       hotelId,
       opportunityId,
     });
+  }
+
+  // Live path: refuse before credit spend when Surfe is not configured.
+  if (authorizeLive && !useMock) {
+    const { getSurfeApiKeyFromEnv } = await import("../lib/surfe/client.js");
+    if (!getSurfeApiKeyFromEnv()) {
+      return res.status(503).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        error: "PROVIDER_UNAVAILABLE",
+        message:
+          "Contact lookup provider is unavailable. Email and phone enrichment is not configured for this environment.",
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
   }
 
   const {
@@ -2963,13 +3013,21 @@ export async function postGdiContactReveal(req, res) {
   } else if (authorizeLive) {
     const pre = await preflightSurfeCredits(channel);
     if (!pre.ok) {
-      return res.status(pre.error === "INSUFFICIENT_CREDITS" ? 402 : 503).json({
+      const preError =
+        pre.error === "SURFE_CREDITS_UNAVAILABLE"
+          ? "PROVIDER_UNAVAILABLE"
+          : pre.error;
+      const preMessage =
+        preError === "PROVIDER_UNAVAILABLE"
+          ? "Contact lookup provider is unavailable. Email and phone enrichment could not verify credit balance."
+          : pre.message;
+      return res.status(preError === "INSUFFICIENT_CREDITS" ? 402 : 503).json({
         ok: false,
         ephemeral: true,
         persisted: false,
         surfePiiPersisted: false,
-        error: pre.error,
-        message: pre.message,
+        error: preError,
+        message: preMessage,
         contactDetails: null,
         credits: pre.credits,
         hotelId,
@@ -3060,15 +3118,22 @@ export async function postGdiContactReveal(req, res) {
   const status =
     result.error === "NO_NAMED_CONTACT_SELECTED"
       ? 400
-      : result.error === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
-          result.error === "PROVIDER_ADAPTER_NOT_WIRED" ||
-          result.error === "CONTACT_ENRICHMENT_DISABLED"
-        ? 403
-        : result.error === "INSUFFICIENT_CREDITS"
-          ? 402
-          : result.ok
-            ? 200
-            : 502;
+      : result.error === "SIGN_IN_REQUIRED"
+        ? 401
+        : result.error === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
+            result.error === "PROVIDER_ADAPTER_NOT_WIRED" ||
+            result.error === "CONTACT_ENRICHMENT_DISABLED" ||
+            result.error === "INSUFFICIENT_PERMISSIONS"
+          ? 403
+          : result.error === "INSUFFICIENT_CREDITS"
+            ? 402
+            : result.error === "PROVIDER_UNAVAILABLE" ||
+                result.error === "MISSING_SURFE_API_KEY" ||
+                result.error === "SURFE_CREDITS_UNAVAILABLE"
+              ? 503
+              : result.ok
+                ? 200
+                : 502;
 
   // Never echo Surfe PII into logs — only return in this response body for the active session.
   return res.status(status).json({
