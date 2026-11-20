@@ -733,7 +733,11 @@
             '<div class="becs-col becs-col-left becs-col-product" data-side="left">' +
             (leftNorm
               ? '<div class="be-atelier-oe becs-product-mount">' + pair.leftHtml + '</div>'
-              : '<div class="becs-card becs-card-empty"><div class="becs-empty-label">Missing in existing</div></div>') +
+              : '<div class="becs-card becs-card-empty"><div class="becs-empty-label">' +
+                (state.leftSource === 'empty-live'
+                  ? 'Empty live Presentation (no CURRENT blocks yet)'
+                  : 'Missing in existing') +
+                '</div></div>') +
             '</div>' +
             '<div class="becs-col becs-col-right becs-col-product" data-side="right">' +
             (rightNorm
@@ -743,7 +747,10 @@
         );
       });
       root.innerHTML =
-        html.join('') || '<p class="becs-muted">No product sections for this tab.</p>';
+        html.join('') ||
+        (state.leftSource === 'empty-live' && !(state.rightBlocks && state.rightBlocks.length)
+          ? '<p class="becs-muted">Empty live Presentation and no staged Proposed blocks for this tab.</p>'
+          : '<p class="becs-muted">No product sections for this tab.</p>');
       window.__BE_COMPARE_STUDIO__ = {
         env: 'comparison-studio',
         mode: 'product-section-pairs',
@@ -1541,6 +1548,16 @@
     };
   }
 
+  function emptyLiveBrandShell(cfg, liveBrand) {
+    return Object.assign({}, liveBrand || {}, {
+      id: cfg.id,
+      name: (liveBrand && (liveBrand.name || liveBrand.brandName)) || cfg.name,
+      brandName: (liveBrand && (liveBrand.name || liveBrand.brandName)) || cfg.name,
+      brandExplorer: { version: 1, blocks: [] },
+      beEmptyLivePresentation: true
+    });
+  }
+
   async function loadLeftBrand(cfg) {
     var loadedAt = new Date().toISOString();
     try {
@@ -1549,14 +1566,34 @@
       );
       if (!data || !data.success || !data.brand) throw new Error('no brand');
       var blocks = blocksFromBrand(data.brand);
-      if (!blocks.length) throw new Error('empty presentation');
+      // Draft / Under Review Factory brands often have empty live Presentation.
+      // Do NOT abort the studio — keep an empty CURRENT shell so PROPOSED can still render.
+      if (!blocks.length) {
+        state.leftSource = 'empty-live';
+        state.leftBrand = emptyLiveBrandShell(cfg, data.brand);
+        state.leftMeta = {
+          label: 'CURRENT · SAVED PROFILE (empty live Presentation)',
+          source:
+            'Live Airtable Presentation has no blocks yet (common for Draft/Under Review Factory brands). Proposed column shows the staged Factory candidate.',
+          brandId: cfg.id,
+          brandName: data.brand.name || data.brand.brandName || cfg.name,
+          blockCount: 0,
+          snapshotTimestamp:
+            data.brand.activeProfileApprovedDate || data.brand.brandExplorerLastReviewed || null,
+          loadedAt: loadedAt,
+          readOnly: true,
+          writeGuard: 'never_overwrite_during_review',
+          emptyLivePresentation: true
+        };
+        return [];
+      }
       state.leftSource = 'live';
       state.leftBrand = data.brand;
       state.leftMeta = {
         label: 'CURRENT · SAVED PROFILE',
         source: 'Canonical live Presentation (Airtable via brand-library API)',
         brandId: cfg.id,
-        brandName: data.brand.name || cfg.name,
+        brandName: data.brand.name || data.brand.brandName || cfg.name,
         blockCount: blocks.length,
         snapshotTimestamp: data.brand.activeProfileApprovedDate || data.brand.brandExplorerLastReviewed || null,
         loadedAt: loadedAt,
@@ -1585,9 +1622,25 @@
         };
         return bb;
       }
-      state.leftSource = 'unavailable';
-      state.leftMeta = null;
-      throw err;
+      // Last resort: empty CURRENT shell so PROPOSED frozen payload can still load
+      state.leftSource = 'empty-live';
+      state.leftBrand = emptyLiveBrandShell(cfg, null);
+      state.leftMeta = {
+        label: 'CURRENT · SAVED PROFILE (unavailable)',
+        source:
+          'Live Presentation could not be loaded (' +
+          (err.message || String(err)) +
+          '). Proposed column still attempts staged Factory candidate.',
+        brandId: cfg.id,
+        brandName: cfg.name,
+        blockCount: 0,
+        loadedAt: loadedAt,
+        readOnly: true,
+        writeGuard: 'never_overwrite_during_review',
+        emptyLivePresentation: true,
+        fallbackReason: err.message || String(err)
+      };
+      return [];
     }
   }
 
@@ -1666,6 +1719,10 @@
       candidateVersion: overlay.candidateVersion || cfg.candidateVersion
     });
     state.rightBrand = built.brand;
+    // Never inherit empty-CURRENT marker onto PROPOSED (frozen/assembled may be rich)
+    if (state.rightBrand) {
+      delete state.rightBrand.beEmptyLivePresentation;
+    }
     state.assembly = built.assembly;
     state.incompleteDrafts = (built.assembly && built.assembly.incompleteDrafts) || [];
     state.provenanceBySlot = (built.assembly && built.assembly.provenanceBySlot) || {};
@@ -2202,7 +2259,9 @@
       $('#becsLeftTag').textContent =
         state.leftSource === 'baseline'
           ? 'Verified snapshot fallback (labeled) · read-only'
-          : 'Canonical live Presentation · read-only';
+          : state.leftSource === 'empty-live'
+            ? 'Empty live Presentation · Draft/Under Review · read-only'
+            : 'Canonical live Presentation · read-only';
       $('#becsRightTag').textContent =
         'Cumulative proposal · ' +
         (state.rightMeta && state.rightMeta.candidateVersion
