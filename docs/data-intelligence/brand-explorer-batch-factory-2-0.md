@@ -24,9 +24,11 @@ npm run be-factory-2-process-batch -- --limit 5
 npm run be-factory-2-process-batch -- --force --brand rec…
 npm run be-factory-2-confirm-batch-ids
 npm run be-factory-2-named-batch-five     # AC / Moxy / Vignette / Canopy / EVEN depth batch
+npm run be-factory-2-batch3               # voco / Motto / avid / Tribute / Indigo
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
 npm run test:be-factory-2-named-batch-five-v1
+npm run test:be-factory-2-batch3-v1
 ```
 
 ## Named batch five (2026-11-20)
@@ -36,6 +38,12 @@ Identities confirmed against live Brand Basics. Depth candidates staged with exa
 **Disposition:** `NEEDS_REMEDIATION` until verified fee exhibits are attached (paid budget still $0).  
 Autograph remains `READY_FOR_REVIEW`; Curio/Ascend remain protected.  
 Review package: `reports/brand-explorer/factory-2-0/13-named-batch-five-consolidated-review.md`.
+
+## Batch 3 (2026-11-20)
+
+Brands: voco Hotels, Motto by Hilton, avid hotels, Tribute Portfolio, Hotel Indigo.  
+Same depth factory; fee exhibits remain the READY blocker ($0 paid).  
+Review package: `reports/brand-explorer/factory-2-0/21-batch3-consolidated-review.md`.
 
 ## Durable storage
 

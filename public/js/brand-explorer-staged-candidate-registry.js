@@ -119,6 +119,76 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: 'ec158fb22512e63bcadef73c243cd8817019613d755e66d0e3cd44320106ad6a'
+    },
+    {
+      id: 'recwONQTqGU1jHCsM',
+      slug: 'voco-hotels',
+      name: 'voco Hotels',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/voco-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-3-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '89af22fb2f82f4ec630a2321010f416ee957c885568e4165f7dde58f929e8dcb'
+    },
+    {
+      id: 'reclt44apoi8co0e6',
+      slug: 'motto-by-hilton',
+      name: 'Motto by Hilton',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/motto-by-hilton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-3-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'eef91e2ed6949fe5f6210760ca57c42be4b87331c023381e66dc6670814441db'
+    },
+    {
+      id: 'recoEarnE8T6sDjZq',
+      slug: 'avid-hotels',
+      name: 'avid hotels',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/avid-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-3-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '6220bbeacc1e6edc7c1ab81d24c45f2bc94d0b6efdba72b53405ee2e25a2352d'
+    },
+    {
+      id: 'recCvV0PuZOi8c3hC',
+      slug: 'tribute-portfolio',
+      name: 'Tribute Portfolio',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/tribute-portfolio-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-3-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '75a9a65d7bb129327924a0b5c965a97345f4920dde67364ea049bf61449222d0'
+    },
+    {
+      id: 'recegXrqaPiSLGCIe',
+      slug: 'hotel-indigo',
+      name: 'Hotel Indigo',
+      overlayUrl:
+        '/brand-explorer-phase2e-preview/hotel-indigo-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-3-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '018c4c0143741ed0817bb28b5ff91d72b6763d20a06ffd2abc15c11acac007c4'
     }
   ];
 
@@ -177,6 +247,11 @@
     if (/vignette/i.test(name)) return bySlug('vignette-collection');
     if (/canopy/i.test(name)) return bySlug('canopy-by-hilton');
     if (/^even\b/i.test(name)) return bySlug('even-hotels');
+    if (/^voco/i.test(name)) return bySlug('voco-hotels');
+    if (/motto/i.test(name)) return bySlug('motto-by-hilton');
+    if (/^avid\b/i.test(name)) return bySlug('avid-hotels');
+    if (/tribute/i.test(name)) return bySlug('tribute-portfolio');
+    if (/hotel indigo/i.test(name)) return bySlug('hotel-indigo');
     return null;
   }
 
