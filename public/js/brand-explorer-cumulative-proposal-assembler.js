@@ -161,6 +161,31 @@
     return false;
   }
 
+  function countColonInsightLeads(text) {
+    var lines = nz(text)
+      .split(/\n+/)
+      .map(function (l) {
+        return l.replace(/^[\s•\-*]+/, '').trim();
+      })
+      .filter(Boolean);
+    var n = 0;
+    for (var i = 0; i < lines.length; i++) {
+      if (/^[^:\n]{3,72}:\s+\S.{11,}/.test(lines[i])) n += 1;
+    }
+    return n;
+  }
+
+  function isWhyValueInsightRegression(slotKey, currentBlocks, candidateBlocks) {
+    if (!/^overview\.why_value$/i.test(nz(slotKey))) return false;
+    var curBody = (currentBlocks || []).map(bodyOf).join('\n');
+    var candBody = (candidateBlocks || []).map(bodyOf).join('\n');
+    var curLeads = countColonInsightLeads(curBody);
+    var candLeads = countColonInsightLeads(candBody);
+    if (curLeads >= 3 && candLeads < Math.min(curLeads, 4)) return true;
+    if (curLeads >= 3 && candLeads === 0) return true;
+    return false;
+  }
+
   function isProseDiligenceRegression(slotKey, currentBlocks, candidateBlocks) {
     var cq = slotGroupQuality(currentBlocks);
     var pq = slotGroupQuality(candidateBlocks);
@@ -170,6 +195,7 @@
     var curBody = (currentBlocks || [])
       .map(bodyOf)
       .join('\n');
+    if (isWhyValueInsightRegression(slotKey, currentBlocks, candidateBlocks)) return true;
     if (cq.bulletCount >= 3 && pq.bulletCount < cq.bulletCount) return true;
     if (cq.bulletCount >= 3 && pq.bulletCount <= 1 && candBody.length > 80) return true;
     // Commercial Engine summary tiles are narrative — never replace with research stubs.

@@ -171,21 +171,37 @@
       .trim()
       .toLowerCase();
     var beProfileMode = 'saved';
+    var beProfileModeExplicit = false;
     if (
       beProfileModeRaw === 'proposed' ||
       beProfileModeRaw === 'proposed_update' ||
       beProfileModeRaw === 'update'
     ) {
       beProfileMode = 'proposed';
+      beProfileModeExplicit = true;
     } else if (
       beProfileModeRaw === 'saved' ||
       beProfileModeRaw === 'current' ||
       beProfileModeRaw === 'current_saved'
     ) {
       beProfileMode = 'saved';
+      beProfileModeExplicit = true;
     } else if (beCandidateOverlay && beInternalPreview) {
       // Legacy overlay flag without explicit mode → proposed.
       beProfileMode = 'proposed';
+    } else if (beInternalPreview && brandId) {
+      // Soft default: staged Curio/Ascend founder preview → PROPOSED UPDATE so
+      // ampersand headings + cumulative why-value are visible without manual mode.
+      try {
+        var reg =
+          typeof globalThis !== 'undefined' ? globalThis.BrandExplorerStagedCandidateRegistry : null;
+        if (reg && typeof reg.resolveForBrand === 'function') {
+          var staged = reg.resolveForBrand({ id: brandId, recordId: brandId });
+          if (staged) beProfileMode = 'proposed';
+        }
+      } catch (_eStaged) {
+        /* ignore */
+      }
     }
 
     return {
@@ -193,6 +209,7 @@
       brandId: brandId,
       beInternalPreview: beInternalPreview,
       beProfileMode: beProfileMode,
+      beProfileModeExplicit: beProfileModeExplicit,
       beCandidateOverlay: beCandidateOverlay,
       beCandidateOverlayUrl: String(params.get('beCandidateOverlayUrl') || '').trim(),
       exportPdf: exportPdf,

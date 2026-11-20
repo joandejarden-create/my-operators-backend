@@ -1559,9 +1559,34 @@
                     }
                     // Honor founder Current Saved | Proposed Update — never leave the popup
                     // on raw Airtable CURRENT when PROPOSED UPDATE is selected.
+                    // Staged Curio/Ascend + internal preview soft-default to Proposed when the
+                    // founder URL omits beProfileMode (route-state must not force CURRENT).
+                    var stagedCfg =
+                        apiPop.resolveStagedCandidateConfig &&
+                        apiPop.resolveStagedCandidateConfig(liveBrandPop || { id: brandId });
+                    var modeNow = apiPop.getProfileMode ? apiPop.getProfileMode() : 'saved';
+                    var explicitSaved = false;
+                    try {
+                        var _pm = new URLSearchParams(window.location.search || '');
+                        var _rawPm = String(_pm.get('beProfileMode') || '').toLowerCase();
+                        if (
+                            _rawPm === 'saved' ||
+                            _rawPm === 'current' ||
+                            _rawPm === 'current_saved'
+                        ) {
+                            explicitSaved = true;
+                        }
+                    } catch (_ePm) { /* ignore */ }
                     var wantProposed =
-                        (apiPop.getProfileMode && apiPop.getProfileMode() === 'proposed') ||
-                        (apiPop.isProposedProfileModeRequest && apiPop.isProposedProfileModeRequest());
+                        !explicitSaved &&
+                        (modeNow === 'proposed' ||
+                            (apiPop.isProposedProfileModeRequest &&
+                                apiPop.isProposedProfileModeRequest()) ||
+                            (!!(
+                                apiPop.isInternalPreviewRequest &&
+                                apiPop.isInternalPreviewRequest()
+                            ) &&
+                                !!stagedCfg));
                     if (
                         wantProposed &&
                         apiPop.buildCumulativeProposedBrandAsync
