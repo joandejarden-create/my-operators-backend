@@ -1,0 +1,72 @@
+{
+  "version": "gdi-surfe-search-people-readiness-v1",
+  "generatedAt": "2026-11-20T10:04:46.944Z",
+  "keyPresent": true,
+  "schema": {
+    "method": "POST",
+    "path": "/v2/people/search",
+    "baseUrl": "https://api.surfe.com/v2",
+    "requestFields": {
+      "limit": "1–200 results per page",
+      "pageToken": "pagination",
+      "peoplePerCompany": "1–40 when searching by domain/name only",
+      "companies": [
+        "domains",
+        "names",
+        "industries",
+        "countries",
+        "employeeCount",
+        "keywords",
+        "technologies"
+      ],
+      "people": [
+        "jobTitles",
+        "exactJobTitles",
+        "seniorities",
+        "departments",
+        "departmentClassifications",
+        "countries",
+        "previousCompanyDomains",
+        "jobChangePeriodInDays"
+      ],
+      "peopleFiltersMissing": [
+        "firstName",
+        "lastName",
+        "fullName",
+        "linkedInUrl",
+        "email"
+      ]
+    },
+    "responsePersonFields": [
+      "firstName",
+      "lastName",
+      "jobTitle",
+      "companyName",
+      "companyDomain",
+      "linkedInUrl",
+      "country",
+      "seniorities",
+      "departments",
+      "externalID"
+    ],
+    "matchingMode": "ORGANIZATION_AND_ROLE_DISCOVERY",
+    "exactPersonMatching": "NOT_SUPPORTED_VIA_SEARCH — use people/enrich with name+company(+domain|+verified LinkedIn)",
+    "credits": {
+      "withSearchCreditsEnabled": "ceil(results_returned / 10) ICP search credits per call",
+      "withoutSearchCredits": "daily people-search quota (docs: 200 results/day)",
+      "docs": "https://developers.surfe.com/credits-and-quotas"
+    },
+    "retentionAndUse": "Search returns identity/profile fields (incl. LinkedIn URL) without email/phone enrich. Email/phone require separate enrich. Surfe-derived PII remains session/provider-restricted per Dealality Surfe policy — do not persist as public-verified."
+  },
+  "credits": {
+    "ok": true,
+    "http_status": 200,
+    "totalEmail": 993,
+    "totalMobile": 198,
+    "totalSearch": 0
+  },
+  "searchExecuted": false,
+  "paidSearchAuthorized": false,
+  "recommendation": "totalSearch=0 — Search People uses daily quota (docs 200 results/day) when search credits disabled. Do not burn quota without founder ceiling. Exact-person matching remains Enrich + public LinkedIn discovery.",
+  "searchFnAvailable": true
+}
