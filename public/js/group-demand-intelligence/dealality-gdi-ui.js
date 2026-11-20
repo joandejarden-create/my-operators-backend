@@ -7033,6 +7033,27 @@
         : "";
     var slotPersonPhone =
       slot.phone && !isPollutedPhoneDisplay(slot.phone) ? slot.phone : "";
+    var slotPhoneExtensions = Array.isArray(slot.phoneExtensions)
+      ? slot.phoneExtensions.filter(Boolean)
+      : [];
+    if (
+      !slotPhoneExtensions.length &&
+      slot.phoneExtension != null &&
+      String(slot.phoneExtension).trim()
+    ) {
+      slotPhoneExtensions = [String(slot.phoneExtension).trim()];
+    }
+    var slotPhoneExtLabel =
+      slotPhoneExtensions.length === 1
+        ? "Extension: " + slotPhoneExtensions[0]
+        : slotPhoneExtensions.length > 1
+          ? "Extensions: " + slotPhoneExtensions.join(" / ")
+          : "";
+    var slotPhoneDialCopy = slotPersonPhone
+      ? slotPhoneExtensions.length
+        ? slotPersonPhone + " · Ext. " + slotPhoneExtensions.join(" / ")
+        : slotPersonPhone
+      : "";
     if (!slot.customerFacingNamed) {
       var hasOrgRoute = !!(slot.organizationEmail || slotCompanyPhone);
       // Secondary research-gap with no org route and no name: one quiet line only
@@ -7240,9 +7261,26 @@
         : "") +
       (slotPersonPhone
         ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">' +
-          esc(slot.phoneLabel || "Direct Business Phone") +
+          esc(
+            slot.phoneLabel ||
+              (slotPhoneExtensions.length ? "Office Phone" : "Direct Business Phone")
+          ) +
           "</span> " +
+          '<a href="tel:' +
+          esc(String(slotPersonPhone).replace(/[^\d+]/g, "")) +
+          '">' +
           esc(slotPersonPhone) +
+          "</a>" +
+          (slotPhoneExtLabel
+            ? '<br><span class="gdi-contact-field__ext">' +
+              esc(slotPhoneExtLabel) +
+              "</span>"
+            : "") +
+          (slotPhoneDialCopy
+            ? ' <button type="button" class="gdi-contact-copy" data-copy="' +
+              esc(slotPhoneDialCopy) +
+              '" aria-label="Copy office phone with extension">Copy</button>'
+            : "") +
           "</p>"
         : "") +
       (slotCompanyPhone

@@ -134,7 +134,7 @@ const scoreMod = readFileSync(
   ),
   "utf8",
 );
-assert.match(scoreMod, /contacto\|directorio\|directory\|organigrama/);
+assert.match(scoreMod, /directorioind|organigrama|contacto/);
 
 console.log(
   JSON.stringify(
