@@ -1,0 +1,220 @@
+/* Admin — Surfe Usage (Dealality Admin Resources, runbook tokens) */
+.asu-page {
+  /* inherits --runbook-* from support-runbook.css */
+}
+
+.asu-shell.adr-shell {
+  max-width: min(1600px, 100%);
+}
+
+.asu-header__title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.asu-header__icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+  color: var(--runbook-accent, #6c72ff);
+  flex: 0 0 auto;
+}
+
+.asu-header__icon svg {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.asu-history-note {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 0.6px solid var(--runbook-warn-border, #fdb52a);
+  background: var(--runbook-warn-bg, rgba(253, 181, 42, 0.12));
+  color: var(--runbook-text, #aeb9e1);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.asu-filters.adr-filters {
+  margin-bottom: 16px;
+}
+
+.asu-status {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--runbook-muted, #7e89ac);
+  min-height: 1.2em;
+}
+
+.asu-kpis.adr-counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.asu-kpis .adr-count {
+  min-width: 0;
+}
+
+.asu-panel {
+  margin-bottom: 16px;
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  background: var(--runbook-surface, #101935);
+  padding: 14px 14px 12px;
+}
+
+.asu-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.asu-panel__head h2,
+.asu-panel h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--runbook-heading, #fff);
+}
+
+.asu-subhead {
+  margin: 14px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--runbook-heading, #fff);
+}
+
+.asu-trend-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 2px;
+  border-radius: 8px;
+  background: rgba(8, 15, 37, 0.65);
+  border: 0.6px solid var(--runbook-border, #37446b);
+}
+
+.asu-trend-tab {
+  border: 0;
+  background: transparent;
+  color: var(--runbook-muted, #7e89ac);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.asu-trend-tab.active,
+.asu-trend-tab[aria-selected="true"] {
+  background: rgba(108, 114, 255, 0.22);
+  color: var(--runbook-heading, #fff);
+}
+
+.asu-table-wrap {
+  max-height: 360px;
+  overflow: auto;
+}
+
+.asu-table.adr-table th:last-child,
+.asu-table.adr-table td:last-child {
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.asu-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  border: 0.6px solid transparent;
+}
+
+.asu-pill--success {
+  background: rgba(20, 202, 116, 0.14);
+  color: var(--runbook-ok, #14ca74);
+  border-color: rgba(20, 202, 116, 0.35);
+}
+
+.asu-pill--partial {
+  background: var(--runbook-warn-bg, rgba(253, 181, 42, 0.12));
+  color: #fdb52a;
+  border-color: rgba(253, 181, 42, 0.4);
+}
+
+.asu-pill--no_match {
+  background: rgba(126, 137, 172, 0.14);
+  color: var(--runbook-text, #aeb9e1);
+  border-color: var(--runbook-border, #37446b);
+}
+
+.asu-pill--error {
+  background: var(--runbook-danger-bg, rgba(255, 90, 101, 0.1));
+  color: #ff5a65;
+  border-color: rgba(255, 90, 101, 0.4);
+}
+
+.asu-pill--certainty-confirmed {
+  background: rgba(20, 202, 116, 0.14);
+  color: var(--runbook-ok, #14ca74);
+  border-color: rgba(20, 202, 116, 0.35);
+}
+
+.asu-pill--certainty-estimated {
+  background: var(--runbook-warn-bg, rgba(253, 181, 42, 0.12));
+  color: #fdb52a;
+  border-color: rgba(253, 181, 42, 0.4);
+}
+
+.asu-pill--certainty-unknown {
+  background: rgba(126, 137, 172, 0.14);
+  color: var(--runbook-text, #aeb9e1);
+  border-color: var(--runbook-border, #37446b);
+}
+
+.asu-ops {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--runbook-text, #aeb9e1);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.asu-ops strong {
+  color: var(--runbook-heading, #fff);
+  font-weight: 650;
+}
+
+.asu-panel-grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.asu-empty {
+  color: var(--runbook-muted, #7e89ac);
+  font-size: 13px;
+  padding: 8px 2px;
+}
+
+@media (max-width: 960px) {
+  .asu-panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+html.embed-mode .asu-shell.adr-shell {
+  padding-top: 12px;
+}
