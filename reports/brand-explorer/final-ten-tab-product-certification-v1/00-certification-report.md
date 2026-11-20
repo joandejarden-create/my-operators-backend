@@ -1,14 +1,14 @@
 # Final 10-Tab Product Popup Certification V1
 
-Generated: 2026-11-20T01:41:25.009Z
+Generated: 2026-11-20T02:29:07.398Z
 Base URL: http://127.0.0.1:8080
 Acceptance URL: http://127.0.0.1:8080/app#/brand-explorer-combined
-Git HEAD (workspace): a800e9cdcec2d9986e03d4eda7cd43603c14c793
+Git HEAD (workspace): 1b4ff3ad7ad02e4537c721f9421dab33e2dfb30f
 Candidate version: phase2h-component-parity
 
 ## Candidate hashes
 
-- Curio phase2h candidate SHA-256: `25748a0d574c37d8ed4dfb38a629cd4b23d9eeeff2c9f72a620ad8699ebef20d`
+- Curio phase2h candidate SHA-256: `27acee25c69d0bcf33746c8c4690cec33b1933db8279db1b7679512665b38e2a`
 - Ascend phase2h candidate SHA-256: `f838e44f994a964c6eb83b1898e7e4d39912e02930e413cb5480ade817811fca`
 
 ## Classification
