@@ -2152,6 +2152,214 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: 'd377fc0ac6316196be8badf70ad55c6a4737972edb4d7fdd02f24659992c9c72'
+    },
+    {
+      id: 'recJgviX5z4tLcMom',
+      slug: 'sofitel',
+      name: 'Sofitel',
+      overlayUrl: '/brand-explorer-phase2e-preview/sofitel-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '477c454fba593f409b710bf95452c931aff2e8cff371d942f0919b22943c41da'
+    },
+    {
+      id: 'recxAGLjrBt8PF3IT',
+      slug: 'sofitel-legend',
+      name: 'Sofitel Legend',
+      overlayUrl: '/brand-explorer-phase2e-preview/sofitel-legend-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'addcfe32df6e2c3ffc2f2cc3957f02a4fea3d9986ddfe82f96bf49b498d39d31'
+    },
+    {
+      id: 'recjYuYOLjL4zusI6',
+      slug: 'raffles-hotels-resorts',
+      name: 'Raffles Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/raffles-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c41a1ae547bbf3de8d8db8a19e5c203ec30373548e313a7de769cc7b2b47022f'
+    },
+    {
+      id: 'recfG3hikZOMqDEb0',
+      slug: 'movenpick-hotels-resorts',
+      name: 'Mövenpick Hotels & Resorts',
+      overlayUrl: '/brand-explorer-phase2e-preview/movenpick-hotels-resorts-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f651733e99a803e8a23cdd8bfc94e9ec40a2f89b3ceb925c943104612647900a'
+    },
+    {
+      id: 'recnRlPoQjNlDFVJn',
+      slug: 'grand-mercure',
+      name: 'Grand Mercure',
+      overlayUrl: '/brand-explorer-phase2e-preview/grand-mercure-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'bb2616eda9a63c45e8c8f3246955fff497741b720d5ceefe7fc77316caf9de12'
+    },
+    {
+      id: 'rec7F80S01oyTADN2',
+      slug: 'peppers',
+      name: 'Peppers',
+      overlayUrl: '/brand-explorer-phase2e-preview/peppers-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '740dd29b4ae8ac8620d573aa31136dd8a920de9f6e933f4848b21b9b28df6639'
+    },
+    {
+      id: 'receSUBBbaxgbenTd',
+      slug: 'mantra',
+      name: 'Mantra',
+      overlayUrl: '/brand-explorer-phase2e-preview/mantra-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f471355f3ba8f8258969d062744d8c41f703799e9ecc307f13688a971a2a933a'
+    },
+    {
+      id: 'recjRHpf0a0ylJbXQ',
+      slug: 'breakfree',
+      name: 'BreakFree',
+      overlayUrl: '/brand-explorer-phase2e-preview/breakfree-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c37536788a2accd7793c34f33fce1ac67eabdc65b993e355db90725486fc1b5d'
+    },
+    {
+      id: 'recilV5oDDP3wtKJn',
+      slug: 'the-sebel',
+      name: 'The Sebel',
+      overlayUrl: '/brand-explorer-phase2e-preview/the-sebel-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'c4dc34e1f36ffd78e0d69f826be29a799e2c0fcd1f4e814dba853250155042f9'
+    },
+    {
+      id: 'recNabpDL7arkX5mi',
+      slug: 'banyan-tree',
+      name: 'Banyan Tree',
+      overlayUrl: '/brand-explorer-phase2e-preview/banyan-tree-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '416c3646aa04f0a6b59c7ca4c730a9556fb0cb2b95f624153f7f619466f70cd6'
+    },
+    {
+      id: 'recR1DWI8QIecWQDl',
+      slug: 'angsana',
+      name: 'Angsana',
+      overlayUrl: '/brand-explorer-phase2e-preview/angsana-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '3c784c26215a8658c82d0ae95f1f13d73d5b3c6ac5d472ee7dd2b34f68c506e0'
+    },
+    {
+      id: 'recmkvmV84vr5LNwi',
+      slug: 'art-series-hotels',
+      name: 'Art Series Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/art-series-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'e2cb77438d91164dca025ba81c9ee58bc5cff62843ac0565a63236d62948ecf1'
+    },
+    {
+      id: 'recpJ13Fo4nxXmEzD',
+      slug: 'citizenm',
+      name: 'citizenM',
+      overlayUrl: '/brand-explorer-phase2e-preview/citizenm-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd1129126d6f31d9dbc283258e065c37d2ffa080473d0cae7082edf9ec8580253'
+    },
+    {
+      id: 'recCtMPwNFDoE3e9m',
+      slug: 'element-hotels',
+      name: 'Element Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/element-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '9ce888e7509a7d2ed7dfe49a0c6ae2688b42a3b0ba5a67aad49f9beac264a4cb'
+    },
+    {
+      id: 'rec5SgAtIKEAC9Jgr',
+      slug: 'protea-hotels-by-marriott',
+      name: 'Protea Hotels by Marriott',
+      overlayUrl: '/brand-explorer-phase2e-preview/protea-hotels-by-marriott-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'a300faaab1a53afe40d2670f71d5c68bb888bbbc378f60d8965df853bf1e7b79'
+    },
+    {
+      id: 'recgaMzDn2GKkpUsi',
+      slug: 'four-points-flex-by-sheraton',
+      name: 'Four Points Flex by Sheraton',
+      overlayUrl: '/brand-explorer-phase2e-preview/four-points-flex-by-sheraton-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-14-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8ce8dc9eb8141deaae943f512e40aa28155bd5ceac1d5f1d593191e1b41e367b'
     }
   ];
 
@@ -2364,6 +2572,22 @@
     if (/sunscape/i.test(name)) return bySlug('sunscape-resorts-spas');
     if (/hyatt\s*vivid|^vivid\b/i.test(name)) return bySlug('hyatt-vivid');
     if (/miraval/i.test(name)) return bySlug('miraval-resorts-spas');
+    if (/sofitel\s*legend/i.test(name)) return bySlug('sofitel-legend');
+    if (/^sofitel\b/i.test(name) && !/legend/i.test(name)) return bySlug('sofitel');
+    if (/\braffles\b/i.test(name)) return bySlug('raffles-hotels-resorts');
+    if (/m[oö]venpick|movenpick/i.test(name)) return bySlug('movenpick-hotels-resorts');
+    if (/grand\s*mercure/i.test(name)) return bySlug('grand-mercure');
+    if (/\bpeppers\b/i.test(name)) return bySlug('peppers');
+    if (/\bmantra\b/i.test(name)) return bySlug('mantra');
+    if (/break\s*free|breakfree/i.test(name)) return bySlug('breakfree');
+    if (/\bsebel\b/i.test(name)) return bySlug('the-sebel');
+    if (/banyan\s*tree/i.test(name)) return bySlug('banyan-tree');
+    if (/\bangsana\b/i.test(name)) return bySlug('angsana');
+    if (/art\s*series/i.test(name)) return bySlug('art-series-hotels');
+    if (/citizen\s*m|citizenm/i.test(name)) return bySlug('citizenm');
+    if (/\belement\b/i.test(name) && /westin|hotel/i.test(name)) return bySlug('element-hotels');
+    if (/\bprotea\b/i.test(name)) return bySlug('protea-hotels-by-marriott');
+    if (/four\s*points\s*flex/i.test(name)) return bySlug('four-points-flex-by-sheraton');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
