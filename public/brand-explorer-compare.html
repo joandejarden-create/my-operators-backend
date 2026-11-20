@@ -36,6 +36,31 @@
         <label class="becs-brand-label">Brand
           <select id="becsBrand" class="filter-select becs-brand-select" aria-label="Brand"></select>
         </label>
+        <label class="becs-brand-filter-label">Search
+          <input type="search" id="becsBrandSearch" class="becs-brand-search" placeholder="Name, parent, ID…" aria-label="Search brands" autocomplete="off" />
+        </label>
+        <label class="becs-brand-filter-label">Parent
+          <select id="becsParentFilter" class="filter-select becs-filter-select" aria-label="Filter by parent company">
+            <option value="">All parents</option>
+          </select>
+        </label>
+        <label class="becs-brand-filter-label">Batch
+          <select id="becsBatchFilter" class="filter-select becs-filter-select" aria-label="Filter by batch">
+            <option value="">All batches</option>
+          </select>
+        </label>
+        <label class="becs-brand-filter-label">Status
+          <select id="becsStatusFilter" class="filter-select becs-filter-select" aria-label="Filter by status">
+            <option value="">All statuses</option>
+            <option value="NOT_APPROVED">Staged / not approved</option>
+            <option value="NEEDS_REMEDIATION">Needs remediation</option>
+            <option value="READY_FOR_REVIEW">Ready for review</option>
+            <option value="AWAITING_FOUNDER_APPROVAL">Awaiting founder approval</option>
+            <option value="FOUNDER_APPROVED_WRITEBACK">Airtable persisted</option>
+            <option value="AWAITING_BASICS">Awaiting Brand Basics create</option>
+          </select>
+        </label>
+        <span id="becsBrandFilterCount" class="becs-brand-filter-count" aria-live="polite"></span>
         <div id="becsTabs" class="becs-tabbar" aria-label="Brand Explorer tabs"></div>
         <div id="becsViewModes" class="becs-modes becs-modes-primary">
           <button type="button" class="becs-mode active" data-becs-mode="full">Full Comparison</button>

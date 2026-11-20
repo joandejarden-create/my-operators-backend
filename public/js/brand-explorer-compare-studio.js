@@ -1625,14 +1625,18 @@
         return bb;
       }
       // Last resort: empty CURRENT shell so PROPOSED frozen payload can still load
+      // (includes NEW_* provisional brands awaiting Brand Basics create).
       state.leftSource = 'empty-live';
       state.leftBrand = emptyLiveBrandShell(cfg, null);
       state.leftMeta = {
-        label: 'CURRENT · SAVED PROFILE (unavailable)',
-        source:
-          'Live Presentation could not be loaded (' +
-          (err.message || String(err)) +
-          '). Proposed column still attempts staged Factory candidate.',
+        label: cfg.awaitingBrandBasicsCreate
+          ? 'CURRENT · NO AIRTABLE BASICS YET'
+          : 'CURRENT · SAVED PROFILE (unavailable)',
+        source: cfg.awaitingBrandBasicsCreate
+          ? 'Provisional NEW_* staging key — Brand Basics create not yet founder-authorized. RIGHT shows staged Factory candidate; LEFT has no saved Presentation.'
+          : 'Live Presentation could not be loaded (' +
+            (err.message || String(err)) +
+            '). Proposed column still attempts staged Factory candidate.',
         brandId: cfg.id,
         brandName: cfg.name,
         blockCount: 0,
@@ -1640,6 +1644,7 @@
         readOnly: true,
         writeGuard: 'never_overwrite_during_review',
         emptyLivePresentation: true,
+        awaitingBrandBasicsCreate: Boolean(cfg.awaitingBrandBasicsCreate),
         fallbackReason: err.message || String(err)
       };
       return [];
@@ -2427,22 +2432,139 @@
     }
   }
 
-  function wireUi() {
-    var brandSel = $('#becsBrand');
-    // Stable A→Z labels; keep id/slug/overlay bound on each option to prevent cross-brand leftovers.
-    var brandsForSelect = BRANDS.slice().sort(function (a, b) {
-      return String(a.name || a.slug || '').localeCompare(String(b.name || b.slug || ''), undefined, {
-        sensitivity: 'base'
+  function brandFilterMeta(b) {
+    return {
+      parent: String(b.parentCompany || '').trim(),
+      batch: String(b.batchTag || '').trim(),
+      status: b.awaitingBrandBasicsCreate
+        ? 'AWAITING_BASICS'
+        : String(b.factoryStatus || b.founderApprovalStatus || 'NOT_APPROVED').trim(),
+      hay: [
+        b.name,
+        b.slug,
+        b.id,
+        b.parentCompany,
+        b.batchTag,
+        b.factoryStatus,
+        b.founderApprovalStatus
+      ]
+        .map(function (x) {
+          return String(x || '').toLowerCase();
+        })
+        .join(' ')
+    };
+  }
+
+  function filteredBrands() {
+    var q = (($('#becsBrandSearch') && $('#becsBrandSearch').value) || '').trim().toLowerCase();
+    var parent = (($('#becsParentFilter') && $('#becsParentFilter').value) || '').trim();
+    var batch = (($('#becsBatchFilter') && $('#becsBatchFilter').value) || '').trim();
+    var status = (($('#becsStatusFilter') && $('#becsStatusFilter').value) || '').trim();
+    return BRANDS.slice()
+      .filter(function (b) {
+        var m = brandFilterMeta(b);
+        if (q && m.hay.indexOf(q) === -1) return false;
+        if (parent && m.parent !== parent) return false;
+        if (batch && m.batch !== batch) return false;
+        if (status) {
+          if (status === 'AWAITING_BASICS' && !b.awaitingBrandBasicsCreate) return false;
+          if (status !== 'AWAITING_BASICS' && m.status !== status && b.founderApprovalStatus !== status)
+            return false;
+        }
+        return true;
+      })
+      .sort(function (a, b) {
+        return String(a.name || a.slug || '').localeCompare(String(b.name || b.slug || ''), undefined, {
+          sensitivity: 'base'
+        });
       });
-    });
+  }
+
+  function rebuildBrandSelect(preferId) {
+    var brandSel = $('#becsBrand');
+    if (!brandSel) return;
+    var keep = preferId || brandSel.value || (state.brand && state.brand.id) || '';
+    var brandsForSelect = filteredBrands();
+    brandSel.innerHTML = '';
     brandsForSelect.forEach(function (b, i) {
       var opt = document.createElement('option');
       opt.value = b.id;
-      opt.textContent = b.name;
+      var suffix = b.awaitingBrandBasicsCreate
+        ? ' · awaiting Basics'
+        : b.factoryStatus === 'NEEDS_REMEDIATION'
+          ? ' · remediation'
+          : '';
+      opt.textContent = (b.name || b.slug || b.id) + suffix;
       opt.setAttribute('data-becs-slug', b.slug || '');
       opt.setAttribute('data-becs-overlay', b.overlayUrl || '');
-      if (i === 0) opt.selected = true;
+      if (b.parentCompany) opt.setAttribute('data-becs-parent', b.parentCompany);
+      if (b.batchTag) opt.setAttribute('data-becs-batch', b.batchTag);
       brandSel.appendChild(opt);
+      if (b.id === keep) opt.selected = true;
+      else if (!keep && i === 0) opt.selected = true;
+    });
+    var countEl = $('#becsBrandFilterCount');
+    if (countEl) {
+      countEl.textContent = brandsForSelect.length + ' / ' + BRANDS.length + ' brands';
+    }
+    if (!brandsForSelect.length) {
+      var empty = document.createElement('option');
+      empty.value = '';
+      empty.textContent = 'No brands match filters';
+      brandSel.appendChild(empty);
+    }
+  }
+
+  function populateBrandFilters() {
+    var parents = {};
+    var batches = {};
+    BRANDS.forEach(function (b) {
+      if (b.parentCompany) parents[b.parentCompany] = true;
+      if (b.batchTag) batches[b.batchTag] = true;
+    });
+    var parentSel = $('#becsParentFilter');
+    if (parentSel) {
+      Object.keys(parents)
+        .sort()
+        .forEach(function (p) {
+          var opt = document.createElement('option');
+          opt.value = p;
+          opt.textContent = p;
+          parentSel.appendChild(opt);
+        });
+    }
+    var batchSel = $('#becsBatchFilter');
+    if (batchSel) {
+      Object.keys(batches)
+        .sort()
+        .forEach(function (p) {
+          var opt = document.createElement('option');
+          opt.value = p;
+          opt.textContent = p;
+          batchSel.appendChild(opt);
+        });
+    }
+  }
+
+  function wireUi() {
+    var brandSel = $('#becsBrand');
+    populateBrandFilters();
+    rebuildBrandSelect();
+    function onFilterChange() {
+      var prev = brandSel.value;
+      rebuildBrandSelect(prev);
+      if (state.rendererParity) return;
+      if (brandSel.value && brandSel.value !== prev) {
+        var cfg = BRANDS.find(function (b) {
+          return b.id === brandSel.value;
+        });
+        if (cfg) loadBrand(cfg);
+      }
+    }
+    ['becsBrandSearch', 'becsParentFilter', 'becsBatchFilter', 'becsStatusFilter'].forEach(function (id) {
+      var el = $('#' + id);
+      if (!el) return;
+      el.addEventListener(id === 'becsBrandSearch' ? 'input' : 'change', onFilterChange);
     });
     brandSel.addEventListener('change', function () {
       if (state.rendererParity) return; // Gate 1 diagnostic locked to Curio saved payload

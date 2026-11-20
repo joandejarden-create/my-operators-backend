@@ -825,6 +825,38 @@ body.becs-hl-off .becs-hl-legend {
 .becs-controls-founder {
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+.becs-brand-filter-label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.68rem;
+  color: var(--becs-muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.becs-brand-search,
+select.becs-filter-select.filter-select {
+  min-width: 140px;
+  max-width: 200px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--becs-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  padding: 4px 8px;
+  font-size: 0.78rem;
+}
+.becs-brand-search:focus,
+select.becs-filter-select.filter-select:focus {
+  outline: 2px solid rgba(120, 180, 255, 0.45);
+  outline-offset: 1px;
+}
+.becs-brand-filter-count {
+  font-size: 0.72rem;
+  color: var(--becs-muted);
+  white-space: nowrap;
 }
 .becs-modes-primary .becs-mode {
   font-size: 0.72rem;
