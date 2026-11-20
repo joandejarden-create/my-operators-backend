@@ -1,10 +1,8 @@
 # HE 5.0 Controlled Apply — Standing Authorization
 
-**Mode:** APPLY (first wave) + idempotent re-run  
-**Status:** `AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED`  
-**First apply completed:** 2026-11-19T23:33:07.401Z  
-**Immutable first-apply snapshot:** `HE50-CONTROLLED-APPLY-FIRST-APPLY-V1.json`  
-**Founder report:** `HE50-STANDING-AUTH-FOUNDER-REPORT-V1.md`
+**Mode:** APPLY  
+**Status:** AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED  
+**Completed:** 2026-11-20T03:37:12.042Z
 
 ## Budget (not reset)
 
@@ -15,39 +13,34 @@
 | Reserved | 0.00 |
 | Remaining | 50.00 |
 
-## First-apply outcomes (10 applied / 2 skipped)
+## Mutation outcomes
 
-| Mutation | Class | Applied | Record |
+| Mutation | Class | Applied | Notes |
 | --- | --- | --- | --- |
-| M-BETH-001 | AUTO_APPROVED_CANONICAL_UPDATE | yes | `recLuxvwwxID7U2B8` Opening Date 1979-01-01 |
-| M-BETH-002 | AUTO_APPROVED_CANONICAL_LINK | yes | `reclg9yw3f8tpEpw2` |
-| M-BETH-003 | AUTO_APPROVED_CANONICAL_LINK | yes | `rec13GMpJmruW34nk` |
+| M-BETH-001 | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-BETH-002 | AUTO_APPROVED_CANONICAL_LINK | no | evidence_id_already_exists |
+| M-BETH-003 | AUTO_APPROVED_CANONICAL_LINK | no | evidence_id_already_exists |
 | M-BETH-REF-STAKEHOLDER | SKIPPED_NO_CHANGE | no | REFERENCE_PRIOR_DRY_RUN |
-| M-NEW-ac_hotel_newtown_square | AUTO_APPROVED_CANONICAL_CREATE | yes | `recF7DQBPDW5aUDoC` rooms 140 |
-| M-NEW-carton_house_fairmont | AUTO_APPROVED_CANONICAL_CREATE | yes | `recYf7HZWmCdWPaSd` rooms 169 |
-| M-NEW-hgi_newtown_square_radnor | AUTO_APPROVED_CANONICAL_CREATE | yes | `recgaBAwa24wsl3xF` rooms 138 |
-| M-UPD-jw_marriott_costa_elena | AUTO_APPROVED_CANONICAL_UPDATE | yes | `recq9KWr8UE7z2549` rooms 415 |
+| M-UPD-ac_hotel_newtown_square | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-carton_house_fairmont | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-hgi_newtown_square_radnor | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-jw_marriott_costa_elena | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
 | M-UPD-secrets_cap_cana-identity | SKIPPED_NO_CHANGE | no | NO_OP |
-| M-UPD-secrets_cap_cana-rooms | AUTO_APPROVED_CANONICAL_UPDATE | yes | `recd7XAM6tLjzQhaI` rooms 457 |
-| M-NEW-secrets_papagayo | AUTO_APPROVED_CANONICAL_CREATE | yes | `recFQ0WvGLbfK5Gpa` rooms 202 |
-| M-NEW-secrets_st_lucia | AUTO_APPROVED_CANONICAL_CREATE | yes | `recwZJuMcx6kA7f7I` rooms 355 |
+| M-UPD-secrets_cap_cana-rooms | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-secrets_papagayo | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-secrets_st_lucia | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
 
-## Counts (first apply)
+## Counts
 
-- Applied: **10**
+- Applied: **0**
 - Quarantined / blocked / failed: **0**
-- HPC created: **5**
-- HPC updated: **3**
-- Evidence created: **2**
+- HPC created: **0**
+- HPC updated: **0**
+- Evidence created: **0**
 - Legacy Hotel Census access: **BLOCKED_CONFIRMED**
-
-## Idempotent re-run
-
-Second apply: **0** writes / **12** skips — no duplicates.
 
 ## Persistence stages
 
-- `RESEARCH_VERIFIED` — yes  
-- `CANONICAL_PERSISTED` — yes  
-- `AIRTABLE_READBACK_VALIDATED` — yes (live HPC fetch)  
-- `HOTEL_EXPLORER_UI_VALIDATED` — **not claimed** (browser follow-on)
+Distinguish RESEARCH_VERIFIED / CANONICAL_PERSISTED / AIRTABLE_READBACK_VALIDATED / HOTEL_EXPLORER_UI_VALIDATED in JSON opResults.
+
+Browser UI validation remains a follow-on check after apply.
