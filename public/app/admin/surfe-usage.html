@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
   <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
-  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v2" />
+  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1-1" />
   <script>
     (function () {
       if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
@@ -146,8 +146,9 @@
                 <th>Opportunity</th>
                 <th>Lookup type</th>
                 <th>Result</th>
-                <th>Credits used</th>
-                <th>Estimated cost</th>
+                <th>Credits</th>
+                <th>Certainty</th>
+                <th>Est. cost</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -174,12 +175,26 @@
             <tbody></tbody>
           </table>
         </div>
+        <h3 class="asu-subhead">Accounting failures</h3>
+        <div class="adr-table-wrap asu-table-wrap">
+          <table class="adr-table asu-table" id="asuAccountingFailures">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Category</th>
+                <th>Hotel</th>
+                <th>Opportunity</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </section>
     </section>
   </div>
 
   <script src="/js/memberstack-auth.js"></script>
   <script src="/js/support-admin-gate.js"></script>
-  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v2"></script>
+  <script src="/js/admin-surfe-usage.js?v=surfe-usage-v1-1"></script>
 </body>
 </html>

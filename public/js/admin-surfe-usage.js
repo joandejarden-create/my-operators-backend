@@ -76,15 +76,29 @@
     }
     var successLike =
       (totals.successfulLookups || 0) + (totals.partialLookups || 0);
+    var creditsLabel =
+      "C " +
+      num(totals.creditsConfirmed) +
+      " · E " +
+      num(totals.creditsEstimated) +
+      " · U " +
+      num(totals.creditsUnknownCount);
     var items = [
       { label: "Total Lookups", value: num(totals.totalLookups) },
       { label: "Successful Lookups", value: num(successLike) },
       { label: "Success Rate", value: num(totals.successRate) + "%" },
       { label: "Email Contacts Found", value: num(totals.emailFoundCount) },
       { label: "Phone Contacts Found", value: num(totals.phoneFoundCount) },
-      { label: "Credits Consumed", value: num(totals.creditsConsumed) },
-      { label: "Estimated Cost", value: money(totals.totalCostEstimateUsd) },
+      { label: "Credits (confirmed · estimated · unknown)", value: creditsLabel },
+      {
+        label: "Estimated Cost (known only)",
+        value: money(totals.totalCostEstimateUsd),
+      },
       { label: "Remaining Surfe Credits", value: remainingLabel },
+      {
+        label: "Accounting failures",
+        value: num(totals.accountingFailureCount),
+      },
     ];
     var root = document.getElementById("asuKpis");
     root.innerHTML = items
@@ -197,17 +211,33 @@
     return '<span class="asu-pill asu-pill--' + esc(s) + '">' + esc(s) + "</span>";
   }
 
+  function certaintyPill(certainty) {
+    var c = String(certainty || "unknown");
+    return (
+      '<span class="asu-pill asu-pill--certainty-' +
+      esc(c) +
+      '">' +
+      esc(c) +
+      "</span>"
+    );
+  }
+
   function renderLatest(rows) {
     var tbody = document.querySelector("#asuLatestTable tbody");
     if (!rows || !rows.length) {
       tbody.innerHTML = emptyRow(
-        7,
+        8,
         "No lookup activity recorded yet for these filters.",
       );
       return;
     }
     tbody.innerHTML = rows
       .map(function (r) {
+        var creditsDisplay =
+          r.creditsCharged == null
+            ? "—"
+            : String(r.creditsCharged) +
+              (r.creditCertainty ? " (" + r.creditCertainty + ")" : "");
         return (
           "<tr><td>" +
           esc(r.at) +
@@ -220,9 +250,16 @@
           "</td><td>" +
           statusPill(r.status) +
           "</td><td>" +
-          esc(r.creditsCharged == null ? "—" : r.creditsCharged) +
+          esc(creditsDisplay) +
           "</td><td>" +
-          esc(money(r.costEstimateUsd)) +
+          certaintyPill(r.creditCertainty) +
+          "</td><td>" +
+          esc(
+            r.costEstimateUsd == null
+              ? "—"
+              : money(r.costEstimateUsd) +
+                  (r.costCertainty ? " (" + r.costCertainty + ")" : ""),
+          ) +
           "</td></tr>"
         );
       })
@@ -231,6 +268,7 @@
 
   function renderOps(summaryData) {
     var t = summaryData.totals || {};
+    var durability = summaryData.durability || {};
     var list = document.getElementById("asuOpsList");
     list.innerHTML = [
       "No-match frequency: <strong>" +
@@ -240,10 +278,26 @@
       "Avg provider latency: <strong>" +
         esc(t.avgLatencyMs == null ? "—" : t.avgLatencyMs + " ms") +
         "</strong>",
+      "Accounting complete: <strong>" +
+        esc(t.accountingComplete === false ? "No" : "Yes") +
+        "</strong> (" +
+        esc(num(t.accountingFailureCount)) +
+        " failures)",
+      "Credits unknown rows: <strong>" +
+        esc(num(t.creditsUnknownCount)) +
+        "</strong>",
+      esc(
+        t.creditAccountingNote ||
+          "Confirmed / estimated / unknown credits are reported separately.",
+      ),
       esc(
         t.duplicateSuppressedNote ||
-          "Duplicate in-flight lookups are blocked server-side.",
+          "Transport retries dedupe on clientRequestId; legitimate repeats are counted.",
       ),
+      "Persistence: <strong>" +
+        esc(durability.store || "filesystem") +
+        "</strong> · " +
+        esc(durability.mechanism || "lock + atomic write"),
       "Personal contact details are not stored in this ledger.",
     ]
       .map(function (html) {
@@ -255,17 +309,40 @@
     var tbody = document.querySelector("#asuErrorsTable tbody");
     if (!errors.length) {
       tbody.innerHTML = emptyRow(4, "No recent provider errors.");
+    } else {
+      tbody.innerHTML = errors
+        .map(function (e) {
+          return (
+            "<tr><td>" +
+            esc(e.at) +
+            "</td><td>" +
+            esc(e.hotelId || "—") +
+            "</td><td>" +
+            esc(e.errorCategory || "—") +
+            "</td><td>" +
+            esc(e.opportunityId || "—") +
+            "</td></tr>"
+          );
+        })
+        .join("");
+    }
+
+    var failures = summaryData.recentAccountingFailures || [];
+    var fbody = document.querySelector("#asuAccountingFailures tbody");
+    if (!fbody) return;
+    if (!failures.length) {
+      fbody.innerHTML = emptyRow(4, "No accounting write failures recorded.");
       return;
     }
-    tbody.innerHTML = errors
+    fbody.innerHTML = failures
       .map(function (e) {
         return (
           "<tr><td>" +
           esc(e.at) +
           "</td><td>" +
-          esc(e.hotelId || "—") +
+          esc(e.category || "—") +
           "</td><td>" +
-          esc(e.errorCategory || "—") +
+          esc(e.hotelId || "—") +
           "</td><td>" +
           esc(e.opportunityId || "—") +
           "</td></tr>"

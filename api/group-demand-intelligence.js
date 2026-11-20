@@ -3103,6 +3103,15 @@ export async function postGdiContactReveal(req, res) {
       channel,
       lookupType: channel,
       enrichmentId: result?.enrichmentId || null,
+      clientRequestId:
+        String(body.clientRequestId || body.idempotencyKey || "").trim() ||
+        null,
+      // Future-ready: only set when Surfe returns per-request billed credits
+      providerCreditsCharged: Number.isFinite(
+        Number(result?.providerCreditsCharged),
+      )
+        ? Number(result.providerCreditsCharged)
+        : undefined,
       ok: result?.ok === true,
       miss: result?.miss === true,
       error: result?.error || null,
@@ -3112,6 +3121,7 @@ export async function postGdiContactReveal(req, res) {
       phoneReturned: Boolean(result?.contactDetails?.phone),
       surfeAttempted: true,
       surface: "gdi_drawer",
+      resolvedVia: result?.resolvedVia || null,
       providerLatencyMs: latencyMs,
       userId:
         req.dealalityUser?.memberstackId ||

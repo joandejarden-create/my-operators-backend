@@ -6,6 +6,7 @@ import {
   summarizeSurfeLiveAccounting,
   readSurfeLiveAccounting,
   GDI_SURFE_USAGE_TRACKING_V1,
+  GDI_SURFE_USAGE_TRACKING_V1_1,
 } from "../lib/group-demand-intelligence/gdi-surfe-live-gate-v1.js";
 import { listGdiSelectableHotels } from "../lib/group-demand-intelligence/repository.js";
 import { getSurfeCredits } from "../lib/surfe/client.js";
@@ -61,7 +62,8 @@ export async function getAdminSurfeUsageSummary(req, res) {
 
   return res.status(200).json({
     ok: true,
-    version: GDI_SURFE_USAGE_TRACKING_V1,
+    version: GDI_SURFE_USAGE_TRACKING_V1_1,
+    trackingCompatVersion: GDI_SURFE_USAGE_TRACKING_V1,
     remainingCredits,
     ...summary,
     // Explicit contract
@@ -91,6 +93,7 @@ export async function getAdminSurfeUsageEvents(req, res) {
   entries.sort((a, b) => String(b.at).localeCompare(String(a.at)));
   const page = entries.slice(0, limit).map((e) => ({
     lookupEventId: e.lookupEventId,
+    clientRequestId: e.clientRequestId || null,
     at: e.at,
     hotelId: e.hotelId,
     hotelName: hotelNames[e.hotelId] || e.hotelId,
@@ -101,8 +104,13 @@ export async function getAdminSurfeUsageEvents(req, res) {
     emailFound: e.emailFound === true || e.emailReturned === true,
     phoneFound: e.phoneFound === true || e.phoneReturned === true,
     creditsCharged: e.creditsCharged ?? null,
+    creditCertainty: e.creditCertainty || null,
+    creditsConfirmed: e.creditsConfirmed ?? null,
+    creditsEstimated: e.creditsEstimated ?? null,
     costEstimateUsd: e.costEstimateUsd ?? null,
+    costCertainty: e.costCertainty || null,
     costEstimateSource: e.costEstimateSource || null,
+    attributionWarning: e.attributionWarning || null,
     providerLatencyMs: e.providerLatencyMs ?? null,
     errorCategory: e.errorCategory || e.error || null,
     resolvedVia: e.resolvedVia || null,
@@ -111,7 +119,7 @@ export async function getAdminSurfeUsageEvents(req, res) {
 
   return res.status(200).json({
     ok: true,
-    version: GDI_SURFE_USAGE_TRACKING_V1,
+    version: GDI_SURFE_USAGE_TRACKING_V1_1,
     count: page.length,
     totalMatching: entries.length,
     events: page,
