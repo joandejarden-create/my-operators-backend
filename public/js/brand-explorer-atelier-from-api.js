@@ -604,15 +604,42 @@
    * - proposed: latest cumulative staged candidate (Compare Studio RIGHT)
    */
   function getProfileMode() {
-    var st = getBrandExplorerRouteStateSafe();
-    if (st && st.beProfileMode) return st.beProfileMode === 'proposed' ? 'proposed' : 'saved';
     var params = getRouteParams();
+    var st = getBrandExplorerRouteStateSafe();
+    // Only honor EXPLICIT beProfileMode query values. Route-state soft-defaults
+    // "saved" when the param is absent — that must not block Proposed Update for
+    // staged Curio/Ascend founder preview (BE-QL-HEADING-AMPERSAND / why-value).
     var raw = String(params.get('beProfileMode') || '')
       .trim()
       .toLowerCase();
+    if (!raw && st && st.params && typeof st.params.get === 'function') {
+      raw = String(st.params.get('beProfileMode') || '')
+        .trim()
+        .toLowerCase();
+    }
     if (raw === 'proposed' || raw === 'proposed_update' || raw === 'update') return 'proposed';
     if (raw === 'saved' || raw === 'current' || raw === 'current_saved') return 'saved';
     if (isCandidateOverlayFlag() && isInternalPreviewRequest()) return 'proposed';
+    // Founder internal preview with a registered staged candidate defaults to
+    // PROPOSED UPDATE so finalized cumulative content is visible without a
+    // hidden CURRENT SAVED "And" heading regressing the review.
+    if (isInternalPreviewRequest()) {
+      try {
+        var liveHint = window.__BE_ATELIER_ACTIVE_BRAND__ || null;
+        if (resolveStagedCandidateConfig(liveHint || {})) return 'proposed';
+        var idHint = String(
+          params.get('id') ||
+            params.get('brandId') ||
+            (st && st.brandId) ||
+            ''
+        ).trim();
+        if (idHint && resolveStagedCandidateConfig({ id: idHint, recordId: idHint })) {
+          return 'proposed';
+        }
+      } catch (_eMode) {
+        /* ignore */
+      }
+    }
     return 'saved';
   }
 
@@ -1051,6 +1078,28 @@
         .join('') +
       '</ul>'
     );
+  }
+
+  /**
+   * Why Value Is Strongest bullets: Bold Title Case Insight + colon + sentence.
+   * Applies when the line already uses a lead/colon structure (CURRENT or proposed).
+   */
+  function formatWhyValueBulletHtml(line) {
+    var raw = line == null ? '' : String(line).trim();
+    if (!raw) return '&nbsp;';
+    var m = raw.match(/^([^:\n]{3,72})\s*:\s+(.+)$/);
+    if (!m) return escapeHtml(fmtCell(raw));
+    var lead = String(m[1] || '').trim();
+    var rest = String(m[2] || '').trim();
+    if (!lead || !rest || rest.length < 12) return escapeHtml(fmtCell(raw));
+    // Title-case the lead for customer-facing insight labels (preserve compact F&B).
+    if (
+      globalThis.BeEditorialTitleCase &&
+      typeof globalThis.BeEditorialTitleCase.toEditorialTitleCase === 'function'
+    ) {
+      lead = globalThis.BeEditorialTitleCase.toEditorialTitleCase(lead);
+    }
+    return '<strong>' + escapeHtml(lead) + ':</strong> ' + escapeHtml(fmtCell(rest));
   }
 
   function fmtNum(n) {
@@ -2167,7 +2216,7 @@
     var whyList = whyLines
       .slice(0, 5)
       .map(function (line) {
-        return '<li>' + (hasVal(line) ? escapeHtml(fmtCell(line)) : '&nbsp;') + '</li>';
+        return '<li>' + (hasVal(line) ? formatWhyValueBulletHtml(line) : '&nbsp;') + '</li>';
       })
       .join('');
 

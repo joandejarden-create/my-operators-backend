@@ -430,11 +430,42 @@ async function auditActivePopupTab(frame, tabId) {
     const brand = window.__BE_ATELIER_ACTIVE_BRAND__ || null;
     const api = window.BrandExplorerAtelierFromApi;
 
+    // Founder-visible text gates (Overview / Value scenarios)
+    const headingTexts = [
+      ...panel.querySelectorAll(
+        "h2, h3, h4, .oe-section-title, .scenario-card__body h4, .scenario-card h4"
+      ),
+    ].map((el) => (el.textContent || "").trim());
+    const andLobbyHeading = headingTexts.some((t) =>
+      /Commercial Platform And Lobby Experience/i.test(t)
+    );
+    const ampLobbyHeading = headingTexts.some((t) =>
+      /Commercial Platform\s*&\s*Lobby Experience/i.test(t)
+    );
+    const whyCluster = [...panel.querySelectorAll(".oe-cluster")].find((c) =>
+      /Why Value Is Strongest/i.test(c.textContent || "")
+    );
+    const whyLis = whyCluster
+      ? [...whyCluster.querySelectorAll("li")].map((li) => ({
+          text: (li.textContent || "").trim(),
+          hasStrong: !!li.querySelector("strong"),
+        }))
+      : [];
+    const whyValueStrongCount = whyLis.filter((li) => li.hasStrong).length;
+    const whyValueColonLeadCount = whyLis.filter((li) =>
+      /^[^:\n]{3,72}:\s+\S.{11,}/.test(li.text)
+    ).length;
+
     return {
       tabId: id,
       popupVisible: !!(popup && popup.style.display === "flex"),
       profileMode: api && api.getProfileMode ? api.getProfileMode() : null,
       brandMode: brand && brand.beProfileMode ? brand.beProfileMode : null,
+      proposedMeta: brand && brand.beCandidateOverlayMeta ? brand.beCandidateOverlayMeta : null,
+      contentHash:
+        brand && brand.beCandidateOverlayMeta && brand.beCandidateOverlayMeta.contentHash
+          ? brand.beCandidateOverlayMeta.contentHash
+          : null,
       sectionTitles,
       sectionCount: sectionTitles.length,
       textLen,
@@ -455,6 +486,11 @@ async function auditActivePopupTab(frame, tabId) {
       orphanFail,
       timelines,
       royalPalmImage,
+      andLobbyHeading,
+      ampLobbyHeading,
+      whyValueStrongCount,
+      whyValueColonLeadCount,
+      whyLisSample: whyLis.slice(0, 6),
     };
   }, tabId);
 }
@@ -500,6 +536,24 @@ function evaluateTabAudit(brandSlug, tab, audit, inventorySections) {
 
   if (tab.id === "atelier-materials" && audit.imageCount < 6) {
     defects.push(`gallery_image_count:${audit.imageCount}`);
+  }
+
+  // Overview: proposed must never show founder-rejected "And" heading or unbolded why-value leads
+  if (tab.id === "atelier-overview") {
+    if (audit.andLobbyHeading) defects.push("heading_and_not_ampersand");
+    if (audit.whyValueStrongCount != null && audit.whyValueStrongCount < 3) {
+      defects.push(`why_value_missing_bold_leads:${audit.whyValueStrongCount}`);
+    }
+    if (audit.whyValueColonLeadCount != null && audit.whyValueColonLeadCount < 3) {
+      defects.push(`why_value_missing_colon_insights:${audit.whyValueColonLeadCount}`);
+    }
+    // Thin fragment dumps (no colon leads) fail even when section count PASSes
+    const thinFragments = (audit.whyLisSample || []).filter(
+      (li) => li.text && li.text.length < 40 && !/:/.test(li.text)
+    );
+    if (thinFragments.length >= 2) {
+      defects.push(`why_value_thin_fragments:${thinFragments.length}`);
+    }
   }
 
   const expectedSections = inventorySections.filter((s) => s.tabId === tab.id);

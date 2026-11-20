@@ -478,6 +478,32 @@
       "implementationModule": "scripts/verify-be-final-ten-tab-product-popup-cert-v1.mjs"
     },
     {
+      "lessonId": "BE-QL-STALE-PROPOSED-CONTENT-001",
+      "date": "2026-11-20",
+      "phase": "STALE-PROPOSED-CONTENT-REGRESSION",
+      "founderObservation": "After PR #478 FULL_10_TAB_PRODUCT_QUALITY_CERTIFIED, the authenticated 8080 popup at /app#/brand-explorer-combined?beInternalPreview=1 still showed CURRENT SAVED 'Commercial Platform And Lobby Experience' and thin Why Value bullets lacking bold Lead: explanation structure. Route-state soft-defaulted beProfileMode=saved (blocking Proposed), and the cumulative candidate's overview.why_value thin dump replaced CURRENT colon-insight bullets. Certification passed on section counts without checking rendered ampersand headings or bold insight leads.",
+      "affected": [
+        "brand-explorer-route-state.js beProfileMode soft default",
+        "getProfileMode",
+        "beCombinedPopupAtelierRoot",
+        "overview.scenario.2",
+        "overview.why_value",
+        "BE_CUMULATIVE_PROPOSAL_ASSEMBLER_V1",
+        "FULL_10_TAB_PRODUCT_QUALITY_CERTIFIED gate"
+      ],
+      "correctExpectedBehavior": "Internal preview for staged Curio/Ascend defaults to PROPOSED UPDATE unless explicitly saved. Assembler must retain CURRENT why_value when candidate lacks colon-insight leads. Atelier renders Bold Title Case Insight: sentence. Cert gate fails on 'And' lobby heading, missing bold leads, and thin why-value fragments even when tab counts match.",
+      "failingExampleRef": "reports/brand-explorer/stale-proposed-content-v1/probe.json",
+      "associatedContract": "configs/brand-explorer-canonical-subsection-inventory-v1.json",
+      "automatedRegressionTest": "test:be-why-value-insight-regression-v1",
+      "browserValidationEvidence": "reports/brand-explorer/stale-proposed-content-v1/",
+      "status": "IMPLEMENTED",
+      "supersededRule": "Treating route-state soft-default saved as explicit mode; allowing thin why_value candidate dumps to replace CURRENT colon insights; FULL cert from section presence alone",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-cumulative-proposal-assembler-v1.js"
+    },
+    {
       "lessonId": "BE-QL-DEALALITY-INSIGHT-001",
       "date": "2026-11-19",
       "phase": "DEALALITY-INSIGHT-ADVISORY",
