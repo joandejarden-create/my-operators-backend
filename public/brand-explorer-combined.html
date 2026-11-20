@@ -2743,6 +2743,13 @@
         onBrandEducationFrameReady();
     });
 
+    // Expose for founder/product certification automation and app-shell probes.
+    // Keeps the same Proposed Update mount path as card "View Brand" clicks.
+    try {
+        window.openBrandEducationPopupForBrand = openBrandEducationPopupForBrand;
+        window.closeBrandEducationPopup = closeBrandEducationPopup;
+    } catch (_exposeErr) { /* ignore */ }
+
     var brandPopupClose = document.getElementById('beCombinedBrandDetailPopupClose');
     var brandPopupOverlay = document.getElementById('beCombinedBrandDetailPopupOverlay');
     if (brandPopupClose) brandPopupClose.addEventListener('click', closeBrandEducationPopup);
