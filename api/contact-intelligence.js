@@ -142,8 +142,44 @@ export async function getContactIntelligenceHotel(req, res) {
     const hotelId = String(req.params.hotelId || "").trim();
     if (!hotelId) return sendError(res, 400, "hotel_id_required");
     const audience = String(req.query.audience || "public").trim();
-    const result = serviceForRequest(req).hotelGet({ hotel_id: hotelId, audience });
+    let result = serviceForRequest(req).hotelGet({ hotel_id: hotelId, audience });
     if (!result.ok) return sendError(res, 404, result.error || "hotel_contact_unavailable", result);
+
+    // Read-through HI graph overlay when seed/local package is sparse (no GET writes).
+    const hiGraphReadDisabled =
+      String(process.env.CONTACT_INTELLIGENCE_HI_GRAPH_READ || "").trim() === "0";
+    const peopleCount = Array.isArray(result.package?.people)
+      ? result.package.people.length
+      : 0;
+    const sparse =
+      peopleCount === 0 &&
+      (result.package?.refresh_status === "NEVER" ||
+        !result.owner_anchor?.owner_entity_id);
+    if (!hiGraphReadDisabled && sparse) {
+      try {
+        const { readHiGraphForHotel } = await import(
+          "../lib/hotel-intelligence/research-engine-v1/he-airtable-graph-reader-v1.js"
+        );
+        const { overlayHiGraphOnContactHotelGet } = await import(
+          "../lib/hotel-intelligence/contact-intelligence/he-hi-graph-contact-overlay-v1.js"
+        );
+        const graph = await readHiGraphForHotel(hotelId, {
+          includeContacts: true,
+          includePortfolio: false,
+        });
+        result = overlayHiGraphOnContactHotelGet(
+          result,
+          graph,
+          graph.orgContacts || [],
+        );
+      } catch (graphErr) {
+        console.warn(
+          "[contact-intelligence] hi-graph overlay skipped",
+          graphErr?.message || graphErr,
+        );
+      }
+    }
+
     return res.json({ success: true, ...result });
   } catch (err) {
     console.error("[contact-intelligence] hotel", err);

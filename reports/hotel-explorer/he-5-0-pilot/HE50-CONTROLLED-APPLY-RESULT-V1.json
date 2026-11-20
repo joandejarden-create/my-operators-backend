@@ -3,20 +3,24 @@
   "approvalContract": "HE50_CONDITIONAL_APPROVAL_V1",
   "standingAuth": {
     "standingAuthorization": true,
-    "authorizationVersion": "he-5-0-standing-authorization-v1",
+    "authorizationVersion": "he-5-0-standing-authorization-v2-expanded",
     "grantedAt": "2026-11-20",
+    "expandedAt": "2026-11-20",
     "pilotRunId": "he50_mullen_eight_hotel_2026_11_19",
     "baseId": "appCCUsuGsE1ifoLk",
     "globalUsdCap": 50,
     "applyAuthorized": true,
     "airtableWritesAllowed": true,
     "surfeAutomatic": false,
+    "surfePersistenceAllowed": false,
     "productionDeploy": false,
     "schemaChangesAllowed": false,
     "legacyHotelCensusWritesAllowed": false,
     "legacyHotelCensusTableIdBlocked": "tblgj2qEwxjTcg6q0",
     "ownershipProposedMustRemainProposed": true,
-    "stopMessage": "STANDING CONDITIONAL AUTHORIZATION — auto-apply only when all mutation gates pass; quarantine exceptions and continue.",
+    "guestSentimentUnlicensedPublicationForbidden": true,
+    "reusableGeographicEntities": true,
+    "stopMessage": "STANDING CONDITIONAL AUTHORIZATION V2 — auto-apply only when all mutation gates pass; quarantine exceptions and continue.",
     "reportStatuses": {
       "FULL": "AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED",
       "PARTIAL": "PARTIAL AUTO-APPLY — EXCEPTIONS QUARANTINED",
@@ -24,8 +28,8 @@
     }
   },
   "pilotRunId": "he50_mullen_eight_hotel_2026_11_19",
-  "startedAt": "2026-11-19T23:32:58.258Z",
-  "completedAt": "2026-11-19T23:33:07.401Z",
+  "startedAt": "2026-11-20T03:37:09.802Z",
+  "completedAt": "2026-11-20T03:37:12.042Z",
   "dryRun": false,
   "applyRequested": true,
   "hpcTableId": "tbl9aY5ijiuIzzWam",
@@ -34,10 +38,9 @@
     "total": 12,
     "executable": 10,
     "byClass": {
-      "AUTO_APPROVED_CANONICAL_UPDATE": 3,
+      "AUTO_APPROVED_CANONICAL_UPDATE": 8,
       "AUTO_APPROVED_CANONICAL_LINK": 2,
-      "SKIPPED_NO_CHANGE": 2,
-      "AUTO_APPROVED_CANONICAL_CREATE": 5
+      "SKIPPED_NO_CHANGE": 2
     }
   },
   "results": [
@@ -113,8 +116,8 @@
       "quarantineReason": "REFERENCE_PRIOR_DRY_RUN"
     },
     {
-      "mutationId": "M-NEW-ac_hotel_newtown_square",
-      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "mutationId": "M-UPD-ac_hotel_newtown_square",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
       "pilotKey": "ac_hotel_newtown_square",
       "applied": false,
       "dryRun": false,
@@ -122,10 +125,15 @@
       "opResults": [
         {
           "ok": true,
-          "kind": "HPC_CREATE",
+          "kind": "HPC_NULL_FILL",
           "skipped": true,
-          "reason": "collision_matched_existing_hpc",
+          "reason": "all_fields_already_populated",
           "recordId": "recF7DQBPDW5aUDoC",
+          "beforeSnapshot": {
+            "Rooms / Keys": 140,
+            "Official Property URL": "https://www.marriott.com/en-us/hotels/phlqc-ac-hotel-newtown-square/overview/",
+            "Canonical Property Name": "AC Hotel Newtown Square"
+          },
           "stages": [
             "RESEARCH_VERIFIED"
           ]
@@ -133,8 +141,8 @@
       ]
     },
     {
-      "mutationId": "M-NEW-carton_house_fairmont",
-      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "mutationId": "M-UPD-carton_house_fairmont",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
       "pilotKey": "carton_house_fairmont",
       "applied": false,
       "dryRun": false,
@@ -142,10 +150,15 @@
       "opResults": [
         {
           "ok": true,
-          "kind": "HPC_CREATE",
+          "kind": "HPC_NULL_FILL",
           "skipped": true,
-          "reason": "collision_matched_existing_hpc",
+          "reason": "all_fields_already_populated",
           "recordId": "recYf7HZWmCdWPaSd",
+          "beforeSnapshot": {
+            "Rooms / Keys": 169,
+            "Official Property URL": "https://www.cartonhouse.com/",
+            "Canonical Property Name": "Carton House, A Fairmont Hotel"
+          },
           "stages": [
             "RESEARCH_VERIFIED"
           ]
@@ -153,8 +166,8 @@
       ]
     },
     {
-      "mutationId": "M-NEW-hgi_newtown_square_radnor",
-      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "mutationId": "M-UPD-hgi_newtown_square_radnor",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
       "pilotKey": "hgi_newtown_square_radnor",
       "applied": false,
       "dryRun": false,
@@ -162,10 +175,15 @@
       "opResults": [
         {
           "ok": true,
-          "kind": "HPC_CREATE",
+          "kind": "HPC_NULL_FILL",
           "skipped": true,
-          "reason": "collision_matched_existing_hpc",
+          "reason": "all_fields_already_populated",
           "recordId": "recgaBAwa24wsl3xF",
+          "beforeSnapshot": {
+            "Rooms / Keys": 138,
+            "Official Property URL": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
+            "Canonical Property Name": "Hilton Garden Inn Newtown Square Radnor"
+          },
           "stages": [
             "RESEARCH_VERIFIED"
           ]
@@ -230,8 +248,8 @@
       ]
     },
     {
-      "mutationId": "M-NEW-secrets_papagayo",
-      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "mutationId": "M-UPD-secrets_papagayo",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
       "pilotKey": "secrets_papagayo",
       "applied": false,
       "dryRun": false,
@@ -239,10 +257,15 @@
       "opResults": [
         {
           "ok": true,
-          "kind": "HPC_CREATE",
+          "kind": "HPC_NULL_FILL",
           "skipped": true,
-          "reason": "collision_matched_existing_hpc",
+          "reason": "all_fields_already_populated",
           "recordId": "recFQ0WvGLbfK5Gpa",
+          "beforeSnapshot": {
+            "Rooms / Keys": 202,
+            "Official Property URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/",
+            "Canonical Property Name": "Secrets Papagayo Costa Rica"
+          },
           "stages": [
             "RESEARCH_VERIFIED"
           ]
@@ -250,8 +273,8 @@
       ]
     },
     {
-      "mutationId": "M-NEW-secrets_st_lucia",
-      "approvalClass": "AUTO_APPROVED_CANONICAL_CREATE",
+      "mutationId": "M-UPD-secrets_st_lucia",
+      "approvalClass": "AUTO_APPROVED_CANONICAL_UPDATE",
       "pilotKey": "secrets_st_lucia",
       "applied": false,
       "dryRun": false,
@@ -259,10 +282,15 @@
       "opResults": [
         {
           "ok": true,
-          "kind": "HPC_CREATE",
+          "kind": "HPC_NULL_FILL",
           "skipped": true,
-          "reason": "collision_matched_existing_hpc",
+          "reason": "all_fields_already_populated",
           "recordId": "recwZJuMcx6kA7f7I",
+          "beforeSnapshot": {
+            "Rooms / Keys": 355,
+            "Official Property URL": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/",
+            "Canonical Property Name": "Secrets St. Lucia Resort & Spa"
+          },
           "stages": [
             "RESEARCH_VERIFIED"
           ]
@@ -279,6 +307,6 @@
     "updatedHpc": 0,
     "evidenceCreated": 0
   },
-  "reportStatus": "PARTIAL AUTO-APPLY — EXCEPTIONS QUARANTINED",
+  "reportStatus": "AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED",
   "legacyHotelCensusAccess": "BLOCKED_CONFIRMED"
 }
