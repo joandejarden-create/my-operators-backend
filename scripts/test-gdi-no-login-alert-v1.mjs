@@ -56,7 +56,12 @@ assert.match(prioritiesSrc, /notifyLoginRequired:\s*false/);
 assert.match(prioritiesSrc, /getAuthHeaders/);
 
 assert.match(htmlSrc, /dealality-memberstack-auth\.js\?v=gdi-no-login-alert-v1/);
-assert.match(htmlSrc, /app\.js\?v=gdi-no-login-alert-v1/);
+// Cache marker may advance with later GDI auth UX fixes; app must still load.
+assert.match(
+  htmlSrc,
+  /app\.js\?v=gdi-(?:no-login-alert-v1|contact-reveal-auth-v1|contact-reveal-authz-v2)/,
+);
+assert.match(appSrc, /contactRevealFetch|notifyLoginRequired:\s*false/);
 
 // Runtime: authFetch with notifyLoginRequired:false must not call alert.
 const alerts = [];
@@ -137,7 +142,7 @@ console.log(
       silentOptionHonored: true,
       legacyAlertPreserved: true,
       gdiFetchNoAlertRetry: true,
-      cacheMarker: "gdi-no-login-alert-v1",
+      cacheMarker: "gdi-contact-reveal-auth-v1",
     },
     null,
     2,

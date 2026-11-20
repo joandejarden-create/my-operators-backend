@@ -1,0 +1,44 @@
+{
+  "suite": "gdi-contact-reveal-auth-states-v1",
+  "passed": true,
+  "rootCause": "External Railway GDI page has no Memberstack JWT; fetchFn→authFetch threw AUTH_REQUIRED with LOGIN_MSG before POST; reveal client catch displayed err.message for all failures",
+  "triggeringError": {
+    "layer": "browser",
+    "code": "AUTH_REQUIRED",
+    "message": "Please log in again to continue.",
+    "httpStatus": null,
+    "note": "POST never left the client on the observed failure path"
+  },
+  "localAcceptance": {
+    "baseUrl": "http://127.0.0.1:8095",
+    "signinRequired": {
+      "ok": true,
+      "state": "auth",
+      "loginAgainMessage": false,
+      "signInLink": true,
+      "screenshot": "screenshots/01-local-signin-required.png"
+    },
+    "mockProviderFound": {
+      "ok": true,
+      "query": "gdiContactRevealMock=1",
+      "state": "found",
+      "email": "alex.buyer@fixture.example",
+      "phone": "+1-202-555-0199",
+      "persisted": false,
+      "screenshot": "screenshots/02-local-mock-found.png"
+    },
+    "handlerUnit": {
+      "anonymous": "401 SIGN_IN_REQUIRED",
+      "signedInNoSurfeKey": "503 PROVIDER_UNAVAILABLE"
+    }
+  },
+  "liveProviderReadiness": {
+    "status": "NOT_CERTIFIED",
+    "paidSurfeCalls": 0,
+    "note": "Missing SURFE_API_KEY returns PROVIDER_UNAVAILABLE. Live Surfe requires separate founder authorization."
+  },
+  "railwayRetest": {
+    "status": "PENDING_IC_MERGE_DEPLOY",
+    "note": "GDI product chat does not merge; Integration Controller owns merge + deploy. Retest Railway after deploy SHA is known."
+  }
+}

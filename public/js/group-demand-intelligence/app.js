@@ -294,6 +294,42 @@
     });
   }
 
+  /**
+   * Contact reveal POST: convert browser-side AUTH_REQUIRED throws into a
+   * JSON 401 Response so the reveal client can show Sign-in required instead
+   * of the Memberstack "Please log in again" string for every failure.
+   * When a JWT is present, uses the same authenticated write path as other GDI posts.
+   */
+  function contactRevealFetch(url, opts) {
+    return fetchFn(url, withSilentAuthOptions(opts)).catch(function (err) {
+      if (
+        err &&
+        (err.code === "AUTH_REQUIRED" ||
+          err.authRequired ||
+          /please log in again/i.test(String((err && err.message) || "")))
+      ) {
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            ephemeral: true,
+            persisted: false,
+            surfePiiPersisted: false,
+            error: "SIGN_IN_REQUIRED",
+            message:
+              "Sign in to Dealality to look up email and phone. Open Group & Demand Intelligence from the Dealality app after signing in.",
+            contactDetails: null,
+            signInHref: "/app#/group-demand-intelligence",
+          }),
+          {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      throw err;
+    });
+  }
+
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
@@ -2294,7 +2330,7 @@
       setLoadingToast: function (on, message) {
         setLoading(on, message || "Retrieving contact details\u2026");
       },
-      fetchFn: fetchFn,
+      fetchFn: contactRevealFetch,
       plainFetch: plainFetch,
       surface: "drawer",
     });
