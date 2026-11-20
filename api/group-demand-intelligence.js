@@ -2810,6 +2810,31 @@ export async function postGdiContactReveal(req, res) {
   const body = req.body || {};
   const channel = String(body.channel || "both").toLowerCase();
 
+  // Hotel-scoped auth BEFORE opportunity load / provider / credits.
+  // Client hotelId, contactName, authorizeLiveProvider, useMock are never grants.
+  const {
+    assertGdiContactRevealAuthorization,
+    resolveContactRevealMockAllowance,
+  } = await import(
+    "../lib/group-demand-intelligence/gdi-contact-reveal-authorization-v1.js"
+  );
+  const access = assertGdiContactRevealAuthorization(req, { hotelId });
+  if (!access.ok) {
+    return res.status(access.status || 403).json({
+      ok: false,
+      ephemeral: true,
+      persisted: false,
+      surfePiiPersisted: false,
+      error: access.code,
+      message: access.message,
+      contactDetails: null,
+      hotelId,
+      opportunityId,
+      signInHref: access.signInHref || undefined,
+      reason: access.reason || undefined,
+    });
+  }
+
   let doc;
   try {
     doc = await loadOppDoc(hotelId);
@@ -2902,59 +2927,16 @@ export async function postGdiContactReveal(req, res) {
     secondary ||
     null;
 
-  // Mock: env GDI_CONTACT_REVEAL_MOCK=1, or explicit body.useMock on local
-  // worktree preview servers (never enables live Surfe / never spends credits).
-  // Production customer hosts must never honor fixture contact values — even if
-  // GDI_CONTACT_REVEAL_MOCK is accidentally set on the deploy host.
-  // Authorized test injection: signed-in Dealality user + matching
-  // X-Dealality-Gdi-Reveal-Test header vs GDI_CONTACT_REVEAL_TEST_INJECTION_TOKEN
-  // (never public-read / never anonymous).
-  const isProductionCustomerHost =
-    process.env.NODE_ENV === "production" &&
-    process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1";
-  const allowLocalMock =
-    !isProductionCustomerHost &&
-    (process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
-      process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1");
-  const signedIn = Boolean(req.dealalityUser || req.memberstackMemberId);
-  const expectedTestToken = String(
-    process.env.GDI_CONTACT_REVEAL_TEST_INJECTION_TOKEN || "",
-  ).trim();
-  const gotTestToken = String(
-    req.headers["x-dealality-gdi-reveal-test"] || "",
-  ).trim();
-  const allowAuthorizedTestInjection =
-    signedIn &&
-    expectedTestToken.length > 0 &&
-    gotTestToken.length > 0 &&
-    gotTestToken === expectedTestToken &&
-    (body.useMock === true || body.useMock === "1");
-  const useMock =
-    (allowLocalMock &&
-      (body.useMock === true ||
-        process.env.GDI_CONTACT_REVEAL_MOCK === "1")) ||
-    allowAuthorizedTestInjection;
-  // Live Surfe requires an explicit button authorize flag AND a signed-in user.
-  // Mock mode never calls Surfe and never persists PII.
+  // Isolated non-production mock only. Production customer hosts never honor
+  // fixture values, URL tokens, or client useMock alone. No anonymous mock.
+  const mockGate = resolveContactRevealMockAllowance(req, body, process.env);
+  const useMock = mockGate.allowMock === true;
+  // Live Surfe: explicit button flag + hotel-authorized Dealality user + not mock.
+  // Client authorizeLiveProvider is never sufficient without access.ok above.
   const authorizeLive =
-    body.authorizeLiveProvider === true && signedIn && !useMock;
+    body.authorizeLiveProvider === true && !useMock && access.ok === true;
 
   if (!useMock && !authorizeLive) {
-    if (!signedIn) {
-      return res.status(401).json({
-        ok: false,
-        ephemeral: true,
-        persisted: false,
-        surfePiiPersisted: false,
-        error: "SIGN_IN_REQUIRED",
-        message:
-          "Sign in to Dealality to look up email and phone. Open Group & Demand Intelligence from the Dealality app after signing in.",
-        contactDetails: null,
-        hotelId,
-        opportunityId,
-        signInHref: "/app#/group-demand-intelligence",
-      });
-    }
     return res.status(403).json({
       ok: false,
       ephemeral: true,
@@ -2962,7 +2944,7 @@ export async function postGdiContactReveal(req, res) {
       surfePiiPersisted: false,
       error: "LIVE_PROVIDER_NOT_AUTHORIZED",
       message:
-        "Contact lookup is not authorized for this session. Live Surfe is never called for share or anonymous viewers.",
+        "Contact lookup is not authorized for this session. Live Surfe requires a signed-in Dealality user with hotel access.",
       contactDetails: null,
       hotelId,
       opportunityId,

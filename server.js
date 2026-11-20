@@ -1286,11 +1286,12 @@ app.post(
   postGdiCustomerValidation
 );
 // User-initiated Surfe contact reveal (ephemeral). Never on share routes.
-// Live Surfe still requires a signed-in Dealality user inside the handler.
-// Mock/provider-sim is allowed under pilot read when GDI_CONTACT_REVEAL_MOCK=1.
+// Requires verified Memberstack + Dealality user; hotel scope enforced in handler.
+// Isolated non-production mock still requires the same hotel-authorized user.
 app.post(
   "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/contacts/reveal",
-  gdiPilotReadAuth,
+  memberstackAuth,
+  requireDealalityUser,
   postGdiContactReveal
 );
 app.post(

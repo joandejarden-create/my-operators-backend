@@ -48,20 +48,6 @@
     }
   }
 
-  function authorizedTestInjectionToken() {
-    try {
-      if (root.__GDI_CONTACT_REVEAL_TEST_TOKEN__) {
-        return String(root.__GDI_CONTACT_REVEAL_TEST_TOKEN__).trim();
-      }
-      var params = new URLSearchParams(
-        root.location && root.location.search ? root.location.search : "",
-      );
-      return text(params.get("gdiRevealTestToken") || "");
-    } catch (e) {
-      return "";
-    }
-  }
-
   function escHtml(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
@@ -162,8 +148,12 @@
     if (
       status === 403 &&
       (code === "INSUFFICIENT_PERMISSIONS" ||
+        code === "HOTEL_ACCESS_DENIED" ||
+        code === "FEATURE_NOT_PERMITTED" ||
+        code === "MEMBERSTACK_ID_INSUFFICIENT" ||
         code === "ACCESS_DENIED" ||
-        /permission/i.test(msg))
+        /permission/i.test(msg) ||
+        /does not have permission/i.test(msg))
     ) {
       return { kind: "auth", message: msg || MSG_PERMISSIONS, signIn: false };
     }
@@ -172,8 +162,12 @@
       (code === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
         code === "SHARE_VIEWER_BLOCKED")
     ) {
-      // Anonymous / share viewers hit this server gate — treat as sign-in.
-      return { kind: "auth", message: msg || MSG_SIGN_IN, signIn: true };
+      // Share / unauthorized session — sign-in when message points there.
+      return {
+        kind: "auth",
+        message: msg || MSG_SIGN_IN,
+        signIn: code === "SHARE_VIEWER_BLOCKED",
+      };
     }
     if (
       status === 402 ||
@@ -312,25 +306,18 @@
       }
 
       var useMock = wantsMock();
-      var testToken = authorizedTestInjectionToken();
       var revealUrl =
         "/api/group-demand-intelligence/hotels/" +
         encodeURIComponent(hotelId) +
         "/opportunities/" +
         encodeURIComponent(opportunityId) +
         "/contacts/reveal";
-      var headers = {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      };
-      // Authorized test injection only — never a customer public-read bypass.
-      if (testToken) {
-        headers["X-Dealality-Gdi-Reveal-Test"] = testToken;
-        useMock = true;
-      }
       var revealOpts = {
         method: "POST",
-        headers: headers,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           channel: channel,
           contactName: contactName,
@@ -341,11 +328,10 @@
         }),
       };
 
-      // Mock / authorized injection may use plainFetch; live always uses auth fetch.
-      var revealFetch =
-        useMock && !testToken
-          ? plainFetch(revealUrl, revealOpts)
-          : fetchFn(revealUrl, revealOpts);
+      // Always authenticated fetch — mock still requires hotel-authorized session.
+      // plainFetch is unused for reveal (kept in opts for callers / future).
+      void plainFetch;
+      var revealFetch = fetchFn(revealUrl, revealOpts);
 
       revealFetch
         .then(function (r) {

@@ -97,7 +97,32 @@ assertKind(
     },
   },
   "auth",
+  { signIn: false },
+);
+assertKind(
+  "403 SHARE_VIEWER_BLOCKED",
+  {
+    status: 403,
+    data: {
+      error: "SHARE_VIEWER_BLOCKED",
+      message: "Contact enrichment is not available on share surfaces.",
+    },
+  },
+  "auth",
   { signIn: true },
+);
+assertKind(
+  "403 HOTEL_ACCESS_DENIED",
+  {
+    status: 403,
+    data: {
+      error: "HOTEL_ACCESS_DENIED",
+      message:
+        "Your account does not have permission to look up contact details for this hotel.",
+    },
+  },
+  "auth",
+  { signIn: false, match: /permission/i },
 );
 
 // 3) Credits / provider / miss are distinct from login
@@ -149,11 +174,14 @@ assert.match(app, /SIGN_IN_REQUIRED/);
 assert.match(app, /fetchFn:\s*contactRevealFetch/);
 assert.match(api, /SIGN_IN_REQUIRED/);
 assert.match(api, /PROVIDER_UNAVAILABLE/);
-assert.match(api, /GDI_CONTACT_REVEAL_TEST_INJECTION_TOKEN/);
-assert.match(api, /x-dealality-gdi-reveal-test/i);
+assert.match(api, /assertGdiContactRevealAuthorization/);
+assert.match(api, /resolveContactRevealMockAllowance/);
 assert.match(api, /getSurfeApiKeyFromEnv/);
-assert.match(server, /gdiPilotReadAuth[\s\S]*postGdiContactReveal/);
-assert.match(html, /gdi-contact-reveal-auth-v1/);
+assert.match(
+  server,
+  /memberstackAuth[\s\S]{0,80}requireDealalityUser[\s\S]{0,80}postGdiContactReveal/,
+);
+assert.match(html, /gdi-contact-reveal-authz-v2/);
 
 // Client must not surface LOGIN_MSG as catch-all for non-auth failures
 const clientSrc = readFileSync(
@@ -186,7 +214,7 @@ console.log(
         "contactRevealFetch → SIGN_IN_REQUIRED Response",
         "classifyRevealFailure distinct states",
         "server SIGN_IN_REQUIRED vs PROVIDER_UNAVAILABLE",
-        "authorized test injection (signed-in + token)",
+        "hotel-scoped Dealality user authorization",
       ],
     },
     null,
