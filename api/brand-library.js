@@ -686,6 +686,19 @@ function normalizeBrandExplorerPresentationRecords(records) {
     else if (sortRaw != null && sortRaw !== '') sort = parseFloat(String(sortRaw).replace(/,/g, '')) || 0;
     const imageUrl = firstAttachmentUrlFromFields(f);
     const imageFilename = firstAttachmentFilenameFromFields(f);
+    // Prefer durable delivery URL (fresh Airtable metadata) over caching signed CDN URLs.
+    const imageAtt = (() => {
+      const names = ["Image", "Images", "Scenario Image", "Attachments", "Photo", "Photos"];
+      for (const name of names) {
+        const val = getFieldValue(f, name);
+        if (Array.isArray(val) && val[0] && typeof val[0] === "object") return val[0];
+      }
+      return null;
+    })();
+    const imageAttachmentId = imageAtt?.id ? String(imageAtt.id) : "";
+    const imageDeliveryUrl = rec.id && imageUrl
+      ? `/api/brand-library/presentation-image/${encodeURIComponent(rec.id)}`
+      : "";
     const summaryUrlRaw = (
       getFieldValue(f, "Summary URL") ??
       getFieldValue(f, "View Summary URL") ??
@@ -724,7 +737,11 @@ function normalizeBrandExplorerPresentationRecords(records) {
       title,
       body,
       sort,
-      imageUrl,
+      // Prefer durable delivery endpoint in UI; keep raw imageUrl for diagnostics.
+      imageUrl: imageDeliveryUrl || imageUrl,
+      imageSourceUrl: imageUrl || "",
+      imageDeliveryUrl: imageDeliveryUrl || "",
+      imageAttachmentId,
       imageFilename,
       summaryUrl,
       caseSummaryOverview: sanitizeExternalCopy(caseSummaryOverview),

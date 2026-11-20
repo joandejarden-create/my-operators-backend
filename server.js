@@ -290,6 +290,7 @@ import {
   postBrandExplorerComparePublish,
   getBrandExplorerComparePublishStatus,
 } from "./api/brand-explorer-compare-publish.js";
+import { getBrandExplorerPresentationImage } from "./api/brand-explorer-presentation-image.js";
 import {
   getBrandExplorerBatchPortfolio,
   getBrandExplorerBatchBrand,
@@ -3438,6 +3439,8 @@ app.get("/api/brand-library/operational-support", getOperationalSupportByBrandId
 app.get("/api/brand-library/brands", getBrandLibraryBrands);
 app.get("/api/brand-library/brand", getBrandLibraryBrandById);
 // Brand Explorer Comparison Studio — local founder review + gated publish (default DRY_RUN; no production writes until founder activation)
+app.get("/api/brand-library/presentation-image/:recordId", getBrandExplorerPresentationImage);
+app.get("/api/brand-explorer/presentation-image/:recordId", getBrandExplorerPresentationImage);
 app.get("/api/brand-explorer-compare/review", ...internalRunbookAuth, getBrandExplorerCompareReview);
 app.post("/api/brand-explorer-compare/review", ...internalRunbookAuth, postBrandExplorerCompareReview);
 app.get("/api/brand-explorer-compare/publish/status", ...internalRunbookAuth, getBrandExplorerComparePublishStatus);
