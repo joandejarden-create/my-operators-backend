@@ -46,11 +46,21 @@ assert.match(
 
 assert.match(host, /hotel-explorer\.js/, "ranked-list host loads Hotel Explorer");
 assert.match(host, /hotel-detail-panel\.js/, "ranked-list host keeps detail panel");
+assert.match(
+  host,
+  /hotel-intelligence-workspace\.js/,
+  "ranked-list host must load HotelIntelligenceWorkspace for HI tabs",
+);
+assert.match(
+  host,
+  /hotel-intelligence-workspace\.css/,
+  "ranked-list host must load HI workspace CSS",
+);
 assert.match(host, /auth-helper\.js/, "ranked-list host loads auth helper for internal-preview");
 assert.match(
   host,
-  /hotel-detail-panel\.js[\s\S]*hotel-explorer\.js/,
-  "Hotel Explorer must load after Hotel Detail Panel"
+  /hotel-detail-panel\.js[\s\S]*hotel-intelligence-workspace\.js[\s\S]*hotel-explorer\.js/,
+  "Hotel Explorer must load after Hotel Detail Panel + HI workspace",
 );
 
 assert.match(
