@@ -120,6 +120,12 @@
             // Founder Comparison Studio — always open internal preview on the active origin.
             defaultQuery: { beInternalPreview: '1' }
         },
+        '/brand-explorer-batch-review': {
+            file: '/brand-explorer-batch-review.html',
+            title: 'Brand Explorer Batch Review',
+            roles: ['admin'],
+            internalRunbookOnly: true
+        },
         '/brand-explorer-export': { file: '/brand-explorer-export.html', title: 'Brand Explorer PDF' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
@@ -354,6 +360,14 @@
                             roles: ['admin'],
                             internalRunbookOnly: true,
                             navId: 'brand-explorer-comparison'
+                        },
+                        {
+                            // Factory 2.0 portfolio review — batch research / staged candidates.
+                            label: 'Brand Explorer Batch Review',
+                            route: '/brand-explorer-batch-review',
+                            roles: ['admin'],
+                            internalRunbookOnly: true,
+                            navId: 'brand-explorer-batch-review'
                         },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {

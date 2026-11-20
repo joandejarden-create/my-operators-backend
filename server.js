@@ -290,6 +290,13 @@ import {
   postBrandExplorerComparePublish,
   getBrandExplorerComparePublishStatus,
 } from "./api/brand-explorer-compare-publish.js";
+import {
+  getBrandExplorerBatchPortfolio,
+  getBrandExplorerBatchBrand,
+  getBrandExplorerBatchQueue,
+  postBrandExplorerBatchApprove,
+  getBrandExplorerBatchApproval,
+} from "./api/brand-explorer-batch-review.js";
 import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
@@ -3435,6 +3442,11 @@ app.get("/api/brand-explorer-compare/review", ...internalRunbookAuth, getBrandEx
 app.post("/api/brand-explorer-compare/review", ...internalRunbookAuth, postBrandExplorerCompareReview);
 app.get("/api/brand-explorer-compare/publish/status", ...internalRunbookAuth, getBrandExplorerComparePublishStatus);
 app.post("/api/brand-explorer-compare/publish", ...internalRunbookAuth, postBrandExplorerComparePublish);
+app.get("/api/brand-explorer-batch-review/portfolio", ...internalRunbookAuth, getBrandExplorerBatchPortfolio);
+app.get("/api/brand-explorer-batch-review/queue", ...internalRunbookAuth, getBrandExplorerBatchQueue);
+app.get("/api/brand-explorer-batch-review/brand/:brandId", ...internalRunbookAuth, getBrandExplorerBatchBrand);
+app.post("/api/brand-explorer-batch-review/approve", ...internalRunbookAuth, postBrandExplorerBatchApprove);
+app.get("/api/brand-explorer-batch-review/approvals/:approvalId", ...internalRunbookAuth, getBrandExplorerBatchApproval);
 app.get("/api/brand-library/brand-status-options", getBrandStatusOptions);
 app.patch("/api/brand-library/brand/:recordId", updateBrandBasicsById);
 app.patch("/api/brand-library/brand/:recordId/sustainability-esg", updateSustainabilityEsgByBrandId);
