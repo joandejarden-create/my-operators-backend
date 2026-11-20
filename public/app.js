@@ -170,7 +170,8 @@
             file: '/app/admin/surfe-usage.html',
             title: 'Surfe Usage',
             roles: ['admin'],
-            internalRunbookOnly: true
+            // Platform admins — same visibility class as AI Demand Admin (not runbook-gated).
+            internalRunbookOnly: false
         },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
@@ -362,7 +363,7 @@
                             label: 'Surfe Usage',
                             route: '/admin/surfe-usage',
                             roles: ['admin'],
-                            internalRunbookOnly: true,
+                            internalRunbookOnly: false,
                             navId: 'surfe-usage'
                         },
                         {
@@ -964,6 +965,9 @@
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') {
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
+        if (normalized === '/admin/surfe-usage') {
+            return hasAdminNavAccess();
+        }
         if (isAdminExclusiveRoute(normalized) && !hasAdminNavAccess()) return false;
         var navRole = resolveCurrentNavRole();
         if (isRouteAllowedForRole(normalized, navRole)) return true;
@@ -978,7 +982,7 @@
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
         if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
-        if (normalized === '/admin/surfe-usage') return '/support';
+        if (normalized === '/admin/surfe-usage') return '/home';
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') return '/home';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }

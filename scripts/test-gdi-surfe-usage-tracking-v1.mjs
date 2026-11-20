@@ -384,6 +384,12 @@ assert.equal(classifySurfeLookupStatus({ error: "TIMEOUT" }), "error");
   const appJs = fs.readFileSync(path.join(ROOT, "public/app.js"), "utf8");
   assert.match(appJs, /\/admin\/surfe-usage/);
   assert.match(appJs, /Surfe Usage/);
+  assert.match(appJs, /navId:\s*'surfe-usage'/);
+  // Admin-visible (not runbook-gated) — founders/admins must see the menu item
+  assert.match(
+    appJs,
+    /label:\s*'Surfe Usage'[\s\S]*?internalRunbookOnly:\s*false/,
+  );
   assert.match(appJs, /adminResources/);
   assert.match(appJs, /normalized === '\/admin\/surfe-usage'/);
 
