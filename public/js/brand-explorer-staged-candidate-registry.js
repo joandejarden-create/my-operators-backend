@@ -1489,6 +1489,227 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: 'e3d0b349cd4ed3b9e4b45f443e3005a6bbbcbd46713c0490817ab0908e66e317'
+    },
+    {
+      id: 'recWPEvxBQxVVzSq3',
+      slug: 'radisson-blu-by-choice',
+      name: 'Radisson Blu by Choice',
+      overlayUrl: '/brand-explorer-phase2e-preview/radisson-blu-by-choice-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '1182042be1a582b1adbea618efb7481859a09259bada315a196c576a8d669629'
+    },
+    {
+      id: 'recOzH5iAE1xEjyD0',
+      slug: 'comfort-inn-suites',
+      name: 'Comfort Inn & Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/comfort-inn-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd25fe766858d72644e8ee71fbecaa8ed79916f251e2a2ce7dc2c0bf0ff8725c6'
+    },
+    {
+      id: 'recRyvM8OmLlDj9G7',
+      slug: 'radisson-individuals-by-choice',
+      name: 'Radisson Individuals by Choice',
+      overlayUrl: '/brand-explorer-phase2e-preview/radisson-individuals-by-choice-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '419fb582613e17b89923f77a2ff0167ec338a88d93f48027acfbf1f9d3d50a4a'
+    },
+    {
+      id: 'recaayt9u7YYg8h7Y',
+      slug: 'country-inn-suites-by-choice',
+      name: 'Country Inn & Suites by Choice',
+      overlayUrl: '/brand-explorer-phase2e-preview/country-inn-suites-by-choice-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '54cb14fa0851613f4f2adb0d8e539f577e51fc16c5afdafa9bbd39e27d7b1eb6'
+    },
+    {
+      id: 'recsOd51NzRPYsMko',
+      slug: 'woodspring-suites',
+      name: 'WoodSpring Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/woodspring-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f42e9aac95a71f73c6ca5b1222525d5f448d099f53a321b157a176ef9db5af7c'
+    },
+    {
+      id: 'recAT3p3d7LAZZNkb',
+      slug: 'cambria-hotels',
+      name: 'Cambria Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/cambria-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '0390460ac69eb1648b5236c9b51c38804fa4ad4f6a9a4f13bd6da46c4dae7ace'
+    },
+    {
+      id: 'recq3vCeOn8lQdY4P',
+      slug: 'clarion-pointe',
+      name: 'Clarion Pointe',
+      overlayUrl: '/brand-explorer-phase2e-preview/clarion-pointe-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '4b4dc671d65f808522d2f5f409c0e734a128c52e88258d4021821d6f6322edbd'
+    },
+    {
+      id: 'recsbxr7pMGMN0N6R',
+      slug: 'clarion',
+      name: 'Clarion',
+      overlayUrl: '/brand-explorer-phase2e-preview/clarion-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'eab822c22ad98c044ce595af4a6be473c77508d14700ec3c0ec8c0a4f12b05bc'
+    },
+    {
+      id: 'recWpSnsKxoUTcWs2',
+      slug: 'wyndham-grand',
+      name: 'Wyndham Grand',
+      overlayUrl: '/brand-explorer-phase2e-preview/wyndham-grand-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'aebecf79e5f93eb430ffeaa5216fc9ee6c541efdf27603b638c792a87a495cc5'
+    },
+    {
+      id: 'rec4w2XsL3yDUsv2C',
+      slug: 'dolce-hotels-resorts-by-wyndham',
+      name: 'Dolce Hotels & Resorts by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/dolce-hotels-resorts-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '7d7da73d38a3ea21416adc76e427192ad644fdf63caf1a5a69e2c29d936de40f'
+    },
+    {
+      id: 'recXIwHYrvJ89a1yK',
+      slug: 'tryp-by-wyndham',
+      name: 'TRYP by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/tryp-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '6a58c46c20c0239f0230ed3d27c9f3b2feaa9311a6a4cf19a3c35e7ad2bf6671'
+    },
+    {
+      id: 'recE5LoJH1EaszkqG',
+      slug: 'esplendor-by-wyndham',
+      name: 'Esplendor by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/esplendor-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '1c9c1f6787a4acef4fb450cd623613c557dfd4a07a29f9348cb2e99e11459a02'
+    },
+    {
+      id: 'rec72kWHpqp5awuZY',
+      slug: 'registry-collection-hotels',
+      name: 'Registry Collection Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/registry-collection-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'f0387fe800b490b3faa9e78f25e15db7037141a8fa07c83e7995f286c211641a'
+    },
+    {
+      id: 'recSgIQ0bhRpPXZbU',
+      slug: 'caption-by-hyatt',
+      name: 'Caption by Hyatt',
+      overlayUrl: '/brand-explorer-phase2e-preview/caption-by-hyatt-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '2dd02364b832bd9255caab8b19c0a86be6f281251a00d525c0ff5040b4145079'
+    },
+    {
+      id: 'rec4oSoJsqHtGfFYL',
+      slug: 'jdv-by-hyatt',
+      name: 'JdV by Hyatt',
+      overlayUrl: '/brand-explorer-phase2e-preview/jdv-by-hyatt-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'ea369b418b88f64c13ac317bc5fd255f87c8c48c5b1f3465c2000bea6abbf581'
+    },
+    {
+      id: 'recDQwcMFontK2CSP',
+      slug: 'unbound-collection-by-hyatt',
+      name: 'The Unbound Collection by Hyatt',
+      overlayUrl: '/brand-explorer-phase2e-preview/unbound-collection-by-hyatt-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '74f148ed76e2fbb51cd3f201e9c3bc917fa90e633c37b21c3912150097d9555e'
+    },
+    {
+      id: 'recmK2PWDTHW6Y6tx',
+      slug: 'sonesta-simply-suites',
+      name: 'Sonesta Simply Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/sonesta-simply-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-11-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '292c1faa9d79921a49c48383c1be120ce5fc54db62f9f413181d031555b830af'
     }
   ];
 
@@ -1650,6 +1871,23 @@
     if (/^radisson\b/i.test(name) && !/red|blu|individuals|collection/i.test(name)) return bySlug('radisson-by-choice');
     if (/preferred\s*hotels/i.test(name)) return bySlug('preferred-hotels-and-resorts');
     if (/small\s*luxury\s*hotels|\bslh\b/i.test(name)) return bySlug('small-luxury-hotels-of-the-world');
+    if (/radisson\s*blu/i.test(name)) return bySlug('radisson-blu-by-choice');
+    if (/comfort\s*inn\s*&\s*suites|comfort\s*inn\s*and\s*suites/i.test(name)) return bySlug('comfort-inn-suites');
+    if (/radisson\s*individuals/i.test(name)) return bySlug('radisson-individuals-by-choice');
+    if (/country\s*inn\s*&\s*suites|country\s*inn\s*and\s*suites/i.test(name)) return bySlug('country-inn-suites-by-choice');
+    if (/woodspring/i.test(name)) return bySlug('woodspring-suites');
+    if (/^cambria\b/i.test(name)) return bySlug('cambria-hotels');
+    if (/clarion\s*pointe/i.test(name)) return bySlug('clarion-pointe');
+    if (/^clarion\b/i.test(name) && !/pointe/i.test(name)) return bySlug('clarion');
+    if (/wyndham\s*grand/i.test(name)) return bySlug('wyndham-grand');
+    if (/\bdolce\b/i.test(name)) return bySlug('dolce-hotels-resorts-by-wyndham');
+    if (/\btryp\b/i.test(name)) return bySlug('tryp-by-wyndham');
+    if (/esplendor/i.test(name)) return bySlug('esplendor-by-wyndham');
+    if (/registry\s*collection/i.test(name)) return bySlug('registry-collection-hotels');
+    if (/caption\s*by\s*hyatt|^caption\b/i.test(name)) return bySlug('caption-by-hyatt');
+    if (/joie\s*de\s*vivre|\bjdv\b/i.test(name)) return bySlug('jdv-by-hyatt');
+    if (/unbound\s*collection/i.test(name)) return bySlug('unbound-collection-by-hyatt');
+    if (/sonesta\s*simply\s*suites/i.test(name)) return bySlug('sonesta-simply-suites');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
