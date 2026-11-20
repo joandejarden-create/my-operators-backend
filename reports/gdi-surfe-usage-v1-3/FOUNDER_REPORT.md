@@ -1,7 +1,9 @@
 # Surfe Usage V1.3 — Founder Report
 
 **Date:** 2026-11-20  
+**PR:** https://github.com/joandejarden-create/my-operators-backend/pull/498 (`OPEN`)  
 **Branch:** `feat/gdi-surfe-usage-v1-3-ui-attribution` (from PR #497 tip `706fc97d0`)  
+**HEAD:** `de3529ebd`  
 **Persistence classification:** `PERSISTENCE_DESIGNED` (unchanged from V1.2)  
 **STOP:** No production deploy. No Airtable table create. No paid Surfe calls.
 
@@ -115,9 +117,10 @@ CI runs on the PR after push.
 ## 11. PR and integration status
 
 - Builds on open PR **#497** (V1.2) tip  
-- Focused V1.3 PR opened from `feat/gdi-surfe-usage-v1-3-ui-attribution`  
+- Focused V1.3 PR: **#498** — https://github.com/joandejarden-create/my-operators-backend/pull/498  
 - Registered `ws-gdi` left on dirty `feat/gdi-google-style-contact-search-before-surfe-v1` (preserved)  
 - **Do not** cut over production or Integrated Staging until founder approval  
+- Preview (worktree): `http://127.0.0.1:8095/app/admin/surfe-usage-v13-layout-preview.html`  
 
 ### Final acceptance (local V1.3)
 
