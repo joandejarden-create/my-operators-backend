@@ -14,39 +14,60 @@ if (missing.length > 0) {
 }
 
 // DEV: self-identify server file and working dir; guard against wrong folder.
-// Canonical localhost:8080 is reserved for checkout basename `my-operators-backend`.
-// Feature worktrees (my-operators-backend-*) may run on isolated ports only.
+// localhost:8080 is reserved for Dealality Integrated Staging (ws-integrated-staging)
+// or legacy primary basename. Product worktrees (ws-*) must never claim 8080 —
+// DEALALITY_CANONICAL_CHECKOUT=1 is NOT sufficient to override that.
+import {
+  mayBindPort8080,
+  isIntegratedStagingCheckout,
+  isProductWorktreeCheckout,
+  INTEGRATED_STAGING_DEFAULT_PATH,
+} from "./lib/dealality-dev-os/integrated-staging-v1.js";
+
 const serverPath = new URL(import.meta.url).pathname;
 const cwd = process.cwd();
 const cwdBase = cwd.replace(/[\\/]+$/, "").split(/[\\/]/).pop() || "";
 const listenPort = Number(process.env.PORT || 8080);
-const isCanonicalCheckout = cwdBase === "my-operators-backend" || cwdBase === "my-operators-backend-canonical-main" || process.env.DEALALITY_CANONICAL_CHECKOUT === "1";
-const isDealalityWorktree = /^my-operators-backend($|-)/.test(cwdBase);
+const canBind8080 = mayBindPort8080(cwd, process.env);
+const isDealalityWorktree =
+  /^my-operators-backend($|-)/.test(cwdBase) ||
+  cwdBase === "ws-integrated-staging" ||
+  isIntegratedStagingCheckout(cwd) ||
+  /^ws-/.test(cwdBase);
 console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
 console.log("Checkout basename:", cwdBase);
 console.log("Listen port:", listenPort);
 if (process.env.NODE_ENV !== "production") {
-  if (listenPort === 8080 && !isCanonicalCheckout) {
+  if (listenPort === 8080 && !canBind8080) {
     console.error(
-      "ERROR: Port 8080 is reserved for the canonical my-operators-backend checkout."
+      "ERROR: Port 8080 is reserved for Dealality Integrated Staging."
     );
+    console.error("Expected checkout:", INTEGRATED_STAGING_DEFAULT_PATH);
     console.error("Current directory:", cwd);
-    console.error(
-      "Start feature worktrees on an isolated PORT (e.g. 8091), or run from C:\\Dev\\dealality\\my-operators-backend."
-    );
+    if (isProductWorktreeCheckout(cwd)) {
+      console.error(
+        "Product worktrees must use an isolated PORT (e.g. 8091). DEALALITY_CANONICAL_CHECKOUT cannot claim 8080."
+      );
+    }
     console.error("Stopping.");
     process.exit(1);
   }
   if (!isDealalityWorktree && process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1") {
     console.error("ERROR: Server started from unexpected directory:", cwd);
-    console.error("Expected a my-operators-backend* checkout.");
+    console.error("Expected a Dealality registered checkout or DEALALITY_ALLOW_WORKTREE_SERVER=1.");
     console.error("Stopping.");
     process.exit(1);
   }
-  if (!isCanonicalCheckout) {
+  if (listenPort === 8080 && isIntegratedStagingCheckout(cwd)) {
+    console.log("[dealality-staging] Serving INTEGRATED STAGING on port 8080.");
+  } else if (listenPort === 8080) {
     console.warn(
-      `[dealality-dev] Non-canonical worktree serving on port ${listenPort} (8080 reserved for main checkout).`
+      `[dealality-dev] Port 8080 bound from legacy-allowed basename ${cwdBase}. Prefer ${INTEGRATED_STAGING_DEFAULT_PATH}.`
+    );
+  } else if (!canBind8080) {
+    console.warn(
+      `[dealality-dev] Non-staging worktree serving on port ${listenPort} (8080 reserved for integrated staging).`
     );
   }
 }
@@ -647,6 +668,7 @@ import {
   getAdminSurfeUsageSummary,
   getAdminSurfeUsageEvents,
 } from "./api/admin-surfe-usage.js";
+import { getAdminIntegratedStagingStatus } from "./api/admin-integrated-staging-status.js";
 import {
   postAcquisitionConnectionsPreview,
   postAcquisitionConnectionsImport,
@@ -1685,6 +1707,11 @@ app.get(
 // GDI Surfe Usage — admin-only non-PII usage telemetry (on-demand reveal accounting)
 app.get("/api/admin/surfe-usage/summary", ...adminAuth, getAdminSurfeUsageSummary);
 app.get("/api/admin/surfe-usage/events", ...adminAuth, getAdminSurfeUsageEvents);
+app.get(
+  "/api/admin/integrated-staging/status",
+  ...adminAuth,
+  getAdminIntegratedStagingStatus,
+);
 
 // AI Demand Leak Audit — free diagnostic (sample + client report + admin)
 const adpLeakAuditAdminAuth = adminAuth;
