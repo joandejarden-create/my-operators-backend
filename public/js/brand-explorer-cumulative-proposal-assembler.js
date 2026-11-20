@@ -333,30 +333,22 @@
       }
     }
 
-    // Key Benefits & Program Strengths (loyalty.proof): EXACT 6 cards.
+    // Key Benefits & Program Strengths (loyalty.proof): EXACT 6 — Factory 1.0/2.0 permanent.
     if (/^loyalty\.proof$/i.test(nz(slotKey))) {
       var REQUIRED_LOYALTY_PROOF = 6;
-      if (pq.substantiveCount > 0 && pq.substantiveCount < REQUIRED_LOYALTY_PROOF) {
-        return {
-          provenance:
-            cq.substantiveCount >= REQUIRED_LOYALTY_PROOF
-              ? PROVENANCE.RETAINED_FROM_CURRENT
-              : PROVENANCE.INCOMPLETE_DRAFT,
-          applyCandidate: false,
-          reason: 'loyalty_proof_requires_exact_six_cards',
-          currentQuality: cq,
-          candidateQuality: pq
-        };
-      }
-      if (
+      var candIncomplete =
+        pq.substantiveCount > 0 && pq.substantiveCount < REQUIRED_LOYALTY_PROOF;
+      var candRegression =
         cq.substantiveCount >= REQUIRED_LOYALTY_PROOF &&
         pq.substantiveCount > 0 &&
-        pq.substantiveCount !== REQUIRED_LOYALTY_PROOF
-      ) {
+        pq.substantiveCount !== REQUIRED_LOYALTY_PROOF;
+      if (candIncomplete || candRegression) {
         return {
           provenance: PROVENANCE.INCOMPLETE_DRAFT,
           applyCandidate: false,
-          reason: 'loyalty_proof_cardinality_regression',
+          reason: candIncomplete
+            ? 'loyalty_proof_requires_exact_six_cards'
+            : 'loyalty_proof_cardinality_regression',
           currentQuality: cq,
           candidateQuality: pq
         };
