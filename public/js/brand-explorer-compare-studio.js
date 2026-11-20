@@ -92,7 +92,9 @@
     provenanceBySlot: {},
     highlightChanges: true,
     highlightStats: null,
-    issuesFilter: 'all'
+    issuesFilter: 'all',
+    // Monotonic brand-load generation — ignore stale async completions after switch.
+    loadGeneration: 0
   };
 
   function $(sel, root) {
@@ -1679,6 +1681,37 @@
     return 'fnv1a:' + sha256HexSync(payload);
   }
 
+  function assertOverlayMatchesBrand(cfg, overlay, usedUrl) {
+    if (!overlay || typeof overlay !== 'object') {
+      throw new Error('Staged overlay at ' + usedUrl + ' is empty or invalid');
+    }
+    var overlayId = nz(overlay.brandId || overlay.id || overlay.recordId);
+    var overlaySlug = nz(overlay.slug || overlay.brandSlug).toLowerCase();
+    var overlayName = nz(overlay.brandName || overlay.name);
+    var cfgId = nz(cfg.id);
+    var cfgSlug = nz(cfg.slug).toLowerCase();
+    var idMismatch = overlayId && cfgId && overlayId !== cfgId;
+    var slugMismatch = overlaySlug && cfgSlug && overlaySlug !== cfgSlug;
+    if (idMismatch || slugMismatch) {
+      throw new Error(
+        'Staged overlay identity mismatch for ' +
+          (cfg.name || cfgSlug || cfgId) +
+          ': expected id/slug ' +
+          cfgId +
+          '/' +
+          cfgSlug +
+          ' but ' +
+          usedUrl +
+          ' has ' +
+          overlayId +
+          '/' +
+          overlaySlug +
+          (overlayName ? ' (' + overlayName + ')' : '') +
+          '. Refusing to render cross-brand leftover content.'
+      );
+    }
+  }
+
   async function loadRightBrand(cfg, leftBrand) {
     // Cumulative proposal: CURRENT baseline + only complete non-regressive staged changes.
     // Refuse silent older Phase 2F/2G fallback. Never replace complete content with weaker reconstruction.
@@ -1695,6 +1728,7 @@
           '). Silent fallback to older Phase 2F/2G is forbidden.'
       );
     }
+    assertOverlayMatchesBrand(cfg, overlay, usedUrl);
     if (cfg.manifestUrl) {
       try {
         state.manifest = await fetchJson(cfg.manifestUrl);
@@ -2184,10 +2218,52 @@
     loadBrand(cfg);
   }
 
+  function clearBrandColumnsForLoad(cfg) {
+    // Immediately drop prior brand columns so a failed/slow switch cannot leave
+    // Choice/Sleep Inn (etc.) content visible under a different brand label.
+    state.leftBlocks = [];
+    state.rightBlocks = [];
+    state.leftBrand = null;
+    state.rightBrand = null;
+    state.leftMeta = null;
+    state.rightMeta = null;
+    state.rightOverlayUrl = null;
+    state.diffs = [];
+    state.assembly = null;
+    state.incompleteDrafts = [];
+    state.provenanceBySlot = {};
+    state.scorecard = null;
+    state.manifest = null;
+    state.highlightStats = null;
+    state.selectedSlot = null;
+    state.leftSource = 'pending';
+    var leftTag = $('#becsLeftTag');
+    var rightTag = $('#becsRightTag');
+    var leftMetaEl = $('#becsLeftMeta');
+    var rightMetaEl = $('#becsRightMeta');
+    if (leftTag) leftTag.textContent = 'Loading CURRENT for ' + (cfg.name || cfg.slug || cfg.id) + '…';
+    if (rightTag) rightTag.textContent = 'Loading PROPOSED for ' + (cfg.name || cfg.slug || cfg.id) + '…';
+    if (leftMetaEl) leftMetaEl.textContent = 'ID ' + cfg.id + ' · loading…';
+    if (rightMetaEl) {
+      rightMetaEl.textContent = 'staged ' + (cfg.overlayUrl || '—') + ' · loading…';
+      rightMetaEl.setAttribute('data-becs-base-meta', rightMetaEl.textContent);
+    }
+  }
+
+  function isStaleBrandLoad(loadGen, cfg) {
+    if (loadGen !== state.loadGeneration) return true;
+    if (!state.brand || state.brand.id !== cfg.id) return true;
+    var brandSel = $('#becsBrand');
+    if (brandSel && brandSel.value && brandSel.value !== cfg.id) return true;
+    return false;
+  }
+
   async function loadBrand(cfg) {
+    var loadGen = ++state.loadGeneration;
     state.brand = cfg;
+    clearBrandColumnsForLoad(cfg);
     var paired = $('#becsPairedDoc');
-    if (paired) paired.innerHTML = '<p class="becs-muted">Loading…</p>';
+    if (paired) paired.innerHTML = '<p class="becs-muted">Loading ' + escapeHtml(cfg.name || cfg.slug || '') + '…</p>';
     var subnav = $('#becsSubnav');
     if (subnav) subnav.innerHTML = '';
     loadReviews();
@@ -2196,8 +2272,10 @@
       if (!state.contract) {
         state.contract = await fetchJson('/brand-explorer-phase2e-preview/subsection-parity-contract-v1.json');
       }
+      if (isStaleBrandLoad(loadGen, cfg)) return;
       if (state.rendererParity) {
         await loadGate1Payload();
+        if (isStaleBrandLoad(loadGen, cfg)) return;
         document.body.classList.add('becs-gate1');
         setStudioBadge('gate1');
         syncModeButtons();
@@ -2238,8 +2316,9 @@
           state.registry = null;
         }
       }
+      if (isStaleBrandLoad(loadGen, cfg)) return;
       try {
-        state.scorecard = await fetchJson(cfg.scorecardUrl);
+        state.scorecard = cfg.scorecardUrl ? await fetchJson(cfg.scorecardUrl) : null;
       } catch (e) {
         state.scorecard = null;
       }
@@ -2247,13 +2326,24 @@
         var persisted = await fetchJson(
           '/api/brand-explorer-compare/review?brandId=' + encodeURIComponent(cfg.id)
         );
+        if (isStaleBrandLoad(loadGen, cfg)) return;
         if (persisted && persisted.reviews) state.reviews = persisted.reviews;
         if (persisted && persisted.brandDecision) state.brandDecision = persisted.brandDecision;
       } catch (pe) {
         /* localStorage already loaded */
       }
       state.leftBlocks = await loadLeftBrand(cfg);
+      if (isStaleBrandLoad(loadGen, cfg)) return;
       state.rightBlocks = await loadRightBrand(cfg, state.leftBrand);
+      if (isStaleBrandLoad(loadGen, cfg)) return;
+      if (state.rightOverlayUrl && state.rightOverlayUrl !== cfg.overlayUrl) {
+        throw new Error(
+          'Proposed overlay URL drifted from selected brand (' +
+            cfg.slug +
+            '): ' +
+            state.rightOverlayUrl
+        );
+      }
       state.diffs = buildDiffs();
       state.loadedAt = new Date().toISOString();
       $('#becsLeftTag').textContent =
@@ -2321,7 +2411,17 @@
           ' · airtableWrites=0'
       );
     } catch (err) {
+      if (isStaleBrandLoad(loadGen, cfg)) return;
+      // Do not keep the previous brand's paired columns on failure.
+      state.leftBlocks = [];
+      state.rightBlocks = [];
+      state.diffs = [];
+      state.rightOverlayUrl = null;
       setStatus('ERROR: ' + err.message);
+      var leftTag = $('#becsLeftTag');
+      var rightTag = $('#becsRightTag');
+      if (leftTag) leftTag.textContent = 'CURRENT unavailable';
+      if (rightTag) rightTag.textContent = 'PROPOSED unavailable';
       $('#becsPairedDoc').innerHTML =
         '<div class="becs-unavailable" role="alert">' + escapeHtml(err.message) + '</div>';
     }
@@ -2329,10 +2429,18 @@
 
   function wireUi() {
     var brandSel = $('#becsBrand');
-    BRANDS.forEach(function (b, i) {
+    // Stable A→Z labels; keep id/slug/overlay bound on each option to prevent cross-brand leftovers.
+    var brandsForSelect = BRANDS.slice().sort(function (a, b) {
+      return String(a.name || a.slug || '').localeCompare(String(b.name || b.slug || ''), undefined, {
+        sensitivity: 'base'
+      });
+    });
+    brandsForSelect.forEach(function (b, i) {
       var opt = document.createElement('option');
       opt.value = b.id;
       opt.textContent = b.name;
+      opt.setAttribute('data-becs-slug', b.slug || '');
+      opt.setAttribute('data-becs-overlay', b.overlayUrl || '');
       if (i === 0) opt.selected = true;
       brandSel.appendChild(opt);
     });
