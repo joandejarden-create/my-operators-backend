@@ -2,6 +2,8 @@
 
 **Date:** 2026-11-20  
 **Branch:** `feat/gdi-google-style-contact-search-before-surfe-v1`  
+**PR:** [#484](https://github.com/joandejarden-create/my-operators-backend/pull/484) — OPEN  
+**HEAD:** `c1bd04b7d`  
 **Workspace:** `C:\Dev\dealality\ws-gdi`
 
 ## 1. Exact root cause
