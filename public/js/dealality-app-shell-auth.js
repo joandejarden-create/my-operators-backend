@@ -451,13 +451,28 @@
     });
   }
 
+  function isLocalhostShellHost() {
+    try {
+      var h = String((global.location && global.location.hostname) || "").toLowerCase();
+      return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
+    } catch (_) {
+      return false;
+    }
+  }
+
   async function fetchMe(jwt) {
     var auth = getAuthModule();
-    if (!auth || !jwt) return null;
-    var headers = await auth.getAuthHeaders(null, { waitForLogin: false });
-    if (headers.error) return null;
+    if (!auth) return null;
     var url = apiBase() + "/api/me";
-    var res = await fetch(url, { method: "GET", headers: headers.headers, credentials: "omit" });
+    var headers = { Accept: "application/json" };
+    if (jwt) {
+      var authHeaders = await auth.getAuthHeaders(null, { waitForLogin: false });
+      if (authHeaders.error) return null;
+      headers = authHeaders.headers;
+    } else if (!isLocalhostShellHost()) {
+      return null;
+    }
+    var res = await fetch(url, { method: "GET", headers: headers, credentials: "omit" });
     var data = await res.json().catch(function () {
       return {};
     });
@@ -465,6 +480,38 @@
       return { ok: false, status: res.status, data: data };
     }
     return { ok: true, status: res.status, data: data };
+  }
+
+  /**
+   * LOCAL DEV ONLY — when Memberstack JWT is absent on localhost, accept the
+   * server DEV_AUTH_BYPASS_EMAIL /api/me fixture (memberstackId=dev_bypass).
+   * Never used outside localhost; does not invent tokens or bypass production auth.
+   */
+  async function tryLocalDevAuthFixture() {
+    if (!isLocalhostShellHost()) return null;
+    var meResult = await fetchMe(null);
+    if (!meResult || !meResult.ok || !meResult.data) return null;
+    var msId = String(
+      (meResult.data.memberstackId ||
+        (meResult.data.memberstack && meResult.data.memberstack.id) ||
+        "")
+    ).trim();
+    if (msId !== "dev_bypass") return null;
+    hideAuthGate();
+    userNotFoundWarned = false;
+    updateShellUserFromMe(meResult.data);
+    lastBootstrappedJwt = "local_dev_auth_fixture";
+    var result = {
+      ok: true,
+      jwt: null,
+      me: meResult,
+      authorized: true,
+      localDevAuthFixture: true,
+      memberstackId: "dev_bypass",
+    };
+    cachedBootstrapResult = result;
+    dispatch("dealality-shell-auth-ready", result);
+    return result;
   }
 
   function warnUserNotFoundOnce(meResult) {
@@ -532,10 +579,14 @@
         await loadMemberstackDomScript(appId);
         jwt = await auth.getMemberstackJwtWhenReady(1500);
         if (!jwt) {
+          var localFixtureEarly = await tryLocalDevAuthFixture();
+          if (localFixtureEarly && localFixtureEarly.ok) return localFixtureEarly;
           showAuthGate(appId);
           jwt = await auth.getMemberstackJwtWhenReady(25000);
         }
       } catch (loadErr) {
+        var localFixtureLoad = await tryLocalDevAuthFixture();
+        if (localFixtureLoad && localFixtureLoad.ok) return localFixtureLoad;
         dispatch("dealality-shell-auth-error", {
           ok: false,
           error: "memberstack_load_failed",
@@ -547,6 +598,8 @@
     }
 
     if (!jwt) {
+      var localFixture = await tryLocalDevAuthFixture();
+      if (localFixture && localFixture.ok) return localFixture;
       showAuthGate(appId);
       dispatch("dealality-shell-auth-error", {
         ok: false,

@@ -2,7 +2,7 @@
 
 **Mode:** DRY_RUN  
 **Status:** DRY_RUN — STANDING AUTH CLASSIFICATION COMPLETE (no writes)  
-**Completed:** 2026-11-19T23:32:18.810Z
+**Completed:** 2026-11-20T03:36:43.818Z
 
 ## Budget (not reset)
 
@@ -17,18 +17,18 @@
 
 | Mutation | Class | Applied | Notes |
 | --- | --- | --- | --- |
-| M-BETH-001 | AUTO_APPROVED_CANONICAL_UPDATE | no | he50_standing_auth:Year Built |
-| M-BETH-002 | AUTO_APPROVED_CANONICAL_LINK | no |  |
-| M-BETH-003 | AUTO_APPROVED_CANONICAL_LINK | no |  |
+| M-BETH-001 | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-BETH-002 | AUTO_APPROVED_CANONICAL_LINK | no | evidence_id_already_exists |
+| M-BETH-003 | AUTO_APPROVED_CANONICAL_LINK | no | evidence_id_already_exists |
 | M-BETH-REF-STAKEHOLDER | SKIPPED_NO_CHANGE | no | REFERENCE_PRIOR_DRY_RUN |
-| M-NEW-ac_hotel_newtown_square | AUTO_APPROVED_CANONICAL_CREATE | no |  |
-| M-NEW-carton_house_fairmont | AUTO_APPROVED_CANONICAL_CREATE | no |  |
-| M-NEW-hgi_newtown_square_radnor | AUTO_APPROVED_CANONICAL_CREATE | no |  |
-| M-UPD-jw_marriott_costa_elena | AUTO_APPROVED_CANONICAL_UPDATE | no | he50_standing_auth:null_fill |
+| M-UPD-ac_hotel_newtown_square | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-carton_house_fairmont | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-hgi_newtown_square_radnor | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-jw_marriott_costa_elena | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
 | M-UPD-secrets_cap_cana-identity | SKIPPED_NO_CHANGE | no | NO_OP |
-| M-UPD-secrets_cap_cana-rooms | AUTO_APPROVED_CANONICAL_UPDATE | no | he50_standing_auth:null_fill |
-| M-NEW-secrets_papagayo | AUTO_APPROVED_CANONICAL_CREATE | no |  |
-| M-NEW-secrets_st_lucia | AUTO_APPROVED_CANONICAL_CREATE | no |  |
+| M-UPD-secrets_cap_cana-rooms | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-secrets_papagayo | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
+| M-UPD-secrets_st_lucia | AUTO_APPROVED_CANONICAL_UPDATE | no | all_fields_already_populated |
 
 ## Counts
 
