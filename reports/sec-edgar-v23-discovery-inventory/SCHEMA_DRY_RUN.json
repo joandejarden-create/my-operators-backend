@@ -1,0 +1,303 @@
+{
+  "contract": "SEC_EDGAR_DISCOVERY_INVENTORY_V23",
+  "schemaVersion": "2.3.0",
+  "generatedAt": "2026-11-20T07:11:22.602Z",
+  "mode": "DRY_RUN",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "graphEvidenceReuseDecision": {
+    "decision": "DO_NOT_REUSE_FOR_UNMATCHED",
+    "createInstead": "HI Discovery Findings",
+    "reasons": [
+      "HI Graph Evidence.Hotel Property Census is a required architectural link for Hotel Explorer Sources SoT",
+      "Unmatched discovery rows would either break required HPC linkage or pollute customer-facing evidence readers",
+      "HE 5.0 standing authorization and he-airtable-graph-reader assume HPC-linked evidence",
+      "Entity Type enum has no Discovery Property; extending it mixes research-only unmatched data into production evidence paths",
+      "Hotel Property Source Evidence / Independent Hotel Source Evidence are census pipeline tables — not SEC discovery inventory"
+    ],
+    "safeReuseAfterHpcMatch": "After strong HPC match, eligible verified findings may be promoted into HI Graph Evidence with read-back — never before match"
+  },
+  "schemaReadBack": {
+    "tableCount": 28,
+    "existingNames": [
+      "Brand Alias Mapping",
+      "CALA Radar Build Plans",
+      "Clause_Library",
+      "Clause_Variables",
+      "Demand Anchors",
+      "Demand Categories",
+      "Demand Centers",
+      "Financial_Term_Library",
+      "HI Contact Channels",
+      "HI Graph Evidence",
+      "HI Hotel–Org Relationships",
+      "HI Org Contacts",
+      "HI Organizations",
+      "HI Ownership Research Runs",
+      "Hotel Census",
+      "Hotel Property Brand Affiliations",
+      "Hotel Property Census",
+      "Hotel Property Source Evidence",
+      "Hotel Property Steward Review",
+      "Independent Hotel Source Candidates",
+      "Independent Hotel Source Evidence",
+      "Market Demand Snapshots",
+      "Markets",
+      "Nearby Hotel Supply",
+      "Opportunity Radar",
+      "Scout Opportunity Signals",
+      "Travel Infrastructure Data",
+      "Verified Independent Hotel Census"
+    ],
+    "collisionCheck": {
+      "discoveryInventoryExists": false,
+      "discoveryFindingsExists": false,
+      "hpcExists": true,
+      "graphEvidenceExists": true,
+      "relatedEvidenceTables": [
+        "Hotel Property Source Evidence",
+        "Independent Hotel Source Evidence"
+      ]
+    },
+    "customerFacingNote": "New tables are INTERNAL_ONLY / CUSTOMER_BLOCKED by default; no HE/Radar/customer UI reads them yet."
+  },
+  "tables": [
+    {
+      "tableName": "HI Hotel Discovery Inventory",
+      "tableId": null,
+      "createdTable": false,
+      "reused": false,
+      "fieldsWouldCreate": [
+        {
+          "name": "Discovery Property ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel Name (normalized)",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel Name (raw)",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Historical Names / Aliases",
+          "type": "multilineText"
+        },
+        {
+          "name": "City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "State / Region",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Address",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Family",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Brand Label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Historical Brand",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Current Brand",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Identity Class",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Evidence Confidence",
+          "type": "singleSelect"
+        },
+        {
+          "name": "SEC Registrant",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Registrant CIK",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Source Filing URL",
+          "type": "url"
+        },
+        {
+          "name": "Filing Date",
+          "type": "date"
+        },
+        {
+          "name": "Source Document Ledger",
+          "type": "multilineText"
+        },
+        {
+          "name": "Primary Accession",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Discovery Method",
+          "type": "singleLineText"
+        },
+        {
+          "name": "HPC Match Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "HPC Hotel",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Lifecycle Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Persistence Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "First Discovered At",
+          "type": "dateTime"
+        },
+        {
+          "name": "Last Researched At",
+          "type": "dateTime"
+        },
+        {
+          "name": "Property Key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Notes / Quarantine Reason",
+          "type": "multilineText"
+        },
+        {
+          "name": "Schema Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Publication State",
+          "type": "singleSelect"
+        }
+      ],
+      "fieldsCreated": [],
+      "fieldsSkipped": [],
+      "fieldsFailed": [],
+      "wouldCreateTable": true
+    },
+    {
+      "tableName": "HI Discovery Findings",
+      "tableId": null,
+      "createdTable": false,
+      "reused": false,
+      "fieldsWouldCreate": [
+        {
+          "name": "Finding ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Discovery Property",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Finding Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Field Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Value Observed",
+          "type": "multilineText"
+        },
+        {
+          "name": "Agreement Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Historical Applicability",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Effective / Event Date",
+          "type": "date"
+        },
+        {
+          "name": "Reporting Date",
+          "type": "date"
+        },
+        {
+          "name": "Source URL",
+          "type": "url"
+        },
+        {
+          "name": "SEC Accession",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Registrant CIK",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Evidence Snippet",
+          "type": "multilineText"
+        },
+        {
+          "name": "Confidence",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Verification Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Related Organization Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Related Organization",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Superseded By",
+          "type": "singleLineText"
+        },
+        {
+          "name": "HPC Promotion Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Schema Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText"
+        }
+      ],
+      "fieldsCreated": [],
+      "fieldsSkipped": [],
+      "fieldsFailed": [],
+      "wouldCreateTable": true
+    }
+  ],
+  "guarantees": [
+    "No HPC core column mutations",
+    "No HI Graph Evidence schema changes",
+    "No ADP evidence table mutations",
+    "Registrant is not auto-classified as legal owner"
+  ]
+}
