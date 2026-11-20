@@ -96,7 +96,7 @@ async function runCase(label, fixture, extra = {}) {
       result.opportunity?.primaryContact?.phoneExtensions ||
       result.found?.phoneExtensions ||
       [],
-    linkedInStatus: result.linkedInDiscovery?.status || result.opportunity?.primaryContact?.linkedInMatchStatus || null,
+    linkedInStatus: result.linkedInDiscovery?.status || result.opportunity?.primaryContact?.liProfileMatchStatus || null,
     linkedInUrl:
       result.opportunity?.primaryContact?.linkedinUrl ||
       result.linkedInDiscovery?.url ||
