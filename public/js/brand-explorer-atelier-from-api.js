@@ -2459,7 +2459,7 @@
 
     var featTitle = 'Featured Application · Conversion Example';
     var featLead = brand.brandTaglineMotto || '';
-    var featBody = brand.brandPositioning || brand.brandCustomerPromise || '';
+    var featBody = brand.brandCustomerPromise || brand.brandValueProposition || '';
     var featSlot = explorerFirstBlock(brand, 'overview.featured_application');
     var featSub = '';
     if (featSlot && (hasVal(featSlot.body) || hasVal(featSlot.title))) {

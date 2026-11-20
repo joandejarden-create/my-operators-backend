@@ -1221,6 +1221,9 @@ export async function getBrandLibraryBrands(req, res) {
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
         positioning: (fields[F.brandBasics.positioning] || '').toString().trim(),
         tagline: (fields[F.brandBasics.tagline] || '').toString().trim(),
+        // Card description uses narrative fields — not short Brand Positioning.
+        customerPromise: (fields[F.brandBasics.customerPromise] || '').toString().trim(),
+        valueProposition: (fields[F.brandBasics.valueProposition] || '').toString().trim(),
         ...(typeof portfolioLadderTier === "number" ? { portfolioLadderTier } : {}),
       };
     });
