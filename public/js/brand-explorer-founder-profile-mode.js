@@ -1,6 +1,8 @@
 /**
  * Founder-only Current Saved / Proposed Update switch for the real Brand Explorer product.
- * Requires beInternalPreview=1. Never writes to Airtable.
+ * Enabled when beInternalPreview=1 (app shell auto-injects this for platform admins on
+ * /app#/brand-explorer-combined — no manual query editing). Never writes to Airtable.
+ * Ordinary customers never receive beInternalPreview and always see CURRENT SAVED.
  */
 (function () {
   'use strict';
@@ -171,7 +173,7 @@
       '</strong> · mode <strong>' +
       (mode === 'proposed' ? 'PROPOSED UPDATE' : 'CURRENT SAVED') +
       '</strong></p>' +
-      '<p class="be-founder-profile-mode__note">Read-only product preview. Switching modes does not publish or write Airtable. Customer sessions without <code>beInternalPreview=1</code> always see CURRENT SAVED. Use Compare Changes for CURRENT vs PROPOSED side-by-side (Admin Resources).</p>' +
+      '<p class="be-founder-profile-mode__note">Read-only product preview inside the authenticated Brand Explorer. Switching modes does not publish or write Airtable. Platform admins get this control automatically on <code>/app#/brand-explorer-combined</code>; ordinary customers always see CURRENT SAVED only. Use Compare Changes for CURRENT vs PROPOSED side-by-side (Admin Resources).</p>' +
       '<dl class="be-founder-profile-mode__meta">' +
       '<div><dt>Brand</dt><dd>' +
       escapeHtml(meta.brandName) +
