@@ -1582,10 +1582,31 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  align-items: stretch;
+}
+/* One card: avoid a half-empty 2-column row — constrain to a readable card width. */
+.be-atelier-oe .property-example-grid[data-card-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: min(100%, 34rem);
+}
+.be-atelier-oe .property-example-grid[data-card-count="1"] .property-example-card {
+  width: 100%;
+}
+/*
+ * Odd last card alone on the final row (3, 5, … cards): do not leave a vacant
+ * right column beside a solitary half-width card.
+ */
+.be-atelier-oe .property-example-grid .property-example-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: min(100%, 34rem);
 }
 @media (max-width: 800px) {
   .be-atelier-oe .property-example-grid {
     grid-template-columns: 1fr;
+    max-width: none;
+  }
+  .be-atelier-oe .property-example-grid .property-example-card:last-child:nth-child(odd) {
+    max-width: none;
   }
 }
 .be-atelier-oe .property-example-card {
@@ -1680,12 +1701,19 @@
   margin-bottom: 4px;
 }
 .be-atelier-oe .property-example-card__scenario {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: var(--explorer-statement-size, 0.8125rem);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
   color: var(--be-footprint-scenario-accent, #c4d600);
   margin-bottom: 8px;
+  line-height: 1.45;
+}
+/* Short accent chips may opt into compact emphasis without forcing ALL CAPS body prose. */
+.be-atelier-oe .property-example-card__scenario[data-accent-short="1"] {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 .be-atelier-oe .property-example-card__photo-credit {
   margin: 0 0 10px;

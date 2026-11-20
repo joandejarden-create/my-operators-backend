@@ -1,6 +1,7 @@
 /**
  * Browser mirror — property image integrity + research-source separation.
  * Article/publication thumbnails are not property photographs.
+ * Keep in sync with lib/brand-explorer/be-property-image-integrity-v1.js
  */
 (function (global) {
   'use strict';
@@ -65,12 +66,6 @@
     if (u && isPublicationHost(u)) {
       return { unsuitable: true, code: 'trade_press_or_news_host_image', detail: u };
     }
-    if (
-      global.BeEditorialTitleCase &&
-      false
-    ) {
-      /* logos handled below via BePermanent gallery helper if present */
-    }
     if (u && /logo|wordmark|social_image|hotel-brand-lo|Curio-Collection-by-Hilton\.webp/i.test(u)) {
       return { unsuitable: true, code: 'logo_as_property_photo', detail: basename(u) };
     }
@@ -79,14 +74,10 @@
 
   function findReplacement(block) {
     var title = nz(block && block.title);
-    var filename = nz(block && block.imageFilename);
     for (var i = 0; i < VERIFIED_REPLACEMENTS.length; i++) {
       var row = VERIFIED_REPLACEMENTS[i];
       if (!row.matchTitleRe.test(title)) continue;
-      if (row.rejectFilenameRe && filename && !row.rejectFilenameRe.test(filename)) {
-        var cur = isUnsuitablePropertyDisplayImage(block.imageUrl, { imageFilename: filename });
-        if (!cur.unsuitable) continue;
-      }
+      // Always return verified identity photo — CDN URLs strip -tw.jpg markers.
       return row;
     }
     return null;
@@ -128,7 +119,7 @@
         });
         return filled;
       }
-      if (replacement && check.unsuitable) {
+      if (replacement && nz(b.imageUrl) !== replacement.imageUrl) {
         var next = {};
         Object.keys(b).forEach(function (k) {
           next[k] = b[k];
@@ -179,7 +170,7 @@
     };
   }
 
-  /** Display gate for proposed column only. */
+  /** Display gate for proposed column / proposed product mounts. */
   function proposedPropertyImageUrl(brand, url, meta) {
     if (!(brand && (brand.beCumulativeProposal || brand.beCandidateOverlay))) {
       return nz(url);
@@ -189,12 +180,44 @@
     return nz(url);
   }
 
+  /**
+   * Resolve display URL for property-facing cards in the product atelier/popup.
+   * Verified identity replacements apply for Proposed Update and whenever the
+   * current asset is unsuitable (including Airtable CDN that stripped -tw.jpg).
+   * Pass brand.__compareStudioSide === 'left' to preserve raw CURRENT for diffs.
+   */
+  function resolvePropertyDisplayImage(block, brand) {
+    var b = block || {};
+    if (brand && brand.__compareStudioSide === 'left') {
+      return nz(b.imageUrl);
+    }
+    if (b.__propertyImageIntegrity && b.__propertyImageIntegrity.replacementUrl) {
+      return nz(b.__propertyImageIntegrity.replacementUrl);
+    }
+    var url = nz(b.imageUrl);
+    var check = isUnsuitablePropertyDisplayImage(url, {
+      imageFilename: b.imageFilename,
+      imageType: b.imageType
+    });
+    var replacement = findReplacement(b);
+    var isProposed = !!(brand && (brand.beCumulativeProposal || brand.beCandidateOverlay));
+    var cdnHiddenPublication =
+      !!replacement && /airtableusercontent\.com/i.test(url) && !!nz(b.title);
+    if (replacement && (isProposed || check.unsuitable || cdnHiddenPublication)) {
+      return replacement.imageUrl;
+    }
+    if (check.unsuitable) return '';
+    return url;
+  }
+
   global.BePropertyImageIntegrity = {
     BE_PROPERTY_IMAGE_INTEGRITY_V1: BE_PROPERTY_IMAGE_INTEGRITY_V1,
     isUnsuitablePropertyDisplayImage: isUnsuitablePropertyDisplayImage,
     filenameMarksPublicationGraphic: filenameMarksPublicationGraphic,
     applyPropertyImageIntegrityToBlocks: applyPropertyImageIntegrityToBlocks,
     proposedPropertyImageUrl: proposedPropertyImageUrl,
+    resolvePropertyDisplayImage: resolvePropertyDisplayImage,
+    findReplacement: findReplacement,
     VERIFIED_REPLACEMENTS: VERIFIED_REPLACEMENTS
   };
 })(typeof globalThis !== 'undefined' ? globalThis : window);

@@ -101,6 +101,32 @@ const before = validatePropertyFacingImages(fixture.blocks);
 assert.equal(before.pass, false, "fixture must FAIL before integrity repair");
 assert.ok(before.failureCount >= 2);
 
+// --- Airtable CDN regression (filename stripped — founder popup defect) ---
+const cdnOnly = applyPropertyImageIntegrityToBlocks([
+  {
+    slotKey: "footprint.openings",
+    title: "Royal Palm Galapagos Curio Collection by Hilton — Santa Cruz Island",
+    body: "https://www.hilton.com/en/hotels/gpsrpqq-royal-palm-galapagos/",
+    imageUrl:
+      "https://v5.airtableusercontent.com/v3/u/59/59/1795104000000/etxh9bS3cPqMIzlMsvuKaQ/hashTokenWithoutTwMarker",
+    imageFilename: "",
+  },
+]);
+assert.equal(
+  cdnOnly.changedCount,
+  1,
+  "Airtable CDN Royal Palm without -tw filename must still receive verified Hilton aerial",
+);
+assert.ok(
+  String(cdnOnly.blocks[0].imageUrl).includes("stories-editor.hilton.com"),
+  "CDN regression must swap to Hilton Stories aerial",
+);
+assert.ok(
+  findVerifiedPropertyImageReplacement({
+    title: "Royal Palm Galapagos Curio Collection by Hilton",
+  }),
+);
+
 const repaired = applyPropertyImageIntegrityToBlocks(fixture.blocks, {
   forceVerifiedReplacements: true,
 });
