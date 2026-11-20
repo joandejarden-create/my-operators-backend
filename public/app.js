@@ -105,7 +105,13 @@
         '/outreach/analytics': { file: '/outreach-analytics.html', title: 'Outreach Analytics' },
         '/outreach/deal-activity-log': { file: '/outreach-deal-activity-log.html', title: 'Outreach Deal Activity Log' },
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
-        '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
+        '/brand-explorer-combined': {
+            file: '/brand-explorer-combined.html',
+            title: 'Brand Explorer',
+            // Admin/founder sessions inject beInternalPreview=1 in routeToEmbedUrl / navigate
+            // so Current Saved | Proposed Update appears without manually editing the hash.
+            founderProductPreview: true
+        },
         '/brand-explorer-compare': {
             file: '/brand-explorer-compare.html',
             title: 'Brand Explorer Comparison',
@@ -478,6 +484,14 @@
 
     /** Owner Pilot Runbook — same platform admin signal as /api/me dealality.isAdmin. */
     function hasInternalRunbookNavAccess() {
+        return hasAdminNavAccess();
+    }
+
+    /**
+     * Founder product preview (Current Saved | Proposed Update) inside the real Brand Explorer.
+     * Platform admins only — never for ordinary customers.
+     */
+    function shouldEnableBeFounderProductPreview() {
         return hasAdminNavAccess();
     }
 
@@ -1437,6 +1451,15 @@
                     }
                 });
             }
+            // Authenticated founder/admin: inject internal preview into the real Brand Explorer
+            // embed so Current Saved | Proposed Update appears without manual URL editing.
+            if (
+                mapped.founderProductPreview &&
+                shouldEnableBeFounderProductPreview() &&
+                !u.searchParams.get('beInternalPreview')
+            ) {
+                u.searchParams.set('beInternalPreview', '1');
+            }
             url = u.pathname + u.search;
         } catch (_hashQsErr) {
             /* keep base embed URL */
@@ -1857,8 +1880,38 @@
             }
         }
 
+        // Founder/admin Brand Explorer: put beInternalPreview=1 on the visible app hash so
+        // /app#/brand-explorer-combined works without manually constructing preview URLs.
+        // Preserve any existing hash query (brand, etc.) — getPath() strips query before navigate.
+        var founderPreviewInjected = false;
+        if (ROUTES[target] && ROUTES[target].founderProductPreview && shouldEnableBeFounderProductPreview()) {
+            try {
+                var hq = new URLSearchParams(
+                    routeQuery && routeQuery.charAt(0) === '?' ? routeQuery.slice(1) : routeQuery || ''
+                );
+                if (!routeQuery) {
+                    getHashQueryParams().forEach(function (value, key) {
+                        if (!hq.has(key)) hq.set(key, value);
+                    });
+                }
+                if (!hq.get('beInternalPreview')) {
+                    hq.set('beInternalPreview', '1');
+                    founderPreviewInjected = true;
+                }
+                var hqStr = hq.toString();
+                routeQuery = hqStr ? '?' + hqStr : '';
+            } catch (_hqErr) {
+                /* keep existing routeQuery */
+            }
+        }
+
         var hashRoute = target + routeQuery;
-        if (updateHash !== false && window.location.hash !== '#' + hashRoute) {
+        // Always write the hash when we auto-inject founder preview (even on silent re-nav after /api/me)
+        // so a bare #/brand-explorer-combined becomes preview-capable without a second click.
+        if (
+            (updateHash !== false || founderPreviewInjected) &&
+            window.location.hash !== '#' + hashRoute
+        ) {
             window.location.hash = hashRoute;
         }
 
@@ -1910,6 +1963,12 @@
                         var expectedAssetV = expectedUrlObj.searchParams.get('v') || '';
                         var childAssetV = childQs.get('v') || '';
                         if (expectedAssetV !== childAssetV) {
+                            mustReloadFrame = true;
+                        }
+                        // Founder preview must remount when beInternalPreview appears/disappears.
+                        var expectedBePreview = expectedUrlObj.searchParams.get('beInternalPreview') || '';
+                        var childBePreview = childQs.get('beInternalPreview') || '';
+                        if (expectedBePreview !== childBePreview) {
                             mustReloadFrame = true;
                         }
                     }
