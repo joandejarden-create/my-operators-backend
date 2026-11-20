@@ -84,6 +84,20 @@ const appJs = read("public/app.js");
 assert.match(appJs, /beProfileMode/);
 assert.match(appJs, /beCandidateOverlay/);
 assert.match(appJs, /beInternalPreview/);
+assert.match(appJs, /founderProductPreview:\s*true/);
+assert.match(appJs, /shouldEnableBeFounderProductPreview/);
+assert.match(appJs, /mapped\.founderProductPreview/);
+assert.match(appJs, /founderPreviewInjected/);
+assert.match(appJs, /expectedBePreview/);
+assert.match(
+  appJs,
+  /\/brand-explorer-combined'[\s\S]*?founderProductPreview:\s*true/
+);
+
+const founderMode = read("public/js/brand-explorer-founder-profile-mode.js");
+assert.match(founderMode, /CURRENT SAVED/);
+assert.match(founderMode, /PROPOSED UPDATE/);
+assert.match(founderMode, /app#\/brand-explorer-combined/);
 
 const compare = read("public/brand-explorer-compare.html");
 assert.match(compare, /brand-explorer-staged-candidate-registry\.js/);
