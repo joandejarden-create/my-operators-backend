@@ -33,12 +33,13 @@ Fail-closed sequence. **Do not skip Gate 2, scorecard review, local parity, or a
 1. **Founder Gate 1 approval** recorded for renderer/product parity (see `BE_PHASE2H_A_GATE1_RENDERER_PARITY_FOUNDER_REVIEW.md`).
 2. **Gate 2 content / standards** PASS for the exact candidate version (`phase2h-component-parity`) — `BE_PERMANENT_CONTENT_STANDARDS_V1`, scorecard green.
 3. **Local product parity gate** PASS — `BE_LOCAL_PRODUCT_PARITY_GATE_V1` (Proposed Update ≡ Compare RIGHT ≡ approved candidate hash).
-4. **Immutable candidate pin** — record brandId `receQkxgjlezsc1xg`, candidateVersion, content hash, overlay path, and scorecard path in the publication run report.
-5. **Dry-run Airtable Presentation writeback** for Curio only — preview field diffs; no `--apply`.
-6. **Founder authorize apply** — then idempotent writeback of the **exact** pinned candidate into Presentation.
-7. **Retrieval proof** — reload product **Current Saved** (no Proposed) and confirm hash/content match published Presentation.
-8. **Customer publication / External Display** only after Current Saved matches the approved candidate and founder activation checklist passes.
-9. **Registry status** — update `founderApprovalStatus` / publication pointers only after apply; never overwrite another brand’s pointer.
+4. **Full 10-tab product popup quality certification** PASS — `FULL_10_TAB_PRODUCT_QUALITY_CERTIFIED` on the actual authenticated ` /app#/brand-explorer-combined` popup in Proposed Update (`verify:be-final-ten-tab-product-popup-cert-v1`, lesson `BE-QL-FINAL-TEN-TAB-PRODUCT-CERT-001`). Hash/parity alone is not sufficient.
+5. **Immutable candidate pin** — record brandId `receQkxgjlezsc1xg`, candidateVersion, content hash, overlay path, and scorecard path in the publication run report.
+6. **Dry-run Airtable Presentation writeback** for Curio only — preview field diffs; no `--apply`.
+7. **Founder authorize apply** — then idempotent writeback of the **exact** pinned candidate into Presentation.
+8. **Retrieval proof** — reload product **Current Saved** (no Proposed) and confirm hash/content match published Presentation.
+9. **Customer publication / External Display** only after Current Saved matches the approved candidate and founder activation checklist passes.
+10. **Registry status** — update `founderApprovalStatus` / publication pointers only after apply; never overwrite another brand’s pointer.
 
 Ascend follows the same procedure independently (`reclkgOzvAcBheUSo`).
 
@@ -54,9 +55,11 @@ Ascend follows the same procedure independently (`reclkgOzvAcBheUSo`).
 - Silent production Airtable writes  
 - Bypassing Gate 2 or parity gates because Proposed Update “looks good”  
 - Treating standalone HTML or Compare Studio alone as customer publication  
+- Declaring publication-ready from a single-tab fix or LEFT/RIGHT hash match without full popup subsection certification  
 
 ## Related
 
 - `docs/brand-explorer/BE_FOUNDER_PRODUCT_PREVIEW_V1.md`  
 - `docs/brand-explorer/BE_LOCAL_PRODUCT_PARITY_GATE_V1.md`  
+- `reports/brand-explorer/final-ten-tab-product-certification-v1/`  
 - `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md`  
