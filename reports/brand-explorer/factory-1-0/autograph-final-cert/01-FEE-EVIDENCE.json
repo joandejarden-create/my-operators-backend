@@ -1,0 +1,117 @@
+{
+  "contract": "BE_FACTORY_1_0_AUTOGRAPH_FEE_EVIDENCE_V1",
+  "brandId": "recEJCTDj1zrsjPM6",
+  "sourcePrimary": {
+    "label": "Autograph Collection Domestic FDD",
+    "issued": "2026-03-31",
+    "note": "Public Marriott hotel-development FDD PDF — United States domestic franchise disclosure",
+    "url": "https://www.hotel-development.marriott.com/ResourceFiles/fdd-document/2025-autograph-collection-fdd-3-31-2025.pdf"
+  },
+  "supportingSources": [
+    {
+      "label": "Marriott 10-K year ended Dec 31, 2025 — Autograph system counts",
+      "url": "https://www.sec.gov/Archives/edgar/data/1048286/000104828626000007/mar-20251231.htm",
+      "use": "System properties/rooms only — not fee schedule"
+    },
+    {
+      "label": "Autograph Collection brand page",
+      "url": "https://news.marriott.com/brands/autograph-collection-hotels",
+      "use": "Program participation / positioning — not fee schedule"
+    }
+  ],
+  "classificationRules": [
+    "No figure is presented as a current universal worldwide Autograph fee.",
+    "Domestic FDD exhibit figures are HISTORICAL_FDD_EXHIBIT until live exhibit/agreement is confirmed for the asset.",
+    "Temporary Bonvoy assessment reductions have explicit sunset language.",
+    "PIP / systems / design costs are VARIABLE_OR_NEGOTIATED.",
+    "Owner-level interpretation language must remain labeled as diligence guidance."
+  ],
+  "claims": [
+    {
+      "claim": "Application $100,000 new-to-system / conversion (+ $400/key over 250)",
+      "class": "HISTORICAL_FDD_EXHIBIT",
+      "condition": "Autograph Collection Domestic FDD issued Mar 31, 2025 — Item/exhibit fee schedule; new-to-system/conversion path; keys over 250 surcharge",
+      "geography": "United States (Domestic FDD)",
+      "status": "ATTRIBUTED_NOT_UNIVERSAL"
+    },
+    {
+      "claim": "Existing Autograph or managed-to-franchise path greater of $150,000 or $500/key",
+      "class": "HISTORICAL_FDD_EXHIBIT",
+      "condition": "Same Domestic FDD — existing Autograph / managed-to-franchise conversion path",
+      "geography": "United States (Domestic FDD)",
+      "status": "ATTRIBUTED_NOT_UNIVERSAL"
+    },
+    {
+      "claim": "Steady-state 5% monthly royalty on gross rooms sales",
+      "class": "HISTORICAL_FDD_EXHIBIT",
+      "condition": "Domestic FDD royalty on GRS; confirm live agreement — may vary by path/year",
+      "geography": "United States (Domestic FDD)",
+      "status": "ATTRIBUTED_NOT_UNIVERSAL"
+    },
+    {
+      "claim": "Program Services Contribution (~2.02% of GRS + fixed annual/per-key)",
+      "class": "HISTORICAL_FDD_EXHIBIT",
+      "condition": "Domestic FDD program contribution exhibit — approximate; confirm current exhibit",
+      "geography": "United States (Domestic FDD)",
+      "status": "ATTRIBUTED_CONFIRM_LIVE_EXHIBIT"
+    },
+    {
+      "claim": "Bonvoy loyalty assessment ~4.2% (temporary reduction to 4.0% through 2027)",
+      "class": "HISTORICAL_FDD_EXHIBIT_WITH_SUNSET",
+      "condition": "Domestic FDD loyalty assessment on eligible member revenue; temporary reduction disclosed through 2027 — not a perpetual universal rate",
+      "geography": "United States (Domestic FDD)",
+      "status": "ATTRIBUTED_CONFIRM_LIVE_EXHIBIT"
+    },
+    {
+      "claim": "PIP / brand assessment / systems install separate",
+      "class": "VARIABLE_OR_NEGOTIATED",
+      "condition": "Project-specific; not a single published universal amount",
+      "geography": "Deal-specific",
+      "status": "OWNER_DILIGENCE"
+    }
+  ],
+  "presentationFeeSlots": [
+    {
+      "slotKey": "economics.fee.join",
+      "title": "To Join",
+      "body": "Application $100,000 new-to-system / conversion (+ $400/key over 250); existing Autograph or managed-to-franchise path greater of $150,000 or $500/key; PIP / brand assessment and systems install are separate (confirm current FDD exhibits). Design, market study, and F&B concept costs vary by conversion vs new-build"
+    },
+    {
+      "slotKey": "economics.fee.operate",
+      "title": "To Operate",
+      "body": "Steady-state 5% monthly royalty on gross rooms sales; Program Services Contribution (~2.02% of GRS plus fixed annual and per-key components—confirm current exhibit); Marriott Bonvoy loyalty assessment on eligible member revenue (public FDD cites ~4.2%, with disclosed temporary reduction to 4.0% through 2027—confirm live exhibit); model owner economics after loyalty chargebacks and distribution—not headline RevPAR"
+    },
+    {
+      "slotKey": "economics.fee.change",
+      "title": "When Things Change",
+      "body": "Renewal PIP; conversion PIP revisions; transfer / change-of-ownership fees; termination-related obligations; owner-funded reserves—triggered at renewal, repositioning, or exit, not steady-state operations. Confirm liquidated damages and transfer mechanics in the current agreement."
+    },
+    {
+      "slotKey": "economics.fee",
+      "title": "Fee Categories",
+      "body": "Autograph Collection fee categories: list each recurring and one-time fee with definition and base from the current FDD / agreement exhibit. Do not collapse them into a single diligence paragraph."
+    },
+    {
+      "slotKey": "economics.fee_variability",
+      "title": "Fee Variability",
+      "body": "Initial vs conversion vs existing-Autograph paths differ; program contribution and loyalty assessments may change by year under agreement terms that allow program fee changes. Lock the fee exhibit before IC—never extrapolate from a peer hotel's rumor."
+    }
+  ],
+  "discrepancies": [
+    {
+      "id": "FEE-SCOPE-DOMESTIC",
+      "severity": "MATERIAL_SCOPE",
+      "finding": "All numeric fee/royalty/program/loyalty assessment figures in the Proposed Economics copy are attributed to the US Domestic FDD (Mar 31, 2025). International / managed / non-US paths may differ materially.",
+      "resolutionRequiredBeforeWriteback": "Keep Domestic attribution visible in Presentation; do not strip 'confirm current FDD exhibits' / geography qualifiers. Structured Fee Structure writeback must store source edition + geography.",
+      "status": "DOCUMENTED_IN_COPY"
+    },
+    {
+      "id": "FEE-BONVOY-TEMPORARY",
+      "severity": "MATERIAL_CONDITION",
+      "finding": "4.0% temporary Bonvoy assessment reduction through 2027 is conditional and time-bounded — not a permanent 4.0% rate.",
+      "resolutionRequiredBeforeWriteback": "Retain sunset language in operate fee body; structured persistence must store both base ~4.2% and temporary 4.0% with end year.",
+      "status": "DOCUMENTED_IN_COPY"
+    }
+  ],
+  "founderFeeGate": "PASS_WITH_ATTRIBUTED_FDD_SCOPE"
+}

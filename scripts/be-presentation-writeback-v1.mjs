@@ -56,7 +56,9 @@ const KNOWN = {
     id: "recEJCTDj1zrsjPM6",
     name: "Autograph Collection",
     slug: "autograph-collection",
-    candidatePath: "brand-explorer-phase2e-preview/autograph-collection-phase2h-candidate.json",
+    // Prefer immutable frozen assembled payload for writeback hash identity.
+    candidatePath:
+      "brand-explorer-phase2e-preview/autograph-collection-frozen-approval-payload-v1.json",
     manifestPath: "brand-explorer-phase2e-preview/autograph-collection-staged-candidate-manifest-v1.json",
   },
 };
