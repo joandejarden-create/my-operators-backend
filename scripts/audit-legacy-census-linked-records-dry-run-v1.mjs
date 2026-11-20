@@ -1,202 +1,122 @@
 #!/usr/bin/env node
 /**
- * Linked-record migration dry-run: map LEGACY_RECORD_ID → CANONICAL_HPC_RECORD_ID
- * for HI Graph / known product references. No Airtable writes.
+ * Schema/code dependency scan for legacy Hotel Census *links* — does NOT read
+ * legacy hotel record contents (founder correction 2026-11-20).
  *
- * Prefers full reconciliation matrix when present; falls back to inventory overlays.
+ * Identifies code/schema references that still mention the legacy table id/name.
+ * Reconstructing relationships requires independent HPC identifiers — never
+ * by fetching Hotel Census rows.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createRequire } from "node:module";
-import {
-  LEGACY_HOTEL_CENSUS_TABLE_ID,
-  migrationReadAllowed,
-} from "../lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js";
-import { HOTEL_PROPERTY_CENSUS_TABLE_ID } from "../lib/hotel-census/platform-base.js";
-
-const require = createRequire(import.meta.url);
-try {
-  require("dotenv").config({ path: "C:/Dev/dealality/my-operators-backend/.env" });
-} catch {
-  /* optional */
-}
+import { LEGACY_HOTEL_CENSUS_TABLE_ID, LEGACY_HOTEL_CENSUS_TABLE_NAME } from "../lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js";
+import { HPC_CLI_TABLE_ID } from "../lib/hotel-census/dealality-census-cli-migration-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const outDir = path.join(root, "reports/hotel-explorer/global-census-retirement");
 fs.mkdirSync(outDir, { recursive: true });
 
-const matrixPath = path.join(outDir, "LEGACY-TO-HPC-RECONCILIATION-MATRIX-FULL-V1.json");
-const dryMatrixPath = path.join(outDir, "LEGACY-TO-HPC-RECONCILIATION-MATRIX-DRY-RUN-V1.json");
+const SCAN_ROOTS = ["api", "lib", "scripts", "public/js"];
+const SKIP = new Set(["node_modules", ".git", "tmp", "data"]);
 
-function loadMap() {
-  if (fs.existsSync(matrixPath)) {
-    const full = JSON.parse(fs.readFileSync(matrixPath, "utf8"));
-    return {
-      source: "FULL_MATRIX",
-      map: full.legacyToHpcMap || {},
-      rows: full.rows || [],
-    };
+function walk(dir, out = []) {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return out;
   }
-  if (fs.existsSync(dryMatrixPath)) {
-    const dry = JSON.parse(fs.readFileSync(dryMatrixPath, "utf8"));
-    const map = {};
-    for (const row of dry.rows || []) {
-      if (row.LEGACY_ID && row.CANONICAL_HPC_ID) map[row.LEGACY_ID] = row.CANONICAL_HPC_ID;
-    }
-    // HE 5.0 Papagayo overlay
-    map.recyX1wLsHBJYRPw7 = map.recyX1wLsHBJYRPw7 || "recFQ0WvGLbfK5Gpa";
-    return { source: "DRY_RUN_MATRIX_PLUS_OVERLAY", map, rows: dry.rows || [] };
+  for (const ent of entries) {
+    if (SKIP.has(ent.name)) continue;
+    const p = path.join(dir, ent.name);
+    if (ent.isDirectory()) walk(p, out);
+    else if (/\.(js|mjs|cjs|ts|json|md)$/i.test(ent.name)) out.push(p);
   }
-  return {
-    source: "OVERLAY_ONLY",
-    map: {
-      recyX1wLsHBJYRPw7: "recFQ0WvGLbfK5Gpa",
-    },
-    rows: [],
-  };
+  return out;
 }
 
-async function probeHiGraphEvidenceLinks(legacyIds, token, baseId) {
-  // HI Graph Evidence table — sample formula search for legacy id strings in text fields.
-  // Read-only. Does not mutate.
-  const table = process.env.AIRTABLE_HI_GRAPH_EVIDENCE_TABLE || "HI Graph Evidence";
-  const findings = [];
-  const sample = legacyIds.slice(0, 25);
-  for (const legacyId of sample) {
-    const formula = `OR(FIND('${legacyId}', {Evidence ID}&'')>0, FIND('${legacyId}', {Notes}&'')>0, FIND('${legacyId}', {Source URL}&'')>0)`;
-    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}?maxRecords=5&filterByFormula=${encodeURIComponent(formula)}`;
+const hits = [];
+for (const rootName of SCAN_ROOTS) {
+  const abs = path.join(root, rootName);
+  for (const file of walk(abs)) {
+    const rel = path.relative(root, file).replace(/\\/g, "/");
+    // Skip disabled recon scripts and deprecated reports (audit history)
+    if (/reconcile-legacy-census|dealality-legacy-hpc-reconciliation|compare-legacy-hpc-population|prepare-legacy-to-hpc-mutation/i.test(rel)) {
+      continue;
+    }
+    if (/global-census-retirement\//i.test(rel) && /RECONCILIATION|MUTATION-PACKAGE|POPULATION-COMPARE/i.test(rel)) {
+      continue;
+    }
+    let text = "";
     try {
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        findings.push({ legacyId, ok: false, error: json?.error?.message || res.status });
-        continue;
-      }
-      findings.push({
-        legacyId,
-        ok: true,
-        hitCount: (json.records || []).length,
-        recordIds: (json.records || []).map((r) => r.id),
-      });
-    } catch (err) {
-      findings.push({ legacyId, ok: false, error: err.message });
+      text = fs.readFileSync(file, "utf8");
+    } catch {
+      continue;
+    }
+    if (
+      text.includes(LEGACY_HOTEL_CENSUS_TABLE_ID) ||
+      /Hotel Census/.test(text) ||
+      /LEGACY_HOTEL_CENSUS/.test(text)
+    ) {
+      const role = /assertLegacyHotelCensusAccess|isLegacyHotelCensusTableRef|LEGACY_HOTEL_CENSUS_DATA_ACCESS_PROHIBITED|ACCESS_BLOCKED|PROHIBITED/.test(
+        text
+      )
+        ? "GUARD_OR_BLOCK"
+        : /deprecated|DISABLED|PROHIBITED LEGACY|do not (read|use|reconcile)/i.test(text)
+          ? "DEPRECATED_DOCS"
+          : "REVIEW_POSSIBLE_DEPENDENCY";
+      hits.push({ file: rel, role });
     }
   }
-  return findings;
 }
 
-const { source, map, rows } = loadMap();
-const mappedCount = Object.keys(map).length;
-const unmatched = (rows || [])
-  .filter((r) => r.legacyId && !r.canonicalHpcId)
-  .map((r) => ({
-    legacyId: r.legacyId,
-    disposition: r.disposition,
-    propertyName: r.propertyName || null,
-  }));
-
-const integrity = {
-  orphanRisk: unmatched.length,
-  mappedPairs: mappedCount,
-  duplicateHpcTargets: (() => {
-    const rev = {};
-    for (const [leg, hpc] of Object.entries(map)) {
-      if (!rev[hpc]) rev[hpc] = [];
-      rev[hpc].push(leg);
-    }
-    return Object.entries(rev)
-      .filter(([, legs]) => legs.length > 1)
-      .map(([hpc, legs]) => ({ hpcId: hpc, legacyIds: legs }));
-  })(),
-  notes: [
-    "Name-only UI display is insufficient — use explicit LEGACY→HPC map.",
-    "AIRTABLE_LINKS_MIGRATED remains false until founder-authorized apply + read-back.",
-    "No production link rewrite in this dry-run.",
-  ],
-};
-
-let hiProbe = { attempted: false };
-const token =
-  process.env.AIRTABLE_API_KEY || process.env.AIRTABLE_PAT || process.env.AIRTABLE_TOKEN;
-const baseId = process.env.AIRTABLE_BASE_ID_ALT;
-if (token && baseId && migrationReadAllowed({ allowLegacyHotelCensusRead: process.env.DEALALITY_LEGACY_HOTEL_CENSUS_MIGRATION_READ === "1" })) {
-  // HI Graph probe does not require legacy table access; skip assert unless we touch Census.
-  hiProbe = {
-    attempted: true,
-    findings: await probeHiGraphEvidenceLinks(Object.keys(map), token, baseId),
-  };
-} else if (token && baseId) {
-  hiProbe = {
-    attempted: true,
-    findings: await probeHiGraphEvidenceLinks(Object.keys(map), token, baseId),
-  };
-}
+const byRole = {};
+for (const h of hits) byRole[h.role] = (byRole[h.role] || 0) + 1;
 
 const report = {
-  contract: "DEALALITY_LEGACY_CENSUS_LINKED_RECORD_DRY_RUN_V1",
+  contract: "DEALALITY_LEGACY_LINK_DEPENDENCY_SCAN_V1",
   generatedAt: new Date().toISOString(),
-  applyAuthorized: false,
-  airtableLinksMigrated: false,
+  policy: "HPC_ONLY_NO_LEGACY_RECORD_READS",
+  banner: "Does not fetch Hotel Census record contents",
   legacyTableId: LEGACY_HOTEL_CENSUS_TABLE_ID,
-  hpcTableId: HOTEL_PROPERTY_CENSUS_TABLE_ID,
-  mapSource: source,
-  legacyToHpcMap: map,
-  integrity,
-  unmatchedSample: unmatched.slice(0, 100),
-  hiGraphEvidenceProbe: hiProbe,
-  proposedApplySteps: [
-    "1. Founder authorize link migration apply (separate task).",
-    "2. For each mapped pair, rewrite HI / org / product links from legacy id → HPC id.",
-    "3. Idempotency key: linkmig:{table}:{record}:{field}:{legacyId}:{hpcId}",
-    "4. Read-back verify no dangling legacy hotel refs in migrated tables.",
-    "5. Only then set AIRTABLE_LINKS_MIGRATED=true.",
+  legacyTableName: LEGACY_HOTEL_CENSUS_TABLE_NAME,
+  hpcTableId: HPC_CLI_TABLE_ID,
+  airtableLinksMigrated: false,
+  legacyLinkDependenciesRemoved: false,
+  note:
+    "Reestablish relationships only via independent HPC identifiers / evidence. Never assume a legacy linked-record id is an HPC hotel.",
+  counts: { filesScannedHits: hits.length, byRole },
+  hits,
+  proposedNextSteps: [
+    "For REVIEW_POSSIBLE_DEPENDENCY files: remove runtime reads/writes or convert to GUARD_OR_BLOCK.",
+    "Airtable linked fields still pointing at Hotel Census require separate founder-authorized schema/link rewrite dry-run — without reading legacy row contents.",
+    "Do not import legacy relationship graphs into HPC.",
   ],
 };
 
 fs.writeFileSync(
-  path.join(outDir, "LEGACY-CENSUS-LINKED-RECORD-MIGRATION-DRY-RUN-V1.json"),
+  path.join(outDir, "LEGACY-CENSUS-LINK-DEPENDENCY-SCAN-V1.json"),
   JSON.stringify(report, null, 2)
 );
 
 const md = [];
-md.push("# Legacy Census linked-record migration dry-run v1");
+md.push("# Legacy Census link dependency scan (no record reads)");
 md.push("");
 md.push(`Generated: ${report.generatedAt}`);
-md.push("**applyAuthorized: false** — `AIRTABLE_LINKS_MIGRATED` remains **false**.");
+md.push("**Does not query Hotel Census record contents.**");
 md.push("");
-md.push(`Map source: ${source}`);
-md.push(`Mapped pairs: **${mappedCount}**`);
-md.push(`Unmatched (orphan risk sample): **${unmatched.length}**`);
-md.push(`Duplicate HPC targets: **${integrity.duplicateHpcTargets.length}**`);
+md.push(`Hits: **${hits.length}**`);
 md.push("");
-md.push("## Referential integrity checklist");
+md.push("| Role | Count |");
+md.push("| --- | ---: |");
+for (const [k, v] of Object.entries(byRole).sort((a, b) => b[1] - a[1])) {
+  md.push(`| ${k} | ${v} |`);
+}
 md.push("");
-md.push("- [ ] No orphaned links after apply");
-md.push("- [ ] No duplicated relationships");
-md.push("- [ ] Contact / ownership mappings remapped via explicit ids");
-md.push("- [ ] GDI opportunities not duplicated by hotel-id rewrite");
-md.push("- [ ] ADP associations use HPC ids");
-md.push("- [ ] Evidence provenance retained (legacy id kept as historical attribute)");
-md.push("");
-md.push("See JSON for full `legacyToHpcMap` and proposed apply steps.");
+md.push("`AIRTABLE_LINKS_MIGRATED` / `LEGACY_LINK_DEPENDENCIES_REMOVED` remain **false** until founder-authorized reconstruction without legacy data.");
 
-fs.writeFileSync(
-  path.join(outDir, "LEGACY-CENSUS-LINKED-RECORD-MIGRATION-DRY-RUN-V1.md"),
-  md.join("\n")
-);
-
-console.log(
-  JSON.stringify(
-    {
-      mappedPairs: mappedCount,
-      unmatched: unmatched.length,
-      duplicateHpcTargets: integrity.duplicateHpcTargets.length,
-      airtableLinksMigrated: false,
-    },
-    null,
-    2
-  )
-);
-console.log("Wrote LEGACY-CENSUS-LINKED-RECORD-MIGRATION-DRY-RUN-V1.*");
+fs.writeFileSync(path.join(outDir, "LEGACY-CENSUS-LINK-DEPENDENCY-SCAN-V1.md"), md.join("\n"));
+console.log(JSON.stringify(report.counts, null, 2));
+console.log("Wrote LEGACY-CENSUS-LINK-DEPENDENCY-SCAN-V1.*");

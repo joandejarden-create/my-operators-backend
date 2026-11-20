@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.28",
+  "version": "hotel-explorer-founder-quality-lessons-v1.29",
   "updated": "2026-11-20",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -426,6 +426,15 @@
       "sharedComponent": "lib/hotel-census/dealality-census-cli-migration-v1.js; dealality-legacy-hpc-reconciliation-v1.js; fields.js; platform-base.js; dealality-hpc-identity-resolver-v1.js",
       "regressionTest": "dealality_legacy_hotel_census_retirement_gate",
       "browserEvidence": "reports/hotel-explorer/global-census-retirement/DEALALITY-GLOBAL-HOTEL-CENSUS-RETIREMENT-PHASE2-FOUNDER-REPORT-V1.md"
+    },
+    {
+      "id": "HE-QL-044",
+      "originalProblem": "Phase 2 incorrectly pursued full legacy Hotel Census → HPC reconciliation and migration-read exceptions, risking contamination of canonical HPC with untrusted legacy inventory",
+      "rootCause": "Retirement framed as data migration/parity instead of dependency elimination; migration-read flags and recon jobs treated Census as an allowable input",
+      "approvedStandard": "HOTEL CENSUS IS NOT A TRUSTED DATA SOURCE. Zero record reads/writes/searches/matches/fallbacks; disable reconcile/import/compare jobs; ignore migration-read env for data access; deprecate recon artifacts as PROHIBITED LEGACY DATA SOURCE; HPC + independent evidence only; never inflate HPC to match legacy counts; Papagayo and other HPC ids must not depend on Census record ids",
+      "sharedComponent": "legacy-hotel-census-access-guard-v1.js (v2 HPC-only); disabled reconcile scripts; dealality-legacy-hpc-reconciliation-v1.js DISABLED; property-census-identity-v1.js HPC-only",
+      "regressionTest": "dealality_legacy_hotel_census_retirement_gate",
+      "browserEvidence": "reports/hotel-explorer/global-census-retirement/DEALALITY-HPC-ONLY-ZERO-LEGACY-FOUNDER-CORRECTION-V1.md"
     }
   ]
 }

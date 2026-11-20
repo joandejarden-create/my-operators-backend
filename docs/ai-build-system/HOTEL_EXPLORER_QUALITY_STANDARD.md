@@ -297,15 +297,19 @@ For the authorized eight-hotel pilot, do **not** stop for routine founder approv
 
 See §9c. Gate `LEGACY_HOTEL_CENSUS_INDEPENDENCE_GATE` fails whenever an active HE production-intended path depends on `tblgj2qEwxjTcg6q0`.
 
-### Global Hotel Census retirement (HE-QL-043)
+### Global Hotel Census retirement (HE-QL-043 / HE-QL-044)
 
-Dealality-wide Phase 2 migration: ordinary enrichment/import CLIs target Hotel Property Census; legacy writes are blocked at `platform-base` + guard.
+**HOTEL CENSUS IS NOT A TRUSTED DATA SOURCE.**
 
-- CLI table/fields: `lib/hotel-census/fields.js` → HPC names; catalog `npm run dealality:census-cli-migration-catalog`.
-- Full reconciliation: `npm run dealality:legacy-census-hpc-reconcile-full` (requires `DEALALITY_LEGACY_HOTEL_CENSUS_MIGRATION_READ=1`). Never match solely by name; never treat legacy record ids as HPC ids.
-- Linked-record dry-run: `npm run dealality:legacy-census-linked-records-dry-run` — `AIRTABLE_LINKS_MIGRATED` stays false until founder-authorized apply + read-back.
+Do **not** reconcile, import, match, search, or fall back to Hotel Census (`tblgj2qEwxjTcg6q0`). Do **not** migrate its records into HPC. Use HPC (`tbl9aY5ijiuIzzWam`) + independently verified evidence only.
+
+- Zero legacy data access: `LEGACY_HOTEL_CENSUS_DATA_ACCESS_PROHIBITED` — migration-read env flags are ignored for record queries.
+- CLI table/fields: `lib/hotel-census/fields.js` → HPC; `platform-base` Proxy blocks all legacy table methods.
+- Reconciliation jobs **disabled** (`dealality:legacy-census-hpc-reconcile-full` / dry-run / population-compare / legacy mutation package exit nonzero).
+- Prior recon artifacts: `DEPRECATED — PROHIBITED LEGACY DATA SOURCE` — audit history only; never pipeline input.
 - Permanent gate: `DEALALITY_LEGACY_HOTEL_CENSUS_RETIREMENT_GATE` via `npm run test:dealality-legacy-hotel-census-retirement-gate-v1`.
-- Do **not** claim `GLOBAL_RETIREMENT_READY` until CLIs, full-table recon, link apply, and cross-product UI proof all clear. Do not delete Hotel Census without separate founder approval.
+- Coverage gaps vs old Census totals are **not** defects — do not inflate HPC to match legacy inventory.
+- Do not delete Hotel Census without separate founder approval.
 
 ## Safety
 

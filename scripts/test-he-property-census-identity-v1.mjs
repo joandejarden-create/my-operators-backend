@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * HE property identity — RECORD_ID ownership (HPC-first; legacy Census opt-in).
+ * HE property identity — RECORD_ID ownership (HPC-only).
  * Live Airtable when credentials present; otherwise structural asserts only.
  */
 import assert from "node:assert/strict";
@@ -41,15 +41,14 @@ assert.equal(kgpvDefault.owningTableKind, "NOT_FOUND");
 assert.equal(kgpvDefault.legacyCensusProbed, false);
 assert.equal(kgpvDefault.error, "not_found_hpc_only");
 
-const kgpvMigration = await resolvePropertyCensusOwnership(base, "recUNycnMwOVFX0hc", {
-  allowLegacyHotelCensusRead: true,
-});
-assert.equal(kgpvMigration.ok, true);
-assert.equal(kgpvMigration.owningTableKind, "HOTEL_CENSUS");
-assert.equal(kgpvMigration.owningTable, HOTEL_CENSUS_TABLE);
-assert.equal(kgpvMigration.hpcFound, false);
-assert.equal(kgpvMigration.censusFound, true);
-assert.equal(kgpvMigration.legacyCensusProbed, true);
+// Founder correction: migration-read opt-in no longer permits Hotel Census probes.
+await assert.rejects(
+  () =>
+    resolvePropertyCensusOwnership(base, "recUNycnMwOVFX0hc", {
+      allowLegacyHotelCensusRead: true,
+    }),
+  (err) => err && err.code === "LEGACY_HOTEL_CENSUS_ACCESS_BLOCKED"
+);
 
 const beth = await resolvePropertyCensusOwnership(base, "recLuxvwwxID7U2B8");
 assert.equal(beth.ok, true);
@@ -59,4 +58,4 @@ assert.equal(beth.hpcFound, true);
 assert.equal(beth.censusFound, false);
 assert.equal(beth.legacyCensusProbed, false);
 
-console.log("OK — HE property census identity (live HPC-first + migration opt-in)");
+console.log("OK — HE property census identity (live HPC-only; legacy opt-in blocked)");
