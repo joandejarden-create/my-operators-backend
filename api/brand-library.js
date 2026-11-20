@@ -114,6 +114,13 @@ function isBrandExplorerCensusMetricsEnabled() {
   return true;
 }
 
+/** When true (default), GET /api/brand-library/brand attaches read-only brand.hpcFootprint from Hotel Property Census. Set BRAND_EXPLORER_HPC_METRICS=0 to disable. */
+function isBrandExplorerHpcMetricsEnabled() {
+  const v = (process.env.BRAND_EXPLORER_HPC_METRICS || "").trim().toLowerCase();
+  if (v === "0" || v === "false" || v === "no") return false;
+  return true;
+}
+
 // Field mappings for Brand Library
 //
 // Brand Setup tabs → Airtable tables → read vs write:
@@ -2410,6 +2417,51 @@ export async function getBrandLibraryBrandById(req, res) {
     const censusSummary = await censusPromise;
     if (censusSummary) {
       brandDetails.censusSummary = censusSummary;
+    }
+
+    // Designated footprint authority: live HPC Open/Pipeline rollup (read-only).
+    // Never writes Airtable. Never replaces company-reported Brand Setup figures.
+    if (isBrandExplorerHpcMetricsEnabled()) {
+      try {
+        const {
+          buildBrandHpcFootprintSummary,
+          resolveHpcMatchersForBrand,
+          extractOfficialReportedFootprint,
+        } = await import("../lib/brand-explorer/be-hpc-footprint-summary-v1.js");
+        const companyReported = extractOfficialReportedFootprint(brandDetails.footprint || {});
+        brandDetails.hpcFootprint = await buildBrandHpcFootprintSummary({
+          brandBasicsRecordId: brandRecordId,
+          brandName,
+          brandMatchers: resolveHpcMatchersForBrand({
+            recordId: brandRecordId,
+            brandName,
+          }),
+          companyReported,
+          allowLive: true,
+        });
+        if (companyReported) {
+          brandDetails.officialReportedFootprint = companyReported;
+        }
+      } catch (hpcErr) {
+        console.error("Error building brand hpcFootprint:", hpcErr.message);
+        brandDetails.hpcFootprint = {
+          available: false,
+          certified: false,
+          dataOrigin: "unavailable",
+          certState: "HPC_LIVE_LOOKUP_UNAVAILABLE",
+          fallbackRecommended: true,
+          metrics: null,
+          displayMetrics: {
+            status: "airtable_unavailable",
+            totalOpenHotels: null,
+            totalOpenKeys: null,
+            totalPipelineHotels: null,
+            totalPipelineKeys: null,
+          },
+          warnings: [`HPC_SUMMARY_ERROR: ${hpcErr.message}`],
+          writes: 0,
+        };
+      }
     }
 
     if (req.query && req.query.debug === "projectFit") {

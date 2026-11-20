@@ -107,16 +107,23 @@ Geography labels (CALA vs International Reference) and property-name matching be
 
 ### Brand Explorer — Gallery (`materials.gallery.1–6`)
 
+Permanent standard (`BE_PERMANENT_SIX_IMAGE_GALLERY_STANDARD_V1`): exactly **six** distinct operating-hotel photographs (or clearly labeled official development renderings).
+
 Ideal state:
 1. Prefer **CALA / LATAM** property photography when the brand has it
 2. Mix space types: Exterior / Arrival, Guest Room / Suite, Public Space / Lobby, F&B (plus design detail / setting)
 3. Prefer **multiple properties** — not six shots from one hotel
 4. Never reuse the same photo (duplicateGroupId)
 5. If no CALA inventory exists, use International Reference hotels with the same variety rules
+6. **Never** use brand logos, brand-name-only graphics, text-only slides, or social placeholders as gallery cards
+7. Captions must be meaningful: `HotelOrProject [| Location] | Scene` — forbid generic labels such as “Property imagery”, “Hotel image”, or “Image 1”
+8. If fewer than six suitable photos/renderings exist, **block** the gallery gate — do not fabricate or pad with logos
 
 Do not invent Exterior/Lobby/F&B captions without filename / DAM / fixture role evidence.
 
-**Module:** `lib/partner-intelligence/brand-explorer-gallery-selection.js` · test: `npm run test:brand-explorer-gallery-selection`
+**Modules:** `lib/partner-intelligence/brand-explorer-gallery-selection.js` · `lib/brand-explorer/be-permanent-six-image-gallery-standard-v1.js`  
+**Tests:** `npm run test:brand-explorer-gallery-selection` · `npm run test:be-permanent-six-image-gallery-standard-v1`  
+**Contract:** `configs/brand-explorer-permanent-content-standards-contract-v1.json#fixedCollections.imageGallery`
 
 ### Brand Explorer — Value Creation Scenarios
 

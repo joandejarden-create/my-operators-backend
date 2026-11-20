@@ -1,0 +1,68 @@
+{
+  "contract": "BE_LOCAL_PRODUCT_PARITY_GATE_V1",
+  "gate": "BE_LOCAL_PRODUCT_PARITY_GATE",
+  "status": "ACTIVE",
+  "mandatoryBefore": [
+    "production_airtable_writeback",
+    "customer_facing_promotion",
+    "automatic_publication_refresh"
+  ],
+  "preservesExistingGates": [
+    "GATE1_RENDERER_PARITY",
+    "GATE2_CONTENT_RECONSTRUCTION",
+    "SCORECARD_FOUNDER_APPROVED",
+    "PRIORITY_GATES",
+    "FOUNDER_BRAND_APPROVAL",
+    "PUBLICATION_ACTIVATION"
+  ],
+  "environments": {
+    "preview": "Brand Explorer development / Comparison Studio (e.g. :8082)",
+    "canonicalLocalApp": "Canonical Dealality local application (e.g. :8080 via my-operators-backend-canonical-main)"
+  },
+  "requiredEvidence": [
+    "brandId",
+    "approvedCandidateHash",
+    "applicationCommit",
+    "rendererAndAssetVersions",
+    "validatedAt",
+    "tenTabResults",
+    "contentComparison",
+    "visualComparison",
+    "functionalTests",
+    "approvedExceptions",
+    "finalPassOrBlock"
+  ],
+  "blockingCodes": [
+    "LOCAL_PRODUCT_PARITY_REQUIRED",
+    "PARITY_REPORT_MISSING",
+    "PARITY_REPORT_STALE",
+    "PARITY_REPORT_WRONG_CANDIDATE_HASH",
+    "PARITY_REPORT_WRONG_APPLICATION_COMMIT",
+    "OUTDATED_OR_MISMATCHED_ASSETS",
+    "PAYLOAD_VERSION_MISMATCH",
+    "MATERIAL_CONTENT_LOST",
+    "CONTENT_ALTERED",
+    "STYLE_LAYOUT_REGRESSION",
+    "TEN_TAB_PARITY_INCOMPLETE",
+    "HPC_AIRTABLE_DIVERGENCE_UNRECONCILED"
+  ],
+  "insufficientProof": [
+    "HTTP_200_alone",
+    "matching_git_commits_alone",
+    "unit_test_PASS_alone"
+  ],
+  "auditStore": "reports/brand-explorer/comparison-studio/local-product-parity/",
+  "publicationOrchestrator": "lib/brand-explorer/be-founder-approval-publication-v1.js",
+  "implementationModule": "lib/brand-explorer/be-local-product-parity-gate-v1.js",
+  "automatedTests": [
+    "test:be-local-product-parity-gate-v1",
+    "test:brand-explorer-local-app-parity",
+    "test:be-founder-approval-publication-v1"
+  ],
+  "certificationBrands": [
+    { "name": "Curio Collection by Hilton", "brandId": "receQkxgjlezsc1xg" },
+    { "name": "Ascend Hotel Collection", "brandId": "reclkgOzvAcBheUSo" }
+  ],
+  "curioAscendApproval": "NOT_APPROVED",
+  "airtableWritesDuringGateImplementation": 0
+}

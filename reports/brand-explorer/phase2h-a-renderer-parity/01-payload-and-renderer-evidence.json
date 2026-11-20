@@ -1,0 +1,54 @@
+{
+  "phase": "2H-A",
+  "gate": 1,
+  "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
+  "contentMutation": false,
+  "automatedPassIsNotFounderApproval": true,
+  "payload": {
+    "path": "public/brand-explorer-phase2e-preview/curio-gate1-renderer-parity-payload.json",
+    "source": "live-api-saved-presentation",
+    "blockCount": 225,
+    "presentationBlocksHashSha256": "3bdbd3927e8bf7ccb19cbcd8f60dfcec3dd87ac5ccf278653be9987ecd7ef37f",
+    "declaredHashMatches": true,
+    "declaredHash": "3bdbd3927e8bf7ccb19cbcd8f60dfcec3dd87ac5ccf278653be9987ecd7ef37f"
+  },
+  "urls": {
+    "environmentA_product": "http://127.0.0.1:8082/brand-explorer-renderer-parity.html?beInternalPreview=1&payload=curio-gate1-renderer-parity-payload.json",
+    "environmentB_compare": "http://127.0.0.1:8082/brand-explorer-compare.html?beInternalPreview=1&rendererParity=1&brand=receQkxgjlezsc1xg",
+    "equalWidthGeometry": "http://127.0.0.1:8082/brand-explorer-compare.html?beInternalPreview=1&rendererParity=1&equalWidth=1",
+    "customerFacingReference": "http://127.0.0.1:8082/brand-explorer-gold-mock.html?id=receQkxgjlezsc1xg&beInternalPreview=1"
+  },
+  "renderer": {
+    "module": "public/js/brand-explorer-atelier-from-api.js",
+    "css": [
+      "public/css/brand-explorer-atelier-oe-panels.css",
+      "public/css/brand-explorer-gold-surface.css",
+      "public/css/brand-explorer-combined-detail-parity.css"
+    ],
+    "productMount": "BrandExplorerAtelierFromApi.mountIntoRoot",
+    "compareMount": "BrandExplorerAtelierFromApi.renderTabInnerHtml → .oe-section pairs",
+    "forbidSimplifiedCompareRenderer": true
+  },
+  "testSections": [
+    "Hero and Brand Snapshot (Overview)",
+    "Where This Brand Creates the Most Value",
+    "What This Brand Is Best At",
+    "Owner Value Snapshot",
+    "Loyalty Architecture",
+    "Economics & Obligations",
+    "Geographic Footprint",
+    "Brand Materials / Property Examples"
+  ],
+  "slotInventoryCounts": {
+    "snapshot": 0,
+    "scenarios": 3,
+    "bestAt": 3,
+    "whyValue": 1,
+    "valueOwners": 14,
+    "loyalty": 14,
+    "economics": 39,
+    "footprint": 19,
+    "materials": 9
+  },
+  "note": "Browser DOM/CSS/geometry/image evidence appended by live capture into 02-browser-capture.json"
+}

@@ -1,0 +1,2371 @@
+{
+  "version": "BE_COMPARISON_STUDIO_REQUIREMENTS_INDEX_V1",
+  "generatedAt": "2026-11-19T17:51:54.107Z",
+  "sourceRegister": "reports/brand-explorer/founder-requirements-reconciliation/01-master-founder-requirements-register.json",
+  "honestPolicy": {
+    "contractIsNotImplementation": true,
+    "unitTestIsNotBrowserVerification": true,
+    "automatedScoreIsNotFounderApproval": true,
+    "doNotDeclareArchitectureCompleteWithoutDisposition": true
+  },
+  "gateStatus": {
+    "gate1": {
+      "status": "AWAITING_FOUNDER_APPROVAL",
+      "founderApproved": false
+    },
+    "gate2": {
+      "status": "BLOCKED",
+      "reason": "Gate1 not founder-approved"
+    }
+  },
+  "increments": {
+    "A": {
+      "name": "Renderer parity and visual verification",
+      "gate": 1,
+      "status": "AWAITING_FOUNDER_APPROVAL",
+      "stopForFounderApproval": true,
+      "visualPack": "reports/brand-explorer/phase2h-a-renderer-parity/ten-tab-visual-v1/02-FOUNDER_GATE1_VISUAL_ACCEPTANCE.md",
+      "requirementIds": [
+        "BE-REQ-045",
+        "BE-REQ-046",
+        "BE-REQ-047",
+        "BE-REQ-048",
+        "BE-REQ-049",
+        "BE-REQ-050",
+        "BE-REQ-052",
+        "BE-REQ-059",
+        "BE-REQ-066",
+        "BE-REQ-070",
+        "BE-REQ-073",
+        "BE-REQ-077",
+        "BE-REQ-080",
+        "BE-REQ-081"
+      ],
+      "implementingComponents": [
+        "public/js/brand-explorer-atelier-from-api.js",
+        "public/js/brand-explorer-compare-studio.js",
+        "public/brand-explorer-renderer-parity.html",
+        "public/brand-explorer-compare.html",
+        "public/css/brand-explorer-atelier-oe-panels.css"
+      ],
+      "evidenceDir": "reports/brand-explorer/phase2h-a-renderer-parity/ten-tab-visual-v1/"
+    },
+    "B": {
+      "name": "Shared component architecture and fixed collection layouts",
+      "gate": "1_approved_or_founder_priority_for_renderer_IA",
+      "status": "QUEUED_AFTER_GATE1",
+      "requirementIds": [
+        "BE-REQ-016",
+        "BE-REQ-017",
+        "BE-REQ-018",
+        "BE-REQ-019",
+        "BE-REQ-020",
+        "BE-REQ-021",
+        "BE-REQ-022",
+        "BE-REQ-023",
+        "BE-REQ-025",
+        "BE-REQ-013",
+        "BE-REQ-028",
+        "BE-REQ-032",
+        "BE-REQ-042",
+        "BE-REQ-015",
+        "BE-REQ-014",
+        "BE-REQ-057",
+        "BE-REQ-058"
+      ],
+      "implementingComponents": [
+        "public/js/brand-explorer-atelier-from-api.js (Value / Ops / Standards / Risk builders)",
+        "configs/brand-explorer-permanent-content-standards-contract-v1.json",
+        "configs/brand-explorer-founder-architecture-corrections-contract-v1.json"
+      ],
+      "notes": [
+        "Preserve production 6-stage lifecycle; 7 remains OPEN conflict",
+        "Owner Buying dual Guest/Owner layout is renderer IA — do not invent content in Gate1"
+      ]
+    },
+    "C": {
+      "name": "Typography, card styling and editorial formatting",
+      "gate": "after_or_with_B",
+      "status": "QUEUED",
+      "requirementIds": [
+        "BE-REQ-001",
+        "BE-REQ-002",
+        "BE-REQ-003",
+        "BE-REQ-004",
+        "BE-REQ-005",
+        "BE-REQ-006",
+        "BE-REQ-007",
+        "BE-REQ-008",
+        "BE-REQ-009",
+        "BE-REQ-010",
+        "BE-REQ-012"
+      ],
+      "implementingComponents": [
+        "public/css/brand-explorer-atelier-oe-panels.css",
+        "public/js/brand-explorer-atelier-from-api.js",
+        "lib/brand-explorer/be-permanent-content-standards-v1.js"
+      ]
+    },
+    "D": {
+      "name": "Evidence-backed content research and population",
+      "gate": 2,
+      "status": "BLOCKED_UNTIL_GATE1_FOUNDER_APPROVED",
+      "requirementIds": [
+        "BE-REQ-011",
+        "BE-REQ-014",
+        "BE-REQ-024",
+        "BE-REQ-026",
+        "BE-REQ-029",
+        "BE-REQ-030",
+        "BE-REQ-031",
+        "BE-REQ-033",
+        "BE-REQ-034",
+        "BE-REQ-035",
+        "BE-REQ-037",
+        "BE-REQ-038",
+        "BE-REQ-039",
+        "BE-REQ-040",
+        "BE-REQ-041",
+        "BE-REQ-043",
+        "BE-REQ-044"
+      ]
+    },
+    "E": {
+      "name": "Comprehensive ten-tab browser regression and founder review",
+      "gate": "post_D",
+      "status": "QUEUED",
+      "requirementIds": [
+        "BE-REQ-050",
+        "BE-REQ-060",
+        "BE-REQ-062"
+      ]
+    }
+  },
+  "totals": {
+    "requirements": 82,
+    "outstanding": 66,
+    "implementedInProduct": 52,
+    "browserVerified": 17,
+    "founderApproved": 0
+  },
+  "requirements": [
+    {
+      "requirementId": "BE-REQ-001",
+      "tab": "all",
+      "tabId": null,
+      "section": "all oe-section-title",
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "White section headings use proper Title Case.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "No production Title Case enforcer on generated titles",
+        "No automated rendered heading-case gate",
+        "Not founder-approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-002",
+      "tab": "all",
+      "tabId": null,
+      "section": "cards",
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "White card headings use proper Title Case.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Card heading Title Case not machine-enforced on candidates"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-003",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "Purple and blue label hierarchy is preserved.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "No automated color hierarchy regression across all subsection labels",
+        "Not founder-approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-004",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "Bullets begin with capital letters.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Capitalization not enforced across all bullet collections in pipeline"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-005",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "No em dashes in generated customer-facing paragraphs.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Helper not applied as hard fail across generation pipeline outputs",
+        "Live baseline may still contain em dashes from production content"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-006",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "No nonbreaking-space artifacts or exposed HTML entities.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Renderer empty-state &nbsp; vs forbidden visible entity artifacts not fully separated in gates"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-007",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "No internal slot keys or generator instructions.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Sanitize clears content but Gate 2 refill blocked; customer profiles not founder-approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-008",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "No generic numbered proof labels.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Not applied as live Gate 2 population gate yet"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-009",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "No artificial padding or repeated paragraphs.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Anti-padding empties without refill (depth regression); Gate 2 blocked"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-010",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "typography_editorial",
+      "founderInstruction": "Appropriate font weight, paragraph spacing, emphasis and visual density.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Partial Gate1 style evidence; full density audit across tabs outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-011",
+      "tab": "Overview",
+      "tabId": "atelier-overview",
+      "section": "Where This Brand Creates the Most Value",
+      "subsection": "overview.scenario.1-3",
+      "status": "BLOCKED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Where This Brand Creates the Most Value has three differentiated, research-backed scenarios with real hotel imagery.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate2 content reconstruction blocked",
+        "Research-backed differentiation not validated on candidates",
+        "Ascend imagery historically blocked"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-012",
+      "tab": "Overview",
+      "tabId": "atelier-overview",
+      "section": null,
+      "subsection": "overview.why_value",
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Why Value Is Strongest uses bold Title Case introductory phrases followed by a colon and full explanatory sentences.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Format not implemented in composer/renderer",
+        "min 5 insights not gated on product output"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-013",
+      "tab": "Overview",
+      "tabId": "atelier-overview",
+      "section": null,
+      "subsection": "overview.differentiators.*",
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Key Differentiators has exactly four meaningful bullets in each canonical category (Experience & Identity; Commercial & Distribution).",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Padding empty bullets fails founder substance rule",
+        "Pipeline must supply 4+4 meaningful bullets"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-014",
+      "tab": "Overview",
+      "tabId": "atelier-overview",
+      "section": null,
+      "subsection": "overview.proof.*",
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Proof Points contain substantive evidence and properly formatted headings.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate2 research/population blocked",
+        "Evidence sufficiency incomplete on candidates"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-015",
+      "tab": "Value to Owners",
+      "tabId": "atelier-value-owners",
+      "section": null,
+      "subsection": "valueOwners.scenario.1-4",
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Value Creation Scenarios preserve full content and card styling.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Candidate depth historically thinner than baseline; Gate2 blocked"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-016",
+      "tab": "Value to Owners",
+      "tabId": "atelier-value-owners",
+      "section": "What the Owner Is Really Buying",
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "What the Owner Is Really Buying distinctly explains what guests receive and what owners receive.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Product renderer does not yet render dual propositions",
+        "Cannot be FOUNDER_APPROVED until implemented + browser verified"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-017",
+      "tab": "Value to Owners",
+      "tabId": "atelier-value-owners",
+      "section": null,
+      "subsection": "What the Guest Receives",
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Guest value must explain the actual brand experience.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Depends on BE-REQ-016 implementation"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-018",
+      "tab": "Value to Owners",
+      "tabId": "atelier-value-owners",
+      "section": null,
+      "subsection": "What the Hotel Owner Receives",
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Owner value must explain commercial, operating, affiliation, investment and development implications.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Depends on BE-REQ-016 implementation"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-019",
+      "tab": "Value to Owners",
+      "tabId": "atelier-value-owners",
+      "section": "Support Across the Lifecycle",
+      "subsection": null,
+      "status": "BLOCKED",
+      "disposition": "CONFLICT_OPEN — retain production EXACT 6 baseline; requested 7-stage enhancement OPEN awaiting founder decision; do not invent stage",
+      "category": "lifecycle_ops",
+      "founderInstruction": "Support Across the Lifecycle preserves the complete founder-required stage structure (founder requested 7; live baseline is 6).",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Founder decision on target design (6 vs 7) unresolved",
+        "Stage body research depth for Gate2 outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-020",
+      "tab": "Economics & Obligations",
+      "tabId": "atelier-economics",
+      "section": "Opening & Conversion Path",
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Opening & Conversion Path contains the five standard populated stages.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Candidate regeneration depth not Gate2-approved",
+        "Not founder-approved"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-021",
+      "tab": "Operating Model",
+      "tabId": "atelier-ops",
+      "section": null,
+      "subsection": "operations.model.* (12 fields)",
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Operating Model contains every canonical subsection.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Substantive population incomplete on reconstructed candidates",
+        "No dedicated failing fixture for empty ops fields yet"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-022",
+      "tab": "Operating Model",
+      "tabId": "atelier-ops",
+      "section": "Third-Party Operator Compatibility",
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Third-Party Operator Compatibility has the full operator fit and capability analysis.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Depth vs live production not validated for reconstructed content"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-023",
+      "tab": "Owner Considerations",
+      "tabId": "atelier-standards-owner",
+      "section": "Standard Detail, Where Available",
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Brand Standards has the proper, substantive multirow table.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Reconstructed candidates may collapse depth",
+        "Not browser-verified for Gate2 candidates"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-024",
+      "tab": "Operating Model",
+      "tabId": "atelier-ops",
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Training, QA, systems, staffing, reporting and brand involvement are meaningfully addressed.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Substance gates per field not implemented"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-025",
+      "tab": "Economics & Obligations",
+      "tabId": "atelier-economics",
+      "section": "Term, Renewal & Exit Risk",
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Term, Renewal & Exit Risk contains substantive contractual and owner-risk coverage.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Must not invent agreement terms; research depth Gate2"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-026",
+      "tab": "Commercial Engine",
+      "tabId": "atelier-commercial",
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Commercial KPI cards use concise meaningful labels, actual values when available and no internal language.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "KPI population quality not Gate2 validated"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-027",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Commercial subsections preserve canonical styling and hierarchy.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Depends on Gate1 founder approval of renderer parity"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-028",
+      "tab": "Commercial Engine",
+      "tabId": "atelier-commercial",
+      "section": "Demand Scenario View",
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Demand Scenario View has at least six differentiated, substantive scenarios.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Differentiation + substance gates incomplete"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-029",
+      "tab": "Footprint & Growth",
+      "tabId": "atelier-footprint",
+      "section": "Recent Momentum",
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Recent Momentum contains researched hotel openings, signings, conversions or other relevant dated developments.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Freshness + research pipeline for Gate2 outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-030",
+      "tab": "Footprint & Growth",
+      "tabId": "atelier-footprint",
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Geographic Footprint does not reuse brand-wide HPC counts as regional figures.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Not browser-verified on founder-approved candidate",
+        "Gate2 blocked"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-031",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Brand-level and regional inventory claims have appropriate source attribution and coverage labels.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Coverage label browser verification outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-032",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "loyalty",
+      "founderInstruction": "Loyalty benefits contain six distinct, researched benefits, each with a meaningful description, for participating brands.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Research freshness/depth for Gate2 candidates; not founder-approved"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-033",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "loyalty",
+      "founderInstruction": "Loyalty member totals use the latest verified, dated, attributable research available.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "No paid research; verification pipeline Gate2"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-034",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "loyalty",
+      "founderInstruction": "Program statistics distinguish parent loyalty program figures from brand-specific participation.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Enforcement in generation incomplete"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-035",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "loyalty",
+      "founderInstruction": "Loyalty tiers reflect the applicable real program structure.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Tier accuracy/browser verification outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-036",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "loyalty",
+      "founderInstruction": "Loyalty cards preserve the intended layout, hierarchy and explanatory depth.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate1 partial; founder approval pending"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-037",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Gallery images prioritize actual operating hotels.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Ascend imagery historically failed; Gate2 blocked"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-038",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Official renderings are prioritized for unopened hotels.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Pipeline priority needs Gate2 validation"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-039",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Generic logos are used only when no suitable hotel or project imagery exists.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Ascend 2F blocked on logos-as-fill"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-040",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Images have verified property identity, source and suitable usage rights.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Rights metadata incomplete in many fixtures"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-041",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Image failures and inappropriate substitutions block approval.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Not founder-approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-042",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Similar Brands contains separate competitor cards.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate2 content quality outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-043",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Every competitor has a meaningful explanation of positioning, similarities and owner trade-offs.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Depth not enforced per competitor card"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-044",
+      "tab": "Brand Materials",
+      "tabId": "atelier-materials",
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "imagery_competition",
+      "founderInstruction": "Brand Materials retains actual hotel examples, cases and supporting materials.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Case study depth historically regressed in candidates"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-045",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Comparison Studio uses the actual customer-facing subsection renderer.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "FOUNDER_APPROVED=false — awaiting Gate1 founder decision"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-046",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Identical data produces equivalent presentation in the product and comparison interface.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Founder approval pending",
+        "Equal-width geometry caveat documented"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-047",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Corresponding subsections start directly opposite each other.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-048",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "One continuous scroll maintains alignment.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-049",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Collections, tables, bullets, colors and images remain intact.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Partial tab coverage in Gate1 evidence pack; founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-050",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Browser visual evidence is required before claiming parity.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Policy encoded; Gate1 still not founder-approved"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-051",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Do not optimize for automated completion scores; optimize for professionally useful advisory profiles.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Scoring systems still exist in phase reports; must not drive approval"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-052",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Gate 2 content reconstruction blocked until Gate 1 founder approval.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-053",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "No production Airtable writes, paid research, mass population, or publication without founder auth.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-054",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "PR #453 (Phase 2F) founder-rejected — do not merge as acceptance; preserve as history.",
+      "coverage": {
+        "documentationOnly": true,
+        "contract": false,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Ensure IC does not merge rejected #453 as current quality bar"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-055",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "Anti-padding must not clear-without-refill; compose distinct evidence-backed claims.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate2 application blocked; founder not approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-056",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "Factory reconstruction must not use production Presentation as content source (baseline compare-only).",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Independent candidates still not founder-approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-057",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Do not reduce What the Owner Is Really Buying to Owner outcomes; guest and owner are not interchangeable.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Renderer gap BE-REQ-016"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-058",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "Do not invent a seventh lifecycle stage merely to satisfy a count.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Paired with open conflict BE-CONFLICT-LIFECYCLE-6-VS-7"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-059",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Preserve Gate 1 frozen Curio payload evidence; no content mutation in Gate 1.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Awaiting Gate1 founder approval"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-060",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Never mark a lesson VERIFIED without actual browser evidence.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-061",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "commercial",
+      "founderInstruction": "Critical omissions block approval regardless of aggregate score.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Needs wiring into unified approval gate"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-062",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Curio and Ascend remain NOT APPROVED until founder says otherwise.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-063",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "Reconstruct without reading production Presentation / Curio fixtures as generator input.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Candidates still not founder-approved"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-064",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "Preserve Brand Basics rec… identity; frozen baseline is never overwritten.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": true,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-065",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Do not treat the number of generated fields as proof of meaningful population.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Needs unified approval gate rejecting field-count scores"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-066",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Real atelier render required; structural tab-ID tests alone do not count.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate1 evidence exists; founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-067",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "Reconcile full Presentation denominator vs factory slots; do not shrink denominator to inflate scores.",
+      "coverage": {
+        "documentationOnly": true,
+        "contract": false,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Denominator discipline not wired as permanent CI gate"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-068",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "lifecycle_ops",
+      "founderInstruction": "No fee % invention; when confidential figures unavailable use labeled diligence guidance.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Economics invention gates partial; Gate2 depth outstanding"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-069",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Validate via real atelier overlay (beInternalPreview + beCandidateOverlay), not standalone HTML substitute.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Not founder-approved"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-070",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Comparison Studio must be visual ten-tab product render — do not build a generic JSON comparison tool.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate1 founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-071",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Automated ~99% / A/B/C scores are NOT accepted as production-quality evidence.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Scoreboards still exist in reports; must not drive approval"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-072",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Capture founder visual failures as permanent regression baseline (titles-as-paragraphs, imagery, depth, economics, empty lists, hero, comparison misalignment).",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Regression suite exists; not all classes browser-verified on current candidates"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-073",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Replace dual full-page scroll with ONE paired-subsection document; next pair below taller column.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-074",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Match collection cards by title/signature/source — not solely by array position; Missing/New empty counterparts.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Browser verification incomplete across all collection types"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-075",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "AUTOMATED_TESTED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "If evidence insufficient: stop generation and record research gap — never min-words via repetition.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Clear-without-refill still leaves empty customer bodies until Gate2 compose"
+      ],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-076",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "pipeline",
+      "founderInstruction": "Separate pipeline stages: discovery → extract → verify → intelligence → owner analysis → generation → styling validation.",
+      "coverage": {
+        "documentationOnly": true,
+        "contract": false,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Staged pipeline not fully separated in code"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-077",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Reuse the same product atelier renderers; do not create a second styling system.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate1 founder approval pending"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-078",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Changes as non-destructive overlays; color alone must not indicate founder approval.",
+      "coverage": {
+        "documentationOnly": true,
+        "contract": false,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Overlay approval semantics need explicit product rule"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-079",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CAPTURED",
+      "disposition": null,
+      "category": "owner_value",
+      "founderInstruction": "Priority subsections for recovery: Why Value, Operating Model, Loyalty, Geographic Footprint, Brand Materials.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Gate2 blocked; priority recovery not executed under approved gate"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-080",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "BROWSER_VERIFIED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "Identical saved Curio payload both sides; do not regenerate, rewrite, summarize or otherwise modify in Gate 1.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": true,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Awaiting Gate1 founder approval"
+      ],
+      "outstanding": false,
+      "implementedInProduct": true,
+      "browserVerified": true,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-081",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "CONTRACT_ENCODED",
+      "disposition": null,
+      "category": "rendering_comparison",
+      "founderInstruction": "A successful HTML render or matching tab IDs is insufficient for parity claims.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": false,
+        "pipelineSuppliesData": false,
+        "regressionTest": false,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [
+        "Need geometry/CSS/component evidence gates beyond tab IDs"
+      ],
+      "outstanding": true,
+      "implementedInProduct": false,
+      "browserVerified": false,
+      "founderApproved": false
+    },
+    {
+      "requirementId": "BE-REQ-082",
+      "tab": null,
+      "tabId": null,
+      "section": null,
+      "subsection": null,
+      "status": "IMPLEMENTED",
+      "disposition": null,
+      "category": "governance",
+      "founderInstruction": "Preserve Phase 2H WIP, PR #457, rejected PR #453; no ADP/GDI/HE edits from BE chat.",
+      "coverage": {
+        "documentationOnly": false,
+        "contract": true,
+        "productionCodeEnforces": true,
+        "pipelineSuppliesData": false,
+        "regressionTest": true,
+        "realAppDemonstrates": false,
+        "founderApproved": false
+      },
+      "unresolvedIssues": [],
+      "outstanding": true,
+      "implementedInProduct": true,
+      "browserVerified": false,
+      "founderApproved": false
+    }
+  ]
+}

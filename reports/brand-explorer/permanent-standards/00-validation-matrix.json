@@ -1,0 +1,254 @@
+{
+  "version": "BE_PERMANENT_CONTENT_STANDARDS_VALIDATION_MATRIX_V1",
+  "contract": "configs/brand-explorer-permanent-content-standards-contract-v1.json",
+  "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
+  "gate2ContentReconstruction": "BLOCKED_UNTIL_GATE1_APPROVED",
+  "enforcementLayers": {
+    "contract": "Machine-readable standards + related BE contracts",
+    "unitGates": "Node test scripts asserting slot/cardinality/forbidden patterns",
+    "renderedGates": "Browser/atelier HTML checks (not JSON presence alone)",
+    "founderReview": "Required; automated PASS ≠ approval"
+  },
+  "rows": [
+    {
+      "requirementId": "R1_TITLE_CASE_HEADINGS",
+      "requirement": "Primary section headings use Title Case + canonical typography",
+      "contractPath": "typographyAndWriting.sectionHeadings",
+      "enforcement": [
+        "configs/brand-explorer-permanent-content-standards-contract-v1.json",
+        "Future: test:be-permanent-content-standards-v1 heading-case gate on rendered .oe-section-title"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R1_NO_EM_DASH",
+      "requirement": "No em dashes in generated customer-facing paragraphs",
+      "contractPath": "typographyAndWriting.editorialQuality.forbidEmDashInGeneratedCustomerFacingText",
+      "enforcement": [
+        "forbiddenCustomerFacingPatterns includes em dash",
+        "Future sanitize + rendered text scan"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R1_NO_NBSP_ARTIFACTS",
+      "requirement": "No NBSP / HTML entity artifacts as visible text",
+      "contractPath": "typographyAndWriting.editorialQuality",
+      "enforcement": ["forbiddenCustomerFacingPatterns", "rendered text scan"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R1_NO_SLOT_KEYS_OR_INSTRUCTIONS",
+      "requirement": "No internal slot keys or generation instructions in customer text",
+      "contractPath": "typographyAndWriting.forbiddenCustomerFacingPatterns",
+      "enforcement": ["anti-padding / sanitize / permanent standards gate"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R1_NO_GENERIC_BOILERPLATE_OR_NEAR_DUPES",
+      "requirement": "No repetitive brand starters, generic diligence boilerplate, near-identical sibling cards, padding, empty headings",
+      "contractPath": "typographyAndWriting.editorialQuality",
+      "enforcement": ["nearDuplicateJaccardThreshold", "anti-padding", "empty heading gate"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R2_LIFECYCLE_SIX_STAGES",
+      "requirement": "Support Across the Lifecycle = exactly 6 ordered canonical stage cards recovered from live production (founder asserted 7; do not invent a seventh)",
+      "contractPath": "fixedCollections.supportAcrossTheLifecycle",
+      "slotKeys": [
+        "valueOwners.lifecycle.1",
+        "valueOwners.lifecycle.2",
+        "valueOwners.lifecycle.3",
+        "valueOwners.lifecycle.4",
+        "valueOwners.lifecycle.5",
+        "valueOwners.lifecycle.6"
+      ],
+      "canonicalTitles": [
+        "Evaluation",
+        "Conversion Design",
+        "Pre-Opening",
+        "Opening",
+        "Ramp-Up",
+        "Ongoing"
+      ],
+      "founderAssertedCount": 7,
+      "liveRecoveredCount": 6,
+      "resolution": "LIVE_PRODUCTION_AUTHORITY_EXACT_6_DO_NOT_INVENT_SEVENTH",
+      "enforcement": [
+        "configs/brand-explorer-collection-cardinality-contract.json lifecycle EXACT 6",
+        "permanent standards orderedCanonicalTitles",
+        "architecture corrections + failing fixture ARCH_FAIL_LIFECYCLE_INVENTED_SEVENTH",
+        "rendered oe-section / card count gate"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R2_OWNER_BUYING_DUAL_PROPOSITIONS",
+      "requirement": "What the Owner Is Really Buying = What the Guest Receives + What the Hotel Owner Receives (not Owner outcomes)",
+      "contractPath": "fixedCollections.whatTheOwnerIsReallyBuying",
+      "enforcement": [
+        "configs/brand-explorer-founder-architecture-corrections-contract-v1.json",
+        "test:be-founder-architecture-corrections-v1",
+        "fixtures/.../failing-owner-buying-outcomes-only.json"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R2_DIFF_EXACT_4_PLUS_4",
+      "requirement": "Key Differentiators = Experience & Identity (4) + Commercial & Distribution (4)",
+      "contractPath": "fixedCollections.keyDifferentiators",
+      "enforcement": ["architecture corrections", "failing-differentiators-empty-and-dupes.json"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R2_DEMAND_MIN_SIX",
+      "requirement": "Demand Scenario View = at least six substantive differentiated cards",
+      "contractPath": "fixedCollections.demandScenarioView",
+      "enforcement": ["architecture corrections", "subsection parity commercial.demand minItems 6"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R12_FOUNDER_LESSONS_REGISTRY",
+      "requirement": "Founder Quality Lessons Registry maintained; VERIFIED requires browser evidence",
+      "contractPath": "architectureCorrections.lessonsRegistry",
+      "enforcement": ["configs/brand-explorer-founder-quality-lessons-registry-v1.json", "test:be-founder-quality-lessons-registry-v1"],
+      "blocksApproval": true,
+      "gate2Only": false
+    },
+    {
+      "requirementId": "R2_OPENING_PATH_FIVE_STAGES",
+      "requirement": "Opening & Conversion Path = exactly 5 ordered canonical stage cards",
+      "contractPath": "fixedCollections.openingAndConversionPath",
+      "slotKeys": [
+        "economics.opening.step.1",
+        "economics.opening.step.2",
+        "economics.opening.step.3",
+        "economics.opening.step.4",
+        "economics.opening.step.5"
+      ],
+      "canonicalTitles": [
+        "Application & Feasibility",
+        "Design & Standards",
+        "Pre-Opening Planning",
+        "Opening Support",
+        "Stabilization"
+      ],
+      "enforcement": [
+        "collection-cardinality economicsItems EXACT 5",
+        "permanent standards orderedCanonicalTitles",
+        "forbid generic single process paragraph"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R3_EMPTY_SECTION_FAIL",
+      "requirement": "Title-only / empty / placeholder / diligence-only sections fail",
+      "contractPath": "emptySectionAndDensity",
+      "enforcement": ["empty body gate", "placeholder pattern gate", "NOT_DISCLOSED ≠ substantive"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R3_COMPONENT_EXPLICIT_CONTRACT",
+      "requirement": "Each component declares required fields, cardinality, depth, evidence, images, missing-data behavior",
+      "contractPath": "emptySectionAndDensity.eachComponentRequiresExplicitContract",
+      "enforcement": ["permanent standards + content-item / presentation contracts"],
+      "blocksApproval": true,
+      "gate2Only": false
+    },
+    {
+      "requirementId": "R4_LOYALTY_SIX_BENEFITS",
+      "requirement": "Participating brands show exactly 6 distinct Key Benefits cards",
+      "contractPath": "fixedCollections.loyaltyKeyBenefits",
+      "enforcement": [
+        "collection-cardinality loyaltyBenefits CONDITIONAL EXACT 6",
+        "content-presentation loyalty.proof min/target 6",
+        "forbid Benefit N / Loyalty proof points placeholders"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R5_LOYALTY_STATISTICS",
+      "requirement": "Latest official loyalty KPIs with source/date/definition; Not Disclosed when unknown",
+      "contractPath": "fixedCollections.loyaltyKpis",
+      "enforcement": ["KPI research evidence pack", "forbid parent≠brand confusion", "compact Not Disclosed"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R6_LOYALTY_TIERS",
+      "requirement": "Actual program tiers as cards/table — not unstructured name list",
+      "contractPath": "fixedCollections.loyaltyTiers",
+      "enforcement": ["ALL_SOURCE_MEMBERS", "per-tier evidence fields", "rendered tier presentation"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R7_GALLERY_PROPERTY_PHOTOS",
+      "requirement": "Gallery prioritizes affiliated hotel photos; 6 distinct; browser load check",
+      "contractPath": "fixedCollections.imageGallery",
+      "enforcement": [
+        "materials.gallery EXACT 6",
+        "sourcing hierarchy",
+        "forbid logos/stock/repeats",
+        "browser image naturalWidth gate"
+      ],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R8_SIMILAR_BRANDS_ONE_PER_CARD",
+      "requirement": "Each competitor in its own card with required fields",
+      "contractPath": "fixedCollections.similarBrands",
+      "enforcement": ["insight.similar cardinality", "one child = one brand", "independent item validation"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R9_RESEARCH_SUPPORTS_POPULATION",
+      "requirement": "Universal research produces evidence for all required categories",
+      "contractPath": "researchMustSupportPopulation",
+      "enforcement": ["evidence pack category checklist", "forbid template fill for missing research"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R10_RENDERED_REGRESSION_SUITE",
+      "requirement": "Regression suite on rendered components for all listed failure modes",
+      "contractPath": "renderingAndQualityGates.regressionCases",
+      "enforcement": ["test:be-permanent-content-standards-v1 (contract)", "Gate 2: rendered component suite"],
+      "blocksApproval": true,
+      "gate2Only": true
+    },
+    {
+      "requirementId": "R11_GATE1_BEFORE_GATE2",
+      "requirement": "Renderer parity founder approval before content reconstruction",
+      "contractPath": "acceptanceSequence",
+      "enforcement": [
+        "docs/brand-explorer/BE_PHASE2H_A_GATE1_RENDERER_PARITY_FOUNDER_REVIEW.md",
+        "Gate 2 scripts must refuse when gate1.founderApproved !== true"
+      ],
+      "blocksApproval": true,
+      "gate2Only": false
+    },
+    {
+      "requirementId": "R12_GOVERNANCE",
+      "requirement": "BE worktree only; preserve WIP/PRs; no paid/writes/population/publication without founder auth",
+      "contractPath": "governance",
+      "enforcement": ["dealality worktree preflight", "PR completion discipline"],
+      "blocksApproval": true,
+      "gate2Only": false
+    }
+  ]
+}
