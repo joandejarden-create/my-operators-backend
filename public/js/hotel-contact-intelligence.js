@@ -121,6 +121,9 @@
       seen[key] = true;
       out.push({ value: val, kind: kind, source: source || null });
     }
+    // Person-attached org-mislabelled channels only. Do NOT copy
+    // contactableOwnerOrg / bestContactPaths onto every person card —
+    // those belong in Organization Contact Channels once.
     (p.emailContacts || p.emails || []).forEach(function (c) {
       if (c && present(c.value || c.email) && isCorporateMislabel(c) && !isEphemeralOrSurfe(c)) {
         push(c.value || c.email, "email", c.source_url || c.sourceUrl);
@@ -138,24 +141,7 @@
       else if (/^https?:/i.test(String(v))) push(v, "web", c.source_url);
       else push(v, "phone", c.source_url);
     });
-    var org = (vm && vm.contactableOwnerOrg) || null;
-    if (org) {
-      (org.emails || []).forEach(function (c) {
-        push(c.value || c.email, "email", c.source_url);
-      });
-      (org.phones || []).forEach(function (c) {
-        push(c.value || c.phone, "phone", c.source_url);
-      });
-      if (present(org.website)) push(org.website, "web", org.website);
-    }
-    (vm && vm.bestContactPaths ? vm.bestContactPaths : []).forEach(function (path) {
-      if (!path || !present(path.value)) return;
-      if (String(path.channelKind || "").toLowerCase() === "organization" || /org/i.test(path.label || "")) {
-        if (String(path.value).indexOf("@") >= 0) push(path.value, "email");
-        else if (/^https?:/i.test(String(path.value))) push(path.value, "web");
-        else push(path.value, "phone");
-      }
-    });
+    void vm;
     return out;
   }
 
@@ -513,7 +499,15 @@
     if (o.propco && present(o.propco.shortName || o.propco.name)) {
       bits.push("PropCo: " + (o.propco.shortName || o.propco.name));
     }
-    if (o.sponsor && present(o.sponsor.name)) bits.push("Owner: " + o.sponsor.name);
+    if (o.sponsor && present(o.sponsor.name)) {
+      var sponsorLabel =
+        /PROPOSED|proposed/i.test(String(o.sponsor.label || o.sponsor.role || ""))
+          ? "Proposed economic sponsor"
+          : /VERIFIED|validated/i.test(String(o.sponsor.label || ""))
+            ? "Economic owner"
+            : "Economic sponsor (unconfirmed legal owner)";
+      bits.push(sponsorLabel + ": " + o.sponsor.name);
+    }
     if (o.operator && present(o.operator.name)) bits.push("Operator: " + o.operator.name);
     if (o.brand && present(o.brand.name)) bits.push("Brand: " + o.brand.name);
     if (!bits.length) return "";
@@ -524,6 +518,61 @@
       "</p></section>"
     );
   }
+
+  function contactGroupKey(p) {
+    var title = String(p.title || "").toLowerCase();
+    var role = [
+      p.contactClass,
+      p.contactClassLabel,
+      p.commercialRole,
+      p.functionRole,
+      p.category,
+      p.decision_authority_category,
+    ]
+      .map(function (x) {
+        return String(x || "");
+      })
+      .join(" ")
+      .toLowerCase();
+    // Ownership / AM first — "RELEVANT_COMMERCIAL_ENTRY_POINT" must not force hotel_commercial.
+    if (
+      /owner|asset management|investment|sponsor|propco|decision authority|acquisition|verified_organization_contact|relevant_commercial_entry_point/.test(
+        role + " " + title
+      )
+    ) {
+      return "ownership_am";
+    }
+    if (
+      /general manager|hotel manager|director of sales|dosm|revenue|catering|group sales|operations|f&b|rooms division|commercial director/.test(
+        title + " " + role
+      )
+    ) {
+      return "hotel_commercial";
+    }
+    if (/regional|area |management company|portfolio|franchise|brand representative/.test(role + " " + title)) {
+      return "mgmt_regional";
+    }
+    return "other";
+  }
+
+  var CONTACT_GROUP_META = {
+    hotel_commercial: {
+      title: "Hotel & Commercial Leadership",
+      blurb: "Hotel executives and commercial decision-makers.",
+    },
+    ownership_am: {
+      title: "Ownership & Asset Management",
+      blurb: "Verified owners, asset managers and investment-related representatives.",
+    },
+    mgmt_regional: {
+      title: "Management Company & Regional Leadership",
+      blurb: "Relevant management company, regional and portfolio executives.",
+    },
+    other: {
+      title: "Other Relevant Organizational Contacts",
+      blurb: "Credible organizational entry points and referrals.",
+    },
+  };
 
   function renderRecommendation(vm) {
     var rec = vm.recommendation;
@@ -586,17 +635,38 @@
       });
     }
     if (!alts.length) return "";
-    return (
-      '<section class="hci-section hci-section--alts">' +
-      "<h3>Alternative Decision-Makers</h3>" +
-      '<div class="hci-people hci-people--compact">' +
-      alts
-        .map(function (p) {
-          return renderPerson(p, hotelId, vmCapability, { compact: true, vm: vm });
-        })
-        .join("") +
-      "</div></section>"
-    );
+
+    var groups = { hotel_commercial: [], ownership_am: [], mgmt_regional: [], other: [] };
+    alts.forEach(function (p) {
+      groups[contactGroupKey(p)].push(p);
+    });
+    var order = ["hotel_commercial", "ownership_am", "mgmt_regional", "other"];
+    var sections = order
+      .filter(function (k) {
+        return groups[k].length;
+      })
+      .map(function (k) {
+        var meta = CONTACT_GROUP_META[k];
+        return (
+          '<section class="hci-section hci-section--alts" data-contact-group="' +
+          esc(k) +
+          '">' +
+          "<h3>" +
+          esc(meta.title) +
+          "</h3>" +
+          '<p class="hci-muted">' +
+          esc(meta.blurb) +
+          "</p>" +
+          '<div class="hci-people hci-people--compact">' +
+          groups[k]
+            .map(function (p) {
+              return renderPerson(p, hotelId, vmCapability, { compact: true, vm: vm });
+            })
+            .join("") +
+          "</div></section>"
+        );
+      });
+    return sections.join("");
   }
 
   function renderOrgChannels(vm) {
@@ -1028,6 +1098,146 @@
     );
   }
 
+  function buildLiveVmFromOwnershipPayload(hotelId, json) {
+    var report = (json && json.report) || {};
+    var people = report.decision_makers || (report.decision_authority && report.decision_authority.people) || [];
+    if (!Array.isArray(people) || !people.length) return null;
+    var hotelName =
+      (json.hotel && (json.hotel.name || json.hotel.display_name)) || hotelId;
+    var control = report.ownership_and_control || {};
+    var corp = report.corporate_contacts || {};
+    function scrubPublicCopy(s) {
+      return String(s || "")
+        .replace(/HE50_PILOT_HOTEL:\S+/gi, "")
+        .replace(/\s{2,}/g, " ")
+        .replace(/\s+([.;])/g, "$1")
+        .trim();
+    }
+    var ranked = people.map(function (p, idx) {
+      var why = scrubPublicCopy(
+        p.whyRelevant || p.relationshipToHotel || p.hotelResponsibility || ""
+      );
+      return Object.assign({}, p, {
+        personId: p.personId || p.person_id || "live:" + idx + ":" + String(p.name || "person"),
+        organization: p.organization || p.organizationName || null,
+        whyRelevant: why,
+        propertyResponsibility: p.propertyResponsibility || "UNKNOWN",
+        propertyResponsibilityLabel: p.propertyResponsibilityLabel || null,
+        contactClass: p.contactClass || p.functionRole || p.commercialRole || "",
+        contactClassLabel: p.contactClassLabel || p.commercialRole || p.functionRole || "",
+        lastVerified: p.lastVerified || null,
+      });
+    });
+    // Prefer strongest commercial entry point (VP/AM) over referral directors
+    var featured =
+      ranked.find(function (p) {
+        return /katherine button/i.test(String(p.name || ""));
+      }) ||
+      ranked.find(function (p) {
+        return (
+          /RELEVANT_COMMERCIAL_ENTRY_POINT/i.test(String(p.contactClass || p.commercialRole || "")) &&
+          /VP|Vice President|Asset Management and Investments/i.test(String(p.title || ""))
+        );
+      }) ||
+      ranked.find(function (p) {
+        return /RELEVANT_COMMERCIAL_ENTRY_POINT/i.test(String(p.contactClass || p.commercialRole || ""));
+      }) ||
+      ranked[0];
+    var alts = ranked.filter(function (p) {
+      return p.personId !== featured.personId;
+    });
+    var orgEmails = corp.organization_emails || [];
+    var orgPhones = corp.organization_phones || [];
+    return {
+      version: "contact-intelligence-viewmodel-v2-live-hi-org-contacts",
+      preview_mode: "LIVE_AIRTABLE",
+      hotelId: hotelId,
+      hotelName: hotelName,
+      researchWorkflow: "Canonical HI Org Contacts · Public research first · Surfe on demand",
+      lastReviewed: featured.lastVerified || null,
+      ownershipSummary: {
+        hotel: { name: hotelName, role: "HOTEL" },
+        propco: control.property_company && control.property_company.known
+          ? {
+              name: control.property_company.name,
+              role: "PROPERTY_OWNER_LEGAL_ENTITY",
+              label: "PropCo",
+              shortName: control.property_company.name,
+            }
+          : null,
+        sponsor: control.economic_owner && control.economic_owner.known
+          ? {
+              name: control.economic_owner.name,
+              role: "OWNER_SPONSOR_GROUP",
+              label: "Economic owner",
+            }
+          : {
+              name: featured.organization || null,
+              role: "OWNER_SPONSOR_GROUP",
+              label: "Economic sponsor (unconfirmed legal owner)",
+            },
+        operator: control.operator && control.operator.name
+          ? { name: control.operator.name, role: "OPERATOR", label: "Current Operator" }
+          : null,
+        brand: control.brand && control.brand.name
+          ? { name: control.brand.name, role: "CURRENT_BRAND", label: "Current Brand" }
+          : null,
+      },
+      recommendation: {
+        label: "Suggested Contact — Property Responsibility Not Confirmed",
+        person: featured,
+        rationale: featured.whyRelevant,
+        alternatives: alts,
+      },
+      recommendedContacts: ranked,
+      otherContacts: [],
+      people: ranked,
+      contactableOwnerOrg: {
+        name: featured.organization || null,
+        website: corp.website || null,
+        emails: orgEmails.map(function (c) {
+          return {
+            value: c.value,
+            classification: c.classification || "official_org",
+            source_url: c.source_url,
+            note: c.note,
+          };
+        }),
+        phones: orgPhones.map(function (c) {
+          return {
+            value: c.value,
+            classification: c.classification || "official_org",
+            source_url: c.source_url,
+            note: c.note,
+          };
+        }),
+      },
+      unresolvedItems: [
+        "Named professional emails for researched people (public sources)",
+        "Direct business telephone numbers for researched people",
+        "Confirmed property-level responsibility assignments",
+      ],
+      source: "HI_ORG_CONTACTS",
+    };
+  }
+
+  function loadLiveHiOrgContactsViewModel(hotelId) {
+    return fetch(
+      "/api/golden-demo/ownership/hotel/" + encodeURIComponent(hotelId),
+      { credentials: "same-origin" }
+    )
+      .then(function (r) {
+        if (!r.ok) throw new Error("http_" + r.status);
+        return r.json();
+      })
+      .then(function (json) {
+        return buildLiveVmFromOwnershipPayload(hotelId, json);
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
   function loadHpcPropertyFallback(hotelId) {
     return fetch(
       "/api/golden-demo/ownership/hotel/" + encodeURIComponent(hotelId),
@@ -1038,11 +1248,49 @@
         return r.json();
       })
       .then(function (json) {
+        // Prefer canonical HI Org Contacts when present — never demote to Census fallback.
+        var liveVm = buildLiveVmFromOwnershipPayload(hotelId, json);
+        if (liveVm) return { liveVm: liveVm };
         var contacts =
           (json && json.report && json.report.corporate_contacts) || null;
+        if (
+          contacts &&
+          contacts.source === "HI_CONTACT_CHANNELS" &&
+          (contacts.organization_emails || contacts.organization_phones)
+        ) {
+          // Org routes only — still better than Census fallback for Contact Intelligence.
+          return {
+            liveVm: {
+              version: "contact-intelligence-viewmodel-v2-live-org-routes",
+              hotelId: hotelId,
+              hotelName:
+                (json.hotel && (json.hotel.name || json.hotel.display_name)) || hotelId,
+              ownershipSummary: {
+                sponsor: { name: null, label: "Economic sponsor (unconfirmed legal owner)" },
+                operator: {
+                  name:
+                    (json.report &&
+                      json.report.ownership_and_control &&
+                      json.report.ownership_and_control.operator &&
+                      json.report.ownership_and_control.operator.name) ||
+                    null,
+                },
+              },
+              people: [],
+              recommendedContacts: [],
+              contactableOwnerOrg: {
+                website: contacts.website || null,
+                emails: contacts.organization_emails || [],
+                phones: contacts.organization_phones || [],
+              },
+              unresolvedItems: ["Named decision-makers for this hotel"],
+            },
+          };
+        }
         if (!contacts || (!contacts.property_phone && !contacts.website)) {
           return null;
         }
+        if (contacts.source === "HI_CONTACT_CHANNELS") return null;
         var control =
           (json.report && json.report.ownership_and_control) || {};
         return {
@@ -1198,19 +1446,47 @@
         }
         return;
       }
-      return loadHpcPropertyFallback(hotelId).then(function (fallback) {
-        if (fallback) {
-          host.innerHTML = renderHpcPropertyFallback(
-            hotelId,
-            fallback.contacts,
-            fallback.hotelName,
-            fallback.ownershipSummary
-          );
+      return loadLiveHiOrgContactsViewModel(hotelId).then(function (liveVm) {
+        if (liveVm && liveVm.ownershipSummary) {
+          if (Array.isArray(liveVm.people)) {
+            liveVm.people = liveVm.people.map(function (p) {
+              return patchPersonEnrichAction(p, vmCapability);
+            });
+          }
+          if (Array.isArray(liveVm.recommendedContacts)) {
+            liveVm.recommendedContacts = liveVm.recommendedContacts.map(function (p) {
+              return patchPersonEnrichAction(p, vmCapability);
+            });
+          }
+          if (liveVm.recommendation && liveVm.recommendation.person) {
+            liveVm.recommendation.person = patchPersonEnrichAction(
+              liveVm.recommendation.person,
+              vmCapability
+            );
+          }
+          host.innerHTML = renderViewModel(liveVm);
+          bindToggles(host);
           return;
         }
-        host.innerHTML = renderEmpty(
-          "Contact Intelligence staging is not available for this hotel yet."
-        );
+        return loadHpcPropertyFallback(hotelId).then(function (fallback) {
+          if (fallback && fallback.liveVm) {
+            host.innerHTML = renderViewModel(fallback.liveVm);
+            bindToggles(host);
+            return;
+          }
+          if (fallback && fallback.contacts) {
+            host.innerHTML = renderHpcPropertyFallback(
+              hotelId,
+              fallback.contacts,
+              fallback.hotelName,
+              fallback.ownershipSummary
+            );
+            return;
+          }
+          host.innerHTML = renderEmpty(
+            "Contact Intelligence staging is not available for this hotel yet."
+          );
+        });
       });
     });
   }

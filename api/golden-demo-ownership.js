@@ -312,19 +312,87 @@ export async function getGoldenDemoHotelOwnership(req, res) {
               class: graphSources.length ? "VERIFIED_HI_EVIDENCE" : "EMPTY",
               source: "HI Graph Evidence",
             },
+            contacts: {
+              class: (airtableGraph.contactCount || 0) > 0 ? "VERIFIED_HI_ORG_CONTACTS" : "EMPTY",
+              source: "HI Org Contacts + HI Contact Channels",
+            },
           },
         };
+
+        // Live Contact Intelligence from canonical HI Org Contacts (not Proposed overlay).
+        const contactPack = airtableGraph.contacts || {};
+        const livePeople = (contactPack.people || []).map((p) => ({
+          personId: p.personId,
+          name: p.name,
+          title: p.title,
+          organization: p.organization,
+          organizationName: p.organization,
+          commercialRole: p.commercialRole || p.functionRole,
+          contactClass: p.contactClass || p.functionRole,
+          contactClassLabel: p.contactClassLabel || p.functionRole,
+          propertyResponsibility: p.propertyResponsibility || "UNKNOWN",
+          propertyResponsibilityLabel: p.propertyResponsibilityLabel,
+          whyRelevant: p.whyRelevant || p.hotelResponsibility,
+          relationshipToHotel: p.hotelResponsibility,
+          linkedinUrl: p.linkedinUrl || null,
+          emailContacts: p.emailContacts || [],
+          phoneContacts: p.phoneContacts || [],
+          verificationStatus: p.verificationState || "Evidence Collected",
+          confidence: p.confidence || null,
+          lastVerified: p.lastVerified || null,
+          source: "HI_ORG_CONTACTS",
+          preview_state: "LIVE_AIRTABLE",
+        }));
+        if (livePeople.length) {
+          payload.report.decision_makers = livePeople;
+          payload.report.decision_authority = {
+            people: livePeople,
+            source: "HI_ORG_CONTACTS",
+            preview_state: "LIVE_AIRTABLE",
+            note:
+              "Canonical HI Org Contacts. Property responsibility may remain unconfirmed even when identity/org affiliation is verified.",
+          };
+        }
+        const orgEmails = (contactPack.orgChannels || []).filter((c) =>
+          /email/i.test(String(c.kind || "")),
+        );
+        const orgPhones = (contactPack.orgChannels || []).filter((c) =>
+          /phone|tel/i.test(String(c.kind || "")),
+        );
+        const orgWeb = (contactPack.orgChannels || []).find((c) =>
+          /^https?:/i.test(String(c.value || "")),
+        );
+        if (orgEmails.length || orgPhones.length || orgWeb || livePeople.length) {
+          payload.report.corporate_contacts = {
+            ...(payload.report.corporate_contacts || {}),
+            organization_emails: orgEmails.map((c) => ({
+              value: c.value,
+              classification: c.classification,
+              verification_status: c.verificationStatus,
+              source_url: c.sourceUrl,
+              note: c.notes || "Organizational Contact Route — not a personal inbox",
+            })),
+            organization_phones: orgPhones.map((c) => ({
+              value: c.value,
+              classification: c.classification,
+              verification_status: c.verificationStatus,
+              source_url: c.sourceUrl,
+              note: c.notes || "Organization / published business line",
+            })),
+            website: orgWeb?.value || payload.report.corporate_contacts?.website || null,
+            source: "HI_CONTACT_CHANNELS",
+            property_fallback_source: null,
+          };
+        }
         payload.org_network = payload.report.organizations;
       }
     }
 
-    // HPC property contact fallback for Contacts chapter (read-only; no CI write).
-    // Also resolve canonical hotel display name for portfolio rows (out-of-cohort).
+    // HPC identity for display name only (Contact Intelligence must not use Census as contact SoT).
     try {
       const { resolvePropertyCensusOwnership } = await import(
         "../lib/hotel-intelligence/property-census-identity-v1.js"
       );
-      // Reuse brand-presence base via env — ownership route already has Airtable creds in process.
       const Airtable = (await import("airtable")).default;
       const key = process.env.AIRTABLE_API_KEY;
       const baseId = process.env.AIRTABLE_BASE_ID_ALT;
@@ -359,27 +427,34 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             }
           }
         }
-        const phone =
-          fields.Phone || fields.Telephone || fields.phone || null;
-        const website =
-          fields["Official Property URL"] || fields.Website || fields.website || null;
-        if (phone || website) {
-          const report = payload.report || {};
-          payload.report = {
-            ...report,
-            corporate_contacts: {
-              ...(report.corporate_contacts || {}),
-              property_phone: phone || report.corporate_contacts?.property_phone || null,
-              website: website || report.corporate_contacts?.website || null,
-              property_fallback_source: identity.owningTable || "Hotel Property Census",
-              source: "HPC_PROPERTY_FALLBACK",
-            },
-          };
+        // Prefer HI Contact Channels. Only expose HPC phone/website when no HI org routes exist.
+        const hasHiOrgRoutes =
+          (payload.report?.corporate_contacts?.source === "HI_CONTACT_CHANNELS") ||
+          (payload.report?.decision_makers || []).some((p) => p.source === "HI_ORG_CONTACTS");
+        if (!hasHiOrgRoutes) {
+          const phone =
+            fields.Phone || fields.Telephone || fields.phone || null;
+          const website =
+            fields["Official Property URL"] || fields.Website || fields.website || null;
+          if (phone || website) {
+            const report = payload.report || {};
+            payload.report = {
+              ...report,
+              corporate_contacts: {
+                ...(report.corporate_contacts || {}),
+                property_phone: phone || report.corporate_contacts?.property_phone || null,
+                website: website || report.corporate_contacts?.website || null,
+                property_fallback_source: identity.owningTable || "Hotel Property Census",
+                source: "HPC_PROPERTY_FALLBACK",
+                note: "Property switchboard/website from HPC identity only — not named professional contacts.",
+              },
+            };
+          }
         }
       }
     } catch (contactErr) {
       console.warn(
-        "[golden-demo-ownership] HPC contact fallback skipped",
+        "[golden-demo-ownership] HPC identity overlay skipped",
         contactErr?.message || contactErr,
       );
     }
