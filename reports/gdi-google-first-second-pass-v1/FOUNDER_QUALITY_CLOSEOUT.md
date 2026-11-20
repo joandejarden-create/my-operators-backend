@@ -73,7 +73,7 @@ Every original cohort contact counted **exactly once**:
 - No automatic STAGED→CURRENT.
 - **Airtable inventory (Maciel `recFsrSCFCNkKvKJE`):** email + phone + ext `35222` verified by read-back.
 - **localhost:8080 STAGED drawer** (`hist_9d12871f512d` / Plan Anual de Obra Pública 2026): contact **name** renders; channels still show **Find Email & Phone** CTA because `source CURRENT_STAGED_PACKAGE` has not been refreshed from inventory. Screenshots: `screenshots/gdi-maciel-local-drawer-closeout.png`, `screenshots/gdi-maciel-local-contact-section.png`.
-- **Railway external:** pending IC merge + deploy + STAGED package refresh (not CURRENT promotion).
+- **Railway external:** comparison page returned auth failure (`Send Authorization: Bearer …`) — screenshot `screenshots/gdi-maciel-railway-drawer-blocked.png`. Pending IC merge + deploy + authenticated STAGED refresh (not CURRENT promotion).
 - Customer-facing channel cert = **BLOCKED until IC STAGED refresh**; research/Airtable quality closeout = done.
 
 ## 7. Remaining unresolved
