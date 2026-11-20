@@ -3,7 +3,8 @@
     "contract": "BE_FACTORY_PERMANENT_LOYALTY_REGION_STANDARDS_V1",
     "lessons": [
       "BE-QL-LOYALTY-SIX-001",
-      "BE-QL-REGION-ACRONYM-001"
+      "BE-QL-REGION-ACRONYM-001",
+      "BE-QL-DEMAND-SCENARIOS-SIX-001"
     ],
     "factoryInheritance": [
       "1.0",
@@ -21,26 +22,54 @@
       "ok": true,
       "badHeadings": []
     },
+    "demand": {
+      "ok": true,
+      "count": 6,
+      "distinctThemeCount": 6,
+      "reasons": [],
+      "blocked": false,
+      "invalidFits": [],
+      "lessonId": "BE-QL-DEMAND-SCENARIOS-SIX-001"
+    },
+    "demandGate": {
+      "contract": "BE_FACTORY_PERMANENT_DEMAND_SCENARIOS_SIX_V1",
+      "lessons": [
+        "BE-QL-DEMAND-SCENARIOS-SIX-001"
+      ],
+      "factoryInheritance": [
+        "1.0",
+        "2.0"
+      ],
+      "ok": true,
+      "demand": {
+        "ok": true,
+        "count": 6,
+        "distinctThemeCount": 6,
+        "reasons": [],
+        "blocked": false,
+        "invalidFits": [],
+        "lessonId": "BE-QL-DEMAND-SCENARIOS-SIX-001"
+      },
+      "blocked": false
+    },
     "blocked": false
   },
   "gaps": [
     "fee_amounts_unverified_pending_disclosure_exhibit",
-    "incomplete_drafts:22",
-    "gallery 0/6",
-    "gallery_images_pending_verified_cdn:0/6"
+    "incomplete_drafts:46"
   ],
-  "tenTabQualityScore": 76,
+  "tenTabQualityScore": 88,
   "subsectionCoverage": {
     "tabs": {
       "overview": 21,
-      "commercial": 20,
+      "commercial": 25,
       "loyalty": 24,
       "economics": 49,
       "operations": 29,
-      "footprint": 17,
+      "footprint": 18,
       "materials": 9,
       "insight": 7,
-      "standards": 11,
+      "standards": 12,
       "valueOwners": 13
     },
     "coveredTabs": 10,
@@ -49,6 +78,11 @@
   "incompleteDrafts": [
     {
       "slotKey": "commercial.lever.corporate_group",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "commercial.lever.data_analytics",
       "provenance": "INCOMPLETE_DRAFT",
       "reason": "candidate_regresses_depth_or_cardinality"
     },
@@ -63,7 +97,87 @@
       "reason": "candidate_regresses_depth_or_cardinality"
     },
     {
+      "slotKey": "commercial.lever.international",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_not_safe_to_replace_current"
+    },
+    {
+      "slotKey": "commercial.lever.leisure_destination",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "commercial.lever.reputation_qa",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
       "slotKey": "commercial.lever.revenue_management",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "commercial.lever.sales_catering",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_not_safe_to_replace_current"
+    },
+    {
+      "slotKey": "commercial.theme",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "footprint.geo_intro",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "footprint.growth_editorial",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "footprint.growth_fit",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "footprint.growth_themes",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "footprint.region.am",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "footprint.region.apac",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "footprint.region.cala",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "footprint.region.eu",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "footprint.region.mea",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "insight.similar",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "insight.summary",
       "provenance": "INCOMPLETE_DRAFT",
       "reason": "candidate_regresses_depth_or_cardinality"
     },
@@ -98,34 +212,49 @@
       "reason": "candidate_prose_or_list_regression"
     },
     {
-      "slotKey": "materials.gallery.1",
+      "slotKey": "materials.file",
       "provenance": "INCOMPLETE_DRAFT",
-      "reason": "candidate_gallery_logo_or_missing"
+      "reason": "candidate_prose_or_list_regression"
     },
     {
-      "slotKey": "materials.gallery.2",
-      "provenance": "INCOMPLETE_DRAFT",
-      "reason": "candidate_gallery_logo_or_missing"
+      "slotKey": "footprint.openings",
+      "provenance": "RESEARCH_REQUIRED",
+      "reason": "candidate_marks_research_required"
     },
     {
-      "slotKey": "materials.gallery.3",
+      "slotKey": "operations.operator_compat.fit",
       "provenance": "INCOMPLETE_DRAFT",
-      "reason": "candidate_gallery_logo_or_missing"
+      "reason": "candidate_regresses_depth_or_cardinality"
     },
     {
-      "slotKey": "materials.gallery.4",
+      "slotKey": "operations.standards_philosophy",
       "provenance": "INCOMPLETE_DRAFT",
-      "reason": "candidate_gallery_logo_or_missing"
+      "reason": "candidate_prose_or_list_regression"
     },
     {
-      "slotKey": "materials.gallery.5",
+      "slotKey": "overview.bestAt.1",
       "provenance": "INCOMPLETE_DRAFT",
-      "reason": "candidate_gallery_logo_or_missing"
+      "reason": "candidate_not_safe_to_replace_current"
     },
     {
-      "slotKey": "materials.gallery.6",
+      "slotKey": "overview.bestAt.3",
       "provenance": "INCOMPLETE_DRAFT",
-      "reason": "candidate_gallery_logo_or_missing"
+      "reason": "candidate_not_safe_to_replace_current"
+    },
+    {
+      "slotKey": "overview.differentiators.commercial",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "overview.differentiators.identity",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "overview.portfolio_context",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_regresses_depth_or_cardinality"
     },
     {
       "slotKey": "overview.scenario.1",
@@ -143,9 +272,24 @@
       "reason": "candidate_regresses_depth_or_cardinality"
     },
     {
+      "slotKey": "overview.typical_use_case",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_not_safe_to_replace_current"
+    },
+    {
+      "slotKey": "standards.conversion",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_not_safe_to_replace_current"
+    },
+    {
       "slotKey": "standards.intro",
       "provenance": "INCOMPLETE_DRAFT",
       "reason": "candidate_regresses_depth_or_cardinality"
+    },
+    {
+      "slotKey": "standards.questions",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
     },
     {
       "slotKey": "standards.requirement",
@@ -154,6 +298,11 @@
     },
     {
       "slotKey": "valueOwners.overview",
+      "provenance": "INCOMPLETE_DRAFT",
+      "reason": "candidate_prose_or_list_regression"
+    },
+    {
+      "slotKey": "valueOwners.watchouts",
       "provenance": "INCOMPLETE_DRAFT",
       "reason": "candidate_prose_or_list_regression"
     }

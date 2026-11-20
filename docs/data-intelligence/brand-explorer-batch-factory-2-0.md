@@ -112,6 +112,19 @@ Separate axes (not collapsed into one status):
 
 CURRENT Presentation baselines are staged as `NEEDS_REMEDIATION` until a Factory-depth candidate closes gaps. Only Autograph (exact candidate + permanent standards) and future Curio-parity candidates reach `CERTIFIED_READY_FOR_REVIEW`.
 
+## Empty-CURRENT slot-parity completion (2026-11-20)
+
+Empty live Presentation brands previously received a thin ~58-block scaffold, so atelier tabs (Ops flexibility, footprint regions, economics opening path, value lifecycle, etc.) rendered blank even when a coarse blob existed.
+
+Factory depth now expands every candidate through `be-factory-2-empty-brand-completion-slots-v1.js` to the Autograph/Curio required-slot bar (≥85% required slots). Reprocess:
+
+```bash
+npm run test:be-factory-2-empty-brand-completion-v1
+npm run be-factory-2-empty-brand-completion
+```
+
+Still `$0` paid; fee amounts remain disclosure-gated. Gallery CDN uses exact-slug fixture pools when available; otherwise Materials keeps file cards and gallery stays a READY gap. Report: `reports/brand-explorer/factory-2-0/73-empty-brand-completion-reprocess.md`.
+
 ## Master queue reconcile
 
 ```bash

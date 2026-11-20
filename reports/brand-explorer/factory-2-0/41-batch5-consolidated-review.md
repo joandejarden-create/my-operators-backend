@@ -1,6 +1,6 @@
-# Factory 2.0 — Batch 5 — Ten Brands (Existing Draft / Under Review) Consolidated Review
+# Factory 2.0 — Batch 5 — empty-brand slot-parity completion Consolidated Review
 
-**Generated:** 2026-11-20T06:27:58.674Z
+**Generated:** 2026-11-20T07:54:03.045Z
 **Production Presentation writes:** OFF
 **Paid research:** $0
 
@@ -17,109 +17,109 @@
 | READY_FOR_REVIEW | 0 |
 | BLOCKED | 0 |
 | Research spend USD | 0 |
-| Expected writes (if later approved) | 530 |
+| Expected writes (if later approved) | 1390 |
 
 ## Brands
 
 ### JW Marriott (`recj5BCSpWqMEEBDg`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `7ec0284441d435940707622395ece692321a8001d8735d9fdfacc3c9f5730c7c`
-- Assembled hash: `60d56158cef771d0c57afaba9c75c87f4ce4225fc21ab4c7ab570884d1fc8568`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `e38d5a7d8d09d7db37a28648a05c887a35bccd0f94433e635b46e660ddab9aa0`
+- Assembled hash: `260f69a75211d5f65a46aa8303cfc5293469c9e3ef493faa5e620e1523d44736`
 - Compare: /app#/brand-explorer-compare?id=recj5BCSpWqMEEBDg&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recj5BCSpWqMEEBDg&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### W Hotels (`recqBiokz5ePxbFTE`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `320e849d99204d40bd8846c3c96d9f7f9fba09cd91ee40afee91c669a7272944`
-- Assembled hash: `3367f7905d0448feb3f490ee0311d42814a8571f162eb01dd0db657dc7b90082`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `cfeb8f5ec2533a438a7073b9a646f9721752992e7b5dfa213bbfaacd477bf392`
+- Assembled hash: `bec854d6326900a394acc70e046c1d87dc16b25221d14e03c751110438024f11`
 - Compare: /app#/brand-explorer-compare?id=recqBiokz5ePxbFTE&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recqBiokz5ePxbFTE&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Le Méridien (`recN6sas0Km17O2Yn`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `8f2e678c175620310741f810f877d38565a40a5ede7a0c129cbb1fb2666054b1`
-- Assembled hash: `79c2683a7deab241e088e949e82ea03bf4dc9d690383fa2e89ced7bde03e07c8`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `73878794509cc9eafda40554704cb91a67a2fa5b9410949c8fecaeff6bbd0f77`
+- Assembled hash: `7fddaa7f02e9df6d62ec1239d9b48ac9513ff700b8ad2d27b31f7257176742ab`
 - Compare: /app#/brand-explorer-compare?id=recN6sas0Km17O2Yn&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recN6sas0Km17O2Yn&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Waldorf Astoria Hotels & Resorts (`recXopdFodrD3IyIR`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `bb0e6dccb4dc8be5147704e3f341c970dcb3bb1ed9a604ee5d9c702a6f7d2dfb`
-- Assembled hash: `17f7a2a46d180b4fd442f7c788f30b446835ca78c8977fed635b0c5f62ad6f35`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `2d18d3324ce58c562b61f11645d82260994c66910918df1aa3e0a9e5755d035b`
+- Assembled hash: `0bd70f5f1d19e50293e4ff78ba9e5fd7104e44b45e42245c2872e55cdbcb6e2c`
 - Compare: /app#/brand-explorer-compare?id=recXopdFodrD3IyIR&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recXopdFodrD3IyIR&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Conrad Hotels & Resorts (`rec90n1dSVVyoEOto`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `3abfa301ae0326c2d7f857e71fd7aeb29972027a6199884e2f9e3a6bb54b85af`
-- Assembled hash: `99a941f5fb3bd80d587fd90b45c1d33e5f373e3e88599b3024ae835fb975f5bd`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `84e64da7ab990d406568c9bd53f4161d514d6977ffe1afa97e4a497afcc569bd`
+- Assembled hash: `4b82679b2a2882901dbddb28cf2aca071f30e581f7b8a0b1a1390b6bd150951c`
 - Compare: /app#/brand-explorer-compare?id=rec90n1dSVVyoEOto&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=rec90n1dSVVyoEOto&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### LXR Hotels & Resorts (`recUsZOxtqIpeA5ZW`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `769cc17625103950b4c11e7c948b6a01f0dfadf16adecc6ecd0b38ffba525969`
-- Assembled hash: `49d39d29274d54bea47704756fe4f07bae36a4583c9dde551b95aa21ae224fb1`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `d7e0ad35195d8cd40ce4c1d89ae21923f8c2fa9291b6358652ae66a2aa47f6a9`
+- Assembled hash: `29f67ac246d1f04d57b0131b53f7cbdd1906dea25eae8611080b1e9f6aa70d60`
 - Compare: /app#/brand-explorer-compare?id=recUsZOxtqIpeA5ZW&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recUsZOxtqIpeA5ZW&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Park Hyatt (`recswdE1mhwDvXtBi`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `0693eb8c660fe17bdd7e3550b8ca1289e0c10c92856d84df4cccba4e88f8c56c`
-- Assembled hash: `4ac19f56b3b47aef1618e254d345a32ba31e33b46622ca32045b5f6852571380`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `23656db80d8ac907c5e6d431898b205ad34df23257999ef525bf15ef2fdaffbc`
+- Assembled hash: `56a25ddc1c1eeb5a3435d0a3d815281e6e2df5af274bbd30e76e2b7bd91a8782`
 - Compare: /app#/brand-explorer-compare?id=recswdE1mhwDvXtBi&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recswdE1mhwDvXtBi&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Grand Hyatt (`recGCWhkeEvsQxuez`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `c4cee6d497d1a837c448d4bb96ef3dc8703c49edb65a824d27b057f68baf2168`
-- Assembled hash: `ec44f44dc10ee710a10f50a57f21026b6f7d0cf698ba1a645ac96886edbe521b`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `fe57845a3474c8b1b662f2d8d83da6494c0b937cab79cdb940eeba23319451e7`
+- Assembled hash: `3b769519115c225aad2b215d562c7904d74482332f8ef5306e729958984023b8`
 - Compare: /app#/brand-explorer-compare?id=recGCWhkeEvsQxuez&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recGCWhkeEvsQxuez&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Andaz (`recbtJoMub5wcankK`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `667dfc88a0cd8a58ca2f9a1eb0d10a44d35cb8a24678e9747e5ef2e6fd7a0347`
-- Assembled hash: `c540832f80afa187bbdc48c20abebba1ed13e9f0e0f5d28c45dc0ecfb2d22515`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `746e21913b8d050f942d3b88fd9ecc26b09bfca32306fe6f6f38da2a5a933aaa`
+- Assembled hash: `6a14592d2f88b54b5baf99cd5de2d500a52de35127f1a2f9e23522c628e61600`
 - Compare: /app#/brand-explorer-compare?id=recbtJoMub5wcankK&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recbtJoMub5wcankK&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ### Hyatt Place (`recgwxli5IsoPKCOY`)
 - Disposition: **NEEDS_REMEDIATION**
-- Research: 9/10 tabs · score 17
-- Candidate hash: `8fb6f4a195318d25abc2655e15b09434bf90cb4ec2a1c80afc6ae1f8812280cd`
-- Assembled hash: `b317d06e90df190fb5804078e9f9b93e71b69cf60c6429631be4f64150b0e728`
+- Research: 10/10 tabs · score 81
+- Candidate hash: `c0b7a7dea5a2b6a1d92e10128e90d3bdceef99e585609879edb896d383529f10`
+- Assembled hash: `3a6e07fd4afa9fff564b912e5e2d523cdf2868bb00560c61dc5f1d78d230a1e8`
 - Compare: /app#/brand-explorer-compare?id=recgwxli5IsoPKCOY&beInternalPreview=1
 - Proposed: /app#/brand-explorer-combined?id=recgwxli5IsoPKCOY&beInternalPreview=1&beProfileMode=proposed
-- Expected writes: {"update":0,"create":53,"deactivate":0,"unchangedSkipped":0}
-- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; gallery 0/6; gallery_images_pending_verified_cdn:0/6
+- Expected writes: {"update":0,"create":139,"deactivate":0,"unchangedSkipped":0}
+- Gaps: fee_amounts_unverified_pending_disclosure_exhibit; incomplete_drafts:1
 
 ## Next
 1. Attach verified fee exhibits → re-run depth builder → promote to READY_FOR_APPROVAL.
