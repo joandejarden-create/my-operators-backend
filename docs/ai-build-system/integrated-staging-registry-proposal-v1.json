@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "proposal": "integrated-staging-v1",
+  "note": "IC-only: append this workspace to worktree-registry.json. Product chats must not apply.",
+  "workspace": {
+    "id": "integrated-staging",
+    "stream": "integrated-staging",
+    "role": "Founder integrated staging — sole localhost:8080 owner; main + explicitly staged features",
+    "path": "C:/Dev/dealality/ws-integrated-staging",
+    "expectedBranchPattern": "^(ws/integrated-staging|staging/)",
+    "defaultBranch": "ws/integrated-staging",
+    "lifecycle": "permanent",
+    "owner": "founder-integration",
+    "allowsProductFeatureBranches": false,
+    "portOwnership": {
+      "port": 8080,
+      "exclusive": true,
+      "marker": ".dealality-integrated-staging"
+    },
+    "status": "proposed",
+    "statusNotes": "Bootstrap via npm run dealality:integrated-staging -- --mode bootstrap --apply. Cutover to :8080 requires founder GO."
+  }
+}
