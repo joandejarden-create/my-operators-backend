@@ -1,0 +1,151 @@
+{
+  "asOf": "2026-11-21T16:13:00.709Z",
+  "mode": "APPLY",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "stream": "TRACK_B",
+  "researchCostUsd": 0,
+  "operations": [
+    {
+      "id": "disc_tb_choice_canada_mfa_transition_2025",
+      "action": "STAGED",
+      "reason": "PORTFOLIO_SCOPE_STAGED_NOT_HOTEL_INVENTORY"
+    },
+    {
+      "id": "disc_tb_norte19_city_express_brand_migration_2025",
+      "action": "STAGED",
+      "reason": "PORTFOLIO_WITHOUT_HOTEL_LEVEL_IDS"
+    },
+    {
+      "id": "disc_tb_yorkville_royal_sonesta_toronto_2025",
+      "action": "NOOP_EXISTING",
+      "airtableId": "recCqubHHjbha20Kl"
+    },
+    {
+      "id": "disc_tb_sonesta_es_toronto_thornhill_2025",
+      "action": "NOOP_EXISTING",
+      "airtableId": "recZIF5yHqHN5qPzB"
+    },
+    {
+      "id": "disc_tb_hgi_sp_reboucas_grand_mercure_2026",
+      "action": "NOOP_EXISTING",
+      "airtableId": "rec9CS84hmFPJQMU8"
+    },
+    {
+      "id": "find_tb_yorkville_sonesta_hma_amend_2043",
+      "action": "NOOP_EXISTING",
+      "airtableId": "rec2yMruTvZzW9mSI"
+    },
+    {
+      "id": "find_tb_thornhill_sonesta_hma_amend_2043",
+      "action": "NOOP_EXISTING",
+      "airtableId": "rechGbGPhDmkkzt4w"
+    },
+    {
+      "id": "find_tb_reboucas_hgi_to_grand_mercure_2026",
+      "action": "NOOP_EXISTING",
+      "airtableId": "recZLKPqW3ZOB5z8o"
+    }
+  ],
+  "summary": {
+    "creates": 0,
+    "updates": 0,
+    "noops": 6,
+    "conflicts": 0,
+    "staged": 0,
+    "researchOnly": 2,
+    "skippedTrackA": 0
+  },
+  "schemaGaps": [],
+  "readBack": [
+    {
+      "table": "inventory",
+      "id": "recCqubHHjbha20Kl",
+      "ok": true,
+      "fields": {
+        "HPC Match Status": "DISCOVERED_NOT_IN_HPC",
+        "Country": "CA",
+        "Hotel Name (normalized)": "yorkville royal sonesta",
+        "Publication State": "CUSTOMER_BLOCKED",
+        "Discovery Property ID": "disc_tb_yorkville_royal_sonesta_toronto_2025",
+        "Address": "220 Bloor Street West",
+        "Evidence Confidence": "HIGH",
+        "Notes / Quarantine Reason": "CUSTOMER_BLOCKED | Track B historical | status=AGREEMENT_EXTENDED_OR_AMENDED | events=2",
+        "State / Region": "ON",
+        "Persistence Status": "DISCOVERY_PERSISTED",
+        "City": "Toronto",
+        "Discovery Method": "TRACK_B_HISTORICAL_FOUNDATION",
+        "HI Discovery Findings": [
+          "rec2yMruTvZzW9mSI"
+        ],
+        "Identity Class": "VERIFIED_PROPERTY",
+        "Hotel Name (raw)": "The Yorkville Royal Sonesta",
+        "Lifecycle Status": "IDENTITY_VERIFIED",
+        "Source Filing URL": "https://www.sec.gov/Archives/edgar/data/945394/000094539425000108/R14.htm",
+        "Current Brand": "Royal Sonesta"
+      }
+    },
+    {
+      "table": "inventory",
+      "id": "recZIF5yHqHN5qPzB",
+      "ok": true,
+      "fields": {
+        "HPC Match Status": "DISCOVERED_NOT_IN_HPC",
+        "Country": "CA",
+        "Hotel Name (normalized)": "sonesta es suites toronto thornhill",
+        "Publication State": "CUSTOMER_BLOCKED",
+        "Discovery Property ID": "disc_tb_sonesta_es_toronto_thornhill_2025",
+        "Evidence Confidence": "HIGH",
+        "Notes / Quarantine Reason": "CUSTOMER_BLOCKED | Track B historical | status=AGREEMENT_EXTENDED_OR_AMENDED | events=1",
+        "State / Region": "ON",
+        "Persistence Status": "DISCOVERY_PERSISTED",
+        "City": "Thornhill",
+        "Discovery Method": "TRACK_B_HISTORICAL_FOUNDATION",
+        "HI Discovery Findings": [
+          "rechGbGPhDmkkzt4w"
+        ],
+        "Identity Class": "VERIFIED_PROPERTY",
+        "Hotel Name (raw)": "Sonesta ES Suites Toronto Thornhill",
+        "Lifecycle Status": "IDENTITY_VERIFIED",
+        "Source Filing URL": "https://contracts.justia.com/companies/hospitality-properties-trust-660/contract/1390933/",
+        "Current Brand": "Sonesta ES Suites"
+      }
+    },
+    {
+      "table": "inventory",
+      "id": "rec9CS84hmFPJQMU8",
+      "ok": true,
+      "fields": {
+        "HPC Match Status": "DISCOVERED_NOT_IN_HPC",
+        "Country": "BR",
+        "Hotel Name (normalized)": "hilton garden inn sao paulo reboucas",
+        "Publication State": "CUSTOMER_BLOCKED",
+        "Discovery Property ID": "disc_tb_hgi_sp_reboucas_grand_mercure_2026",
+        "Address": "Avenida Rebouças, Pinheiros (Helbor Wide)",
+        "Evidence Confidence": "HIGH",
+        "Notes / Quarantine Reason": "CUSTOMER_BLOCKED | Track B historical | status=BRAND_CHANGED | events=3",
+        "State / Region": "SP",
+        "Historical Brand": "Hilton Garden Inn",
+        "Persistence Status": "DISCOVERY_PERSISTED",
+        "City": "São Paulo",
+        "Discovery Method": "TRACK_B_HISTORICAL_FOUNDATION",
+        "HI Discovery Findings": [
+          "recZLKPqW3ZOB5z8o"
+        ],
+        "Identity Class": "VERIFIED_PROPERTY",
+        "Hotel Name (raw)": "Hilton Garden Inn São Paulo Rebouças / Grand Mercure São Paulo Rebouças",
+        "Lifecycle Status": "IDENTITY_VERIFIED",
+        "Source Filing URL": "https://hoteliernews.com.br/dobradinha-entre-atrio-e-accor-faz-conversao-relevante-em-sp/",
+        "Current Brand": "Grand Mercure (conversion announced; reopen scheduled Jul 2026)"
+      }
+    }
+  ],
+  "planCounts": {
+    "creates": 0,
+    "updates": 6,
+    "noops": 0,
+    "conflicts": 0,
+    "researchOnly": 2,
+    "staged": 0,
+    "autoPersistEligible": 6
+  }
+}
