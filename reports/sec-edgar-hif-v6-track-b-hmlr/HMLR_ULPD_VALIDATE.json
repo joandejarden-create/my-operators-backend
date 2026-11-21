@@ -1,0 +1,367 @@
+{
+  "generatedAt": "2026-11-21T03:45:12.613Z",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "researchCostUsd": 0,
+  "authStatus": {
+    "productInferred": "USE_LAND_AND_PROPERTY_DATA",
+    "baseUrl": "https://use-land-property-data.service.gov.uk/api/v1",
+    "keyPresent": true,
+    "keyLength": 36,
+    "companiesHouseApiKeyPresent": false,
+    "keySourceHint": "dotenv_file",
+    "note": "This credential targets Use Land and Property Data (bulk datasets: CCOD/OCOD/NPS). It does NOT grant Business Gateway live title-register access.",
+    "outcome": "AUTHENTICATED_OK",
+    "authenticatedAccess": true,
+    "datasetListOk": true,
+    "datasetsVisible": [
+      "ccod",
+      "ocod",
+      "nps",
+      "nps_sample",
+      "res_cov",
+      "leases"
+    ],
+    "capabilitySummary": {
+      "listsDatasets": true,
+      "canReadDatasetMetadata": true,
+      "freeDatasetDownloadTickets": 0,
+      "licenceBlocks": [
+        "ccod",
+        "ocod",
+        "nps_sample"
+      ],
+      "paidBlocks": [],
+      "doesNotProvide": [
+        "Business Gateway live title register",
+        "Per-address official copy purchase",
+        "Real-time proprietor lookup by UPRN/title number (unless in CCOD/OCOD bulk)"
+      ]
+    }
+  },
+  "probes": [
+    {
+      "pathname": "/datasets",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 1091,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "list",
+        "count": 6,
+        "names": [
+          "ccod",
+          "ocod",
+          "nps",
+          "nps_sample",
+          "res_cov",
+          "leases"
+        ],
+        "titles": [
+          "UK companies that own property in England and Wales",
+          "Overseas companies that own property in England and Wales",
+          "National Polygon Service",
+          "National Polygon Service Sample",
+          "Restrictive Covenants",
+          "Registered Leases"
+        ]
+      }
+    },
+    {
+      "pathname": "/datasets/ccod",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 244,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "object",
+        "name": "ccod",
+        "title": "UK companies that own property in England and Wales",
+        "fee": "Free",
+        "datasetType": "licenced",
+        "state": "active",
+        "licence_id": "ccod",
+        "resources": [
+          {
+            "name": "Change Only File",
+            "file_name": "CCOD_COU_2026_11.zip",
+            "file_size": "39.52 MB",
+            "format": "CSV",
+            "row_count": 107205
+          },
+          {
+            "name": "Full File",
+            "file_name": "CCOD_FULL_2026_11.zip",
+            "file_size": "1.59 GB",
+            "format": "CSV",
+            "row_count": 4485125
+          }
+        ],
+        "public_resources": [
+          {
+            "name": "Example Data",
+            "file_name": "example.csv",
+            "file_size": "5.96 KB"
+          }
+        ]
+      }
+    },
+    {
+      "pathname": "/datasets/ocod",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 238,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "object",
+        "name": "ocod",
+        "title": "Overseas companies that own property in England and Wales",
+        "fee": "Free",
+        "datasetType": "licenced",
+        "state": "active",
+        "licence_id": "ocod",
+        "resources": [
+          {
+            "name": "Change Only File",
+            "file_name": "OCOD_COU_2026_11.zip",
+            "file_size": "846.16 KB",
+            "format": "CSV",
+            "row_count": 2005
+          },
+          {
+            "name": "Full File",
+            "file_name": "OCOD_FULL_2026_11.zip",
+            "file_size": "36.58 MB",
+            "format": "CSV",
+            "row_count": 90951
+          }
+        ],
+        "public_resources": [
+          {
+            "name": "Example Data",
+            "file_name": "example.csv",
+            "file_size": "5.68 KB"
+          }
+        ]
+      }
+    },
+    {
+      "pathname": "/datasets/nps",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 256,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "object",
+        "name": "nps",
+        "title": "National Polygon Service",
+        "fee": "£20,000 + VAT",
+        "datasetType": "restricted",
+        "state": "active",
+        "licence_id": "nps",
+        "resources": [
+          {
+            "name": "Change Only File",
+            "file_name": "NSD_COU_2026_11.zip",
+            "file_size": "53.21 MB",
+            "format": "ZIP",
+            "row_count": 0
+          },
+          {
+            "name": "Full File",
+            "file_name": "NSD_FULL_2026_11.zip",
+            "file_size": "8.26 GB",
+            "format": "ZIP",
+            "row_count": 0
+          }
+        ],
+        "public_resources": []
+      }
+    },
+    {
+      "pathname": "/datasets/nps_sample",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 270,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "object",
+        "name": "nps_sample",
+        "title": "National Polygon Service Sample",
+        "fee": "£20,000 + VAT",
+        "datasetType": "licenced",
+        "state": "active",
+        "licence_id": "nps_sample",
+        "resources": [
+          {
+            "name": "Change Only File",
+            "file_name": "NSD_COU_03_JUL_2019.zip",
+            "file_size": "11.67 KB",
+            "format": "ZIP",
+            "row_count": 0
+          },
+          {
+            "name": "Full File",
+            "file_name": "NSD_FULL_JUL.zip",
+            "file_size": "58.4 KB",
+            "format": "ZIP",
+            "row_count": 0
+          }
+        ],
+        "public_resources": []
+      }
+    },
+    {
+      "pathname": "/datasets/res_cov",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 225,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "object",
+        "name": "res_cov",
+        "title": "Restrictive Covenants",
+        "fee": "Fee dependent on licence",
+        "datasetType": "freemium",
+        "state": "active",
+        "licence_id": null,
+        "resources": [
+          {
+            "name": "Change Only File",
+            "file_name": "RES_COV_COU_2026_11.zip",
+            "file_size": "12.47 MB",
+            "format": "CSV",
+            "row_count": 57793
+          },
+          {
+            "name": "Full File",
+            "file_name": "RES_COV_FULL_2026_11.zip",
+            "file_size": "3.69 GB",
+            "format": "CSV",
+            "row_count": 19450479
+          }
+        ],
+        "public_resources": [
+          {
+            "name": "Example Data",
+            "file_name": "example.csv",
+            "file_size": "3.35 KB"
+          }
+        ]
+      }
+    },
+    {
+      "pathname": "/datasets/leases",
+      "status": 200,
+      "errClass": "OK",
+      "ms": 231,
+      "success": true,
+      "error": null,
+      "resultSummary": {
+        "type": "object",
+        "name": "leases",
+        "title": "Registered Leases",
+        "fee": "Fee dependent on licence",
+        "datasetType": "freemium",
+        "state": "active",
+        "licence_id": null,
+        "resources": [
+          {
+            "name": "Change Only File",
+            "file_name": "LEASES_COU_2026_11.zip",
+            "file_size": "26.58 MB",
+            "format": "CSV",
+            "row_count": 87152
+          },
+          {
+            "name": "Full File",
+            "file_name": "LEASES_FULL_2026_11.zip",
+            "file_size": "2.23 GB",
+            "format": "CSV",
+            "row_count": 7788104
+          }
+        ],
+        "public_resources": [
+          {
+            "name": "Example Data",
+            "file_name": "example.csv",
+            "file_size": "4.87 KB"
+          }
+        ]
+      }
+    }
+  ],
+  "downloadProbes": [
+    {
+      "dataset": "ccod",
+      "file": "example.csv",
+      "pathname": "/datasets/ccod/example.csv",
+      "status": 403,
+      "errClass": "LICENCE_NOT_SIGNED",
+      "ms": 293,
+      "success": false,
+      "error": "You have not yet signed the licence for this dataset: ccod",
+      "resultSummary": null
+    },
+    {
+      "dataset": "ocod",
+      "file": "example.csv",
+      "pathname": "/datasets/ocod/example.csv",
+      "status": 403,
+      "errClass": "LICENCE_NOT_SIGNED",
+      "ms": 315,
+      "success": false,
+      "error": "You have not yet signed the licence for this dataset: ocod",
+      "resultSummary": null
+    },
+    {
+      "dataset": "nps",
+      "file": "NSD_COU_2026_11.zip",
+      "pathname": "/datasets/nps/NSD_COU_2026_11.zip",
+      "status": 403,
+      "errClass": "PERMISSION_OR_FORBIDDEN",
+      "ms": 275,
+      "success": false,
+      "error": "You do not have access to this dataset: nps",
+      "resultSummary": null
+    },
+    {
+      "dataset": "nps_sample",
+      "file": "NSD_COU_03_JUL_2019.zip",
+      "pathname": "/datasets/nps_sample/NSD_COU_03_JUL_2019.zip",
+      "status": 403,
+      "errClass": "LICENCE_NOT_SIGNED",
+      "ms": 283,
+      "success": false,
+      "error": "You have not yet signed the licence for this dataset: nps_sample",
+      "resultSummary": null
+    },
+    {
+      "dataset": "res_cov",
+      "file": "example.csv",
+      "pathname": "/datasets/res_cov/example.csv",
+      "status": 403,
+      "errClass": "PERMISSION_OR_FORBIDDEN",
+      "ms": 258,
+      "success": false,
+      "error": "You do not have access to this dataset: res_cov",
+      "resultSummary": null
+    },
+    {
+      "dataset": "leases",
+      "file": "example.csv",
+      "pathname": "/datasets/leases/example.csv",
+      "status": 403,
+      "errClass": "PERMISSION_OR_FORBIDDEN",
+      "ms": 251,
+      "success": false,
+      "error": "You do not have access to this dataset: leases",
+      "resultSummary": null
+    }
+  ]
+}
