@@ -133,6 +133,9 @@ regexes = [
   # Profile-match status field name (linkedInStatus / linkedInMatchStatus) — not a LinkedIn OAuth client id (PR #484).
   '''(?i)linkedIn(?:Match)?Status''',
   '''(?i)liProfileMatchStatus''',
+  # Variable assignment of Apollo-recovered public LinkedIn profile URL — not an OAuth client id (PR #484 / integration).
+  '''opportunity\.primaryContact\.linkedinUrl\s*=\s*apolloLinkedIn''',
+  '''linkedinUrl:\s*apolloProfileUrl''',
   '''https://v5\.airtableusercontent\.com/v3/u/''',
 
   # Public client-side IHG config captured from HTML.
