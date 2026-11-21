@@ -87,6 +87,7 @@ test("decision_window_calculated_from_notice_days", () => {
     scheduledExpiration: "2028-06-30",
     renewalNoticeDays: 90,
     renewalOptionsCount: 2,
+    skipDateSemanticGate: true,
   });
   const notice = w.windows.find((x) => x.kind === "RENEWAL_NOTICE_DEADLINE");
   assert.equal(notice.date, "2028-04-01"); // 2028-06-30 minus 90 days (UTC)
@@ -99,10 +100,27 @@ test("vague_terms_not_precisely_dated", () => {
     scheduledExpiration: null,
     renewalNoticeDays: null,
     terminationWithoutCause: true,
+    skipDateSemanticGate: true,
   });
   const term = w.windows.find((x) => x.kind === "EARLIEST_TERMINATION_WINDOW");
   assert.equal(term.date, null);
   assert.equal(term.disclosureClass, DISCLOSURE_CLASS.CONDITIONAL);
+});
+
+test("opening_date_blocks_decision_windows", () => {
+  const w = calculateDecisionWindows({
+    scheduledExpiration: "2008-12-31",
+    renewalNoticeDays: 90,
+    dateObservation: {
+      primaryDate: "2008-12-31",
+      dateMeaning: "FRANCHISE_EXPIRATION",
+      evidenceSnippet:
+        "25.01 | CREFI | Homewood Suites X | Daphne | AL | 36526 | Baldwin | 1 | Hotel | Extended Stay | 2008 | 2018-2019 | 104 | Rooms | 73.9%",
+    },
+  });
+  assert.equal(w.blocked, true);
+  assert.match(w.dateSemanticGate.code, /NON_CONTRACT_DATE|UNRESOLVED/);
+  assert.equal(w.nextDecisionWindow, null);
 });
 
 test("cohort_franchise_only_no_relabel", () => {
