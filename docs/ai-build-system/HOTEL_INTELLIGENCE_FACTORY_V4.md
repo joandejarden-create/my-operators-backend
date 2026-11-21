@@ -100,8 +100,10 @@ Historical versions preserved.
 | Cost ledger | `cost-ledger-v1.js` |
 | Change detection | `change-detection-v1.js` |
 | Config | `config-v1.js` |
-| Stages | `stages-v1.js` |
+| Stages | `stages-v1.js` (includes `ENRICH_CONTRACT_TERMS`) |
+| Contract terms / renewals | `sec-edgar/contract-terms-*-v1.js` |
 | CLI / PS | `scripts/hotel-intelligence-factory-run.mjs`, `.ps1` |
+| Terms & renewals pilot | `scripts/sec-edgar-contract-terms-renewals-pilot.mjs` |
 
 ## Test suites (separate)
 
@@ -109,6 +111,7 @@ Historical versions preserved.
 |---|---|
 | Research Mode | `scripts/test-hotel-intelligence-factory-research-mode-v4.mjs` |
 | Canonical Promotion Mode | `scripts/test-hotel-intelligence-factory-promotion-mode-v4.mjs` |
+| Contract terms / renewals | `scripts/test-sec-edgar-contract-terms-renewals-v4.mjs` |
 
 Must cover: negative permissions, rerun idempotency, resume after interruption, authorization mismatch/expiry, and (in live V4) Airtable read-back failure fail-closed.
 
