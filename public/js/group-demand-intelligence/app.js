@@ -2607,7 +2607,28 @@
       }
     });
 
-  loadAll().catch(function (err) {
-    handleLoadFailure(err);
-  });
+  /** Deep-link: open the exact opportunity drawer after hotel inventory loads. */
+  function openOpportunityFromQueryOnce() {
+    var params = readGdiQueryParams();
+    var opportunityId = String(params.get("opportunityId") || "").trim();
+    if (!opportunityId) return Promise.resolve(null);
+    if (state._openedOpportunityFromQuery === opportunityId) {
+      return Promise.resolve(null);
+    }
+    state._openedOpportunityFromQuery = opportunityId;
+    return openDetail(opportunityId).catch(function (err) {
+      showError(
+        (err && err.message) ||
+          "Could not open opportunity from deep link: " + opportunityId,
+      );
+    });
+  }
+
+  loadAll()
+    .then(function () {
+      return openOpportunityFromQueryOnce();
+    })
+    .catch(function (err) {
+      handleLoadFailure(err);
+    });
 })();

@@ -3085,7 +3085,26 @@ export async function postGdiContactReveal(req, res) {
     } catch {
       creditsAfter = null;
     }
-    appendSurfeLiveAccounting({
+    const startedAt = Number(res.locals?.gdiSurfeRevealStartedAtMs) || null;
+    const latencyMs =
+      startedAt && Number.isFinite(startedAt)
+        ? Math.max(0, Date.now() - startedAt)
+        : null;
+    // Non-blocking / never fails the customer response; never persists PII.
+    // On this path authorizeLive implies Surfe was the enrichment provider.
+    const { enrichSurfeUsageContext } = await import(
+      "../lib/group-demand-intelligence/gdi-surfe-usage-context-v1.js"
+    );
+    const enriched = enrichSurfeUsageContext({
+      hotelId,
+      opportunityId,
+      opportunity,
+      dealalityUser: req.dealalityUser || null,
+      req,
+      body,
+      env: process.env,
+    });
+    const accounted = appendSurfeLiveAccountingSafe({
       hotelId,
       opportunityId,
       identityKey,
@@ -3098,7 +3117,47 @@ export async function postGdiContactReveal(req, res) {
       creditsAfter,
       emailReturned: Boolean(result?.contactDetails?.email),
       phoneReturned: Boolean(result?.contactDetails?.phone),
+      surfeAttempted: true,
+      surface: "gdi_drawer",
+      resolvedVia: result?.resolvedVia || null,
+      providerLatencyMs: latencyMs,
+      userId:
+        req.dealalityUser?.memberstackId ||
+        req.dealalityUser?.id ||
+        req.user?.id ||
+        null,
+      portfolioId:
+        opportunity?.portfolioId ||
+        opportunity?.customerId ||
+        opportunity?.ownerPortfolioId ||
+        null,
+      _enrichedContext: enriched,
+      hotelName: enriched.hotelName,
+      hotelMarket: enriched.hotelMarket,
+      hotelCountry: enriched.hotelCountry,
+      opportunityTitle: enriched.opportunityTitle,
+      opportunityOrganizationName: enriched.opportunityOrganizationName,
+      opportunityDrawerHref: enriched.opportunityDrawerHref,
+      requestingPortfolioId: enriched.requestingPortfolioId,
+      requestingHotelOrOfficeId: enriched.requestingHotelOrOfficeId,
+      requestingOrganizationName: enriched.requestingOrganizationName,
+      requestingOfficeMarket: enriched.requestingOfficeMarket,
+      requestingOfficeCity: enriched.requestingOfficeCity,
+      dataEnvironment: enriched.dataEnvironment,
+      usageClass: enriched.usageClass,
     });
+    if (accounted?.entry?.lookupEventId) {
+      try {
+        const { syncSurfeUsageEventsToAirtableSafe } = await import(
+          "../lib/group-demand-intelligence/gdi-surfe-usage-airtable-sync-v1.js"
+        );
+        void syncSurfeUsageEventsToAirtableSafe([accounted.entry], {
+          env: process.env,
+        });
+      } catch {
+        /* non-blocking */
+      }
+    }
   }
 
   const status =
