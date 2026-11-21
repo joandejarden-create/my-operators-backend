@@ -178,8 +178,10 @@ Ledgers: `PERSISTENCE_LEDGER_DRY_RUN.json`, `PERSISTENCE_LEDGER_FIRST_APPLY.json
 |------|-------|
 | Test | `npm run test:hif-track-b-global-historical-waves` |
 | Branch | `feat/hif-v6-track-b-global-historical-waves` |
+| PR | **[#543](https://github.com/joandejarden-create/my-operators-backend/pull/543)** OPEN |
 | Workspace | `C:\Dev\dealality\ws-hif-v6-track-b` |
-| Base | `origin/main` (`1f6af0677` at branch start) |
+| HEAD at PR open | `56ffd63fc` |
+| Base | `origin/main` moved 28 commits during the wave. This branch was not merged with `main`. |
 | Untracked file preserved | `tmp/ic-fold-519-audit.mjs` (not in the commit) |
 | Merge | Integration Controller |
 
