@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19",
+  "updatedAt": "2026-11-21",
   "updatedBy": "Integration Controller",
   "notes": [
     "Static intent only. Live HEAD/dirty/PR state must be computed by dealality:worktree-audit / registry-status.",
@@ -122,6 +122,30 @@
       "status": "active",
       "safeRemovalEligibility": "founder_approved_after_pr_merge_and_clean_verify",
       "statusNotes": "Prior radar acceptance gate PR #399 merged; same path now hosts chore/dev-os-pr-completion-ownership-v1. Extended 2026-11-19 with permanent Brand Explorer (be) stream registration."
+    },
+    {
+      "id": "hif-v6-track-a",
+      "stream": "he",
+      "role": "HIF V6 Track A — commercial/contract discovery (EX-10, CMBS, franchise/management queues)",
+      "path": "C:/Dev/dealality/ws-hif-v6-track-a",
+      "expectedBranchPattern": "^feat/hif-v6-track-a-",
+      "lifecycle": "temporary",
+      "owner": "integration",
+      "status": "active",
+      "safeRemovalEligibility": "founder_approved_after_v6_wave_complete_and_clean_verify",
+      "statusNotes": "Registered 2026-11-21 after PR #506 merge. Parallel Track A research only. Do not develop in dirty ws-hotel-explorer / ADP / GDI / BE. Shared HIF core ownership remains HE stream."
+    },
+    {
+      "id": "hif-v6-track-b",
+      "stream": "he",
+      "role": "HIF V6 Track B — government/regulatory discovery (CVM, EDINET, Companies House, SGX, HKEX, SEDAR+)",
+      "path": "C:/Dev/dealality/ws-hif-v6-track-b",
+      "expectedBranchPattern": "^feat/hif-v6-track-b-",
+      "lifecycle": "temporary",
+      "owner": "integration",
+      "status": "active",
+      "safeRemovalEligibility": "founder_approved_after_v6_wave_complete_and_clean_verify",
+      "statusNotes": "Registered 2026-11-21 for PR #507 + Companies House API wave. Parallel Track B research only. Do not overwrite dirty HE/ADP/GDI/BE product worktrees."
     }
   ],
   "protectedRefs": [
@@ -134,7 +158,9 @@
     "ws/hotel-explorer",
     "ws/adp",
     "ws/gdi",
-    "ws/brand-explorer"
+    "ws/brand-explorer",
+    "feat/hif-v6-track-a-cmbs-owner",
+    "feat/hif-v6-track-b-regulatory-wave1"
   ],
   "sharedFileGlobs": [
     "package.json",
