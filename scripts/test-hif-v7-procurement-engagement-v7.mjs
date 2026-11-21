@@ -63,6 +63,18 @@ assert.equal(
   "Pueblo-style development is adjacent — not BCT first-100"
 );
 
+// No-RFP: private owner-led brand review without procurementStatus may pass legacy helper
+assert.equal(
+  qualifiesVerifiedPriorityAForMilestone({
+    commercialCategory: COMMERCIAL_CATEGORY.BRAND_CONVERSION_TARGET,
+    verifiedPriorityA: true,
+    ownerLedBrandReview: true,
+    brandOrManagementDecisionEvidenced: true,
+  }),
+  true,
+  "private owner-led pathway must not require public RFP"
+);
+
 assert.ok(ENGAGEMENT_ROUTE.PUBLIC_TENDER_SUBMISSION);
 assert.ok(ENGAGEMENT_ROUTE.NO_LONGER_COMMERCIALLY_ACCESSIBLE);
 
