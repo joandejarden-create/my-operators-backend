@@ -5,7 +5,8 @@ Generated: 2026-11-21T01:37:11.178Z (rescored after independent verification tig
 ## 1. PR / HEAD
 
 - **PR:** [#503](https://github.com/joandejarden-create/my-operators-backend/pull/503) — `feat/hotel-intelligence-factory-v5` (OPEN)
-- **Parent tip before this commit:** `e1741fafb166dd92e9f70c08dbd141b95368d8bc`
+- **Implementation HEAD (PR tip):** `7f1deb5fb6f00929e8b57c3b8f04d61fdc901cde`
+- **Parent tip before Agent pilot commit:** `e1741fafb166dd92e9f70c08dbd141b95368d8bc`
 - **Implementation:** optional stage `EXA_AGENT_DEEP_VERIFICATION` + `exa-agent-*-v1.js` + pilot script/report pack
 - **Registered workspace:** `C:\Dev\dealality\ws-hotel-explorer` (dirty HE tree preserved; commit-tree onto PR branch)
 - **origin/main at report time:** `d6dd99ddc588835c67cf46c8a4089b19089878ec` (V5 branch not FF of latest main — IC merge owns rebase/conflict)
