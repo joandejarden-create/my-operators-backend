@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-21T16:30:00Z",
   "updatedBy": "Integration Controller",
   "notes": [
     "Static intent only. Live HEAD/dirty/PR state must be computed by dealality:worktree-audit / registry-status.",
@@ -126,26 +126,38 @@
     {
       "id": "hif-v6-track-a",
       "stream": "he",
-      "role": "HIF V6 Track A — commercial/contract discovery (EX-10, CMBS, franchise/management queues)",
+      "role": "HIF Parallel Foundation Track A — current-backward commercial opportunity discovery (triggers, qualification, timing, accessibility, engagement)",
       "path": "C:/Dev/dealality/ws-hif-v6-track-a",
       "expectedBranchPattern": "^feat/hif-v6-track-a-",
       "lifecycle": "temporary",
       "owner": "integration",
       "status": "active",
       "safeRemovalEligibility": "founder_approved_after_v6_wave_complete_and_clean_verify",
-      "statusNotes": "Registered 2026-11-21 after PR #506 merge. Parallel Track A research only. Do not develop in dirty ws-hotel-explorer / ADP / GDI / BE. Shared HIF core ownership remains HE stream."
+      "statusNotes": "Confirmed 2026-11-21 HIF Parallel Foundation. Write ownership: commercial opportunities/triggers/qualification/timing/accessibility/engagement via HI Findings + Inventory. Reuses foundation persistence v1 (PR #538). Do not use dirty HE/ADP/GDI/BE/IC worktrees. CUSTOMER_BLOCKED. IC owns merges."
     },
     {
       "id": "hif-v6-track-b",
       "stream": "he",
-      "role": "HIF V6 Track B — government/regulatory discovery (CVM, EDINET, Companies House, SGX, HKEX, SEDAR+)",
+      "role": "HIF Parallel Foundation Track B — historical contractual and commercial intelligence (agreements, amendments, events, freshness, current status)",
       "path": "C:/Dev/dealality/ws-hif-v6-track-b",
       "expectedBranchPattern": "^feat/hif-v6-track-b-",
       "lifecycle": "temporary",
       "owner": "integration",
       "status": "active",
       "safeRemovalEligibility": "founder_approved_after_v6_wave_complete_and_clean_verify",
-      "statusNotes": "Registered 2026-11-21 for PR #507 + Companies House API wave. Parallel Track B research only. Do not overwrite dirty HE/ADP/GDI/BE product worktrees."
+      "statusNotes": "Confirmed 2026-11-21 HIF Parallel Foundation. Write ownership: contractual facts/amendments/historical events/evidence freshness/current status. Reuses foundation persistence v1 (PR #539). Do not overwrite Track A verified commercial rows or dirty product WTs. CUSTOMER_BLOCKED. IC owns merges."
+    },
+    {
+      "id": "hif-v6-track-c",
+      "stream": "he",
+      "role": "HIF Parallel Foundation Track C — hotel universe expansion (canonical hotel identity, geography, brand/operator attributes)",
+      "path": "C:/Dev/dealality/ws-hif-v6-track-c",
+      "expectedBranchPattern": "^feat/hif-v6-track-c-",
+      "lifecycle": "temporary",
+      "owner": "integration",
+      "status": "active",
+      "safeRemovalEligibility": "founder_approved_after_v6_wave_complete_and_clean_verify",
+      "statusNotes": "Registered 2026-11-21 HIF Parallel Foundation. Isolated path only — never reuse dirty HE/ADP/GDI/BE/IC. Write ownership: HPC identity/geo/brand/operator enrichment + Discovery Inventory matching. No duplicate hotel inventories. No unauthorized HPC creates from weak evidence. CUSTOMER_BLOCKED. IC owns merges."
     }
   ],
   "protectedRefs": [
@@ -160,7 +172,8 @@
     "ws/gdi",
     "ws/brand-explorer",
     "feat/hif-v6-track-a-cmbs-owner",
-    "feat/hif-v6-track-b-regulatory-wave1"
+    "feat/hif-v6-track-b-regulatory-wave1",
+    "feat/hif-v6-track-c-us-universe-expansion"
   ],
   "sharedFileGlobs": [
     "package.json",
