@@ -41,7 +41,33 @@ const tierB = classifyCommercialOpportunity({
 });
 assert.equal(tierB.tier, OPPORTUNITY_TIER.TIER_B_VERIFIED_CONTRACT_EXPIRATION);
 assert.equal(tierB.noticeStatus, NOTICE_STATUS.NOTICE_NOT_DISCLOSED);
+assert.equal(tierB.researchEligible, true);
+assert.equal(tierB.nearTermOutreachPriority, true);
 assert.equal(tierB.activeTargeting, true);
+
+// Historical Tier B remains research-eligible (no horizon exclusion)
+const tierBHistorical = classifyCommercialOpportunity({
+  hotelName: "Hampton Inn Historical Example",
+  hotelVerified: true,
+  hotelAttributed: true,
+  agreementType: "FRANCHISE",
+  primaryDate: "2018-06-30",
+  brand: "Hampton",
+  evidenceSnippet: "Franchise Expiration Date June 30, 2018 for Hampton Inn Historical Example",
+  dateAudit: {
+    auditedMeaning: AUDITED_DATE_MEANING.FRANCHISE_AGREEMENT_EXPIRATION,
+    confidence: EVIDENCE_CONFIDENCE.HIGH,
+    decisionWindowEligibility: DECISION_WINDOW_ELIGIBILITY.ELIGIBLE,
+  },
+  sourceUrl: "https://www.sec.gov/Archives/edgar/data/1/exh.htm",
+});
+assert.equal(tierBHistorical.tier, OPPORTUNITY_TIER.TIER_B_VERIFIED_CONTRACT_EXPIRATION);
+assert.equal(tierBHistorical.researchEligible, true);
+assert.equal(tierBHistorical.nearTermOutreachPriority, false);
+assert.ok(tierBHistorical.appDateFilterHints.includes("HISTORICAL_EXPIRATIONS"));
+assert.ok(
+  filterProspectList([tierBHistorical], { dateFilter: "HISTORICAL_EXPIRATIONS" }).length === 1,
+);
 
 // Tier A — expiration + notice days
 const tierA = classifyCommercialOpportunity({

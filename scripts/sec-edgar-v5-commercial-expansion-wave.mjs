@@ -326,12 +326,17 @@ async function main() {
             : ["MANAGEMENT_CONTRACT", "BRAND_CONVERSION"],
     };
     row.prospectClass = mapProspectClass(row, later);
-    row.activeTargeting =
+    // Research eligibility is NEVER gated by 36 months — near-term is app-filter metadata only.
+    row.researchEligible =
+      row.prospectClass !== PROSPECT_CLASS.CLOSED_SUPERSEDED;
+    row.nearTermOutreachPriority =
       row.prospectClass === PROSPECT_CLASS.A_VERIFIED_DECISION_WINDOW ||
       (row.prospectClass === PROSPECT_CLASS.B_VERIFIED_END_DATE_STATUS_UNCONFIRMED &&
         row.monthsToExpiration != null &&
         row.monthsToExpiration >= 0 &&
         row.monthsToExpiration <= 36);
+    row.activeTargeting = Boolean(row.nearTermOutreachPriority);
+    row.within36Months = Boolean(row.nearTermOutreachPriority);
     row.recommendedNextAction = "VERIFY_OWNER_OPERATOR_AND_CURRENT_STATUS";
     prospectSeeds.push(row);
   }
@@ -364,13 +369,24 @@ async function main() {
       activeTargeting: Boolean(row.activeTargeting),
     };
     const isFranchise = /FRANCHISE|LICENSE/i.test(row.agreementType || "");
-    const isMgmt = /MANAGEMENT/i.test(row.agreementType || "");
+    const isMgmt = /^MANAGEMENT$/i.test(row.agreementType || "");
     if (isFranchise || row.listHints?.includes("BRAND_CONVERSION") || (!isMgmt && row.brand)) {
-      brandConversion.push({ ...base, prospectList: "BRAND_CONVERSION", decisionMakerFocus: "owner_and_brand" });
+      brandConversion.push({
+        ...base,
+        researchEligible: row.researchEligible !== false,
+        nearTermOutreachPriority: Boolean(row.nearTermOutreachPriority),
+        within36Months: Boolean(row.within36Months),
+        prospectList: "BRAND_CONVERSION",
+        decisionMakerFocus: "owner_and_brand",
+      });
     }
-    if (isMgmt || row.listHints?.includes("MANAGEMENT_CONTRACT") || (!isFranchise && /MANAGEMENT|OTHER|UNKNOWN/i.test(row.agreementType || ""))) {
+    // Only verified MANAGEMENT agreement types — do not inflate with UNKNOWN/OTHER
+    if (isMgmt || row.listHints?.includes("MANAGEMENT_CONTRACT")) {
       managementContract.push({
         ...base,
+        researchEligible: row.researchEligible !== false,
+        nearTermOutreachPriority: Boolean(row.nearTermOutreachPriority),
+        within36Months: Boolean(row.within36Months),
         prospectList: "MANAGEMENT_CONTRACT",
         decisionMakerFocus: "owner_and_asset_management",
       });
