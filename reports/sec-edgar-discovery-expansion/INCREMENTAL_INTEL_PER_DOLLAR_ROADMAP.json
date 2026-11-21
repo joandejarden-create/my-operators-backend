@@ -1,0 +1,87 @@
+{
+  "version": "sec-discovery-expansion-design-v1",
+  "principle": "Maximize verified contractual terms / renewal / decision-window yield per USD",
+  "orderedWorkstreams": [
+    {
+      "rank": 1,
+      "id": "EX10_HMA_FRANCHISE_EXHIBIT_HARVEST",
+      "why": "Terms pilot showed EX-10 management/franchise prose >> CMBS schedule rows for lifecycle terms",
+      "expectedIntel": "Term years, renewal options, notice days, fees, termination/CoC",
+      "costProfile": "Mostly free EDGAR + selective SEC-API full-text",
+      "dependsOn": [
+        "coverage-ledger-v3",
+        "ENRICH_CONTRACT_TERMS"
+      ]
+    },
+    {
+      "rank": 2,
+      "id": "CMBS_DEAL_GRAPH_EXPANSION",
+      "why": "Existing verified inventory is CMBS-heavy; many deals/issuers still unsearched",
+      "expectedIntel": "Hotel identities + franchise expiration columns + collateral pools",
+      "costProfile": "Free EDGAR primary; SEC-API for deal discovery",
+      "dependsOn": [
+        "brand-neutral full-text",
+        "coverage ledger"
+      ]
+    },
+    {
+      "rank": 3,
+      "id": "UNREGISTERED_ISSUER_ADAPTIVE_QUEUE",
+      "why": "Registry of ~32 companies is a seed, not the universe",
+      "expectedIntel": "New CIKs from depositors, related parties, managers, franchisees",
+      "costProfile": "Low — queue caps + free submissions inventory",
+      "dependsOn": [
+        "entity extraction",
+        "adaptive-discovery-queue-v2"
+      ]
+    },
+    {
+      "rank": 4,
+      "id": "LATER_AMENDMENT_AND_RENEWAL_PROBES",
+      "why": "Terms pilot: 0 executed renewals verified — needs systematic later-doc search",
+      "expectedIntel": "Executed renewals/extensions/terminations/reflags",
+      "costProfile": "Capped Exa + free EDGAR",
+      "dependsOn": [
+        "ENRICH_CONTRACT_TERMS",
+        "budget ledger"
+      ]
+    },
+    {
+      "rank": 5,
+      "id": "REIT_10K_PROPERTY_SCHEDULE_BACKFILL",
+      "why": "Large eligible inventories barely processed (pending >> processed)",
+      "expectedIntel": "Portfolio hotels + ownership/management relationships",
+      "costProfile": "Free EDGAR + checkpoint resume",
+      "dependsOn": [
+        "eligible-filing-inventory-v2"
+      ]
+    },
+    {
+      "rank": 6,
+      "id": "IBR_AND_HISTORICAL_PERIOD_PARTITIONS",
+      "why": "Incorporated-by-reference + pre-2019 periods under-covered",
+      "expectedIntel": "Original agreements + amendments",
+      "costProfile": "Free EDGAR dominant",
+      "dependsOn": [
+        "filing-package-exhibits-v2"
+      ]
+    },
+    {
+      "rank": 7,
+      "id": "INTL_NON_SEC_ADAPTERS",
+      "why": "SEC finds global hotels; durable intl coverage needs local disclosures",
+      "expectedIntel": "Non-US agreements / ownership",
+      "costProfile": "Separate authorization; no paid launch in this packet",
+      "dependsOn": [
+        "intl-readiness-v1",
+        "geo HPC priority Americas/Europe"
+      ]
+    }
+  ],
+  "stopRules": [
+    "No uncontrolled large-scale paid research",
+    "Budget ceiling + resume via PowerShell/Node factory",
+    "Research Mode ≠ Canonical Promotion ≠ customer publication",
+    "Do not claim exhaustive SEC hotel discovery"
+  ]
+}

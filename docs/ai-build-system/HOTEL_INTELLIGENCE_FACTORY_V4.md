@@ -100,10 +100,12 @@ Historical versions preserved.
 | Cost ledger | `cost-ledger-v1.js` |
 | Change detection | `change-detection-v1.js` |
 | Config | `config-v1.js` |
-| Stages | `stages-v1.js` (includes `ENRICH_CONTRACT_TERMS`) |
+| Stages | `stages-v1.js` (includes `ENRICH_CONTRACT_TERMS`; opt-in `DISCOVER_EXPAND`) |
 | Contract terms / renewals | `sec-edgar/contract-terms-*-v1.js` |
+| SEC discovery expansion | `sec-edgar/sec-discovery-expansion-design-v1.js`, `sec-discovery-coverage-ledger-v3.js` |
 | CLI / PS | `scripts/hotel-intelligence-factory-run.mjs`, `.ps1` |
 | Terms & renewals pilot | `scripts/sec-edgar-contract-terms-renewals-pilot.mjs` |
+| Discovery universe audit | `scripts/sec-edgar-discovery-universe-audit.mjs` |
 
 ## Test suites (separate)
 
