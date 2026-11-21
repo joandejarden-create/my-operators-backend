@@ -77,3 +77,18 @@ Ownership enrichment remains deferred. Owner/operator captured only when inline 
 3. Expand management-specific operator-replacement queries (0 MCT from this yield pack).
 4. US CMBS: invest in HTML schedule extractor breadth (dated franchise yield exhausted on current formats).
 5. MX/BR/GB/CA: native regulator document retrieval (not SEC keyword bleed).
+
+
+## 6) IC post-#516/#517/#518 count correction (2026-11-21)
+
+See `IC_POST_516_517_518_RECONCILIATION.json` and updated `RECONCILIATION_SUMMARY.json`.
+
+| Claim | Disposition |
+|-------|-------------|
+| #516 ~233 | Obsolete pre-dedupe |
+| Additive 194 | Corrected by #518 to **192** |
+| Country report 195 | Obsolete (194+1); true path is **192 + 1 GB geo** = **193** |
+| Yield clean 57 | Already inside 192 |
+| Track B undated portal rows | HOLD — not toward 1000 until physical hotel verify |
+
+**Canonical toward 1,000: 193**

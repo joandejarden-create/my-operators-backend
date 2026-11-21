@@ -2,48 +2,59 @@
   "asOf": "2026-11-21",
   "publicationState": "CUSTOMER_BLOCKED",
   "researchCostUsd": 0,
+  "integrationBaseline": {
+    "merged": [
+      "#510",
+      "#511",
+      "#512",
+      "#513",
+      "#514",
+      "#515",
+      "#516",
+      "#518"
+    ],
+    "mergingNow": [
+      "#517"
+    ],
+    "originMainAtReconcile": "fc494019f71e317d277b2d3be8c19663bda409c9"
+  },
   "reportedClaim": {
-    "baselineQualifiedCommercialTargets": 139,
-    "wave23ActiveDatedClaimed": 11,
-    "wave34CleanUndatedClaimed": 44,
-    "reportedSum": 194,
-    "note": "194 = 139 baseline + 11 active dated (W2/W3) + 44 clean undated EX-10 signals (additive estimate; may double-count if baseline already includes some hotels)"
+    "pr516Approx233": "OBSOLETE",
+    "additive194": "OBSOLETE_CORRECTED_BY_518_TO_192",
+    "countryReport195": "OBSOLETE_ARITHMETIC_194_PLUS_1"
   },
   "exactRegistry": {
-    "distinctHotelsInRegistry": 272,
     "ACTIVE_DATED": 19,
-    "ACTIVE_UNDATED_EVIDENCE_BACKED": 173,
+    "ACTIVE_UNDATED_EVIDENCE_BACKED": 174,
     "HISTORICAL_OR_SUPERSEDED": 60,
     "RESEARCH_CANDIDATE_OR_HOLD": 0,
+    "GEO_UNVERIFIED_HOLD": 38,
+    "TRACK_B_UNVERIFIED_HOLD": 14,
     "QUARANTINED_OR_INVALID": 20,
-    "countsToward1000Milestone": 192
+    "countsToward1000Milestone": 193
   },
   "countsToward1000Breakdown": {
     "activeDated": 19,
-    "activeUndatedEvidenceBacked": 173,
-    "total": 192,
+    "activeUndatedEvidenceBacked": 174,
+    "total": 193,
     "franchiseVsManagement": {
-      "FRANCHISE": 134,
+      "FRANCHISE": 135,
       "MANAGEMENT": 58,
       "OTHER": 0
     },
     "byCountry": {
-      "US": 192
+      "US": 192,
+      "GB": 1
     }
   },
-  "baselineReference": {
-    "QUALIFIED_COMMERCIAL_TARGETS": 139,
-    "brandConversion": 136,
-    "managementContract": 4,
-    "baselineHotelListPresentInRepo": true,
-    "note": "If baseline hotel-level list is absent, baseline 139 remains a count-only layer and exact hotel-level dedupe vs baseline is partial"
-  },
-  "varianceVsReported194": {
-    "reported": 194,
-    "exactToward1000": 192,
-    "delta": -2,
-    "explanation": "Variance expected when baseline hotel IDs are unavailable for dedupe and/or when CMBS probable rows expand the registry beyond the additive 139+11+44 estimate"
-  },
+  "varianceExplanations": [
+    "PR #516 ~233 was a pre-dedupe wave claim; superseded by #518 hotel-key registry.",
+    "#518 exact toward-1000 = 192 (19 dated + 173 undated).",
+    "Country concentration report 195 incorrectly used obsolete prior 194 + 1 geo row.",
+    "IC: add 1 geography-verified GB undated prospect not in the 192 US registry → final 193.",
+    "Track B undated portal rows remain HOLD until physical hotel verification.",
+    "Yield wave clean 57 conversion/reflag prospects are already inside the 192."
+  ],
   "milestoneRule": {
     "counts": [
       "ACTIVE_DATED",
@@ -52,7 +63,8 @@
     "doesNotCount": [
       "HISTORICAL_OR_SUPERSEDED",
       "RESEARCH_CANDIDATE_OR_HOLD",
-      "QUARANTINED_OR_INVALID"
+      "QUARANTINED_OR_INVALID",
+      "GEO_UNVERIFIED_HOLD"
     ]
   }
 }
