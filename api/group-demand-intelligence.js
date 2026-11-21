@@ -3483,8 +3483,24 @@ export async function postGdiContactReveal(req, res) {
 
   let result;
   try {
-    result = await revealGdiContactOnDemand({
+    // Public-first missing-channel resolver (Exa/Serper directories) before Surfe.
+    // Surfe remains last and never overwrites public findings.
+    const { resolveMissingContactChannels } = await import(
+      "../lib/group-demand-intelligence/presentation/gdi-missing-channel-resolver-v1.js"
+    );
+    const { inspectPublicContactSearchCredentials } = await import(
+      "../lib/group-demand-intelligence/presentation/gdi-public-contact-search-providers-v1.js"
+    );
+    const publicCreds = inspectPublicContactSearchCredentials(process.env);
+    const authorizePaidPublicSearch =
+      !useMock &&
+      access.ok === true &&
+      publicCreds.chosenMode !== "NONE" &&
+      String(process.env.GDI_PUBLIC_CONTACT_ON_DEMAND || "1") !== "0";
+
+    const resolved = await resolveMissingContactChannels({
       channel,
+      opportunity,
       contact: {
         name: resolvedName,
         role:
@@ -3497,10 +3513,10 @@ export async function postGdiContactReveal(req, res) {
           selectedContact?.profileUrl ||
           selectedContact?.sourceUrl ||
           null,
-        profileUrl:
-          selectedContact?.profileUrl ||
-          selectedContact?.linkedinUrl ||
-          selectedContact?.sourceUrl ||
+        title:
+          selectedContact?.title ||
+          selectedContact?.role ||
+          opportunity.contactRole ||
           null,
       },
       organization: {
@@ -3510,9 +3526,88 @@ export async function postGdiContactReveal(req, res) {
           opportunity.company ||
           null,
       },
-      provider,
-      authorizeLiveProvider: authorizeLive,
+      authorizePaidPublicSearch,
+      authorizeLiveSurfe: authorizeLive === true && !useMock,
+      surfeProvider: useMock
+        ? provider
+        : authorizeLive
+          ? provider
+          : null,
+      forcePublicSearch: useMock === true && body.forcePublicSearch === true,
+      seedRegressionFixtures: body.seedRegressionFixtures === true,
+      env: process.env,
     });
+
+    // Mock-only path that still wants Surfe-shaped responses without public search.
+    if (useMock && body.skipPublicSearch === true) {
+      result = await revealGdiContactOnDemand({
+        channel,
+        contact: {
+          name: resolvedName,
+          role:
+            selectedContact?.role ||
+            selectedContact?.title ||
+            opportunity.contactRole ||
+            null,
+          linkedinUrl:
+            selectedContact?.linkedinUrl ||
+            selectedContact?.profileUrl ||
+            selectedContact?.sourceUrl ||
+            null,
+        },
+        organization: {
+          name:
+            opportunity.displayCompanyName ||
+            opportunity.organizationName ||
+            opportunity.company ||
+            null,
+        },
+        provider,
+        authorizeLiveProvider: true,
+      });
+    } else {
+      result = {
+        ok: resolved.ok,
+        ephemeral: resolved.resolvedVia === "surfe_ephemeral",
+        persisted: false,
+        miss: resolved.miss === true,
+        error: resolved.ok ? null : "CHANNELS_UNRESOLVED",
+        message: resolved.message,
+        contactDetails: resolved.contactDetails
+          ? {
+              email: resolved.contactDetails.email || null,
+              emailType: resolved.contactDetails.email
+                ? "work"
+                : null,
+              phone: resolved.contactDetails.phone || null,
+              phoneType:
+                resolved.contactDetails.phoneType ||
+                (resolved.contactDetails.phone ? "office" : null),
+              phoneExtensions: resolved.contactDetails.phoneExtensions || [],
+              phoneDisplay: resolved.contactDetails.phoneDisplay || null,
+              phoneLabel: resolved.contactDetails.phoneLabel || null,
+              source: resolved.contactDetails.source || null,
+              sourceUrl: resolved.contactDetails.sourceUrl || null,
+              distinguishedFromSourceVerified: true,
+              distinguishedFromSurfe: true,
+            }
+          : null,
+        providerCalls: resolved.surfeAttempted ? 1 : 0,
+        publicSearchAttempted: resolved.publicSearchAttempted === true,
+        methods: resolved.methods || [],
+        resolvedVia: resolved.resolvedVia || null,
+        version: resolved.version,
+        liveVerified: Boolean(authorizeLive && resolved.surfeAttempted),
+      };
+      // Surface updated opportunity channels for authenticated refresh (in-memory).
+      if (resolved.opportunity?.primaryContact) {
+        opportunity.primaryContact = resolved.opportunity.primaryContact;
+        opportunity.contactEmail =
+          resolved.opportunity.contactEmail || opportunity.contactEmail;
+        opportunity.contactPhone =
+          resolved.opportunity.contactPhone || opportunity.contactPhone;
+      }
+    }
   } finally {
     if (authorizeLive && !useMock) endSurfeInFlight(identityKey);
   }
