@@ -1,0 +1,617 @@
+{
+  "module": "V4_CONTRACT_MIGRATION_DRY_RUN",
+  "at": "2026-11-20T23:06:57.012Z",
+  "mode": "DRY_RUN_QUALITY_GATED",
+  "noAirtableWrites": true,
+  "noHpcCreates": true,
+  "publicationState": "CUSTOMER_BLOCKED",
+  "input": {
+    "findingsLoaded": 481,
+    "contractFindings": 481,
+    "reportedTotalHint": "57+19+405=481 reported finding total — not automatic unique agreements"
+  },
+  "unique": {
+    "physicalHotels": 373,
+    "agreements": 373,
+    "milestones": 373,
+    "excludedFindings": 3,
+    "quarantinedFindings": 2
+  },
+  "findingQualityCounts": {
+    "VERIFIED": 306,
+    "RESEARCH_ONLY": 171,
+    "CONFLICTED": 1,
+    "REJECTED": 3
+  },
+  "agreementQualityCounts": {
+    "CONFLICTED": 2,
+    "RESEARCH_ONLY": 113,
+    "VERIFIED": 258
+  },
+  "proposedAirtableOps": {
+    "verifiedContractCreates": 258,
+    "researchOnlyContractCreates": 113,
+    "conflictedQuarantine": 2,
+    "rejectedExcluded": 3,
+    "verifiedMilestoneCreates": 258,
+    "note": "Full 481 migration blocked. Research Mode pilot (10–20 VERIFIED) only after schema auth + founder persist auth."
+  },
+  "samples": {
+    "rejected": [
+      {
+        "findingId": "ctim_00987847781fc351f058",
+        "hotelName": "Maple Grove RV Resort",
+        "reasons": [
+          "non_hotel_asset"
+        ],
+        "wave": "V3"
+      },
+      {
+        "findingId": "ctim_7677e349a99dfb89d799",
+        "hotelName": "Homewood Suites - Allentown West Fogelsville",
+        "reasons": [
+          "non_hotel_asset"
+        ],
+        "wave": "V3"
+      },
+      {
+        "findingId": "ctim_8ec3fcf934ab9195e7b3",
+        "hotelName": "1480 North Hampton Road",
+        "reasons": [
+          "non_hotel_asset"
+        ],
+        "wave": "V3"
+      }
+    ],
+    "conflicted": [
+      {
+        "contractId": "ctr_b2154c9c782723ee",
+        "hotelName": "Bellagio Hotel and Casino",
+        "city": "Clark",
+        "stateRegion": "NV",
+        "agreementType": "FRANCHISE",
+        "brandFamily": null,
+        "quality": "CONFLICTED",
+        "reasons": [
+          "city_may_be_county",
+          "casino_complex_franchise_unverified",
+          "multi_city_identity_collision"
+        ],
+        "findingIds": [
+          "ctim_608e3475729147ce72d0"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1005007/000153949720000828/n2231-x5_424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000828"
+        ],
+        "evidenceSnippets": [
+          "Loan | 5, 8, 10, 11 | 1 | Bellagio Hotel and Casino | Clark | NV | 89109 | 1997 | 2019 | 3,933 | Rooms | 94.8% | 9/30/2019 | $4,260,000,000 | 10/16/2019 | 3.1702% | 0.01911% | 0.00250% | 0.00000% | 0.00125% | 0.01246% | 0.00200% | 0.00040% "
+        ]
+      },
+      {
+        "contractId": "ctr_c0a591f26409c40a",
+        "hotelName": "Bellagio Hotel and Casino",
+        "city": "Las Vegas",
+        "stateRegion": "NV",
+        "agreementType": "FRANCHISE",
+        "brandFamily": null,
+        "quality": "CONFLICTED",
+        "reasons": [
+          "casino_complex_franchise_unverified",
+          "multi_city_identity_collision"
+        ],
+        "findingIds": [
+          "ctim_608e3475729147ce72d0"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474"
+        ],
+        "evidenceSnippets": [
+          "8 | JPMCB | Bellagio Hotel and Casino | 3600 South Las Vegas Boulevard | Las Vegas | NV | 89109 | Clark | 1 | Hotel | Full Service | 1997 | 2019 | 3,933 | Rooms | 94.8%"
+        ]
+      }
+    ],
+    "researchOnly": [
+      {
+        "contractId": "ctr_423ece0b4cb845e3",
+        "hotelName": "Courtyard Larkspur Landing Marin County",
+        "city": "Larkspur Landing Marin County",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_ad7ea600a9f8dee7ffef",
+          "ctim_fbf53aba2d5e369519a0"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.01 | GACC | Courtyard Larkspur Landing Marin County | 10,606,885 | 6,313,605 | 5,093,110 | 530,344 | 4,562,766 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.01 | GACC | Courtyard Larkspur Landing Marin County | 10,606,885 | 6,313,605 | 5,093,110 | 530,344 | 4,562,766 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_f822fca10ba51809",
+        "hotelName": "Courtyard San Mateo Foster City",
+        "city": "San Mateo Foster City",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_a1744229b1a34c6ff777",
+          "ctim_5365b4b5543069810d5c"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.02 | GACC | Courtyard San Mateo Foster City | 10,075,100 | 5,507,288 | 5,227,381 | 503,755 | 4,723,626 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.02 | GACC | Courtyard San Mateo Foster City | 10,075,100 | 5,507,288 | 5,227,381 | 503,755 | 4,723,626 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_c8548a95a7e6f93c",
+        "hotelName": "Courtyard San Jose Cupertino",
+        "city": "San Jose Cupertino",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_7ed18437937356f9200e",
+          "ctim_36c118a2641a858d3026"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.03 | GACC | Courtyard San Jose Cupertino | 9,929,264 | 5,237,133 | 4,692,130 | 496,463 | 4,195,667 | Leasehold | 12/31/2033 | Three, 10-year options | 12/31/2025",
+          "5.03 | GACC | Courtyard San Jose Cupertino | 9,929,264 | 5,237,133 | 4,692,130 | 496,463 | 4,195,667 | Leasehold | 12/31/2033 | Three, 10-year options | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_a01e82a1c38d2de7",
+        "hotelName": "Courtyard Boulder",
+        "city": "Boulder",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_6dd15866dab04c743008",
+          "ctim_3318380cb4d12ec888a3"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.04 | GACC | Courtyard Boulder | 6,412,709 | 4,098,743 | 2,638,153 | 320,635 | 2,317,517 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.04 | GACC | Courtyard Boulder | 6,412,709 | 4,098,743 | 2,638,153 | 320,635 | 2,317,517 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_8326c41bd22eb83e",
+        "hotelName": "Courtyard Los Angeles Torrance Palos Verdes",
+        "city": "Los Angeles Torrance Palos",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_25f48570faa98b2162f7",
+          "ctim_59e058319454ef4513e4"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.05 | GACC | Courtyard Los Angeles Torrance Palos Verdes | 7,071,345 | 4,762,563 | 2,835,580 | 353,567 | 2,482,013 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.05 | GACC | Courtyard Los Angeles Torrance Palos Verdes | 7,071,345 | 4,762,563 | 2,835,580 | 353,567 | 2,482,013 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_29e846572d6ebda2",
+        "hotelName": "Courtyard Los Angeles Hacienda Heights",
+        "city": "Los Angeles Hacienda Heights",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_c581694500c63064aa15",
+          "ctim_f064f0a5545247cdfcd5"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.06 | GACC | Courtyard Los Angeles Hacienda Heights | 6,447,505 | 4,432,551 | 2,534,642 | 322,375 | 2,212,267 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.06 | GACC | Courtyard Los Angeles Hacienda Heights | 6,447,505 | 4,432,551 | 2,534,642 | 322,375 | 2,212,267 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_b7b7ecfb267b2e64",
+        "hotelName": "Courtyard Seattle South Center",
+        "city": "Seattle South Center",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_c38942cd2149a19ddd14",
+          "ctim_d00786b66182e674ec31"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.07 | GACC | Courtyard Seattle South Center | 7,211,855 | 4,637,132 | 2,971,846 | 360,593 | 2,611,254 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.07 | GACC | Courtyard Seattle South Center | 7,211,855 | 4,637,132 | 2,971,846 | 360,593 | 2,611,254 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      },
+      {
+        "contractId": "ctr_da6d37b7b072fdbc",
+        "hotelName": "Courtyard Nashville Airport",
+        "city": "Nashville Airport",
+        "stateRegion": null,
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "RESEARCH_ONLY",
+        "reasons": [
+          "missing_or_invalid_city_state",
+          "agreement_type_wording_not_in_snippet"
+        ],
+        "findingIds": [
+          "ctim_afa7bf904f66fe8cbb4c",
+          "ctim_09653fb89663e4c57b03"
+        ],
+        "waves": [
+          "V3",
+          "V1"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+          "https://www.sec.gov/Archives/edgar/data/0001013611/000153949720000579/n2032_x17-424b2.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474",
+          "0001539497-20-000579"
+        ],
+        "evidenceSnippets": [
+          "5.08 | GACC | Courtyard Nashville Airport | 6,995,720 | 4,282,394 | 3,076,419 | 349,786 | 2,726,633 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025",
+          "5.08 | GACC | Courtyard Nashville Airport | 6,995,720 | 4,282,394 | 3,076,419 | 349,786 | 2,726,633 | Fee/Leasehold | 12/31/2068 | None | 12/31/2025"
+        ]
+      }
+    ],
+    "verified": [
+      {
+        "contractId": "ctr_d84f836184765a72",
+        "hotelName": "Homewood Suites Mobile East Bay Daphne",
+        "city": "Daphne",
+        "stateRegion": "AL",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "HILTON",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_e491a0e7c3f41ae7f390"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474"
+        ],
+        "evidenceSnippets": [
+          "25.01 | CREFI | Homewood Suites Mobile East Bay Daphne | 29474 North Main Street | Daphne | AL | 36526 | Baldwin | 1 | Hotel | Extended Stay | 2008 | 2018-2019 | 104 | Rooms | 73.9%"
+        ]
+      },
+      {
+        "contractId": "ctr_65ab89098486b967",
+        "hotelName": "Hilton Garden Inn Mobile East Bay Daphne",
+        "city": "Daphne",
+        "stateRegion": "AL",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "HILTON",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_fa0217af80f6bafd2c60"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474"
+        ],
+        "evidenceSnippets": [
+          "25.03 | CREFI | Hilton Garden Inn Mobile East Bay Daphne | 29546 North Main Street | Daphne | AL | 36526 | Baldwin | 1 | Hotel | Select Service | 2004 | 2018-2019 | 124 | Rooms | 68.0%"
+        ]
+      },
+      {
+        "contractId": "ctr_26a514623bdcfe78",
+        "hotelName": "Holiday Inn Express Trinidad",
+        "city": "Trinidad",
+        "stateRegion": "CO",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "IHG",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_580840896f10851cd15f"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000474"
+        ],
+        "evidenceSnippets": [
+          "28 | JPMCB | Holiday Inn Express Trinidad | 3130 Santa Fe Trail Drive | Trinidad | CO | 81082 | Las Animas | 1 | Hotel | Limited Service | 2008 | 86 | Rooms | 76.5%"
+        ]
+      },
+      {
+        "contractId": "ctr_4139c13b36a9f592",
+        "hotelName": "Residence Inn Hartford Avon",
+        "city": "Avon",
+        "stateRegion": "CT",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "MARRIOTT",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_69184978162e63dd3e15"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1547361/000153949720000454/n2027_x4-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000454"
+        ],
+        "evidenceSnippets": [
+          "Property | 7.01 | Residence Inn Hartford Avon | Avon | Hartford | CT | 06001 | 2004 | 2018 | 100 | Rooms | 73.3% | 9/30/2019 | $14,700,000 | 10/1/2020"
+        ]
+      },
+      {
+        "contractId": "ctr_7dd14a6b3641f0da",
+        "hotelName": "Candlewood Suites Fort Myers Sanibel Gateway",
+        "city": "Fort Myers",
+        "stateRegion": "FL",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "IHG",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_30b7a5d54ec97d20f665"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1547361/000153949720000454/n2027_x4-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000454"
+        ],
+        "evidenceSnippets": [
+          "Property | 7.03 | Candlewood Suites Fort Myers Sanibel Gateway | Fort Myers | Lee | FL | 33908 | 2009 | 2019 | 120 | Rooms | 68.2% | 9/30/2019 | $12,200,000 | 10/1/2019"
+        ]
+      },
+      {
+        "contractId": "ctr_3f98d28fd9b22d26",
+        "hotelName": "Comfort Inn International Drive",
+        "city": "Orlando",
+        "stateRegion": "FL",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "CHOICE",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_0a79ce7ea377ec2c4af9"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1547361/000153949720000454/n2027_x4-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000454"
+        ],
+        "evidenceSnippets": [
+          "Property | 7.04 | Comfort Inn International Drive | Orlando | Orange | FL | 32817 | 1999 | 2016 | 112 | Rooms | 86.8% | 9/30/2019 | $11,500,000 | 10/1/2019"
+        ]
+      },
+      {
+        "contractId": "ctr_bf847b3133cc0790",
+        "hotelName": "Holiday Inn Savannah South - I-95 Gateway",
+        "city": "Savannah",
+        "stateRegion": "GA",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "IHG",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_e28fd4936ab7865449c5"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1547361/000153949720000454/n2027_x4-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000454"
+        ],
+        "evidenceSnippets": [
+          "Property | 7.06 | Holiday Inn Savannah South - I-95 Gateway | Savannah | Chatham | GA | 31419 | 1999 | 2016 | 100 | Rooms | 71.9% | 9/30/2019 | $7,000,000 | 10/1/2019"
+        ]
+      },
+      {
+        "contractId": "ctr_115d14651e10d0d0",
+        "hotelName": "Staybridge Suites - Columbus",
+        "city": "Columbus",
+        "stateRegion": "OH",
+        "agreementType": "FRANCHISE",
+        "brandFamily": "IHG",
+        "quality": "VERIFIED",
+        "reasons": [
+          "identity_geo_provenance_cmbs_franchise_column"
+        ],
+        "findingIds": [
+          "ctim_1a6563e8f04856ae63cb"
+        ],
+        "waves": [
+          "V3"
+        ],
+        "sourceUrls": [
+          "https://www.sec.gov/Archives/edgar/data/1547361/000153949720000454/n2027_x4-424h.htm"
+        ],
+        "sourceAccessions": [
+          "0001539497-20-000454"
+        ],
+        "evidenceSnippets": [
+          "Property | 17.01 | Staybridge Suites - Columbus | Columbus | Franklin | OH | 43202 | 2016 | N/A | 90 | Rooms | 82.4% | 11/30/2019 | $17,600,000 | 11/7/2019"
+        ]
+      }
+    ]
+  },
+  "investigationNotes": [
+    "Maple Grove RV Resort — REJECTED (non_hotel_asset / manufactured housing collateral)",
+    "Bellagio Hotel and Casino city=Clark — CONFLICTED (county-as-city; multi-city Las Vegas also present)",
+    "Agreement type FRANCHISE default without franchise wording → RESEARCH_ONLY or CONFLICTED",
+    "Stable agreement keys are not verified legal agreement identities"
+  ],
+  "note": "Stable keys are reconciliation aids only. VERIFIED ≠ authorized Airtable persist until Research Mode pilot auth."
+}

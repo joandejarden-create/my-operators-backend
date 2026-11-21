@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "4.0.0-factory",
+  "budgetUsd": 25,
+  "researchCoverage": "GLOBAL",
+  "geographicPriority": "PRIORITY_HPC_ENRICHMENT",
+  "hpcEnrichmentRegions": ["AMERICAS", "EUROPE", "CARIBBEAN"],
+  "providers": {
+    "secApiIo": true,
+    "exa": true,
+    "freeEdgar": true
+  },
+  "research": {
+    "batchSize": 100,
+    "maxBatches": 5,
+    "futureYearMin": 2027,
+    "futureYearMax": 2040
+  },
+  "promotion": {
+    "pilotMaxCreates": 50,
+    "requireManifestSha256": true,
+    "requireAuthorizationBinding": true,
+    "unpublishedDefault": true,
+    "queueHotelExplorerEnrichment": true,
+    "canonicalBaseId": "appCCUsuGsE1ifoLk"
+  },
+  "recurring": {
+    "enabled": false,
+    "useSameEngine": true,
+    "dedupeProviderFingerprints": true
+  },
+  "publication": {
+    "defaultState": "CUSTOMER_BLOCKED",
+    "authorizeSeparately": true
+  },
+  "validation": {
+    "dryRunIsNotLiveValidation": true
+  }
+}

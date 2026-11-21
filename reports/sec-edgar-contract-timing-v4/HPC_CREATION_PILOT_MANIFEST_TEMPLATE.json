@@ -1,0 +1,92 @@
+{
+  "module": "VERIFIED_DISCOVERY_TO_HPC_CREATION_PILOT",
+  "version": "4.0.0-template",
+  "status": "TEMPLATE_ONLY_NOT_A_CREATE_AUTHORIZATION",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "hpcTableId": "tbl9aY5ijiuIzzWam",
+  "discoveryInventoryTableId": "tblx77Nmh56h4xa9z",
+  "policy": {
+    "dryRunFirst": true,
+    "founderApprovalRequiredBeforeApply": true,
+    "maxPilotCreates": 50,
+    "geography": "US",
+    "publicationStateDefault": "CUSTOMER_BLOCKED",
+    "queueHotelExplorerEnrichment": true,
+    "reusePathway": "hpc-authorized-create-reuse-v1"
+  },
+  "minimumIdentityFields": [
+    "Property Name",
+    "Country",
+    "City",
+    "Current Brand",
+    "Affiliation Status",
+    "Family / Source Family"
+  ],
+  "candidates": [
+    {
+      "candidateId": "hpc_pilot_001_example",
+      "discoveryPropertyId": "disc_ctim_…",
+      "discoveryInventoryRecordId": null,
+      "hotelNameNormalized": "EXAMPLE Hampton Inn City",
+      "hotelNameRaw": "Hampton Inn City",
+      "aliases": [],
+      "city": "City",
+      "stateRegion": "ST",
+      "country": "United States",
+      "address": null,
+      "brandFamily": "HILTON",
+      "brandLabel": "Hampton Inn",
+      "operatingStatus": "UNKNOWN_REQUIRES_RESEARCH",
+      "geographicProcessingClass": "PRIORITY_HPC_ENRICHMENT",
+      "collision": {
+        "outcome": "PENDING_LIVE_SEARCH",
+        "reviewedHpcIds": [],
+        "notes": ""
+      },
+      "disposition": "PENDING",
+      "dispositionOptions": [
+        "LINK_EXISTING",
+        "CREATE",
+        "REJECT_AMBIGUOUS",
+        "KEEP_INVENTORY_ONLY"
+      ],
+      "intendedHpcFields": {
+        "Property Name": null,
+        "Country": "United States",
+        "City": null,
+        "State / Region": null,
+        "Current Brand": null,
+        "Affiliation Status": null,
+        "Family / Source Family": null
+      },
+      "evidence": {
+        "sourceUrls": [],
+        "secAccessions": [],
+        "contractIds": [],
+        "milestoneIds": [],
+        "findingIds": []
+      },
+      "publicationState": "CUSTOMER_BLOCKED",
+      "heEnrichmentQueue": true,
+      "founderApproval": {
+        "approvedForCreate": false,
+        "approvedAt": null,
+        "approver": null
+      },
+      "applyResult": {
+        "applied": false,
+        "hpcRecordId": null,
+        "readBackOk": null
+      }
+    }
+  ],
+  "summaryPlaceholders": {
+    "selected": 0,
+    "alreadyInHpc": 0,
+    "createCandidates": 0,
+    "ambiguousRejected": 0,
+    "inventoryOnly": 0,
+    "appliedCreates": 0,
+    "readBackOk": 0
+  }
+}

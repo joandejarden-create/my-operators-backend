@@ -1,0 +1,199 @@
+{
+  "module": "V4_CONTRACT_TERMS_CAPABILITY_AUDIT",
+  "at": "2026-11-21T00:13:27.694Z",
+  "tables": {
+    "hiHotelContracts": "tblMjUCBtXF2o3r9u",
+    "hiContractMilestones": "tbljzAYjYs3dyHWZk",
+    "hiHotelDiscoveryInventory": "tblx77Nmh56h4xa9z",
+    "hiDiscoveryFindings": "tblGjTWNm8G4UOF1e",
+    "hiOrganizations": "tbliXEfUOWk32AN9y",
+    "baseId": "appCCUsuGsE1ifoLk"
+  },
+  "existingContractFieldsSupportingTerms": [
+    "Commencement Date",
+    "Scheduled Expiration Date",
+    "Term Years",
+    "Renewal Options Summary",
+    "Termination Rights Summary",
+    "Contract Status",
+    "Agreement Role"
+  ],
+  "verifiedInventoryAgreementTypes": [
+    "FRANCHISE"
+  ],
+  "verifiedCount": 258,
+  "franchiseOnlyConfirmed": true,
+  "additiveSchema": {
+    "module": "contract-terms-schema-proposal-v4",
+    "status": "PROPOSED_PENDING_FOUNDER_META_APPLY",
+    "baseId": "appCCUsuGsE1ifoLk",
+    "table": "HI Hotel Contracts",
+    "existingFieldsReused": [
+      "Commencement Date",
+      "Scheduled Expiration Date",
+      "Term Years",
+      "Renewal Options Summary",
+      "Termination Rights Summary",
+      "Contract Status",
+      "Agreement Role",
+      "Counterparty Name Raw",
+      "Primary Source URL",
+      "Primary SEC Accession",
+      "Evidence Confidence",
+      "Publication State"
+    ],
+    "addFields": [
+      "Original Agreement Date",
+      "Original Effective Date",
+      "Current Corroborated Expiration",
+      "Renewal Options Count",
+      "Renewal Option Years Each",
+      "Renewal Exercise Party",
+      "Renewal Mode",
+      "Renewal Notice Days",
+      "Renewal Notice Deadline",
+      "Option Exercise Deadline",
+      "Renewal Status Class",
+      "Termination Rights Structured",
+      "Change Of Control Rights Summary",
+      "Financial Terms Summary",
+      "Terms Evidence JSON",
+      "Decision Window Next Date",
+      "Decision Window Class",
+      "Decision Window Notes",
+      "Terms Schema Version"
+    ],
+    "fieldBlueprints": [
+      {
+        "name": "Original Agreement Date",
+        "type": "date",
+        "purpose": "Quoted original agreement / instrument date"
+      },
+      {
+        "name": "Original Effective Date",
+        "type": "date",
+        "purpose": "Quoted commencement / effective date when distinct"
+      },
+      {
+        "name": "Current Corroborated Expiration",
+        "type": "date",
+        "purpose": "Post-amendment / post-renewal expiration when verified"
+      },
+      {
+        "name": "Renewal Options Count",
+        "type": "number",
+        "purpose": "Number of disclosed renewal options"
+      },
+      {
+        "name": "Renewal Option Years Each",
+        "type": "number",
+        "purpose": "Years per option when uniform"
+      },
+      {
+        "name": "Renewal Exercise Party",
+        "type": "singleSelect",
+        "choices": [
+          "FRANCHISEE_OWNER",
+          "FRANCHISOR",
+          "MANAGER",
+          "OWNER",
+          "EITHER",
+          "NOT_DISCLOSED"
+        ]
+      },
+      {
+        "name": "Renewal Mode",
+        "type": "singleSelect",
+        "choices": [
+          "ELECTIVE",
+          "AUTOMATIC",
+          "AUTOMATIC_CONDITIONAL",
+          "NOT_DISCLOSED"
+        ]
+      },
+      {
+        "name": "Renewal Notice Days",
+        "type": "number",
+        "purpose": "Advance notice days when disclosed"
+      },
+      {
+        "name": "Renewal Notice Deadline",
+        "type": "date"
+      },
+      {
+        "name": "Option Exercise Deadline",
+        "type": "date"
+      },
+      {
+        "name": "Renewal Status Class",
+        "type": "singleSelect",
+        "choices": [
+          "RENEWAL_EXECUTED_VERIFIED",
+          "EXTENSION_EXECUTED_VERIFIED",
+          "AUTOMATIC_RENEWAL_CONDITIONAL",
+          "RENEWAL_OPTION_AVAILABLE",
+          "TERMINATED_VERIFIED",
+          "REPLACED_OR_REFLAGGED_VERIFIED",
+          "CURRENT_TERMS_CORROBORATED",
+          "STATUS_UNCONFIRMED"
+        ]
+      },
+      {
+        "name": "Termination Rights Structured",
+        "type": "multilineText",
+        "purpose": "JSON/text: cause / without-cause / performance / cure / CoC"
+      },
+      {
+        "name": "Change Of Control Rights Summary",
+        "type": "multilineText"
+      },
+      {
+        "name": "Financial Terms Summary",
+        "type": "multilineText",
+        "purpose": "Royalties / base / incentive / marketing when disclosed"
+      },
+      {
+        "name": "Terms Evidence JSON",
+        "type": "multilineText",
+        "purpose": "Per-field evidence excerpts + accession + confidence (research)"
+      },
+      {
+        "name": "Decision Window Next Date",
+        "type": "date"
+      },
+      {
+        "name": "Decision Window Class",
+        "type": "singleSelect",
+        "choices": [
+          "EXPLICITLY_DISCLOSED",
+          "CALCULATED_FROM_VERIFIED_TERMS",
+          "CONDITIONAL",
+          "UNDETERMINED",
+          "NOT_DISCLOSED",
+          "NOT_VERIFIED"
+        ]
+      },
+      {
+        "name": "Decision Window Notes",
+        "type": "multilineText"
+      },
+      {
+        "name": "Terms Schema Version",
+        "type": "singleLineText"
+      }
+    ],
+    "milestoneTypeAdditions": [
+      "RENEWAL_NOTICE_DEADLINE",
+      "OPTION_EXERCISE_DEADLINE",
+      "PERFORMANCE_TEST_REVIEW",
+      "CHANGE_OF_CONTROL_TRIGGER",
+      "EARLIEST_TERMINATION_WINDOW"
+    ],
+    "publicationState": "CUSTOMER_BLOCKED",
+    "stop": "REQUIRES_EXPLICIT_FOUNDER_META_API_AUTHORIZATION",
+    "note": "Do not apply merely because design is proposed. Persist structured terms to research JSON / Notes until authorized."
+  },
+  "researchModeEngine": "hotel-intelligence-factory RESEARCH + PERSIST_RESEARCH (reuse)",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "preserveExistingPilotContracts": true
+}

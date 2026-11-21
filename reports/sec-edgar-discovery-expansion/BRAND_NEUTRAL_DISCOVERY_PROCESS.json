@@ -1,0 +1,128 @@
+{
+  "version": "sec-discovery-expansion-design-v1",
+  "constraints": {
+    "brandNamesAreNotCeilings": true,
+    "issuerRegistryIsNotExhaustive": true,
+    "queryFamilyExhaustionIsNotCoverageComplete": true,
+    "marriottHiltonNotRequired": true
+  },
+  "stages": [
+    {
+      "id": "SEED_OR_RESUME",
+      "actions": [
+        "Load coverage ledger V3 + checkpoints",
+        "Accept optional seed CIKs/tickers WITHOUT treating them as the universe",
+        "Load open follow-ups (exhibits, IBR, amendments)"
+      ]
+    },
+    {
+      "id": "CONTENT_DISCOVERY",
+      "actions": [
+        "Run brand-neutral full-text / filing-query families (not brand-name-only)",
+        "Discover CMBS / REIT / EX-10 / amendment accessions",
+        "Record every hit as a coverage row (QUEUED)"
+      ]
+    },
+    {
+      "id": "ENTITY_EXTRACTION",
+      "actions": [
+        "Extract hotel identities, owners, managers, franchisors, SPVs from document content",
+        "Link CIK ↔ entity ↔ hotel without requiring prior brand allowlist",
+        "Enqueue newly observed issuer CIKs into adaptive queue (capped)"
+      ]
+    },
+    {
+      "id": "SOURCE_RELATIONSHIPS",
+      "actions": [
+        "Graph parent accession → exhibits → IBR targets → later amendments",
+        "Deduplicate by coverageUnitId",
+        "Preserve historical versions (do not overwrite)"
+      ]
+    },
+    {
+      "id": "RETRIEVE_AND_EXTRACT",
+      "actions": [
+        "Cache-first free EDGAR retrieval",
+        "Paid providers only under budget ledger + founder ceiling",
+        "Extract contractual intelligence; update ledger extractionStatus",
+        "Hand verified terms to ENRICH_CONTRACT_TERMS when authorized"
+      ]
+    },
+    {
+      "id": "GEO_AND_HPC",
+      "actions": [
+        "Persist verified intelligence globally (Research Mode)",
+        "Prioritize HPC reconcile/enrich for Americas + Europe",
+        "Queue INTL_SOURCE_EXPAND for non-SEC jurisdictions"
+      ]
+    },
+    {
+      "id": "REPORT_COVERAGE",
+      "actions": [
+        "Publish measurable coverage summary + blind spots + backlog",
+        "Never claim complete SEC hotel intelligence discovery"
+      ]
+    }
+  ],
+  "factoryIntegration": {
+    "proposedStage": "DISCOVER_EXPAND",
+    "existingReuse": [
+      "DISCOVER",
+      "EXTRACT",
+      "VERIFY",
+      "ENRICH_CONTRACT_TERMS",
+      "PERSIST_RESEARCH"
+    ],
+    "modes": [
+      "RESEARCH"
+    ],
+    "promotionUnchanged": true,
+    "publicationUnchanged": true,
+    "customerBlockedDefault": true,
+    "powershellSameEngine": true
+  },
+  "taxonomyVersion": "sec-edgar-search-taxonomy-v2.1.0",
+  "taxonomyFamilyCount": 14,
+  "seedQueryFamilies": {
+    "secApi": [
+      "franchise_expiration_date",
+      "franchise_agreement_expiration",
+      "franchise_termination_date",
+      "management_agreement_expiration",
+      "hotel_management_agreement",
+      "hotel_franchise_agreement",
+      "license_agreement_expiration",
+      "expiration_or_termination_franchise",
+      "mortgaged_property_hotel",
+      "hotel_property_schedule",
+      "initial_term_renewal_option_hma"
+    ],
+    "exa": [
+      "hotel_franchise_renewal_announce",
+      "management_agreement_extension",
+      "hotel_reflag_conversion",
+      "cmbs_franchise_expiration_disclosure",
+      "owner_operator_change_contract",
+      "historical_hotel_name_franchise"
+    ],
+    "note": "Seeds for incremental intel/$ — expandable; exhaustion ≠ complete coverage"
+  },
+  "periodPartitions": [
+    "2012_2015",
+    "2016_2018",
+    "2019_2020",
+    "2021_2022",
+    "2023_2024",
+    "2025_2026"
+  ],
+  "followUpVocabulary": [
+    "NONE",
+    "ENUMERATE_EXHIBITS",
+    "FETCH_INCORPORATED_BY_REFERENCE",
+    "ENRICH_CONTRACT_TERMS",
+    "LATER_AMENDMENT_SEARCH",
+    "HPC_RECONCILE_AMERICAS_EUROPE",
+    "INTL_SOURCE_EXPAND",
+    "MANUAL_REVIEW"
+  ]
+}

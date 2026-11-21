@@ -1,0 +1,60 @@
+{
+  "categories": [
+    {
+      "id": "SEC_REGISTRANT_HOTEL_EXPOSURE",
+      "label": "SEC registrants with hotel ownership/ops/franchise/management/lease/financing exposure",
+      "method": "Content + SIC/industry + full-text discovery; expand CIK set from hits",
+      "priority": 1,
+      "currentState": "PARTIAL"
+    },
+    {
+      "id": "CMBS_ISSUERS_AND_COLLATERAL",
+      "label": "CMBS issuers and hotel collateral pools (424B schedules)",
+      "method": "Full-text franchise/management expiration columns; deal-level accession graph",
+      "priority": 1,
+      "currentState": "PARTIAL — JPMCC baseline + incremental V2/V3 findings; deal graph incomplete"
+    },
+    {
+      "id": "REIT_PUBLIC_DISCLOSURES",
+      "label": "Lodging REIT and public-company 10-K / 10-Q / 8-K / DEF 14A",
+      "method": "Eligible filing inventory per CIK + exhibit index enumeration",
+      "priority": 1,
+      "currentState": "PARTIAL — registry seeds + eligible inventory; processing backlog large"
+    },
+    {
+      "id": "EXHIBITS_AND_AMENDMENTS",
+      "label": "Hotel-related exhibits (EX-10*) and amendments",
+      "method": "Filing package index.json; treat parent ≠ exhibit",
+      "priority": 1,
+      "currentState": "PARTIAL — exhibit ledger present; low exhibitsProcessed vs eligible"
+    },
+    {
+      "id": "INCORPORATED_BY_REFERENCE",
+      "label": "Incorporated-by-reference contractual documents",
+      "method": "Parse IBR pointers; queue FETCH_IBR follow-ups",
+      "priority": 2,
+      "currentState": "MOSTLY_UNCOVERED"
+    },
+    {
+      "id": "HISTORICAL_BACKFILL",
+      "label": "Historical filings + subsequent amendments (1994+)",
+      "method": "Period partitions + resumable checkpoints; cache-first EDGAR",
+      "priority": 2,
+      "currentState": "PARTIAL"
+    },
+    {
+      "id": "UNREGISTERED_RELEVANT_ISSUERS",
+      "label": "Relevant companies not previously in issuer registry",
+      "method": "Adaptive queue from entity extraction / related-party / CMBS depositor CIKs",
+      "priority": 1,
+      "currentState": "DESIGNED — adaptive queue caps exist; not continuously expanded"
+    },
+    {
+      "id": "INTL_PUBLIC_DISCLOSURES",
+      "label": "International public disclosures beyond SEC",
+      "method": "Jurisdiction adapters (intl-readiness); persist globally; HPC prioritize Americas/Europe",
+      "priority": 3,
+      "currentState": "READINESS_ONLY"
+    }
+  ]
+}

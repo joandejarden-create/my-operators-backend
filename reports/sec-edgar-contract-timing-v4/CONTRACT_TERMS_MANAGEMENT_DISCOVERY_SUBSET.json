@@ -1,0 +1,81 @@
+{
+  "plan": {
+    "version": "contract-terms-cohort-v1",
+    "subset": "MANAGEMENT_AGREEMENT_DISCOVERY",
+    "note": "Verified inventory is FRANCHISE-only; do not relabel. Discover management agreements separately.",
+    "queries": [
+      {
+        "provider": "SEC_EDGAR_FREE",
+        "query": "hotel management agreement \"initial term\" expiration EX-10",
+        "formHints": [
+          "EX-10",
+          "10-K",
+          "10-Q",
+          "8-K"
+        ]
+      },
+      {
+        "provider": "SEC_API_IO",
+        "query": "\"hotel management agreement\" OR \"management agreement\" hotel (term OR expiration OR renewal)",
+        "formHints": [
+          "EX-10"
+        ]
+      },
+      {
+        "provider": "EXA",
+        "query": "hotel management agreement renewal term years SEC exhibit",
+        "numResults": 5
+      }
+    ],
+    "maxPaidDiscoveryUsd": 5
+  },
+  "leads": [
+    {
+      "source": "EXA",
+      "title": "Form of Hotel Management Agreement.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1295810/000119312504143744/dex103.htm",
+      "publishedDate": null,
+      "agreementTypeHint": "MANAGEMENT",
+      "verificationStatus": "DISCOVERY_LEAD_NOT_VERIFIED",
+      "note": "Lead only — not a verified hotel management contract"
+    },
+    {
+      "source": "EXA",
+      "title": "Exhibit 99.6",
+      "url": "https://www.sec.gov/Archives/edgar/data/1342805/000114036105008984/ex99_6.htm",
+      "publishedDate": null,
+      "agreementTypeHint": "MANAGEMENT",
+      "verificationStatus": "DISCOVERY_LEAD_NOT_VERIFIED",
+      "note": "Lead only — not a verified hotel management contract"
+    },
+    {
+      "source": "EXA",
+      "title": null,
+      "url": "https://www.sec.gov/Archives/edgar/data/79661/000114420417052401/v475682_ex10-5.htm",
+      "publishedDate": null,
+      "agreementTypeHint": "MANAGEMENT",
+      "verificationStatus": "DISCOVERY_LEAD_NOT_VERIFIED",
+      "note": "Lead only — not a verified hotel management contract"
+    },
+    {
+      "source": "EXA",
+      "title": null,
+      "url": "https://www.sec.gov/Archives/edgar/data/1298946/000129894617000078/R46.htm",
+      "publishedDate": null,
+      "agreementTypeHint": "MANAGEMENT",
+      "verificationStatus": "DISCOVERY_LEAD_NOT_VERIFIED",
+      "note": "Lead only — not a verified hotel management contract"
+    },
+    {
+      "source": "EXA",
+      "title": null,
+      "url": "https://www.sec.gov/Archives/edgar/data/945394/000110465920001539/tm201147d1_ex10-2.htm",
+      "publishedDate": null,
+      "agreementTypeHint": "MANAGEMENT",
+      "verificationStatus": "DISCOVERY_LEAD_NOT_VERIFIED",
+      "note": "Lead only — not a verified hotel management contract"
+    }
+  ],
+  "verifiedManagementInFranchiseCohort": 0,
+  "note": "Management leads are a separate discovery subset; franchises were not relabeled."
+}
