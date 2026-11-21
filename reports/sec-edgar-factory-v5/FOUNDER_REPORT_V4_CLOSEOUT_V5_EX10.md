@@ -40,8 +40,8 @@ Date-only extraction errors do **not** force whole-agreement `CONFLICTED` unless
 | Item | Result |
 |------|--------|
 | V5 branch | `feat/hotel-intelligence-factory-v5` (from `origin/main` @ `b0711ba4d`) |
-| V5 PR | *(filled after `gh pr create`)* |
-| V5 HEAD | *(filled after push)* |
+| V5 PR | **#503** — https://github.com/joandejarden-create/my-operators-backend/pull/503 |
+| V5 HEAD | `4bd43da53415952a170220badd72f4fac62eb331` |
 | Pilot | `node scripts/sec-edgar-v5-ex10-discovery-pilot.mjs --run --limit=80` |
 | Budget ceiling | $25 incremental |
 | Actual spend | **$0.184** (Exa lite discovery; EDGAR retrieval cache-first; SEC-API live calls failed/network — mined prior SEC-API cache instead) |
