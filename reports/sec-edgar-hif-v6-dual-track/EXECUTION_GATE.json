@@ -1,0 +1,126 @@
+{
+  "version": "hif-v6-shared-research-contract",
+  "operatingContract": "hif-industrial-scale-operating-contract-v6",
+  "v5Pr503Merged": false,
+  "mergeSha": null,
+  "v6WaveExecutionAuthorized": false,
+  "competingImplementationPrsAllowed": false,
+  "designAndInventoryAllowedWhileBlocked": true,
+  "blocker": "AWAITING_INTEGRATION_CONTROLLER — PR #503 must merge before Track A/B research waves",
+  "sequencingAfterMerge": [
+    "COMPLETE_62_EXHIBIT_EX10_HARVEST",
+    "EXPAND_US_FRANCHISE_AND_NAMED_MANAGEMENT_SOURCES",
+    "LAUNCH_REAL_NON_US_DISCOVERY_AMERICAS_EUROPE",
+    "EXPAND_SOURCES_BY_MEASURED_YIELD",
+    "RECONCILE_INTO_HOTEL_EXPLORER_INTELLIGENCE",
+    "REPEAT_CONTROLLED_INCREMENTAL_BATCHES"
+  ],
+  "trackAInitialWaves": [
+    "EXTRACT_62_EX10_EXHIBITS",
+    "EXPAND_HIGH_YIELD_CMBS_CONTRACTUAL_TABLES",
+    "PILOT_RECORDED_MANAGEMENT_AGREEMENT_MEMORANDA",
+    "PILOT_COURT_INSOLVENCY_CONTRACT_EXHIBITS",
+    "RESEARCH_APPRAISALS_AND_UNDERWRITING",
+    "ENRICH_OWNERS_OPERATORS_FOR_VERIFIED_EXPIRATIONS",
+    "INVESTIGATE_HISTORICAL_RENEWALS_AND_REFLAGGING"
+  ],
+  "trackBInitialWaves": [
+    "VERIFY_TEST_BRAZIL_CVM",
+    "VERIFY_TEST_JAPAN_EDINET",
+    "VERIFY_TEST_UK_COMPANIES_HOUSE",
+    "VERIFY_TEST_SGX_AND_HKEX",
+    "ASSESS_NA_LATAM_EU_PROPERTY_REGISTRATION_SOURCES",
+    "RETRIEVE_HOTEL_RELATED_DISCLOSURES",
+    "EXTRACT_AND_VERIFY_AGREEMENT_OWNERSHIP_FINDINGS",
+    "IDENTIFY_PORTALS_FOR_LARGER_SCALE_INGESTION"
+  ],
+  "constraints": {
+    "researchHorizonFilter": "NONE",
+    "geographicEligibilityExclusions": "NONE",
+    "fixedIssuerListIsCeiling": false,
+    "preEnumeratedBatchIsCeiling": false,
+    "customerBlockedDefault": true,
+    "hpcCreatesUnauthorized": false,
+    "metaSchemaApplyUnauthorized": false,
+    "exaAgentRouting": "MANUAL_ESCALATION_ONLY",
+    "jevRouting": "DETERMINISTIC_ONLY_SHADOW_OPTIONAL"
+  },
+  "routing": {
+    "defaultPath": [
+      "DETERMINISTIC_ROUTING",
+      "FREE_OFFICIAL_RECORDS_OR_EXA_SEARCH",
+      "INDEPENDENT_VERIFICATION"
+    ],
+    "exaAgent": "MANUAL_ESCALATION_ONLY",
+    "jev": "SHADOW_ONLY",
+    "noAutomaticAgentSpend": true,
+    "noAutomaticJevApply": true,
+    "providerMayNotCertifyWithoutEvidence": true,
+    "spendLedgers": [
+      "SEARCH_AND_RETRIEVAL",
+      "COURT_DOCUMENT_ACCESS",
+      "EXA_AGENT",
+      "JEV",
+      "OTHER_PAID_RESEARCH"
+    ]
+  },
+  "governance": {
+    "customerBlocked": true,
+    "hpcCreatesUnauthorized": true,
+    "hpcUpdatesUnauthorized": true,
+    "metaSchemaChangesUnauthorized": true,
+    "customerPublicationUnauthorized": true,
+    "paidPersonalContactEnrichmentUnauthorized": true,
+    "requireDeduplication": true,
+    "requireSchemaVerification": true,
+    "requireEvidenceValidation": true,
+    "requireIdempotentWrites": true,
+    "requireIndependentReadBack": true,
+    "requireHistoricalEventPreservation": true,
+    "requireSourceLineage": true
+  },
+  "commercialLists": {
+    "BRAND_CONVERSION_TARGETS": "BRAND_CONVERSION_TARGETS",
+    "MANAGEMENT_CONTRACT_TARGETS": "MANAGEMENT_CONTRACT_TARGETS",
+    "thirdListAuthorized": false,
+    "leaseDedicatedProduct": false,
+    "leaseClassificationRetained": true
+  },
+  "metricTaxonomy": {
+    "DISCOVERED_HOTELS": "DISCOVERED_HOTELS",
+    "IDENTITY_VERIFIED_HOTELS": "IDENTITY_VERIFIED_HOTELS",
+    "OWNER_LINKED_HOTELS": "OWNER_LINKED_HOTELS",
+    "AGREEMENT_IDENTIFIED_HOTELS": "AGREEMENT_IDENTIFIED_HOTELS",
+    "VERIFIED_EXPIRATION_HOTELS": "VERIFIED_EXPIRATION_HOTELS",
+    "VERIFIED_NOTICE_HOTELS": "VERIFIED_NOTICE_HOTELS",
+    "CURRENT_STATUS_VERIFIED_HOTELS": "CURRENT_STATUS_VERIFIED_HOTELS",
+    "QUALIFIED_COMMERCIAL_TARGETS": "QUALIFIED_COMMERCIAL_TARGETS"
+  },
+  "scaleAmbitions": {
+    "distinctResearchedHotelsInitialScale": 10000,
+    "verifiedOwnerPropertyRelationships": 2000,
+    "hotelSpecificVerifiedFranchiseOrManagementExpirations": 1000,
+    "evidenceBackedCommercialResearchProspects": 2000
+  },
+  "parallelOrchestration": {
+    "registeredWorkspace": "C:/Dev/dealality/ws-hotel-explorer",
+    "stream": "he",
+    "separateUnregisteredWorktrees": false,
+    "newRegistryEntriesRequireIntegrationController": true,
+    "trackABranchPattern": "feat/hif-v6-track-a-*",
+    "trackBBranchPattern": "feat/hif-v6-track-b-*",
+    "sharedContractOwnership": "lib/hotel-intelligence/sec-edgar/hif-v6-shared-research-contract.js",
+    "sharedCoreOwnership": [
+      "lib/hotel-intelligence/sec-edgar/commercial-target-discovery-v1.js",
+      "lib/hotel-intelligence/sec-edgar/hif-industrial-scale-operating-contract-v6.js",
+      "lib/hotel-intelligence/sec-edgar/hif-regional-coverage-yield-register-v6.js"
+    ],
+    "mergeOwner": "Integration Controller",
+    "sequentialMergeRequired": true,
+    "independentQueues": true,
+    "independentCheckpoints": true,
+    "separateCostLedgers": true,
+    "noDuplicateHifCore": true,
+    "noDuplicateProspectEngines": true
+  }
+}
