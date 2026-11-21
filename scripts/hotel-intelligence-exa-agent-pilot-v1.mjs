@@ -441,7 +441,15 @@ async function runAgentBatch({ calibrate = false, calibrateN = 3, effort = "low"
     console.log(`[agent] ${c.caseId} ${c.hotel} effort=${effort} remaining=$${snap.remainingUsd}`);
     const out = await runExaAgentDeepVerification(
       { ...c, effort },
-      { budget, cwd: ROOT, effort },
+      {
+        budget,
+        cwd: ROOT,
+        effort,
+        // Authorized pilot batches only — never factory-wide auto-discovery.
+        explicitManualEscalation: true,
+        spendAuthorization: true,
+        factoryWideAutoDiscovery: false,
+      },
     );
     results.push({
       ...out,
@@ -550,30 +558,39 @@ function evaluate() {
     const issues = r.verification?.issues || [];
     let gained = false;
 
-    if (inc.newEndDate) {
+    const gates = r.verification?.gates || {};
+    const classification = r.verification?.classificationHint;
+    const statusGateOk = gates.CURRENT_STATUS_VERIFIED === true;
+    const isClosed = classification === AGENT_FINDING_CLASS.CLOSED_OR_SUPERSEDED;
+
+    // Research lead (preserves historical Agent evidence) — not the same as verified/actionable.
+    if (inc.newEndDate || inc.statusResolution || inc.ownerOrOperator || inc.newNoticeDays != null) {
+      gained = true;
+    }
+
+    // Verified contractual expiration credit only when terms gate holds AND not a closed/superseded lead
+    // and CURRENT_STATUS is not falsely implied by a termination complaint alone.
+    if (inc.newEndDate && gates.CONTRACT_TERMS_VERIFIED === true && !isClosed && statusGateOk) {
       metrics.verifiedExpirationDates.incremental += 1;
       metrics.verifiedExpirationDates.searchPlusAgent += 1;
-      gained = true;
     }
-    if (inc.newNoticeDays != null) {
+    if (inc.newNoticeDays != null && gates.CONTRACT_TERMS_VERIFIED === true) {
       metrics.verifiedNoticePeriods.incremental += 1;
       metrics.verifiedNoticePeriods.searchPlusAgent += 1;
-      gained = true;
     }
-    if (inc.statusResolution) {
+    // CURRENT_STATUS_VERIFIED gate must be true — status text alone is insufficient.
+    if (inc.statusResolution && statusGateOk) {
       metrics.verifiedCurrentStatusResolutions.incremental += 1;
       metrics.verifiedCurrentStatusResolutions.searchPlusAgent += 1;
-      gained = true;
     }
-    if (inc.renewalConfirmed) {
+    if (inc.renewalConfirmed && statusGateOk) {
       metrics.executedRenewalsConfirmed.incremental += 1;
       metrics.executedRenewalsConfirmed.searchPlusAgent += 1;
-      gained = true;
     }
-    if (inc.ownerOrOperator) {
+    // Owner/operator signals are research signals unless CURRENT_STATUS gate is true.
+    if (inc.ownerOrOperator && statusGateOk) {
       metrics.verifiedOwnerOperatorIdentities.incremental += 1;
       metrics.verifiedOwnerOperatorIdentities.searchPlusAgent += 1;
-      gained = true;
     }
     if (
       inc.falseOrUnsupported ||
@@ -609,19 +626,26 @@ function evaluate() {
         sourceUrl: r.structured?.source_url || null,
         publicationState: "CUSTOMER_BLOCKED",
         activeTargeting: false,
+        actionableCommercialProspect: false,
+        gates,
         verificationNote:
-          "Agent candidate only — AGREEMENT_EXISTENCE / CONTRACT_TERMS / CURRENT_STATUS gates require independent source reopen; Agent alone cannot satisfy gates.",
+          "Agent candidate only — AGREEMENT_EXISTENCE / CONTRACT_TERMS / CURRENT_STATUS gates require independent source reopen; Agent alone cannot satisfy gates. CLOSED_OR_SUPERSEDED is a research lead, not a new active sales opportunity.",
       };
       if (r.prospectList === "MANAGEMENT_CONTRACT") mgmtDelta.push(row);
       else brandDelta.push(row);
     }
   }
 
-  metrics.qualifiedBrandConversionTargets.incremental = brandDelta.filter(
-    (t) => t.classification !== AGENT_FINDING_CLASS.RESEARCH_REQUIRED,
+  // Actionable qualified targets require open decision-window class — never CLOSED_OR_SUPERSEDED / RESEARCH_REQUIRED.
+  const actionableClass = new Set([
+    AGENT_FINDING_CLASS.VERIFIED_DECISION_WINDOW,
+    AGENT_FINDING_CLASS.VERIFIED_END_DATE_STATUS_UNCONFIRMED,
+  ]);
+  metrics.qualifiedBrandConversionTargets.incremental = brandDelta.filter((t) =>
+    actionableClass.has(t.classification),
   ).length;
-  metrics.qualifiedManagementTargets.incremental = mgmtDelta.filter(
-    (t) => t.classification !== AGENT_FINDING_CLASS.RESEARCH_REQUIRED,
+  metrics.qualifiedManagementTargets.incremental = mgmtDelta.filter((t) =>
+    actionableClass.has(t.classification),
   ).length;
   metrics.qualifiedBrandConversionTargets.searchPlusAgent =
     metrics.qualifiedBrandConversionTargets.searchOnly +
@@ -708,35 +732,30 @@ function recommendRouting(metrics, unitEconomics, agentOkCount) {
     "Search exhausted without resolving an important contractual question",
   ];
 
-  let recommendation = "KEEP_MANUAL_OPT_IN_ONLY";
-  let rationale = [];
-
+  const rationale = [];
   if (agentOkCount === 0) {
-    recommendation = "BLOCKED_NO_AGENT_RUNS";
     rationale.push("No successful Agent runs — do not enable automatic routing.");
   } else if (incrDates + incrNotice + incrStatus + incrTargets === 0) {
-    recommendation = "DO_NOT_AUTO_ROUTE";
     rationale.push("No independently credited incremental commercial verifications in this pilot.");
   } else if ((falseRate != null && falseRate > 40) || (noValue != null && noValue > 70)) {
-    recommendation = "MANUAL_ESCALATION_ONLY";
     rationale.push("High false/unsupported or no-value rate — keep Agent as human-triggered escalation.");
   } else if (spend > 0 && incrTargets === 0 && incrDates + incrNotice + incrStatus < 2) {
-    recommendation = "MANUAL_ESCALATION_ONLY";
     rationale.push("Insufficient incremental verified intelligence per dollar for automatic routing.");
   } else {
-    recommendation = "CONDITIONAL_AUTO_ROUTE_AFTER_FOUNDER_APPROVAL";
-    rationale.push("Pilot shows some incremental signal; enable only the listed triggers after founder approval.");
+    rationale.push("Even with some incremental research leads, founder policy keeps Agent manual-only.");
   }
+  rationale.push("Founder decision 2026-11-21: MANUAL_ESCALATION_ONLY — no automatic Agent routing.");
 
   return {
-    recommendation,
+    recommendation: "MANUAL_ESCALATION_ONLY",
+    founderApprovedDefault: true,
     rationale,
     proposedTriggers: triggers,
     autoDeployNow: false,
-    keepHighVolumeOn: ["Exa Search", "Free SEC EDGAR"],
+    keepHighVolumeOn: ["Exa Search", "Free SEC EDGAR", "source-specific research workflows"],
     approvalsRequired: [
-      "Founder approval of routing policy",
-      "Separate Agent budget allocation beyond $15 pilot",
+      "Explicit manual selection per Agent batch",
+      "Applicable Agent spend authorization per batch",
       "Confirmation Agent findings still pass independent verification gates before prospect promotion",
       "No customer publication / HPC without separate authorization",
     ],

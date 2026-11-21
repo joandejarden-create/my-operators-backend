@@ -8,7 +8,11 @@ import {
   caseQualifiesForAgent,
   buildResearchQuestion,
   independentlyVerifyAgentFinding,
+  assertManualAgentAuthorization,
+  runExaAgentDeepVerification,
   AGENT_FINDING_CLASS,
+  EXA_AGENT_DEFAULT_ROUTING,
+  EXA_AGENT_ROUTING_MODE,
 } from "../lib/hotel-intelligence/sec-edgar/exa-agent-deep-verification-v1.js";
 import { VERIFICATION_GATE } from "../lib/hotel-intelligence/sec-edgar/contract-intelligence-identity-layers-v1.js";
 import { createExaAgentPilotBudget } from "../lib/hotel-intelligence/sec-edgar/exa-agent-pilot-budget-v1.js";
@@ -85,5 +89,40 @@ assert.equal(budget.canSpend(0.025, "c1").ok, false); // per-case
 assert.equal(budget.canSpend(0.025, "c2").ok, true);
 assert.equal(budget.record({ usd: 0.025, caseId: "c2", operation: "t2" }).ok, true);
 assert.equal(budget.canSpend(0.01, "c3").ok, false); // ceiling
+
+// Default routing: MANUAL_ESCALATION_ONLY — factory-wide / missing auth blocked
+assert.equal(EXA_AGENT_DEFAULT_ROUTING, EXA_AGENT_ROUTING_MODE.MANUAL_ESCALATION_ONLY);
+assert.equal(assertManualAgentAuthorization({}).ok, false);
+assert.equal(assertManualAgentAuthorization({ explicitManualEscalation: true }).ok, false);
+assert.equal(
+  assertManualAgentAuthorization({
+    explicitManualEscalation: true,
+    spendAuthorization: true,
+    factoryWideAutoDiscovery: true,
+  }).ok,
+  false,
+);
+assert.equal(
+  assertManualAgentAuthorization({
+    explicitManualEscalation: true,
+    spendAuthorization: true,
+    factoryWideAutoDiscovery: false,
+  }).ok,
+  true,
+);
+
+const blocked = await runExaAgentDeepVerification(caseRow, {
+  factoryWideAutoDiscovery: true,
+  explicitManualEscalation: true,
+  spendAuthorization: true,
+});
+assert.equal(blocked.ok, false);
+assert.equal(blocked.skipped, true);
+assert.equal(blocked.reason, "EXA_AGENT_BLOCKED_ON_FACTORY_WIDE_RUN");
+
+const noAuth = await runExaAgentDeepVerification(caseRow, {});
+assert.equal(noAuth.ok, false);
+assert.equal(noAuth.skipped, true);
+assert.equal(noAuth.reason, "EXA_AGENT_REQUIRES_MANUAL_ESCALATION");
 
 console.log("test-exa-agent-deep-verification-v1: PASS");
