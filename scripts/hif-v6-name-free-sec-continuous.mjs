@@ -29,6 +29,12 @@ const MAX_DOCS = Number((process.argv.find((a) => a.startsWith("--max-docs=")) |
 const PAGE_SIZE = 25;
 const MAX_PAGES = Number((process.argv.find((a) => a.startsWith("--pages=")) || "").split("=")[1]) || 10;
 const START_PAGE = Number((process.argv.find((a) => a.startsWith("--start-page=")) || "").split("=")[1]) || 0;
+const QUERY_FILTER = new Set(
+  ((process.argv.find((a) => a.startsWith("--query-ids=")) || "").split("=")[1] || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+);
 const UA = "Dealality Research joan@aohospitalityadvisors.com";
 const asOf = new Date().toISOString().slice(0, 10);
 const WAVE = "NAME_FREE_SEC_CONTINUOUS";
@@ -222,7 +228,7 @@ async function main() {
     { id: "related_license_franchise_424b2", q: '"Related License/ Franchise Agreement"', forms: "424B2" },
     { id: "related_operating_mgmt_424b2", q: '"Operating Agreement or Management Agreement"', forms: "424B2" },
     { id: "gold_related_license_424b5", q: '"Expiration/Termination of Related License"', forms: "424B5" },
-  ];
+  ].filter((q) => QUERY_FILTER.size === 0 || QUERY_FILTER.has(q.id));
 
   const byUrl = new Map();
   const pageStats = [];
