@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surfe Usage V1.3 — Layout Preview (DEVELOPMENT demos)</title>
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css" />
+  <link rel="stylesheet" href="/css/admin-surfe-usage.css?v=surfe-usage-v1-3" />
+  <style>
+    body { margin: 0; background: #0b1220; color: #e2e8f0; font-family: Inter, system-ui, sans-serif; }
+    .preview-banner {
+      background: #422006; color: #fde68a; padding: 8px 16px; font-size: 0.85rem;
+      border-bottom: 1px solid #92400e;
+    }
+  </style>
+</head>
+<body class="support-page adr-page asu-page">
+  <div class="preview-banner">
+    LAYOUT PREVIEW — DEVELOPMENT layoutValidationOnly rows using real GDI hotel/opportunity IDs.
+    Existing 29 FIXTURE_TEST ledger rows stay classified and are not shown as adoption.
+    Not production. No paid Surfe calls.
+  </div>
+  <div class="support-page-shell adr-shell asu-shell" id="supportGateContent">
+    <header class="adr-header asu-header">
+      <div class="asu-header__title-row">
+        <div>
+          <h1>Surfe Usage</h1>
+          <p class="adr-subtitle">
+            See which hotel and market each lookup relates to, which GDI opportunity was pursued, and which organization initiated the request — without storing returned contact details.
+          </p>
+        </div>
+      </div>
+      <p class="asu-history-note">
+        Fixture/test rows stay classified and are hidden by default. Production activity is preferred.
+      </p>
+    </header>
+
+    <section class="asu-top">
+      <section class="adr-filters asu-filters" aria-label="Filters">
+        <label class="asu-check"><input type="checkbox" checked disabled /> Hide fixture/test</label>
+        <span class="asu-status">Preview · 3 DEVELOPMENT layout demos</span>
+      </section>
+      <section class="adr-counts asu-kpis" aria-label="Executive KPIs">
+        <div class="asu-kpi"><span class="asu-kpi__label">Total Lookups</span><span class="asu-kpi__value">3</span></div>
+        <div class="asu-kpi"><span class="asu-kpi__label">Successful Lookups</span><span class="asu-kpi__value">3</span></div>
+        <div class="asu-kpi"><span class="asu-kpi__label">Fixture / test (not adoption)</span><span class="asu-kpi__value">0</span></div>
+        <div class="asu-kpi"><span class="asu-kpi__label">Production class lookups</span><span class="asu-kpi__value">0</span></div>
+        <div class="asu-kpi"><span class="asu-kpi__label">Estimated Cost (known only)</span><span class="asu-kpi__value">$0.60</span></div>
+      </section>
+    </section>
+
+    <section class="asu-middle">
+      <section class="asu-panel">
+        <div class="asu-panel__head"><h2>Usage by opportunity hotel</h2></div>
+        <div class="asu-table-scroll">
+          <table class="adr-table asu-table">
+            <thead>
+              <tr>
+                <th class="asu-col-identity">Hotel</th>
+                <th>City / Market / Country</th>
+                <th>Class</th>
+                <th>Lookups</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Success</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Sheraton Guadalajara Expo</span><span class="asu-identity__secondary">Guadalajara, Mexico</span><span class="asu-identity__meta">ID: recCAGqkERSXgiku4</span></div></td>
+                <td>Guadalajara / Mexico</td>
+                <td>DEVELOPMENT</td>
+                <td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>$0.30</td>
+              </tr>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Bethesda Marriott</span><span class="asu-identity__secondary">Bethesda, Maryland</span><span class="asu-identity__meta">ID: recLuxvwwxID7U2B8</span></div></td>
+                <td>Bethesda / US</td>
+                <td>DEVELOPMENT</td>
+                <td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>$0.15</td>
+              </tr>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Radisson Blu Toronto Downtown</span><span class="asu-identity__secondary">Toronto, Canada</span><span class="asu-identity__meta">ID: recH9h3McgMNFQEla</span></div></td>
+                <td>Toronto / Canada</td>
+                <td>DEVELOPMENT</td>
+                <td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>$0.15</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="asu-panel">
+        <div class="asu-panel__head"><h2>Usage by requesting organization</h2></div>
+        <div class="asu-table-scroll">
+          <table class="adr-table asu-table">
+            <thead>
+              <tr>
+                <th class="asu-col-identity">Organization / office</th>
+                <th>Location</th>
+                <th>Lookups</th>
+                <th>Hotels researched</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Jalisco Regional Sales Desk</span><span class="asu-identity__secondary">Office: office_gdl_sales</span></div></td>
+                <td>Guadalajara, Guadalajara</td>
+                <td>1</td><td>1</td><td>2</td><td>$0.30</td>
+              </tr>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Dealality Layout Validation Org</span><span class="asu-identity__secondary">Office: office_dc_regional</span></div></td>
+                <td>Washington, DMV</td>
+                <td>1</td><td>1</td><td>1</td><td>$0.15</td>
+              </tr>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Toronto Portfolio Ops</span><span class="asu-identity__secondary">Office: office_toronto_ops</span></div></td>
+                <td>Toronto, Greater Toronto</td>
+                <td>1</td><td>1</td><td>1</td><td>$0.15</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="asu-panel">
+        <div class="asu-panel__head"><h2>Most researched opportunities</h2></div>
+        <div class="asu-table-scroll">
+          <table class="adr-table asu-table">
+            <thead>
+              <tr>
+                <th class="asu-col-identity">Opportunity</th>
+                <th>Organization / event</th>
+                <th>Associated hotel</th>
+                <th>Hotel market</th>
+                <th>Lookups</th>
+                <th>Est. cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary"><a href="/app#/group-demand-intelligence?hotelId=recCAGqkERSXgiku4&amp;opportunityId=disc_1490e4966ee8" target="_top">Insignia Yo también juego rumbo a la Copa Mundial FIFA 2026</a></span><span class="asu-identity__meta">Opportunity ID: disc_1490e4966ee8</span></div></td>
+                <td>Secretaría de Desarrollo Económico de Jalisco…</td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Sheraton Guadalajara Expo</span><span class="asu-identity__secondary">Guadalajara, Mexico</span></div></td>
+                <td>Guadalajara / Mexico</td>
+                <td>1</td><td>$0.30</td>
+              </tr>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary"><a href="/app#/group-demand-intelligence?hotelId=recLuxvwwxID7U2B8&amp;opportunityId=gdi_opp_nado_ddaa_washcon_2028" target="_top">NADO &amp; DDAA Washington Conference 2028 — Arlington, VA (hotel not yet named)</a></span><span class="asu-identity__meta">Opportunity ID: gdi_opp_nado_ddaa_washcon_2028</span></div></td>
+                <td>National Association of Development Organizations (NADO) / DDAA</td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Bethesda Marriott</span><span class="asu-identity__secondary">Bethesda, Maryland</span></div></td>
+                <td>Bethesda / US</td>
+                <td>1</td><td>$0.15</td>
+              </tr>
+              <tr>
+                <td><div class="asu-identity"><span class="asu-identity__primary"><a href="/app#/group-demand-intelligence?hotelId=recH9h3McgMNFQEla&amp;opportunityId=rb_gdi_disc_dc428c1bd4c4e412" target="_top">ISCT 2027 Toronto Annual Meeting</a></span><span class="asu-identity__meta">Opportunity ID: rb_gdi_disc_dc428c1bd4c4e412</span></div></td>
+                <td>International Society for Cell &amp; Gene Therapy</td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Radisson Blu Toronto Downtown</span><span class="asu-identity__secondary">Toronto, Canada</span></div></td>
+                <td>Toronto / Canada</td>
+                <td>1</td><td>$0.15</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="asu-bottom">
+      <section class="asu-panel asu-panel--activity">
+        <div class="asu-panel__head"><h2>Activity history</h2></div>
+        <div class="asu-table-scroll asu-table-scroll--tall">
+          <table class="adr-table asu-table asu-table--activity">
+            <thead>
+              <tr>
+                <th>Date/time</th>
+                <th class="asu-col-identity">Opportunity hotel</th>
+                <th class="asu-col-identity">Requested from</th>
+                <th class="asu-col-identity">Opportunity</th>
+                <th>Lookup type</th>
+                <th>Result</th>
+                <th>Credits</th>
+                <th>Est. cost</th>
+                <th>Environment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026-11-20T22:00:00.000Z</td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Sheraton Guadalajara Expo</span><span class="asu-identity__secondary">Guadalajara, Mexico</span><span class="asu-identity__meta">ID: recCAGqkERSXgiku4</span></div></td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Jalisco Regional Sales Desk</span><span class="asu-identity__secondary">Office: office_gdl_sales · Guadalajara</span></div></td>
+                <td><div class="asu-identity"><span class="asu-identity__primary"><a href="/app#/group-demand-intelligence?hotelId=recCAGqkERSXgiku4&amp;opportunityId=disc_1490e4966ee8">Insignia Yo también juego rumbo a la Copa Mundial FIFA 2026</a></span><span class="asu-identity__meta">Opportunity ID: disc_1490e4966ee8</span></div></td>
+                <td>both</td>
+                <td><span class="asu-badge asu-badge--ok">success</span></td>
+                <td>2 · estimated</td>
+                <td>$0.30 · estimated</td>
+                <td>development · DEVELOPMENT</td>
+              </tr>
+              <tr>
+                <td>2026-11-20T21:59:00.000Z</td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Bethesda Marriott</span><span class="asu-identity__secondary">Bethesda, Maryland</span><span class="asu-identity__meta">ID: recLuxvwwxID7U2B8</span></div></td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Dealality Layout Validation Org</span><span class="asu-identity__secondary">Office: office_dc_regional · DMV</span></div></td>
+                <td><div class="asu-identity"><span class="asu-identity__primary"><a href="/app#/group-demand-intelligence?hotelId=recLuxvwwxID7U2B8&amp;opportunityId=gdi_opp_nado_ddaa_washcon_2028">NADO &amp; DDAA Washington Conference 2028</a></span><span class="asu-identity__meta">Opportunity ID: gdi_opp_nado_ddaa_washcon_2028</span></div></td>
+                <td>email</td>
+                <td><span class="asu-badge asu-badge--ok">success</span></td>
+                <td>1 · estimated</td>
+                <td>$0.15 · estimated</td>
+                <td>development · DEVELOPMENT</td>
+              </tr>
+              <tr>
+                <td>2026-11-20T21:58:00.000Z</td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Radisson Blu Toronto Downtown</span><span class="asu-identity__secondary">Toronto, Canada</span><span class="asu-identity__meta">ID: recH9h3McgMNFQEla</span></div></td>
+                <td><div class="asu-identity"><span class="asu-identity__primary">Toronto Portfolio Ops</span><span class="asu-identity__secondary">Office: office_toronto_ops · Greater Toronto</span></div></td>
+                <td><div class="asu-identity"><span class="asu-identity__primary"><a href="/app#/group-demand-intelligence?hotelId=recH9h3McgMNFQEla&amp;opportunityId=rb_gdi_disc_dc428c1bd4c4e412">ISCT 2027 Toronto Annual Meeting</a></span><span class="asu-identity__meta">Opportunity ID: rb_gdi_disc_dc428c1bd4c4e412</span></div></td>
+                <td>phone</td>
+                <td><span class="asu-badge asu-badge--ok">success</span></td>
+                <td>1 · estimated</td>
+                <td>$0.15 · estimated</td>
+                <td>development · DEVELOPMENT</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="asu-panel asu-panel--ops">
+        <div class="asu-panel__head"><h2>Operational visibility</h2></div>
+        <ul class="asu-ops">
+          <li><span class="asu-ops__label">Airtable sync</span><span class="asu-ops__value">PROPOSED_AWAITING_FOUNDER</span></li>
+          <li><span class="asu-ops__label">Persistence</span><span class="asu-ops__value">filesystem</span></li>
+          <li><span class="asu-ops__label">Privacy</span><span class="asu-ops__value">No contact PII stored</span></li>
+          <li><span class="asu-ops__label">Adoption note</span><span class="asu-ops__value">Fixture/test ≠ customer adoption</span></li>
+        </ul>
+      </section>
+    </section>
+  </div>
+</body>
+</html>

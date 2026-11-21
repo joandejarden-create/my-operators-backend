@@ -21,6 +21,37 @@
   var embedJwtWaiters = [];
   var embedMessageListenerInstalled = false;
 
+  /**
+   * LOCAL DEV ONLY — same host gate as dealality-app-shell-auth tryLocalDevAuthFixture.
+   * Used when Memberstack JWT is absent so same-origin embeds can share the shell's
+   * DEV_AUTH_BYPASS /api/me path. Never invents tokens; never applies outside localhost.
+   */
+  function isLocalDevHost() {
+    try {
+      var h = String((global.location && global.location.hostname) || '').toLowerCase();
+      return (
+        h === 'localhost' ||
+        h === '127.0.0.1' ||
+        h === '0.0.0.0' ||
+        h === '[::1]' ||
+        h === '::1'
+      );
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function isSameOriginRequestUrl(url) {
+    try {
+      if (!url || typeof url !== 'string') return false;
+      if (url.charAt(0) === '/') return true;
+      var resolved = new URL(url, global.location && global.location.href);
+      return resolved.origin === (global.location && global.location.origin);
+    } catch (_) {
+      return false;
+    }
+  }
+
   function isValidBearerToken(token) {
     if (!token || typeof token !== 'string') return false;
     var t = token.trim();
@@ -531,8 +562,74 @@
    * }} [options]
    * @returns {Promise<Response>}
    */
+  function localDevNoBearerFetch(url, options) {
+    var localHeaders = Object.assign(
+      { Accept: 'application/json' },
+      options.headers || {}
+    );
+    delete localHeaders.Authorization;
+    delete localHeaders.authorization;
+    var localOpts = Object.assign({}, options, {
+      headers: localHeaders,
+      credentials: options.credentials != null ? options.credentials : 'omit',
+    });
+    delete localOpts.waitForLogin;
+    delete localOpts.maxWaitMs;
+    delete localOpts.notifyLoginRequired;
+    delete localOpts.silent;
+    delete localOpts.onAuthNotify;
+    return fetch(url, localOpts);
+  }
+
   async function authFetch(url, options) {
     options = options || {};
+    var localSameOrigin = isLocalDevHost() && isSameOriginRequestUrl(url);
+
+    // Localhost same-origin: prefer a JWT if one is already available, but do not
+    // call getMemberstackJwt() (embeds wait up to 15s for parent). Use a short probe
+    // then the shell DEV_AUTH_BYPASS no-Bearer path.
+    if (localSameOrigin) {
+      installEmbedMessageListener();
+      var localJwt = embedJwtFromParent || null;
+      if (!localJwt) {
+        try {
+          var published = global.__dealalityMemberstackJwt;
+          if (isValidBearerToken(published)) localJwt = String(published).trim();
+        } catch (_) {}
+      }
+      if (!localJwt) {
+        try {
+          localJwt = await getMemberstackJwtFromAnyClient();
+        } catch (_) {}
+      }
+      if (!localJwt && isEmbeddedFrame()) {
+        localJwt = await waitForEmbedJwtFromParent(800);
+      }
+      if (localJwt) {
+        var localBearerHeaders = Object.assign(
+          { Authorization: 'Bearer ' + localJwt, Accept: 'application/json' },
+          options.headers || {}
+        );
+        var activeWs = readActiveWorkspaceForApi();
+        if (activeWs && !localBearerHeaders['X-Dealality-Active-Workspace']) {
+          localBearerHeaders['X-Dealality-Active-Workspace'] = activeWs;
+        }
+        var demoPortfolio = readDemoBrandPortfolioForApi();
+        if (demoPortfolio && !localBearerHeaders['X-Dealality-Demo-Brand-Portfolio']) {
+          localBearerHeaders['X-Dealality-Demo-Brand-Portfolio'] = demoPortfolio;
+        }
+        var bearerOpts = Object.assign({}, options, { headers: localBearerHeaders });
+        delete bearerOpts.waitForLogin;
+        delete bearerOpts.maxWaitMs;
+        delete bearerOpts.notifyLoginRequired;
+        delete bearerOpts.silent;
+        delete bearerOpts.onAuthNotify;
+        return fetch(url, bearerOpts);
+      }
+      // Parity with DealalityAppShellAuth.tryLocalDevAuthFixture — no Bearer.
+      return localDevNoBearerFetch(url, options);
+    }
+
     var auth = await getAuthHeaders(null, {
       waitForLogin: options.waitForLogin != null ? options.waitForLogin : isEmbeddedFrame(),
       maxWaitMs: options.maxWaitMs,
