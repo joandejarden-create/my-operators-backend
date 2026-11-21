@@ -70,3 +70,8 @@ Sources reviewed: Hotel Management 2026-10-22; Hospitality Net 2026-10-26; Pass 
 ---
 
 **CUSTOMER_BLOCKED** — no customer publication · no weekly automation
+
+
+## Cumulative note (PR tip includes CB3)
+
+After CB3 on the same PR tip, first-100 accessible numerator is **5 / 100** (adds Embassy One Bengaluru MCT). Legacy remains excluded as preferred-brand / conversion intelligence. CB3 independently recorded Legacy as PREFERRED_BRAND_DECISION — consistent with IC #544 qualification.
