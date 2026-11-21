@@ -1,7 +1,8 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
- * HIF V6 Track B — Five-country regulatory / official-source opportunity research.
+ * HIF V6 Track B — Priority-market depth + worldwide-eligible regulatory research.
  * Free public sources. CH/HMLR supporting only. CUSTOMER_BLOCKED. $0.
+ * Priority countries are concentration targets — not geographic allowlists.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -17,6 +18,7 @@ import {
 } from "../lib/hotel-intelligence/sec-edgar/hif-weekly-regional-yield-scorecard-v6.js";
 import {
   PRIORITY_COUNTRIES_V6,
+  COUNTRY_CONCENTRATION_RULES_V6,
   emptyCountryScorecardRow,
 } from "../lib/hotel-intelligence/sec-edgar/hif-v6-country-concentration-v6.js";
 
@@ -290,7 +292,9 @@ async function main() {
         {
           ok: true,
           dryRun: true,
-          countries: PRIORITY_COUNTRIES_V6,
+          priorityMarkets: PRIORITY_COUNTRIES_V6,
+          worldwideEligibility: COUNTRY_CONCENTRATION_RULES_V6.geographicEligibilityExclusions,
+          countryAllowlists: COUNTRY_CONCENTRATION_RULES_V6.countryAllowlists,
           chKeyPresent: chKey,
           hmlrKeyPresent: Boolean(hmlrKey),
         },
@@ -301,7 +305,13 @@ async function main() {
     return;
   }
 
+  // Seed priority markets for concentration reporting; any other verified country is appended dynamically.
   const byCountry = Object.fromEntries(PRIORITY_COUNTRIES_V6.map((c) => [c, emptyCountryScorecardRow(c)]));
+  const countryRow = (code) => {
+    const c = String(code || "UNATTRIBUTED").toUpperCase();
+    if (!byCountry[c]) byCountry[c] = emptyCountryScorecardRow(c);
+    return byCountry[c];
+  };
   const probes = [];
   const prospects = [];
   const candidates = [];
@@ -335,8 +345,8 @@ async function main() {
         probe.status = res.status;
         probe.authOutcome = res.ok ? "AUTHENTICATED_OK" : `HTTP_${res.status}`;
         // Supporting only — do not invent hotel ownership prospects from dataset list
-        byCountry[t.country].filingsOrDatasetsProbed += 1;
-        if (res.ok) byCountry[t.country].portalsRetrievedOk += 1;
+        countryRow(t.country).filingsOrDatasetsProbed += 1;
+        if (res.ok) countryRow(t.country).portalsRetrievedOk += 1;
         probes.push(probe);
         continue;
       }
@@ -345,8 +355,8 @@ async function main() {
       probe.retrieved = res.ok;
       probe.status = res.status;
       probe.error = res.error || null;
-      byCountry[t.country].filingsOrDatasetsProbed += 1;
-      if (res.ok) byCountry[t.country].portalsRetrievedOk += 1;
+      countryRow(t.country).filingsOrDatasetsProbed += 1;
+      if (res.ok) countryRow(t.country).portalsRetrievedOk += 1;
 
       let deepDocs = [];
       if (res.ok && /efts\.sec\.gov/i.test(t.url)) {
@@ -383,7 +393,7 @@ async function main() {
             ownershipRequired: false,
             ownershipStatus: "DEFERRED",
           });
-          byCountry[t.country].holdResearchCandidates += 1;
+          countryRow(t.country).holdResearchCandidates += 1;
         }
       }
 
@@ -394,7 +404,7 @@ async function main() {
         for (const name of d.hotelNames || []) {
           const key = hotelKey(name, t.country);
           if (seen.has(key)) {
-            byCountry[t.country].duplicatesRemoved += 1;
+            countryRow(t.country).duplicatesRemoved += 1;
             continue;
           }
           seen.add(key);
@@ -426,18 +436,18 @@ async function main() {
           if (isProspect) {
             prospects.push(row);
             probe.prospectsExtracted += 1;
-            byCountry[t.country].evidenceBackedCommercialProspectsUndated += 1;
-            byCountry[t.country].distinctEvidenceBackedProspects += 1;
-            byCountry[t.country].trackBContribution += 1;
-            byCountry[t.country].distinctHotelsResearched += 1;
+            countryRow(t.country).evidenceBackedCommercialProspectsUndated += 1;
+            countryRow(t.country).distinctEvidenceBackedProspects += 1;
+            countryRow(t.country).trackBContribution += 1;
+            countryRow(t.country).distinctHotelsResearched += 1;
             if (signal.conversion) {
-              byCountry[t.country].brandConversionAndOperatorChangeSignals += 1;
+              countryRow(t.country).brandConversionAndOperatorChangeSignals += 1;
             }
-            byCountry[t.country].sourceFamilies[t.sourceFamily] =
-              (byCountry[t.country].sourceFamilies[t.sourceFamily] || 0) + 1;
+            countryRow(t.country).sourceFamilies[t.sourceFamily] =
+              (countryRow(t.country).sourceFamilies[t.sourceFamily] || 0) + 1;
           } else {
             candidates.push(row);
-            byCountry[t.country].holdResearchCandidates += 1;
+            countryRow(t.country).holdResearchCandidates += 1;
           }
         }
       }
@@ -506,3 +516,4 @@ main().catch((e) => {
   console.error(String(e?.stack || e));
   process.exit(1);
 });
+
