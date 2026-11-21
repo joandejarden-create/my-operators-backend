@@ -21,6 +21,13 @@ assert.ok(
   ex.hotelContractFindings.some((f) => /Hilton Garden Inn/i.test(f.hotelName) && f.primaryDate === "2032-06-30"),
 );
 assert.equal(ex.counts.loanMaturities, ex.counts.relatedLicensePlainRows);
+const combined = ex.hotelContractFindings.find((f) => /Hilton Garden Inn/i.test(f.hotelName));
+assert.equal(
+  combined.dateMeaning,
+  "COMBINED_LICENSE_FRANCHISE_OPERATING_OR_MANAGEMENT",
+  "combined column must not auto-label as franchise expiration",
+);
+assert.match(String(combined.agreementType), /UNKNOWN/);
 
 const reserveOnly = scoreCmbsScheduleYield(
   "Franchise Expiration Reserve Trigger Event cash management",
