@@ -1,0 +1,159 @@
+{
+  "version": "v5-final-date-tier-verification",
+  "researchAsOf": "2026-11-21",
+  "auditedAt": "2026-11-21T01:57:26.562Z",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "routingDefaults": {
+    "discovery": "DETERMINISTIC_SEARCH_FIRST",
+    "exaAgent": "MANUAL_ESCALATION_ONLY",
+    "jev": "SHADOW_ONLY_DETERMINISTIC_DEFAULT"
+  },
+  "identityMath": {
+    "verifiedExpirationsTierAB": 79,
+    "historical": 60,
+    "future": 19,
+    "futureFranchise": 17,
+    "futureManagement": 2,
+    "identity": "79 verified = 60 historical + 19 future; 19 future = 17 franchise (Brand filter) + 2 management (PHL Tier A + Denver SpringHill Tier B)",
+    "tierBEnrichmentQueue": {
+      "future": 17,
+      "historical": 60,
+      "note": "Queue is Tier B grain (77). Future 17 excludes management Tier A/B extras counted in the 19."
+    },
+    "brandListEnds": {
+      "historical": 60,
+      "future": 17
+    },
+    "strictLists": {
+      "brand": 136,
+      "management": 4,
+      "holdExcluded": true
+    }
+  },
+  "joplinCorrection": {
+    "hotel": "Hilton Garden Inn Joplin",
+    "verifiedEndDate": "2026-10-31",
+    "bucketAsOfResearchDate": "HISTORICAL",
+    "monthsToExpiration": -1,
+    "narrativeFix": "Prior consolidated founder example incorrectly titled Joplin as Future franchise. Data already HISTORICAL as of 2026-11-21; narrative corrected.",
+    "datesPreserved": true
+  },
+  "hiltonPhiladelphiaAirport": {
+    "tier": "TIER_A_VERIFIED_DECISION_WINDOW",
+    "agreementType": "MANAGEMENT",
+    "verifiedEndDate": "2035-03-30",
+    "noticePeriodDays": 180,
+    "noticeDeadline": "2034-10-01",
+    "noticeRelevantTo2035Expiration": true,
+    "noticeRelevanceNote": "180-day notice is contractual timing for the 2035-03-30 MANAGEMENT expiration (deadline 2034-10-01). It is not a near-term outreach trigger as of 2026-11-21 (monthsToNoticeDeadline≈95).",
+    "currentApplicability": "HISTORICALLY_DISCLOSED_ONLY",
+    "renewalStatusClass": "STATUS_UNCONFIRMED",
+    "nearTermOutreachPriority": false,
+    "researchEligible": true,
+    "tierARetained": true,
+    "evidenceUrl": "https://www.sec.gov/Archives/edgar/data/1301236/000095017024123250/soho-ex10_22.htm"
+  },
+  "futureFranchiseRows": [
+    {
+      "hotel": "Hampton Inn Joplin",
+      "end": "2033-01-31",
+      "months": 74
+    },
+    {
+      "hotel": "Hampton Inn Marion",
+      "end": "2033-02-28",
+      "months": 75
+    },
+    {
+      "hotel": "Fairfield Inn – Oak Creek",
+      "end": "2029-06-22",
+      "months": 31
+    },
+    {
+      "hotel": "Holiday Inn Express – Fond Du Lac",
+      "end": "2035-06-01",
+      "months": 103
+    },
+    {
+      "hotel": "Baymont Inn – Madison",
+      "end": "2036-01-31",
+      "months": 110
+    },
+    {
+      "hotel": "Holiday Inn Express - Oshkosh",
+      "end": "2027-12-28",
+      "months": 13
+    },
+    {
+      "hotel": "Holiday Inn Express - Milwaukee Airport",
+      "end": "2030-06-22",
+      "months": 43
+    },
+    {
+      "hotel": "Homewood Suites Memphis Southwind",
+      "end": "2029-03-31",
+      "months": 28
+    },
+    {
+      "hotel": "Hampton Inn Memphis Southwind",
+      "end": "2029-03-31",
+      "months": 28
+    },
+    {
+      "hotel": "The Residence Inn by Marriott South Beach",
+      "end": "2046-12-31",
+      "months": 241
+    },
+    {
+      "hotel": "Hilton Cincinnati Netherland Plaza",
+      "end": "2029-11-30",
+      "months": 36
+    },
+    {
+      "hotel": "The Westin Book Cadillac",
+      "end": "2032-12-31",
+      "months": 73
+    },
+    {
+      "hotel": "Homewood Suites Mobile East Bay Daphne",
+      "end": "2032-03-31",
+      "months": 64
+    },
+    {
+      "hotel": "Hampton Inn Mobile East Bay Daphne",
+      "end": "2032-03-31",
+      "months": 64
+    },
+    {
+      "hotel": "Hilton Garden Inn Mobile East Bay Daphne",
+      "end": "2032-03-31",
+      "months": 64
+    },
+    {
+      "hotel": "Holiday Inn Express Trinidad",
+      "end": "2035-01-10",
+      "months": 98
+    },
+    {
+      "hotel": "Marriott Executive Apartments",
+      "end": "2027-01-30",
+      "months": 2
+    }
+  ],
+  "futureManagementRows": [
+    {
+      "hotel": "SpringHill Suites Denver Airport",
+      "end": "2035-12-30",
+      "tier": "TIER_B_VERIFIED_CONTRACT_EXPIRATION",
+      "months": 109
+    },
+    {
+      "hotel": "Hilton Philadelphia Airport",
+      "end": "2035-03-30",
+      "tier": "TIER_A_VERIFIED_DECISION_WINDOW",
+      "months": 100
+    }
+  ],
+  "pass": true,
+  "failures": []
+}

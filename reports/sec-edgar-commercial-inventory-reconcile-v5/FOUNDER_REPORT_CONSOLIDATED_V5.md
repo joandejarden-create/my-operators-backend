@@ -59,10 +59,14 @@ Dual-list projection only places `MANAGEMENT` (or explicit list hints) on List B
 | Tier C | 73 |
 | HOLD | 299 |
 | Research-eligible | 152 |
-| Verified expirations | 79 (**60 historical** + **19 future**) |
+| Verified expirations | 79 (**60 historical** + **19 future**) as of **2026-11-21** |
+| Future franchise (Brand filter) | **17** |
+| Future management | **2** (PHL Tier A + Denver SpringHill Tier B) |
 | Brand Conversion (deduped hotels) | **136** |
 | Management Contract (deduped hotels) | **4** (was 0) |
 | Notice periods verified/calculated | 2 |
+
+**Identity check:** `60 + 19 = 79` and `17 franchise future + 2 management future = 19`. Tier B enrichment queue future count (**17**) is franchise Tier B only — not the full 19.
 
 ---
 
@@ -83,6 +87,8 @@ Dual-list projection only places `MANAGEMENT` (or explicit list hints) on List B
 | FUTURE_EXPIRATIONS | 17 |
 | NEXT_36_MONTHS | 5 |
 | nearTermOnly | 5 |
+
+Brand `FUTURE_EXPIRATIONS = 17` is correct and does **not** contradict inventory `future = 19` (the extra 2 are management-list hotels).
 
 ---
 
@@ -137,27 +143,31 @@ Budgets remain separate (V5 Search $25 · Agent $15 · Jev eval ~$0.001).
 
 ## Founder review examples
 
-### 1) Future franchise — Tier B (Brand Conversion)
+### 1) Historical franchise — Tier B (Brand Conversion) — Joplin correction
 
 - **Hotel:** Hilton Garden Inn Joplin (Joplin, MO)  
 - **Brand:** Hilton / HGI  
 - **Agreement:** FRANCHISE  
-- **Verified end:** 2026-10-31 (`HISTORICAL`/`future` as of research date — see monthsToExpiration)  
+- **Verified end:** 2026-10-31  
+- **As of 2026-11-21:** **HISTORICAL** (`monthsToExpiration = -1`) — prior narrative that labeled this “future” was wrong; **date preserved**  
 - **Notice:** not disclosed  
-- **Status:** STATUS_UNCONFIRMED — **not** claimed as active decision window  
-- **Next:** VERIFY_CURRENT_APPLICABILITY_THEN_OWNER_ENRICH  
+- **Status:** HISTORICAL_EXPIRATION_STATUS_UNKNOWN / STATUS_UNCONFIRMED — **not** an active decision window  
+- **Next:** VERIFY_RENEWAL_OR_SUCCESSOR_STATUS  
 - **Evidence:** SEC CMBS schedule URL on prospect row  
 
 ### 2) Future management — Tier A (Management Contract)
 
 - **Hotel:** Hilton Philadelphia Airport  
 - **Agreement:** MANAGEMENT  
-- **End:** 2035-03-30 · **Notice:** 180 days  
-- **Tier:** A_VERIFIED_DECISION_WINDOW  
+- **End:** 2035-03-30 · **Notice:** 180 days → calculated deadline **2034-10-01** (end − 180d)  
+- **Notice relevance:** **Yes** — the 180-day clause applies to the 2035 expiration; it is **not** a near-term outreach trigger as of 2026-11-21 (~95 months to notice deadline)  
+- **Tier:** A_VERIFIED_DECISION_WINDOW (verified end + notice window terms) — retained  
+- **Current applicability:** HISTORICALLY_DISCLOSED_ONLY / STATUS_UNCONFIRMED (later-filing corroboration still open)  
+- **Near-term outreach:** false · **Research eligible:** true  
 - **Owner/operator:** enrichment pending (no unauthorized HPC)  
 - **Evidence:** EX-10 persist source URL  
 
-### 3) Historical franchise — Tier B retained
+### 3) Historical franchise — Tier B retained (additional example)
 
 - **Hotel:** Hampton Inn Mount Vernon  
 - **End:** 2020-10-31 (historical)  
