@@ -155,6 +155,10 @@ for (const h of cont2?.hotels || []) upsert(h, "name_free_continuous_w2");
 const tenk = load("reports/sec-edgar-hif-v6-10k-management-schedules/INCREMENTAL_EVENTS.json");
 for (const h of tenk?.hotels || []) upsert(h, "ten_k_mgmt_extract");
 
+// Management discovery pass (EX-10 / 8-K / 10-K)
+const mgmt = load("reports/sec-edgar-hif-v6-management-discovery/INCREMENTAL.json");
+for (const h of mgmt?.hotels || []) upsert(h, "mgmt_discovery");
+
 // Agreement-type resolution upgrades (same event key)
 const resolved = load("reports/sec-edgar-hif-v6-agreement-type-resolution/RESOLUTION_RESULTS.json");
 for (const h of resolved?.results || []) {
