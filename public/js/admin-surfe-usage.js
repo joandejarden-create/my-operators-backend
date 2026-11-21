@@ -668,10 +668,18 @@
       });
     });
     document.getElementById("asuRefresh").addEventListener("click", function () {
-      loadSummary().catch(function (err) {
+      Promise.all([loadSummary(), loadFeBenchmark()]).catch(function (err) {
         setStatus(err && err.message ? err.message : "Load failed");
       });
     });
+    var feBtn = document.getElementById("asuFeBenchmarkRefresh");
+    if (feBtn) {
+      feBtn.addEventListener("click", function () {
+        loadFeBenchmark().catch(function (err) {
+          setStatus(err && err.message ? err.message : "Benchmark load failed");
+        });
+      });
+    }
     document.querySelectorAll(".asu-trend-tab").forEach(function (btn) {
       btn.addEventListener("click", function () {
         document.querySelectorAll(".asu-trend-tab").forEach(function (b) {
@@ -684,6 +692,130 @@
         renderTrends();
       });
     });
+  }
+
+  function renderFeBenchmark(data) {
+    var summary = (data && data.summary) || {};
+    var kpis = [
+      {
+        label: "Eligible Surfe miss events",
+        value: num(summary.genuineEligibleMissEvents),
+      },
+      {
+        label: "Distinct verified contacts",
+        value: num(summary.distinctVerifiedContacts),
+      },
+      {
+        label: "Associated hotels",
+        value: num(summary.associatedHotels),
+      },
+      {
+        label: "Associated opportunities",
+        value: num(summary.associatedOpportunities),
+      },
+      {
+        label: "Identity-ready contacts",
+        value: num(summary.fullEnrichIdentityReadyCount),
+      },
+      {
+        label: "Prior FullEnrich attempts (excluded)",
+        value: num(summary.priorFullEnrichAttemptCount),
+      },
+      {
+        label: "Est. benchmark credit exposure",
+        value: num(summary.estimatedBenchmarkCreditExposure),
+      },
+      {
+        label: "Fixtures excluded",
+        value: num(summary.excluded && summary.excluded.fixture),
+      },
+    ];
+    var kpiRoot = document.getElementById("asuFeBenchmarkKpis");
+    if (kpiRoot) {
+      kpiRoot.innerHTML = kpis
+        .map(function (it) {
+          return (
+            '<div class="asu-kpi"><span class="asu-kpi__label">' +
+            esc(it.label) +
+            '</span><span class="asu-kpi__value">' +
+            esc(it.value) +
+            "</span></div>"
+          );
+        })
+        .join("");
+    }
+    var tbody = document.querySelector("#asuFeBenchmarkTable tbody");
+    if (!tbody) return;
+    var rows = (data && data.shortlist) || [];
+    if (!rows.length) {
+      tbody.innerHTML = emptyRow(
+        7,
+        "No genuine eligible Surfe work-email misses yet. Fixture/test rows are excluded."
+      );
+      return;
+    }
+    tbody.innerHTML = rows
+      .map(function (r) {
+        var hotels = (r.hotels || []).join(", ") || "—";
+        var oppCount = num(r.opportunityCount);
+        var ready =
+          r.identityReadiness && r.identityReadiness.ready ? "Yes" : "No";
+        return (
+          "<tr>" +
+          "<td>" +
+          identityCell({
+            primary: r.contactDisplayName || "—",
+            secondary: r.contactRole || "",
+            meta: r.personIdentityKey
+              ? "person " + String(r.personIdentityKey).slice(0, 8)
+              : "",
+          }) +
+          "</td>" +
+          "<td>" +
+          esc(r.organizationName || "—") +
+          "</td>" +
+          "<td>" +
+          esc(hotels) +
+          " (" +
+          num(r.hotelCount) +
+          ")</td>" +
+          "<td>" +
+          esc(oppCount) +
+          "</td>" +
+          "<td>" +
+          esc(ready) +
+          "</td>" +
+          "<td>" +
+          esc(num(r.estimatedCreditsIfBenchmarked)) +
+          "</td>" +
+          "<td>" +
+          esc(r.latestMissAt || "—") +
+          "</td>" +
+          "</tr>"
+        );
+      })
+      .join("");
+  }
+
+  async function loadFeBenchmark() {
+    var data = await authFetch(
+      "/api/admin/surfe-usage/fullenrich-benchmark-eligibility"
+    ).then(function (r) {
+      if (!r.ok) throw new Error("Benchmark eligibility HTTP " + r.status);
+      return r.json();
+    });
+    renderFeBenchmark(data);
+    var note = document.getElementById("asuFeBenchmarkNote");
+    if (note && data && data.controls) {
+      note.textContent =
+        "Genuine Surfe work-email misses only. Fixtures excluded. FullEnrich OFF · paidLookupsTriggered=" +
+        String(data.controls.paidLookupsTriggered === true) +
+        " · customerFacing=" +
+        String(data.privacy && data.privacy.customerFacing === true) +
+        " · " +
+        (data.generatedAt || "");
+    }
+    return data;
   }
 
   async function boot() {
@@ -724,6 +856,7 @@
     bind();
     try {
       await loadSummary();
+      await loadFeBenchmark();
     } catch (err) {
       setStatus(err && err.message ? err.message : "Failed to load Surfe Usage");
     }

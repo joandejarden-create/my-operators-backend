@@ -647,6 +647,7 @@ import {
   getAdminSurfeUsageSummary,
   getAdminSurfeUsageEvents,
   getAdminSurfeUsageAirtablePlan,
+  getAdminFullEnrichBenchmarkEligibility,
 } from "./api/admin-surfe-usage.js";
 import {
   postAcquisitionConnectionsPreview,
@@ -1690,6 +1691,11 @@ app.get(
   "/api/admin/surfe-usage/airtable-plan",
   ...adminAuth,
   getAdminSurfeUsageAirtablePlan,
+);
+app.get(
+  "/api/admin/surfe-usage/fullenrich-benchmark-eligibility",
+  ...adminAuth,
+  getAdminFullEnrichBenchmarkEligibility,
 );
 
 // AI Demand Leak Audit — free diagnostic (sample + client report + admin)
