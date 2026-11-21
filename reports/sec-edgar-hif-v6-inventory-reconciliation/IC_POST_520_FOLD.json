@@ -1,0 +1,88 @@
+{
+  "asOf": "2026-11-21",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "researchCostUsd": 0,
+  "merges": {
+    "pr520": {
+      "mergeCommit": "a8f49857af822a92828a6f12986b86b2661826db",
+      "tipClaimedToward1000": 385,
+      "incrementalActiveDatedValidated": 118,
+      "icDecision": "DO_NOT_FORCE_385"
+    },
+    "pr524": {
+      "mergeCommit": "0ba712f4546f5189974854398d882afde658da95",
+      "tipClaimedToward1000": 612,
+      "tipMethodNote": "Tip 612 = stale tip-385 + continuous 227; not IC SoT composition",
+      "continuousActiveDatedClaimed": 227,
+      "parseNoiseQuarantined": 15,
+      "incrementalActiveDatedFolded": 212,
+      "icDecision": "DO_NOT_FORCE_TIP_COMPOSITION"
+    },
+    "pr523": "OPEN — handle separately (UK CCOD/OCOD ownership)"
+  },
+  "validation": {
+    "scaleupExactEventDupVsMain282": 0,
+    "continuousExactEventDupVsMainPlusScale": 0,
+    "scaleupAutoFranchise": 0,
+    "continuousAutoFranchise": 0,
+    "geographyScaleupAllUS": true,
+    "geographyContinuousAllUS": true,
+    "missingSourceUrlScale": 0,
+    "missingSourceUrlCont": 0
+  },
+  "exactRegistry": {
+    "countsToward1000Milestone": 612,
+    "ACTIVE_DATED": 438,
+    "ACTIVE_UNDATED_EVIDENCE_BACKED": 174,
+    "HISTORICAL_OR_SUPERSEDED": 217,
+    "HOLD": 0,
+    "QUARANTINED": 48,
+    "byCountry": {
+      "US": 611,
+      "GB": 1
+    },
+    "byAgreementType": {
+      "UNKNOWN_AGREEMENT": 330,
+      "MANAGEMENT": 58,
+      "FRANCHISE": 224
+    },
+    "byCommercialList": {
+      "CONTRACT_DATE_AGREEMENT_TYPE_UNRESOLVED": 330,
+      "MANAGEMENT_CONTRACT_TARGETS": 58,
+      "BRAND_CONVERSION_TARGETS": 224
+    },
+    "byStatus": {
+      "ACTIVE_DATED": 438,
+      "ACTIVE_UNDATED_EVIDENCE_BACKED": 174
+    },
+    "agreementTypeResolvedFranchise": 224,
+    "agreementTypeResolvedManagement": 58,
+    "agreementTypeUnresolvedAmongToward1000": 330,
+    "qualifiedBct": 224,
+    "qualifiedMct": 58,
+    "contractualDatedUnresolved": 330
+  },
+  "math": {
+    "priorMainToward1000": 282,
+    "plusPr520ScaleupActiveDated": 118,
+    "plusPr524ContinuousActiveDatedNetOfNoise": 212,
+    "equals": 612,
+    "tip520Claimed385": 385,
+    "tip524Claimed612": 612
+  },
+  "nextSecBatches": {
+    "goldRelatedLicense424b2": "continue pagination; yield not exhausted (cont trailing ~11.4 at 50 docs)",
+    "goldRelatedLicense424h": "~312 hits catalogued — next authorized wave",
+    "relatedLicenseFranchise424b2": "~277 hits",
+    "extractorHardening": "strip 'Maturity/turity Date of the related Mortgage Loan' prefixes before hotel identity",
+    "agreementTypeResolution": "keep combined column unresolved; optional exhibit-level franchise/HMA resolution separate",
+    "ownership": "PR #523 only — no major ownership enrichment diversion",
+    "milestonePolicy": "1000 is not a research cap"
+  },
+  "governance": {
+    "customerPublication": "CUSTOMER_BLOCKED",
+    "dirtyWorktreesPreserved": true,
+    "fiveCountryCommercialConcentration": true,
+    "globalResearchEligibility": true
+  }
+}
