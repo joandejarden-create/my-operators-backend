@@ -1,0 +1,671 @@
+{
+  "contract": "BE_FACTORY_PERMANENT_IMAGE_INTEGRITY_V3",
+  "generatedAt": "2026-11-21T01:42:12.149Z",
+  "paidResearchSpendUsd": 0,
+  "integration": {
+    "pr": 502,
+    "status": "MERGED",
+    "mergeCommit": "d6dd99ddc588835c67cf46c8a4089b19089878ec",
+    "beHome": "C:\\Dev\\dealality\\ws-brand-explorer",
+    "beBranch": "ws/brand-explorer",
+    "headEqualsOriginMain": true,
+    "port8080Root": "C:\\Dev\\dealality\\ws-integrated-staging",
+    "galleryDeliveryFixOn8080": true,
+    "galleryDeliveryFixOnOriginMain": false
+  },
+  "phase0": {
+    "pr494MergeCommit": "be99076b1",
+    "note": "V2 durable ingest + AC/Courtyard regression fixtures preserved"
+  },
+  "canonicalAirtable": {
+    "activeLiveBrands": 68,
+    "brandsWithCompleteImageRows": 67,
+    "missingActiveLiveBrands": [
+      {
+        "id": "recTJdPlr4mDs9app",
+        "name": "SO/",
+        "present": 0,
+        "required": 9
+      }
+    ],
+    "rawRequiredImageRows": 619,
+    "uniqueBrandSlotPairs": 603,
+    "duplicateSlotConflicts": 16,
+    "duplicateClassifications": null,
+    "classCounts": {
+      "IMAGE_MISSING": 0,
+      "IMAGE_ATTACHMENT_PRESENT": 0,
+      "IMAGE_FETCH_FAILED": 0,
+      "IMAGE_DECODE_FAILED": 0,
+      "IMAGE_SIGNED_URL_EXPIRED": 0,
+      "IMAGE_WRONG_BRAND": 0,
+      "IMAGE_SIBLING_BRAND": 0,
+      "IMAGE_PROPERTY_UNVERIFIED": 0,
+      "IMAGE_WRONG_SCENE": 0,
+      "IMAGE_DUPLICATE": 0,
+      "IMAGE_RIGHTS_UNVERIFIED": 0,
+      "IMAGE_TECHNICALLY_VALID": 603,
+      "IMAGE_BRAND_VERIFIED": 119,
+      "IMAGE_BROWSER_VALIDATED": 59,
+      "IMAGE_CERTIFIED": 0
+    },
+    "brandsWithAllNinePresent": 67,
+    "brandsWithAllSixGalleryPresent": 67,
+    "brandsWithAllThreeScenarioPresent": 67,
+    "brandsWithSiblingReject": 0,
+    "probe": true
+  },
+  "exactBrandIdentity": {
+    "slotsEvaluated": 603,
+    "IMAGE_BRAND_VERIFIED": 119,
+    "IMAGE_EXACT_BRAND_UNVERIFIED": 484,
+    "IMAGE_SIBLING_BRAND_REJECTED": 0,
+    "propertyInferred": 12,
+    "propertyPoolMatched": 496,
+    "censusIndex": {
+      "loaded": 1542,
+      "brandsQueried": 68,
+      "skipped": null
+    },
+    "note": "IMAGE_BRAND_VERIFIED requires Hotel Property Census Current Brand exact match + property name join. Inferred/pool matches without census remain PROPERTY_INFERRED_CENSUS_PENDING. HE and customer rights remain blocked."
+  },
+  "rights": {
+    "IMAGE_RIGHTS_INTERNAL_ONLY": 603,
+    "IMAGE_RIGHTS_BE_STAGED": 603,
+    "IMAGE_RIGHTS_HE_BLOCKED": 603,
+    "IMAGE_RIGHTS_CUSTOMER_BLOCKED": 603,
+    "note": "Public Marriott/Hilton photography is not treated as redistribution license"
+  },
+  "browserCertification": {
+    "mode": "CURRENT",
+    "base": "http://127.0.0.1:8080",
+    "brandsAttempted": 68,
+    "fullyBrowserValidated": 59,
+    "pass": 59,
+    "fail": 9,
+    "brands": [
+      {
+        "slug": "ac-hotels-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "aloft-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "ascend-hotel-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "autograph-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "avid-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "bunkhouse-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "bw-premier-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "bw-signature-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "canopy-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "city-express-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "comfort-inn-and-suites",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "country-inn-and-suites-by-choice",
+        "ok": false,
+        "browserValidated": 5,
+        "techValidDelivery": 5,
+        "error": null
+      },
+      {
+        "slug": "courtyard-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "curio-collection-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "dazzler-by-wyndham",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "delta-hotels-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "design-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "doubletree-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "even-hotels",
+        "ok": false,
+        "browserValidated": 7,
+        "techValidDelivery": 7,
+        "error": null
+      },
+      {
+        "slug": "everhome-suites",
+        "ok": false,
+        "browserValidated": 4,
+        "techValidDelivery": 4,
+        "error": null
+      },
+      {
+        "slug": "fairfield-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "fairmont",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "four-points-by-sheraton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "hampton-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "handwritten-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "hilton-garden-inn",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "hilton-hotels-and-resorts",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "holiday-inn-express",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "home2-suites-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "homewood-suites-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "hotel-indigo",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "hyatt-centric",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "hyatt-regency",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "ibis",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "kimpton-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "mama-shelter",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "marriott-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "mercure",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "mgallery-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "motto-by-hilton",
+        "ok": false,
+        "browserValidated": 6,
+        "techValidDelivery": 6,
+        "error": null
+      },
+      {
+        "slug": "moxy-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "novotel",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "preferred-hotels-and-resorts",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "pullman",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "quality-inn",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "radisson-blu-by-choice",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "radisson-by-choice",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "radisson-individuals-by-choice",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "radisson-red-by-choice",
+        "ok": false,
+        "browserValidated": 8,
+        "techValidDelivery": 8,
+        "error": null
+      },
+      {
+        "slug": "residence-inn-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "sheraton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "small-luxury-hotels-of-the-world",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "so",
+        "ok": false,
+        "browserValidated": 0,
+        "techValidDelivery": 0,
+        "error": null
+      },
+      {
+        "slug": "spark-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "springhill-suites-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "studiores",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "suburban-studios",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "tapestry-collection-by-hilton",
+        "ok": false,
+        "browserValidated": 8,
+        "techValidDelivery": 8,
+        "error": null
+      },
+      {
+        "slug": "tempo-by-hilton",
+        "ok": false,
+        "browserValidated": 6,
+        "techValidDelivery": 6,
+        "error": null
+      },
+      {
+        "slug": "thompson-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "towneplace-suites-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "trademark-collection-by-wyndham",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "tribute-portfolio",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "tru-by-hilton",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "vignette-collection",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "voco-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "westin",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      {
+        "slug": "woodspring-suites",
+        "ok": false,
+        "browserValidated": 6,
+        "techValidDelivery": 6,
+        "error": null
+      }
+    ],
+    "fixtures": {
+      "ac-hotels-by-marriott": {
+        "slug": "ac-hotels-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      "courtyard-by-marriott": {
+        "slug": "courtyard-by-marriott",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      "aloft-hotels": {
+        "slug": "aloft-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      },
+      "bunkhouse-hotels": {
+        "slug": "bunkhouse-hotels",
+        "ok": true,
+        "browserValidated": 9,
+        "techValidDelivery": 9,
+        "error": null
+      }
+    },
+    "note": "CURRENT mode only. IMAGE_BROWSER_VALIDATED requires DOM natural dimensions + non-ephemeral src. Exact-brand census verification remains separate."
+  },
+  "factoryPortfolio": {
+    "frozenPayloadFiles": 230,
+    "brandsAudited": 230,
+    "brandsWithSixGalleryUrls": 160,
+    "brandsWithThreeScenarioUrls": 159,
+    "galleryGaps": 70,
+    "scenarioGaps": 71,
+    "ephemeralCdnSlots": 415,
+    "siblingRejects": 3
+  },
+  "remediation": {
+    "aloftBunkhouseSuburbanApply": {
+      "okCount": 11,
+      "failCount": 8
+    },
+    "bunkhouseSuburbanRetry": {
+      "okCount": 8,
+      "failCount": 0
+    },
+    "webpReencode": {
+      "okCount": 3,
+      "failCount": 0
+    },
+    "successfullyImportedSlots": 22
+  },
+  "sharedVerifiedHotelImageLibrary": {
+    "contract": "BE_SHARED_VERIFIED_HOTEL_IMAGE_LIBRARY_V1",
+    "totalAssets": 624,
+    "uniqueContentHashes": 624,
+    "brandsRepresented": 67,
+    "hotelsRepresented": 33,
+    "countriesRepresented": 8,
+    "exactBrandEligible": 247,
+    "rightsBrandExplorer": 624,
+    "rightsHotelExplorer": 0,
+    "rightsCustomerFacing": 0,
+    "awaitingReview": 505
+  },
+  "duplicateSlotResolution": {
+    "conflictCount": 16,
+    "classifications": null,
+    "reviewRequired": 16,
+    "note": "Deterministic primary selected; no automatic deletes"
+  },
+  "persistenceAndReadiness": {
+    "qualityCertifiedBrands": 0,
+    "imageCertifiedBrands": 0,
+    "imageBrandAndBrowserReadyBrands": 7,
+    "imageBrandAndBrowserReadySlugs": [
+      "dazzler-by-wyndham",
+      "hampton-by-hilton",
+      "hilton-garden-inn",
+      "hilton-hotels-and-resorts",
+      "holiday-inn-express",
+      "preferred-hotels-and-resorts",
+      "voco-hotels"
+    ],
+    "brandVerifiedAllNineSlots": 8,
+    "browserFullyValidatedBrands": 59,
+    "airtablePersistedThisWave": 0,
+    "customerPublication": "NOT_AUTO",
+    "note": "Stages kept separate. Browser+census-ready ≠ IMAGE_CERTIFIED (rights) ≠ QUALITY_CERTIFIED ≠ AIRTABLE_PERSISTED."
+  },
+  "remainingBlockers": [
+    "16 duplicate Presentation slot conflicts flagged (no deletes; primary selected)",
+    "Exact-brand census verification incomplete: 119/603 IMAGE_BRAND_VERIFIED",
+    "Authenticated browser CURRENT cert: 59/68 brands fully validated",
+    "IMAGE_RIGHTS: HE display + customer publication remain blocked without explicit per-asset authorization",
+    "QUALITY_CERTIFIED / AIRTABLE_PERSISTED require full content gates + IMAGE_CERTIFIED (not technical completeness alone)",
+    "Gallery relative delivery-URL fix is live on 8080 (ws-integrated-staging overlay) but still uncommitted on origin/main — follow-up PR required",
+    "Factory Proposed ephemeral CDN URLs still require Current rehydration path (V2) before Proposed browser cert"
+  ],
+  "exceptionMatrixPath": "03-current-slot-matrix.json",
+  "brandsAudited": 67,
+  "slotsAudited": 603
+}
