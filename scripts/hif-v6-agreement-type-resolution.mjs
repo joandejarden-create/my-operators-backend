@@ -164,6 +164,47 @@ function resolveFromContext(text, hotelName) {
   };
 }
 
+function classifyDocumentSchedule(text) {
+  const plain = String(text || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .toLowerCase();
+  // Prefer schedule header bands near Related License / Franchise / Operating / Management
+  const idx = plain.search(/expiration\/termination of related license|related license\/\s*franchise/);
+  const band = idx >= 0 ? plain.slice(idx, idx + 2500) : plain.slice(0, 4000);
+  const hasFranchisorCol = /franchisor|franchise brand|\bflag\b|brand affiliation/.test(band);
+  const hasManagerCol = /\bmanager\b|management company|\boperator\b/.test(band);
+  const hasExclusiveFranchiseHeader =
+    /franchise agreement expiration|franchise expiration date/.test(band) &&
+    !/operating agreement or management agreement/.test(band);
+  const hasExclusiveManagementHeader =
+    /management agreement expiration|hma expiration/.test(band) &&
+    !/license\/\s*franchise/.test(band);
+
+  if (hasExclusiveFranchiseHeader && !hasManagerCol) {
+    return {
+      docClass: "FRANCHISE",
+      agreementType: "FRANCHISE",
+      evidence: "Document schedule header indicates franchise expiration column (not combined L/F/O/M)",
+    };
+  }
+  if (hasExclusiveManagementHeader && !hasFranchisorCol) {
+    return {
+      docClass: "MANAGEMENT",
+      agreementType: "MANAGEMENT",
+      evidence: "Document schedule header indicates management agreement expiration column",
+    };
+  }
+  if (hasFranchisorCol && hasManagerCol) {
+    return {
+      docClass: "MULTIPLE",
+      agreementType: "MULTIPLE",
+      evidence: "Document exposes both franchisor and manager columns — combined date is not exclusive",
+    };
+  }
+  return { docClass: null, agreementType: null, evidence: null };
+}
+
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   if (!RUN) {
@@ -186,6 +227,7 @@ async function main() {
   let resolvedManagement = 0;
   let resolvedMultiple = 0;
   let stillUnresolved = 0;
+  let documentLevelResolutions = 0;
 
   for (const [url, hotels] of byUrl) {
     const res = await edgar.request(url, { accept: "text/html,*/*", maxAgeMs: 14 * 24 * 3600 * 1000 });
@@ -203,8 +245,23 @@ async function main() {
       }
       continue;
     }
+
+    const docLevel = classifyDocumentSchedule(text);
     for (const h of hotels) {
-      const r = resolveFromContext(text, h.hotelName);
+      let r;
+      if (docLevel.docClass) {
+        r = {
+          status: docLevel.docClass,
+          agreementType: docLevel.agreementType,
+          agreementTypeResolved: true,
+          evidence: docLevel.evidence,
+          resolutionMode: "DOCUMENT_SCHEDULE_HEADER",
+          windowSnippet: null,
+        };
+        documentLevelResolutions += 1;
+      } else {
+        r = { ...resolveFromContext(text, h.hotelName), resolutionMode: "ROW_CONTEXT" };
+      }
       const out = {
         hotelName: h.hotelName,
         expirationDate: h.expirationDate,
@@ -231,6 +288,7 @@ async function main() {
     researchCostUsd: 0,
     candidatesAttempted: candidates.length,
     documentsFetched: byUrl.size,
+    documentLevelResolutions,
     resolvedFranchise,
     resolvedManagement,
     resolvedMultiple,
@@ -238,6 +296,7 @@ async function main() {
     resolutionRate: Number(
       (((resolvedFranchise + resolvedManagement + resolvedMultiple) / Math.max(1, candidates.length)) * 100).toFixed(1),
     ),
+    note: "Combined Related License/Franchise/Operating/Management columns are never auto-labeled franchise",
   };
 
   writeJson(path.join(OUT, "RESOLUTION_RESULTS.json"), { count: results.length, results });

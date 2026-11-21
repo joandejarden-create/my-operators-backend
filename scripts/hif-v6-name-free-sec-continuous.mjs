@@ -411,11 +411,16 @@ async function main() {
     })),
   };
 
+  // Preserve prior cumulative NET_NEW_EVENTS.json; write this run to a wave-tagged file.
+  const waveTag = `WAVE_${asOf.replace(/-/g, "")}_${docs.length}DOC`;
+  const priorNet = load("reports/sec-edgar-hif-v6-name-free-sec-continuous/NET_NEW_EVENTS.json");
+  const mergedHotels = [...(priorNet?.hotels || []), ...netNew];
   writeJson(path.join(OUT, "DOC_RESULTS.json"), { docs: docResults });
-  writeJson(path.join(OUT, "NET_NEW_EVENTS.json"), { count: netNew.length, hotels: netNew });
+  writeJson(path.join(OUT, `NET_NEW_EVENTS_${waveTag}.json`), { count: netNew.length, hotels: netNew, waveTag });
+  writeJson(path.join(OUT, "NET_NEW_EVENTS.json"), { count: mergedHotels.length, hotels: mergedHotels });
   writeJson(path.join(OUT, "DUPLICATES.json"), { count: duplicates.length, rows: duplicates.slice(0, 200) });
   writeJson(path.join(OUT, "QUARANTINED.json"), { count: quarantined.length, rows: quarantined.slice(0, 100) });
-  writeJson(path.join(OUT, "CONTINUOUS_METRICS.json"), metrics);
+  writeJson(path.join(OUT, "CONTINUOUS_METRICS.json"), { ...metrics, waveTag });
   console.log(JSON.stringify(metrics, null, 2));
 }
 
