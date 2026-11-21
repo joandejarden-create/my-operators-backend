@@ -166,6 +166,13 @@
             adpMonthlyReviewAdmin: true,
             defaultTab: 'action-plan'
         },
+        '/admin/surfe-usage': {
+            file: '/app/admin/surfe-usage.html',
+            title: 'Surfe Usage',
+            roles: ['admin'],
+            // Platform admins — same visibility class as AI Demand Admin (not runbook-gated).
+            internalRunbookOnly: false
+        },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -352,6 +359,13 @@
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'AI Demand Admin', route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
+                        {
+                            label: 'Surfe Usage',
+                            route: '/admin/surfe-usage',
+                            roles: ['admin'],
+                            internalRunbookOnly: false,
+                            navId: 'surfe-usage'
+                        },
                         {
                             // Permanent founder review workspace (CURRENT vs PROPOSED).
                             // Single Admin Resources entry — do not duplicate elsewhere.
@@ -951,6 +965,9 @@
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') {
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
+        if (normalized === '/admin/surfe-usage') {
+            return hasAdminNavAccess();
+        }
         if (isAdminExclusiveRoute(normalized) && !hasAdminNavAccess()) return false;
         var navRole = resolveCurrentNavRole();
         if (isRouteAllowedForRole(normalized, navRole)) return true;
@@ -965,6 +982,7 @@
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
         if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
+        if (normalized === '/admin/surfe-usage') return '/home';
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') return '/home';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }
