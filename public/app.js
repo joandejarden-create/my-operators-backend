@@ -171,7 +171,9 @@
             title: 'Surfe Usage',
             roles: ['admin'],
             // Platform admins — same visibility class as AI Demand Admin (not runbook-gated).
-            internalRunbookOnly: false
+            // Page + API: SupportAdminGate.requireAdmin + requireAdminAccess (isAdmin / local QA).
+            internalRunbookOnly: false,
+            platformAdmin: true
         },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
@@ -364,6 +366,7 @@
                             route: '/admin/surfe-usage',
                             roles: ['admin'],
                             internalRunbookOnly: false,
+                            platformAdmin: true,
                             navId: 'surfe-usage'
                         },
                         {
@@ -966,7 +969,8 @@
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
         if (normalized === '/admin/surfe-usage') {
-            return hasAdminNavAccess();
+            // Parity with SupportAdminGate.isAdminMe / requireAdminAccess (incl. local QA admin).
+            return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
         if (isAdminExclusiveRoute(normalized) && !hasAdminNavAccess()) return false;
         var navRole = resolveCurrentNavRole();
@@ -1607,7 +1611,8 @@
         if (child.validationScorecard) {
             return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
         }
-        if (child.adpMonthlyReviewAdmin) {
+        if (child.adpMonthlyReviewAdmin || child.platformAdmin) {
+            // Platform admin tools (AI Demand Admin, Surfe Usage): isAdmin or local QA admin.
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
         if (child.stakeholderProduct && window.DealalityStakeholderNav) {

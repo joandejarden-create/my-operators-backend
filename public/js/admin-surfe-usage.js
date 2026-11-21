@@ -15,7 +15,12 @@
     if (auth && typeof auth.authFetch === "function") {
       return auth.authFetch(url, opts);
     }
-    return fetch(url, Object.assign({ credentials: "same-origin" }, opts));
+    // Fail closed — bare fetch caused shell/embed auth split-brain on admin APIs.
+    return Promise.reject(
+      new Error(
+        "DealalityMemberstackAuth.authFetch unavailable — cannot call Surfe Usage admin APIs"
+      )
+    );
   }
 
   function esc(v) {
@@ -683,19 +688,45 @@
 
   async function boot() {
     var gate = window.SupportAdminGate;
+    var deniedEl = document.getElementById("supportGateDenied");
+    var loadingEl = document.getElementById("supportGateLoading");
     if (!gate || typeof gate.requireAdmin !== "function") {
-      document.getElementById("supportGateLoading").hidden = true;
-      document.getElementById("supportGateDenied").hidden = false;
+      if (loadingEl) loadingEl.hidden = true;
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var msg = deniedEl.querySelector("[data-gate-message]");
+        if (msg) {
+          msg.textContent =
+            "Authentication unavailable. Sign in through the Dealality app to view this page.";
+        }
+      }
+      return;
+    }
+    if (!window.DealalityMemberstackAuth || typeof window.DealalityMemberstackAuth.authFetch !== "function") {
+      if (loadingEl) loadingEl.hidden = true;
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var authMsg = deniedEl.querySelector("[data-gate-message]");
+        if (authMsg) {
+          authMsg.textContent =
+            "Authentication unavailable. Sign in through the Dealality app to view this page.";
+        }
+      }
       return;
     }
     var ok = await gate.requireAdmin({
-      loadingEl: document.getElementById("supportGateLoading"),
-      deniedEl: document.getElementById("supportGateDenied"),
-      contentEl: document.getElementById("supportGateContent"),
+      loadingId: "supportGateLoading",
+      deniedId: "supportGateDenied",
+      contentId: "supportGateContent",
+      loadingMessage: "Verifying admin access…",
     });
     if (!ok) return;
     bind();
-    await loadSummary();
+    try {
+      await loadSummary();
+    } catch (err) {
+      setStatus(err && err.message ? err.message : "Failed to load Surfe Usage");
+    }
   }
 
   if (document.readyState === "loading") {

@@ -42,12 +42,42 @@
     }
   }
 
+  /**
+   * Platform admin — aligned with middleware/requireAdminAccess.js + /api/me:
+   * isAdmin, flags.isAdmin, or localDealalityAdminAccess (localhost QA only).
+   * Do not invent admin from Demo Mode badge alone.
+   */
   function isAdminMe(data) {
-    return !!(data && data.dealality && data.dealality.isAdmin);
+    if (!data || !data.dealality) return false;
+    if (data.dealality.isAdmin === true) return true;
+    if (data.dealality.flags && data.dealality.flags.isAdmin === true) return true;
+    if (data.dealality.localDealalityAdminAccess === true) return true;
+    return false;
   }
 
   function isInternalRunbookMe(data) {
     return isAdminMe(data);
+  }
+
+  function gateFailureMessage(result) {
+    if (!result) return "Authentication required. Sign in and try again.";
+    if (result.reason === "auth_unavailable") {
+      return "Authentication unavailable. Sign in through the Dealality app to view this page.";
+    }
+    if (result.status === 401 || result.reason === "http_401") {
+      return "Session expired or not signed in. Sign in through the Dealality app and try again.";
+    }
+    if (result.status === 403 || result.reason === "http_403") {
+      return "Authenticated but unauthorized. Dealality platform administrator access is required.";
+    }
+    if (
+      result.reason === "AUTH_REQUIRED" ||
+      (result.reason && String(result.reason).indexOf("Please log in") === 0)
+    ) {
+      return "Authentication required. Sign in through the Dealality app and try again.";
+    }
+    if (result.message) return String(result.message);
+    return "Authentication required. Sign in and try again.";
   }
 
   /**
@@ -175,9 +205,21 @@
    */
   async function requireAdmin(options) {
     options = options || {};
-    var loadingEl = document.getElementById(options.loadingId || "supportGateLoading");
-    var deniedEl = document.getElementById(options.deniedId || "supportGateDenied");
-    var contentEl = document.getElementById(options.contentId || "supportGateContent");
+    var loadingEl =
+      resolveEl(options.loadingEl) ||
+      document.getElementById(options.loadingId || "supportGateLoading");
+    var deniedEl =
+      resolveEl(options.deniedEl) ||
+      document.getElementById(options.deniedId || "supportGateDenied");
+    var contentEl =
+      resolveEl(options.contentEl) ||
+      document.getElementById(options.contentId || "supportGateContent");
+
+    if (contentEl) contentEl.hidden = true;
+    if (deniedEl) deniedEl.hidden = true;
+    if (loadingEl) {
+      showPageLoading(loadingEl, options.loadingMessage || "Verifying admin access…");
+    }
 
     var result = await fetchMe();
 
@@ -187,19 +229,21 @@
       if (deniedEl) {
         deniedEl.hidden = false;
         var msg = deniedEl.querySelector("[data-gate-message]");
-        if (msg) {
-          msg.textContent =
-            result.reason === "auth_unavailable"
-              ? "Sign in through the Dealality app to view this page."
-              : "Authentication required. Sign in and try again.";
-        }
+        if (msg) msg.textContent = gateFailureMessage(result);
       }
       if (contentEl) contentEl.hidden = true;
       return false;
     }
 
     if (!isAdminMe(result.data)) {
-      if (deniedEl) deniedEl.hidden = false;
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var deniedMsg = deniedEl.querySelector("[data-gate-message]");
+        if (deniedMsg) {
+          deniedMsg.textContent =
+            "Authenticated but unauthorized. Surfe Usage is for Dealality platform administrators only.";
+        }
+      }
       if (contentEl) contentEl.hidden = true;
       return false;
     }
