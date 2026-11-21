@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * HIF V6 Track A — Five-country concentration opportunity discovery.
+ * HIF V6 Track A — Priority-market depth + worldwide-eligible contractual discovery.
  * Free EDGAR EFTS + CMBS extract + commercial-signal harvest.
+ * Priority countries schedule research emphasis — not geographic allowlists.
  * Ownership deferred. CUSTOMER_BLOCKED. $0.
  */
 import fs from "node:fs";
@@ -22,11 +23,19 @@ import {
 import {
   COUNTRY_PROSPECT_AMBITIONS_V6,
   PRIORITY_COUNTRIES_V6,
+  COUNTRY_CONCENTRATION_RULES_V6,
   computeYieldPer1000,
   emptyCountryScorecardRow,
   progressTowardAmbition,
 } from "../lib/hotel-intelligence/sec-edgar/hif-v6-country-concentration-v6.js";
 import { progressTowardOpportunityMilestone } from "../lib/hotel-intelligence/sec-edgar/hif-v6-opportunities-first-priority-v6.js";
+import {
+  ensureCountryScorecardRow,
+  geographyEligibilityDisposition,
+  normalizeHotelCountryCode,
+  resolvePhysicalCountryAttribution,
+  shouldDiscardForNonPriorityCountry,
+} from "../lib/hotel-intelligence/sec-edgar/hif-v6-worldwide-eligibility-v6.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 for (const p of [path.join(ROOT, ".env"), "C:/Dev/dealality/my-operators-backend/.env"]) {
@@ -190,14 +199,29 @@ function inferCountryFromQueryAndText(countryHint, text, hotelName) {
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   if (!RUN) {
-    console.log(JSON.stringify({ ok: true, dryRun: true, countries: PRIORITY_COUNTRIES_V6 }, null, 2));
+    console.log(
+      JSON.stringify(
+        {
+          ok: true,
+          dryRun: true,
+          priorityMarkets: PRIORITY_COUNTRIES_V6,
+          worldwideEligibility: COUNTRY_CONCENTRATION_RULES_V6.geographicEligibilityExclusions,
+          countryAllowlists: COUNTRY_CONCENTRATION_RULES_V6.countryAllowlists,
+        },
+        null,
+        2,
+      ),
+    );
     return;
   }
 
   const asOf = new Date().toISOString().slice(0, 10);
   const priorKeys = loadPriorKeys();
   const edgar = createSecEdgarClient();
+  // Seed priority markets for concentration scheduling; any verified physical country is appended.
   const byCountry = Object.fromEntries(PRIORITY_COUNTRIES_V6.map((c) => [c, emptyCountryScorecardRow(c)]));
+  const countryRow = (code) =>
+    ensureCountryScorecardRow(byCountry, normalizeHotelCountryCode(code), emptyCountryScorecardRow);
   const queryStats = [];
   const docResults = [];
   const datedActive = [];
@@ -258,19 +282,32 @@ async function main() {
             const hotelName = f.hotelName || f.propertyName;
             const exp = f.primaryDate || f.expirationDate;
             if (!hotelName || !exp) continue;
-            const cc = inferCountryFromQueryAndText(country, text, hotelName);
-            if (!PRIORITY_COUNTRIES_V6.includes(cc) && country === "US") {
-              // keep US default for CMBS US schedules
-            }
-            const hotelCountry = country === "US" ? "US" : cc;
+            const inferred = normalizeHotelCountryCode(
+              inferCountryFromQueryAndText(country, text, hotelName),
+            );
+            // Physical hotel country wins; SEC filing jurisdiction preserved separately.
+            // US CMBS schedules default physical=US only when inference is unattributed.
+            const physical =
+              inferred !== "UNATTRIBUTED"
+                ? inferred
+                : country === "US"
+                  ? "US"
+                  : inferred;
+            if (shouldDiscardForNonPriorityCountry(physical)) continue; // always false; invariant
+            const geo = resolvePhysicalCountryAttribution({
+              physicalCountry: physical,
+              sourceJurisdiction: "US",
+            });
+            const hotelCountry = geo.hotelCountry;
+            const disp = geographyEligibilityDisposition(hotelCountry);
+            if (disp.disposition === "HOLD_GEOGRAPHY_UNVERIFIED") continue;
             researchedHotels.add(hotelKey(hotelName, hotelCountry));
-            byCountry[hotelCountry] = byCountry[hotelCountry] || emptyCountryScorecardRow(hotelCountry);
-            byCountry[hotelCountry].distinctHotelsResearched += 1;
+            countryRow(hotelCountry).distinctHotelsResearched += 1;
             row.findings += 1;
             const key = hotelKey(hotelName, hotelCountry);
             if (priorKeys.has(key)) {
               duplicatesRemoved += 1;
-              byCountry[hotelCountry].duplicatesRemoved += 1;
+              countryRow(hotelCountry).duplicatesRemoved += 1;
               continue;
             }
             priorKeys.add(key);
@@ -304,23 +341,23 @@ async function main() {
             row.netNew += 1;
             if (hist) {
               historical.push(opp);
-              byCountry[hotelCountry].historicalClosedSuperseded += 1;
-              byCountry[hotelCountry].newlyVerifiedFranchiseExpirations +=
+              countryRow(hotelCountry).historicalClosedSuperseded += 1;
+              countryRow(hotelCountry).newlyVerifiedFranchiseExpirations +=
                 agType === "FRANCHISE" ? 1 : 0;
-              byCountry[hotelCountry].newlyVerifiedManagementExpirations +=
+              countryRow(hotelCountry).newlyVerifiedManagementExpirations +=
                 agType === "MANAGEMENT" ? 1 : 0;
             } else {
               datedActive.push(opp);
-              byCountry[hotelCountry].verifiedContractualResearchOpportunities += 1;
-              byCountry[hotelCountry].distinctEvidenceBackedProspects += 1;
-              byCountry[hotelCountry].newlyVerifiedFranchiseExpirations +=
+              countryRow(hotelCountry).verifiedContractualResearchOpportunities += 1;
+              countryRow(hotelCountry).distinctEvidenceBackedProspects += 1;
+              countryRow(hotelCountry).newlyVerifiedFranchiseExpirations +=
                 agType === "FRANCHISE" ? 1 : 0;
-              byCountry[hotelCountry].newlyVerifiedManagementExpirations +=
+              countryRow(hotelCountry).newlyVerifiedManagementExpirations +=
                 agType === "MANAGEMENT" ? 1 : 0;
-              byCountry[hotelCountry].trackAContribution += 1;
+              countryRow(hotelCountry).trackAContribution += 1;
             }
-            byCountry[hotelCountry].sourceFamilies.SEC_CMBS =
-              (byCountry[hotelCountry].sourceFamilies.SEC_CMBS || 0) + 1;
+            countryRow(hotelCountry).sourceFamilies.SEC_CMBS =
+              (countryRow(hotelCountry).sourceFamilies.SEC_CMBS || 0) + 1;
           }
         }
 
@@ -340,17 +377,26 @@ async function main() {
             ? "MANAGEMENT"
             : "FRANCHISE";
           for (const hotelName of names) {
-            const hotelCountry = inferCountryFromQueryAndText(country, text, hotelName);
-            if (!PRIORITY_COUNTRIES_V6.includes(hotelCountry) && hotelCountry !== country) {
-              // still attribute to hint if unclear
+            const inferred = normalizeHotelCountryCode(
+              inferCountryFromQueryAndText(country, text, hotelName),
+            );
+            // Never collapse a verified nonpriority physical country into the query country.
+            const physical = inferred !== "UNATTRIBUTED" ? inferred : normalizeHotelCountryCode(country);
+            if (shouldDiscardForNonPriorityCountry(physical)) continue;
+            const geo = resolvePhysicalCountryAttribution({
+              physicalCountry: physical,
+              sourceJurisdiction: "US",
+            });
+            const cc = geo.hotelCountry;
+            if (geographyEligibilityDisposition(cc).disposition === "HOLD_GEOGRAPHY_UNVERIFIED") {
+              continue;
             }
-            const cc = PRIORITY_COUNTRIES_V6.includes(hotelCountry) ? hotelCountry : country;
             researchedHotels.add(hotelKey(hotelName, cc));
-            byCountry[cc].distinctHotelsResearched += 1;
+            countryRow(cc).distinctHotelsResearched += 1;
             const key = hotelKey(hotelName, cc);
             if (priorKeys.has(key)) {
               duplicatesRemoved += 1;
-              byCountry[cc].duplicatesRemoved += 1;
+              countryRow(cc).duplicatesRemoved += 1;
               continue;
             }
             priorKeys.add(key);
@@ -380,15 +426,15 @@ async function main() {
               scopeClass: harvest.scopeClass,
             };
             undatedSignals.push(opp);
-            byCountry[cc].evidenceBackedCommercialProspectsUndated += 1;
-            byCountry[cc].distinctEvidenceBackedProspects += 1;
-            byCountry[cc].trackAContribution += 1;
+            countryRow(cc).evidenceBackedCommercialProspectsUndated += 1;
+            countryRow(cc).distinctEvidenceBackedProspects += 1;
+            countryRow(cc).trackAContribution += 1;
             if (isConversion) {
               conversions.push(opp);
-              byCountry[cc].brandConversionAndOperatorChangeSignals += 1;
+              countryRow(cc).brandConversionAndOperatorChangeSignals += 1;
             }
-            byCountry[cc].sourceFamilies.EX10_OR_8K_DISCLOSURE =
-              (byCountry[cc].sourceFamilies.EX10_OR_8K_DISCLOSURE || 0) + 1;
+            countryRow(cc).sourceFamilies.EX10_OR_8K_DISCLOSURE =
+              (countryRow(cc).sourceFamilies.EX10_OR_8K_DISCLOSURE || 0) + 1;
             row.netNew += 1;
           }
         }
@@ -400,31 +446,23 @@ async function main() {
     }
   }
 
-  // Finalize country metrics
-  for (const cc of PRIORITY_COUNTRIES_V6) {
+  // Unique hotel researched recount from set (all verified countries)
+  const hotelsByCountry = {};
+  for (const k of researchedHotels) {
+    const cc = k.split("|")[1];
+    hotelsByCountry[cc] = (hotelsByCountry[cc] || 0) + 1;
+  }
+  for (const cc of Object.keys(byCountry)) {
     const row = byCountry[cc];
-    // distinct hotels researched was incremented per finding — approximate unique via set filter
+    row.distinctHotelsResearched = hotelsByCountry[cc] || row.distinctHotelsResearched || 0;
     row.yieldPer1000HotelsResearched = computeYieldPer1000(
       row.distinctEvidenceBackedProspects,
-      Math.max(row.distinctHotelsResearched, 1),
+      row.distinctHotelsResearched,
     );
     row.ambitionProgress = progressTowardAmbition(row.distinctEvidenceBackedProspects, cc);
     row.progressTowardAmbitionMinPct = row.ambitionProgress?.pctOfMin ?? null;
     row.researchCostUsd = 0;
-  }
-
-  // Unique hotel researched recount from set
-  const hotelsByCountry = Object.fromEntries(PRIORITY_COUNTRIES_V6.map((c) => [c, 0]));
-  for (const k of researchedHotels) {
-    const cc = k.split("|")[1];
-    if (hotelsByCountry[cc] != null) hotelsByCountry[cc] += 1;
-  }
-  for (const cc of PRIORITY_COUNTRIES_V6) {
-    byCountry[cc].distinctHotelsResearched = hotelsByCountry[cc] || 0;
-    byCountry[cc].yieldPer1000HotelsResearched = computeYieldPer1000(
-      byCountry[cc].distinctEvidenceBackedProspects,
-      byCountry[cc].distinctHotelsResearched,
-    );
+    row.isPriorityMarket = PRIORITY_COUNTRIES_V6.includes(cc);
   }
 
   const baselinePath = path.join(
@@ -516,18 +554,19 @@ async function main() {
     asOf,
     global,
     byCountry: Object.fromEntries(
-      PRIORITY_COUNTRIES_V6.map((c) => [
+      Object.keys(byCountry).map((c) => [
         c,
         {
-          ...global,
           distinctEvidenceBackedProspects: byCountry[c].distinctEvidenceBackedProspects,
+          distinctHotelsResearched: byCountry[c].distinctHotelsResearched,
         },
       ]),
     ),
     trackA: global,
     notes: {
       priority: "COUNTRY_CONCENTRATION_OPPORTUNITIES_FIRST",
-      countries: PRIORITY_COUNTRIES_V6.join(","),
+      priorityMarkets: PRIORITY_COUNTRIES_V6.join(","),
+      geographyPolicy: "Priority markets schedule emphasis only — never eligibility",
     },
     allowOverwrite: true,
   });
