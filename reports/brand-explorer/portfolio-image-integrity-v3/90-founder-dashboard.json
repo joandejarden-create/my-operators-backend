@@ -1,0 +1,95 @@
+{
+  "contract": "BE_FACTORY_PERMANENT_IMAGE_INTEGRITY_V3",
+  "generatedAt": "2026-11-21T00:36:05.261Z",
+  "paidResearchSpendUsd": 0,
+  "phase0": {
+    "pr494MergeCommit": "be99076b1",
+    "note": "V2 durable ingest + AC/Courtyard regression fixtures preserved"
+  },
+  "canonicalAirtable": {
+    "activeLiveBrands": 68,
+    "rawRequiredImageRows": 603,
+    "uniqueBrandSlotPairs": 603,
+    "duplicateSlotConflicts": 16,
+    "classCounts": {
+      "IMAGE_MISSING": 0,
+      "IMAGE_ATTACHMENT_PRESENT": 0,
+      "IMAGE_FETCH_FAILED": 0,
+      "IMAGE_DECODE_FAILED": 0,
+      "IMAGE_SIGNED_URL_EXPIRED": 0,
+      "IMAGE_WRONG_BRAND": 0,
+      "IMAGE_SIBLING_BRAND": 0,
+      "IMAGE_PROPERTY_UNVERIFIED": 0,
+      "IMAGE_WRONG_SCENE": 0,
+      "IMAGE_DUPLICATE": 0,
+      "IMAGE_RIGHTS_UNVERIFIED": 0,
+      "IMAGE_TECHNICALLY_VALID": 603,
+      "IMAGE_BRAND_VERIFIED": 0,
+      "IMAGE_BROWSER_VALIDATED": 0,
+      "IMAGE_CERTIFIED": 0
+    },
+    "brandsWithAllNinePresent": 67,
+    "brandsWithAllSixGalleryPresent": 67,
+    "brandsWithAllThreeScenarioPresent": 67,
+    "brandsWithSiblingReject": 0,
+    "probe": true
+  },
+  "factoryPortfolio": {
+    "frozenCandidates": null,
+    "sixGalleryPresent": null,
+    "threeScenarioPresent": null,
+    "galleryGaps": 70,
+    "scenarioGaps": 71,
+    "ephemeralCdn": null,
+    "siblingRejects": 3
+  },
+  "remediation": {
+    "aloftBunkhouseSuburbanApply": {
+      "okCount": 11,
+      "failCount": 8
+    },
+    "bunkhouseSuburbanRetry": {
+      "okCount": 8,
+      "failCount": 0
+    },
+    "webpReencode": {
+      "okCount": 3,
+      "failCount": 0
+    },
+    "successfullyImportedSlots": 22
+  },
+  "sharedVerifiedHotelImageLibrary": {
+    "contract": "BE_SHARED_VERIFIED_HOTEL_IMAGE_LIBRARY_V1",
+    "totalAssets": 21,
+    "uniqueContentHashes": 21,
+    "brandsRepresented": 4,
+    "hotelsRepresented": 0,
+    "countriesRepresented": 0,
+    "exactBrandEligible": 11,
+    "rightsBrandExplorer": 21,
+    "rightsHotelExplorer": 0,
+    "rightsCustomerFacing": 0,
+    "awaitingReview": 21
+  },
+  "duplicateSlotResolution": {
+    "conflictCount": 16,
+    "reviewRequired": 16,
+    "note": "Deterministic primary selected; no automatic deletes"
+  },
+  "persistenceAndReadiness": {
+    "qualityCertifiedBrands": 0,
+    "airtablePersistedThisWave": 0,
+    "customerPublication": "NOT_AUTO",
+    "note": "Image technical remediation ≠ overall QUALITY_CERTIFIED / AIRTABLE_PERSISTED"
+  },
+  "remainingBlockers": [
+    "IMAGE_BRAND_VERIFIED / IMAGE_CERTIFIED require census-linked property verification + rights + browser cert",
+    "16 duplicate Presentation slot conflicts flagged for review (not deleted)",
+    "Factory Proposed ephemeral CDN URLs still require Current rehydration path (V2)",
+    "Authenticated browser certification pending post-merge 8080 sync for remediated brands",
+    "Hotel Explorer display permission remains false until HE product approval per asset"
+  ],
+  "exceptionMatrixPath": "03-current-slot-matrix.json",
+  "brandsAudited": 67,
+  "slotsAudited": 603
+}
