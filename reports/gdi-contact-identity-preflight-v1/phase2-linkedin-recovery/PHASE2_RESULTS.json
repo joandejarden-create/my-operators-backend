@@ -1,0 +1,2517 @@
+{
+  "generatedAt": "2026-11-20T10:04:49.547Z",
+  "version": "gdi-contact-identity-preflight-phase2-linkedin-v1",
+  "baselinePath": "reports/gdi-contact-identity-preflight-v1/PILOT_20_RESULTS.json",
+  "pr484": {
+    "state": "OPEN",
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/484",
+    "note": "Phase 1 identity preflight was uncommitted at Phase 2 start; Phase 1+2 land on same GDI branch for IC merge."
+  },
+  "authorization": {
+    "spendCeilingUsd": 1.5,
+    "offlineOnly": false,
+    "applyAirtable": true,
+    "surfeSearch": false,
+    "surfeEnrich": false,
+    "apollo": false
+  },
+  "spend": {
+    "billedTowardCapUsd": 0.45,
+    "thisRunGoogleUsd": 0,
+    "priorCachedGoogleUsd": 0.45,
+    "googleCallsThisRun": 0,
+    "googleCallsPriorCached": 0,
+    "exaUsd": 0,
+    "surfeCredits": 0,
+    "note": "Surfe Search/Enrich not executed. Google reused from prior Phase 2 cache when present."
+  },
+  "surfeSearchPeopleReadiness": {
+    "matchingMode": "ORGANIZATION_AND_ROLE_DISCOVERY",
+    "exactPersonMatching": "NOT_SUPPORTED_VIA_SEARCH — use people/enrich with name+company(+domain|+verified LinkedIn)",
+    "totalSearchCredits": 0,
+    "searchExecuted": false,
+    "recommendation": "totalSearch=0 — Search People uses daily quota (docs 200 results/day) when search credits disabled. Do not burn quota without founder ceiling. Exact-person matching remains Enrich + public LinkedIn discovery."
+  },
+  "before": {
+    "READY": 3,
+    "PARTIAL": 15,
+    "UNRESOLVED": 2,
+    "employerName": 20,
+    "domainVerified": 9,
+    "linkedInVerified": 3
+  },
+  "after": {
+    "READY": 3,
+    "PARTIAL": 14,
+    "UNRESOLVED": 3,
+    "employerName": 20,
+    "domainVerified": 14,
+    "domainPresent": 14,
+    "linkedInVerified": 3,
+    "linkedInCandidate": 0,
+    "surfeInputsImproved": 4
+  },
+  "deltas": {
+    "READY": 0,
+    "PARTIAL": -1,
+    "UNRESOLVED": 1,
+    "domainVerified": 5,
+    "linkedInVerified": 0
+  },
+  "incorrectLinkedInRejected": [],
+  "betterCommercialContactsDiscovered": 0,
+  "betterCommercialContactsNote": "Surfe Search People not executed (no founder search ceiling). Org-label UNRESOLVED cases flagged as MISSING_NAMED_PERSON for continuation.",
+  "airtable": {
+    "mode": "APPLY",
+    "outcomes": [
+      {
+        "opportunityId": "wy_pd_fc13e2e08dd5",
+        "personName": "Daryl Simon",
+        "ok": true,
+        "recordId": "recoKhXmQF814qwb3",
+        "readBack": {
+          "name": "Daryl Simon",
+          "linkedinUrl": null,
+          "employerDomain": null,
+          "identityReadiness": null,
+          "surfeDerived": false
+        },
+        "readBackOk": true
+      },
+      {
+        "opportunityId": "paid3_0a6b19883953",
+        "personName": "Alejandra Vázquez",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "gdi_opp_insurance_risk_capital_bermuda_2026_0",
+        "personName": "Adam Jordan",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "gdi_opp_ndss_advocacy_2027",
+        "personName": "Amy Drow",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "gdi_opp_autoamericas_2027",
+        "personName": "Andrés Caballero",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "hist_9d12871f512d",
+        "personName": "Abraham Yasir Maciel Montoya",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "wy_pd_5cc46249ac1f",
+        "personName": "Bacilio Sánchez",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+        "personName": "Laura Keeley",
+        "ok": true,
+        "recordId": "recTSOXMxDT7JpxGq",
+        "readBack": {
+          "name": "Laura Keeley",
+          "linkedinUrl": null,
+          "employerDomain": null,
+          "identityReadiness": null,
+          "surfeDerived": false
+        },
+        "readBackOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+        "personName": "Ariela Kiradjian",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "rx_d_2d58b95c5905",
+        "personName": "Abramo A. Chabib",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+        "personName": "Francesco Francavilla",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+        "personName": "Olivia Jallits",
+        "ok": true,
+        "recordId": "recQSDCnQgalMvlJV",
+        "readBack": {
+          "name": "Olivia Jallits",
+          "linkedinUrl": null,
+          "employerDomain": null,
+          "identityReadiness": null,
+          "surfeDerived": false
+        },
+        "readBackOk": true
+      },
+      {
+        "opportunityId": "disc_1490e4966ee8",
+        "personName": "David Mendoza Martínez",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      },
+      {
+        "opportunityId": "wy_pd_c6455b6578ee",
+        "personName": "Dra. Carmen Encarnación",
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    ],
+    "readBackSuccesses": 3,
+    "skippedNoRow": 0
+  },
+  "remainingGaps": [
+    {
+      "opportunityId": "wy_pd_fc13e2e08dd5",
+      "personName": "Daryl Simon",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "paid3_0a6b19883953",
+      "personName": "Alejandra Vázquez",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_insurance_risk_capital_bermuda_2026_0",
+      "personName": "Adam Jordan",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_ndss_advocacy_2027",
+      "personName": "Amy Drow",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_autoamericas_2027",
+      "personName": "Andrés Caballero",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "hist_9d12871f512d",
+      "personName": "Abraham Yasir Maciel Montoya",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "wy_pd_5cc46249ac1f",
+      "personName": "Bacilio Sánchez",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "personName": "Laura Keeley",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+      "personName": "Ariela Kiradjian",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "rx_d_2d58b95c5905",
+      "personName": "Abramo A. Chabib",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "EMPLOYER_DOMAIN_MISSING",
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_iafl_usa_canadian_chapter_meeting_10",
+      "personName": "IAFL",
+      "readiness": "UNRESOLVED",
+      "gaps": [
+        "NAME_INCOMPLETE",
+        "EMPLOYER_DOMAIN_MISSING",
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": {
+        "kind": "MISSING_NAMED_PERSON",
+        "note": "Organization or role label used where a natural-person name is required. Research continuation = find a named commercial contact; do not invent a person."
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+      "personName": "Francesco Francavilla",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "EMPLOYER_DOMAIN_MISSING",
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+      "personName": "Olivia Jallits",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "disc_1490e4966ee8",
+      "personName": "David Mendoza Martínez",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_opp_cda_annual_meeting_2026_8",
+      "personName": "CDA Contact",
+      "readiness": "UNRESOLVED",
+      "gaps": [
+        "NAME_INCOMPLETE",
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": {
+        "kind": "MISSING_NAMED_PERSON",
+        "note": "Organization or role label used where a natural-person name is required. Research continuation = find a named commercial contact; do not invent a person."
+      }
+    },
+    {
+      "opportunityId": "wy_pd_c6455b6578ee",
+      "personName": "Dra. Carmen Encarnación",
+      "readiness": "PARTIAL",
+      "gaps": [
+        "EMPLOYER_DOMAIN_MISSING",
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": null
+    },
+    {
+      "opportunityId": "gdi_pe_879047c3211d2e82",
+      "personName": "CityCruises",
+      "readiness": "UNRESOLVED",
+      "gaps": [
+        "NAME_INCOMPLETE",
+        "EMPLOYER_DOMAIN_MISSING",
+        "LINKEDIN_MISSING"
+      ],
+      "unresolvedClass": {
+        "kind": "MISSING_NAMED_PERSON",
+        "note": "Organization or role label used where a natural-person name is required. Research continuation = find a named commercial contact; do not invent a person."
+      }
+    }
+  ],
+  "results": [
+    {
+      "opportunityId": "rx_d_2400ebe4c2bb",
+      "hotelId": "recH9h3McgMNFQEla",
+      "category": "LINKEDIN_VERIFIED",
+      "personName": "Abbas Zavar",
+      "beforeReadiness": "READY",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Abbas",
+        "lastName": "Zavar",
+        "fullName": "Abbas Zavar",
+        "nameVariants": [
+          "Abbas Zavar"
+        ],
+        "title": "Researcher / FHLIP",
+        "employerName": "University of Toronto — Institute of Health Policy, Management and Evaluation",
+        "employerDomain": "ihpme.utoronto.ca",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "FHLIP / University of Toronto",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": "https://www.linkedin.com/in/abbaszavar/",
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "VERIFIED_LINKEDIN_PROFILE",
+        "linkedinTrustedForSurfe": true,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "name_tokens_in_slug",
+          "organization_in_evidence",
+          "title_in_evidence"
+        ],
+        "opportunityId": "rx_d_2400ebe4c2bb",
+        "hotelId": "recH9h3McgMNFQEla",
+        "commercialClassification": "LINKEDIN_VERIFIED",
+        "sourceEvidence": "https://ihpme.utoronto.ca/fhlip-conference/",
+        "verifiedAt": "2026-11-20T09:23:51.607Z",
+        "linkedInQueries": [
+          "\"Abbas Zavar\" \"University of Toronto — Institute of Health Policy, Management and Evaluation\" linkedin",
+          "site:linkedin.com/in \"Abbas Zavar\" \"University of Toronto — Institute of Health Policy, Management and Evaluation\"",
+          "\"Abbas Zavar\" \"Researcher / FHLIP\" linkedin",
+          "\"Abbas Zavar\" \"ihpme.utoronto.ca\""
+        ],
+        "readiness": "READY",
+        "readinessGaps": [],
+        "readinessReason": "Verified name, employer, and personal LinkedIn"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Abbas",
+          "lastName": "Zavar",
+          "companyName": "University of Toronto — Institute of Health Policy, Management and Evaluation",
+          "companyDomain": "ihpme.utoronto.ca",
+          "linkedInUrl": "https://www.linkedin.com/in/abbaszavar"
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Abbas",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Zavar",
+            "verified": true
+          },
+          "companyName": {
+            "value": "University of Toronto — Institute of Health Policy, Management and Evaluation",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "ihpme.utoronto.ca",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": "https://www.linkedin.com/in/abbaszavar",
+            "verified": true,
+            "status": "VERIFIED_LINKEDIN_PROFILE"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "action": "PRESERVE_BASELINE_READY",
+        "google": {
+          "skipped": true,
+          "reason": "ALREADY_READY"
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "BASELINE_READY_PRESERVED"
+      }
+    },
+    {
+      "opportunityId": "hist_de85f642e969",
+      "hotelId": "recCAGqkERSXgiku4",
+      "category": "LINKEDIN_VERIFIED",
+      "personName": "Abir Chermiti",
+      "beforeReadiness": "READY",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Abir",
+        "lastName": "Chermiti",
+        "fullName": "Abir Chermiti",
+        "nameVariants": [
+          "Abir Chermiti"
+        ],
+        "title": null,
+        "employerName": "IEEE",
+        "employerDomain": "ieee.org",
+        "employerDomainVerified": true,
+        "employerDomainSource": "curated_official_domain",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "IEEE World Technology Summits",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": "https://www.linkedin.com/in/abirchermiti/",
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "VERIFIED_LINKEDIN_PROFILE",
+        "linkedinTrustedForSurfe": true,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "name_tokens_in_slug",
+          "organization_in_evidence"
+        ],
+        "opportunityId": "hist_de85f642e969",
+        "hotelId": "recCAGqkERSXgiku4",
+        "commercialClassification": "LINKEDIN_VERIFIED",
+        "sourceEvidence": "https://abirchermiti.com/contact/",
+        "verifiedAt": "2026-11-20T09:23:51.609Z",
+        "linkedInQueries": [
+          "\"Abir Chermiti\" \"IEEE\" linkedin",
+          "site:linkedin.com/in \"Abir Chermiti\" \"IEEE\""
+        ],
+        "readiness": "READY",
+        "readinessGaps": [
+          "EMPLOYER_DOMAIN_MISSING"
+        ],
+        "readinessReason": "Verified name, employer, and personal LinkedIn (employer domain still open)"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Abir",
+          "lastName": "Chermiti",
+          "companyName": "IEEE",
+          "companyDomain": "ieee.org",
+          "linkedInUrl": "https://www.linkedin.com/in/abirchermiti"
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Abir",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Chermiti",
+            "verified": true
+          },
+          "companyName": {
+            "value": "IEEE",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "ieee.org",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": "https://www.linkedin.com/in/abirchermiti",
+            "verified": true,
+            "status": "VERIFIED_LINKEDIN_PROFILE"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": true
+      },
+      "phase2": {
+        "action": "PRESERVE_BASELINE_READY",
+        "google": {
+          "skipped": true,
+          "reason": "ALREADY_READY"
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "BASELINE_READY_PRESERVED"
+      }
+    },
+    {
+      "opportunityId": "wy_pd_fc13e2e08dd5",
+      "hotelId": "recXh4NgF8sDbi9cQ",
+      "category": "LINKEDIN_VERIFIED",
+      "personName": "Daryl Simon",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Daryl",
+        "lastName": "Simon",
+        "fullName": "Daryl Simon",
+        "nameVariants": [
+          "Daryl Simon"
+        ],
+        "title": null,
+        "employerName": "The Tie",
+        "employerDomain": "thetie.io",
+        "employerDomainVerified": true,
+        "employerDomainSource": "curated_official_domain",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "The Tie",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "wy_pd_fc13e2e08dd5",
+        "hotelId": "recXh4NgF8sDbi9cQ",
+        "commercialClassification": "NAMED_CONTACT",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:47.073Z",
+        "linkedInQueries": [
+          "\"Daryl Simon\" \"The Tie\" linkedin",
+          "site:linkedin.com/in \"Daryl Simon\" \"The Tie\"",
+          "\"Daryl Simon\" \"thetie.io\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Daryl",
+          "lastName": "Simon",
+          "companyName": "The Tie",
+          "companyDomain": "thetie.io",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Daryl",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Simon",
+            "verified": true
+          },
+          "companyName": {
+            "value": "The Tie",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "thetie.io",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": true
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://www.outeastsummit.com/travel",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFPaBEvB78E_U5B28eePdX7XrPw6n3ZD1oI_WXqokBMzm5QlmKts8-ugLx4OkNot6R_muuMSCjfMntozRGDu0S7q3O6yQQpBJiFbYPPs__8cjJy2rFAGDsykDi6I0BtLndcosMVFHbWOQ==",
+            "https://www.rgnywine.com/corporate-events/",
+            "https://theorg.com/org/the-tie/org-chart/joshua-frank",
+            "https://out-east-summit.webflow.io/travel"
+          ]
+        },
+        "patches": {
+          "employerDomain": "thetie.io",
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "ok": true,
+        "recordId": "recoKhXmQF814qwb3",
+        "readBack": {
+          "name": "Daryl Simon",
+          "linkedinUrl": null,
+          "employerDomain": null,
+          "identityReadiness": null,
+          "surfeDerived": false
+        },
+        "readBackOk": true
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_divcult_spring_webinar_7",
+      "hotelId": "rec2PVBDavppGpenm",
+      "category": "LINKEDIN_VERIFIED_SLUG_VARIANT",
+      "personName": "Michel Lafleur",
+      "beforeReadiness": "READY",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Michel",
+        "lastName": "Lafleur",
+        "fullName": "Michel Lafleur",
+        "nameVariants": [
+          "Michel Lafleur"
+        ],
+        "title": "Coordinator Dr",
+        "employerName": "Faculty of Sociology, University of A Coruña",
+        "employerDomain": null,
+        "employerDomainVerified": false,
+        "employerDomainSource": null,
+        "employerRelationship": "DIRECT_EMPLOYER",
+        "demandOrganizationName": "DivCult",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": "https://www.linkedin.com/in/jean-michel-lafleur-480119342/",
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "VERIFIED_LINKEDIN_PROFILE",
+        "linkedinTrustedForSurfe": true,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "name_tokens_in_slug",
+          "organization_in_evidence"
+        ],
+        "opportunityId": "gdi_opp_divcult_spring_webinar_7",
+        "hotelId": "rec2PVBDavppGpenm",
+        "commercialClassification": "LINKEDIN_VERIFIED_SLUG_VARIANT",
+        "sourceEvidence": "https://www.imiscoe.org/about-imiscoe/contact",
+        "verifiedAt": "2026-11-20T09:23:51.609Z",
+        "linkedInQueries": [
+          "\"Michel Lafleur\" \"Faculty of Sociology, University of A Coruña\" linkedin",
+          "site:linkedin.com/in \"Michel Lafleur\" \"Faculty of Sociology, University of A Coruña\"",
+          "\"Michel Lafleur\" \"Coordinator Dr\" linkedin"
+        ],
+        "readiness": "READY",
+        "readinessGaps": [
+          "EMPLOYER_DOMAIN_MISSING"
+        ],
+        "readinessReason": "Verified name, employer, and personal LinkedIn (employer domain still open)"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Michel",
+          "lastName": "Lafleur",
+          "companyName": "Faculty of Sociology, University of A Coruña",
+          "companyDomain": null,
+          "linkedInUrl": "https://www.linkedin.com/in/jean-michel-lafleur-480119342"
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Michel",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Lafleur",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Faculty of Sociology, University of A Coruña",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": null,
+            "verified": false
+          },
+          "linkedinUrl": {
+            "value": "https://www.linkedin.com/in/jean-michel-lafleur-480119342",
+            "verified": true,
+            "status": "VERIFIED_LINKEDIN_PROFILE"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "action": "PRESERVE_BASELINE_READY",
+        "google": {
+          "skipped": true,
+          "reason": "ALREADY_READY"
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "BASELINE_READY_PRESERVED"
+      }
+    },
+    {
+      "opportunityId": "paid3_0a6b19883953",
+      "hotelId": "recCAGqkERSXgiku4",
+      "category": "LINKEDIN_MISSING_STRONG_EMAIL",
+      "personName": "Alejandra Vázquez",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Alejandra",
+        "lastName": "Vázquez",
+        "fullName": "Alejandra Vázquez",
+        "nameVariants": [
+          "Alejandra Vázquez",
+          "Alejandra Vazquez"
+        ],
+        "title": "Sales Manager",
+        "employerName": "IGECO (Italian German Exhibition Company)",
+        "employerDomain": "igeco.mx",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "IGECO",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "paid3_0a6b19883953",
+        "hotelId": "recCAGqkERSXgiku4",
+        "commercialClassification": "LINKEDIN_MISSING_STRONG_EMAIL",
+        "sourceEvidence": "https://ecomondomexico.com.mx/contact/",
+        "verifiedAt": "2026-11-20T10:04:48.172Z",
+        "linkedInQueries": [
+          "\"Alejandra Vázquez\" \"IGECO (Italian German Exhibition Company)\" linkedin",
+          "site:linkedin.com/in \"Alejandra Vázquez\" \"IGECO (Italian German Exhibition Company)\"",
+          "\"Alejandra Vázquez\" \"Sales Manager\" linkedin",
+          "\"Alejandra Vázquez\" \"igeco.mx\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Alejandra",
+          "lastName": "Vázquez",
+          "companyName": "IGECO (Italian German Exhibition Company)",
+          "companyDomain": "igeco.mx",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Alejandra",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Vázquez",
+            "verified": true
+          },
+          "companyName": {
+            "value": "IGECO (Italian German Exhibition Company)",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "igeco.mx",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://ecomondomexico.com.mx/bioenergia/",
+            "https://ecomondomexico.com.mx/contact/",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGzxRt6zdsBFLui6tncfTlDR5jiTGuGMULpzSgoBLgSOayLGHZ3fQkP5pvSnts4j7pJHHiaRM_sh9x4RdpPrsYi0D8padgtY74zh4BHFZlGuQe6",
+            "https://ecomondomexico.com.mx/contacto",
+            "https://ecomondo.igeco.mx/"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_insurance_risk_capital_bermuda_2026_0",
+      "hotelId": "recIwaP1etgx2g9nA",
+      "category": "LINKEDIN_MISSING_STRONG_EMAIL",
+      "personName": "Adam Jordan",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Adam",
+        "lastName": "Jordan",
+        "fullName": "Adam Jordan",
+        "nameVariants": [
+          "Adam Jordan"
+        ],
+        "title": null,
+        "employerName": "InsuranceERM",
+        "employerDomain": "insuranceerm.com",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "InsuranceERM",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_insurance_risk_capital_bermuda_2026_0",
+        "hotelId": "recIwaP1etgx2g9nA",
+        "commercialClassification": "LINKEDIN_MISSING_STRONG_EMAIL",
+        "sourceEvidence": "https://www.insuranceerm.com/content/events/insurance-risk-and-capital-bermuda-2026/",
+        "verifiedAt": "2026-11-20T10:04:48.172Z",
+        "linkedInQueries": [
+          "\"Adam Jordan\" \"InsuranceERM\" linkedin",
+          "site:linkedin.com/in \"Adam Jordan\" \"InsuranceERM\"",
+          "\"Adam Jordan\" \"insuranceerm.com\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Adam",
+          "lastName": "Jordan",
+          "companyName": "InsuranceERM",
+          "companyDomain": "insuranceerm.com",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Adam",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Jordan",
+            "verified": true
+          },
+          "companyName": {
+            "value": "InsuranceERM",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "insuranceerm.com",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEtr3pKs8ROLME9Bpm6wY2C3sqzX60s2BPtsGxyQ1Cr-xWTpFtz8Ta7rvY16hUh3MDhC7J4IkrHO3JMZd7CI6jK7XXhw93tb9mGLY32OAZOsMVz85OVrVsybGlzkg9dCnWqnLA_RQ==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFRVYemxU3bh30an5l03UOpY9OL54D6qUC-R2-bnCx3PRqDVs14rIHyDX_l7dhQ7m8uybFiEX2C-2X2Abw6jNiinc-JVkRhHwaiL1pucjZ3qI1r3SWalmtdZ6iQBZJ48-RoeQEQDYz0cSgK",
+            "https://fieldgibsonmedia.com/about",
+            "https://www.insuranceerm.com/contact-us.html",
+            "https://www.fieldgibsonmedia.com/about.html"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_ndss_advocacy_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "category": "LINKEDIN_MISSING_ASSOCIATION",
+      "personName": "Amy Drow",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Amy",
+        "lastName": "Drow",
+        "fullName": "Amy Drow",
+        "nameVariants": [
+          "Amy Drow"
+        ],
+        "title": null,
+        "employerName": "National Down Syndrome Society (NDSS)",
+        "employerDomain": "ndss.org",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "National Down Syndrome Society (NDSS)",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_ndss_advocacy_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "commercialClassification": "LINKEDIN_MISSING_ASSOCIATION",
+        "sourceEvidence": "https://ndss.org/meet-our-staff",
+        "verifiedAt": "2026-11-20T10:04:48.172Z",
+        "linkedInQueries": [
+          "\"Amy Drow\" \"National Down Syndrome Society (NDSS)\" linkedin",
+          "site:linkedin.com/in \"Amy Drow\" \"National Down Syndrome Society (NDSS)\"",
+          "\"Amy Drow\" \"ndss.org\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Amy",
+          "lastName": "Drow",
+          "companyName": "National Down Syndrome Society (NDSS)",
+          "companyDomain": "ndss.org",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Amy",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Drow",
+            "verified": true
+          },
+          "companyName": {
+            "value": "National Down Syndrome Society (NDSS)",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "ndss.org",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHLXMv_5MfFivDLA8ATlXZTvVeZh0gJu2GBGDnv1Ht6qkhXQEkjtz662vMqYegc0oosTYHagmEL2UbwX_qNkJE-XdJHdPmX_mRH3hjcTSz20g_ItOw=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHtVyvZegO2U2WDCpCUTSY8pfiBiSYUzwBRUMXvwe4lQ6x7dXwwbYX25DsiMxjHrNsU9npf-Wil-4IrxrRIDtSpvLBJ6A3gZ-jbCmDremPELVw=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGohU2aQwfApnQwSOh5u4I1KNL-yiqnLyUhLKqJJEbSEPoKevhqEjnqRvRddlZUCIYXqezvU3qQnvYxxV3y47LtJ5iZJKDL2OJoYD4VMwrJw35z7pxy",
+            "https://ndss.org/meet-our-staff",
+            "https://ndss.org/events/ndss-gala-auction"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_autoamericas_2027",
+      "hotelId": "recUOyzOXn2Zdp98I",
+      "category": "LINKEDIN_MISSING",
+      "personName": "Andrés Caballero",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Andrés",
+        "lastName": "Caballero",
+        "fullName": "Andrés Caballero",
+        "nameVariants": [
+          "Andrés Caballero",
+          "Andres Caballero"
+        ],
+        "title": null,
+        "employerName": "AutoAméricas / Latinpress",
+        "employerDomain": "autoamericas.show",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "AutoAméricas",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_autoamericas_2027",
+        "hotelId": "recUOyzOXn2Zdp98I",
+        "commercialClassification": "LINKEDIN_MISSING",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:48.172Z",
+        "linkedInQueries": [
+          "\"Andrés Caballero\" \"AutoAméricas / Latinpress\" linkedin",
+          "site:linkedin.com/in \"Andrés Caballero\" \"AutoAméricas / Latinpress\"",
+          "\"Andrés Caballero\" \"autoamericas.show\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Andrés",
+          "lastName": "Caballero",
+          "companyName": "AutoAméricas / Latinpress",
+          "companyDomain": "autoamericas.show",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Andrés",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Caballero",
+            "verified": true
+          },
+          "companyName": {
+            "value": "AutoAméricas / Latinpress",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "autoamericas.show",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEM_fy3l-fTBlDh4YtgqN57gkXa4Hf2_zWpYqlidUUhOcaGqkjJkvQksL0OwMASF2m223ZkQPBXJ_JWP4AfjfMkuxX5UxdHdl8cBZ_A4EXZ9ueDEa3R8_6z530UNbLo3umsKS3TGrmL3S5UKzD520IqApKTwJaAX_h-r81m0CQBYGrfPSeF",
+            "https://issuu.com/latinpressinc/docs/branding-options-for-events-acaballero-en?fr=sMWEwZTg0NDEyNTA",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHx96T2gTlX9wDEO3umSyokxITnJ_7k8oYiBWYCVD4qGHXIqFwqI0ErONL-dqBYhVA8TQY-jNb969QZ0cJsRclc_xz6CBY-YL56Og3JewpTxAcx17eTg3bYmb4l60LqMs7WcsMGSmX4SFi893Uc5Z4I8h58rAwClHQKXAhnHE08_WcA0HC16e7NDHLg4uekafS8BH6F55zE61kaz28nwmAFIbbSRMBT_K2Clm-fu6yRoXmfCZoz",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFnBoG6TQ23lTFR1R_UwJTZ1Ic5l87mH6N-GvywxRu9DrB086TPblEqEExBNos-3H8HsJpTh3O53OFpBgXjEULosNJOFbazNs0gH5P_cglPVugnRJI40FezHZYC1Gh_YLdIc_8sYis3vHoOEWbz6SFZH0sIkMArH8N1dN1nfdCeH2dRGpnlXkP4RkwZ_DdqCY28ZN5UBT9AxGVVy6usS5KjL39_4vT9hsDsIw4YTHJAUg==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHxPX_5ii7XrbP91BskGM21N_OZRu6QOLS8VvLXL_-lEf3iPHIosx-ZhPUrljXlbjcE7bZ82UQOXSGPrUMxDDs0xDycFONbqiVEHYTPtk4dh7Smq7pnISq18LSLfCW98SCxHW63psWxd0jC4XbFm0F-VNZVgSTOU-HHb72KLA=="
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "hist_9d12871f512d",
+      "hotelId": "recCAGqkERSXgiku4",
+      "category": "LINKEDIN_MISSING_GOV",
+      "personName": "Abraham Yasir Maciel Montoya",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Abraham",
+        "lastName": "Yasir Maciel Montoya",
+        "fullName": "Abraham Yasir Maciel Montoya",
+        "nameVariants": [
+          "Abraham Yasir Maciel Montoya",
+          "Abraham Montoya"
+        ],
+        "title": null,
+        "employerName": "Gobierno de Guadalajara",
+        "employerDomain": "jalisco.gob.mx",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "Gobierno de Guadalajara",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "hist_9d12871f512d",
+        "hotelId": "recCAGqkERSXgiku4",
+        "commercialClassification": "LINKEDIN_MISSING_GOV",
+        "sourceEvidence": "https://info.jalisco.gob.mx/puesto/coordinador-de-adquisiciones",
+        "verifiedAt": "2026-11-20T10:04:48.172Z",
+        "linkedInQueries": [
+          "\"Abraham Yasir Maciel Montoya\" \"Gobierno de Guadalajara\" linkedin",
+          "site:linkedin.com/in \"Abraham Yasir Maciel Montoya\" \"Gobierno de Guadalajara\"",
+          "\"Abraham Yasir Maciel Montoya\" \"jalisco.gob.mx\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Abraham",
+          "lastName": "Yasir Maciel Montoya",
+          "companyName": "Gobierno de Guadalajara",
+          "companyDomain": "jalisco.gob.mx",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Abraham",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Yasir Maciel Montoya",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Gobierno de Guadalajara",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "jalisco.gob.mx",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://info.jalisco.gob.mx/gobierno/organigrama/19634",
+            "https://guadalajara.gob.mx/organigrama/abraham-yasir-maciel-montoya",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFLrwO3DBm9X5ZBEKGfC4dCIMaup6WgH2rUXNaqgizeHRxP2eJ2SZq--lG3TfcUFvVbOhqx5j2cirXdiiy0UX27jbO948_t5coNBqi0WEA2AICPwBYPB2tefBvOT2U4AA1zC3Wsg98aqo6rhKXpmCkYSH8F4cdHaXulg4xRIRJYbDiHPipYgSck_NA_w3mTlDhjfqtrPG3p6yB-v3KjlZKLspvsJqw1CorNoj9wJS0=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEue9rA6S_f7HOTRJNE7nB24KnoF_eqegg1KKH9IfrxHPsN6eBwPoVhz7StADA2y15RgVbIlEUqsDJGFeHgL7QYaCvL-mVb3FM-rXOWK-sDIKXTlrtmc5_wkmFJ5GtN43WsGxic8TqaeO8XdDR5DojoJYnLu5x1-7rvjZ1HjFz73oY0YyKrL6mTupg=",
+            "https://info.jalisco.gob.mx"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "wy_pd_5cc46249ac1f",
+      "hotelId": "recXh4NgF8sDbi9cQ",
+      "category": "EMPLOYER_ORGANIZER_MISMATCH",
+      "personName": "Bacilio Sánchez",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Bacilio",
+        "lastName": "Sánchez",
+        "fullName": "Bacilio Sánchez",
+        "nameVariants": [
+          "Bacilio Sánchez",
+          "Bacilio Sanchez"
+        ],
+        "title": "Advisor",
+        "employerName": "SPA Consultores",
+        "employerDomain": "spaconsultores.com.do",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DIRECT_EMPLOYER",
+        "demandOrganizationName": "Asociación Interamericana de Contabilidad",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "wy_pd_5cc46249ac1f",
+        "hotelId": "recXh4NgF8sDbi9cQ",
+        "commercialClassification": "EMPLOYER_ORGANIZER_MISMATCH",
+        "sourceEvidence": "https://spaconsultores.com.do/contacto/",
+        "verifiedAt": "2026-11-20T10:04:48.172Z",
+        "linkedInQueries": [
+          "\"Bacilio Sánchez\" \"SPA Consultores\" linkedin",
+          "site:linkedin.com/in \"Bacilio Sánchez\" \"SPA Consultores\"",
+          "\"Bacilio Sánchez\" \"Advisor\" linkedin",
+          "\"Bacilio Sánchez\" \"spaconsultores.com.do\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Bacilio",
+          "lastName": "Sánchez",
+          "companyName": "SPA Consultores",
+          "companyDomain": "spaconsultores.com.do",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Bacilio",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Sánchez",
+            "verified": true
+          },
+          "companyName": {
+            "value": "SPA Consultores",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "spaconsultores.com.do",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://spaconsultores.com.do/nosotros/",
+            "https://www.mgiworld.com/member-directory/spa-consultores.html?branch=spa-consultores",
+            "https://spaconsultores.com.do/team/bacilio-sanchez/",
+            "https://spaconsultores.com.do/contacto/",
+            "https://www.spaconsultores.com.do/nosotros/"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "category": "WRONG_CHANNEL_GENERIC_MAILBOX",
+      "personName": "Laura Keeley",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Laura",
+        "lastName": "Keeley",
+        "fullName": "Laura Keeley",
+        "nameVariants": [
+          "Laura Keeley"
+        ],
+        "title": null,
+        "employerName": "Parenteral Drug Association (PDA)",
+        "employerDomain": "pda.org",
+        "employerDomainVerified": true,
+        "employerDomainSource": "curated_official_domain",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "Parenteral Drug Association (PDA)",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "commercialClassification": "NAMED_CONTACT",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:48.173Z",
+        "linkedInQueries": [
+          "\"Laura Keeley\" \"Parenteral Drug Association (PDA)\" linkedin",
+          "site:linkedin.com/in \"Laura Keeley\" \"Parenteral Drug Association (PDA)\"",
+          "\"Laura Keeley\" \"pda.org\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Laura",
+          "lastName": "Keeley",
+          "companyName": "Parenteral Drug Association (PDA)",
+          "companyDomain": "pda.org",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Laura",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Keeley",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Parenteral Drug Association (PDA)",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "pda.org",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": true
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHrP0WW44GcjCFvKTVnF4OxeMHvlibsAE4n6VYB_pIs7bofjfOdBDIbSEJcKZWvD6ypQ8HM6cJB62GY01xcKR1b3jiD9B0JeXri82E78LbhR_qehFpBpe5tkQPw-atyRvlCqNx500YTALrde0hstA==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQESr2NxgSvYX6BtvwC6d-YqWKA4WGFgtAjadHGmVf_AdRukfM6-u3w3akZTsKYcvcX2lT-SrX0wcAkJvPAogfw4hxrcBdCIC9HMDeLLpiJR1A5psCcrFTdyJqGLb_MkClCmjsdgmSd99Y4ziA==",
+            "https://www.calameo.com/books/006113385a35b5d001d07",
+            "https://www.interphex.com/en-us/education/advisory-board.html",
+            "https://theorg.com/org/datakind/org-chart/john-harnisher"
+          ]
+        },
+        "patches": {
+          "employerDomain": "pda.org",
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "ok": true,
+        "recordId": "recTSOXMxDT7JpxGq",
+        "readBack": {
+          "name": "Laura Keeley",
+          "linkedinUrl": null,
+          "employerDomain": null,
+          "identityReadiness": null,
+          "surfeDerived": false
+        },
+        "readBackOk": true
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "category": "LINKEDIN_MISSING_ENTRY_POINT",
+      "personName": "Ariela Kiradjian",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Ariela",
+        "lastName": "Kiradjian",
+        "fullName": "Ariela Kiradjian",
+        "nameVariants": [
+          "Ariela Kiradjian"
+        ],
+        "title": "Partner & COO",
+        "employerName": "Boutique & Luxury Lodging Association",
+        "employerDomain": "bllaevents.com",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "Boutique & Luxury Lodging Association",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+        "hotelId": "gdi_hotel_renaissance_times_square",
+        "commercialClassification": "LINKEDIN_MISSING_ENTRY_POINT",
+        "sourceEvidence": "https://blla.org/speaker/ariela-kiradjian/",
+        "verifiedAt": "2026-11-20T10:04:48.881Z",
+        "linkedInQueries": [
+          "\"Ariela Kiradjian\" \"Boutique & Luxury Lodging Association\" linkedin",
+          "site:linkedin.com/in \"Ariela Kiradjian\" \"Boutique & Luxury Lodging Association\"",
+          "\"Ariela Kiradjian\" \"Partner & COO\" linkedin",
+          "\"Ariela Kiradjian\" \"bllaevents.com\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Ariela",
+          "lastName": "Kiradjian",
+          "companyName": "Boutique & Luxury Lodging Association",
+          "companyDomain": "bllaevents.com",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Ariela",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Kiradjian",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Boutique & Luxury Lodging Association",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "bllaevents.com",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHcjIkVHr1Up_9kL_s3lNA-kStmRnjrdU8XMTKgCxwHgloCAUlw2J1V8hGdQa4kmoARYg-tt4cs1nWlIszyaSbZBbyqy9qnzf2vKF2B_q7hmhM3y-DrcAPG32BiVSoHE5Q=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFsnHxftHX_ICdvtaNCn79JyxBJiQpoXeIdD09cgG3GdeSVfiS-LDE_WPwv6tvsTOp_YCAmCWmsX1DbfvWg8p0CMcoio4Kyz_l5GRxJkU34qzgj",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFx-T2dkGPGUQJ9fuGjjuQ2SuRhZzr74SOHSGemVK80OBpvzFVTiBjsRyijMVL_Q6xD8nVGgH7qobhlddxsdFmUUV2oW0jjUuOoVtJaHL_dzt6wIB8=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEFjDHeulpPUtLtjZzYzqlmIdsAEQk0X02-UsW2Nzp979B9VXJI0iuWKPafGAs8sWnJc4wBNQCeo6tV_1h0gCowde3-5dF1qHP25CPiH7ClwQS7MsxaazmQvtZxOPNpGyarW7eRaXAa8E9GngQglIKoBciTyMxfNncR",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFw2JgYfmFJn5uHAU0oUr_OXo3Qs4QTwt9Xkm2v5TZK5ydqANveSdSeCfU3vwtPsxfIWkcQZ29v-13yo05r2FHFLt_-CYp-1SmCgMrQlGMUholITVP40w=="
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "rx_d_2d58b95c5905",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "category": "UNRESOLVED_QUARANTINED",
+      "personName": "Abramo A. Chabib",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Abramo",
+        "lastName": "A. Chabib",
+        "fullName": "Abramo A. Chabib",
+        "nameVariants": [
+          "Abramo A. Chabib",
+          "Abramo Chabib"
+        ],
+        "title": null,
+        "employerName": "Future We Want Model United Nations",
+        "employerDomain": null,
+        "employerDomainVerified": false,
+        "employerDomainSource": null,
+        "employerRelationship": "DIRECT_EMPLOYER",
+        "demandOrganizationName": null,
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "rx_d_2d58b95c5905",
+        "hotelId": "recrPQcZg7SFARRb2",
+        "commercialClassification": "UNRESOLVED_QUARANTINED",
+        "sourceEvidence": "https://www.italiandiplomaticacademy.org/chi-siamo/struttura/direzione-generale/",
+        "verifiedAt": "2026-11-20T10:04:48.881Z",
+        "linkedInQueries": [
+          "\"Abramo A. Chabib\" \"Future We Want Model United Nations\" linkedin",
+          "site:linkedin.com/in \"Abramo A. Chabib\" \"Future We Want Model United Nations\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "EMPLOYER_DOMAIN_MISSING",
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Abramo",
+          "lastName": "A. Chabib",
+          "companyName": "Future We Want Model United Nations",
+          "companyDomain": null,
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Abramo",
+            "verified": true
+          },
+          "lastName": {
+            "value": "A. Chabib",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Future We Want Model United Nations",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": null,
+            "verified": false
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://www.tomorrow-foundation.com/en/activities-our-actions/tomorrow-foundation-invited-to-a-conference-at-the-united-na",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHTlV3xcG5C0swwrqXHpxdnf5YQNS262KYw_ALvetFTQGcAj1ac5HazxFusgEdSnrMsVdDd2D66vlThkKqy1oQ2SjrPYWiy6nFFgPZxWm1YbslH-MVpOTYH2uOXjNjfPtEr2A==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH2D83lPrTsxJsGF1BzMr95R3t9yT9acDFu3-TyWkiqVtn8Ay3YRX9xjyhbLTmSN2BS4fzeCugxmiAMdrFoYwS3-X0AVdR3hSV2U4lXxB_huvEiQAr2vTCbeJbiwMSFcUmQgX20Cas_vcuQ5RRl5GuQ8KSVcYlZUenkF7IFvJ1Dp3-SqhnSCw==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHs3LtxhKE0nBHK8ZKNBmP1urlsRM3S_uHy63Iz2pTTvIFs0qqirE9f5KCod7cNtnutE0zd7YKY2DY2WFzwQEI-SoTd0-436q2v-b4eXH7DsQq54kg=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEZsXkPGj0l_O1FPLR8HAbQkietAVC4cOWEC6QQTlIjJK8GIPqnR8AwZzCHnPZN7YvjYwrs_TGrb__l5zNGX37dFTSMRVxw4saIZJz2QbKLLnsv03Svye8J8xczKII8L2W1RtSVE67IFaYAiAOuNQI1-Fh9rhVGxFeZO00daKpM2omTS_sY"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_iafl_usa_canadian_chapter_meeting_10",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "category": "UNRESOLVED_ORG_NOT_PERSON",
+      "personName": "IAFL",
+      "beforeReadiness": "UNRESOLVED",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "IAFL",
+        "lastName": null,
+        "fullName": "IAFL",
+        "nameVariants": [
+          "IAFL"
+        ],
+        "title": null,
+        "employerName": "IAFL",
+        "employerDomain": null,
+        "employerDomainVerified": false,
+        "employerDomainSource": null,
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "IAFL",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_iafl_usa_canadian_chapter_meeting_10",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "commercialClassification": "UNRESOLVED_ORG_NOT_PERSON",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:48.882Z",
+        "linkedInQueries": [
+          "\"IAFL\" \"IAFL\" linkedin",
+          "site:linkedin.com/in \"IAFL\" \"IAFL\""
+        ],
+        "readiness": "UNRESOLVED",
+        "readinessGaps": [
+          "NAME_INCOMPLETE",
+          "EMPLOYER_DOMAIN_MISSING",
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Named person identity insufficient"
+      },
+      "surfeInput": {
+        "sufficient": false,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "IAFL",
+          "lastName": null,
+          "companyName": "IAFL",
+          "companyDomain": null,
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "IAFL",
+            "verified": true
+          },
+          "lastName": {
+            "value": null,
+            "verified": false
+          },
+          "companyName": {
+            "value": "IAFL",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": null,
+            "verified": false
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": true,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "action": "SKIP_ORG_LABEL",
+        "unresolvedClass": {
+          "kind": "MISSING_NAMED_PERSON",
+          "note": "Organization or role label used where a natural-person name is required. Research continuation = find a named commercial contact; do not invent a person."
+        },
+        "google": {
+          "skipped": true,
+          "reason": "MISSING_NAMED_PERSON"
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "MISSING_NAMED_PERSON"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+      "hotelId": "rece0or38cxo3Fymb",
+      "category": "LINKEDIN_MISSING_ENTRY_POINT",
+      "personName": "Francesco Francavilla",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Francesco",
+        "lastName": "Francavilla",
+        "fullName": "Francesco Francavilla",
+        "nameVariants": [
+          "Francesco Francavilla"
+        ],
+        "title": "Head of Marketing Communications & PR",
+        "employerName": "Red Bull",
+        "employerDomain": null,
+        "employerDomainVerified": false,
+        "employerDomainSource": null,
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "Red Bull SailGP Rome",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+        "hotelId": "rece0or38cxo3Fymb",
+        "commercialClassification": "LINKEDIN_MISSING_ENTRY_POINT",
+        "sourceEvidence": "https://www.linkedin.com/in/francesco-francavilla-",
+        "verifiedAt": "2026-11-20T10:04:48.882Z",
+        "linkedInQueries": [
+          "\"Francesco Francavilla\" \"Red Bull\" linkedin",
+          "site:linkedin.com/in \"Francesco Francavilla\" \"Red Bull\"",
+          "\"Francesco Francavilla\" \"Head of Marketing Communications & PR\" linkedin"
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "EMPLOYER_DOMAIN_MISSING",
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Francesco",
+          "lastName": "Francavilla",
+          "companyName": "Red Bull",
+          "companyDomain": null,
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Francesco",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Francavilla",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Red Bull",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": null,
+            "verified": false
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGiswLbgNOAB-_gA52GExDx_08rhZYjWAatudy8sEiGrxjtr9wAXx4YRRaNFJ6oGGq9YBpIMpb9VfyezknYCAFpLQvX8rJHVAi5HBUnheiE_TnAMIxRh50RNh7ZKQhSsPa89WZfhC8DAzmTO1KFbFsfsu7nyGMLtB-iBNE7Vgjw",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHSg-OTpufKjeeYPxyS92fgU93MgFxmeJAU29PNIwIqlR11hxlGZwjNE--xoIpuElg34BuL9a0z6dT9Km5ABVWMw5hqU3KGuotS2queTM7ej1EKzOQoe4ahXgBkqvLGcge0GvQevyhR4CuJveMVjqsCUPw81Xjkalnm08kAEGf4NZyw0fRpphzIBz6dwvdhCeTDwT_JKyPXFLspCO6Rm0vFtP1E0lyo",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF72GxVKqWCQdwQp_pmNKrqvmg92mQEfgRm2_A3ZKszD0rXOB9SrMEyNMSTwSLTXGoX6GihMIH_23iEr0Da3_IjLqx05ZVH9E-j_J5w0KA7nwoCh4MHJjhutW8eUHewMLEMObStkR1NMnjZmft_mPoMT3OF-i7FUE_Wk31BJ8wc4LbvD0DkfpAwrwnZXPs00bLMmSFs9CL_Dl1p386zcOgOQps=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFSn-o30fdS4G5vqd3AKhEm6xXvZaEi0-doF0UaR8K31y5yt6AR_uBzxucUmojTilezUKxQtFW4TBd3QnTtSsFO_eONNrlq9I71eX7-AAAMZvSU6HlG6bxqiKghFBpIxNTKjIOs9xcKK1QNeIrEbyWZpIeUiYrqkVtVrb6oZz1y6D44GvxFJuExWQwu9X0kNkEIp0E=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEo_auXamTfoRSgJAGZ2Hrf94_9rmK2fjJN_-lNPgZUMwl_IFTbrQ0M_fFiEkc7djkUvKYkyA1uSxeEUK8eKfSQss0UT2G495SlEkczHSaMN6T7q5AMM021RGmXy2_IWnVvrJkbXVCIWjDRuUsnTJeaRsUjAG1aPyyg6ITx-BychdWfE4uJSFvXK3UJZiHvIG5FiTiS71WcJuKbqn0_1CA-MOE_W01iwuA="
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "category": "LINKEDIN_MISSING",
+      "personName": "Olivia Jallits",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Olivia",
+        "lastName": "Jallits",
+        "fullName": "Olivia Jallits",
+        "nameVariants": [
+          "Olivia Jallits"
+        ],
+        "title": "Event Director",
+        "employerName": "International Association of Airport and Duty Free Stores (IAADFS)",
+        "employerDomain": "iaadfs.org",
+        "employerDomainVerified": true,
+        "employerDomainSource": "curated_official_domain",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "IAADFS",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+        "hotelId": "recgMYovrrZDJMqzX",
+        "commercialClassification": "NAMED_CONTACT",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:48.882Z",
+        "linkedInQueries": [
+          "\"Olivia Jallits\" \"International Association of Airport and Duty Free Stores (IAADFS)\" linkedin",
+          "site:linkedin.com/in \"Olivia Jallits\" \"International Association of Airport and Duty Free Stores (IAADFS)\"",
+          "\"Olivia Jallits\" \"Event Director\" linkedin",
+          "\"Olivia Jallits\" \"iaadfs.org\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Olivia",
+          "lastName": "Jallits",
+          "companyName": "International Association of Airport and Duty Free Stores (IAADFS)",
+          "companyDomain": "iaadfs.org",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Olivia",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Jallits",
+            "verified": true
+          },
+          "companyName": {
+            "value": "International Association of Airport and Duty Free Stores (IAADFS)",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "iaadfs.org",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": true
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHSB1yxsCkydXqM4WIZrbkPoAlto5ca4HxDlftQVviCndXI3aPS46-1nAZ9ZEcIHEFNcgpjCXVfBjbfKnJ5m7OY0THK4k2vWuRcp4JoRSQtAevu1kI73_meZQ==",
+            "https://iaadfs.org/Contact"
+          ]
+        },
+        "patches": {
+          "employerDomain": "iaadfs.org",
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "ok": true,
+        "recordId": "recQSDCnQgalMvlJV",
+        "readBack": {
+          "name": "Olivia Jallits",
+          "linkedinUrl": null,
+          "employerDomain": null,
+          "identityReadiness": null,
+          "surfeDerived": false
+        },
+        "readBackOk": true
+      }
+    },
+    {
+      "opportunityId": "disc_1490e4966ee8",
+      "hotelId": "recCAGqkERSXgiku4",
+      "category": "MULTIPLE_EMPLOYER_LABELS",
+      "personName": "David Mendoza Martínez",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "David",
+        "lastName": "Mendoza Martínez",
+        "fullName": "David Mendoza Martínez",
+        "nameVariants": [
+          "David Mendoza Martínez",
+          "David Mendoza Martinez",
+          "David Martínez"
+        ],
+        "title": null,
+        "employerName": "Secretaría de Desarrollo Económico de Jalisco",
+        "employerDomain": "jalisco.gob.mx",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "Secretaría de Desarrollo Económico de Jalisco; Secretaría de Turismo de Jalisco",
+        "demandOrganizationDistinct": true,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "disc_1490e4966ee8",
+        "hotelId": "recCAGqkERSXgiku4",
+        "commercialClassification": "MULTIPLE_EMPLOYER_LABELS",
+        "sourceEvidence": "https://info.jalisco.gob.mx/gobierno/organigrama/17821",
+        "verifiedAt": "2026-11-20T10:04:49.546Z",
+        "linkedInQueries": [
+          "\"David Mendoza Martínez\" \"Secretaría de Desarrollo Económico de Jalisco\" linkedin",
+          "site:linkedin.com/in \"David Mendoza Martínez\" \"Secretaría de Desarrollo Económico de Jalisco\"",
+          "\"David Mendoza Martínez\" \"jalisco.gob.mx\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "David",
+          "lastName": "Mendoza Martínez",
+          "companyName": "Secretaría de Desarrollo Económico de Jalisco",
+          "companyDomain": "jalisco.gob.mx",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "David",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Mendoza Martínez",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Secretaría de Desarrollo Económico de Jalisco",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "jalisco.gob.mx",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://info.jalisco.gob.mx/gobierno/organigrama/17821",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFL25B0xBXqm3qmi4FgOvJEQ_zjx2l_BMa-4tBK7DNGfIss71frJSVXXhEF_fCp2OeKSDUrjAn9AOkesw28Vt3jdSsTdPf2_K7vZgFsgpGJLfXdckj0Wyy_EOM4iA1F6gFPEniNGqCkOUQ4l-GzNXj7iSKBunWgCb0fRDhugR5lKGK1odHoXCkFR6jXE6bGCAbX0TwomCuSdMb-pWSI4oKHbB2BEJVnwwl17DAzPYXdLYceXyNaK-LLQaU9FcB0P1w9CaHvmFmVayAZcmHcekGK6PvtPQ==",
+            "https://jalisco.gob.mx/wx/prensa/noticias/131043",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGnUycnQQsjjbOe0kObK53OfsoDNcWJJyXYXt_TWbfQRQ_goed1PoFYCEYefrI9vfze0ChR8VQ7ZGUJygTX0UsP0FjO0t1iG2BhsL6erDnsTrna2cYa0kq8yGGTZIV1NsZYBQxwEGj0Py-wW7bAAGx2AKI2EujZp40bFT6JtYjdAakJCRei4uuWXZP64sY8ajCcayRDxYb5e8FyrX8g1_BKP-zaXcL2oUUAHZWVpbGfKBWuNmehppWim2vn7YKvbXuezg5eNzq67V4=",
+            "https://info.jalisco.gob.mx"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_opp_cda_annual_meeting_2026_8",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "category": "UNVERIFIED_COMPANY_DOMAIN",
+      "personName": "CDA Contact",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "CDA",
+        "lastName": "Contact",
+        "fullName": "CDA Contact",
+        "nameVariants": [
+          "CDA Contact"
+        ],
+        "title": null,
+        "employerName": "Canadian Dental Association",
+        "employerDomain": "cda-adc.ca",
+        "employerDomainVerified": true,
+        "employerDomainSource": "explicit",
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "Canadian Dental Association",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_opp_cda_annual_meeting_2026_8",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "commercialClassification": "UNVERIFIED_COMPANY_DOMAIN",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:49.546Z",
+        "linkedInQueries": [
+          "\"CDA Contact\" \"Canadian Dental Association\" linkedin",
+          "site:linkedin.com/in \"CDA Contact\" \"Canadian Dental Association\"",
+          "\"CDA Contact\" \"cda-adc.ca\""
+        ],
+        "readiness": "UNRESOLVED",
+        "readinessGaps": [
+          "NAME_INCOMPLETE",
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": false,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "CDA",
+          "lastName": "Contact",
+          "companyName": "Canadian Dental Association",
+          "companyDomain": "cda-adc.ca",
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "CDA",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Contact",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Canadian Dental Association",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": "cda-adc.ca",
+            "verified": true
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": true,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "action": "SKIP_ORG_LABEL",
+        "unresolvedClass": {
+          "kind": "MISSING_NAMED_PERSON",
+          "note": "Organization or role label used where a natural-person name is required. Research continuation = find a named commercial contact; do not invent a person."
+        },
+        "google": {
+          "skipped": true,
+          "reason": "MISSING_NAMED_PERSON"
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "MISSING_NAMED_PERSON"
+      }
+    },
+    {
+      "opportunityId": "wy_pd_c6455b6578ee",
+      "hotelId": "recXh4NgF8sDbi9cQ",
+      "category": "NAME_VARIANT_PARTIAL",
+      "personName": "Dra. Carmen Encarnación",
+      "beforeReadiness": "PARTIAL",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "Dra.",
+        "lastName": "Carmen Encarnación",
+        "fullName": "Dra. Carmen Encarnación",
+        "nameVariants": [
+          "Dra. Carmen Encarnación",
+          "Dra. Carmen Encarnacion",
+          "Dra. Encarnación",
+          "Carmen Encarnación"
+        ],
+        "title": null,
+        "employerName": "Sociedad Dominicana de Cardiología (SODOCARDIO)",
+        "employerDomain": null,
+        "employerDomainVerified": false,
+        "employerDomainSource": null,
+        "employerRelationship": "DIRECT_EMPLOYER",
+        "demandOrganizationName": null,
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "wy_pd_c6455b6578ee",
+        "hotelId": "recXh4NgF8sDbi9cQ",
+        "commercialClassification": "NAME_VARIANT_PARTIAL",
+        "sourceEvidence": "https://homs.com.do/medico/carmen-encarnacion-roa/",
+        "verifiedAt": "2026-11-20T10:04:49.546Z",
+        "linkedInQueries": [
+          "\"Dra. Carmen Encarnación\" \"Sociedad Dominicana de Cardiología (SODOCARDIO)\" linkedin",
+          "site:linkedin.com/in \"Dra. Carmen Encarnación\" \"Sociedad Dominicana de Cardiología (SODOCARDIO)\""
+        ],
+        "readiness": "PARTIAL",
+        "readinessGaps": [
+          "EMPLOYER_DOMAIN_MISSING",
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Verified name and employer; personal LinkedIn not verified"
+      },
+      "surfeInput": {
+        "sufficient": true,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "Dra.",
+          "lastName": "Carmen Encarnación",
+          "companyName": "Sociedad Dominicana de Cardiología (SODOCARDIO)",
+          "companyDomain": null,
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "Dra.",
+            "verified": true
+          },
+          "lastName": {
+            "value": "Carmen Encarnación",
+            "verified": true
+          },
+          "companyName": {
+            "value": "Sociedad Dominicana de Cardiología (SODOCARDIO)",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": null,
+            "verified": false
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": false,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "unresolvedClass": null,
+        "google": {
+          "skipped": false,
+          "reason": "REUSED_PRIOR_PHASE2_GOOGLE",
+          "billedUsd": 0,
+          "linkedInStatus": "NO_PROFILE_FOUND",
+          "candidateUrl": null,
+          "sourceUrls": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH-G6ftdT1OO7rdbA0G-TV8oHstWtC-VGnaTdHkN0qTB2jJw63qUy0ZDE6pEURP_4_L7T1LBZXl4PFXwAR9NA9YuZt8jxFASJhoxPJgBZylE0gDkjpH1dOM7xNhcOHAuZwxq1Ydu5-q9ui-mLEif3XxLbTDwtwSN1P5-ij6VcWUoXosUFtEwfNdv2s-38AoAmq1d0P4WLpX1fRxICiUD0VlmUjEuuI=",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEJSUHlfR1HPm2iuA3CU1OSqk-4HNYnQzNtqnSsFuqYrXHNo1tFVzqdprH1D9IWkHHS3JBcBjKXBnuvnWhbIfLf6nqWy1H6HEXdV2eSzpoHi-xtniRY9F1R4nbqq3Rbx3P2uPTYutNVnQ==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHhV8depVElElJNam2UduwgS2RfosDYoSptcWtKrwNWMt9ntNrE_lkomMi-FIOuozu3Hp6hVH2eiqFPFRa25FMcSjZE7VS529sISt4OCpCUgnosIRFBMaF7P4YN75G6vpkwO1VdUdO6sdN1hUbwCV5HmgLqeYt-dVZ_wKgxxk5-uqOxlVKFj1_45gHM7iZMuT3oIBCyLhAY5zgY4Xpvu1MwT_1IbyrMBxSNdfyZJQ==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH7DgnU0SbX5Ur5-Kf82qUxGbkUme6y8G-1nUQPn8nXik8_TqiOYQ0GtXz8uIwq5EEoVN_hij15EHWCWV9QEOQi-5Qnk6eNvHJsGOMhCl4XBGB6NPA3t0RmBvLBIqBHY77APJS6F7vdXg==",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG_uP4emNjjIDkd-DGVhFrZXED6xer9c5TKLw9dBVO29N1BEYP0SGvHGccWXy6aONw6je7KIw5t37kQsyk2LJAE9_pc5w9N5DQR5V-TlsntMjK37WcRfX6ZfGG8ZrtREUKHKia_n6WiPu4GLvgkfuApz5fD90eErrMpzp38TAG745i0dmZG"
+          ]
+        },
+        "patches": {
+          "employerDomain": null,
+          "linkedinVerified": false,
+          "linkedinCandidate": null
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "NO_IMPROVEMENT"
+      }
+    },
+    {
+      "opportunityId": "gdi_pe_879047c3211d2e82",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "category": "ORG_LABEL_NOT_PERSON",
+      "personName": "CityCruises",
+      "beforeReadiness": "UNRESOLVED",
+      "identity": {
+        "version": "gdi-contact-identity-preflight-v1",
+        "firstName": "CityCruises",
+        "lastName": null,
+        "fullName": "CityCruises",
+        "nameVariants": [
+          "CityCruises"
+        ],
+        "title": null,
+        "employerName": "City Cruises San Diego",
+        "employerDomain": null,
+        "employerDomainVerified": false,
+        "employerDomainSource": null,
+        "employerRelationship": "DEMAND_ORG_SAME_AS_EMPLOYER",
+        "demandOrganizationName": "City Cruises San Diego",
+        "demandOrganizationDistinct": false,
+        "linkedinUrl": null,
+        "linkedinCandidateUrl": null,
+        "linkedinStatus": "NO_PROFILE_FOUND",
+        "linkedinTrustedForSurfe": false,
+        "linkedinRejectReason": null,
+        "linkedinReasons": [
+          "no_url"
+        ],
+        "opportunityId": "gdi_pe_879047c3211d2e82",
+        "hotelId": "recnPB3Q02NO8Ma1o",
+        "commercialClassification": "ORG_LABEL_NOT_PERSON",
+        "sourceEvidence": null,
+        "verifiedAt": "2026-11-20T10:04:49.547Z",
+        "linkedInQueries": [
+          "\"CityCruises\" \"City Cruises San Diego\" linkedin",
+          "site:linkedin.com/in \"CityCruises\" \"City Cruises San Diego\""
+        ],
+        "readiness": "UNRESOLVED",
+        "readinessGaps": [
+          "NAME_INCOMPLETE",
+          "EMPLOYER_DOMAIN_MISSING",
+          "LINKEDIN_MISSING"
+        ],
+        "readinessReason": "Named person identity insufficient"
+      },
+      "surfeInput": {
+        "sufficient": false,
+        "surfeCallExecuted": false,
+        "paidCallAuthorized": false,
+        "surfeFieldNames": {
+          "firstName": "CityCruises",
+          "lastName": null,
+          "companyName": "City Cruises San Diego",
+          "companyDomain": null,
+          "linkedInUrl": null
+        },
+        "fieldsProvided": {
+          "firstName": {
+            "value": "CityCruises",
+            "verified": true
+          },
+          "lastName": {
+            "value": null,
+            "verified": false
+          },
+          "companyName": {
+            "value": "City Cruises San Diego",
+            "verified": true
+          },
+          "companyDomain": {
+            "value": null,
+            "verified": false
+          },
+          "linkedinUrl": {
+            "value": null,
+            "verified": false,
+            "status": "NO_PROFILE_FOUND"
+          }
+        },
+        "omittedUnverifiedLinkedIn": true,
+        "improvedVsBaseline": false
+      },
+      "phase2": {
+        "action": "SKIP_ORG_LABEL",
+        "unresolvedClass": {
+          "kind": "MISSING_NAMED_PERSON",
+          "note": "Organization or role label used where a natural-person name is required. Research continuation = find a named commercial contact; do not invent a person."
+        },
+        "google": {
+          "skipped": true,
+          "reason": "MISSING_NAMED_PERSON"
+        }
+      },
+      "persist": {
+        "skipped": true,
+        "reason": "MISSING_NAMED_PERSON"
+      }
+    }
+  ],
+  "stop": "STOP after 20-opportunity Phase 2. No Surfe enrich, no Surfe Search paid calls, no Apollo, no full-database research."
+}
