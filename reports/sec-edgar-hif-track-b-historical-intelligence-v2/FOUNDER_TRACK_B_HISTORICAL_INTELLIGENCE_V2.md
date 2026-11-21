@@ -142,3 +142,14 @@ Integration Controller merges. This cycle is `AWAITING_INTEGRATION_CONTROLLER` u
 ## 13. Next research wave
 
 Recover The Allegro Royal Sonesta from the split exhibit line. Retry Quality Suites Oscar Freire when the operator site responds. Look for a named United Kingdom hotel agreement. Keep searching for a successor manager at The Yucat√°n after the 30 April 2026 suspension. Do not rerun the exhausted 424H query or the zero-yield 424B2 page window. Do not turn the 2043 Sonesta expirations into commercial opportunities.
+
+---
+
+## IC integration notes (PR #546)
+
+- Sonesta 2043-06-30 expirations retained as contractual intelligence only ó **not** near-term commercial opportunities.
+- Termination fee: source figure **11,035** in a 10-Q section denominated in **thousands of dollars** (normalized $11,035,000 if applied). Stored in evidence with denomination note; no separate incorrect bare-dollar field.
+- Villahermosa operating instrument stored as **OTHER** (schema lacks OPERATING); not classified as MANAGEMENT.
+- Track A handoff: four MX hotels as **research candidates only** (Villahermosa, Yucat·n, Hyatt Ziva, Hyatt Zilara) ó affirmative prospective decision required before qualification.
+- Opportunity-first: do not launch HE enrichment for all 51 Sonesta hotels solely from contractual discovery; prioritize identity linkage by commercial opportunity queue.
+- CUSTOMER_BLOCKED.
