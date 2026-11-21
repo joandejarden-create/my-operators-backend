@@ -22,6 +22,14 @@
     "Insufficient credits for this contact lookup. Try again later or contact Dealality support.";
   var MSG_MISS = "No matching email/phone found for this person.";
   var MSG_GENERIC = "Contact lookup did not return a usable result.";
+  var MSG_FE_OFFER =
+    "Surfe did not return a work email. You can try FullEnrich as a secondary lookup (may use credits).";
+  var MSG_FE_CONFIRM =
+    "FullEnrich may consume credits. Continue only if authorized.";
+  var MSG_FE_BLOCKED_DISPLAY =
+    "FullEnrich recovered a work email, but display is blocked until licensing is confirmed. Nothing was saved.";
+  var MSG_FE_PENDING =
+    "FullEnrich lookup in progress (may take up to a few minutes)…";
 
   var STATUS_CLASSES = [
     "gdi-contact-reveal-status--loading",
@@ -31,6 +39,7 @@
     "gdi-contact-reveal-status--credits",
     "gdi-contact-reveal-status--provider",
     "gdi-contact-reveal-status--error",
+    "gdi-contact-reveal-status--fallback",
   ];
 
   function text(v) {
@@ -171,7 +180,9 @@
     }
     if (
       status === 402 ||
-      code === "INSUFFICIENT_CREDITS"
+      code === "INSUFFICIENT_CREDITS" ||
+      code === "INSUFFICIENT_CREDITS_RESERVE" ||
+      code === "SPEND_CAP_REACHED"
     ) {
       return { kind: "credits", message: msg || MSG_CREDITS };
     }
@@ -181,14 +192,75 @@
       code === "SURFE_CREDITS_UNAVAILABLE" ||
       code === "MISSING_SURFE_API_KEY" ||
       code === "PROVIDER_ADAPTER_NOT_WIRED" ||
-      code === "CONTACT_ENRICHMENT_DISABLED"
+      code === "CONTACT_ENRICHMENT_DISABLED" ||
+      code === "FULLENRICH_API_KEY_MISSING" ||
+      code === "CREDITS_UNAVAILABLE"
     ) {
       return { kind: "provider", message: msg || MSG_PROVIDER };
+    }
+    if (
+      code === "FEATURE_FLAG_OFF" ||
+      code === "SPEND_NOT_AUTHORIZED" ||
+      code === "CUSTOMER_DISPLAY_BLOCKED" ||
+      code === "LOOKUP_IN_FLIGHT" ||
+      code === "FULLENRICH_TIMEOUT" ||
+      code === "ABORTED"
+    ) {
+      return { kind: "error", message: msg || code || MSG_GENERIC };
     }
     if (data.miss || code === "NO_RESULT" || code === "NO_MATCHING_CONTACT") {
       return { kind: "miss", message: msg || MSG_MISS };
     }
     return { kind: "error", message: msg || code || MSG_GENERIC };
+  }
+
+  function removeFallbackCta(rootEl) {
+    if (!rootEl) return;
+    var existing = rootEl.querySelector("[data-gdi-fullenrich-fallback-cta]");
+    if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+  }
+
+  /**
+   * Offer explicit FullEnrich work-email fallback after Surfe miss.
+   * Never auto-executes. Requires a second click + confirm.
+   */
+  function renderFullEnrichFallbackOffer(rootEl, statusEl, meta, runFe) {
+    if (!rootEl || !meta || meta.offerVisible !== true) return;
+    removeFallbackCta(rootEl);
+    var wrap = document.createElement("div");
+    wrap.className = "gdi-contact-fullenrich-fallback";
+    wrap.setAttribute("data-gdi-fullenrich-fallback-cta", "1");
+    var est = meta.estimatedCredits != null ? String(meta.estimatedCredits) : "?";
+    wrap.innerHTML =
+      '<p class="gdi-contact-fullenrich-fallback__note">' +
+      escHtml(MSG_FE_OFFER) +
+      " Estimated ~" +
+      escHtml(est) +
+      " credit(s). Phone fallback is disabled.</p>" +
+      '<button type="button" class="gdi-contact-cta__btn gdi-contact-fullenrich-fallback__btn" data-gdi-fullenrich-confirm>' +
+      "Try FullEnrich work email</button>";
+    if (statusEl && statusEl.parentNode === rootEl) {
+      rootEl.insertBefore(wrap, statusEl.nextSibling);
+    } else {
+      rootEl.appendChild(wrap);
+    }
+    var btn = wrap.querySelector("[data-gdi-fullenrich-confirm]");
+    if (btn) {
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        var ok = false;
+        try {
+          ok = root.confirm
+            ? root.confirm(MSG_FE_CONFIRM)
+            : false;
+        } catch (e) {
+          ok = false;
+        }
+        if (!ok) return;
+        if (typeof runFe === "function") runFe();
+      });
+    }
   }
 
   /**
@@ -312,29 +384,35 @@
         "/opportunities/" +
         encodeURIComponent(opportunityId) +
         "/contacts/reveal";
-      var revealOpts = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          channel: channel,
-          contactName: contactName,
-          authorizeLiveProvider: useMock ? false : true,
-          useMock: useMock,
-          mockScenario: "hit",
-          comparisonPanel: panel,
-        }),
-      };
 
-      // Always authenticated fetch — mock still requires hotel-authorized session.
-      // plainFetch is unused for reveal (kept in opts for callers / future).
-      void plainFetch;
-      var revealFetch = fetchFn(revealUrl, revealOpts);
+      function newClientRequestId(suffix) {
+        return [
+          "gdi_reveal",
+          hotelId,
+          opportunityId,
+          contactName.replace(/\s+/g, "_").slice(0, 40),
+          channel,
+          panel,
+          suffix || "surfe",
+          String(Date.now()),
+        ].join("|");
+      }
 
-      revealFetch
-        .then(function (r) {
+      function postReveal(bodyObj) {
+        var payload = Object.assign(
+          {
+            clientRequestId: bodyObj.clientRequestId || newClientRequestId(),
+          },
+          bodyObj,
+        );
+        return fetchFn(revealUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+        }).then(function (r) {
           return r.json().then(
             function (data) {
               return { okHttp: r.ok, status: r.status, data: data || {} };
@@ -347,30 +425,113 @@
               };
             },
           );
+        });
+      }
+
+      function handleRevealResult(res, fromFullEnrich) {
+        if (!document.body.contains(surfeBtn)) return;
+        var data = res.data || {};
+        var details = data.contactDetails || null;
+        if (res.okHttp && details && (details.email || details.phone)) {
+          removeFallbackCta(rootEl);
+          applySessionDetailsToCard(rootEl, details);
+          var bits = [];
+          if (details.email) bits.push("Email: " + details.email);
+          if (details.phone) bits.push("Phone: " + details.phone);
+          setRevealStatus(
+            bits.join(" · ") +
+              " (session only — not saved to Dealality records)",
+            "found",
+          );
+          return;
+        }
+        if (
+          fromFullEnrich &&
+          (data.incrementalEmailFound === true ||
+            data.customerDisplayBlocked === true)
+        ) {
+          removeFallbackCta(rootEl);
+          setRevealStatus(
+            data.message || MSG_FE_BLOCKED_DISPLAY,
+            data.incrementalEmailFound ? "found" : "miss",
+          );
+          return;
+        }
+        if (data.pending || data.error === "FULLENRICH_TIMEOUT") {
+          setRevealStatus(data.message || MSG_FE_PENDING, "loading");
+          return;
+        }
+        var feMeta = data.fullEnrichFallback || null;
+        if (
+          !fromFullEnrich &&
+          feMeta &&
+          feMeta.offerVisible === true &&
+          (data.miss || !details || !details.email)
+        ) {
+          setRevealStatus(data.message || MSG_MISS, "miss");
+          renderFullEnrichFallbackOffer(rootEl, statusEl, feMeta, function () {
+            runFullEnrichFallback();
+          });
+          return;
+        }
+        if (data.miss || data.error === "NO_RESULT") {
+          setRevealStatus(data.message || MSG_MISS, "miss");
+          return;
+        }
+        var classified = classifyRevealFailure(res);
+        setRevealStatus(classified.message, classified.kind);
+      }
+
+      function runFullEnrichFallback() {
+        var feKey = flightKey + "|fe";
+        if (inFlight[feKey]) return;
+        inFlight[feKey] = true;
+        removeFallbackCta(rootEl);
+        setRevealStatus(MSG_FE_PENDING, "loading");
+        if (setLoadingToast) {
+          setLoadingToast(true, MSG_FE_PENDING);
+        }
+        postReveal({
+          channel: "email",
+          contactName: contactName,
+          authorizeLiveProvider: false,
+          authorizeFullEnrichFallback: true,
+          fullEnrichFallbackOnly: true,
+          useMock: useMock,
+          mockFullEnrichScenario: "hit",
+          comparisonPanel: panel,
+          clientRequestId: newClientRequestId("fe"),
         })
-        .then(function (res) {
-          // Ignore if user switched cards / opportunities and this root is gone.
-          if (!document.body.contains(surfeBtn)) return;
-          var data = res.data || {};
-          var details = data.contactDetails || null;
-          if (res.okHttp && details && (details.email || details.phone)) {
-            applySessionDetailsToCard(rootEl, details);
-            var bits = [];
-            if (details.email) bits.push("Email: " + details.email);
-            if (details.phone) bits.push("Phone: " + details.phone);
+          .then(function (res) {
+            handleRevealResult(res, true);
+          })
+          .catch(function (err) {
+            if (!document.body.contains(surfeBtn)) return;
             setRevealStatus(
-              bits.join(" · ") +
-                " (session only — not saved to Dealality records)",
-              "found",
+              (err && err.message) || "FullEnrich lookup failed.",
+              "error",
             );
-            return;
-          }
-          if (data.miss || data.error === "NO_RESULT") {
-            setRevealStatus(data.message || MSG_MISS, "miss");
-            return;
-          }
-          var classified = classifyRevealFailure(res);
-          setRevealStatus(classified.message, classified.kind);
+          })
+          .finally(function () {
+            delete inFlight[feKey];
+            if (setLoadingToast) setLoadingToast(false);
+          });
+      }
+
+      // Always authenticated fetch — mock still requires hotel-authorized session.
+      // plainFetch is unused for reveal (kept in opts for callers / future).
+      void plainFetch;
+
+      postReveal({
+        channel: channel,
+        contactName: contactName,
+        authorizeLiveProvider: useMock ? false : true,
+        useMock: useMock,
+        mockScenario: "hit",
+        comparisonPanel: panel,
+      })
+        .then(function (res) {
+          handleRevealResult(res, false);
         })
         .catch(function (err) {
           if (!document.body.contains(surfeBtn)) return;
@@ -406,10 +567,12 @@
     applySessionDetailsToCard: applySessionDetailsToCard,
     wantsMock: wantsMock,
     classifyRevealFailure: classifyRevealFailure,
+    renderFullEnrichFallbackOffer: renderFullEnrichFallbackOffer,
     MSG_SIGN_IN: MSG_SIGN_IN,
     MSG_PROVIDER: MSG_PROVIDER,
     MSG_CREDITS: MSG_CREDITS,
     MSG_MISS: MSG_MISS,
+    MSG_FE_OFFER: MSG_FE_OFFER,
   };
 
   if (root.DealalityGdiUi) {
