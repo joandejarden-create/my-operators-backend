@@ -10,13 +10,14 @@
 |----|-------|--------|-----------|
 | #510 | CH identity/API docs | **MERGED** | `3e099e773ea7929c1d375cee057cc9e5cd2c8dcf` |
 | #511 | Track A Wave 2 | **MERGED** | `8397c85bbc3a43d9a2fc94be96ec71b4235bb784` |
-| #512 | Track B Wave 2 | OPEN — package.json conflict fixed; awaiting green CI then merge | — |
-| #513 | HMLR ULPD | OPEN — queued after #512 | — |
-| #514 | Track A Waves 3–4 | OPEN — queued | — |
-| #515 | Track B Waves 3–4 | OPEN — queued | — |
-| #516/#517 | Country concentration | OPEN — after #510–#515 | — |
+| #512 | Track B Wave 2 | **MERGED** | `bbc934a4c66d776d860fb908bc420ba94303cdcc` |
+| #513 | HMLR ULPD | **MERGED** | `58b9382ad30d6ec4b8785c2d5fc31906623e6625` |
+| #514 | Track A Waves 3–4 | **MERGED** | `a1426776b8a2f402ee6bc16f303c76c4cdb42f68` |
+| #515 | Track B Waves 3–4 | **MERGED** | `6dea52ed4080eda72c3e2ecd082e33710c1ce26e` |
+| #516/#517 | Country concentration | OPEN | — |
+| #518 | Inventory reconcile + yield wave | OPEN | — |
 
-Integration primary checkout left **dirty/untouched** (remote merges only).
+Integration primary checkout left **dirty/untouched** (remote merges only). Shared `package.json` conflicts resolved during #512/#513/#515.
 
 ## 2) Exact reconciliation of the reported ~194
 
