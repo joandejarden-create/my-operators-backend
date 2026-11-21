@@ -4,8 +4,10 @@
   "publicationState": "CUSTOMER_BLOCKED",
   "researchCostUsd": 0,
   "branch": "feat/hif-v6-track-a-cb2-commercial-discovery",
-  "baselineMain": "9cce68f0f",
+  "baselineMain": "81425a067",
   "priorMergedPr": 541,
+  "openPr": 544,
+  "resumeWave": "CB2B",
   "policy": {
     "publicRfpRequired": false,
     "saleOrExpirationAloneInsufficient": true,
@@ -15,28 +17,38 @@
   "statusChecks": {
     "lakevilleInn": {
       "status": "STILL_OPEN_BCT",
-      "evidence": "No superseding brand announcement found after Star Tribune 2026-04-09 / Chamber 2026-04-13; remains independent seeking brand by end-2026",
+      "verifiedAt": "2026-11-21TCB2B",
+      "evidence": "CB2b re-check: no superseding brand/franchise announcement after Star Tribune 2026-04-09 / Chamber 2026-04-13; remains independent seeking brand",
       "action": "NOOP_EXISTING_AIRTABLE"
     },
     "hiltonTrinidad": {
       "status": "STILL_OPEN_MCT",
-      "evidence": "Short-term HMA still in force; HotelTT EOI still active (responses due ~2027-01-29); no buyer/operator award observed",
+      "verifiedAt": "2026-11-21TCB2B",
+      "evidence": "CB2b re-check: short-term HMA still in force; HotelTT EOI still active (~2027-01-29); no buyer/operator award observed",
+      "action": "NOOP_EXISTING_AIRTABLE"
+    },
+    "legacyHotelGreenBay": {
+      "status": "STILL_OPEN_SOFT_BRAND_BCT",
+      "verifiedAt": "2026-11-21TCB2B",
+      "evidence": "Marriott soft brand still planned; collection/timeline still undisclosed (Hospitality Net / Pass Brief)",
       "action": "NOOP_EXISTING_AIRTABLE"
     }
   },
   "batchMetrics": {
-    "distinctHotelsInvestigated": 22,
-    "countriesTouched": ["US", "CA", "MX", "BR", "GB", "TT", "PT", "ES", "TC"],
+    "distinctHotelsInvestigated": 34,
+    "countriesTouched": ["US", "CA", "MX", "BR", "GB", "TT", "PT", "ES", "TC", "AT", "IN"],
     "priorityCountriesCovered": ["US", "CA", "MX", "BR", "GB"],
-    "newPrincipalBct": 1,
+    "newPrincipalBct": 3,
     "newPrincipalMct": 0,
     "carriedFirst100Open": 2,
     "first100AfterCb2": 3,
-    "adjacentOpen": 2,
+    "first100AfterCb2b": 5,
+    "adjacentOpen": 4,
     "awardWatch": 3,
-    "rejectedOrCompleted": 8,
-    "publicPathwayYield": 5,
-    "privatePathwayYield": 2
+    "rejectedOrCompleted": 14,
+    "publicPathwayYield": 7,
+    "privatePathwayYield": 4,
+    "portfolioLevelSignals": 2
   },
   "candidates": [
     {
@@ -356,8 +368,263 @@
     {
       "id": "mexico-macro-under-researched",
       "disposition": "UNDER_RESEARCHED",
-      "reason": "No new named-hotel open principal BCT/MCT verified this wave beyond prior awarded conversions",
+      "reason": "CB2b: no new named-hotel open principal BCT/MCT verified in MX (Aimbridge/Accor conversions awarded; JL operator marketing is supply-side only)",
       "physicalLocation": { "country": "MX" },
+      "persistEligible": false
+    },
+    {
+      "id": "shorebreak-huntington-bct",
+      "discoveryPropertyId": "disc_cb2b_shorebreak_huntington_2026",
+      "findingId": "find_cb2b_shorebreak_huntington_bct_2026",
+      "hotelName": "Kimpton Shorebreak Huntington Beach Resort",
+      "physicalLocation": {
+        "country": "US",
+        "stateProvince": "CA",
+        "city": "Huntington Beach",
+        "address": "500 Pacific Coast Highway",
+        "market": "Orange County / Surf City",
+        "geographicClass": "VERIFIED"
+      },
+      "currentBrand": "Kimpton (IHG)",
+      "currentOperator": "Kimpton (month-to-month after agreement expiry)",
+      "owner": "DiamondRock Hospitality Company (NYSE: DRH)",
+      "agreementType": "UNRESOLVED_BRAND_RENEWAL_OR_CONVERSION",
+      "opportunityType": "BCT",
+      "commercialCategory": "BRAND_CONVERSION_TARGET",
+      "evidencePathway": "OWNER_LED_PRIVATE_DECISION",
+      "commercialTrigger": "DiamondRock states Kimpton Shorebreak brand/management agreement expired and is month-to-month; ownership evaluating retain brand vs rebrand vs independent",
+      "decisionEvidence": "DRH Q2 2026 + Q3 2026 earnings: Shorebreak agreement expired / month-to-month; near-term franchise/brand decision alongside Courtyard Denver; citybiz Jul 2026 confirms evaluation of remaining branded",
+      "commercialRelevance": "VERIFIED_RELEVANT",
+      "commercialTiming": "0_6_MONTHS",
+      "timingConfidence": "HIGH",
+      "nextDecisionDate": "2027-06-30",
+      "commercialAccessibility": "ACCESSIBLE_PROBABLE",
+      "engagementRoute": "OWNER_ASSET_MANAGEMENT_OR_BRAND_DEVELOPMENT",
+      "decisionParty": "DiamondRock Hospitality (Jeffrey Donnelly / asset management)",
+      "contactInformationValidated": false,
+      "outreachReady": false,
+      "priority": "PRIORITY_A",
+      "countsTowardFirst100": true,
+      "publicRfp": false,
+      "discoveryMode": "PRIVATE",
+      "currentDecisionStatus": "OPEN_BRAND_VS_INDEPENDENT_EVALUATION",
+      "qualificationTier": "FIRST_100_BCT",
+      "hotelSpecificEvidence": true,
+      "prospectiveCommercialDecisionEvidence": true,
+      "saleOrExpirationOnly": false,
+      "persistEligible": true,
+      "notes": "Private franchise/brand decision. Expiration alone insufficient — owner publicly evaluating commercial alternatives. Not MCT (manager already Kimpton MTM).",
+      "sources": [
+        {
+          "url": "https://www.fool.com/earnings/call-transcripts/2026/11/04/diamondrock-drh-q3-2026-earnings-call-transcript/",
+          "publicationDate": "2026-11-04"
+        },
+        {
+          "url": "https://www.citybiz.co/article/882577/diamondrock-raises-2026-outlook-boosts-dividend-22-as-hotel-demand-strengthens/",
+          "publicationDate": "2026-07-31"
+        },
+        {
+          "url": "https://www.shorebreakhotel.com/contact/",
+          "publicationDate": "2026-11-21"
+        }
+      ]
+    },
+    {
+      "id": "courtyard-denver-downtown-bct",
+      "discoveryPropertyId": "disc_cb2b_courtyard_denver_downtown_2026",
+      "findingId": "find_cb2b_courtyard_denver_bct_2026",
+      "hotelName": "Courtyard by Marriott Denver Downtown",
+      "physicalLocation": {
+        "country": "US",
+        "stateProvince": "CO",
+        "city": "Denver",
+        "address": "934 16th Street",
+        "market": "Downtown Denver / 16th Street Mall",
+        "geographicClass": "VERIFIED"
+      },
+      "currentBrand": "Courtyard by Marriott",
+      "currentOperator": "Sage Hospitality",
+      "owner": "DiamondRock Hospitality Company (NYSE: DRH)",
+      "agreementType": "FRANCHISE_EXPIRING_2027",
+      "opportunityType": "BCT",
+      "commercialCategory": "BRAND_CONVERSION_TARGET",
+      "evidencePathway": "OWNER_LED_PRIVATE_DECISION",
+      "commercialTrigger": "Courtyard Denver Downtown franchise expires 2027; DiamondRock evaluating renew Courtyard vs higher brand vs independent vs expand adjacent land vs sale",
+      "decisionEvidence": "DRH Q2/Q3 2026 earnings name Courtyard Denver as near-term franchise decision; CEO describes multi-path evaluation including brand change; portfolio page confirms 177-key ownership + Sage ops",
+      "commercialRelevance": "VERIFIED_RELEVANT",
+      "commercialTiming": "6_18_MONTHS",
+      "timingConfidence": "HIGH",
+      "nextDecisionDate": "2027-12-31",
+      "commercialAccessibility": "ACCESSIBLE_PROBABLE",
+      "engagementRoute": "OWNER_ASSET_MANAGEMENT_OR_BRAND_DEVELOPMENT",
+      "decisionParty": "DiamondRock Hospitality",
+      "contactInformationValidated": false,
+      "outreachReady": false,
+      "priority": "PRIORITY_A",
+      "countsTowardFirst100": true,
+      "publicRfp": false,
+      "discoveryMode": "PRIVATE",
+      "currentDecisionStatus": "OPEN_FRANCHISE_RENEWAL_OR_CONVERSION",
+      "qualificationTier": "FIRST_100_BCT",
+      "hotelSpecificEvidence": true,
+      "prospectiveCommercialDecisionEvidence": true,
+      "saleOrExpirationOnly": false,
+      "persistEligible": true,
+      "notes": "Portfolio-level franchise optionality with hotel-specific naming. MCT not open (Sage remains operator unless separately changed).",
+      "sources": [
+        {
+          "url": "https://www.fool.com/earnings/call-transcripts/2026/11/04/diamondrock-drh-q3-2026-earnings-call-transcript/",
+          "publicationDate": "2026-11-04"
+        },
+        {
+          "url": "https://drhc.com/portfolio-properties.php",
+          "publicationDate": "2026-11-21"
+        },
+        {
+          "url": "https://www.marriott.com/en-us/hotels/dencd-courtyard-denver-downtown/overview/",
+          "publicationDate": "2026-11-21"
+        }
+      ]
+    },
+    {
+      "id": "hotel-murta-xativa-concession",
+      "discoveryPropertyId": "disc_cb2b_hotel_murta_xativa_2026",
+      "findingId": "find_cb2b_hotel_murta_concession_2026",
+      "hotelName": "Hotel Murta",
+      "physicalLocation": {
+        "country": "ES",
+        "stateProvince": "Valencia / Xàtiva",
+        "city": "Xàtiva",
+        "geographicClass": "VERIFIED"
+      },
+      "currentBrand": "Closed municipal hotel (since 2018)",
+      "agreementType": "OPERATING_CONCESSION",
+      "opportunityType": "CONCESSION",
+      "commercialCategory": "CONCESSION",
+      "evidencePathway": "PUBLIC_COMPETITIVE_PROCESS",
+      "commercialTrigger": "Third 2026 concession tender declared desert (both candidates excluded); Ayuntamiento announced fourth licitation 'as soon as possible' for 20-year hotel+restaurant exploitation",
+      "decisionEvidence": "Levante-EMV 2026-11-06: Mesa proposed desert; councillor Ignacio Reig commits to fourth tender ASAP; prior DOUE/Gobierto published exp. 10436/2026 (~€19.1M estimated value)",
+      "commercialRelevance": "VERIFIED_RELEVANT",
+      "commercialTiming": "0_6_MONTHS",
+      "commercialAccessibility": "ACCESSIBLE_PROBABLE",
+      "engagementRoute": "PUBLIC_PROCUREMENT",
+      "decisionParty": "Ajuntament de Xàtiva",
+      "priority": "PRIORITY_A",
+      "countsTowardFirst100": false,
+      "publicRfp": true,
+      "discoveryMode": "PUBLIC",
+      "currentDecisionStatus": "OPEN_RETENDER_ANNOUNCED",
+      "qualificationTier": "EXPANDED_PIPELINE_ADJACENT",
+      "hotelSpecificEvidence": true,
+      "prospectiveCommercialDecisionEvidence": true,
+      "saleOrExpirationOnly": false,
+      "persistEligible": true,
+      "notes": "Operating concession for existing hotel asset — adjacent (not first-100 BCT/MCT).",
+      "sources": [
+        {
+          "url": "https://www.levante-emv.com/costera/2026/11/06/tercer-reabrir-hotel-murta-xativa-136115285.html",
+          "publicationDate": "2026-11-06"
+        },
+        {
+          "url": "https://contratos.gobierto.es/licitaciones/5218828",
+          "publicationDate": "2026-09-09"
+        }
+      ]
+    },
+    {
+      "id": "areia-branca-revive-concession",
+      "discoveryPropertyId": "disc_cb2b_areia_branca_revive_2026",
+      "findingId": "find_cb2b_areia_branca_concession_2026",
+      "hotelName": "Antiga Colónia Balnear da Areia Branca (REVIVE)",
+      "physicalLocation": {
+        "country": "PT",
+        "stateProvince": "Lisboa / Lourinhã area",
+        "city": "Areia Branca",
+        "geographicClass": "VERIFIED"
+      },
+      "agreementType": "TOURISM_CONCESSION_50Y",
+      "opportunityType": "HOTEL_DEVELOPMENT",
+      "commercialCategory": "HOTEL_DEVELOPMENT",
+      "evidencePathway": "PUBLIC_COMPETITIVE_PROCESS",
+      "commercialTrigger": "Turismo de Portugal REVIVE concession for recovery/requalification and hotelaria/restauração exploitation — 50-year term; proposals due 2027-03-17",
+      "decisionEvidence": "Anúncio de procedimento n.º 27619/2026 / TED 807179-2026 published 2026-11-19; open procedure on VORTAL; CPV 55100000",
+      "commercialRelevance": "VERIFIED_RELEVANT",
+      "commercialTiming": "6_18_MONTHS",
+      "commercialAccessibility": "ACCESSIBLE_VERIFIED",
+      "engagementRoute": "PUBLIC_PROCUREMENT",
+      "decisionParty": "Instituto do Turismo de Portugal, IP",
+      "priority": "PRIORITY_A",
+      "countsTowardFirst100": false,
+      "publicRfp": true,
+      "discoveryMode": "PUBLIC",
+      "currentDecisionStatus": "OPEN_CONCESSION",
+      "qualificationTier": "EXPANDED_PIPELINE_ADJACENT",
+      "hotelSpecificEvidence": true,
+      "prospectiveCommercialDecisionEvidence": true,
+      "saleOrExpirationOnly": false,
+      "persistEligible": true,
+      "notes": "Development/concession for state property into hotel use — adjacent, not first-100 BCT/MCT.",
+      "sources": [
+        {
+          "url": "https://tendernation.io/opportunities/01a1f128-d435-72f7-834d-25e69d3e59d2/portugal-hotel-services-concessao-para-exploracao-turistica-da-antiga-coloni",
+          "publicationDate": "2026-11-19"
+        },
+        {
+          "url": "https://files.diariodarepublica.pt/cp_hora/2026/11/225/419977887.pdf",
+          "publicationDate": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "belvedere-vienna-pullman-completed",
+      "hotelName": "Hotel Am Belvedere (ex-Lindner Wien)",
+      "physicalLocation": { "country": "AT", "city": "Vienna" },
+      "disposition": "COMPLETED_AWARDED",
+      "reason": "VERKEHRSBUERO assumed ops 2026-11-16; Pullman (Accor) planned mid-2028 — brand+operator decided",
+      "countsTowardFirst100": false,
+      "persistEligible": false
+    },
+    {
+      "id": "garysburg-quality-inn-completed",
+      "hotelName": "Quality Inn Garysburg–Roanoke Rapids (ex-Super 8)",
+      "physicalLocation": { "country": "US", "stateProvince": "NC", "city": "Garysburg" },
+      "disposition": "COMPLETED_AWARDED",
+      "reason": "Sale Oct 2026 with Quality Inn plan; guest listings already show Quality Inn by Oct 2026",
+      "countsTowardFirst100": false,
+      "persistEligible": false
+    },
+    {
+      "id": "omni-mont-royal-deflag-watch",
+      "hotelName": "Hotel Mont-Royal (ex-Omni Mont-Royal)",
+      "physicalLocation": { "country": "CA", "city": "Montreal" },
+      "disposition": "DEFLAG_TO_OWNER_OPS_INSUFFICIENT",
+      "reason": "Omni management ends 2026-12-11; owner Society Developments/Ciancone taking independent ops — no public brand/operator search evidence",
+      "countsTowardFirst100": false,
+      "persistEligible": false
+    },
+    {
+      "id": "grand-continent-india-own-brand",
+      "hotelName": "Grand Continent Bengaluru affiliates (Indiranagar / Koramangala)",
+      "physicalLocation": { "country": "IN", "city": "Bengaluru" },
+      "disposition": "PORTFOLIO_OWN_BRAND_EXIT_NOT_BCT",
+      "reason": "Franchise non-renewal 2027/2029 to own brand — not seeking replacement franchise partners",
+      "countsTowardFirst100": false,
+      "persistEligible": false
+    },
+    {
+      "id": "ihg-pentahotels-franchise-completed",
+      "hotelName": "IHG 11 former PentaHotels (Europe)",
+      "disposition": "COMPLETED_AWARDED",
+      "reason": "IHG franchise conversion package signed — closed portfolio deal",
+      "countsTowardFirst100": false,
+      "persistEligible": false
+    },
+    {
+      "id": "verdi-handwritten-accor-completed",
+      "hotelName": "Verdi Accor Handwritten Collection conversions",
+      "disposition": "COMPLETED_AWARDED",
+      "reason": "Accor Handwritten Collection agreements signed",
+      "countsTowardFirst100": false,
       "persistEligible": false
     }
   ]

@@ -30,11 +30,19 @@ const keys = [
   "disc_cb2_jericho_beach_hostel_2026",
   "disc_cb2_torre_uriz_navarra_2026",
   "disc_cb2_white_sands_grand_turk_2026",
+  "disc_cb2b_shorebreak_huntington_2026",
+  "disc_cb2b_courtyard_denver_downtown_2026",
+  "disc_cb2b_hotel_murta_xativa_2026",
+  "disc_cb2b_areia_branca_revive_2026",
   "find_cb2_legacy_hotel_green_bay_bct_2026",
   "find_cb2_hotel_do_mel_gois_operator_2026",
   "find_cb2_jericho_beach_hostel_operator_2026",
   "find_cb2_torre_uriz_concession_2026",
   "find_cb2_white_sands_lease_ops_2026",
+  "find_cb2b_shorebreak_huntington_bct_2026",
+  "find_cb2b_courtyard_denver_bct_2026",
+  "find_cb2b_hotel_murta_concession_2026",
+  "find_cb2b_areia_branca_concession_2026",
 ];
 const out = {};
 for (const k of keys) {

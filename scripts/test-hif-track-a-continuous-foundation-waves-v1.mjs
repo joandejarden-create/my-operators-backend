@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import {
   HIF_TRACK_A_CONTINUOUS_FOUNDATION_WAVES,
   HIF_TRACK_A_CB2,
+  HIF_TRACK_A_CB2B,
   TRACK_A_WAVE_IDS,
   isTrackAContinuousWaveId,
   classifyAgreementVsOpportunity,
@@ -30,8 +31,11 @@ const scorePath = path.join(
 
 assert.equal(HIF_TRACK_A_CONTINUOUS_FOUNDATION_WAVES, "hif-track-a-continuous-foundation-waves-v1");
 assert.equal(HIF_TRACK_A_CB2, "hif-track-a-cb2-commercial-discovery-v1");
+assert.equal(HIF_TRACK_A_CB2B, "hif-track-a-cb2b-commercial-discovery-v1");
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cfa_hilton_trinidad_pos_2026"));
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2_legacy_hotel_green_bay_2026"));
+assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2b_shorebreak_huntington_2026"));
+assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2b_courtyard_denver_downtown_2026"));
 assert.equal(isTrackAContinuousWaveId("disc_cfa_hilton_trinidad_pos_2026"), true);
 assert.equal(isTrackAContinuousWaveId("disc_track_b_other"), false);
 
@@ -121,8 +125,25 @@ assert.equal(legacy.countsTowardFirst100, true);
 assert.equal(legacy.opportunityType, "BCT");
 assert.equal(legacy.publicRfp, false);
 assert.equal(legacy.agreementType, "UNRESOLVED_SOFT_BRAND_LICENSE");
-assert.equal(cb2Score.metrics.COMMERCIALLY_RELEVANT, 3);
+const shorebreak = cb2.candidates.find((c) => c.id === "shorebreak-huntington-bct");
+const courtyard = cb2.candidates.find((c) => c.id === "courtyard-denver-downtown-bct");
+const murta = cb2.candidates.find((c) => c.id === "hotel-murta-xativa-concession");
+assert.equal(shorebreak.countsTowardFirst100, true);
+assert.equal(shorebreak.opportunityType, "BCT");
+assert.equal(shorebreak.publicRfp, false);
+assert.equal(shorebreak.discoveryMode, "PRIVATE");
+assert.equal(courtyard.countsTowardFirst100, true);
+assert.equal(courtyard.opportunityType, "BCT");
+assert.equal(murta.countsTowardFirst100, false);
+assert.equal(murta.opportunityType, "CONCESSION");
+assert.equal(cb2.statusChecks.lakevilleInn.status, "STILL_OPEN_BCT");
+assert.equal(cb2.statusChecks.hiltonTrinidad.status, "STILL_OPEN_MCT");
+assert.equal(cb2.batchMetrics.first100AfterCb2b, 5);
+assert.equal(cb2Score.metrics.COMMERCIALLY_RELEVANT, 5);
+assert.equal(cb2Score.metrics.afterCb2b, 5);
 assert.ok(cb2Score.qualifiedIds.includes("legacy-hotel-green-bay-bct"));
+assert.ok(cb2Score.qualifiedIds.includes("shorebreak-huntington-bct"));
+assert.ok(cb2Score.qualifiedIds.includes("courtyard-denver-downtown-bct"));
 assert.equal(
   qualifiesPrincipalFirst100({
     countsTowardFirst100: true,
@@ -134,5 +155,8 @@ assert.equal(
   }),
   true,
 );
+assert.equal(qualifiesPrincipalFirst100(shorebreak), true);
+assert.equal(qualifiesPrincipalFirst100(courtyard), true);
+assert.equal(qualifiesPrincipalFirst100(murta), false);
 
 console.log("test-hif-track-a-continuous-foundation-waves-v1: OK");
