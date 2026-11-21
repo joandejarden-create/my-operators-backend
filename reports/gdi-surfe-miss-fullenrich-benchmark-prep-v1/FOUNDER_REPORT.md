@@ -100,8 +100,9 @@ Estimated credit exposure formula: `1 credit × distinct eligible contacts` (doc
 
 ## 8. PR status
 
-Opened for Integration Controller review (GDI chat does **not** merge).  
-Registered `ws-gdi` left dirty/unrelated — preserved. Exceptional WT used for this PR only.
+- **PR:** [#533](https://github.com/joandejarden-create/my-operators-backend/pull/533) — **OPEN**
+- GDI chat does **not** merge — Integration Controller owns merge + CI.
+- Registered `ws-gdi` left dirty/unrelated — preserved. Exceptional WT used for this PR only.
 
 ## 9. Remaining licensing requirements (unchanged HOLD)
 
