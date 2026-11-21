@@ -1,40 +1,33 @@
-# HIF V6 — Five-Country Concentration Report (Geography-Gated)
+# HIF V6 — Five-Country Concentration + Canonical Inventory
 
 **As of:** 2026-11-21  
 **Publication:** CUSTOMER_BLOCKED · **Spend:** $0  
-**Integration:** #510–#516/#518 MERGED · #517 IC merge with this reconcile
+**Integration:** #510–#516/#518/#519 MERGED · #517 carries this IC fold
 
-## Canonical progress toward 1,000 (post-#518 + geo gate)
+## Canonical progress toward 1,000
 
 | Measure | Count |
 |--------|------:|
-| #518 exact registry (US-heavy) | 192 |
-| Net-new geography-supported (GB) | 1 |
+| #518 exact registry | 192 |
+| + GB geography-verified undated | 1 |
+| + #519 name-free CMBS (active dated toward-1000) | 89 |
 | Geography-unverified HOLD | 38 |
-| Track B HOLD (unverified property link) | 14 |
-| Quarantined (name quality / invalid) | 20 |
-| **Toward 1,000 (canonical)** | **193** |
-| Remaining | 807 |
+| Track B HOLD | 14 |
+| Historical preserved (incl. #519 hist) | 100 |
+| **Toward 1,000 (canonical)** | **282** |
+| Remaining | 718 |
 
-### Obsolete claims (do not use)
-- PR #516 ~233 — pre-dedupe additive claim
-- Additive 194 / country-report 195 — corrected by #518 hotel-key registry then +1 GB geo row
+## Country distribution (qualified toward 1000)
 
-## Country ambitions (geography-supported qualified only)
+| Country | Count |
+|---------|------:|
+| US | 281 |
+| GB | 1 |
+| MX | 0 |
+| BR | 0 |
+| CA | 0 |
 
-| Country | Ambition min | Qualified toward 1000 | Notes |
-|---------|-------------:|----------------------:|-------|
-| United States | 300 | 192 | Nearly all of current registry |
-| Mexico | 150 | 0 | HOLD rows not counted |
-| Brazil | 150 | 0 | Track B HOLD/probes only |
-| United Kingdom | 150 | 1 | London. Morgans Hotel geo-supported undated |
-| Canada | 100 | 0 | Track B HOLD pending property verify |
+Franchise 224 · Management 58
 
-## Key findings
-- US dated CMBS incremental this concentration wave: 0.
-- Yield conversion/reflag clean 57 already inside the 192 — not additive.
-- Track B portals retrieved; CH key absent; HMLR supporting only.
-- Ownership enrichment remains deferred.
-
-## Next wave
-SEC Source Intelligence Audit (8-K / 10-K schedules / CMBS HTML / EX-10).
+## Obsolete claims
+233 / 194 / 195 / intermediate-193-without-#519 — superseded by this fold.
