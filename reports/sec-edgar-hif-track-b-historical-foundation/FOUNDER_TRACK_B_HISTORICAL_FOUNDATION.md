@@ -160,7 +160,7 @@ Track A Lakeville (`disc_cb1_lakeville_inn_mn_2026` → `recPXlLWkd63mLK5h` / `r
 | Test | `npm run test:hif-track-b-historical-foundation` → **PASS** |
 | Scripts | `hif-track-b-hotel-universe-coverage`, `hif-track-b-historical-research-batch`, `hif-track-b-foundation-persist-batch`, `hif-track-b-probe-hpc-country` |
 | Modules | `hif-track-b-historical-foundation-v1.js` + shared `hif-foundation-persistence-v1.js` (identical hash to Track A #538) |
-| PR | *opened after push — see IC handoff below* |
+| PR | **[#539](https://github.com/joandejarden-create/my-operators-backend/pull/539)** OPEN |
 | Merge | **Do not merge from Track B chat** — Integration Controller owns merge + post-merge sync |
 | Parallel | Track A **#538** remains OPEN |
 
