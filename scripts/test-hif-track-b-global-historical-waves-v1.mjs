@@ -6,6 +6,8 @@ import {
   resolveExplicitAgreementType,
   timingBucket,
   contractPersistAllowed,
+  namedInstrumentsInClause,
+  executedInstrumentsInClause,
 } from "../lib/hotel-intelligence/sec-edgar/hif-track-b-global-historical-waves-v1.js";
 import { isTrackAReservedId } from "../lib/hotel-intelligence/sec-edgar/hif-track-b-historical-foundation-v1.js";
 import { GLOBAL_WAVE_DOSSIERS, STAGED_PORTFOLIO_FINDINGS } from "../lib/hotel-intelligence/sec-edgar/hif-track-b-global-wave-dossiers-v1.js";
@@ -50,5 +52,11 @@ assert.match(
   STAGED_PORTFOLIO_FINDINGS.find((d) => d.physicalCountry === "GB").evidenceSnippet,
   /2005/,
 );
+
+const villahermosa =
+  "El hotel de Servicio Limitado Villahermosa terminó su contrato de operación y franquicia el 1 de julio de 2026 e iniciará operaciones bajo un esquema de arrendamiento con la marca InHouse.";
+assert.deepEqual(namedInstrumentsInClause(villahermosa), ["FRANCHISE", "OPERATING", "LEASE"]);
+assert.deepEqual(executedInstrumentsInClause(villahermosa), ["FRANCHISE", "OPERATING"]);
+assert.equal(executedInstrumentsInClause(villahermosa).includes("MANAGEMENT"), false);
 
 console.log("test-hif-track-b-global-historical-waves-v1: PASS");
