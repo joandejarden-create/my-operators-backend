@@ -131,4 +131,42 @@ assert.equal(
   true,
 );
 
+// LEASE: classify + retain incidentally; never a third list; never inflate Brand/Management
+const lease = classifyCommercialOpportunity({
+  hotelName: "Example Ground Lease Hotel",
+  hotelVerified: true,
+  hotelAttributed: true,
+  agreementType: "LEASE",
+  primaryDate: "2031-12-31",
+  owner: "Example Lessor LLC",
+  evidenceSnippet: "Ground lease expires December 31, 2031 for Example Ground Lease Hotel",
+  dateAudit: {
+    auditedMeaning: AUDITED_DATE_MEANING.LEASE_OR_LICENSE_EXPIRATION,
+    confidence: EVIDENCE_CONFIDENCE.HIGH,
+    decisionWindowEligibility: DECISION_WINDOW_ELIGIBILITY.ELIGIBLE,
+  },
+  sourceUrl: "https://www.sec.gov/Archives/edgar/data/1/lease.htm",
+  brand: "WouldNotMatter",
+  conversionSignals: { brand: true },
+  listHints: [PROSPECT_LIST.BRAND_CONVERSION, PROSPECT_LIST.MANAGEMENT_CONTRACT],
+});
+assert.notEqual(lease.tier, OPPORTUNITY_TIER.HOLD_QUARANTINE);
+assert.equal(lease.agreementType, "LEASE");
+assert.equal(lease.verifiedEndDate, "2031-12-31");
+
+const leaseProj = projectDualProspectLists([lease, tierA]);
+assert.equal(leaseProj.incidentalLeaseRetained.length, 1);
+assert.equal(leaseProj.incidentalLeaseRetained[0].retentionMode, "INCIDENTAL_EVIDENCE_ONLY");
+assert.equal(leaseProj.deferredLeaseIntelligence?.thirdProspectList, false);
+assert.equal(leaseProj.deferredLeaseIntelligence?.dedicatedDiscoveryAuthorized, false);
+assert.equal(
+  leaseProj.brandConversionTargets.filter((r) => r.agreementType === "LEASE").length,
+  0,
+);
+assert.equal(
+  leaseProj.managementContractTargets.filter((r) => r.agreementType === "LEASE").length,
+  0,
+);
+assert.ok(!Object.prototype.hasOwnProperty.call(PROSPECT_LIST, "LEASE"));
+
 console.log("test-commercial-target-discovery-v1: PASS");

@@ -6,7 +6,7 @@
 
 - Worldwide · historical + future dates · no discovery horizon
 - App filters only for geography/date ranges
-- Lease: classify/retain if encountered; dedicated lease research deferred
+- **Lease Intelligence deferred:** classify/retain incidental `LEASE` only — no third list, no dedicated/paid lease research, must not delay franchise or management waves (see `LEASE_INTELLIGENCE_DEFERRED.md`)
 - Exa Search + public records primary · Agent MANUAL_ESCALATION_ONLY · Jev shadow/deterministic default
 - Independent verification required for contractual facts · CUSTOMER_BLOCKED · no HPC
 

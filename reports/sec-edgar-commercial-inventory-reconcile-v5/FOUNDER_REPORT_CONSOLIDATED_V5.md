@@ -127,6 +127,14 @@ Named EX-10 MANAGEMENT hotels merged (portfolio/form-of-agreement excluded):
 Same hotel may appear on both without duplicating property identity.  
 CLOSED/SUPERSEDED archived separately; HOLD never inflates lists.
 
+### Lease Intelligence — deferred (not a third list)
+
+- `LEASE` remains a supported classification; incidental lease evidence is retained (`incidentalLeaseRetained`).
+- **No** `LEASE_TARGETS` prospect list · **no** dedicated lease discovery/spend · **no** dual-list inflation.
+- Architecture stays extensible to ground / operating / other hotel leases.
+- Reassess only after Brand Conversion + Management Contract commercial value is established.
+- Detail: `reports/sec-edgar-v5-final-verification/LEASE_INTELLIGENCE_DEFERRED.md`
+
 ---
 
 ## Phase 11 — Exa Search / Agent / Jev (status)
