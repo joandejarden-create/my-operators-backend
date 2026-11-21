@@ -9,8 +9,8 @@
 | Check | Result |
 |---|---|
 | REST base reachable | Yes (`api.company-information.service.gov.uk`) |
-| Unauthenticated `GET /company/11870286` | **HTTP 401** `Empty Authorization header` |
-| `COMPANIES_HOUSE_API_KEY` in local `.env` | **Absent** |
+| Unauthenticated company profile GET | **HTTP 401** (`Empty Authorization header`) |
+| `COMPANIES_HOUSE_API_KEY` in local `.env` | **Absent** (at sample time) |
 | Credentials committed | **No** |
 
 ## Required founder setup (authorized key)
@@ -18,16 +18,10 @@
 1. Sign in at https://developer.company-information.service.gov.uk/
 2. Create a **Live** application (Dealality HIF research).
 3. Create a **REST** API key (not stream).
-4. Store only in local `.env`:
+4. Store only in local `.env` as `COMPANIES_HOUSE_API_KEY` (never commit; never paste into reports, chat, or CI logs).
+5. Authentication: HTTP Basic with the REST API key as the username and an empty password. Prefer the HIF client (`lib/hotel-intelligence/sec-edgar/companies-house-client-v1.js` when present) or an Authorization header built at runtime from the environment variable — do **not** paste keys into shell history examples in docs.
 
-```bash
-COMPANIES_HOUSE_API_KEY=<rest-api-key>
-```
-
-5. Auth pattern: HTTP Basic, API key as username, empty password  
-   Example: `curl -u "$COMPANIES_HOUSE_API_KEY:" https://api.company-information.service.gov.uk/company/01051132`
-
-Docs: https://developer.company-information.service.gov.uk/authentication/  
+Official docs: https://developer.company-information.service.gov.uk/authentication/  
 Specs: https://developer-specs.company-information.service.gov.uk/
 
 ## Public HTML sample (lawful interim)
@@ -48,3 +42,7 @@ Governance preserved: registered office ≠ hotel; company-name “Hotel Managem
 2. Extract hotel-named filings / charges; independent property match to Hotel Explorer identities.
 3. Expand BR CVM / JP EDINET / SGX / HKEX / SEDAR+ beyond access probes into hotel-specific disclosures.
 4. Update weekly regional scorecard with only independently verified increments.
+
+## Gitleaks note (PR #509)
+
+A prior documentation example used a shell Basic-auth form that tripped the `curl-auth-user` rule. That line referenced only an environment-variable placeholder — **not a live credential**. Rewritten above to avoid the false-positive pattern without weakening repository secret scanning.
