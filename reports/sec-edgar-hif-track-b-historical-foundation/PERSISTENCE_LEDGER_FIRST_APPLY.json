@@ -1,0 +1,75 @@
+{
+  "asOf": "2026-11-21T16:11:00.000Z",
+  "mode": "APPLY_FIRST",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "stream": "TRACK_B",
+  "researchCostUsd": 0,
+  "note": "Initial create batch before idempotent re-apply (subsequent APPLY = 6 NOOP).",
+  "operations": [
+    {
+      "id": "disc_tb_yorkville_royal_sonesta_toronto_2025",
+      "action": "CREATE",
+      "table": "inventory",
+      "airtableId": "recCqubHHjbha20Kl"
+    },
+    {
+      "id": "find_tb_yorkville_sonesta_hma_amend_2043",
+      "action": "CREATE",
+      "table": "findings",
+      "airtableId": "rec2yMruTvZzW9mSI"
+    },
+    {
+      "id": "disc_tb_sonesta_es_toronto_thornhill_2025",
+      "action": "CREATE",
+      "table": "inventory",
+      "airtableId": "recZIF5yHqHN5qPzB"
+    },
+    {
+      "id": "find_tb_thornhill_sonesta_hma_amend_2043",
+      "action": "CREATE",
+      "table": "findings",
+      "airtableId": "rechGbGPhDmkkzt4w"
+    },
+    {
+      "id": "disc_tb_hgi_sp_reboucas_grand_mercure_2026",
+      "action": "CREATE",
+      "table": "inventory",
+      "airtableId": "rec9CS84hmFPJQMU8"
+    },
+    {
+      "id": "find_tb_reboucas_hgi_to_grand_mercure_2026",
+      "action": "CREATE",
+      "table": "findings",
+      "airtableId": "recZLKPqW3ZOB5z8o"
+    },
+    {
+      "id": "disc_tb_choice_canada_mfa_transition_2025",
+      "action": "STAGED",
+      "reason": "PORTFOLIO_SCOPE_STAGED_NOT_HOTEL_INVENTORY"
+    },
+    {
+      "id": "disc_tb_norte19_city_express_brand_migration_2025",
+      "action": "STAGED",
+      "reason": "PORTFOLIO_WITHOUT_HOTEL_LEVEL_IDS"
+    }
+  ],
+  "summary": {
+    "creates": 6,
+    "updates": 0,
+    "noops": 0,
+    "conflicts": 0,
+    "staged": 2,
+    "researchOnly": 2,
+    "skippedTrackA": 0
+  },
+  "trackACoordination": {
+    "skippedLakeville": true,
+    "reservedIds": [
+      "disc_cb1_lakeville_inn_mn_2026",
+      "find_cb1_lakeville_bct_brand_search_2026"
+    ],
+    "airtableInventoryId": "recPXlLWkd63mLK5h",
+    "airtableFindingId": "recjL2vx3ExNlReF1"
+  },
+  "schemaGaps": []
+}
