@@ -39,7 +39,8 @@ if (!token) {
   process.exit(2);
 }
 
-const OUT = path.join(ROOT, "reports/sec-edgar-hif-track-b-global-historical-waves");
+const batchArg = (process.argv.find((a) => a.startsWith("--batch-dir=")) || "").split("=")[1];
+const OUT = path.resolve(ROOT, batchArg || "reports/sec-edgar-hif-track-b-global-historical-waves");
 const batch = JSON.parse(fs.readFileSync(path.join(OUT, "WAVE_DOSSIERS.json"), "utf8"));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -158,11 +159,36 @@ for (const d of batch.dossiers || []) {
     continue;
   }
 
-  const existingInv = await findByFormula(
+  let existingInv = await findByFormula(
     FOUNDATION_DESTINATIONS.discoveryInventory.tableId,
     `{${MAP_DISCOVERY_INVENTORY.discoveryPropertyId}}="${d.discoveryPropertyId}"`,
   );
   await sleep(160);
+  if (!existingInv && d.hotelNameNormalized) {
+    try {
+      const safeName = String(d.hotelNameNormalized).replace(/"/g, "");
+      const byName = await findByFormula(
+        FOUNDATION_DESTINATIONS.discoveryInventory.tableId,
+        `LOWER({${MAP_DISCOVERY_INVENTORY.hotelNameNormalized}})="${safeName}"`,
+      );
+      await sleep(140);
+      if (byName) {
+        existingInv = byName;
+        ledger.operations.push({
+          id: d.discoveryPropertyId,
+          action: "LINK_EXISTING_NAME",
+          airtableId: byName.id,
+          table: "inventory",
+        });
+      }
+    } catch (err) {
+      ledger.operations.push({
+        id: d.discoveryPropertyId,
+        action: "NAME_LOOKUP_SKIPPED",
+        error: String(err?.message || err).slice(0, 240),
+      });
+    }
+  }
 
   const hpcStatus =
     d.hpcMatchStatus === "MATCHED_UNIQUE_NAME_AND_COUNTRY"
@@ -194,7 +220,7 @@ for (const d of batch.dossiers || []) {
       evidenceConfidence: d.evidenceConfidence,
       hpcMatchStatus: hpcStatus,
       sourceUrl: d.sourceUrl,
-      discoveryMethod: "TRACK_B_GLOBAL_HISTORICAL_WAVES",
+      discoveryMethod: d.discoveryMethod || "TRACK_B_GLOBAL_HISTORICAL_WAVES",
       lifecycleStatus: hpcStatus === "MATCHED" ? "HPC_MATCHED" : "IDENTITY_VERIFIED",
       notes: `CUSTOMER_BLOCKED | Track B global waves | ${d.wave} | status=${d.reconciliation?.currentStatusClass || ""} | agreement=${d.agreementType || "UNRESOLVED"}`,
     });
@@ -245,6 +271,7 @@ for (const d of batch.dossiers || []) {
         commercialThesis: d.evidenceSnippet,
         decisionEvidence: d.evidenceSnippet,
         nextDecisionDate: isoOrNull(d.milestoneDate || d.expirationDate),
+        sourcePublicationDate: isoOrNull(d.sourcePublicationDate),
         sourceUrl: d.sourceUrl,
         evidenceConfidence: d.evidenceConfidence,
         verificationStatus: "EVIDENCE_SUPPORTED",
