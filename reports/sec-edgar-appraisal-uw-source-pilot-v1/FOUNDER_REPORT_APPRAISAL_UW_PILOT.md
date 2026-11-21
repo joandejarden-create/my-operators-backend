@@ -32,7 +32,9 @@ CUSTOMER_BLOCKED · no third product · no Meta · no paywall bypass
 Hotel **appraisal reports** frequently assume continued franchise affiliation and rarely publish independently usable franchise/HMA expiration dates. **Underwriting annexes / CMBS schedules** that already feed HIF remain the higher-yield public path for hotel-specific franchise expiration columns. European free hits were mostly criteria/registry context, not hotel-specific contract schedules.
 
 ## Permanent adapter recommendation
-- **DO_NOT_PRIORITIZE_STANDALONE_APPRAISAL_ADAPTER**
+- **DO_NOT_PRIORITIZE_STANDALONE_APPRAISAL_ADAPTER** — **FOUNDER ACCEPTED & LOCKED (2026-11-21)**
+- 22 source-priority pointers routed into Franchise/Management discovery queues (`reports/sec-edgar-hif-v6-appraisal-policy/`)
+- No standalone appraisal adapter · no paid appraisal research from this pilot · incidental appraisal evidence retained · valuation assumptions ≠ contractual terms
 - Permanent adapter now: **false**
 - Standalone hotel appraisal reports in this 50-doc free pilot predominantly assume continued franchise affiliation and did not yield independently usable hotel-specific franchise/HMA expiration dates.
 - CMBS / underwriting annexes remain the high-yield public path when they contain Franchise Expiration Date columns — already covered by existing HIF CMBS extractors; this pilot did not justify a separate appraisal product.
