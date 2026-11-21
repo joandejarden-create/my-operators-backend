@@ -56,9 +56,22 @@
 
 ## Cross-track
 
-- **Track C:** handoff JSON for AHIP, Maldives plots, Cedar Lake, Radisson La Crosse  
+- **Track C:** opportunity-first AHIP portfolio handoff (`TRACK_C_HANDOFF.json` + `IC_AHIP_PORTFOLIO_TRACK_C_HANDOFF.json`) — one parent MCT (`disc_cb4_ahip_remaining_portfolio_mct_2026` / `recWQQKIVI89cJnSV`); **19** remaining named property identities; **0** existing HPC links; **no fictional portfolio HPC**  
 - **Track B:** no competing active opportunity writes  
 - **Hotel Explorer priorities:** AHIP remaining assets, La Crosse, Cedar Lake, carry opens (Embassy ONE, Shorebreak, Denver)
+
+## IC commercial qualification (PR #547)
+
+| Check | Result |
+|-------|--------|
+| Aimbridge / ONE Lodging exit | **2027-04-30** (extension exercised 2026-10-21; settlement originally Jan 31 2027) |
+| Replacement management required | **Yes** (FLI assumes retain a replacement hotel manager) |
+| Selection open | **Yes** |
+| Replacement agreements awarded | **No** (not disclosed) |
+| One vs multiple managers | Singular FLI phrasing only — **not an explicit multi-manager decision** |
+| Affected portfolio | **Not all historical AHIP hotels** — Sept 30 2026: **22** / 2,303 rooms; remaining named affected: **19** after 2026 dispositions |
+| Decision-maker | **AHIP REIT LP** (GP: American Hotel Income Properties REIT (GP) Inc.) |
+| First-100 counting | **One** portfolio MCT → cumulative **6/100** |
 
 ## Airtable
 
