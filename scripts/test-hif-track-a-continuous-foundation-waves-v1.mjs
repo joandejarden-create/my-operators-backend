@@ -121,8 +121,11 @@ assert.equal(cb2.priorMergedPr, 541);
 assert.equal(cb2.statusChecks.lakevilleInn.status, "STILL_OPEN_BCT");
 assert.equal(cb2.statusChecks.hiltonTrinidad.status, "STILL_OPEN_MCT");
 const legacy = cb2.candidates.find((c) => c.id === "legacy-hotel-green-bay-bct");
-assert.equal(legacy.countsTowardFirst100, true);
-assert.equal(legacy.opportunityType, "BCT");
+assert.equal(legacy.countsTowardFirst100, false);
+assert.equal(legacy.openCompetitiveBrandSelection, false);
+assert.equal(legacy.brandFamilyCommitmentClass, "PREFERRED_BRAND_FAMILY_WITHOUT_BINDING_COMMITMENT");
+assert.equal(legacy.collectionSelectionClass, "INTRA_BRAND_FAMILY_COLLECTION_SELECTION");
+assert.equal(legacy.commercialAccessibility, "ACCESS_LIMITED_PREFERRED_BRAND_FAMILY");
 assert.equal(legacy.publicRfp, false);
 assert.equal(legacy.agreementType, "UNRESOLVED_SOFT_BRAND_LICENSE");
 const shorebreak = cb2.candidates.find((c) => c.id === "shorebreak-huntington-bct");
@@ -138,10 +141,12 @@ assert.equal(murta.countsTowardFirst100, false);
 assert.equal(murta.opportunityType, "CONCESSION");
 assert.equal(cb2.statusChecks.lakevilleInn.status, "STILL_OPEN_BCT");
 assert.equal(cb2.statusChecks.hiltonTrinidad.status, "STILL_OPEN_MCT");
-assert.equal(cb2.batchMetrics.first100AfterCb2b, 5);
-assert.equal(cb2Score.metrics.COMMERCIALLY_RELEVANT, 5);
-assert.equal(cb2Score.metrics.afterCb2b, 5);
-assert.ok(cb2Score.qualifiedIds.includes("legacy-hotel-green-bay-bct"));
+assert.equal(cb2.statusChecks.legacyHotelGreenBay.status, "CORRECTED_NOT_OPEN_COMPETITIVE_BCT");
+assert.equal(cb2.batchMetrics.first100AfterIcQualification, 4);
+assert.equal(cb2Score.metrics.COMMERCIALLY_RELEVANT, 4);
+assert.equal(cb2Score.metrics.afterIcQualification, 4);
+assert.ok(!cb2Score.qualifiedIds.includes("legacy-hotel-green-bay-bct"));
+assert.ok(cb2Score.excludedConversionIntelligence.includes("legacy-hotel-green-bay-bct"));
 assert.ok(cb2Score.qualifiedIds.includes("shorebreak-huntington-bct"));
 assert.ok(cb2Score.qualifiedIds.includes("courtyard-denver-downtown-bct"));
 assert.equal(
@@ -157,6 +162,7 @@ assert.equal(
 );
 assert.equal(qualifiesPrincipalFirst100(shorebreak), true);
 assert.equal(qualifiesPrincipalFirst100(courtyard), true);
+assert.equal(qualifiesPrincipalFirst100(legacy), false);
 assert.equal(qualifiesPrincipalFirst100(murta), false);
 
 console.log("test-hif-track-a-continuous-foundation-waves-v1: OK");

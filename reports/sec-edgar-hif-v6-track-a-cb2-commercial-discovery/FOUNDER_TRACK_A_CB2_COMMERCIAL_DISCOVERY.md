@@ -1,111 +1,72 @@
-# HIF Track A — CB2 / CB2b Commercial Opportunity Discovery
+# HIF Track A — CB2 Commercial Opportunity Discovery (IC Qualification)
 
 **As of:** 2026-11-21  
 **Publication:** CUSTOMER_BLOCKED  
 **Research spend:** **$0**  
-**Branch:** `feat/hif-v6-track-a-cb2-commercial-discovery`  
-**Baseline:** `origin/main` `81425a067`  
-**Open PR:** **#544** (updated with CB2b)  
-**E2E classification:** **PERSISTENCE_VALIDATED** (apply + idempotent read-back) — not FULL_E2E / not CUSTOMER_PUBLISHED
+**PR:** #544  
+**E2E classification:** **PERSISTENCE_VALIDATED** — not FULL_E2E / not CUSTOMER_PUBLISHED  
+**IC qualification:** Applied on PR tip before merge (Legacy Green Bay corrected)
 
 ---
 
-## Checkpoint (CB2b resume)
+## Status re-checks (affirmative evidence)
 
-| Item | Result |
-|------|--------|
-| Prior PR #541 | **MERGED** |
-| Prior CB2 commit | `94098da3f` on PR #544 — preserved; no reset |
-| Uncommitted at CB2b start | Clean working tree (no discard) |
-| Duplicate discovery / Airtable | Existing CB2 + #541 IDs = **NOOP** only |
+| Hotel | Result | Basis |
+|-------|--------|-------|
+| **Lakeville Inn** (US) | **STILL OPEN BCT** | Affirmative owner/CEO brand-search statement (Star Tribune 2026-04-09); independent as of Chamber 2026-04-13; no superseding reflag. Absence of newer announcement alone insufficient — affirmative decision evidence retained. |
+| **Hilton Trinidad** (TT) | **STILL OPEN MCT** | Affirmative short-term HMA (6+6) while longer-term arrangements evaluated; HotelTT EOI active (~2027-01-29). Not merely absence of award. |
 
 ---
 
-## Status re-checks (CB2b)
+## Legacy Hotel, Green Bay — IC commercial qualification
 
-| Hotel | Prior | CB2b result |
-|-------|-------|------------|
-| **Lakeville Inn** (US) | First-100 BCT | **STILL OPEN** — no brand announcement |
-| **Hilton Trinidad** (TT) | First-100 MCT | **STILL OPEN** — HMA + HotelTT EOI; no award |
-| **Legacy Hotel Green Bay** | First-100 BCT | **STILL OPEN** — Marriott soft brand; collection unnamed |
+| Spectrum question | Finding |
+|-------------------|---------|
+| Open competitive brand selection | **No** — sources state Marriott soft brand |
+| Preferred brand family without binding commitment | **Yes** — public owner plan; franchise contract not disclosed |
+| Committed brand affiliation | **Not proven** from public filings (no named franchise/collection agreement) |
+| Intra-brand-family collection selection | **Yes** — collection unnamed within Marriott soft brands |
+| Unknown contractual commitment | **Yes** — binding instrument not published |
+
+**Verdict:** Unnamed collection ≠ open competitive accessibility. **Remove from first-100 accessible numerator.** Retain conversion intelligence.
+
+Sources reviewed: Hotel Management 2026-10-22; Hospitality Net 2026-10-26; Pass Brief 2026-10-23; Hotel Business corroboration.
 
 ---
 
-## 1. Hotels researched (CB2 + CB2b cumulative)
+## Corrected first-100
 
-**34** distinct hotels/sites (US, CA, MX, BR, GB, TT, PT, ES, TC, AT, IN).
+| Metric | Pre-IC (reported) | Post-IC |
+|--------|------------------:|--------:|
+| Open BCT | 4 | **3** (Lakeville + Shorebreak + Courtyard Denver) |
+| Open MCT | 1 | **1** (Hilton Trinidad) |
+| **First-100** | 5 / 100 | **4 / 100** (Δ +2 vs #541; Legacy corrected out) |
+| Commercially relevant / accessible | 5 | **4** |
+| Conversion intelligence retained (not first-100) | — | **1** (Legacy) |
 
-## 2. New opportunities (CB2b delta)
+---
 
-| Opportunity | Type | Status |
-|-------------|------|--------|
-| **Kimpton Shorebreak, Huntington Beach, CA** | **BCT** (private franchise/brand eval) | **NEW first-100** |
-| **Courtyard Denver Downtown, CO** | **BCT** (franchise expires 2027; multi-path eval) | **NEW first-100** |
-| Hotel Murta, Xàtiva, ES | Concession retender | OPEN (4th tender ASAP) |
-| Antiga Colónia Areia Branca, PT | REVIVE hotel concession 50y | OPEN (due 2027-03-17) |
+## Expanded pipeline (preserved separately)
 
-### Rejected / completed this batch (not persisted as open)
+| Opportunity | Class | Submissions |
+|-------------|-------|-------------|
+| Hotel do Mel (PT) | Operating / new-build adjacent | Open |
+| Jericho Beach Hostel (CA) | Operator **lease** incidental — deferred dedicated lease research | **Open** due 2026-11-25 |
+| Torre Uriz (ES) | Concession award-watch | Closed / award pending |
+| White Sands (TC) | Lease/redevelopment/ops award-watch — deferred dedicated lease research | **Closed** ~2026-10-09; 6 submissions; award pending |
+| Dorset portfolio / George Hotel | Award-watch (carried) | Cabinet / watch |
 
-- Belvedere Vienna → Pullman + VERKEHRSBUERO (**awarded**)
-- Super 8 Garysburg → Quality Inn (**completed**)
-- IHG PentaHotels / Verdi Handwritten (**signed**)
-- Omni Mont-Royal → owner independent ops (**deflag insufficient**)
-- Grand Continent India → own-brand non-renewal (**not seeking partners**)
+---
 
-## 3. First-100 BCT/MCT
-
-| Metric | Count |
-|--------|------:|
-| Open BCT | **4** (Lakeville + Legacy + Shorebreak + Courtyard Denver) |
-| Open MCT | **1** (Hilton Trinidad) |
-| **First-100** | **5 / 100** (Δ +2 vs CB2) |
-| Commercially relevant / accessible | **5 / 5** |
-| Outreach-ready | **0** |
-
-### Shorebreak — Huntington Beach — PRIORITY A BCT (private)
-
-- DiamondRock: Kimpton agreement **expired / month-to-month**
-- Owner evaluating retain vs rebrand vs independent (Q2/Q3 2026)
-- Sources: Motley Fool DRH Q3 2026-11-04; citybiz 2026-07-31
-
-### Courtyard Denver Downtown — PRIORITY A BCT (private / portfolio)
-
-- Franchise expires **2027**; multi-path eval including brand change / independent / expand / sale
-- Sources: DRH Q3 2026-11-04; DRHC portfolio
-
-## 4–7. Expanded · matrix · public/private
-
-See `MATRIX_COUNTRY_TIMING_DEALTYPE_FRESHNESS.json` and `FIRST_100_SCORECARD.json`.
-
-| Pathway | First-100 | Expanded open |
-|---------|----------:|--------------:|
-| Private | 4 | — |
-| Public | 1 | 4 (+ Murta retender, Areia Branca) |
-
-MX remains UNDER_RESEARCHED for new open principals.
-
-## 8–9. Airtable
+## Airtable
 
 | Action | Result |
 |--------|--------|
-| CB2 creates (prior) | 10 |
-| CB2b creates | **8** (4 inventory + 4 findings) |
-| CB2b apply NOOPs | **14** (Lakeville/Trinidad/Legacy + prior CB2) |
-| Idempotent retry | **22** NOOPs |
-| Conflicts | **0** |
-| HPC / schema | **0** |
+| Creates (CB2+CB2b) | **18** preserved (10+8; no re-create) |
+| Idempotent no-ops | **22** evidence retained |
+| IC update | Non-destructive PATCH on Legacy finding `recAVM0frtNV6tzLJ` + inventory notes; prior classification preserved in Notes history |
 | Publication | CUSTOMER_BLOCKED |
 
-CB2b Airtable IDs: Shorebreak inv `recTnywid3vtCErTu` / find `recrgvSQeupLLKe0B` · Courtyard Denver `recmomZidWqHS7vTv` / `recBL4VUbarrWCUDS` · Hotel Murta `recsX2Ug2x9tdSBZO` / `recaKFVNNO9cgTE2D` · Areia Branca `rec6zL8zx4ldHZbnw` / `rec1CJcEItR3QpyjH`
+---
 
-Ledgers: `PERSISTENCE_LEDGER_DRY_RUN.json` · `PERSISTENCE_LEDGER_APPLY.json` · `PERSISTENCE_LEDGER_IDEMPOTENT.json` · `PERSISTENCE_LEDGER_FIRST_APPLY.json`
-
-## 10. Cost, tests, PR
-
-| Item | Value |
-|------|-------|
-| Cost | **$0** |
-| Tests | `test:hif-track-a-continuous-foundation` · `test:hif-foundation-persistence` · `test:hif-v7-commercial-dimensions` |
-| PR | **#544** — Integration Controller only — **do not merge from Track A** |
-
-**CUSTOMER_BLOCKED**
+**CUSTOMER_BLOCKED** — no customer publication · no weekly automation
