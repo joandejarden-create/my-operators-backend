@@ -1,0 +1,699 @@
+{
+  "version": "tier-b-enrichment-queue-v5",
+  "note": "All Tier B remain in research scope. Future-dated prioritized for enrichment; historical for status resolution. No horizon exclusion.",
+  "priorities": {
+    "FUTURE_DATED_ENRICH_FIRST": "owner, management company, notice period, current status, decision-makers",
+    "HISTORICAL_STATUS_RESOLUTION": "RENEWED_VERIFIED | EXTENDED_VERIFIED | REFLAGGED_VERIFIED | TERMINATED_VERIFIED | REPLACED_VERIFIED | CURRENT_STATUS_VERIFIED | HISTORICAL_EXPIRATION_STATUS_UNKNOWN | FURTHER_RESEARCH_REQUIRED"
+  },
+  "constraints": {
+    "noHpcWrites": true,
+    "publicationState": "CUSTOMER_BLOCKED",
+    "noPaidPeopleEnrichment": true,
+    "researchHorizonFilter": "NONE"
+  },
+  "futureDated": [
+    {
+      "hotel": "Hampton Inn Joplin",
+      "end": "2033-01-31",
+      "months": 74,
+      "brand": "Hampton",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1532799/000153949718000531/n1196_x19-424b2.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Hampton Inn Marion",
+      "end": "2033-02-28",
+      "months": 75,
+      "brand": "Hampton",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1532799/000153949718000531/n1196_x19-424b2.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Fairfield Inn – Oak Creek",
+      "end": "2029-06-22",
+      "months": 31,
+      "brand": "Fairfield",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Holiday Inn Express – Fond Du Lac",
+      "end": "2035-06-01",
+      "months": 103,
+      "brand": "Holiday Inn",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Baymont Inn – Madison",
+      "end": "2036-01-31",
+      "months": 110,
+      "brand": null,
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Holiday Inn Express - Oshkosh",
+      "end": "2027-12-28",
+      "months": 13,
+      "brand": "Holiday Inn",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Holiday Inn Express - Milwaukee Airport",
+      "end": "2030-06-22",
+      "months": 43,
+      "brand": "Holiday Inn",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Homewood Suites Memphis Southwind",
+      "end": "2029-03-31",
+      "months": 28,
+      "brand": "Homewood Suites",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1005007/000153949718000821/n1234_424b2-x11.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Hampton Inn Memphis Southwind",
+      "end": "2029-03-31",
+      "months": 28,
+      "brand": "Hampton",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1005007/000153949718000821/n1234_424b2-x11.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "The Residence Inn by Marriott South Beach",
+      "end": "2046-12-31",
+      "months": 241,
+      "brand": "Residence Inn",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949719002159/n1872_424b2-x20.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Hilton Cincinnati Netherland Plaza",
+      "end": "2029-11-30",
+      "months": 36,
+      "brand": "Hilton Hotels & Resorts",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949719002159/n1872_424b2-x20.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "The Westin Book Cadillac",
+      "end": "2032-12-31",
+      "months": 73,
+      "brand": "Westin",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Homewood Suites Mobile East Bay Daphne",
+      "end": "2032-03-31",
+      "months": 64,
+      "brand": "Homewood Suites",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Hampton Inn Mobile East Bay Daphne",
+      "end": "2032-03-31",
+      "months": 64,
+      "brand": "Hampton",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Hilton Garden Inn Mobile East Bay Daphne",
+      "end": "2032-03-31",
+      "months": 64,
+      "brand": "Hilton Hotels & Resorts",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "Holiday Inn Express Trinidad",
+      "end": "2035-01-10",
+      "months": 98,
+      "brand": "Holiday Inn",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    },
+    {
+      "hotel": "SpringHill Suites Denver Airport",
+      "end": "2035-12-30",
+      "months": 109,
+      "brand": null,
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1583077/000114420417018003/v462888_ex10-8.htm",
+      "next": "SEARCH_NOTICE_PROVISIONS_THEN_OWNER_ENRICHMENT"
+    }
+  ],
+  "historical": [
+    {
+      "hotel": "Hilton Garden Inn Joplin",
+      "end": "2026-10-31",
+      "months": -1,
+      "brand": "Hilton Hotels & Resorts",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1532799/000153949718000531/n1196_x19-424b2.htm"
+    },
+    {
+      "hotel": "Hampton Inn Mount Vernon",
+      "end": "2020-10-31",
+      "months": -73,
+      "brand": "Hampton",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1532799/000153949718000531/n1196_x19-424b2.htm"
+    },
+    {
+      "hotel": "Hampton Inn Anderson",
+      "end": "2020-05-31",
+      "months": -78,
+      "brand": "Hampton",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1532799/000153949718000531/n1196_x19-424b2.htm"
+    },
+    {
+      "hotel": "Holiday Inn – Madison West",
+      "end": "2020-07-21",
+      "months": -76,
+      "brand": "Holiday Inn",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm"
+    },
+    {
+      "hotel": "Comfort Inn & Suites - Appleton Airport",
+      "end": "2024-07-30",
+      "months": -28,
+      "brand": "Comfort Inn",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm"
+    },
+    {
+      "hotel": "Comfort Inn & Suites - Milwaukee Airport",
+      "end": "2019-06-01",
+      "months": -89,
+      "brand": "Comfort Inn",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm"
+    },
+    {
+      "hotel": "Comfort Inn & Suites - Madison West",
+      "end": "2025-05-22",
+      "months": -18,
+      "brand": "Comfort Inn",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm"
+    },
+    {
+      "hotel": "Comfort Inn & Suites – Fond Du Lac (2)",
+      "end": "2025-12-23",
+      "months": -11,
+      "brand": "Comfort Inn",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm"
+    },
+    {
+      "hotel": "Courtyard Larkspur Landing Marin County",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard San Mateo Foster City",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard San Jose Cupertino",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Boulder",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Los Angeles Torrance Palos Verdes",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Los Angeles Hacienda Heights",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Seattle South Center",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Nashville Airport",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Palm Springs",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Portland Beaverton",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Atlanta Perimeter Center",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Detroit Livonia",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard St. Louis Creve Coeur",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Lincroft Red Bank",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Rye",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Fresno",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Tampa Westshore",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Boston Andover",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Detroit Metro Airport",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Denver Tech Center",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Charlottesville North",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard St. Petersburg Clearwater",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Fort Lauderdale Plantation",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard West Palm Beach",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Chicago Lincolnshire",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Phoenix Mesa",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Chicago Waukegan Gurnee",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Chicago Highland Park",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Bakersfield",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Norwalk",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Kansas City Overland Park Metcalf",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Silver Spring North",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Raleigh Cary",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard New Haven Wallingford",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Chicago Oakbrook Terrace",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Indianapolis Castleton",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Annapolis",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Greenville Haywood Mall",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Minneapolis St Paul Airport",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard San Antonio Downtown Market Square",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Denver Stapleton",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard St. Louis Westport Plaza",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Dallas Plano Parkway",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Phoenix North Metrocenter",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Dallas Richardson at Spring Valley",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Birmingham Homewood",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Atlanta Airport South",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Atlanta Gwinnett Mall",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Poughkeepsie",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Memphis Airport",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Charlotte South Park",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    },
+    {
+      "hotel": "Courtyard Philadelphia Devon",
+      "end": "2025-12-31",
+      "months": -11,
+      "brand": "Courtyard",
+      "statusClass": "HISTORICAL_EXPIRATION_STATUS_UNKNOWN",
+      "next": "VERIFY_RENEWAL_OR_SUCCESSOR_STATUS",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000474/n2032_x6-424h.htm"
+    }
+  ],
+  "counts": {
+    "future": 17,
+    "historical": 60,
+    "total": 77
+  }
+}

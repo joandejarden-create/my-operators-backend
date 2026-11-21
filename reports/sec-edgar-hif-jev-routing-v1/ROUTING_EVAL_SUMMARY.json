@@ -1,0 +1,68 @@
+{
+  "version": "hif-jev-routing-eval-v1",
+  "evaluatedAt": "2026-11-21T01:42:42.795Z",
+  "mode": "LIVE_SHADOW",
+  "jevEnabled": true,
+  "jevConfig": {
+    "jevConfigPresent": true,
+    "authMode": "Bearer token via JEZ_API_KEY|JEV_API_KEY|TYPESAFE_API_KEY",
+    "model": "jev-1.13.0",
+    "endpoint": "https://api.typesafe.ai/v1/systemone",
+    "timeoutMs": 12000,
+    "shadowDefault": true,
+    "enabled": true,
+    "version": "gdi_jev_decision_v1.1"
+  },
+  "jevBlocked": null,
+  "jevSpendUsd": 0.000824,
+  "jevCalls": 28,
+  "ceilingUsd": 1,
+  "caseCount": 30,
+  "scores": {
+    "alwaysAgent": {
+      "n": 30,
+      "oracleMatchRate": 3.3,
+      "agentEscalations": 30,
+      "agentEscalationPrecision": 6.7,
+      "agentEscalationRecall": 100,
+      "falseAgentEscalations": 28,
+      "estimatedAgentSpendUsdIfFollowed": 0.75
+    },
+    "deterministic": {
+      "n": 30,
+      "oracleMatchRate": 26.7,
+      "agentEscalations": 22,
+      "agentEscalationPrecision": 9.1,
+      "agentEscalationRecall": 100,
+      "falseAgentEscalations": 20,
+      "estimatedAgentSpendUsdIfFollowed": 0.55
+    },
+    "jevShadow": {
+      "n": 30,
+      "oracleMatchRate": 16.7,
+      "agentEscalations": 0,
+      "agentEscalationPrecision": null,
+      "agentEscalationRecall": 0,
+      "falseAgentEscalations": 0,
+      "estimatedAgentSpendUsdIfFollowed": 0
+    }
+  },
+  "recommendation": {
+    "policy": "DETERMINISTIC_ONLY",
+    "autoEnableJev": false,
+    "rationale": [
+      "Measured Jev shadow benefit does not justify additional cost/complexity vs deterministic escalation on this 30-case sample.",
+      "Deterministic Agent precision 9.1% (spend $0.55) vs Jev null% (Jev spend $0.0008239139999999998 + Agent $0).",
+      "Keep Jev available as optional shadow comparator; default HIF routing = deterministic."
+    ],
+    "approvalsRequired": [
+      "Founder override required to enable Jev apply routing despite insufficient measured benefit"
+    ]
+  },
+  "forbiddenConfirmed": [
+    "no_contract_fact_writes",
+    "no_verification_gate_declarations",
+    "no_hpc_authorization",
+    "no_customer_publication"
+  ]
+}

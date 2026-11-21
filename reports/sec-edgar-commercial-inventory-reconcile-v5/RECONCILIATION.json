@@ -1,0 +1,264 @@
+{
+  "version": "commercial-inventory-reconcile-v5",
+  "asOf": "2026-11-21",
+  "prNote": "PR #503 — no research horizon; dual lists; EX-10 management merge",
+  "priorMetricsSnapshot": {
+    "distinctHotelObservations": 446,
+    "tierB": 76,
+    "tierC": 71,
+    "hold": 299,
+    "brandList": 136,
+    "managementList": 0
+  },
+  "explanation": {
+    "whyBrandListWas136Not76Plus71": "projectDualProspectLists includes (a) all FRANCHISE Tier A/B rows and (b) Tier C UNKNOWN rows only when brand/conversionSignals.brand are present. Of 71 Tier C, only those with brand signals joined Brand Conversion — yielding 76 Franchise Tier B + ~60 branded Tier C ≈ 136. Management list was 0 because OPPORTUNITIES had 0 MANAGEMENT agreementType rows (all CMBS franchise-like).",
+    "tierBVsBrandList": "Tier B (76) = verified hotel-specific contractual expirations (all FRANCHISE in prior inventory). Brand Conversion list (136) = Tier B franchise rows + Tier C brand-signal research candidates. Not the same grain.",
+    "historicalVsFutureTierB": {
+      "researchAsOf": "2026-11-21",
+      "verifiedExpirationsTierAB": 79,
+      "historicallyExpired": 60,
+      "futureDatedTotal": 19,
+      "futureFranchiseBrandFilter": 17,
+      "futureManagement": 2,
+      "tierBEnrichmentQueueFuture": 17,
+      "tierBEnrichmentQueueHistorical": 60,
+      "joplinHiltonGardenInn": {
+        "end": "2026-10-31",
+        "bucket": "HISTORICAL",
+        "monthsToExpiration": -1,
+        "note": "Narrative correction only; inventory already historical as of research as-of date."
+      },
+      "note": "79 = 60 historical + 19 future; 19 = 17 franchise + 2 management. Tier B queue future=17 is franchise Tier B grain. All remain research-eligible. Near-term outreach is optional app metadata only."
+    },
+    "managementGapRootCause": "Scale pilot source family was CMBS franchise expiration schedules; EX-10 named MANAGEMENT agreements were not projected into MANAGEMENT_CONTRACT_TARGETS.json (count 0).",
+    "duplicatesVsUniqueHotels": "Prior 446 observations ≈ 442 distinct hotel names; researchId is hotel|type|date|source — multiple agreements/filings can share a hotel."
+  },
+  "after": {
+    "opportunityCount": 451,
+    "summary": {
+      "version": "commercial-target-discovery-v1",
+      "opportunityCount": 451,
+      "distinctHotels": 446,
+      "byTier": {
+        "TIER_A_VERIFIED_DECISION_WINDOW": 2,
+        "TIER_B_VERIFIED_CONTRACT_EXPIRATION": 77,
+        "TIER_C_CONVERSION_RESEARCH_CANDIDATE": 73,
+        "TIER_D_FURTHER_RESEARCH_REQUIRED": 0,
+        "CLOSED_SUPERSEDED": 0,
+        "HOLD_QUARANTINE": 299
+      },
+      "byAgreementType": {
+        "FRANCHISE": 376,
+        "UNKNOWN": 71,
+        "MANAGEMENT": 4
+      },
+      "byCountry": {
+        "UNKNOWN": 451
+      },
+      "verifiedExpirations": 79,
+      "historicalContractExpirations": 60,
+      "futureContractExpirations": 19,
+      "unknownExpirationCount": 73,
+      "noticePeriodsDiscovered": 2,
+      "nearTermOutreachPriorityCount": 6,
+      "validFutureDecisionWindows": 6,
+      "researchEligibleCount": 152,
+      "holdQuarantine": 299,
+      "renewalsOrTerminationsClosed": 0,
+      "brandConversionListCount": 137,
+      "brandConversionDistinctHotels": 137,
+      "managementContractListCount": 4,
+      "managementContractDistinctHotels": 4,
+      "closedSupersededArchiveCount": 0,
+      "rejectedFalseExpirations": 264,
+      "rejectedFalseExpirationSamples": [
+        {
+          "hotelName": "Bellagio Hotel and Casino",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Homewood Suites Mobile East Bay Daphne",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Hilton Garden Inn Mobile East Bay Daphne",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Holiday Inn Express Trinidad",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Residence Inn Hartford Avon",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Candlewood Suites Fort Myers Sanibel Gateway",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Comfort Inn International Drive",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Holiday Inn Savannah South - I-95 Gateway",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Marriott Richmond Dual Brand",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Staybridge Suites - Columbus",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Holiday Inn Express & Suites - Columbus",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Residence Inn - Amelia Island",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Ayres Hotel Orange",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Courtyard - Charlotte Matthews",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Ayres Hotel Spa Mission Viejo",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Comfort Inn - Pinehurst",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Springhill Suites - New Smyrna Beach",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Holiday Inn Express - Indianapolis, IN",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Hampton Inn & Suites Oklahoma City",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Fairfield Inn & Suites Lebanon",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Home2 Suites - Alexandria, LA",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Hampton Inn - Roseville, MI",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Home2 Suites by Hilton Charlotte University Research Park",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Home2 Suites OKC",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        },
+        {
+          "hotelName": "Fairfield Inn and Suites Fredericksburg",
+          "reason": "non_contract_date:HOTEL_OPENING_OR_YEAR_BUILT",
+          "auditedMeaning": null
+        }
+      ],
+      "researchHorizonFilter": "NONE",
+      "geographicResearchRestriction": "NONE",
+      "publicationState": "CUSTOMER_BLOCKED"
+    },
+    "brandListRows": 136,
+    "managementListRows": 4,
+    "ex10ManagementMerged": 5,
+    "ex10AddedSamples": [
+      {
+        "hotel": "Embassy Suites Las Vegas",
+        "agreementType": "MANAGEMENT",
+        "tier": "TIER_C_CONVERSION_RESEARCH_CANDIDATE",
+        "end": null,
+        "notice": 90,
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1232582/000110465918051984/a18-18592_1ex10d2.htm"
+      },
+      {
+        "hotel": "SpringHill Suites Denver Airport",
+        "agreementType": "MANAGEMENT",
+        "tier": "TIER_B_VERIFIED_CONTRACT_EXPIRATION",
+        "end": "2035-12-30",
+        "notice": null,
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1583077/000114420417018003/v462888_ex10-8.htm"
+      },
+      {
+        "hotel": "Hilton San Francisco Financial District",
+        "agreementType": "MANAGEMENT",
+        "tier": "TIER_C_CONVERSION_RESEARCH_CANDIDATE",
+        "end": null,
+        "notice": 30,
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/79661/000114420418047600/tv501816_ex10-5.htm"
+      },
+      {
+        "hotel": "Marriott Executive Apartments",
+        "agreementType": "FRANCHISE",
+        "tier": "TIER_A_VERIFIED_DECISION_WINDOW",
+        "end": "2027-01-30",
+        "notice": 60,
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1583077/000158307714000005/v373726_ex10-28.htm"
+      },
+      {
+        "hotel": "Hilton Philadelphia Airport",
+        "agreementType": "MANAGEMENT",
+        "tier": "TIER_A_VERIFIED_DECISION_WINDOW",
+        "end": "2035-03-30",
+        "notice": 180,
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1301236/000095017024123250/soho-ex10_22.htm"
+      }
+    ]
+  },
+  "appFilterExamples": {
+    "allBrand": 136,
+    "historicalBrand": 60,
+    "futureBrand": 17,
+    "next36Brand": 6,
+    "nearTermBrand": 6,
+    "allMgmt": 4
+  },
+  "globalCoverage": {
+    "geographicResearchRestriction": "NONE",
+    "researchHorizonFilter": "NONE",
+    "note": "Country/region filters are application-only; inventory retains worldwide eligibility."
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "pricing": {
+    "source": "https://exa.ai/pricing",
+    "verifiedAt": "2026-11-21T01:16:44.482Z",
+    "fixedEffortUsd": {
+      "minimal": 0.012,
+      "low": 0.025,
+      "medium": 0.1,
+      "high": 0.5,
+      "xhigh": 1,
+      "auto": 0.5,
+      "ultra": 2
+    },
+    "endpoint": "https://api.exa.ai/agent/runs",
+    "auth": "x-api-key or Authorization Bearer EXA_API_KEY",
+    "async": "POST create → poll GET /agent/runs/{id} until completed|failed|cancelled",
+    "structuredOutput": "outputSchema → output.structured",
+    "pilotCeilingUsd": 15,
+    "recommendedPilotEffort": "low ($0.025/run fixed)"
+  },
+  "connectivity": {
+    "apiKeyPresent": true,
+    "apiKeyLen": 36
+  },
+  "probe": {
+    "ok": true,
+    "error": null,
+    "runId": "agent_run_453025a197f6452ca2cc69ce721dec12",
+    "status": "completed",
+    "spentUsd": 0.012,
+    "structuredPresent": true
+  },
+  "budget": {
+    "version": "exa-agent-pilot-budget-v1",
+    "ceilingUsd": 15,
+    "maxPerCaseUsd": 0.5,
+    "spentUsd": 0.012,
+    "remainingUsd": 14.988,
+    "stoppedAtBudget": false,
+    "byCase": {
+      "PROBE_CONNECTIVITY": 0.012
+    },
+    "byProvider": {
+      "EXA_AGENT": 0.012
+    },
+    "requestCounts": {
+      "EXA_AGENT": 1
+    },
+    "operationCount": 1,
+    "updatedAt": "2026-11-21T01:16:53.778Z"
+  },
+  "blocker": null
+}

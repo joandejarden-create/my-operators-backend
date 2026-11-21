@@ -1,0 +1,81 @@
+{
+  "status": "PROPOSED_PENDING_FOUNDER_META_APPLY",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "tables": {
+    "HI Hotel Contracts": {
+      "addFields": [
+        {
+          "name": "Document Execution Class",
+          "type": "singleSelect",
+          "choices": [
+            "EXECUTED_NAMED_HOTEL_AGREEMENT",
+            "EXECUTED_PORTFOLIO_AGREEMENT",
+            "AMENDMENT_OR_EXTENSION_INSTRUMENT",
+            "FORM_AGREEMENT",
+            "DRAFT_OR_PROPOSED_AGREEMENT",
+            "EXECUTION_STATUS_UNRESOLVED"
+          ],
+          "purpose": "Distinguish form/draft/portfolio evidence from executed hotel agreements"
+        },
+        {
+          "name": "Scope Class",
+          "type": "singleSelect",
+          "choices": [
+            "NAMED_HOTEL",
+            "PORTFOLIO_LEVEL",
+            "FORM_WITHOUT_PROPERTY",
+            "UNRESOLVED"
+          ]
+        },
+        {
+          "name": "End Date Status Class",
+          "type": "singleSelect",
+          "choices": [
+            "EXPLICIT_CONTRACT_END_DATE",
+            "CALCULATED_FROM_VERIFIED_TERMS",
+            "HISTORICAL_DATE_STATUS_UNCONFIRMED",
+            "CURRENTLY_CORROBORATED_END_DATE",
+            "TERMINATION_EXECUTED_VERIFIED",
+            "NOT_DISCLOSED"
+          ]
+        },
+        {
+          "name": "Notice Period Days",
+          "type": "number"
+        },
+        {
+          "name": "Notice Deadline",
+          "type": "date"
+        }
+      ]
+    },
+    "HI Discovery Findings": {
+      "addFields": [
+        {
+          "name": "Document Execution Class",
+          "type": "singleSelect",
+          "choices": [
+            "EXECUTED_NAMED_HOTEL_AGREEMENT",
+            "EXECUTED_PORTFOLIO_AGREEMENT",
+            "AMENDMENT_OR_EXTENSION_INSTRUMENT",
+            "FORM_AGREEMENT",
+            "DRAFT_OR_PROPOSED_AGREEMENT",
+            "EXECUTION_STATUS_UNRESOLVED"
+          ]
+        },
+        {
+          "name": "Publication State",
+          "type": "singleSelect",
+          "choices": [
+            "CUSTOMER_BLOCKED",
+            "INTERNAL_ONLY",
+            "DO_NOT_PUBLISH"
+          ]
+        }
+      ]
+    }
+  },
+  "interimPersistence": "Until Meta apply: encode Document Execution Class in Notes / Quarantine; Forms/Drafts/Portfolio → Findings only; named-hotel contracts use Agreement Role + Contract Status + Notes",
+  "stop": "REQUIRES_EXPLICIT_FOUNDER_META_API_AUTHORIZATION",
+  "publicationState": "CUSTOMER_BLOCKED"
+}

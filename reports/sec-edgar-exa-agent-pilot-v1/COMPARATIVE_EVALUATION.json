@@ -1,0 +1,327 @@
+{
+  "version": "exa-agent-comparative-eval-v1",
+  "evaluatedAt": "2026-11-21T01:37:11.178Z",
+  "prNote": "Extend existing V5 implementation PR #503 when still active",
+  "preflight": {
+    "ok": true,
+    "pricing": {
+      "source": "https://exa.ai/pricing",
+      "verifiedAt": "2026-11-21T01:16:44.482Z",
+      "fixedEffortUsd": {
+        "minimal": 0.012,
+        "low": 0.025,
+        "medium": 0.1,
+        "high": 0.5,
+        "xhigh": 1,
+        "auto": 0.5,
+        "ultra": 2
+      },
+      "endpoint": "https://api.exa.ai/agent/runs",
+      "auth": "x-api-key or Authorization Bearer EXA_API_KEY",
+      "async": "POST create → poll GET /agent/runs/{id} until completed|failed|cancelled",
+      "structuredOutput": "outputSchema → output.structured",
+      "pilotCeilingUsd": 15,
+      "recommendedPilotEffort": "low ($0.025/run fixed)"
+    },
+    "connectivity": {
+      "apiKeyPresent": true,
+      "apiKeyLen": 36
+    },
+    "probe": {
+      "ok": true,
+      "error": null,
+      "runId": "agent_run_453025a197f6452ca2cc69ce721dec12",
+      "status": "completed",
+      "spentUsd": 0.012,
+      "structuredPresent": true
+    },
+    "budget": {
+      "version": "exa-agent-pilot-budget-v1",
+      "ceilingUsd": 15,
+      "maxPerCaseUsd": 0.5,
+      "spentUsd": 0.012,
+      "remainingUsd": 14.988,
+      "stoppedAtBudget": false,
+      "byCase": {
+        "PROBE_CONNECTIVITY": 0.012
+      },
+      "byProvider": {
+        "EXA_AGENT": 0.012
+      },
+      "requestCounts": {
+        "EXA_AGENT": 1
+      },
+      "operationCount": 1,
+      "updatedAt": "2026-11-21T01:16:53.778Z"
+    },
+    "blocker": null
+  },
+  "cohortActual": {
+    "A": 10,
+    "B": 10,
+    "C": 10,
+    "total": 30
+  },
+  "casesRun": {
+    "agentAttempts": 30,
+    "agentOk": 30,
+    "agentFail": 0,
+    "agentSkipped": 0
+  },
+  "metrics": {
+    "verifiedExpirationDates": {
+      "searchOnly": 28,
+      "searchPlusAgent": 29,
+      "incremental": 1
+    },
+    "verifiedNoticePeriods": {
+      "searchOnly": 0,
+      "searchPlusAgent": 0,
+      "incremental": 0
+    },
+    "verifiedCurrentStatusResolutions": {
+      "searchOnly": 0,
+      "searchPlusAgent": 1,
+      "incremental": 1
+    },
+    "executedRenewalsConfirmed": {
+      "searchOnly": 0,
+      "searchPlusAgent": 0,
+      "incremental": 0
+    },
+    "verifiedOwnerOperatorIdentities": {
+      "searchOnly": 0,
+      "searchPlusAgent": 1,
+      "incremental": 1
+    },
+    "qualifiedBrandConversionTargets": {
+      "searchOnly": 30,
+      "searchPlusAgent": 32,
+      "incremental": 2
+    },
+    "qualifiedManagementTargets": {
+      "searchOnly": 0,
+      "searchPlusAgent": 0,
+      "incremental": 0
+    },
+    "falseOrUnsupportedFindings": {
+      "searchOnly": 0,
+      "searchPlusAgent": 3,
+      "incremental": 3
+    },
+    "actualExpenditure": {
+      "searchOnly": 0,
+      "searchPlusAgent": 0.762,
+      "incremental": 0.762
+    }
+  },
+  "unitEconomics": {
+    "costPerNewlyVerifiedContractDate": 0.762,
+    "costPerNewlyVerifiedNoticePeriod": null,
+    "costPerResolvedContractualStatus": 0.762,
+    "costPerDistinctIncrementalQualifiedHotelTarget": 0.381,
+    "distinctIncrementalHotelTargets": 2,
+    "pctAgentResultsRequiringManualCorrection": 10,
+    "pctAgentRunsNoIncrementalValue": 93.3
+  },
+  "incrementalFindings": [
+    {
+      "caseId": "A03_ct_c1c3b0061bb89baf",
+      "hotel": "Hampton Inn Joplin",
+      "cohort": "A",
+      "incremental": {
+        "newEndDate": "2024-07-18",
+        "newNoticeDays": null,
+        "statusResolution": "terminated effective july 18, 2024; no renewal or extension located. subsequent public choice hotels listing identifies the same address as comfort inn joplin i-44 and says the property is undergoing conversion.",
+        "renewalConfirmed": false,
+        "ownerOrOperator": null,
+        "falseOrUnsupported": false,
+        "restatesBaselineOnly": false
+      },
+      "classification": "CLOSED_OR_SUPERSEDED",
+      "runId": "agent_run_222d5aee65a246688f3d117347bd3386",
+      "spentUsd": 0.025,
+      "gates": {
+        "AGREEMENT_EXISTENCE_VERIFIED": true,
+        "CONTRACT_TERMS_VERIFIED": true,
+        "CURRENT_STATUS_VERIFIED": false
+      },
+      "agentAloneSatisfiesAnyGate": false
+    },
+    {
+      "caseId": "C03_ct_904c2d9ed5bbb27c",
+      "hotel": "Courtyard San Mateo Foster City",
+      "cohort": "C",
+      "incremental": {
+        "newEndDate": null,
+        "newNoticeDays": null,
+        "statusResolution": null,
+        "renewalConfirmed": false,
+        "ownerOrOperator": {
+          "owner": "Clarion Partners (latest located hotel-specific evidence, January 2025)",
+          "managementCompany": "Marriott International, Inc. (latest located hotel-specific evidence, January 2025)"
+        },
+        "falseOrUnsupported": false,
+        "restatesBaselineOnly": true
+      },
+      "classification": "VERIFIED_COMMERCIAL_SIGNAL",
+      "runId": "agent_run_64ef3d669e124185b6f69a532caadd64",
+      "spentUsd": 0.025,
+      "gates": {
+        "AGREEMENT_EXISTENCE_VERIFIED": true,
+        "CONTRACT_TERMS_VERIFIED": true,
+        "CURRENT_STATUS_VERIFIED": false
+      },
+      "agentAloneSatisfiesAnyGate": false
+    }
+  ],
+  "falsePositives": [
+    {
+      "caseId": "A04_ct_6eefb79f56ed45ec",
+      "hotel": "Hampton Inn Anderson",
+      "issues": [
+        "UNGROUNDED_OR_EMPTY_ANSWER",
+        "NO_INCREMENTAL_EVIDENCE_IN_ANSWER"
+      ],
+      "structured": {
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1731058/000188852426020427/0001888524-26-020427.txt",
+        "source_date": "2026-11-02",
+        "proposed_answer": "No authoritative public evidence was identified that the Hampton franchise agreement was renewed, extended, terminated, superseded, or replaced. The latest property-specific SEC disclosure reviewed, filed November 2, 2026 and covering the period ended October 19, 2026, continues to identify the hotel as Hampton Inn Anderson at the same address, but it does not disclose a franchise-agreement action or a new franchise end date. Accordingly, the latest disclosed franchise status is unknown; no new end date can be established from the public evidence reviewed.",
+        "claimed_end_date": "No new end date disclosed; current end date unknown.",
+        "research_question": "Is there authoritative public evidence that the FRANCHISE agreement was renewed, extended, terminated, superseded, or replaced since the historical filing, and what is the latest disclosed status or new end date?",
+        "source_attribution": "UBS Commercial Mortgage Trust 2018-C9, SEC Form ABS-EE asset-data filing.",
+        "supporting_excerpt": "CONFORMED PERIOD OF REPORT: 20261019 ... Hampton Inn Anderson 2312 Hampton Drive Anderson IN 46013 ... The filing is an ABS-EE asset-data filing and the property record contains no disclosed franchise renewal, extension, termination, supersession, replacement, or franchise agreement end date.",
+        "evidence_confidence": "MEDIUM",
+        "suggested_follow_up": "Obtain the current Hilton franchise agreement, amendment, renewal, or termination certificate from the owner, lender, servicer, or Hilton; alternatively review any current Hilton franchise disclosure or property-specific lender underwriting exhibit that expressly states the agreement term.",
+        "unresolved_limitations": "The latest SEC filing is a commercial-mortgage asset-data filing, not the franchise agreement or a Hilton franchise disclosure document. Continued identification of the property and absence of a reported agreement event do not prove that no private renewal or amendment occurred. The historical end date of 2020-05-31 is treated as caller-provided prior evidence and is not independently restated here.",
+        "claimed_notice_period_days": "Unknown; not disclosed in the latest public filing reviewed.",
+        "hotel_or_agreement_identity": "Hampton Inn Anderson, 2312 Hampton Drive, Anderson, Indiana 46013 — Hampton franchise agreement",
+        "claimed_renewal_or_termination_status": "No renewal, extension, termination, supersession, or replacement disclosed; agreement status remains unknown from public evidence."
+      }
+    },
+    {
+      "caseId": "B03_ct_88bcaa8a5948f730",
+      "hotel": "Comfort Inn & Suites - Madison West",
+      "issues": [
+        "DATE_SEMANTIC_RISK_OPENING_OR_LOAN",
+        "NO_INCREMENTAL_EVIDENCE_IN_ANSWER"
+      ],
+      "structured": {
+        "source_url": "https://www.sec.gov/Archives/edgar/data/850779/000153949718000207/n1164_424b2-x16.htm",
+        "source_date": "2018-01-29",
+        "claimed_owner": "Unknown from the cited excerpt",
+        "proposed_answer": "No later publicly disclosed expiration, termination, renewal, or advance-notice period was verified. The supplied historical end date of 2025-05-22 remains the latest date available for this franchise in the research record, but the retrieved SEC filing does not itself state that date or a notice period. Do not treat the 2028 mortgage maturity as a franchise expiration.",
+        "claimed_end_date": "2025-05-22 (supplied historical date; not independently verified in the cited excerpt)",
+        "research_question": "What is the latest disclosed expiration or termination date and any advance notice period for the specific franchise covering Comfort Inn & Suites - Madison West?",
+        "source_attribution": "Wells Fargo Commercial Mortgage Securities, Inc., BANK 2018-BNK10 prospectus filed January 29, 2018.",
+        "supporting_excerpt": "The SEC prospectus identifies the collateral as “Comfort Inn & Suites - Madison West” at 1253 John Q. Hammons Drive, Madison, WI 53717, and separately identifies the mortgage pool’s maturity date as 2/1/2028. It does not disclose a hotel-specific franchise expiration, termination date, renewal, or advance-notice period in the retrieved text.",
+        "evidence_confidence": "LOW",
+        "suggested_follow_up": "Obtain the executed franchise agreement and any renewal, amendment, or termination correspondence from the property owner, Choice Hotels, or the CMBS servicing/property file; specifically confirm whether the franchise ended on 2025-05-22 and whether advance notice was required.",
+        "unresolved_limitations": "The source is a CMBS prospectus rather than the executed Choice Hotels franchise agreement, amendment, or termination notice. The 2025-05-22 date was supplied as known historical evidence but was not located in the retrieved primary-source excerpt, and no post-2018 hotel-specific amendment or termination filing was verified.",
+        "claimed_management_company": "Unknown from the cited excerpt",
+        "claimed_notice_period_days": "Unknown / not disclosed in the cited source",
+        "hotel_or_agreement_identity": "Comfort Inn & Suites - Madison West, 1253 John Q. Hammons Drive, Madison, Wisconsin — FRANCHISE / Comfort Inn",
+        "claimed_renewal_or_termination_status": "No renewal or termination status independently verified; no later disclosure located"
+      }
+    },
+    {
+      "caseId": "B10_ct_Maple Grove RV Resort",
+      "hotel": "Maple Grove RV Resort",
+      "issues": [
+        "DATE_SEMANTIC_RISK_OPENING_OR_LOAN",
+        "NO_INCREMENTAL_EVIDENCE_IN_ANSWER"
+      ],
+      "structured": {
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949720000844/n2234-x7_anxa1.htm",
+        "source_date": "2020-06-16",
+        "claimed_owner": "Not disclosed in the cited franchise evidence",
+        "proposed_answer": "No franchise expiration or termination date, advance notice period, renewal, or termination status is disclosed for Maple Grove RV Resort in the identified SEC collateral schedule. The schedule includes a “Franchise Expiration Date” column, but the Maple Grove RV Resort row contains no date or related notice-period language. The March 6, 2030 date shown in the filing is the mortgage loan maturity, not a franchise expiration date, and should not be treated as the agreement end date.",
+        "claimed_end_date": "Not disclosed",
+        "research_question": "What is the latest disclosed expiration or termination date and any advance notice period for the specific FRANCHISE covering Maple Grove RV Resort?",
+        "source_attribution": "J.P. Morgan Chase Commercial Mortgage Securities Corp., Free Writing Prospectus Annex A-1 to JPMDB Commercial Mortgage Securities Trust 2020-COR7.",
+        "supporting_excerpt": "For Loan 35, “Maple Grove RV Resort” is identified at “12403 & 12417 Highway 99” in Everett, WA. The underwriting schedule’s headings include “Ground Lease Expiration,” “Ground Lease Extension Terms,” and “Franchise Expiration Date”; the Maple Grove row provides no value under the franchise-expiration field. The same property’s loan maturity is separately reported as 03/06/30.",
+        "evidence_confidence": "LOW",
+        "suggested_follow_up": "Obtain the executed franchise agreement and any amendments from the borrower, franchisor, lender, or servicer; verify specifically the initial term, renewal options, termination rights, and required advance notice.",
+        "unresolved_limitations": "The publicly available SEC collateral schedule does not provide the underlying franchise agreement, amendment, termination provisions, or notice period. No later primary-source franchise exhibit or amendment was located that supplies those terms.",
+        "claimed_management_company": "Not disclosed in the cited franchise evidence",
+        "claimed_notice_period_days": "Not disclosed",
+        "hotel_or_agreement_identity": "Maple Grove RV Resort, 12403 & 12417 Highway 99, Everett, Washington — purported FRANCHISE agreement",
+        "claimed_renewal_or_termination_status": "Not disclosed; no renewal or termination amendment identified"
+      }
+    }
+  ],
+  "routingPolicy": {
+    "recommendation": "MANUAL_ESCALATION_ONLY",
+    "rationale": [
+      "High false/unsupported or no-value rate — keep Agent as human-triggered escalation."
+    ],
+    "proposedTriggers": [
+      "Verified historical end date with unresolved current status",
+      "High-value hotel with missing notice period after Search exhausted",
+      "Conflicting renewal evidence",
+      "Ownership/operator relationship requiring multistep research",
+      "Search exhausted without resolving an important contractual question"
+    ],
+    "autoDeployNow": false,
+    "keepHighVolumeOn": [
+      "Exa Search",
+      "Free SEC EDGAR"
+    ],
+    "approvalsRequired": [
+      "Founder approval of routing policy",
+      "Separate Agent budget allocation beyond $15 pilot",
+      "Confirmation Agent findings still pass independent verification gates before prospect promotion",
+      "No customer publication / HPC without separate authorization"
+    ]
+  },
+  "verificationGateRule": "Agent conclusions alone cannot satisfy AGREEMENT_EXISTENCE_VERIFIED, CONTRACT_TERMS_VERIFIED, or CURRENT_STATUS_VERIFIED",
+  "budget": {
+    "version": "exa-agent-pilot-budget-v1",
+    "ceilingUsd": 15,
+    "maxPerCaseUsd": 0.5,
+    "spentUsd": 0.762,
+    "remainingUsd": 14.238,
+    "stoppedAtBudget": false,
+    "byCase": {
+      "PROBE_CONNECTIVITY": 0.012,
+      "A01_ct_e3cd41be62ffab12": 0.025,
+      "A02_ct_e8e5a63c32ebd25d": 0.025,
+      "A03_ct_c1c3b0061bb89baf": 0.025,
+      "A04_ct_6eefb79f56ed45ec": 0.025,
+      "A05_ct_f71f07824e8bc2aa": 0.025,
+      "A06_ct_14151b2882226e16": 0.025,
+      "A07_ct_657adcb6847bfccc": 0.025,
+      "A08_ct_ccd84b51864e7170": 0.025,
+      "A09_ct_d7e4f4fd59fc239c": 0.025,
+      "A10_ct_61fcca0c600966ce": 0.025,
+      "B01_ct_bbea5a5a8be10ed9": 0.025,
+      "B02_ct_ce1da1da14709258": 0.025,
+      "B03_ct_88bcaa8a5948f730": 0.025,
+      "B04_ct_70a2e217011c529c": 0.025,
+      "B05_ct_7abfc7f6dab7262d": 0.025,
+      "B06_ct_e578267da5d166f6": 0.025,
+      "B07_ct_869b3b5791d3a51f": 0.025,
+      "B08_ct_de65a79bcf327776": 0.025,
+      "B09_ct_994e6a043f2f36e8": 0.025,
+      "B10_ct_Maple Grove RV Resort": 0.025,
+      "C01_ct_Bellagio Hotel and Casino": 0.025,
+      "C02_ct_03d4dc0ff9ca19f8": 0.025,
+      "C03_ct_904c2d9ed5bbb27c": 0.025,
+      "C04_ct_07edf7cfb4732e6d": 0.025,
+      "C05_ct_8d5323c037ed20b7": 0.025,
+      "C06_ct_1d46a8631e0f5518": 0.025,
+      "C07_ct_7af06ffd8122339f": 0.025,
+      "C08_ct_a469ceda54409c28": 0.025,
+      "C09_ct_f70e81dcce510348": 0.025,
+      "C10_ct_7e53c582481969b2": 0.025
+    },
+    "byProvider": {
+      "EXA_AGENT": 0.762
+    },
+    "requestCounts": {
+      "EXA_AGENT": 31
+    },
+    "operationCount": 31,
+    "updatedAt": "2026-11-21T01:35:15.078Z"
+  }
+}
