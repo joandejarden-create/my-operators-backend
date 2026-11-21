@@ -1,6 +1,15 @@
 {
   "permanentAdapterNow": false,
   "recommendation": "DO_NOT_PRIORITIZE_STANDALONE_APPRAISAL_ADAPTER",
+  "founderDecisionStatus": "ACCEPTED_AND_LOCKED_2026-11-21",
+  "buildStandaloneAppraisalAdapter": false,
+  "authorizePaidAppraisalResearch": false,
+  "usefulSourcePriorityPointers": 22,
+  "pointerRouting": {
+    "franchiseAgreementDiscoveryQueue": true,
+    "managementContractDiscoveryQueue": true,
+    "artifacts": "reports/sec-edgar-hif-v6-appraisal-policy/"
+  },
   "rationale": [
     "Standalone hotel appraisal reports in this 50-doc free pilot predominantly assume continued franchise affiliation and did not yield independently usable hotel-specific franchise/HMA expiration dates.",
     "CMBS / underwriting annexes remain the high-yield public path when they contain Franchise Expiration Date columns — already covered by existing HIF CMBS extractors; this pilot did not justify a separate appraisal product.",
@@ -9,12 +18,23 @@
     "Do not create a third commercial intelligence product. Lease remains deferred. Brand Conversion + Management Contract lists only."
   ],
   "whenWarranted": [
-    "Only if metered Search later finds appraisals that cite explicit, hotel-attributed franchise/HMA end dates at material incremental yield",
+    "Only with separate founder authorization if metered Search later finds appraisals that cite explicit, hotel-attributed franchise/HMA end dates at material incremental yield",
     "International executable exhibits with contract dates (not registry stubs) appear at scale"
   ],
-  "nextGate": "OPTIONAL_FOUNDER_APPROVAL_FOR_LIMITED_METERED_SEARCH_SPOTCHECK",
+  "nextGate": "FOUNDER_LOCKED — CONTINUE_CMBS_EX10_REGULATORY_RECORDED_MA_COURT_OWNERSHIP",
   "preferredContinue": [
     "Scale existing CMBS/UW annex + EX-10 harvest for franchise and management expirations",
-    "Owner/operator enrichment via HE/HI for already-verified expirations"
-  ]
+    "Route 22 source-priority pointers through Franchise/Management discovery queues",
+    "Owner/operator enrichment via HE/HI for already-verified expirations",
+    "International regulatory filings, recorded management memoranda, court exhibits"
+  ],
+  "safeguards": {
+    "customerBlocked": true,
+    "metaSchemaChangesUnauthorized": true,
+    "hpcWritesUnauthorized": true,
+    "customerPublicationUnauthorized": true,
+    "valuationAssumptionsAreNotContractualTerms": true,
+    "retainIncidentalAppraisalEvidence": true
+  },
+  "successCriterion": "More independently verified hotel-specific Franchise and Management Contract opportunities—not more appraisal documents."
 }
