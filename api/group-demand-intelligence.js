@@ -3029,6 +3029,50 @@ export async function postGdiContactReveal(req, res) {
     channel,
   });
 
+  // Non-PII person attribution for Surfe-miss → FullEnrich benchmark eligibility.
+  let personIdentityKey = null;
+  let contactNameHash = null;
+  let fullEnrichIdentityInputs = null;
+  try {
+    const {
+      personIdentityKey: buildPersonKey,
+      contactNameHash: buildNameHash,
+      assessFullEnrichIdentityReadiness,
+    } = await import(
+      "../lib/group-demand-intelligence/gdi-fullenrich-benchmark-eligibility-v1.js"
+    );
+    const orgName =
+      selectedContact?.organization ||
+      opportunity?.organizationName ||
+      opportunity?.displayCompanyName ||
+      opportunity?.company ||
+      null;
+    const domain =
+      selectedContact?.companyDomain ||
+      opportunity?.organizationDomain ||
+      opportunity?.companyDomain ||
+      null;
+    personIdentityKey = buildPersonKey({
+      contactName: resolvedName,
+      organizationName: orgName,
+    });
+    contactNameHash = buildNameHash(resolvedName);
+    fullEnrichIdentityInputs = assessFullEnrichIdentityReadiness({
+      name: resolvedName,
+      organizationName: orgName,
+      companyDomain: domain,
+      linkedinUrl:
+        selectedContact?.linkedinUrl ||
+        selectedContact?.profileUrl ||
+        selectedContact?.sourceUrl ||
+        null,
+    });
+  } catch {
+    personIdentityKey = null;
+    contactNameHash = null;
+    fullEnrichIdentityInputs = null;
+  }
+
   let creditsBefore = null;
   let provider = null;
   let fullEnrichResultMeta = null;
@@ -3110,6 +3154,7 @@ export async function postGdiContactReveal(req, res) {
         hotelId,
         opportunityId,
         identityKey,
+        personIdentityKey,
         clientRequestId,
         creditsReserved: spendGate.estimatedCredits || 1,
       },
@@ -3329,6 +3374,9 @@ export async function postGdiContactReveal(req, res) {
       hotelId,
       opportunityId,
       identityKey,
+      personIdentityKey,
+      contactNameHash,
+      fullEnrichIdentityInputs,
       channel: "email",
       lookupType: "email",
       channelRequested: "email",
@@ -3548,6 +3596,9 @@ export async function postGdiContactReveal(req, res) {
       hotelId,
       opportunityId,
       identityKey,
+      personIdentityKey,
+      contactNameHash,
+      fullEnrichIdentityInputs,
       channel,
       channelRequested: channel,
       enrichmentId: result?.enrichmentId || null,
