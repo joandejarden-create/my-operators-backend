@@ -145,9 +145,15 @@ for (const h of sia?.hotels || []) {
 const scale = load("reports/sec-edgar-hif-v6-name-free-sec-scaleup/NET_NEW_EVENTS.json");
 for (const h of scale?.hotels || []) upsert(h, "name_free_scaleup");
 
-// Continuous uncapped wave
+// Continuous uncapped wave(s)
 const cont = load("reports/sec-edgar-hif-v6-name-free-sec-continuous/NET_NEW_EVENTS.json");
 for (const h of cont?.hotels || []) upsert(h, "name_free_continuous");
+const cont2 = load("reports/sec-edgar-hif-v6-name-free-sec-continuous/NET_NEW_EVENTS_WAVE2.json");
+for (const h of cont2?.hotels || []) upsert(h, "name_free_continuous_w2");
+
+// 10-K management schedule extracts
+const tenk = load("reports/sec-edgar-hif-v6-10k-management-schedules/INCREMENTAL_EVENTS.json");
+for (const h of tenk?.hotels || []) upsert(h, "ten_k_mgmt_extract");
 
 // Agreement-type resolution upgrades (same event key)
 const resolved = load("reports/sec-edgar-hif-v6-agreement-type-resolution/RESOLUTION_RESULTS.json");
