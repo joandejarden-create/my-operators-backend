@@ -7,10 +7,13 @@ import {
   HIF_TRACK_A_CONTINUOUS_FOUNDATION_WAVES,
   HIF_TRACK_A_CB2,
   HIF_TRACK_A_CB2B,
+  HIF_TRACK_A_CB3,
   TRACK_A_WAVE_IDS,
   isTrackAContinuousWaveId,
   classifyAgreementVsOpportunity,
   qualifiesPrincipalFirst100,
+  classifyPreferredVsOpenBrandDecision,
+  CB3_QUALIFICATION_CLASSES,
 } from "../lib/hotel-intelligence/sec-edgar/hif-track-a-continuous-foundation-waves-v1.js";
 import {
   mapCommercialCategoryToFindingType,
@@ -32,12 +35,29 @@ const scorePath = path.join(
 assert.equal(HIF_TRACK_A_CONTINUOUS_FOUNDATION_WAVES, "hif-track-a-continuous-foundation-waves-v1");
 assert.equal(HIF_TRACK_A_CB2, "hif-track-a-cb2-commercial-discovery-v1");
 assert.equal(HIF_TRACK_A_CB2B, "hif-track-a-cb2b-commercial-discovery-v1");
+assert.equal(HIF_TRACK_A_CB3, "hif-track-a-cb3-commercial-discovery-v1");
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cfa_hilton_trinidad_pos_2026"));
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2_legacy_hotel_green_bay_2026"));
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2b_shorebreak_huntington_2026"));
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2b_courtyard_denver_downtown_2026"));
+assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb3_embassy_one_bengaluru_2026"));
 assert.equal(isTrackAContinuousWaveId("disc_cfa_hilton_trinidad_pos_2026"), true);
 assert.equal(isTrackAContinuousWaveId("disc_track_b_other"), false);
+
+const preferred = classifyPreferredVsOpenBrandDecision({
+  preferredBrandFamilyLocked: true,
+  softBrandCollectionNamed: false,
+  multiPathBrandEvaluation: false,
+});
+assert.equal(preferred.class, CB3_QUALIFICATION_CLASSES.PREFERRED_BRAND_DECISION);
+assert.equal(preferred.countsTowardFirst100, false);
+const multipath = classifyPreferredVsOpenBrandDecision({
+  preferredBrandFamilyLocked: false,
+  multiPathBrandEvaluation: true,
+  countsTowardFirst100: true,
+});
+assert.equal(multipath.class, CB3_QUALIFICATION_CLASSES.PRIVATE_OPPORTUNITY_PROBABLE_ACCESS);
+assert.equal(multipath.countsTowardFirst100, true);
 
 const unresolved = classifyAgreementVsOpportunity({
   agreementType: "UNRESOLVED_INSTRUMENT",
@@ -164,5 +184,36 @@ assert.equal(qualifiesPrincipalFirst100(shorebreak), true);
 assert.equal(qualifiesPrincipalFirst100(courtyard), true);
 assert.equal(qualifiesPrincipalFirst100(legacy), false);
 assert.equal(qualifiesPrincipalFirst100(murta), false);
+
+const cb3Path = path.join(
+  ROOT,
+  "reports/sec-edgar-hif-v6-track-a-cb3-commercial-discovery/RESEARCH_CANDIDATES.json",
+);
+const cb3ScorePath = path.join(
+  ROOT,
+  "reports/sec-edgar-hif-v6-track-a-cb3-commercial-discovery/FIRST_100_SCORECARD.json",
+);
+const invPath = path.join(
+  ROOT,
+  "reports/sec-edgar-hif-v6-track-a-cb3-commercial-discovery/INVESTIGATED_HOTELS.json",
+);
+const cb3 = JSON.parse(fs.readFileSync(cb3Path, "utf8"));
+const cb3Score = JSON.parse(fs.readFileSync(cb3ScorePath, "utf8"));
+const inv = JSON.parse(fs.readFileSync(invPath, "utf8"));
+assert.equal(cb3.publicationState, "CUSTOMER_BLOCKED");
+assert.equal(cb3.researchCostUsd, 0);
+assert.equal(cb3.openPr, 544);
+assert.ok(inv.distinctHotelsInvestigated >= 100);
+assert.equal(inv.stopReason, "RESEARCH_VOLUME_TARGET_MET");
+const embassy = cb3.candidates.find((c) => c.id === "embassy-one-bengaluru-mct");
+const legacyReclass = cb3.candidates.find((c) => c.id === "legacy-hotel-green-bay-reclass");
+assert.equal(embassy.countsTowardFirst100, true);
+assert.equal(embassy.opportunityType, "MCT");
+assert.equal(legacyReclass.countsTowardFirst100, false);
+assert.equal(legacyReclass.qualificationClass, "PREFERRED_BRAND_DECISION");
+assert.equal(cb3Score.metrics.afterCb3, 5);
+assert.ok(cb3Score.qualifiedIds.includes("embassy-one-bengaluru-mct"));
+assert.ok(!cb3Score.qualifiedIds.includes("legacy-hotel-green-bay-bct"));
+assert.ok(cb3Score.qualifiedIds.includes("shorebreak-huntington-bct"));
 
 console.log("test-hif-track-a-continuous-foundation-waves-v1: OK");
