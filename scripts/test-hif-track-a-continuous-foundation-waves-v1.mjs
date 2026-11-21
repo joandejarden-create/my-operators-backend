@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   HIF_TRACK_A_CONTINUOUS_FOUNDATION_WAVES,
+  HIF_TRACK_A_CB2,
   TRACK_A_WAVE_IDS,
   isTrackAContinuousWaveId,
   classifyAgreementVsOpportunity,
@@ -28,7 +29,9 @@ const scorePath = path.join(
 );
 
 assert.equal(HIF_TRACK_A_CONTINUOUS_FOUNDATION_WAVES, "hif-track-a-continuous-foundation-waves-v1");
+assert.equal(HIF_TRACK_A_CB2, "hif-track-a-cb2-commercial-discovery-v1");
 assert.ok(TRACK_A_WAVE_IDS.includes("disc_cfa_hilton_trinidad_pos_2026"));
+assert.ok(TRACK_A_WAVE_IDS.includes("disc_cb2_legacy_hotel_green_bay_2026"));
 assert.equal(isTrackAContinuousWaveId("disc_cfa_hilton_trinidad_pos_2026"), true);
 assert.equal(isTrackAContinuousWaveId("disc_track_b_other"), false);
 
@@ -97,5 +100,39 @@ const score = JSON.parse(fs.readFileSync(scorePath, "utf8"));
 assert.equal(score.metrics.COMMERCIALLY_RELEVANT, 2);
 assert.deepEqual(score.qualifiedIds.sort(), ["hilton-trinidad-mct", "lakeville-inn-mn-bct"].sort());
 assert.ok(!score.qualifiedIds.includes("magdalena-grand-tobago-sale"));
+
+const cb2Path = path.join(
+  ROOT,
+  "reports/sec-edgar-hif-v6-track-a-cb2-commercial-discovery/RESEARCH_CANDIDATES.json",
+);
+const cb2ScorePath = path.join(
+  ROOT,
+  "reports/sec-edgar-hif-v6-track-a-cb2-commercial-discovery/FIRST_100_SCORECARD.json",
+);
+const cb2 = JSON.parse(fs.readFileSync(cb2Path, "utf8"));
+const cb2Score = JSON.parse(fs.readFileSync(cb2ScorePath, "utf8"));
+assert.equal(cb2.publicationState, "CUSTOMER_BLOCKED");
+assert.equal(cb2.researchCostUsd, 0);
+assert.equal(cb2.priorMergedPr, 541);
+assert.equal(cb2.statusChecks.lakevilleInn.status, "STILL_OPEN_BCT");
+assert.equal(cb2.statusChecks.hiltonTrinidad.status, "STILL_OPEN_MCT");
+const legacy = cb2.candidates.find((c) => c.id === "legacy-hotel-green-bay-bct");
+assert.equal(legacy.countsTowardFirst100, true);
+assert.equal(legacy.opportunityType, "BCT");
+assert.equal(legacy.publicRfp, false);
+assert.equal(legacy.agreementType, "UNRESOLVED_SOFT_BRAND_LICENSE");
+assert.equal(cb2Score.metrics.COMMERCIALLY_RELEVANT, 3);
+assert.ok(cb2Score.qualifiedIds.includes("legacy-hotel-green-bay-bct"));
+assert.equal(
+  qualifiesPrincipalFirst100({
+    countsTowardFirst100: true,
+    priority: "PRIORITY_A",
+    hotelSpecificEvidence: true,
+    saleOrExpirationOnly: false,
+    prospectiveCommercialDecisionEvidence: true,
+    commercialRelevance: "VERIFIED_RELEVANT",
+  }),
+  true,
+);
 
 console.log("test-hif-track-a-continuous-foundation-waves-v1: OK");
