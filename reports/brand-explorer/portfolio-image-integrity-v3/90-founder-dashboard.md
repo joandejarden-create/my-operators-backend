@@ -1,69 +1,119 @@
 # Brand Explorer — Image Integrity V3 Founder Dashboard
 
-Generated: 2026-11-21T00:36:05.261Z
+Generated: 2026-11-21T01:42:12.149Z
 
-## Canonical Airtable (live probe)
+## Integration / sync
+
+| Item | Value |
+|------|-------|
+| PR #502 | MERGED |
+| Merge commit | `d6dd99ddc588835c67cf46c8a4089b19089878ec` |
+| BE home | `C:\Dev\dealality\ws-brand-explorer` on `ws/brand-explorer` |
+| HEAD == origin/main | true |
+| Port 8080 root | `C:\Dev\dealality\ws-integrated-staging` |
+| Gallery delivery fix on 8080 | true |
+| Gallery delivery fix on origin/main | false |
+
+## Canonical Airtable (live)
 
 | Metric | Value |
 |--------|------:|
 | Active/Live brands | 68 |
-| Raw required image rows | 603 |
+| Brands with complete 9 image rows | 67 |
+| Raw required image rows | 619 |
 | Unique brand+slot pairs | 603 |
 | Duplicate slot conflicts | 16 |
-| IMAGE_MISSING | 0 |
-| IMAGE_SIGNED_URL_EXPIRED | 0 |
-| IMAGE_SIBLING_BRAND | 0 |
-| IMAGE_TECHNICALLY_VALID | 603 |
-| Brands with all 9 present | 67 |
-| Brands with gallery 6 present | 67 |
-| Brands with scenario 3 present | 67 |
+| IMAGE_TECHNICALLY_VALID (prior probe) | 603 |
+| IMAGE_BRAND_VERIFIED (census) | 119 |
+| IMAGE_BROWSER_VALIDATED brands | 59 |
+| IMAGE_CERTIFIED brands | 0 |
+| Sibling rejects | 0 |
 
-> Re-run `npm run be-factory-image-integrity-current-audit-v3 -- --probe` after remediation to refresh these counts.
+### Missing Active/Live brand identity
 
-## Remediation executed (this wave)
+- **SO/** (`recTJdPlr4mDs9app`)
 
-- Aloft Hotels: 9/9 content-API import + read-back
-- Bunkhouse Hotels: 9/9 (initial 2 + retry 7) JPEG durable import + read-back
-- Suburban Studios gallery.5: PDF replaced with same-brand gallery reuse + read-back
-- Radisson Individuals gallery.6 + SLH scenario.1–2: webp→JPEG re-encode + read-back
-- Successfully imported/repaired slots (apply reports): **22**
-- Paid research spend: **$0**
+## Exact-brand identity
+
+| Metric | Value |
+|--------|------:|
+| Slots evaluated | 603 |
+| Census IMAGE_BRAND_VERIFIED | 119 |
+| Unverified / census pending | 484 |
+| Sibling rejected | 0 |
+| Title inferred | 12 |
+| Pool matched | 496 |
+
+> Matching parent company is insufficient. Exact verified brand affiliation is required.
+
+## Rights staging
+
+| Stage | Count |
+|-------|------:|
+| Internal research | 603 |
+| Brand Explorer staged | 603 |
+| Hotel Explorer blocked | 603 |
+| Customer blocked | 603 |
+
+## Authenticated browser certification (CURRENT)
+
+| Metric | Value |
+|--------|------:|
+| Brands attempted | 68 |
+| Fully browser-validated | 59 |
+| Pass | 59 |
+| Fail | 9 |
+
+Fixtures: AC Hotels, Courtyard, Aloft, Bunkhouse — see `browser-current/*/CERT.json`.
 
 ## Shared Verified Hotel Image Library
 
 | Metric | Value |
 |--------|------:|
-| Total assets | 21 |
-| Unique content hashes | 21 |
-| Brands represented | 4 |
-| Rights Brand Explorer | 21 |
+| Total assets | 624 |
+| Unique content hashes | 624 |
+| Brands represented | 67 |
+| Rights Brand Explorer | 624 |
 | Rights Hotel Explorer | 0 |
 | Customer-facing | 0 |
-| Awaiting review | 21 |
+| Awaiting review | 505 |
 
-## Factory Proposed (prior audit snapshot)
+## Factory Proposed
 
 | Metric | Value |
 |--------|------:|
-| Frozen candidates | null |
-| Six gallery present | null |
-| Three scenario present | null |
+| Frozen payload files | 230 |
+| Brands audited | 230 |
+| Six gallery URLs | 160 |
+| Three scenario URLs | 159 |
 | Gallery gaps | 70 |
 | Scenario gaps | 71 |
+| Ephemeral CDN slots | 415 |
+
+## Remediation executed
+
+- Successfully imported/repaired slots (apply reports): **22**
+- Paid research spend: **$0**
 
 ## Persistence / certification
 
-- QUALITY_CERTIFIED (overall factory): **0** this wave (image technical repair ≠ full certification)
-- AIRTABLE_PERSISTED (presentation writeback of certified candidates): **0** this wave
+- Browser+census-ready brands (not IMAGE_CERTIFIED): **7** (dazzler-by-wyndham, hampton-by-hilton, hilton-garden-inn, hilton-hotels-and-resorts, holiday-inn-express, preferred-hotels-and-resorts, voco-hotels)
+
+
+- QUALITY_CERTIFIED: **0**
+- IMAGE_CERTIFIED: **0**
+- AIRTABLE_PERSISTED: **0**
 - Customer publication: **NOT_AUTO**
 
 ## Remaining blockers
 
-- IMAGE_BRAND_VERIFIED / IMAGE_CERTIFIED require census-linked property verification + rights + browser cert
-- 16 duplicate Presentation slot conflicts flagged for review (not deleted)
-- Factory Proposed ephemeral CDN URLs still require Current rehydration path (V2)
-- Authenticated browser certification pending post-merge 8080 sync for remediated brands
-- Hotel Explorer display permission remains false until HE product approval per asset
+- 16 duplicate Presentation slot conflicts flagged (no deletes; primary selected)
+- Exact-brand census verification incomplete: 119/603 IMAGE_BRAND_VERIFIED
+- Authenticated browser CURRENT cert: 59/68 brands fully validated
+- IMAGE_RIGHTS: HE display + customer publication remain blocked without explicit per-asset authorization
+- QUALITY_CERTIFIED / AIRTABLE_PERSISTED require full content gates + IMAGE_CERTIFIED (not technical completeness alone)
+- Gallery relative delivery-URL fix is live on 8080 (ws-integrated-staging overlay) but still uncommitted on origin/main — follow-up PR required
+- Factory Proposed ephemeral CDN URLs still require Current rehydration path (V2) before Proposed browser cert
 
 ## Contracts
 
