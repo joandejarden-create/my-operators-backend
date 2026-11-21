@@ -1,0 +1,47 @@
+{
+  "asOf": "2026-11-21",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "reuseApprovedInfrastructure": true,
+  "credentials": {
+    "envVars": ["EXA_API_KEY", "EXA_KEY"],
+    "keyPresent": true,
+    "keyValueExposed": false
+  },
+  "adapters": [
+    {
+      "module": "lib/hotel-intelligence/sec-edgar/exa-contract-timing-client-v1.js",
+      "capabilities": ["search (lite default)", "contents"],
+      "budgetHook": "contract-timing-v2-budget-v1 canSpend/record",
+      "cache": "data/sec-edgar/exa-contract-timing-cache",
+      "retry": "429 sleep 2s return error",
+      "selectedForPilot": true,
+      "reason": "Lowest-cost Lite Search + Contents; Agent not used"
+    },
+    {
+      "module": "lib/hotel-intelligence/sec-edgar/exa-agent-client-v1.js",
+      "capabilities": ["agent/runs"],
+      "selectedForPilot": false,
+      "reason": "MANUAL_ESCALATION_ONLY — not authorized by Wave 3b pilot"
+    },
+    {
+      "module": "lib/group-demand-intelligence/research/exa-agent/*",
+      "selectedForPilot": false,
+      "reason": "GDI-specific; do not dual-build"
+    },
+    {
+      "module": "lib/group-demand-intelligence/presentation/gdi-public-contact-search-providers-v1.js",
+      "capabilities": ["exaSearch"],
+      "selectedForPilot": false,
+      "reason": "Contact search path; prefer HI contract-timing client"
+    }
+  ],
+  "pricingObserved": {
+    "source": "lib/hotel-intelligence/research-engine-v1/benchmark-p3a/provider-capability-matrix.js + contract-timing-v2-budget-v1",
+    "liteSearchReserveUsd": 0.005,
+    "contentsReserveUsd": 0.001,
+    "listPriceNote": "Exa docs: lite ~$4/1k searches; contents ~$1/1k pages; free monthly credits UNKNOWN remaining",
+    "agent": "NOT_AUTHORIZED_THIS_PILOT"
+  },
+  "pilotHardCapUsd": 10,
+  "jevOtherPaidProviders": "NOT_AUTHORIZED"
+}
