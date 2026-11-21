@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Finalize five-country concentration inventory with strict hotel-identity gates.
+ * Finalize country concentration inventory with strict hotel-identity gates.
+ * Priority markets are reporting/ambition dimensions — not allowlists.
  * Quarantines brand-only / boilerplate names and likely country misattribution.
  */
 import fs from "node:fs";
@@ -14,6 +15,11 @@ import {
   progressTowardAmbition,
 } from "../lib/hotel-intelligence/sec-edgar/hif-v6-country-concentration-v6.js";
 import { progressTowardOpportunityMilestone } from "../lib/hotel-intelligence/sec-edgar/hif-v6-opportunities-first-priority-v6.js";
+import {
+  ensureCountryScorecardRow,
+  geographyEligibilityDisposition,
+  normalizeHotelCountryCode,
+} from "../lib/hotel-intelligence/sec-edgar/hif-v6-worldwide-eligibility-v6.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "reports/sec-edgar-hif-v6-country-concentration");
@@ -98,49 +104,57 @@ for (const row of all) {
   kept.push(row);
 }
 
+// Seed priority markets for concentration reporting; any verified country is credited dynamically.
 const byCountry = Object.fromEntries(PRIORITY_COUNTRIES_V6.map((c) => [c, emptyCountryScorecardRow(c)]));
 const activeProspects = kept.filter((r) => r.bucket !== "HISTORICAL");
 const historical = kept.filter((r) => r.bucket === "HISTORICAL");
+const geoHold = [];
 
 for (const r of activeProspects) {
-  const cc = PRIORITY_COUNTRIES_V6.includes(r.hotelCountry) ? r.hotelCountry : null;
-  if (!cc) continue;
-  byCountry[cc].distinctEvidenceBackedProspects += 1;
-  byCountry[cc].distinctHotelsResearched += 1;
-  if (r.bucket === "DATED_ACTIVE") {
-    byCountry[cc].verifiedContractualResearchOpportunities += 1;
-    if (r.agreementType === "FRANCHISE") byCountry[cc].newlyVerifiedFranchiseExpirations += 1;
-    if (r.agreementType === "MANAGEMENT") byCountry[cc].newlyVerifiedManagementExpirations += 1;
-  } else {
-    byCountry[cc].evidenceBackedCommercialProspectsUndated += 1;
+  const cc = normalizeHotelCountryCode(r.hotelCountry);
+  const disp = geographyEligibilityDisposition(cc);
+  if (disp.disposition === "HOLD_GEOGRAPHY_UNVERIFIED") {
+    geoHold.push({ ...r, holdReason: disp.reason });
+    continue;
   }
-  if (r.track === "TRACK_A") byCountry[cc].trackAContribution += 1;
-  else byCountry[cc].trackBContribution += 1;
+  const row = ensureCountryScorecardRow(byCountry, cc, emptyCountryScorecardRow);
+  row.distinctEvidenceBackedProspects += 1;
+  row.distinctHotelsResearched += 1;
+  if (r.bucket === "DATED_ACTIVE") {
+    row.verifiedContractualResearchOpportunities += 1;
+    if (r.agreementType === "FRANCHISE") row.newlyVerifiedFranchiseExpirations += 1;
+    if (r.agreementType === "MANAGEMENT") row.newlyVerifiedManagementExpirations += 1;
+  } else {
+    row.evidenceBackedCommercialProspectsUndated += 1;
+  }
+  if (r.track === "TRACK_A") row.trackAContribution += 1;
+  else row.trackBContribution += 1;
   const fam = r.sourceFamily || "OTHER";
-  byCountry[cc].sourceFamilies[fam] = (byCountry[cc].sourceFamilies[fam] || 0) + 1;
+  row.sourceFamilies[fam] = (row.sourceFamilies[fam] || 0) + 1;
 }
 for (const r of historical) {
-  const cc = PRIORITY_COUNTRIES_V6.includes(r.hotelCountry) ? r.hotelCountry : null;
-  if (!cc) continue;
-  byCountry[cc].historicalClosedSuperseded += 1;
+  const cc = normalizeHotelCountryCode(r.hotelCountry);
+  if (geographyEligibilityDisposition(cc).disposition === "HOLD_GEOGRAPHY_UNVERIFIED") continue;
+  ensureCountryScorecardRow(byCountry, cc, emptyCountryScorecardRow).historicalClosedSuperseded += 1;
 }
 for (const r of quarantined) {
-  const cc = PRIORITY_COUNTRIES_V6.includes(r.hotelCountry) ? r.hotelCountry : null;
-  if (!cc) continue;
-  byCountry[cc].invalidOrQuarantined += 1;
+  const cc = normalizeHotelCountryCode(r.hotelCountry);
+  if (geographyEligibilityDisposition(cc).disposition === "HOLD_GEOGRAPHY_UNVERIFIED") continue;
+  ensureCountryScorecardRow(byCountry, cc, emptyCountryScorecardRow).invalidOrQuarantined += 1;
 }
 
-for (const cc of PRIORITY_COUNTRIES_V6) {
+for (const cc of Object.keys(byCountry)) {
   byCountry[cc].ambitionProgress = progressTowardAmbition(
     byCountry[cc].distinctEvidenceBackedProspects,
     cc,
   );
-  byCountry[cc].progressTowardAmbitionMinPct = byCountry[cc].ambitionProgress?.pctOfMin ?? 0;
+  byCountry[cc].progressTowardAmbitionMinPct = byCountry[cc].ambitionProgress?.pctOfMin ?? null;
   byCountry[cc].yieldPer1000HotelsResearched = computeYieldPer1000(
     byCountry[cc].distinctEvidenceBackedProspects,
     byCountry[cc].distinctHotelsResearched,
   );
   byCountry[cc].researchCostUsd = 0;
+  byCountry[cc].isPriorityMarket = PRIORITY_COUNTRIES_V6.includes(cc);
 }
 
 const netNewClean = activeProspects.length;
@@ -177,9 +191,12 @@ const summary = {
   netNewCleanProspectsThisWave: netNewClean,
   historicalThisWave: historical.length,
   quarantinedThisWave: quarantined.length,
+  geographyUnverifiedHold: geoHold.length,
   crossTrackDuplicatesRemoved: crossTrackDupes,
   progressToward1000: progress,
+  worldwideEligibility: "PRIORITY_MARKETS_ARE_CONCENTRATION_NOT_ALLOWLIST",
   byCountry,
+  globalCountryCodes: Object.keys(byCountry).sort(),
   trackContribution: {
     trackA: activeProspects.filter((r) => r.track === "TRACK_A").length,
     trackB: activeProspects.filter((r) => r.track === "TRACK_B").length,
