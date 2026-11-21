@@ -1,0 +1,136 @@
+{
+  "generatedAt": "2026-11-20T09:47:00.000Z",
+  "version": "gdi-multi-provider-contact-enrichment-audit-v1",
+  "paidEnrichmentExecuted": false,
+  "pr484": {
+    "state": "OPEN",
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/484"
+  },
+  "credentials": {
+    "surfe": { "present": true, "env_var": "SURFE_API_KEY" },
+    "pdl": { "present": true, "env_var": "PDL_API_KEY" },
+    "fullenrich": { "present": true, "env_var": "FULL_ENRICH_API_KEY" },
+    "prospeo": { "present": true, "env_var": "PROSPEO_API_KEY" },
+    "apollo": { "present": true, "status": "FREE_PLAN_BLOCKS_PEOPLE_ENRICHMENT" },
+    "apify": { "present": true, "status": "LIMITED_USE" }
+  },
+  "connectivity": {
+    "surfe_credits": {
+      "ok": true,
+      "http_status": 200,
+      "totalEmail": 993,
+      "totalMobile": 198,
+      "totalSearch": 0
+    },
+    "fullenrich": {
+      "verify_ok": true,
+      "credits_ok": true,
+      "balance": 36
+    },
+    "prospeo": {
+      "ok": true,
+      "plan": "FREE",
+      "remaining_credits": 100,
+      "used_credits": 0,
+      "next_quota_renewal_date": "2026-12-14 18:35:00+00:00"
+    },
+    "pdl": {
+      "key_present": true,
+      "balance_probe": "SKIPPED_NO_FREE_ENDPOINT_AVOID_CHARGE"
+    }
+  },
+  "costs_credits": {
+    "surfe": {
+      "email_enrich_worst_case": 1,
+      "mobile_enrich_worst_case": 1,
+      "search": "0_search_credits_on_account_daily_quota_200_without_search_credits"
+    },
+    "pdl": { "per_200_match": 1 },
+    "prospeo": { "email_found": 1, "mobile_found": 10, "no_match": 0 },
+    "fullenrich": {
+      "work_email_found": 1,
+      "mobile_found": 10,
+      "personal_email_found": 3,
+      "no_result": 0
+    }
+  },
+  "integration_coverage": {
+    "surfe": "gdi_on_demand_and_he_session",
+    "pdl": "client_plus_eval_modules",
+    "fullenrich": "client_plus_gated_submit",
+    "prospeo": "key_present_no_lib_client_module"
+  },
+  "cohort": [
+    {
+      "personName": "Abbas Zavar",
+      "opportunityId": "rx_d_2400ebe4c2bb",
+      "hotelId": "recH9h3McgMNFQEla"
+    },
+    {
+      "personName": "Daryl Simon",
+      "opportunityId": "wy_pd_fc13e2e08dd5",
+      "hotelId": "recXh4NgF8sDbi9cQ"
+    },
+    {
+      "personName": "Ariela Kiradjian",
+      "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+      "hotelId": "gdi_hotel_renaissance_times_square"
+    },
+    {
+      "personName": "Francesco Francavilla",
+      "opportunityId": "gdi_opp_wrome_pilot_v0_red_bull_sailgp_rome_2027",
+      "hotelId": "rece0or38cxo3Fymb"
+    },
+    {
+      "personName": "Olivia Jallits",
+      "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+      "hotelId": "recgMYovrrZDJMqzX"
+    },
+    {
+      "personName": "Aimee Welsh",
+      "opportunityId": "rx_d_5976330f194d",
+      "hotelId": "recH9h3McgMNFQEla"
+    },
+    {
+      "personName": "Agathe Lairy",
+      "opportunityId": "rx_d_52859ee0961e",
+      "hotelId": "recrPQcZg7SFARRb2"
+    },
+    {
+      "personName": "Alexandre Catton",
+      "opportunityId": "rx_d_d29851414427",
+      "hotelId": "recrPQcZg7SFARRb2"
+    },
+    {
+      "personName": "Andrew Bartucci",
+      "opportunityId": "rx_d_096138499154",
+      "hotelId": "recH9h3McgMNFQEla"
+    },
+    {
+      "personName": "Ben Hawkins",
+      "opportunityId": "gdi_opp_alexandria_soccer_kickoff_2027",
+      "hotelId": "recLuxvwwxID7U2B8"
+    }
+  ],
+  "proposedFirstPaidGate": {
+    "authorized": false,
+    "pdl_ceiling_credits": 10,
+    "prospeo_email_only_ceiling_credits": 10,
+    "surfe": false,
+    "fullenrich": false,
+    "mobile": false,
+    "waterfall": false
+  },
+  "recommendedOrder": [
+    "identity_preflight",
+    "google_exa",
+    "apify_limited",
+    "pdl",
+    "prospeo_email",
+    "surfe_search_optional",
+    "surfe_enrich_onclick",
+    "fullenrich_escalation",
+    "apollo_disabled"
+  ],
+  "stop": "No paid enrichment without provider-specific authorization. No Surfe reveals. No STAGED-to-CURRENT. No full-database backfill."
+}
