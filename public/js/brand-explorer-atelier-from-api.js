@@ -7236,10 +7236,34 @@
     var gallery = galleryRows
       .map(function (row) {
         var slot = String(row.slotKey || '');
-        var imgUrl = row && hasVal(row.imageUrl) ? String(row.imageUrl).trim() : '';
+        // Mirror Overview scenario delivery: prefer durable presentation-image path.
+        // Relative /api/... URLs fail isSafeHttpUrl (URL ctor requires absolute http(s)).
+        var imgUrl = '';
+        if (row) {
+          if (hasVal(row.imageDeliveryUrl)) imgUrl = String(row.imageDeliveryUrl).trim();
+          else if (hasVal(row.imageUrl)) imgUrl = String(row.imageUrl).trim();
+          if (
+            hasVal(imgUrl) &&
+            /airtableusercontent\.com/i.test(imgUrl) &&
+            hasVal(row.recordId) &&
+            /^rec[a-zA-Z0-9]+$/.test(String(row.recordId))
+          ) {
+            imgUrl =
+              '/api/brand-library/presentation-image/' + encodeURIComponent(String(row.recordId));
+          }
+          if (
+            !hasVal(imgUrl) &&
+            hasVal(row.recordId) &&
+            /^rec[a-zA-Z0-9]+$/.test(String(row.recordId))
+          ) {
+            imgUrl =
+              '/api/brand-library/presentation-image/' + encodeURIComponent(String(row.recordId));
+          }
+        }
+        var deliveryOk = /\/api\/brand-(?:library|explorer)\/presentation-image\//i.test(imgUrl);
         var fallback = galleryDefaultLabels[slot] || 'Gallery';
         var caption = galleryCaptionForRow(brand, row, fallback);
-        if (imgUrl && isSafeHttpUrl(imgUrl)) {
+        if (imgUrl && (deliveryOk || isSafeHttpUrl(imgUrl))) {
           galleryHasImage = true;
           return (
             '<div class="gallery-card gallery-card--has-image" role="img" aria-label="' +
@@ -7248,7 +7272,11 @@
             escapeHtml(imgUrl) +
             '" alt=""' +
             (isExportPdfMode() ? ' loading="eager" decoding="sync"' : ' loading="lazy" decoding="async"') +
-            ' referrerpolicy="no-referrer" />' +
+            ' referrerpolicy="no-referrer" data-be-record-id="' +
+            escapeHtml(row && row.recordId ? String(row.recordId) : '') +
+            '" data-be-slot="' +
+            escapeHtml(slot) +
+            '" />' +
             '<span class="gallery-card__cap">' +
             escapeHtml(caption) +
             '</span></div>'
