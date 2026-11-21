@@ -145,6 +145,34 @@ for (const h of sia?.hotels || []) {
 const scale = load("reports/sec-edgar-hif-v6-name-free-sec-scaleup/NET_NEW_EVENTS.json");
 for (const h of scale?.hotels || []) upsert(h, "name_free_scaleup");
 
+// Continuous uncapped wave
+const cont = load("reports/sec-edgar-hif-v6-name-free-sec-continuous/NET_NEW_EVENTS.json");
+for (const h of cont?.hotels || []) upsert(h, "name_free_continuous");
+
+// Agreement-type resolution upgrades (same event key)
+const resolved = load("reports/sec-edgar-hif-v6-agreement-type-resolution/RESOLUTION_RESULTS.json");
+for (const h of resolved?.results || []) {
+  if (!h.agreementTypeResolved) continue;
+  upsert(
+    {
+      hotelName: h.hotelName,
+      expirationDate: h.expirationDate,
+      sourceUrl: h.sourceUrl,
+      agreementType: h.agreementType,
+      agreementTypeResolved: true,
+      commercialList:
+        h.status === "MANAGEMENT"
+          ? "MANAGEMENT_CONTRACT_TARGETS"
+          : h.status === "FRANCHISE"
+            ? "BRAND_CONVERSION_TARGETS"
+            : "CONTRACT_DATE_MULTIPLE_AGREEMENT_TYPES",
+      dateMeaning: h.status === "MULTIPLE" ? "MULTIPLE_AGREEMENT_TYPES" : h.agreementType,
+      wave: "AGREEMENT_TYPE_RESOLUTION",
+    },
+    "agreement_type_resolution",
+  );
+}
+
 const rows = [...byEvent.values()];
 const toward = rows.filter((r) => r.countsToward1000);
 const activeDated = rows.filter((r) => r.status === "ACTIVE_DATED");
