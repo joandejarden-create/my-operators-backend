@@ -1,0 +1,40 @@
+{
+  "version": "hif-jev-research-routing-v1",
+  "decisionType": "HIF_CONTRACT_RESEARCH_ESCALATION",
+  "choices": [
+    "ACCEPT_EXISTING_EVIDENCE",
+    "SEARCH_ADDITIONAL_SOURCES",
+    "INVESTIGATE_WITH_EXA_AGENT",
+    "VERIFY_CONTRACT_DATE",
+    "VERIFY_RENEWAL_STATUS",
+    "VERIFY_OWNER_OPERATOR",
+    "HOLD_INSUFFICIENT_EVIDENCE",
+    "STOP_LOW_VALUE_RESEARCH"
+  ],
+  "reuses": [
+    "lib/group-demand-intelligence/jev/jev-client.js",
+    "lib/group-demand-intelligence/jev/jev-decision-service.js",
+    "lib/group-demand-intelligence/jev/jev-config.js"
+  ],
+  "forbidden": [
+    "write_contract_facts",
+    "declare_verification_gates",
+    "authorize_hpc_changes",
+    "publish_customer_intelligence",
+    "invent_renewals_or_end_dates"
+  ],
+  "defaultMode": "shadow",
+  "jevConfig": {
+    "jevConfigPresent": true,
+    "authMode": "Bearer token via JEZ_API_KEY|JEV_API_KEY|TYPESAFE_API_KEY",
+    "model": "jev-1.13.0",
+    "endpoint": "https://api.typesafe.ai/v1/systemone",
+    "timeoutMs": 12000,
+    "shadowDefault": true,
+    "enabled": true,
+    "version": "gdi_jev_decision_v1.1"
+  },
+  "sanitizePreview": {
+    "evidenceSummary": "test"
+  }
+}
