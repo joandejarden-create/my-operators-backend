@@ -2891,12 +2891,18 @@ export async function postGdiContactReveal(req, res) {
     evaluateFullEnrichFallbackEligibility,
     assertFullEnrichSpendAllowed,
     preflightFullEnrichCredits,
-    recordFullEnrichSpend,
-    getFullEnrichSpendBudgetState,
+    reserveFullEnrichSpend,
+    reconcileFullEnrichSpend,
+    markFullEnrichJobSubmitted,
+    prepareFullEnrichJobRecovery,
+    recordFullEnrichEligibleOffer,
     CONTACT_PROVIDER_FULLENRICH,
     CONTACT_PROVIDER_SURFE,
   } = await import(
     "../lib/group-demand-intelligence/gdi-fullenrich-fallback-v1.js"
+  );
+  const { FE_JOB_STATUS } = await import(
+    "../lib/group-demand-intelligence/gdi-fullenrich-spend-ledger-v1.js"
   );
   const {
     createGdiFullEnrichContactRevealProvider,
@@ -3067,14 +3073,15 @@ export async function postGdiContactReveal(req, res) {
     const spendGate = assertFullEnrichSpendAllowed({
       flags: feFlags,
       balance: bal.balance,
-      spentThisBudget: getFullEnrichSpendBudgetState().spent,
       env: process.env,
     });
     if (!spendGate.ok) {
-      return res.status(spendGate.error === "INSUFFICIENT_CREDITS_RESERVE" ||
-        spendGate.error === "SPEND_CAP_REACHED"
-        ? 402
-        : 403).json({
+      return res.status(
+        spendGate.error === "INSUFFICIENT_CREDITS_RESERVE" ||
+          spendGate.error === "SPEND_CAP_REACHED"
+          ? 402
+          : 403,
+      ).json({
         ok: false,
         ephemeral: true,
         persisted: false,
@@ -3089,6 +3096,74 @@ export async function postGdiContactReveal(req, res) {
           spendBlocked: true,
           balance: bal.balance,
         },
+        hotelId,
+        opportunityId,
+      });
+    }
+
+    const clientRequestId =
+      String(body.clientRequestId || body.idempotencyKey || "").trim() || null;
+
+    // Durable reserve before any paid submission (survives restart; concurrency-safe).
+    const reservation = reserveFullEnrichSpend(
+      {
+        hotelId,
+        opportunityId,
+        identityKey,
+        clientRequestId,
+        creditsReserved: spendGate.estimatedCredits || 1,
+      },
+      process.env,
+    );
+    if (!reservation.ok) {
+      return res.status(
+        reservation.error === "SPEND_CAP_REACHED" ? 402 : 503,
+      ).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        fullenrichPiiPersisted: false,
+        error: reservation.error,
+        message: reservation.message,
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
+
+    // Restart recovery: if duplicate client request already has enrichmentId, poll it — never re-POST.
+    let recoverEnrichmentId = null;
+    if (reservation.duplicate === true && reservation.enrichmentId) {
+      const prep = prepareFullEnrichJobRecovery(
+        {
+          enrichmentId: reservation.enrichmentId,
+          clientRequestId,
+          jobId: reservation.jobId,
+        },
+        process.env,
+      );
+      if (prep.ok) recoverEnrichmentId = prep.enrichmentId;
+    } else if (
+      reservation.duplicate === true &&
+      !reservation.enrichmentId &&
+      reservation.jobStatus &&
+      reservation.jobStatus !== "RESERVED"
+    ) {
+      // Prior attempt reserved but may still be in flight without id — do not start another paid job.
+      return res.status(409).json({
+        ok: false,
+        pending: true,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        fullenrichPiiPersisted: false,
+        error: "LOOKUP_IN_FLIGHT",
+        message:
+          "A FullEnrich lookup was already reserved for this request. Wait for recovery — do not resubmit.",
+        lookupRequestId: reservation.lookupRequestId,
+        jobId: reservation.jobId,
+        contactDetails: null,
         hotelId,
         opportunityId,
       });
@@ -3116,6 +3191,17 @@ export async function postGdiContactReveal(req, res) {
     try {
       feReveal = await feProvider.reveal({
         channel: "email",
+        recoverEnrichmentId,
+        onSubmitted: async ({ enrichmentId }) => {
+          markFullEnrichJobSubmitted(
+            {
+              jobId: reservation.jobId,
+              lookupRequestId: reservation.lookupRequestId,
+              enrichmentId,
+            },
+            process.env,
+          );
+        },
         contact: {
           name: resolvedName,
           role:
@@ -3161,6 +3247,8 @@ export async function postGdiContactReveal(req, res) {
           contactProvider: CONTACT_PROVIDER_FULLENRICH,
           providerCalls: feReveal?.providerCalls || 0,
           enrichmentId: feReveal?.enrichmentId || null,
+          providerStatus: FE_JOB_STATUS.ABORTED,
+          creditCertainty: "unknown",
         };
       }
     } finally {
@@ -3171,13 +3259,59 @@ export async function postGdiContactReveal(req, res) {
     const feLatency =
       Number(feReveal?.providerLatencyMs) ||
       Math.max(0, Date.now() - feStarted);
-    if (
-      feReveal?.incrementalEmailFound === true ||
-      (feReveal?.contactDetails?.email &&
-        Number(feReveal?.providerCreditsCharged) > 0)
+
+    // Reconcile durable reservation — never assume miss/timeout/error was free.
+    const incrementalEmailFound = Boolean(feReveal?.contactDetails?.email);
+    let providerStatus =
+      feReveal?.providerStatus ||
+      (feReveal?.error === "FULLENRICH_TIMEOUT"
+        ? FE_JOB_STATUS.TIMEOUT
+        : feReveal?.miss
+          ? FE_JOB_STATUS.NO_MATCH
+          : feReveal?.ok && incrementalEmailFound
+            ? FE_JOB_STATUS.FINISHED
+            : FE_JOB_STATUS.ERROR);
+    const certaintyRaw = String(feReveal?.creditCertainty || "").toLowerCase();
+    let creditCertainty = "unknown";
+    let creditsCharged;
+    let releaseReservation = false;
+    if (incrementalEmailFound && certaintyRaw.startsWith("estimated")) {
+      creditCertainty = "estimated";
+      creditsCharged =
+        Number(feReveal?.providerCreditsCharged) ||
+        spendGate.estimatedCredits ||
+        1;
+    } else if (incrementalEmailFound && certaintyRaw === "confirmed") {
+      creditCertainty = "confirmed";
+      creditsCharged = Number(feReveal?.providerCreditsCharged) || 1;
+    } else if (
+      feReveal?.error === "INSUFFICIENT_CREDITS" &&
+      !feReveal?.enrichmentId &&
+      !recoverEnrichmentId
     ) {
-      recordFullEnrichSpend(Number(feReveal.providerCreditsCharged) || 1);
+      // Start rejected before job creation — release unused reservation.
+      releaseReservation = true;
+      providerStatus = FE_JOB_STATUS.ERROR;
+    } else {
+      creditCertainty = "unknown";
+      creditsCharged =
+        Number(reservation.creditsReserved) || spendGate.estimatedCredits || 1;
     }
+
+    const reconciled = reconcileFullEnrichSpend(
+      {
+        jobId: reservation.jobId,
+        lookupRequestId: reservation.lookupRequestId,
+        enrichmentId: feReveal?.enrichmentId || recoverEnrichmentId || null,
+        providerStatus,
+        creditCertainty,
+        creditsCharged,
+        releaseReservation,
+        incrementalEmailFound,
+        error: feReveal?.error || null,
+      },
+      process.env,
+    );
 
     const { enrichSurfeUsageContext } = await import(
       "../lib/group-demand-intelligence/gdi-surfe-usage-context-v1.js"
@@ -3215,9 +3349,13 @@ export async function postGdiContactReveal(req, res) {
       fullenrichAttempted: true,
       contactProvider: CONTACT_PROVIDER_FULLENRICH,
       fallbackReason: "SURFE_EMAIL_MISS",
-      incrementalEmailFound: Boolean(feReveal?.contactDetails?.email),
+      incrementalEmailFound,
+      creditCertainty: reconciled?.creditCertainty || creditCertainty,
+      providerCreditsCharged: reconciled?.creditsCharged,
+      lookupRequestId: reservation.lookupRequestId,
+      distinguishedFromPublicSource: true,
       surface: "gdi_drawer",
-      resolvedVia: feReveal?.contactDetails?.email
+      resolvedVia: incrementalEmailFound
         ? "fullenrich_ephemeral"
         : "fullenrich_miss",
       providerLatencyMs: feLatency,
@@ -3244,8 +3382,6 @@ export async function postGdiContactReveal(req, res) {
 
     // Licensing: never return FullEnrich PII to clients until rights confirmed.
     // Measure incremental recovery via non-PII flags only (no transient display workaround).
-    const incrementalEmailFound = Boolean(feReveal?.contactDetails?.email);
-    // Drop PII from process memory after accounting — ephemeral store TTL handles short-lived cache.
     const details = null;
 
     return res.status(
@@ -3267,16 +3403,21 @@ export async function postGdiContactReveal(req, res) {
       pending: feReveal?.pending === true,
       error: feReveal?.error || null,
       message: incrementalEmailFound
-        ? "FullEnrich recovered a work email, but customer display is blocked until licensing is confirmed. Nothing was saved."
+        ? "FullEnrich recovered a work email, but customer display is blocked until licensing is confirmed. Nothing was saved. Not a permanent public-source GDI contact."
         : feReveal?.message || null,
       contactDetails: details,
       contactProvider: CONTACT_PROVIDER_FULLENRICH,
       providerCalls: feReveal?.providerCalls || 0,
       enrichmentId: feReveal?.enrichmentId || null,
+      lookupRequestId: reservation.lookupRequestId,
+      jobId: reservation.jobId,
+      chargeStatus: reconciled?.chargeStatus || null,
+      creditCertainty: reconciled?.creditCertainty || creditCertainty,
       resolvedVia: incrementalEmailFound
         ? "fullenrich_ephemeral_redacted"
         : "fullenrich_miss",
       incrementalEmailFound,
+      distinguishedFromPublicSource: true,
       customerDisplayBlocked: true,
       fullEnrichFallback: {
         eligible: false,
@@ -3284,6 +3425,8 @@ export async function postGdiContactReveal(req, res) {
         channel: "email",
         reason: "EXECUTED_AFTER_CONFIRMATION",
         displayBlockedPendingLicensing: true,
+        recoveredExistingJob: Boolean(recoverEnrichmentId),
+        duplicateRequest: reservation.duplicate === true,
       },
       hotelId,
       opportunityId,
@@ -3501,6 +3644,13 @@ export async function postGdiContactReveal(req, res) {
     autoExecute: false,
     phoneFallbackEnabled: false,
   };
+  if (feEligibility.eligible === true) {
+    try {
+      recordFullEnrichEligibleOffer(process.env);
+    } catch {
+      /* non-blocking metrics */
+    }
+  }
 
   // Never echo Surfe PII into logs — only return in this response body for the active session.
   return res.status(status).json({

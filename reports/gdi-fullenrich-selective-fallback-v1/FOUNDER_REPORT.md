@@ -80,7 +80,12 @@ No paid FullEnrich or Surfe enrichment calls during implementation/tests.
 
 ## 8. PR and CI status
 
-See PR opened for Integration Controller. Local CI precheck run before open. **Do not merge/activate from GDI chat.**
+- **PR:** [#521](https://github.com/joandejarden-create/my-operators-backend/pull/521) — OPEN
+- **HEAD:** `6ebb9faef` on `feat/gdi-fullenrich-selective-fallback-v1`
+- **Local:** `dealality:ci-precheck` PASS (gitleaks); fixture + Surfe regression tests PASS
+- **GitHub CI:** pending at open — Integration Controller verifies
+- Built in exceptional temp worktree (registered `ws-gdi` had 194 dirty files on unrelated feature branch — preserved; preflight path mismatch expected)
+- **Do not merge/activate from GDI chat.**
 
 ## 9. Proposed controlled benchmark (post-activation approval)
 

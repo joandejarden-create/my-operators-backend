@@ -12,11 +12,12 @@ import {
   assertFullEnrichSpendAllowed,
   readFullEnrichFallbackFlags,
   resetFullEnrichSpendBudgetForTests,
-  recordFullEnrichSpend,
-  getFullEnrichSpendBudgetState,
+  reserveFullEnrichSpend,
+  reconcileFullEnrichSpend,
   CONTACT_PROVIDER_SURFE,
   CONTACT_PROVIDER_FULLENRICH,
 } from "../lib/group-demand-intelligence/gdi-fullenrich-fallback-v1.js";
+import { FE_JOB_STATUS } from "../lib/group-demand-intelligence/gdi-fullenrich-spend-ledger-v1.js";
 import {
   createMockGdiFullEnrichContactRevealProvider,
 } from "../lib/group-demand-intelligence/gdi-fullenrich-contact-provider-v1.js";
@@ -172,15 +173,20 @@ check("surfe not attempted → not eligible", () => {
 });
 
 check("spend gate: insufficient reserve", () => {
-  resetFullEnrichSpendBudgetForTests();
-  const g = assertFullEnrichSpendAllowed({
-    flags: readFullEnrichFallbackFlags(enabledEnv),
-    balance: 20,
-    spentThisBudget: 0,
-    env: enabledEnv,
-  });
-  assert.equal(g.ok, false);
-  assert.equal(g.error, "INSUFFICIENT_CREDITS_RESERVE");
+  const dir = mkdtempSync(join(tmpdir(), "gdi-fe-gate-"));
+  const env = { ...enabledEnv, GDI_FULLENRICH_SPEND_DIR: dir, GDI_FULLENRICH_SPEND_CAP: "10" };
+  try {
+    resetFullEnrichSpendBudgetForTests(env);
+    const g = assertFullEnrichSpendAllowed({
+      flags: readFullEnrichFallbackFlags(env),
+      balance: 20,
+      env,
+    });
+    assert.equal(g.ok, false);
+    assert.equal(g.error, "INSUFFICIENT_CREDITS_RESERVE");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 check("spend gate: spend not authorized", () => {
@@ -194,30 +200,52 @@ check("spend gate: spend not authorized", () => {
   assert.equal(g.error, "SPEND_NOT_AUTHORIZED");
 });
 
-check("spend gate: spend cap reached", () => {
-  resetFullEnrichSpendBudgetForTests();
-  recordFullEnrichSpend(10);
-  const g = assertFullEnrichSpendAllowed({
-    flags: readFullEnrichFallbackFlags(enabledEnv),
-    balance: 36,
-    spentThisBudget: getFullEnrichSpendBudgetState().spent,
-    env: enabledEnv,
-  });
-  assert.equal(g.ok, false);
-  assert.equal(g.error, "SPEND_CAP_REACHED");
-  resetFullEnrichSpendBudgetForTests();
+check("spend gate: durable spend cap reached", () => {
+  const dir = mkdtempSync(join(tmpdir(), "gdi-fe-cap-"));
+  const env = { ...enabledEnv, GDI_FULLENRICH_SPEND_DIR: dir, GDI_FULLENRICH_SPEND_CAP: "1" };
+  try {
+    resetFullEnrichSpendBudgetForTests(env);
+    const r = reserveFullEnrichSpend(
+      { clientRequestId: "cap1", creditsReserved: 1 },
+      env,
+    );
+    reconcileFullEnrichSpend(
+      {
+        jobId: r.jobId,
+        providerStatus: FE_JOB_STATUS.FINISHED,
+        creditCertainty: "estimated",
+        creditsCharged: 1,
+        incrementalEmailFound: true,
+      },
+      env,
+    );
+    const g = assertFullEnrichSpendAllowed({
+      flags: readFullEnrichFallbackFlags(env),
+      balance: 36,
+      env,
+    });
+    assert.equal(g.ok, false);
+    assert.equal(g.error, "SPEND_CAP_REACHED");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 check("spend gate: ok with balance above reserve", () => {
-  resetFullEnrichSpendBudgetForTests();
-  const g = assertFullEnrichSpendAllowed({
-    flags: readFullEnrichFallbackFlags(enabledEnv),
-    balance: 36,
-    spentThisBudget: 0,
-    env: enabledEnv,
-  });
-  assert.equal(g.ok, true);
-  assert.equal(g.balance, 36);
+  const dir = mkdtempSync(join(tmpdir(), "gdi-fe-ok-"));
+  const env = { ...enabledEnv, GDI_FULLENRICH_SPEND_DIR: dir, GDI_FULLENRICH_SPEND_CAP: "10" };
+  try {
+    resetFullEnrichSpendBudgetForTests(env);
+    const g = assertFullEnrichSpendAllowed({
+      flags: readFullEnrichFallbackFlags(env),
+      balance: 36,
+      env,
+    });
+    assert.equal(g.ok, true);
+    assert.equal(g.balance, 36);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 await checkAsync("FullEnrich mock success", async () => {
