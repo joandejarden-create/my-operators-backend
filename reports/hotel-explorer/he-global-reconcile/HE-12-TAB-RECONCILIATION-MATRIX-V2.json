@@ -1,0 +1,43 @@
+{
+  "version": "HE_12_TAB_RECONCILIATION_MATRIX_V2",
+  "generatedAt": "2026-11-20T01:55:00.000Z",
+  "originMain": "3306488ee",
+  "pr477": { "status": "MERGED", "mergeCommit": "3306488ee", "url": "https://github.com/joandejarden-create/my-operators-backend/pull/477" },
+  "preservation": {
+    "wtHe50PreserveDirty": 159,
+    "stash0": "present",
+    "stashDropped": false,
+    "preserveWorktreeDeleted": false
+  },
+  "threeEntryPointLiveParityPostRestart": {
+    "8080": { "demand": 8, "access": 6, "panelHpcNative": true },
+    "8090": { "demand": 8, "access": 6, "panelHpcNative": true },
+    "8091": { "demand": 8, "access": 6, "panelHpcNative": true },
+    "parityGate": "PASS"
+  },
+  "discrepancyCount": { "beforePr477": { "demandFalseEmpty": 2, "areaHotelsCensusPath": 1 }, "afterPr477Restart": { "demandFalseEmpty": 0, "areaHotelsCensusPath": 0 } },
+  "tabs": [
+    { "tab": "Hotel Overview", "live8080": "VERIFIED_AND_RENDERED", "class": null },
+    { "tab": "Guest Rooms & Meeting Space", "live8080": "VERIFIED_AND_RENDERED", "class": null },
+    { "tab": "Ownership Intelligence", "live8080": "PARTIAL — operator/brand Live", "proposed": "Marbeth+Mullen staged", "class": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE", "note": "Do not promote Mullen portfolio listing to verified legal ownership" },
+    { "tab": "Contact Intelligence", "live8080": "PARTIAL — phone/website HPC", "proposed": "3 named DMs staged", "class": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE", "blocker": "HI Org Contacts not in HE50 standing allowlist — quarantined" },
+    { "tab": "Organization & Portfolio", "live8080": "PARTIAL", "proposed": "Mullen portfolio staged", "class": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE" },
+    { "tab": "Relationships & Structure", "live8080": "PARTIAL — HI operator/brand", "proposed": "ownership overlays", "class": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE" },
+    { "tab": "Submarket Snapshot", "live8080": "PARTIAL — honest 1 HPC corridor", "class": null },
+    { "tab": "Area Hotels", "live8080": "VERIFIED_AND_RENDERED — HPC-native nearby", "class": null, "fixedBy": "PR#477" },
+    { "tab": "Demand Drivers", "live8080": "VERIFIED_AND_RENDERED — 8 anchors", "class": null, "fixedBy": "PR#477", "canonicalSource": "Demand Anchors" },
+    { "tab": "Access & Connectivity", "live8080": "VERIFIED_AND_RENDERED — 6 TI", "class": null, "canonicalSource": "Travel Infrastructure Data" },
+    { "tab": "Guest Sentiment", "live8080": "PROVIDER_RESTRICTED shell (follow-on PR)", "proposed": "3 platforms staged scores", "class": "PROVIDER_RESTRICTED" },
+    { "tab": "Sources & Evidence", "live8080": "PARTIAL/VERIFIED", "proposed": "18-source register", "class": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE" }
+  ],
+  "certification": {
+    "CANONICAL_COMPONENT_PARITY": "YES — Demand/Area Hotels panel shared on 8080/8090/8091 after restart",
+    "CANONICAL_API_PARITY": "YES — Demand/Access Live APIs match across entry points",
+    "AIRTABLE_MAPPING_VALIDATED": "PARTIAL — Demand/Access/HPC validated; contacts/ownership HI Org still Proposed/quarantined",
+    "LIVE_PROPOSED_GOVERNANCE_VALIDATED": "YES",
+    "TWELVE_TAB_RENDER_VALIDATED": "PARTIAL — all tabs render; ownership/contacts/sentiment depth still governance-limited",
+    "THREE_ENTRY_POINT_BROWSER_PARITY_VALIDATED": "YES — Live Demand/Access/Area Hotels",
+    "EIGHT_HOTEL_RESEARCH_COVERAGE_VALIDATED": "PARTIAL",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  }
+}
