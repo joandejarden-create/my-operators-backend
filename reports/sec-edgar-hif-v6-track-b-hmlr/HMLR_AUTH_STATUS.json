@@ -1,0 +1,36 @@
+{
+  "productInferred": "USE_LAND_AND_PROPERTY_DATA",
+  "baseUrl": "https://use-land-property-data.service.gov.uk/api/v1",
+  "keyPresent": true,
+  "keyLength": 36,
+  "companiesHouseApiKeyPresent": false,
+  "keySourceHint": "dotenv_file",
+  "note": "This credential targets Use Land and Property Data (bulk datasets: CCOD/OCOD/NPS). It does NOT grant Business Gateway live title-register access.",
+  "outcome": "AUTHENTICATED_OK",
+  "authenticatedAccess": true,
+  "datasetListOk": true,
+  "datasetsVisible": [
+    "ccod",
+    "ocod",
+    "nps",
+    "nps_sample",
+    "res_cov",
+    "leases"
+  ],
+  "capabilitySummary": {
+    "listsDatasets": true,
+    "canReadDatasetMetadata": true,
+    "freeDatasetDownloadTickets": 0,
+    "licenceBlocks": [
+      "ccod",
+      "ocod",
+      "nps_sample"
+    ],
+    "paidBlocks": [],
+    "doesNotProvide": [
+      "Business Gateway live title register",
+      "Per-address official copy purchase",
+      "Real-time proprietor lookup by UPRN/title number (unless in CCOD/OCOD bulk)"
+    ]
+  }
+}
