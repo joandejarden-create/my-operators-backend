@@ -6,11 +6,11 @@
 ## Dual views (from current canonical toward inventory)
 
 ### Global Opportunity Inventory
-- Countries represented: **1**
-- Total prospects in view: **385**
+- Countries represented: **2**
+- Total prospects in view: **612**
 
 ### Priority Market Performance
-- US/MX/BR/GB/CA total: **385**
+- US/MX/BR/GB/CA total: **612**
 
 ## Invariants
 - Geographic eligibility exclusions: **NONE**
