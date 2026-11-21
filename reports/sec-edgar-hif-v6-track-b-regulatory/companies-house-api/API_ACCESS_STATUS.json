@@ -1,0 +1,41 @@
+{
+  "asOf": "2026-11-21T03:24:14.629Z",
+  "restBase": "https://api.company-information.service.gov.uk",
+  "docs": [
+    "https://developer.company-information.service.gov.uk/",
+    "https://developer-specs.company-information.service.gov.uk/",
+    "https://developer.company-information.service.gov.uk/authentication/"
+  ],
+  "auth": "HTTP Basic — API key as username, empty password",
+  "envVarRequired": "COMPANIES_HOUSE_API_KEY",
+  "keyPresentInEnv": false,
+  "unauthenticatedProbe": {
+    "url": "https://api.company-information.service.gov.uk/company/11870286",
+    "http": 401,
+    "body": {
+      "error": "Empty Authorization header",
+      "type": "ch:service"
+    }
+  },
+  "setupSteps": [
+    "Create GOV.UK Companies House developer account",
+    "Create Live application for Dealality HIF research",
+    "Create REST API key (not stream key)",
+    "Store key only in local .env under COMPANIES_HOUSE_API_KEY (never commit; never paste into docs)",
+    "Re-run authenticated search/profile/filing-history/officers/charges/psc enrichment via HIF client"
+  ],
+  "capabilitiesAfterKey": [
+    "company search",
+    "company profile",
+    "filing history",
+    "accounts metadata",
+    "officers",
+    "PSC (public)",
+    "charges",
+    "company status",
+    "registered address",
+    "related filings"
+  ],
+  "publicationState": "CUSTOMER_BLOCKED",
+  "meteredResearchUnauthorized": true
+}

@@ -1,0 +1,79 @@
+{
+  "results": [
+    {
+      "family": "COURT_LISTENER_RECAP",
+      "url": "https://www.courtlistener.com/?q=%22management+agreement%22+hotel&type=o&order_by=score+desc",
+      "note": "Free RECAP/opinions search — not PACER paid",
+      "ok": false,
+      "status": 403,
+      "bytes": 919,
+      "maHits": 0,
+      "franchiseHits": 0,
+      "hotelHits": 0,
+      "verifiedContractFacts": 0,
+      "note2": "Retrieval failed"
+    },
+    {
+      "family": "COURT_LISTENER_RECAP",
+      "url": "https://www.courtlistener.com/?q=%22franchise+agreement%22+hotel+exhibit&type=r&order_by=score+desc",
+      "note": "RECAP docket search",
+      "ok": false,
+      "status": 403,
+      "bytes": 919,
+      "maHits": 0,
+      "franchiseHits": 0,
+      "hotelHits": 0,
+      "verifiedContractFacts": 0,
+      "note2": "Retrieval failed"
+    },
+    {
+      "family": "GOVINFO_BANKRUPTCY",
+      "url": "https://www.govinfo.gov/app/search/%7B%22query%22%3A%22hotel%20management%20agreement%22%2C%22offset%22%3A0%7D",
+      "note": "GovInfo free search",
+      "ok": true,
+      "status": 200,
+      "bytes": 1769,
+      "maHits": 0,
+      "franchiseHits": 0,
+      "hotelHits": 0,
+      "verifiedContractFacts": 0,
+      "note2": "Retrieved but low lexicon yield"
+    },
+    {
+      "family": "SEC_EDGAR_EX10_HMA",
+      "url": "https://efts.sec.gov/LATEST/search-index?q=%22hotel%20management%20agreement%22&forms=EX-10&dateRange=custom&startdt=2020-01-01&enddt=2026-11-21",
+      "note": "Free EDGAR full-text EX-10 HMA",
+      "ok": true,
+      "status": 200,
+      "bytes": 1069,
+      "maHits": 1,
+      "franchiseHits": 0,
+      "hotelHits": 1,
+      "verifiedContractFacts": 0,
+      "note2": "Search surface returned lexicon hits — document-level verification still required"
+    },
+    {
+      "family": "SEC_EDGAR_MEMORANDUM_MA",
+      "url": "https://efts.sec.gov/LATEST/search-index?q=%22memorandum%20of%20management%20agreement%22&dateRange=custom&startdt=2015-01-01&enddt=2026-11-21",
+      "note": "Free EDGAR recorded-MA style phrase",
+      "ok": true,
+      "status": 200,
+      "bytes": 5887,
+      "maHits": 1,
+      "franchiseHits": 0,
+      "hotelHits": 0,
+      "verifiedContractFacts": 0,
+      "note2": "Search surface returned lexicon hits — document-level verification still required"
+    }
+  ],
+  "candidates": [
+    {
+      "family": "SEC_EDGAR_MEMORANDUM_MA",
+      "url": "https://efts.sec.gov/LATEST/search-index?q=%22memorandum%20of%20management%20agreement%22&dateRange=custom&startdt=2015-01-01&enddt=2026-11-21",
+      "status": "SEARCH_HIT_CANDIDATE_NOT_VERIFIED"
+    }
+  ],
+  "recordedMaVerified": 0,
+  "courtExhibitsVerified": 0,
+  "note": "Zero verified recorded-MA / court exhibits this wave — search surfaces probed only"
+}

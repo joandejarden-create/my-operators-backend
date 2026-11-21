@@ -1,0 +1,75 @@
+{
+  "version": "hif-weekly-regional-yield-scorecard-v6",
+  "weekId": "2026-W47-track-b-ch-identity-sample",
+  "asOf": "2026-11-21",
+  "immutable": true,
+  "customerBlocked": true,
+  "publicationRestricted": true,
+  "geographicExclusions": "NONE",
+  "researchHorizonFilter": "NONE",
+  "geographyAttribution": "PHYSICAL_HOTEL_LOCATION",
+  "discoveryTracks": [
+    "TRACK_A_COMMERCIAL_CONTRACT_PROPERTY",
+    "TRACK_B_GOVERNMENT_REGULATORY_PUBLIC"
+  ],
+  "notes": [
+    "Companies House REST API access BLOCKED — COMPANIES_HOUSE_API_KEY absent; unauthenticated probe returned HTTP 401.",
+    "Public HTML company overview enrichment confirmed legal identity for a 15-company sample of the 61 wave-1 candidates.",
+    "0 companies converted into verified hotel-specific property relationships.",
+    "SIC 55100 and registered office are NOT counted as property-level ownership/operator proof.",
+    "Track A CMBS 57 franchise schedule dates remain prior/re-extracted inventory — NOT counted as incremental new discoveries this wave.",
+    "No new Brand Conversion Targets or Management Contract Targets from this CH identity sample."
+  ],
+  "global": {
+    "distinctHotelsDiscoveredIncremental": 0,
+    "identityVerifiedHotelsIncremental": 0,
+    "ownerLinkedHotelsIncremental": 0,
+    "agreementIdentifiedHotelsIncremental": 0,
+    "verifiedFranchiseExpirationsIncremental": 0,
+    "verifiedManagementExpirationsIncremental": 0,
+    "qualifiedCommercialTargetsIncremental": 0,
+    "newBrandConversionTargets": 0,
+    "newManagementContractTargets": 0,
+    "sourceCandidates": 61,
+    "legalIdentitiesEnrichedSample": 15,
+    "legalIdentitiesActiveSample": 8,
+    "legalIdentitiesDissolvedSample": 7,
+    "hotelSicCodePresentSample": 7,
+    "verifiedHotelRelationships": 0,
+    "researchCostUsd": 0,
+    "agentSpendUsd": 0,
+    "duplicateRate": null,
+    "cmbsReextractedDatesNotCountedAsNew": 57
+  },
+  "byCountry": {
+    "GB": {
+      "sourceCandidates": 61,
+      "legalIdentitiesEnrichedSample": 15,
+      "verifiedHotelRelationships": 0,
+      "sourceYield": "LEGAL_IDENTITY_ONLY"
+    }
+  },
+  "bySourceFamily": {
+    "UK_COMPANIES_HOUSE_PUBLIC_HTML": {
+      "candidates": 61,
+      "sampled": 15,
+      "verifiedRelationships": 0
+    },
+    "UK_COMPANIES_HOUSE_REST_API": {
+      "access": "BLOCKED_NO_API_KEY",
+      "verifiedRelationships": 0
+    }
+  },
+  "trackComparison": {
+    "trackA": {
+      "status": "MERGED_PR_506",
+      "incrementalVerifiedExpirationsThisCloseout": 0,
+      "note": "CMBS schedule dates carried; independent hotel reconcile still required before QUALIFIED"
+    },
+    "trackB": {
+      "status": "MERGED_PR_507_PLUS_CH_IDENTITY_SAMPLE_LOCAL",
+      "incrementalVerifiedHotelRelationships": 0,
+      "apiAccess": "BLOCKED_NO_API_KEY"
+    }
+  }
+}
