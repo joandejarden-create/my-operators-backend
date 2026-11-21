@@ -1,0 +1,79 @@
+{
+  "schema": "gdi-contact-actionability-contract-v1",
+  "status": "PROPOSED_AWAITING_FOUNDER_APPROVAL",
+  "nonGoals": [
+    "STRICT_EMAIL is NOT a customer-publication gate",
+    "Actionability does NOT mutate opportunity eligibility",
+    "Actionability does NOT change CURRENT/STAGED pointers",
+    "Provider-enriched channels are not customer-verified by default"
+  ],
+  "separationOfConcerns": {
+    "opportunityEligibility": "commercial demand + hotel fit + contact eligibility class",
+    "contactVerification": "named person identity + source-backed channels",
+    "contactActionability": "SALES_READY | REACHABLE | CONTACT_RESEARCH_REQUIRED | CONTACT_IDENTIFICATION_REQUIRED",
+    "customerPublication": "founder-authorized CURRENT / registry PUBLISHED only"
+  },
+  "tiers": {
+    "SALES_READY": {
+      "requires": [
+        "named person",
+        "commercially relevant (DIRECT_BUYER or RELEVANT_COMMERCIAL_ENTRY_POINT — labeled distinctly)",
+        "person-specific business email with independent source confirmation"
+      ],
+      "customerLabel": "Sales-ready contact",
+      "forbids": [
+        "inferred email patterns",
+        "generic/org mailboxes counted as personal email",
+        "fabricated source URLs",
+        "provider-only channels without display rights"
+      ]
+    },
+    "REACHABLE": {
+      "requires": [
+        "named commercially relevant person",
+        "usable person-specific business phone or office extension with evidence"
+      ],
+      "customerLabel": "Reachable contact",
+      "note": "Email may still be CONTACT_RESEARCH_REQUIRED while phone keeps REACHABLE"
+    },
+    "CONTACT_RESEARCH_REQUIRED": {
+      "requires": [
+        "named person identified"
+      ],
+      "customerLabel": "Contact research needed",
+      "includes": [
+        "person_specific email without source URL",
+        "LinkedIn-only",
+        "generic mailbox only",
+        "research candidates lacking remit evidence"
+      ]
+    },
+    "CONTACT_IDENTIFICATION_REQUIRED": {
+      "requires": [],
+      "customerLabel": "Contact not yet identified",
+      "when": "no verified named person"
+    }
+  },
+  "buyerVsEntryPoint": {
+    "DIRECT_BUYER": "Hotel/travel/meetings/lodging/purchasing remit",
+    "RELEVANT_COMMERCIAL_ENTRY_POINT": "Verified commercially relevant intermediary/referral — valid contact, never mislabeled as direct decision-maker",
+    "rule": "Both may achieve SALES_READY actionability when channels are source-confirmed; UI must show distinct role labels"
+  },
+  "sharedContactModel": {
+    "identityKey": "personIdentityKey(name|organization|domain)",
+    "reuse": "Verified person channels reusable across hotels",
+    "hotelSpecific": "Commercial relevance / buyerVsEntry re-evaluated per opportunity-hotel pair"
+  },
+  "researchLimits": {
+    "minAttemptsBeforeStop": 1,
+    "maxPublicDiscoveryPassesPerContact": 2,
+    "maxUrlReverifyFetchesPerContact": 5,
+    "stopWhen": [
+      "two public discovery passes yield no person-specific channel",
+      "all candidate official URLs fetched and email/phone absent",
+      "identity mismatch / lookalike LinkedIn quarantine",
+      "only generic mailbox remains after named-person search"
+    ],
+    "paidProviders": "HOLD until separately justified bounded budget"
+  }
+}

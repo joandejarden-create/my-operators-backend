@@ -130,6 +130,9 @@ regexes = [
   '''(?i)const bannedKeys = \["email", "phone", "mobile", "linkedinUrl", "linkedInUrl", "providerPersonId", "emails", "phones"\];''',
   # Boolean gate / comment text next to public LinkedIn URL field — not a LinkedIn OAuth client secret (PR #463).
   '''linkedinUrl:\s*linkedinVerified''',
+  # Profile-match status field name (linkedInStatus / linkedInMatchStatus) — not a LinkedIn OAuth client id (PR #484).
+  '''(?i)linkedIn(?:Match)?Status''',
+  '''(?i)liProfileMatchStatus''',
   '''https://v5\.airtableusercontent\.com/v3/u/''',
 
   # Public client-side IHG config captured from HTML.
