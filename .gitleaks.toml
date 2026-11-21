@@ -69,12 +69,18 @@ paths = [
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/SUMMARY-dry\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/ac-hi-apply-dry\.json$''',
   '''scripts/output/deal-readiness-field-audit-data\.json$''',
+  # HIF V6 Track B source inventory: human accessMethod prose (County/municipal portals) trips generic-api-key (PR #503).
+  '''lib/hotel-intelligence/sec-edgar/hif-v6-track-b-source-inventory\.js$''',
+  '''reports/sec-edgar-hif-v6-dual-track/TRACK_B_SOURCE_INVENTORY\.json$''',
 ]
 
 regexes = [
   # Proven false positives: Dealality property/census identity metadata.
   '''(?i)"identity_key"\s*:''',
   '''(?i)Identity Key"\s*:''',
+
+  # HIF V6 Track B inventory accessMethod prose (not credentials) — historical PR #503 commits.
+  '''(?i)accessMethod["']?\s*:\s*["']County/municipal portals''',
 
   # Hotel Explorer session preference storage id (not a credential). Historical STORAGE_KEY= and SESSION_PREF_ID= lines.
   '''(?i)(?:STORAGE_KEY|SESSION_PREF_ID)\s*=\s*"he_measurement_prefs_v1"''',
