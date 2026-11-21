@@ -2805,7 +2805,14 @@ export async function postGdiCustomerValidation(req, res) {
  * AND an injected/live adapter (default returns LIVE_PROVIDER_NOT_AUTHORIZED / NOT_WIRED).
  *
  * POST .../opportunities/:opportunityId/contacts/reveal
- * body: { channel: 'email'|'phone'|'both', contactName?, authorizeLiveProvider?, useMock?: boolean }
+ * body: {
+ *   channel: 'email'|'phone'|'both',
+ *   contactName?,
+ *   authorizeLiveProvider?,
+ *   useMock?: boolean,
+ *   authorizeFullEnrichFallback?: boolean,  // explicit user confirm for FE spend
+ *   fullEnrichFallbackOnly?: boolean,       // skip Surfe; FE email only after prior miss
+ * }
  */
 export async function postGdiContactReveal(req, res) {
   if (!flagGate(req, res)) return;
@@ -2879,6 +2886,30 @@ export async function postGdiContactReveal(req, res) {
   const { createGdiSurfeContactRevealProvider } = await import(
     "../lib/group-demand-intelligence/gdi-surfe-contact-provider-v1.js"
   );
+  const {
+    readFullEnrichFallbackFlags,
+    evaluateFullEnrichFallbackEligibility,
+    assertFullEnrichSpendAllowed,
+    preflightFullEnrichCredits,
+    reserveFullEnrichSpend,
+    reconcileFullEnrichSpend,
+    markFullEnrichJobSubmitted,
+    prepareFullEnrichJobRecovery,
+    recordFullEnrichEligibleOffer,
+    CONTACT_PROVIDER_FULLENRICH,
+    CONTACT_PROVIDER_SURFE,
+  } = await import(
+    "../lib/group-demand-intelligence/gdi-fullenrich-fallback-v1.js"
+  );
+  const { FE_JOB_STATUS } = await import(
+    "../lib/group-demand-intelligence/gdi-fullenrich-spend-ledger-v1.js"
+  );
+  const {
+    createGdiFullEnrichContactRevealProvider,
+    createMockGdiFullEnrichContactRevealProvider,
+  } = await import(
+    "../lib/group-demand-intelligence/gdi-fullenrich-contact-provider-v1.js"
+  );
 
   const contactName =
     String(body.contactName || "").trim() ||
@@ -2939,8 +2970,13 @@ export async function postGdiContactReveal(req, res) {
   // Client authorizeLiveProvider is never sufficient without access.ok above.
   const authorizeLive =
     body.authorizeLiveProvider === true && !useMock && access.ok === true;
+  const authorizeFullEnrichFallback =
+    body.authorizeFullEnrichFallback === true && !useMock && access.ok === true;
+  const fullEnrichFallbackOnly =
+    body.fullEnrichFallbackOnly === true && authorizeFullEnrichFallback === true;
+  const feFlags = readFullEnrichFallbackFlags(process.env);
 
-  if (!useMock && !authorizeLive) {
+  if (!useMock && !authorizeLive && !authorizeFullEnrichFallback) {
     return res.status(403).json({
       ok: false,
       ephemeral: true,
@@ -2955,8 +2991,9 @@ export async function postGdiContactReveal(req, res) {
     });
   }
 
-  // Live path: refuse before credit spend when Surfe is not configured.
-  if (authorizeLive && !useMock) {
+  // Live Surfe path: refuse before credit spend when Surfe is not configured.
+  // FullEnrich-only confirmed fallback may proceed without Surfe key.
+  if (authorizeLive && !useMock && !fullEnrichFallbackOnly) {
     const { getSurfeApiKeyFromEnv } = await import("../lib/surfe/client.js");
     if (!getSurfeApiKeyFromEnv()) {
       return res.status(503).json({
@@ -2979,7 +3016,7 @@ export async function postGdiContactReveal(req, res) {
     preflightSurfeCredits,
     beginSurfeInFlight,
     endSurfeInFlight,
-    appendSurfeLiveAccounting,
+    appendSurfeLiveAccountingSafe,
   } = await import(
     "../lib/group-demand-intelligence/gdi-surfe-live-gate-v1.js"
   );
@@ -2994,6 +3031,409 @@ export async function postGdiContactReveal(req, res) {
 
   let creditsBefore = null;
   let provider = null;
+  let fullEnrichResultMeta = null;
+
+  // ---------- FullEnrich-only confirmed fallback (no Surfe re-spend) ----------
+  if (fullEnrichFallbackOnly) {
+    const eligibilityProbe = evaluateFullEnrichFallbackEligibility({
+      contactDetails: null,
+      channel: "email",
+      surfeAttempted: true,
+      surfeMiss: true,
+      flags: feFlags,
+      env: process.env,
+    });
+    // Force email-missing eligibility shape for confirmed fallback path
+    const eligibility = {
+      ...eligibilityProbe,
+      eligible: feFlags.enabled && feFlags.apiKeyPresent && !feFlags.customerDisplay,
+      channel: "email",
+      reason: eligibilityProbe.eligible
+        ? eligibilityProbe.reason
+        : eligibilityProbe.reason || "SURFE_EMAIL_MISS",
+    };
+    if (!eligibility.eligible && eligibility.reason === "FEATURE_FLAG_OFF") {
+      return res.status(403).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        fullenrichPiiPersisted: false,
+        error: "FEATURE_FLAG_OFF",
+        message: "FullEnrich fallback is disabled on this server.",
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
+    // Mock/fixture path never hits FullEnrich balance or start APIs (no paid calls).
+    const bal = useMock
+      ? { ok: true, balance: 36 }
+      : await preflightFullEnrichCredits(process.env);
+    const spendGate = assertFullEnrichSpendAllowed({
+      flags: feFlags,
+      balance: bal.balance,
+      env: process.env,
+    });
+    if (!spendGate.ok) {
+      return res.status(
+        spendGate.error === "INSUFFICIENT_CREDITS_RESERVE" ||
+          spendGate.error === "SPEND_CAP_REACHED"
+          ? 402
+          : 403,
+      ).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        fullenrichPiiPersisted: false,
+        error: spendGate.error,
+        message: spendGate.message,
+        contactDetails: null,
+        fullEnrichFallback: {
+          ...eligibility,
+          eligible: false,
+          spendBlocked: true,
+          balance: bal.balance,
+        },
+        hotelId,
+        opportunityId,
+      });
+    }
+
+    const clientRequestId =
+      String(body.clientRequestId || body.idempotencyKey || "").trim() || null;
+
+    // Durable reserve before any paid submission (survives restart; concurrency-safe).
+    const reservation = reserveFullEnrichSpend(
+      {
+        hotelId,
+        opportunityId,
+        identityKey,
+        clientRequestId,
+        creditsReserved: spendGate.estimatedCredits || 1,
+      },
+      process.env,
+    );
+    if (!reservation.ok) {
+      return res.status(
+        reservation.error === "SPEND_CAP_REACHED" ? 402 : 503,
+      ).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        fullenrichPiiPersisted: false,
+        error: reservation.error,
+        message: reservation.message,
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
+
+    // Restart recovery: if duplicate client request already has enrichmentId, poll it — never re-POST.
+    let recoverEnrichmentId = null;
+    if (reservation.duplicate === true && reservation.enrichmentId) {
+      const prep = prepareFullEnrichJobRecovery(
+        {
+          enrichmentId: reservation.enrichmentId,
+          clientRequestId,
+          jobId: reservation.jobId,
+        },
+        process.env,
+      );
+      if (prep.ok) recoverEnrichmentId = prep.enrichmentId;
+    } else if (
+      reservation.duplicate === true &&
+      !reservation.enrichmentId &&
+      reservation.jobStatus &&
+      reservation.jobStatus !== "RESERVED"
+    ) {
+      // Prior attempt reserved but may still be in flight without id — do not start another paid job.
+      return res.status(409).json({
+        ok: false,
+        pending: true,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        fullenrichPiiPersisted: false,
+        error: "LOOKUP_IN_FLIGHT",
+        message:
+          "A FullEnrich lookup was already reserved for this request. Wait for recovery — do not resubmit.",
+        lookupRequestId: reservation.lookupRequestId,
+        jobId: reservation.jobId,
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
+
+    const feProvider = useMock
+      ? createMockGdiFullEnrichContactRevealProvider(
+          String(body.mockFullEnrichScenario || body.mockScenario || "hit"),
+        )
+      : createGdiFullEnrichContactRevealProvider({
+          hotelId,
+          opportunityId,
+          maxPollWaitMs: Number(process.env.GDI_FULLENRICH_POLL_MS || 120000),
+        });
+
+    // Abort polling when the client disconnects (drawer closed).
+    let aborted = false;
+    const onClose = () => {
+      aborted = true;
+    };
+    req.on("close", onClose);
+
+    const feStarted = Date.now();
+    let feReveal;
+    try {
+      feReveal = await feProvider.reveal({
+        channel: "email",
+        recoverEnrichmentId,
+        onSubmitted: async ({ enrichmentId }) => {
+          markFullEnrichJobSubmitted(
+            {
+              jobId: reservation.jobId,
+              lookupRequestId: reservation.lookupRequestId,
+              enrichmentId,
+            },
+            process.env,
+          );
+        },
+        contact: {
+          name: resolvedName,
+          role:
+            selectedContact?.role ||
+            selectedContact?.title ||
+            opportunity.contactRole ||
+            null,
+          linkedinUrl:
+            selectedContact?.linkedinUrl ||
+            selectedContact?.profileUrl ||
+            selectedContact?.sourceUrl ||
+            null,
+          companyName:
+            opportunity.displayCompanyName ||
+            opportunity.organizationName ||
+            opportunity.company ||
+            null,
+          companyDomain:
+            opportunity.organizationDomain ||
+            opportunity.companyDomain ||
+            null,
+          hotelId,
+          opportunityId,
+        },
+        organization: {
+          name:
+            opportunity.displayCompanyName ||
+            opportunity.organizationName ||
+            opportunity.company ||
+            null,
+          domain:
+            opportunity.organizationDomain ||
+            opportunity.companyDomain ||
+            null,
+        },
+      });
+      if (aborted && !feReveal?.contactDetails?.email) {
+        feReveal = {
+          ok: false,
+          error: "ABORTED",
+          message: "Lookup canceled because the session closed.",
+          contactDetails: null,
+          contactProvider: CONTACT_PROVIDER_FULLENRICH,
+          providerCalls: feReveal?.providerCalls || 0,
+          enrichmentId: feReveal?.enrichmentId || null,
+          providerStatus: FE_JOB_STATUS.ABORTED,
+          creditCertainty: "unknown",
+        };
+      }
+    } finally {
+      req.off?.("close", onClose);
+      req.removeListener?.("close", onClose);
+    }
+
+    const feLatency =
+      Number(feReveal?.providerLatencyMs) ||
+      Math.max(0, Date.now() - feStarted);
+
+    // Reconcile durable reservation — never assume miss/timeout/error was free.
+    const incrementalEmailFound = Boolean(feReveal?.contactDetails?.email);
+    let providerStatus =
+      feReveal?.providerStatus ||
+      (feReveal?.error === "FULLENRICH_TIMEOUT"
+        ? FE_JOB_STATUS.TIMEOUT
+        : feReveal?.miss
+          ? FE_JOB_STATUS.NO_MATCH
+          : feReveal?.ok && incrementalEmailFound
+            ? FE_JOB_STATUS.FINISHED
+            : FE_JOB_STATUS.ERROR);
+    const certaintyRaw = String(feReveal?.creditCertainty || "").toLowerCase();
+    let creditCertainty = "unknown";
+    let creditsCharged;
+    let releaseReservation = false;
+    if (incrementalEmailFound && certaintyRaw.startsWith("estimated")) {
+      creditCertainty = "estimated";
+      creditsCharged =
+        Number(feReveal?.providerCreditsCharged) ||
+        spendGate.estimatedCredits ||
+        1;
+    } else if (incrementalEmailFound && certaintyRaw === "confirmed") {
+      creditCertainty = "confirmed";
+      creditsCharged = Number(feReveal?.providerCreditsCharged) || 1;
+    } else if (
+      feReveal?.error === "INSUFFICIENT_CREDITS" &&
+      !feReveal?.enrichmentId &&
+      !recoverEnrichmentId
+    ) {
+      // Start rejected before job creation — release unused reservation.
+      releaseReservation = true;
+      providerStatus = FE_JOB_STATUS.ERROR;
+    } else {
+      creditCertainty = "unknown";
+      creditsCharged =
+        Number(reservation.creditsReserved) || spendGate.estimatedCredits || 1;
+    }
+
+    const reconciled = reconcileFullEnrichSpend(
+      {
+        jobId: reservation.jobId,
+        lookupRequestId: reservation.lookupRequestId,
+        enrichmentId: feReveal?.enrichmentId || recoverEnrichmentId || null,
+        providerStatus,
+        creditCertainty,
+        creditsCharged,
+        releaseReservation,
+        incrementalEmailFound,
+        error: feReveal?.error || null,
+      },
+      process.env,
+    );
+
+    const { enrichSurfeUsageContext } = await import(
+      "../lib/group-demand-intelligence/gdi-surfe-usage-context-v1.js"
+    );
+    const enriched = enrichSurfeUsageContext({
+      hotelId,
+      opportunityId,
+      opportunity,
+      dealalityUser: req.dealalityUser || null,
+      req,
+      body,
+      env: process.env,
+    });
+    appendSurfeLiveAccountingSafe({
+      hotelId,
+      opportunityId,
+      identityKey,
+      channel: "email",
+      lookupType: "email",
+      channelRequested: "email",
+      enrichmentId: feReveal?.enrichmentId || null,
+      clientRequestId:
+        String(body.clientRequestId || body.idempotencyKey || "").trim() || null,
+      providerCreditsCharged: Number.isFinite(
+        Number(feReveal?.providerCreditsCharged),
+      )
+        ? Number(feReveal.providerCreditsCharged)
+        : undefined,
+      ok: feReveal?.ok === true,
+      miss: feReveal?.miss === true,
+      error: feReveal?.error || null,
+      emailReturned: Boolean(feReveal?.contactDetails?.email),
+      phoneReturned: false,
+      surfeAttempted: false,
+      fullenrichAttempted: true,
+      contactProvider: CONTACT_PROVIDER_FULLENRICH,
+      fallbackReason: "SURFE_EMAIL_MISS",
+      incrementalEmailFound,
+      creditCertainty: reconciled?.creditCertainty || creditCertainty,
+      providerCreditsCharged: reconciled?.creditsCharged,
+      lookupRequestId: reservation.lookupRequestId,
+      distinguishedFromPublicSource: true,
+      surface: "gdi_drawer",
+      resolvedVia: incrementalEmailFound
+        ? "fullenrich_ephemeral"
+        : "fullenrich_miss",
+      providerLatencyMs: feLatency,
+      userId:
+        req.dealalityUser?.memberstackId ||
+        req.dealalityUser?.id ||
+        req.user?.id ||
+        null,
+      _enrichedContext: enriched,
+      hotelName: enriched.hotelName,
+      hotelMarket: enriched.hotelMarket,
+      hotelCountry: enriched.hotelCountry,
+      opportunityTitle: enriched.opportunityTitle,
+      opportunityOrganizationName: enriched.opportunityOrganizationName,
+      opportunityDrawerHref: enriched.opportunityDrawerHref,
+      requestingPortfolioId: enriched.requestingPortfolioId,
+      requestingHotelOrOfficeId: enriched.requestingHotelOrOfficeId,
+      requestingOrganizationName: enriched.requestingOrganizationName,
+      requestingOfficeMarket: enriched.requestingOfficeMarket,
+      requestingOfficeCity: enriched.requestingOfficeCity,
+      dataEnvironment: enriched.dataEnvironment,
+      usageClass: enriched.usageClass,
+    });
+
+    // Licensing: never return FullEnrich PII to clients until rights confirmed.
+    // Measure incremental recovery via non-PII flags only (no transient display workaround).
+    const details = null;
+
+    return res.status(
+      feReveal?.error === "INSUFFICIENT_CREDITS" ||
+        feReveal?.error === "INSUFFICIENT_CREDITS_RESERVE"
+        ? 402
+        : feReveal?.ok
+          ? 200
+          : feReveal?.pending
+            ? 202
+            : 502,
+    ).json({
+      ok: feReveal?.ok !== false,
+      ephemeral: true,
+      persisted: false,
+      surfePiiPersisted: false,
+      fullenrichPiiPersisted: false,
+      miss: feReveal?.miss === true || (!incrementalEmailFound && feReveal?.ok),
+      pending: feReveal?.pending === true,
+      error: feReveal?.error || null,
+      message: incrementalEmailFound
+        ? "FullEnrich recovered a work email, but customer display is blocked until licensing is confirmed. Nothing was saved. Not a permanent public-source GDI contact."
+        : feReveal?.message || null,
+      contactDetails: details,
+      contactProvider: CONTACT_PROVIDER_FULLENRICH,
+      providerCalls: feReveal?.providerCalls || 0,
+      enrichmentId: feReveal?.enrichmentId || null,
+      lookupRequestId: reservation.lookupRequestId,
+      jobId: reservation.jobId,
+      chargeStatus: reconciled?.chargeStatus || null,
+      creditCertainty: reconciled?.creditCertainty || creditCertainty,
+      resolvedVia: incrementalEmailFound
+        ? "fullenrich_ephemeral_redacted"
+        : "fullenrich_miss",
+      incrementalEmailFound,
+      distinguishedFromPublicSource: true,
+      customerDisplayBlocked: true,
+      fullEnrichFallback: {
+        eligible: false,
+        executed: true,
+        channel: "email",
+        reason: "EXECUTED_AFTER_CONFIRMATION",
+        displayBlockedPendingLicensing: true,
+        recoveredExistingJob: Boolean(recoverEnrichmentId),
+        duplicateRequest: reservation.duplicate === true,
+      },
+      hotelId,
+      opportunityId,
+      contactName: resolvedName,
+    });
+  }
+
   if (useMock) {
     provider = createMockGdiContactRevealProvider(String(body.mockScenario || "hit"));
   } else if (authorizeLive) {
@@ -3109,6 +3549,7 @@ export async function postGdiContactReveal(req, res) {
       opportunityId,
       identityKey,
       channel,
+      channelRequested: channel,
       enrichmentId: result?.enrichmentId || null,
       ok: result?.ok === true,
       miss: result?.miss === true,
@@ -3118,6 +3559,8 @@ export async function postGdiContactReveal(req, res) {
       emailReturned: Boolean(result?.contactDetails?.email),
       phoneReturned: Boolean(result?.contactDetails?.phone),
       surfeAttempted: true,
+      fullenrichAttempted: false,
+      contactProvider: CONTACT_PROVIDER_SURFE,
       surface: "gdi_drawer",
       resolvedVia: result?.resolvedVia || null,
       providerLatencyMs: latencyMs,
@@ -3180,17 +3623,49 @@ export async function postGdiContactReveal(req, res) {
                 ? 200
                 : 502;
 
+  // Offer FullEnrich work-email fallback when Surfe/public path left email missing.
+  // Never auto-executes; client must confirm with authorizeFullEnrichFallback.
+  const feEligibility = evaluateFullEnrichFallbackEligibility({
+    contactDetails: result?.contactDetails || null,
+    channel,
+    surfeAttempted:
+      result?.liveVerified === true ||
+      result?.resolvedVia === "surfe_ephemeral" ||
+      Number(result?.providerCalls || 0) > 0,
+    surfeMiss: result?.miss === true || !result?.contactDetails?.email,
+    surfeOk: result?.ok !== false,
+    flags: feFlags,
+    env: process.env,
+  });
+  fullEnrichResultMeta = {
+    ...feEligibility,
+    offerVisible: feEligibility.eligible === true,
+    confirmationRequired: true,
+    autoExecute: false,
+    phoneFallbackEnabled: false,
+  };
+  if (feEligibility.eligible === true) {
+    try {
+      recordFullEnrichEligibleOffer(process.env);
+    } catch {
+      /* non-blocking metrics */
+    }
+  }
+
   // Never echo Surfe PII into logs — only return in this response body for the active session.
   return res.status(status).json({
     ...result,
     hotelId,
     opportunityId,
     contactName: resolvedName,
+    contactProvider: CONTACT_PROVIDER_SURFE,
     // Explicit contract: never claim persistence
     persisted: false,
     surfePiiPersisted: false,
+    fullenrichPiiPersisted: false,
     creditsBefore: creditsBefore || undefined,
     creditsAfter: creditsAfter || undefined,
+    fullEnrichFallback: fullEnrichResultMeta,
   });
 }
 

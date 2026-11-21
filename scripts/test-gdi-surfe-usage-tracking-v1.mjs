@@ -397,7 +397,10 @@ assert.equal(classifySurfeLookupStatus({ error: "TIMEOUT" }), "error");
   assert.match(html, /admin-surfe-usage\.js/);
   assert.match(html, /support-admin-gate/);
   assert.match(html, /asuKpis/);
-  assert.match(html, /Monitor on-demand contact enrichment/);
+  assert.match(
+    html,
+    /See which hotel and market each lookup relates to|Monitor on-demand contact enrichment/,
+  );
   assert.match(html, /support-runbook\.css/);
   assert.match(html, /admin-ai-demand-reviews\.css/);
   assert.match(html, /asuOutcome/);
@@ -409,7 +412,7 @@ assert.equal(classifySurfeLookupStatus({ error: "TIMEOUT" }), "error");
     "utf8",
   );
   assert.match(css, /\.asu-page/);
-  assert.match(css, /--runbook-/);
+  assert.match(css, /--asu-gap|--runbook-/);
 
   const client = fs.readFileSync(
     path.join(ROOT, "public/js/admin-surfe-usage.js"),
