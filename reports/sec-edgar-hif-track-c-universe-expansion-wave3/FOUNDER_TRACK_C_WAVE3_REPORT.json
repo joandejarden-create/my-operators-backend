@@ -1,0 +1,161 @@
+{
+  "asOf": "2026-11-21T17:47:12.633Z",
+  "stream": "TRACK_C_WAVE3",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "checkpointFrom": "wave2b US≈53 UK=3 CA=5",
+  "standingAuthConstraint": {
+    "priorMaxHpcCreateBatch": 25,
+    "wave3MaxHpcCreateBatch": 100,
+    "note": "Raised under Wave 3 founder directive; CREATE still requires CREATE_READY + collision-clear + authorized pathway"
+  },
+  "hpcBeforeAfter": {
+    "US": {
+      "before": 53,
+      "after": 89
+    },
+    "Mexico": {
+      "before": 3772,
+      "after": 3772
+    },
+    "Brazil": {
+      "before": 6179,
+      "after": 6179
+    },
+    "UK": {
+      "before": 3,
+      "after": 5
+    },
+    "Canada": {
+      "before": 5,
+      "after": 8
+    }
+  },
+  "streamCU": {
+    "evaluatedDistinct": 603,
+    "met500Target": true,
+    "summary": {
+      "counts": {
+        "MATCHED_EXISTING_HPC": 25,
+        "CREATE_CANDIDATE": 0,
+        "CREATE_READY": 0,
+        "AMBIGUOUS": 0,
+        "UNMATCHED_VERIFIED": 578,
+        "UNCERTAIN": 0,
+        "HISTORICAL_ONLY": 0,
+        "RESEARCH_REQUIRED": 0
+      },
+      "distinctHotels": 603,
+      "matchedExistingHpc": 25,
+      "unmatchedVerified": 578,
+      "uncertain": 0,
+      "matchRate": 0.0415
+    },
+    "attrition": {
+      "evaluated": 603,
+      "createReady": 0,
+      "attrition": 603,
+      "byReason": {
+        "MISSING_OFFICIAL_PROPERTY_URL": 1,
+        "MISSING_PHYSICAL_ADDRESS": 518,
+        "BRAND_AMBIGUITY": 512,
+        "DUPLICATE_UNCERTAINTY": 0,
+        "HISTORICAL_IDENTITY_UNRESOLVED": 0,
+        "OPERATING_STATUS_UNCLEAR": 0,
+        "MISSING_REQUIRED_FIELD": 0,
+        "OTHER_VERIFICATION_FAILURE": 69
+      },
+      "createReadyRate": 0
+    },
+    "byBrandFamily": {
+      "UNKNOWN": 512,
+      "MARRIOTT": 33,
+      "CHOICE": 2,
+      "OTHER": 44,
+      "HILTON": 4,
+      "IHG": 6,
+      "HYATT": 2
+    }
+  },
+  "streamCR": {
+    "sec57": 57,
+    "enriched": 37,
+    "summary": {
+      "counts": {
+        "MATCHED_EXISTING_HPC": 18,
+        "CREATE_CANDIDATE": 0,
+        "CREATE_READY": 37,
+        "AMBIGUOUS": 0,
+        "UNMATCHED_VERIFIED": 0,
+        "UNCERTAIN": 0,
+        "HISTORICAL_ONLY": 0,
+        "RESEARCH_REQUIRED": 2
+      },
+      "distinctHotels": 57,
+      "matchedExistingHpc": 18,
+      "unmatchedVerified": 37,
+      "uncertain": 2,
+      "matchRate": 0.3158
+    },
+    "attrition": {
+      "evaluated": 57,
+      "createReady": 37,
+      "attrition": 20,
+      "byReason": {
+        "MISSING_OFFICIAL_PROPERTY_URL": 0,
+        "MISSING_PHYSICAL_ADDRESS": 20,
+        "BRAND_AMBIGUITY": 0,
+        "DUPLICATE_UNCERTAINTY": 0,
+        "HISTORICAL_IDENTITY_UNRESOLVED": 0,
+        "OPERATING_STATUS_UNCLEAR": 0,
+        "MISSING_REQUIRED_FIELD": 0,
+        "OTHER_VERIFICATION_FAILURE": 0
+      },
+      "createReadyRate": 0.6491
+    },
+    "deferredHistorical": [
+      {
+        "hotelName": "Courtyard Silver Spring North",
+        "reason": "HISTORICAL_IDENTITY_UNRESOLVED",
+        "detail": "Official directory surfaces Courtyard Silver Spring Downtown (wassv); North identity not independently confirmed as same physical property."
+      },
+      {
+        "hotelName": "Courtyard Denver Stapleton",
+        "reason": "HISTORICAL_IDENTITY_UNRESOLVED",
+        "detail": "Stapleton neighborhood redeveloped; Courtyard Denver Airport (denap) is a different property identity until contract linkage confirms reflag/relocation."
+      }
+    ]
+  },
+  "ukCa": {
+    "rows": 10,
+    "createReady": 5
+  },
+  "persistence": {
+    "creates": 43,
+    "noops": 24,
+    "conflicts": 0,
+    "staged": 0,
+    "hpcCreates": 41,
+    "hpcCreateFailures": 1,
+    "hpcReusedExisting": 0,
+    "existingEnriched": 59
+  },
+  "newHpcRecordsPersisted": 41,
+  "cala": {
+    "calaTotal": 9951,
+    "priorCalaTotal": 9951,
+    "preserved": true,
+    "mexico": 3772,
+    "brazil": 6179,
+    "note": "Track C must not delete or overwrite CALA HPC records"
+  },
+  "researchCostUsd": 0,
+  "nextCheckpoint": {
+    "resumeBranch": "feat/hif-v6-track-c-wave3-census-scale",
+    "nextSourceBatch": "Hilton/IHG/Wyndham/Choice official US directories + remaining Discovery Inventory CREATE_CANDIDATE collision queue",
+    "remainingCreateCandidates": 0,
+    "deferredHistorical": [
+      "Courtyard Silver Spring North",
+      "Courtyard Denver Stapleton"
+    ]
+  }
+}
