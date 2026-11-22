@@ -17,9 +17,13 @@ import {
   aggregateHpcAudit,
   dedupeDiscoveries,
   summarizeMatchClasses,
+  summarizeCreateReadyAttrition,
+  classifyCreateReadyAttrition,
   buildCalaPreservationCheck,
   inferBrandFamilyFromLabel,
   TRACK_C_STANDING_AUTH,
+  CREATE_READY_ATTRITION_REASON,
+  TRACK_C_STREAM,
 } from "../lib/hotel-intelligence/sec-edgar/hif-track-c-universe-expansion-v1.js";
 import {
   classifyWriteCategory,
@@ -29,6 +33,10 @@ import {
 assert.equal(TRACK_C_STANDING_AUTH.customerBlocked, true);
 assert.equal(TRACK_C_STANDING_AUTH.forbidOperatorInferenceFromBrand, true);
 assert.equal(TRACK_C_STANDING_AUTH.preserveCalaRecords, true);
+assert.equal(TRACK_C_STANDING_AUTH.maxHpcCreateBatch, 100);
+assert.equal(TRACK_C_STANDING_AUTH.wave3CensusScale, true);
+assert.ok(TRACK_C_STREAM.C_U_UNIVERSE_EXPANSION);
+assert.ok(TRACK_C_STREAM.C_R_TARGETED_RECONCILIATION);
 
 assert.equal(normalizeCountry("US"), "United States");
 assert.equal(normalizeCountry("uk"), "United Kingdom");
@@ -146,5 +154,19 @@ const hotel = buildTrackCDiscoveryHotel({
 });
 assert.equal(hotel.physicalCountry, "United States");
 assert.match(hotel.discoveryPropertyId, /^disc_tc_/);
+
+const attritionMissing = classifyCreateReadyAttrition({
+  hotelName: "Courtyard Example",
+  matchClass: MATCH_CLASS.UNMATCHED_VERIFIED,
+});
+assert.equal(attritionMissing.reason, CREATE_READY_ATTRITION_REASON.MISSING_OFFICIAL_PROPERTY_URL);
+assert.ok(attritionMissing.reasons.includes(CREATE_READY_ATTRITION_REASON.MISSING_PHYSICAL_ADDRESS));
+
+const attritionSummary = summarizeCreateReadyAttrition([
+  { matchClass: MATCH_CLASS.CREATE_READY, hotelName: "A", address: "1 Main", sourceUrl: "https://marriott.com/x" },
+  { matchClass: MATCH_CLASS.RESEARCH_REQUIRED, hotelName: "B" },
+]);
+assert.equal(attritionSummary.createReady, 1);
+assert.equal(attritionSummary.attrition, 1);
 
 console.log("test-hif-track-c-universe-expansion-v1: PASS");
