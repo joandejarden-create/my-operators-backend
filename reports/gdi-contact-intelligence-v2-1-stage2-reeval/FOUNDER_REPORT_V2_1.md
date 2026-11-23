@@ -3,6 +3,7 @@
 **Status:** Implementation complete · PR ready for Integration Controller · **STOP** before live persistence / paid enrichment / customer display / production deploy
 
 **Branch:** `feat/gdi-contact-intelligence-v2-1-recovery-reuse`  
+**PR:** [#554](https://github.com/joandejarden-create/my-operators-backend/pull/554) — `OPEN` · `AWAITING_INTEGRATION_CONTROLLER`  
 **Baseline:** Stage-2 freeze `STAGE2_COHORT_FREEZE.json` (80 people / 12 hotels)  
 **Airtable E2E classification:** `PERSISTENCE_DESIGNED` (writes remain DISABLED)
 
