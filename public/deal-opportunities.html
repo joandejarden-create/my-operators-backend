@@ -1792,6 +1792,9 @@
           const bits = [
             s.publisher,
             s.date,
+            s.language ? `Lang ${String(s.language).toUpperCase()}` : null,
+            s.role ? `Role ${s.role}` : null,
+            s.directClaimSupport === false ? "Related/context (not direct claim support)" : null,
             s.primarySecondary,
             s.claim || s.caption,
             s.limitations,
