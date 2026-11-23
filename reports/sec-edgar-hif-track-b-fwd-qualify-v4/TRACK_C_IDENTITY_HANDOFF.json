@@ -1,0 +1,52 @@
+{
+  "handoffs": [
+    {
+      "issue": "JW_MARRIOTT_MONTERREY_ARBOLEDA_VS_VALLE",
+      "preferredNameFromAsgTable": "JW Marriott Monterrey Arboleda",
+      "aliases": [
+        "JW Marriott Monterrey Valle",
+        "JW Marriott Hotel Monterrey Valle"
+      ],
+      "rooms": 250,
+      "city": "San Pedro Garza García",
+      "country": "MX",
+      "evidence": "ASG 2025 property table uses Arboleda; Aimbridge portfolio + FINN debt language use Valle; ASG also prints Valle in photo captions. Resolve one HPC; do not create duplicates.",
+      "action": "MATCH_EXISTING_OR_ALIAS — no speculative create",
+      "priorCalaId": "disc_tb_cala_fu_jw_marriott_monterrey_valle"
+    },
+    {
+      "issue": "COURTYARD_GDL_ACUEDUCTO_VS_ANDARES",
+      "committedBrand": "Courtyard by Marriott",
+      "priorName": "Wyndham Garden Guadalajara Acueducto (GDLAN)",
+      "asgName": "Courtyard by Marriott Guadalajara Andares",
+      "rooms": 186,
+      "evidence": "Gov conversion GDLAN→GDLCA; ASG Dec announcement Andares; table shows Andares internalized 186 keys.",
+      "action": "Confirm single physical asset alias before HPC write"
+    },
+    {
+      "issue": "VILLAHERMOSA_FAIRFIELD_VS_FIESTA_INN",
+      "leaseHotel": "Fairfield Inn & Suites Villahermosa (134) → InHouse lease",
+      "distinctHotel": "Fiesta Inn Villahermosa (159) Grupo Posadas — still listed separately",
+      "action": "Do not merge identities; lease finding attaches only to 134-key Fairfield/InHouse asset"
+    },
+    {
+      "issue": "CIUDAD_DEL_CARMEN_INHOUSE",
+      "hotelName": "InHouse Ciudad del Carmen",
+      "priorBrand": "Fiesta Inn",
+      "rooms": 253,
+      "action": "Match/alias prior Fiesta Inn Cd Carmen HPC if exists; preserve historical brand"
+    },
+    {
+      "issue": "YUCATAN_RESORT_PLAYA_DEL_CARMEN",
+      "hotelName": "The Yucatán Resort Playa del Carmen",
+      "rooms": 60,
+      "status": "Ops suspended 2026-04-30 for lease portfolio; brand/lessee unnamed",
+      "action": "Match existing HPC only; no create from weak evidence"
+    },
+    {
+      "issue": "SANTANDER_BUCARAMANGA",
+      "status": "Hotel identity TBD — SECOP II concesión",
+      "action": "NO HPC CREATE until pliego confirms lodging asset"
+    }
+  ]
+}
