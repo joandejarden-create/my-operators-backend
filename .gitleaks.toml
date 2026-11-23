@@ -316,8 +316,10 @@ regexes = [
 id = "airtable-api-key"
 
 [rules.allowlist]
-description = "Allow Airtable base, record, field, and table identifiers"
+description = "Allow Airtable base, record, field, and table identifiers; JS inventory link var names (not PATs)"
 regexTarget = "secret"
 regexes = [
   '''^(?:app|rec|fld|tbl)[A-Za-z0-9]{14}$''',
+  # Persist-script local vars next to airtableId keys — not credentials (pat… still detected).
+  '''^(?:discoveryRecordId|inventoryRecId)$''',
 ]
