@@ -1,0 +1,213 @@
+{
+  "asOf": "2026-11-23",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "researchCostUsd": 0,
+  "trackAHandoffReviewed": "DealSignal dealsignal-source-registry-v1 + SOURCE_PRODUCTIVITY rank (no separate Global Source Expansion V1 file in Track A reports)",
+  "trackAProductivityRank": [
+    "A_owner_contractual_schedules",
+    "B_owner_investor_relations",
+    "C_contractual_filings_sec",
+    "G_owner_operator_relationship",
+    "F_ownership_transaction",
+    "I_international_disclosures",
+    "E_capex_pip",
+    "D_cmbs_debt",
+    "H_property_planning_development"
+  ],
+  "sourceFamiliesCodified": [
+    "OWNER_FRANCHISE_HMA_SCHEDULE",
+    "OWNER_IR_EARNINGS",
+    "SEC_EXHIBITS_8K_10K",
+    "MX_BMV_EMISNET",
+    "BR_CVM",
+    "CMBS_DEBT_CAPITAL",
+    "CAPEX_PIP_HOTEL_SPECIFIC",
+    "PUBLIC_CONCESSION_AWARD"
+  ],
+  "sourceVerification": {
+    "cldt": {
+      "ok": true,
+      "status": 200,
+      "hasIhm": true
+    },
+    "peb10k": {
+      "ok": true,
+      "status": 200,
+      "margaritavilleFranchiseJuly2028": false
+    },
+    "peb10q": {
+      "ok": true,
+      "status": 200
+    },
+    "pebIr": {
+      "ok": true,
+      "status": 200
+    },
+    "fibra": {
+      "startOk": true,
+      "doneOk": true,
+      "startStatus": 200,
+      "doneStatus": 200,
+      "namedCountExpected": 28,
+      "listOk": true,
+      "donePhrase": true
+    },
+    "fibraGov": {
+      "ok": false,
+      "status": 200,
+      "bytes": 112881,
+      "note": "PDF binary may not utf8-decode; Aimbridge/FINN designation retained from Track A/governance secondary extract + ASG."
+    }
+  },
+  "existingSourcesReused": [
+    "SEC EDGAR 10-K/10-Q schedules",
+    "Track B global waves persist pipeline",
+    "HI discovery inventory / findings / contracts / milestones",
+    "year/month precision + debt≠conversion rules"
+  ],
+  "newSourcesTested": [
+    {
+      "id": "CLDT_YE2025_FRANCHISE_IHM",
+      "productive": true
+    },
+    {
+      "id": "PEB_YE2025_FRANCHISE_NONTERM_MGMT",
+      "productive": true
+    },
+    {
+      "id": "PEB_IR_JULY_2026_TERMINABILITY",
+      "productive": true
+    },
+    {
+      "id": "PEB_Q3_2026_MORTGAGE_REPAYMENT",
+      "productive": true,
+      "capitalOnly": true
+    },
+    {
+      "id": "FIBRA_INN_ES_PRESS_28_HOTELS",
+      "productive": true,
+      "language": "es"
+    },
+    {
+      "id": "FIBRA_INN_GOVERNANCE_AIMBRIDGE",
+      "productive": false,
+      "language": "en/es"
+    },
+    {
+      "id": "BR_CVM",
+      "productive": false,
+      "staged": true
+    }
+  ],
+  "integrationsImplemented": [
+    "hif-track-b-international-source-registry-v1.js",
+    "hif-track-b-international-source-expansion-dossiers-v1.js",
+    "reports batch for hif-track-b-global-waves-persist.mjs --batch-dir="
+  ],
+  "matrix": {
+    "distinctHotels": 64,
+    "contractualEvents": 67,
+    "byCountry": {
+      "US": {
+        "hotels": 36,
+        "events": 39,
+        "byAgreementType": {
+          "FRANCHISE": 35,
+          "MANAGEMENT": 3,
+          "CAPITAL_OR_OTHER": 1
+        },
+        "byTiming": {
+          "UNDATED_OR_IMPRECISE": 39
+        },
+        "byStatus": {}
+      },
+      "MX": {
+        "hotels": 28,
+        "events": 28,
+        "byAgreementType": {
+          "MANAGEMENT": 28
+        },
+        "byTiming": {
+          "HISTORICAL_DATE": 28
+        },
+        "byStatus": {}
+      }
+    }
+  },
+  "cala": {
+    "mexicoHotels": 28,
+    "spanishRetrieval": true,
+    "portugueseRetrieval": false,
+    "note": "CALA priority via Fibra Inn MX internalization; CVM staged"
+  },
+  "verifiedDatesAndNoticeWindows": [
+    {
+      "hotel": "CLDT portfolio / Holtsville",
+      "notice": "IHM 90-day non-renewal; 6-month sale exit",
+      "precision": "term-end day unknown"
+    },
+    {
+      "hotel": "Margaritaville Hollywood Beach",
+      "window": "HMA terminable at will from Sep 2026",
+      "precision": "MONTH"
+    },
+    {
+      "hotel": "Westin Copley Place",
+      "window": "Non-terminable HMA expires Dec 2028",
+      "precision": "MONTH"
+    },
+    {
+      "hotel": "Embassy Suites SD Bay",
+      "window": "Franchise expires Jan 2028",
+      "precision": "MONTH"
+    },
+    {
+      "hotel": "Fibra Inn 28",
+      "window": "Operator internalization completed 2026-01-15",
+      "precision": "EXACT_DAY_PORTFOLIO"
+    },
+    {
+      "hotel": "CLDT Holtsville franchise",
+      "window": "Franchise expiration year 2026",
+      "precision": "YEAR_ONLY"
+    }
+  ],
+  "sourceUrls": {
+    "CLDT_10K": "https://www.sec.gov/Archives/edgar/data/1476045/000143774926006103/cldt20251231_10k.htm",
+    "PEB_10K": "https://www.sec.gov/Archives/edgar/data/1474098/000147409826000015/peb-20251231.htm",
+    "PEB_10Q_Q3": "https://www.sec.gov/Archives/edgar/data/1474098/000147409826000072/peb-20260930.htm",
+    "PEB_IR_JULY_2026": "https://uk.marketscreener.com/news/pebblebrook-hotel-trust-investor-presentation-july-2026-low-resolution-ce7f51d3dc8ef126",
+    "FIBRA_INN_START": "https://fibrainn.mx/storage/docs/fibra-inn-internaliza-la-operacion-en-28-de-sus-hoteles.pdf",
+    "FIBRA_INN_DONE": "https://fibrainn.mx/storage/docs/fibra-inn-finaliza-proceso-de-internalizacion-de-la-operacion-en-28-hoteles.pdf",
+    "FIBRA_GOV_2025": "https://fibrainn.mx/assets/docs/2025-corporate-governance-letters-updated_69d5ae218a163.pdf"
+  },
+  "unresolvedContractualQuestions": [
+    "CLDT franchise month/day and franchise notice windows",
+    "PEB Margaritaville HMA manager identity and termination fee",
+    "Fibra Inn per-hotel transition dates within Nov 2025–Jan 2026",
+    "Aimbridge original HMA instrument text not public",
+    "CVM hotel-named contract schedules still thin"
+  ],
+  "staged": [
+    {
+      "id": "BR_CVM_HOTEL_ISSUER_THIN",
+      "family": "BR_CVM",
+      "status": "STAGED",
+      "note": "CVM public access confirmed conceptually; no hotel-named HMA/franchise instrument persisted this wave. Hard gate: administração condominial / multipropriedade ≠ HMA."
+    },
+    {
+      "id": "BMV_EMISNET_DIRECT_PDF_503",
+      "family": "MX_BMV_EMISNET",
+      "status": "ACCESS_RESTRICTED_INTERMITTENT",
+      "note": "Direct BMV eventfid PDFs intermittently 503; Fibra Inn issuer IR PDF mirrors used instead."
+    },
+    {
+      "id": "PAID_PROPERTY_REGISTRIES",
+      "family": "PUBLIC_CONCESSION_AWARD",
+      "status": "RESTRICTED_NO_PAID",
+      "note": "No paid corporate/property registries accessed. Founder authorization required for paid research."
+    }
+  ],
+  "trackAResearchCandidates": 38,
+  "trackCIssues": 2
+}
