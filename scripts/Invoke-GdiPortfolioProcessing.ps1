@@ -50,6 +50,17 @@
 .PARAMETER AllowLivePilot
   Required in addition to paid/publication flags. Without it, this launcher stays $0.
 
+.PARAMETER LeisureModules
+  Optional CSV of LDI modules (events,sports,attractions,universities,destination,distribution or leisure_* ids).
+  When set (or -LeisureOnly), runs Leisure Demand Intelligence via the shared Node LDI runner
+  using the same hotel cohort inputs — does not replace the 14-segment engine.
+
+.PARAMETER LeisureOnly
+  Run only LDI modules (auto-select per hotel when -LeisureModules omitted).
+
+.PARAMETER DisableLeisure
+  Explicitly confirm leisure modules are off (default). Fourteen-segment path unchanged.
+
 .EXAMPLE
   # Safe preview for one hotel
   .\scripts\Invoke-GdiPortfolioProcessing.ps1 -HotelId recLuxvwwxID7U2B8 -Mode Preview
@@ -57,6 +68,10 @@
 .EXAMPLE
   # Certification cohort rehearsal ($0)
   .\scripts\Invoke-GdiPortfolioProcessing.ps1 -Mode Rehearsal -HotelsFile reports\gdi-portfolio-processing-certification-v1\cert-cohort-hotels.txt
+
+.EXAMPLE
+  # Leisure modules only (fixture / $0)
+  .\scripts\Invoke-GdiPortfolioProcessing.ps1 -HotelId recaokE8psIbuVeuH -LeisureOnly -Mode Preview
 
 .EXAMPLE
   # Resume after partial failure
@@ -94,6 +109,12 @@ param(
 
   [ValidateRange(1, 50)]
   [int]$MaxCandidates = 8,
+
+  [string]$LeisureModules = '',
+
+  [switch]$LeisureOnly,
+
+  [switch]$DisableLeisure,
 
   [string]$RepoPath = ''
 )
@@ -147,6 +168,58 @@ if (-not $RepoPath) {
 $resolvedRepo = (Resolve-Path -LiteralPath $RepoPath -ErrorAction Stop).Path
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   Write-FailClosed 'Node.js is not on PATH.'
+}
+
+$runLeisure = $LeisureOnly.IsPresent -or ($LeisureModules -and $LeisureModules.Trim().Length -gt 0)
+if ($DisableLeisure.IsPresent -and $runLeisure) {
+  Write-FailClosed 'Cannot combine -DisableLeisure with -LeisureOnly / -LeisureModules.'
+}
+
+# Leisure-only path: same hotel cohort args, canonical LDI Node runner (fixture/$0).
+if ($runLeisure) {
+  $ldiRunner = Join-Path $resolvedRepo 'scripts\gdi-leisure-demand-intelligence-v1.mjs'
+  if (-not (Test-Path -LiteralPath $ldiRunner)) {
+    Write-FailClosed "Missing LDI runner: $ldiRunner"
+  }
+  if ($Mode -eq 'AuditOnly' -and -not $HotelId) {
+    $ldiArgs = @($ldiRunner, '--coverage-only')
+    Write-Host 'GDI Leisure coverage matrix (AuditOnly)' -ForegroundColor Cyan
+    Push-Location $resolvedRepo
+    try {
+      & node @ldiArgs
+      if ($LASTEXITCODE -ne 0) { throw "GDI leisure coverage exited with code $LASTEXITCODE" }
+    } finally { Pop-Location }
+    if ($LeisureOnly) { return }
+  }
+  if (-not $HotelId) {
+    Write-FailClosed 'Leisure portfolio path currently requires -HotelId (HotelsFile multi-hotel leisure batch: invoke per hotel or pass modules via Node CLI).'
+  }
+  $modArg = if ($LeisureModules -and $LeisureModules.Trim().Length -gt 0) { $LeisureModules } else { 'all' }
+  $ldiMode = 'fixture'
+  $ldiArgs = @(
+    $ldiRunner,
+    '--hotel-id', $HotelId,
+    '--modules', $modArg,
+    '--mode', $ldiMode,
+    '--budget-usd', ([string][double]$BudgetUSD)
+  )
+  if ($ReportPath) { $ldiArgs += @('--out', $ReportPath) }
+  Write-Host "GDI Portfolio Processing + Leisure: HotelId=$HotelId Modules=$modArg" -ForegroundColor Cyan
+  Push-Location $resolvedRepo
+  try {
+    & node @ldiArgs
+    if ($LASTEXITCODE -ne 0) {
+      throw "GDI leisure runner exited with code $LASTEXITCODE"
+    }
+    Write-Host 'Leisure module run finished ($0 fixture path). Fourteen-segment Full E2E unchanged unless separately invoked.' -ForegroundColor Green
+  }
+  finally {
+    Pop-Location
+  }
+  if ($LeisureOnly) {
+    return
+  }
+  Write-Host 'Continuing with standard fourteen-segment portfolio runner…' -ForegroundColor DarkCyan
 }
 
 $isPaidPilotMode = ($Mode -eq 'PaidPilotPreflight' -or $Mode -eq 'PaidPilotExecute' -or $Mode -eq 'PaidPilotReplay')
