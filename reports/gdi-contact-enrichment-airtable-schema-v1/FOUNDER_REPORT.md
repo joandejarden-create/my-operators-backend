@@ -145,17 +145,17 @@ Usage table empty. Sample list fingerprint unchanged across ensure.
 
 ## 11. PR and CI status for code changes
 
-Code/docs/tests live on branch `feat/gdi-contact-enrichment-airtable-schema-v1` (isolated worktree).  
-Includes:
+| Item | Value |
+|------|-------|
+| PR | [#580](https://github.com/joandejarden-create/my-operators-backend/pull/580) |
+| Status | **OPEN** |
+| Branch | `feat/gdi-contact-enrichment-airtable-schema-v1` |
+| Head | see PR |
+| CI precheck | PASS (gitleaks) |
+| Merge | Integration Controller only |
+| `ws-gdi` | Dirty Surfe/contact work **preserved** (not switched) |
 
-- `lib/.../gdi-contact-enrichment-airtable-schema-v1.js` (live IDs)
-- `scripts/ensure-gdi-contact-enrichment-airtable-schema-v1.mjs`
-- Findymail V1.1 contract alignment + destinations
-- HI `MAP_HI_CONTACT_CHANNEL` enrichment fields
-- Surfe usage proposal retargeted to shared ledger
-- Docs + regression tests
-
-**PR:** to be opened · Integration Controller owns merge · `ws-gdi` dirty work preserved
+Includes live schema ID contract, ensure script, Findymail V1.1 alignment, HI field map, Surfe retarget, docs, tests.
 
 ---
 
@@ -172,5 +172,5 @@ Still require separate founder GO:
 
 ### Cycle state
 
-**`AWAITING_INTEGRATION_CONTROLLER`** (after PR open) for code merge.  
+**`AWAITING_INTEGRATION_CONTROLLER`** for code merge.  
 **Airtable schema itself is already live** under this founder GO.
