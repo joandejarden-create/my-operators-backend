@@ -1,0 +1,89 @@
+{
+  "contract": "gdi-portfolio-processing-certification-v1",
+  "canonicalEngine": "gdi-canonical-full-e2e-entry-v1",
+  "generatedAt": "2026-11-23T10:24:25.255Z",
+  "runners": {
+    "scripts/gdi-workflow.ps1": {
+      "role": "Universal ops wrapper; Research/FullRun → canonical dry-run only",
+      "status": "FUNCTIONAL_NOT_CERTIFIED"
+    },
+    "scripts/Invoke-GdiScalingCompanies.ps1": {
+      "role": "Scaling-companies segment launcher (Preview/FullE2E fail-closed)",
+      "status": "FUNCTIONAL_NOT_CERTIFIED"
+    },
+    "scripts/gdi-canonical-full-e2e-entry-v1.mjs": {
+      "role": "Canonical Full E2E research entry (authoritative Node path)",
+      "status": "FUNCTIONAL_NOT_CERTIFIED"
+    },
+    "scripts/gdi-full-e2e-fourteen-segment-orchestrator-v1.mjs": {
+      "role": "Fourteen-segment orchestrator",
+      "status": "FUNCTIONAL_NOT_CERTIFIED"
+    },
+    "scripts/gdi-full-e2e-powershell-deep-research-certification-v1.mjs": {
+      "role": "Bethesda-centric $0 deep-research certification harness",
+      "status": "PARTIAL"
+    },
+    "scripts/Invoke-GdiPortfolioProcessing.ps1": {
+      "role": "Portfolio multi-hotel standardized interface (this certification)",
+      "status": "FUNCTIONAL_NOT_CERTIFIED"
+    }
+  },
+  "capabilities": [
+    {
+      "capability": "New hotels (net-new discovery)",
+      "status": "PARTIAL",
+      "note": "Canonical path + preflight exist; fresh discovery not Full-E2E certified without paid auth"
+    },
+    {
+      "capability": "Existing hotels (refresh / replay)",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Historical replay + dry-run work; customer delivery not certified here"
+    },
+    {
+      "capability": "All 14 GDI demand categories",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Segment registries + executors on disk; per-segment live deep research not portfolio-certified"
+    },
+    {
+      "capability": "Discovery",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Offline/fixture discovery certified in harnesses; paid discovery blocked without flags"
+    },
+    {
+      "capability": "Deep research",
+      "status": "PARTIAL",
+      "note": "Eligibility + restored pass modules exist; live Exa requires separate founder auth"
+    },
+    {
+      "capability": "Contact identification",
+      "status": "PARTIAL",
+      "note": "Universal contact contract + Surfe/PDL gates; FE→public path certified in prior PRs; enrichment HOLD/partial"
+    },
+    {
+      "capability": "Opportunity qualification",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Commercial spine present; Sales Ready speculation rejection enforced in quality gates"
+    },
+    {
+      "capability": "Canonical persistence",
+      "status": "PARTIAL",
+      "note": "Local hotel stores + research persistence bridge dry-run; production Airtable apply fail-closed"
+    },
+    {
+      "capability": "Customer drawer generation",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Certified drawer commercial content contract used in prior hotel certs; portfolio batch not customer-published"
+    },
+    {
+      "capability": "Weekly Change",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Durability annotation + delta states offline-verifiable; weekly automation NOT activated"
+    },
+    {
+      "capability": "Repeated runs (idempotent)",
+      "status": "FUNCTIONAL_NOT_CERTIFIED",
+      "note": "Stable opportunity IDs + resume ledger; rehearsal proves no overwrite under $0"
+    }
+  ],
+  "classificationRule": "CERTIFIED requires Full E2E evidence for the capability under certified constraints. Unit tests / script existence alone → at most FUNCTIONAL_NOT_CERTIFIED."
+}
