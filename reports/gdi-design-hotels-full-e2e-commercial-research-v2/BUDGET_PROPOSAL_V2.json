@@ -1,0 +1,141 @@
+{
+  "pricingAssumptions": {
+    "discoveryUnitUsd": 0.1,
+    "deepMediumUnitUsd": 0.1,
+    "deepHighUnitUsd": 0.5,
+    "quoteAsOf": "2026-10-24",
+    "note": "Historical $12 Design Hotels pilot authorization MUST NOT be reused. New caps required.",
+    "assumedDeepToCredibleYield": 0.7,
+    "findymail": false,
+    "surfe": false
+  },
+  "historicalPilotSpendUsdApprox": 3.2,
+  "historicalDeepCapPerHotel": 4,
+  "newVolumeStandard": {
+    "minPerHotel": 25,
+    "preferredPerHotel": "30-40",
+    "portfolioMin": 75,
+    "portfolioPreferred": "90-120"
+  },
+  "recommendedAuthorization": {
+    "mode": "FOUNDER_GDI_DH_FULL_E2E_COMMERCIAL_V2",
+    "effortDeepDefault": "medium",
+    "perHotelCeilingUsd": 18,
+    "aggregateCeilingUsd": 54,
+    "alternateQualityTier": {
+      "mediumDeepAggregateUsd": 26.9,
+      "highDeepAggregateUsd": 83.3,
+      "minPathAggregateMediumUsd": 18.5
+    },
+    "stopLoss": [
+      "hard_ceiling_reached",
+      "NO_IMPROVEMENT on 3 consecutive deep calls for same opportunity family",
+      "provider_error_budget",
+      "resume_duplicate_live_call_blocked",
+      "founder_revoke",
+      "cost_per_new_commercially_credible_opportunity > 2.50_usd"
+    ],
+    "costPerCredibleTargetUsd": 1.5,
+    "excludes": [
+      "production_airtable_writes",
+      "customer_publication",
+      "findymail",
+      "surfe",
+      "railway_deploy",
+      "reuse_of_historical_12_usd_authorization"
+    ],
+    "executeCommandAfterApproval": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -Mode CohortExecute -HotelsFile reports\\gdi-design-hotels-full-e2e-commercial-research-v2\\design-hotels-full-e2e-cohort.txt -BudgetUSD <AGG> -PerHotelBudgetUSD <PER> -AuthorizePaidResearch -AllowLivePilot"
+  },
+  "hotels": [
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "hotelName": "Condesa DF",
+      "budgetMin": {
+        "reuseDiscoveryUsd": 0,
+        "gapDiscoveryRuns": 8,
+        "gapDiscoveryUsd": 0.8,
+        "deepInvestigateCount": 32,
+        "deepUsdMedium": 3.2,
+        "deepUsdHighOption": 16,
+        "publicContactUsd": 0,
+        "contingencyUsd": 2,
+        "aggregateMedium": 6,
+        "aggregateHighDeep": 18.8
+      },
+      "budgetPreferred": {
+        "reuseDiscoveryUsd": 0,
+        "gapDiscoveryRuns": 12,
+        "gapDiscoveryUsd": 1.2,
+        "deepInvestigateCount": 46,
+        "deepUsdMedium": 4.6,
+        "deepUsdHighOption": 23,
+        "publicContactUsd": 0,
+        "contingencyUsd": 3,
+        "aggregateMedium": 8.8,
+        "aggregateHighDeep": 27.2
+      },
+      "deepPoolMin": 32,
+      "deepPoolPreferred": 46
+    },
+    {
+      "hotelId": "recaokE8psIbuVeuH",
+      "hotelName": "LaLuna",
+      "budgetMin": {
+        "reuseDiscoveryUsd": 0,
+        "gapDiscoveryRuns": 10,
+        "gapDiscoveryUsd": 1,
+        "deepInvestigateCount": 34,
+        "deepUsdMedium": 3.4,
+        "deepUsdHighOption": 17,
+        "publicContactUsd": 0,
+        "contingencyUsd": 2,
+        "aggregateMedium": 6.4,
+        "aggregateHighDeep": 20
+      },
+      "budgetPreferred": {
+        "reuseDiscoveryUsd": 0,
+        "gapDiscoveryRuns": 14,
+        "gapDiscoveryUsd": 1.4,
+        "deepInvestigateCount": 48,
+        "deepUsdMedium": 4.8,
+        "deepUsdHighOption": 24,
+        "publicContactUsd": 0,
+        "contingencyUsd": 3,
+        "aggregateMedium": 9.2,
+        "aggregateHighDeep": 28.4
+      },
+      "deepPoolMin": 34,
+      "deepPoolPreferred": 48
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "hotelName": "Memmo",
+      "budgetMin": {
+        "reuseDiscoveryUsd": 0,
+        "gapDiscoveryRuns": 8,
+        "gapDiscoveryUsd": 0.8,
+        "deepInvestigateCount": 33,
+        "deepUsdMedium": 3.3,
+        "deepUsdHighOption": 16.5,
+        "publicContactUsd": 0,
+        "contingencyUsd": 2,
+        "aggregateMedium": 6.1,
+        "aggregateHighDeep": 19.3
+      },
+      "budgetPreferred": {
+        "reuseDiscoveryUsd": 0,
+        "gapDiscoveryRuns": 12,
+        "gapDiscoveryUsd": 1.2,
+        "deepInvestigateCount": 47,
+        "deepUsdMedium": 4.7,
+        "deepUsdHighOption": 23.5,
+        "publicContactUsd": 0,
+        "contingencyUsd": 3,
+        "aggregateMedium": 8.9,
+        "aggregateHighDeep": 27.7
+      },
+      "deepPoolMin": 33,
+      "deepPoolPreferred": 47
+    }
+  ]
+}

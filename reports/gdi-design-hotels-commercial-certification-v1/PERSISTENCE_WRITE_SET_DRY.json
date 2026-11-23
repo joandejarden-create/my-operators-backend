@@ -1,0 +1,187 @@
+{
+  "contract": "gdi-design-hotels-commercial-certification-v1",
+  "mode": "DRY_RUN_ONLY",
+  "applyAuthorized": false,
+  "publicationAuthorized": false,
+  "paidResearchAuthorized": false,
+  "destination": {
+    "tableName": "GDI Hotel Research Opportunities",
+    "tableId": "tblbkDj0vhQLfrssV",
+    "adapter": "gdi-hotel-research-inventory-store-v1",
+    "identityField": "compositeKey",
+    "logicalUniqueKey": "(hotelId, opportunityId)"
+  },
+  "sourceRun": "gdi_dh_live_20261123141330",
+  "authorizationBlockersIfApplyAttempted": [
+    "AUTHORIZE_RESEARCH_PERSISTENCE_REQUIRED",
+    "EXACT_WRITE_SET_AUTHORIZATION_REQUIRED",
+    "ENV_PRODUCTION_GATE_OFF (GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES)"
+  ],
+  "contactStoragePolicy": {
+    "persistNamedRoles": true,
+    "persistPersonalEmails": false,
+    "persistProviderRestrictedEnrichment": false,
+    "note": "Names + public LinkedIn/org channels only; no Surfe/Findymail/PDL/FullEnrich payloads."
+  },
+  "idempotency": {
+    "compositeKey": "hotelId::opportunityId",
+    "expectedActionsOnFirstApply": "CREATE",
+    "expectedActionsOnReplay": "UNCHANGED or UPDATE if material fields changed",
+    "rollback": "Do not delete Airtable history; mark superseded via research lifecycle; restore from local opportunity-research-state + run reports"
+  },
+  "dedupeBeforeApply": {
+    "excludeOpportunityIds": [
+      "disc_023923963f08",
+      "disc_51073448c775"
+    ],
+    "reason": "Near-duplicate segment-path copies of CARPHA / Advantage Travel; keep canonical disc_a6def3588729 and disc_9cd2c082c05d"
+  },
+  "recommendedWriteSet": [
+    {
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_1342860c1693",
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_1342860c1693",
+      "title": "Salesforce Mexico City office / GDC expansion",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "commercialEligibilityStatus": "CUSTOMER_ELIGIBLE_CANDIDATE",
+      "founderRecommend": "INCLUDE",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_0ca4947f4e8e",
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_0ca4947f4e8e",
+      "title": "WAPOR 2026 Annual Conference",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_2017a6cef8cd",
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_2017a6cef8cd",
+      "title": "IAFMHS 2027 Mexico City Conference",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_227427613732",
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_227427613732",
+      "title": "SAH 79th Annual International Conference 2026",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "recaokE8psIbuVeuH::disc_a6def3588729",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "disc_a6def3588729",
+      "title": "CARPHA 71st Annual Health Research Conference 2027",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "recaokE8psIbuVeuH::disc_f8938e28ec56",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "disc_f8938e28ec56",
+      "title": "Annual Regional CTLPA Conference 2027",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "recaokE8psIbuVeuH::disc_db8429d00434",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "disc_db8429d00434",
+      "title": "Pure Grenada Sailing Week 2027",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE",
+      "marketScope": "Hotel",
+      "salesReady": false,
+      "note": "Contact hint 'World Sailing' is weak — treat as org entry, not named buyer"
+    },
+    {
+      "compositeKey": "rec1t35e3sPerzxYu::disc_62b0361d0b7e",
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_62b0361d0b7e",
+      "title": "TDCX Lisbon campus / 2027 expansion",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "commercialEligibilityStatus": "CUSTOMER_ELIGIBLE_CANDIDATE",
+      "founderRecommend": "INCLUDE",
+      "marketScope": "Hotel",
+      "salesReady": false
+    },
+    {
+      "compositeKey": "rec1t35e3sPerzxYu::disc_8e730047c1b9",
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_8e730047c1b9",
+      "title": "ESICM LIVES 2026 Annual Congress",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY_OVERFLOW_ONLY",
+      "marketScope": "Hotel",
+      "salesReady": false,
+      "note": "41-key boutique fit risk — overflow / VIP only"
+    },
+    {
+      "compositeKey": "rec1t35e3sPerzxYu::disc_9cd2c082c05d",
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_9cd2c082c05d",
+      "title": "Advantage Travel Partnership Annual Conference 2027",
+      "action": "WOULD_CREATE",
+      "researchLifecycleStatus": "EXPLORATORY",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "founderRecommend": "INCLUDE_AS_EXPLORATORY",
+      "marketScope": "Hotel",
+      "salesReady": false
+    }
+  ],
+  "excludedFromRecommendedWriteSet": [
+    {
+      "compositeKey": "recaokE8psIbuVeuH::disc_023923963f08",
+      "reason": "NEAR_DUPLICATE_OF disc_a6def3588729 (CARPHA, alternate segment path)"
+    },
+    {
+      "compositeKey": "rec1t35e3sPerzxYu::disc_51073448c775",
+      "reason": "NEAR_DUPLICATE_OF disc_9cd2c082c05d (Advantage Travel, alternate segment path)"
+    }
+  ],
+  "counts": {
+    "recommendedInclude": 10,
+    "excludedNearDuplicates": 2,
+    "wouldCreateIfAuthorized": 10,
+    "salesReadyInWriteSet": 0,
+    "airtableWritesExecuted": 0
+  },
+  "readBackPlan": [
+    "After authorized apply: fetch by compositeKey for each INCLUDE row",
+    "Verify hotelId link, opportunityId, lifecycle, evidence URLs present",
+    "Confirm no personal email fields written",
+    "Confirm GDO / customer publication tables unchanged"
+  ],
+  "status": "PERSISTENCE_DESIGNED — dry write-set ready; apply NOT authorized"
+}

@@ -22,7 +22,8 @@ import {
 import { inspectFounderPreviewPublicationAvailability } from "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE_BUST = "gdi-customer-ui-regression-v1-1";
+const CACHE_BUST_UI = "gdi-customer-ui-regression-v1-1";
+const CACHE_BUST_APP = "gdi-restore-canonical-staged-workflow-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -234,15 +235,15 @@ check("sales_ready_and_market_scope_unchanged_markers", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, new RegExp(`app\\.js\\?v=${CACHE_BUST}`));
-  assert.match(html, new RegExp(`dealality-gdi-ui\\.js\\?v=${CACHE_BUST}`));
+  assert.match(html, new RegExp(`app\\.js\\?v=${CACHE_BUST_APP}`));
+  assert.match(html, new RegExp(`dealality-gdi-ui\\.js\\?v=${CACHE_BUST_UI}`));
   const shareHtml = fs.readFileSync(
     path.join(ROOT, "public/group-demand-intelligence-share.html"),
     "utf8",
   );
   assert.match(
     shareHtml,
-    new RegExp(`dealality-gdi-ui\\.js\\?v=${CACHE_BUST}`),
+    new RegExp(`dealality-gdi-ui\\.js\\?v=${CACHE_BUST_UI}`),
   );
 });
 

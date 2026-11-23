@@ -116,7 +116,7 @@ check("api_returns_recovery_without_silent_fallback", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, /gdi-customer-ui-regression-v1-1/);
+  assert.match(html, /gdi-restore-canonical-staged-workflow-v1/);
 });
 
 check("inventories_unchanged_pointers", () => {

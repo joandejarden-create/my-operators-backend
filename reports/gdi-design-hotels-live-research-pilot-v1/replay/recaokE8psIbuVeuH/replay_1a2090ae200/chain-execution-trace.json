@@ -1,0 +1,1641 @@
+{
+  "version": "gdi-original-full-e2e-research-chain-v1",
+  "at": "2026-11-23T15:33:58.082Z",
+  "stages": [
+    "HOTEL_PROFILE",
+    "DISCOVERY",
+    "DEEP_RESEARCH",
+    "CONTACT_RESEARCH",
+    "COMMERCIAL_QUALIFICATION",
+    "SALES_INTELLIGENCE_OUTPUT",
+    "PERSISTENCE_AND_CONTINUATION"
+  ],
+  "hotelIds": [
+    "recaokE8psIbuVeuH"
+  ],
+  "authorizePaidDiscovery": false,
+  "authorizePaidResearch": false,
+  "budgetCeilingUsd": 0,
+  "authorizationId": "FOUNDER_GDI_DH_LIVE_V1_LALUNA_4",
+  "durableLedgerPath": null,
+  "ledgerSnapshotPath": null,
+  "allowPartial": true,
+  "plannedSegmentIds": [
+    "travel_trade_group_intermediaries",
+    "social_special_events",
+    "corporate_celebrations_private_events",
+    "sports_entertainment",
+    "corporate_meetings_incentives",
+    "government_public_sector",
+    "preferred_lodging_partnerships"
+  ],
+  "paidSpendUsd": 0,
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "hotelProfiles": [
+    {
+      "hotelId": "recaokE8psIbuVeuH",
+      "ok": true,
+      "displayName": "LaLuna Boutique Hotels & Villas",
+      "city": "St. George's"
+    }
+  ],
+  "discovery": {
+    "cellCount": 7,
+    "extracted": 16,
+    "costUsd": 0,
+    "freshRetrievalCells": 0,
+    "resumedCells": 0,
+    "paidBudgetRemainingUsd": null,
+    "cells": [
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "travel_trade_group_intermediaries",
+        "startedAt": "2026-11-23T15:33:58.090Z",
+        "finishedAt": "2026-11-23T15:33:58.095Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@travel_trade_group_intermediaries",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "professional_planner_queries",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 5,
+        "providerCallCount": 0,
+        "cacheHits": 5,
+        "freshRetrievals": 0,
+        "rawResults": 5,
+        "extractedCandidates": 1,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 1,
+        "persistedResearchCandidates": 11,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_1c49141e6c6b",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "travel_trade_group_intermediaries",
+            "organizationName": null,
+            "title": "Fixture demand signal — travel_trade — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/trade_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "trade_q1",
+              "intent": "travel_trade",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"St. George's\" (\"meeting planner\" OR \"corporate event planner\" OR \"conference planner\") (hotel OR venue) (portfolio OR clients) -yelp -directory",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal travel trade st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "trade_q1",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"St. George's\" (\"meeting planner\" OR \"corporate event planner\" OR \"conference planner\") (hotel OR venue) (portfolio OR clients) -yelp -directory"
+          },
+          {
+            "id": "trade_q2",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"St. George's\" (\"association management\" OR AMC OR \"meeting planning firm\") (chapter OR conference) hotel -yelp"
+          },
+          {
+            "id": "trade_q3",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"St. George's\" (\"wedding planner\" OR \"social events\" OR mitzvah planner) (hotel OR banquet) -guestlist -children -yelp"
+          },
+          {
+            "id": "trade_q4",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"St. George's\" (\"gala planner\" OR \"fundraising event\" OR \"nonprofit events\") (planner OR agency) hotel"
+          },
+          {
+            "id": "trade_q5",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"St. George's\" (\"destination management\" OR DMC OR \"incentive travel\") (agency OR planner) hotel lodging"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 1
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\travel_trade_group_intermediaries.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.095Z",
+          "fingerprint": "eb5de194a72a",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 11,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "social_special_events",
+        "startedAt": "2026-11-23T15:33:58.106Z",
+        "finishedAt": "2026-11-23T15:33:58.111Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@social_special_events",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "venue_discovery_queries",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 2,
+        "providerCallCount": 0,
+        "cacheHits": 2,
+        "freshRetrievals": 0,
+        "rawResults": 2,
+        "extractedCandidates": 2,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 2,
+        "persistedResearchCandidates": 13,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_3c5294f9fbfe",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "social_special_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_wedding — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/social_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "social_q1",
+              "intent": "destination_wedding",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: St. George's destination wedding hotel block OR wedding packages 2026 2027",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination wedding st george s"
+          },
+          {
+            "candidateId": "disc_da59fddd5b89",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "social_special_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — social_gala — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/social_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "social_q2",
+              "intent": "social_gala",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: St. George's gala OR fundraising dinner hotel venue",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal social gala st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "social_q1",
+            "segmentId": "social_special_events",
+            "intent": "destination_wedding",
+            "query": "St. George's destination wedding hotel block OR wedding packages 2026 2027"
+          },
+          {
+            "id": "social_q2",
+            "segmentId": "social_special_events",
+            "intent": "social_gala",
+            "query": "St. George's gala OR fundraising dinner hotel venue"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 2
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\social_special_events.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.111Z",
+          "fingerprint": "ace5065b9da2",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 13,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false,
+        "apifyAccounting": {
+          "status": "SKIPPED",
+          "reason": "APIFY_NOT_ORCHESTRATED",
+          "dispatched": false,
+          "mock": false
+        }
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "corporate_celebrations_private_events",
+        "startedAt": "2026-11-23T15:33:58.124Z",
+        "finishedAt": "2026-11-23T15:33:58.132Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@corporate_celebrations_private_events",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "destination_recognition_celebration_filter",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 3,
+        "providerCallCount": 0,
+        "cacheHits": 3,
+        "freshRetrievals": 0,
+        "rawResults": 3,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 15,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_b7df275d2304",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "corporate_celebrations_private_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_incentive_program_en — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_celebrations_private_events_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_celebrations_private_events_q1",
+              "intent": "destination_incentive_program_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employe",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination incentive program en st george s"
+          },
+          {
+            "candidateId": "disc_3cebfedb2668",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "corporate_celebrations_private_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_sales_kickoff_retreat_en — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_celebrations_private_events_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_celebrations_private_events_q2",
+              "intent": "destination_sales_kickoff_retreat_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"p",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination sales kickoff retreat en st george s"
+          },
+          {
+            "candidateId": "disc_f5bf5a91112d",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "corporate_celebrations_private_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_company_first_recognition_training_en — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_celebrations_private_events_q3"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_celebrations_private_events_q3",
+              "intent": "destination_company_first_recognition_training_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"St. George's\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (C",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination company first recognition training en st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "corporate_celebrations_private_events_q1",
+            "segmentId": "corporate_celebrations_private_events",
+            "intent": "destination_incentive_program_en",
+            "query": "(\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "incentive_case_studies",
+              "hr_program_pages"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_celebrations_private_events_q2",
+            "segmentId": "corporate_celebrations_private_events",
+            "intent": "destination_sales_kickoff_retreat_en",
+            "query": "(\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "sales_ops_announcements"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_celebrations_private_events_q3",
+            "segmentId": "corporate_celebrations_private_events",
+            "intent": "destination_company_first_recognition_training_en",
+            "query": "\"St. George's\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (Cancun OR Cancún OR destination OR resort-style) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "hr_program_pages",
+              "corp_news"
+            ],
+            "weight": 5
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\corporate_celebrations_private_events.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.132Z",
+          "fingerprint": "fda48506c1fe",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 15,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "sports_entertainment",
+        "startedAt": "2026-11-23T15:33:58.140Z",
+        "finishedAt": "2026-11-23T15:33:58.145Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@sports_entertainment",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "base_of_demand_sports_entertainment",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 2,
+        "providerCallCount": 0,
+        "cacheHits": 2,
+        "freshRetrievals": 0,
+        "rawResults": 2,
+        "extractedCandidates": 1,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 1,
+        "persistedResearchCandidates": 8,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_4dffcb92a4f4",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "sports_entertainment",
+            "organizationName": null,
+            "title": "Fixture demand signal — SPORTS_ENTERTAINMENT_PRODUCTION — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/sports_entertainment_base_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "sports_entertainment_base_q1",
+              "intent": "SPORTS_ENTERTAINMENT_PRODUCTION",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: St. George's team hotel OR production crew OR tournament housing OR tournament OR production crew hotel block",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal sports entertainment production st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "sports_entertainment_base_q1",
+            "segmentId": "sports_entertainment",
+            "intent": "SPORTS_ENTERTAINMENT_PRODUCTION",
+            "query": "St. George's team hotel OR production crew OR tournament housing OR tournament OR production crew hotel block",
+            "language": "en"
+          },
+          {
+            "id": "sports_entertainment_base_q2",
+            "segmentId": "sports_entertainment",
+            "intent": "SPORTS_ENTERTAINMENT_PRODUCTION",
+            "query": "St. George's federation team housing OR broadcast crew hotel",
+            "language": "en"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 1
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\sports_entertainment.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.145Z",
+          "fingerprint": "2c6586abeec2",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 8,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false,
+        "apifyAccounting": {
+          "status": "SKIPPED",
+          "reason": "APIFY_NOT_ORCHESTRATED",
+          "dispatched": false,
+          "mock": false
+        }
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "corporate_meetings_incentives",
+        "startedAt": "2026-11-23T15:33:58.158Z",
+        "finishedAt": "2026-11-23T15:33:58.165Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@corporate_meetings_incentives",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "destination_corporate_demand_strategies",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 3,
+        "providerCallCount": 0,
+        "cacheHits": 3,
+        "freshRetrievals": 0,
+        "rawResults": 3,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 12,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_ec872d85f6d2",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "corporate_meetings_incentives",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_incentive_program_en — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_meetings_incentives_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_meetings_incentives_q1",
+              "intent": "destination_incentive_program_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employe",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination incentive program en st george s"
+          },
+          {
+            "candidateId": "disc_baa954ba7710",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "corporate_meetings_incentives",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_sales_kickoff_retreat_en — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_meetings_incentives_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_meetings_incentives_q2",
+              "intent": "destination_sales_kickoff_retreat_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"p",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination sales kickoff retreat en st george s"
+          },
+          {
+            "candidateId": "disc_0c571b01751b",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "corporate_meetings_incentives",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_company_first_recognition_training_en — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_meetings_incentives_q3"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_meetings_incentives_q3",
+              "intent": "destination_company_first_recognition_training_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"St. George's\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (C",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination company first recognition training en st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "corporate_meetings_incentives_q1",
+            "segmentId": "corporate_meetings_incentives",
+            "intent": "destination_incentive_program_en",
+            "query": "(\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "incentive_case_studies",
+              "hr_program_pages"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_meetings_incentives_q2",
+            "segmentId": "corporate_meetings_incentives",
+            "intent": "destination_sales_kickoff_retreat_en",
+            "query": "(\"St. George's\" OR \"Grenada\" OR \"St. George's\" OR \"Morne Rouge\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "sales_ops_announcements"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_meetings_incentives_q3",
+            "segmentId": "corporate_meetings_incentives",
+            "intent": "destination_company_first_recognition_training_en",
+            "query": "\"St. George's\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (Cancun OR Cancún OR destination OR resort-style) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "hr_program_pages",
+              "corp_news"
+            ],
+            "weight": 5
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\corporate_meetings_incentives.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.165Z",
+          "fingerprint": "1a3211881c34",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 12,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "government_public_sector",
+        "startedAt": "2026-11-23T15:33:58.172Z",
+        "finishedAt": "2026-11-23T15:33:58.178Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@government_public_sector",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "government_manual_plus_gdi_queries",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 8,
+        "providerCallCount": 0,
+        "cacheHits": 8,
+        "freshRetrievals": 0,
+        "rawResults": 8,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 15,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_f474860563b5",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "government_public_sector",
+            "organizationName": null,
+            "title": "Fixture demand signal — government_public_meetings — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/gov_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "gov_q1",
+              "intent": "government_public_meetings",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: St. George's Grenada government conference lodging OR hotel block 2026 OR 2027",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal government public meetings st george s"
+          },
+          {
+            "candidateId": "disc_4428b6d69459",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "government_public_sector",
+            "organizationName": null,
+            "title": "Fixture demand signal — PUBLISHED_EVENT_DECOMPOSITION — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/gdi_institutional_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "gdi_institutional_q1",
+              "intent": "PUBLISHED_EVENT_DECOMPOSITION",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: unknown conference OR congress OR summit 2026 OR 2027 hotel block OR room block OR official hotel OR accommodation",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal published event decomposition st george s"
+          },
+          {
+            "candidateId": "disc_30b8cddecf88",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "government_public_sector",
+            "organizationName": null,
+            "title": "Fixture demand signal — INTERNATIONAL_ORG_RECURRING_GROUPS — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/gdi_institutional_q4"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "gdi_institutional_q4",
+              "intent": "INTERNATIONAL_ORG_RECURRING_GROUPS",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: unknown UNECE OR WHO OR WIPO OR WTO OR ILO working group meeting 2026 hotel",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal international org recurring groups st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "gov_q1",
+            "segmentId": "government_public_sector",
+            "intent": "government_public_meetings",
+            "query": "St. George's Grenada government conference lodging OR hotel block 2026 OR 2027",
+            "language": "en"
+          },
+          {
+            "id": "gov_q2",
+            "segmentId": "government_public_sector",
+            "intent": "government_public_meetings",
+            "query": "St. George's ministerio OR gobierno convocatoria reunión hotel",
+            "language": "es"
+          },
+          {
+            "id": "gov_q3",
+            "segmentId": "government_public_sector",
+            "intent": "government_public_meetings",
+            "query": "St. George's public sector training workshop accommodation RFP",
+            "language": "en"
+          },
+          {
+            "id": "gdi_institutional_q1",
+            "segmentId": "institutional",
+            "intent": "PUBLISHED_EVENT_DECOMPOSITION",
+            "query": "unknown conference OR congress OR summit 2026 OR 2027 hotel block OR room block OR official hotel OR accommodation",
+            "language": "en",
+            "locale": {
+              "hl": "en",
+              "gl": "en"
+            }
+          },
+          {
+            "id": "gdi_institutional_q2",
+            "segmentId": "institutional",
+            "intent": "PUBLISHED_EVENT_DECOMPOSITION",
+            "query": "unknown sponsors exhibitors speakers list conference 2026",
+            "language": "en",
+            "locale": {
+              "hl": "en",
+              "gl": "en"
+            }
+          },
+          {
+            "id": "gdi_institutional_q3",
+            "segmentId": "institutional",
+            "intent": "PUBLISHED_EVENT_DECOMPOSITION",
+            "query": "unknown conference OR congress 2026 OR 2027 official hotel OR room block",
+            "language": "en",
+            "locale": {
+              "hl": "en",
+              "gl": "en"
+            }
+          },
+          {
+            "id": "gdi_institutional_q4",
+            "segmentId": "institutional",
+            "intent": "INTERNATIONAL_ORG_RECURRING_GROUPS",
+            "query": "unknown UNECE OR WHO OR WIPO OR WTO OR ILO working group meeting 2026 hotel",
+            "language": "en",
+            "locale": {
+              "hl": "en",
+              "gl": "en"
+            }
+          },
+          {
+            "id": "gdi_institutional_q5",
+            "segmentId": "institutional",
+            "intent": "INTERNATIONAL_ORG_RECURRING_GROUPS",
+            "query": "unknown national delegation meeting secretariat accommodation",
+            "language": "en",
+            "locale": {
+              "hl": "en",
+              "gl": "en"
+            }
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\government_public_sector.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.178Z",
+          "fingerprint": "b07b5497bc18",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 15,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "recaokE8psIbuVeuH",
+        "segmentId": "preferred_lodging_partnerships",
+        "startedAt": "2026-11-23T15:33:58.185Z",
+        "finishedAt": "2026-11-23T15:33:58.191Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@preferred_lodging_partnerships",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "preferred_lodging_prompt_builder",
+        "sourceFamily": "preferred_lodging_prompt",
+        "queryCount": 3,
+        "providerCallCount": 0,
+        "cacheHits": 3,
+        "freshRetrievals": 0,
+        "rawResults": 3,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 8,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_d5aa4d4238b2",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "preferred_lodging_partnerships",
+            "organizationName": null,
+            "title": "Fixture demand signal — preferred_lodging_prompt — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pref_prompt"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pref_prompt",
+              "intent": "preferred_lodging_prompt",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hote",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal preferred lodging prompt st george s"
+          },
+          {
+            "candidateId": "disc_f5cad7e69e1b",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "preferred_lodging_partnerships",
+            "organizationName": null,
+            "title": "Fixture demand signal — preferred_lodging_referral_venues — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pref_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pref_q1",
+              "intent": "preferred_lodging_referral_venues",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: St. George's (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR ove",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal preferred lodging referral venues st george s"
+          },
+          {
+            "candidateId": "disc_0f97ff684c63",
+            "hotelId": "recaokE8psIbuVeuH",
+            "segmentId": "preferred_lodging_partnerships",
+            "organizationName": null,
+            "title": "Fixture demand signal — complementary_venue_no_guestrooms — St. George's",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pref_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pref_q2",
+              "intent": "complementary_venue_no_guestrooms",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: St. George's event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal complementary venue no guestrooms st george s"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+        "hotelName": "LaLuna Boutique Hotels & Villas",
+        "hotelCity": "St. George's",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "pref_prompt",
+            "segmentId": "preferred_lodging_partnerships",
+            "intent": "preferred_lodging_prompt",
+            "query": "Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hotel guestrooms or groups — weddings, private celebrations, banquets, cultural/private functions, clubs, museums, entertainment destinations, and complementary event facilities. | A competing event venue can be a valuable Preferred Lodging partner when it has no guestrooms or only complementary / overflow lodging need. | Do NOT reject a venue merely because it offers meeting space, banquet halls, or catering — those often create overnight guest referral demand for a nearby hotel. | Prefer venues without a full competing guestroom inventory; still assess limited on-site lodging for overflow partnership potential (use UNKNOWN when not evidenced). | Exclude generic restaurants unless a documented event format credibly creates overnight visitors. | Return venue name, address, website, event types, on-site lodging status if published, and any lodging-partner language. | Do not invent distances, drive times, annual wedding counts, or room-night forecasts. | Venue types: wedding_reception_venue, standalone_banquet_hall, private_event_facility, independent_conference_event_venue, museum_event_rental, garden_or_historic_property, country_club_or_private_club_outside_events, cultural_institution_event_space, entertainment_destination_event_venue, waterfront_or_rooftop_event_venue"
+          },
+          {
+            "id": "pref_q1",
+            "segmentId": "preferred_lodging_partnerships",
+            "intent": "preferred_lodging_referral_venues",
+            "query": "St. George's (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR overflow OR \"guest accommodations\") -restaurant-only"
+          },
+          {
+            "id": "pref_q2",
+            "segmentId": "preferred_lodging_partnerships",
+            "intent": "complementary_venue_no_guestrooms",
+            "query": "St. George's event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\recaokE8psIbuVeuH\\full-e2e-fourteen-segment-state\\preferred_lodging_partnerships.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.192Z",
+          "fingerprint": "c40fb222fa16",
+          "researchRunId": "gdi_disc_run_mwtfeklj_7e645d",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 8,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false,
+        "apifyAccounting": {
+          "status": "SKIPPED",
+          "reason": "APIFY_NOT_ORCHESTRATED",
+          "dispatched": false,
+          "mock": false
+        }
+      }
+    ]
+  },
+  "globalIntelligenceRetention": {
+    "version": "gdi-global-intelligence-store-v1",
+    "candidateCount": 16,
+    "retainedGlobal": 16,
+    "outOfMarketRetained": 0,
+    "unsupportedAudit": 16,
+    "privacyBlocked": 0
+  },
+  "preDeepScreening": {
+    "version": "gdi-pre-deep-candidate-screening-v1.1",
+    "candidateCount": 0,
+    "screenedCount": 0,
+    "eligibleForDeepCount": 0,
+    "outcomeCounts": {
+      "ELIGIBLE_FOR_DEEP_RESEARCH": 0,
+      "ELIGIBLE_FOR_TARGETED_RESEARCH": 0,
+      "SCREEN_ONLY": 0,
+      "DEFER_BUDGET": 0,
+      "GLOBAL_INTELLIGENCE_ONLY": 0,
+      "EXISTING_OPPORTUNITY_ENRICHMENT": 0,
+      "DUPLICATE_NO_NEW_EVIDENCE": 0,
+      "REJECT_UNSUPPORTED": 0
+    },
+    "publishedPackage": null,
+    "duplicatesPrevented": 0,
+    "globalOnlyRetained": 0
+  },
+  "deepResearchSelection": {
+    "version": "gdi-deep-research-selection-register-v1",
+    "selectedCount": 0,
+    "deferredCount": 0,
+    "expectedCommittedUsd": 0,
+    "segmentSelected": {
+      "associations_conferences_events": 0,
+      "corporate_accounts_scaling": 0,
+      "corporate_meetings_incentives": 0,
+      "government_public_sector": 0,
+      "sports_entertainment": 0,
+      "education_scientific": 0,
+      "projects_infrastructure": 0,
+      "social_special_events": 0,
+      "local_catering_day_meetings": 0,
+      "corporate_celebrations_private_events": 0,
+      "travel_trade_group_intermediaries": 0,
+      "relocation_extended_stay": 0,
+      "preferred_lodging_partnerships": 0,
+      "professional_event_planners": 0
+    },
+    "maxCandidates": 8,
+    "fairMinPerSegment": 1,
+    "fairFloorCanConsumeEntireCap": false,
+    "selectionPolicy": "EXISTING_FAIR_FLOOR_THEN_SCORE",
+    "productionPolicyChanged": false
+  },
+  "candidateCapApplied": 8,
+  "fairScheduler": {
+    "version": "gdi-segment-hotel-fair-research-scheduler-v1",
+    "totalQueued": 0,
+    "bySegment": {},
+    "firstOccurrenceBySegment": {
+      "associations_conferences_events": -1,
+      "corporate_accounts_scaling": -1,
+      "corporate_meetings_incentives": -1,
+      "government_public_sector": -1,
+      "sports_entertainment": -1,
+      "education_scientific": -1,
+      "projects_infrastructure": -1,
+      "social_special_events": -1,
+      "local_catering_day_meetings": -1,
+      "corporate_celebrations_private_events": -1,
+      "travel_trade_group_intermediaries": -1,
+      "relocation_extended_stay": -1,
+      "preferred_lodging_partnerships": -1,
+      "professional_event_planners": -1
+    },
+    "lateSegmentsCoveredInFirstPass": []
+  },
+  "retainedCandidates": 0,
+  "skippedAlreadyDeepResearched": 0,
+  "inventoryDedupe": {
+    "totalOrgKeys": 0,
+    "totalOpportunityIds": 0,
+    "perHotel": {
+      "recaokE8psIbuVeuH": {
+        "count": 0
+      }
+    },
+    "additionalSharedOrgKeys": 0
+  },
+  "skippedExistingInventory": 0,
+  "skippedCrossSegmentOrg": 0,
+  "airtablePersistenceDryRun": {
+    "plannedWriteCount": 0,
+    "deferredAuditOnly": 0,
+    "byTable": {},
+    "mutationBlocked": true
+  },
+  "discoveryYieldCounts": {},
+  "commercialDispositionCounts": {},
+  "claimsGenuineNewDiscoveryCount": 0,
+  "syntheticCorpusCount": 0,
+  "segmentCoverage": {
+    "version": "gdi-segment-coverage-accounting-v1",
+    "coverageStatus": "PARTIAL_COVERAGE",
+    "allowPartial": true,
+    "maxCandidates": 8,
+    "perSegment": {
+      "travel_trade_group_intermediaries": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 1
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "social_special_events": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 2
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "corporate_celebrations_private_events": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "sports_entertainment": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 1
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "corporate_meetings_incentives": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "government_public_sector": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "preferred_lodging_partnerships": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      }
+    },
+    "totals": {
+      "plannedSegments": 7,
+      "segmentsFullyCovered": 0,
+      "segmentsWithLiveDiscovery": 0,
+      "segmentsZeroYieldEvaluated": 7,
+      "segmentsUnexecuted": 0,
+      "retained": 0,
+      "selected": 0,
+      "deferred": 0,
+      "processed": 0,
+      "syntheticCorpusCount": 0
+    },
+    "partialReasons": [
+      "AUTHORIZED_PARTIAL_RUN",
+      "FIXTURE_OR_HISTORICAL_ONLY",
+      "DISCOVERY_NOT_LIVE"
+    ],
+    "fullCoverageClaimAllowed": false,
+    "runOkWhenPartialAuthorized": true,
+    "note": "FULL_COVERAGE requires live discovery evaluation for every planned segment with no deep-cap truncation and no synthetic corpus evidence."
+  },
+  "researchEconomics": {
+    "version": "gdi-research-economics-ledger-v1",
+    "at": "2026-11-23T15:33:58.251Z",
+    "candidatesDiscovered": 0,
+    "newUniqueCandidates": 0,
+    "previouslyKnownCandidates": 0,
+    "fixtureCandidates": 0,
+    "candidatesConsideredForDeeperResearch": 0,
+    "candidatesSelected": 0,
+    "candidatesSkipped": 0,
+    "skipReasons": {},
+    "researchCostUsdTotal": 0,
+    "hardCeilingUsd": 0,
+    "researchCostUsdPerSelected": null,
+    "researchCostUsdPerIncrementalActionable": null,
+    "verifiedCommercialContactsGained": 0,
+    "opportunitiesBecomingActionable": 0,
+    "canonicalSalesReadyCount": 0,
+    "researchContinuationCount": 0,
+    "candidatesStoppedMonitoredOrExhausted": 0,
+    "evidenceReusedFromPreviousRuns": 0,
+    "syntheticCorpusCount": 0,
+    "segmentCoverageStatus": "PARTIAL_COVERAGE",
+    "zeroYieldResearch": true,
+    "honestyNotes": [
+      "Cheaper runs are not better unless coverage and commercial quality are also considered.",
+      "Zero-yield research is reported explicitly when selected/actionable/live-new are empty.",
+      "Economics do not invent incremental quality from drawer length.",
+      "verifiedCommercialContactsGained counts named primaryContactName / salesReadyContacts on processed rows — not Sales Ready and not verified personal email.",
+      "opportunitiesBecomingActionable excludes final EXCLUDE disposition even when commercialResearchComplete is true.",
+      "canonicalSalesReadyCount is the only economics field that reflects Sales Ready eligibility.",
+      "Portfolio certification must prefer commercialEligibilityStatus + reconciled disposition over intermediate economics counters."
+    ]
+  },
+  "processedCount": 0,
+  "blockedCount": 0,
+  "withPresentation": 0,
+  "withContactInvestigation": 0,
+  "coverageStatus": "PARTIAL_COVERAGE",
+  "commercialResearchCompleteClaimAllowed": false,
+  "fullE2eCompleteClaimAllowed": false,
+  "fullE2eCompleteClaimBlockedReason": "Fixture/zero-cost chain proves module connectivity — live Exa Full E2E requires authorized budget",
+  "ok": true,
+  "coverageGate": null,
+  "processed": [],
+  "persistenceOpportunityCount": 0,
+  "budgetManifest": {
+    "version": "gdi-original-full-e2e-research-chain-v1",
+    "at": "2026-11-23T15:33:58.251Z",
+    "authorizationStatus": "NOT_AUTHORIZED",
+    "hotelIds": [
+      "recaokE8psIbuVeuH"
+    ],
+    "segmentIds": [
+      "associations_conferences_events",
+      "corporate_accounts_scaling",
+      "corporate_meetings_incentives",
+      "government_public_sector",
+      "sports_entertainment",
+      "education_scientific",
+      "projects_infrastructure",
+      "social_special_events",
+      "local_catering_day_meetings",
+      "corporate_celebrations_private_events",
+      "travel_trade_group_intermediaries",
+      "relocation_extended_stay",
+      "preferred_lodging_partnerships",
+      "professional_event_planners"
+    ],
+    "priorLiveSpendUsd": 0.4,
+    "pricingAssumptions": {
+      "discoveryEffort": "medium",
+      "deepResearchEffort": "medium",
+      "discoveryUnitUsd": 0.1,
+      "deepResearchUnitUsd": 0.1,
+      "note": "Exa Agent fixed-effort list prices; auto/max require separate ceilings. $0.10/run is not guaranteed for all operations.",
+      "quoteAsOf": "2026-10-24"
+    },
+    "discovery": {
+      "cells": 14,
+      "runsPerSegment": 2,
+      "plannedRuns": 28,
+      "maxUsd": 2.8,
+      "resumeSkipsCompletedLiveCells": true
+    },
+    "deepResearch": {
+      "estimatedEligibleCandidates": 25,
+      "runsPerCandidate": 1,
+      "plannedRuns": 25,
+      "maxUsd": 2.5,
+      "usesExistingOrsIntegration": true,
+      "module": "deep-research-gdi-integration-v1.runDeepResearchOnExistingGdiOpportunity"
+    },
+    "contactResearch": {
+      "paidSurfe": false,
+      "paidPdl": false,
+      "mode": "public_evidence_and_ors_extraction",
+      "estimatedUsd": 0
+    },
+    "contingencyUsd": 0.79,
+    "hardCeilingUsd": 6.09,
+    "requestedAuthorizationUsd": 6.09,
+    "stopConditions": [
+      "hard_ceiling_reached",
+      "quote_unbounded",
+      "provider_error_budget",
+      "resume_duplicate_live_call_blocked",
+      "founder_revoke"
+    ],
+    "excludes": [
+      "production_airtable_writes",
+      "customer_publication",
+      "share_token_changes",
+      "railway_deploy",
+      "surfe_enrichment"
+    ],
+    "note": "One bounded Full E2E authorization requested — not per-segment micro-approvals. Paid execution must not start until founder authorizes this ceiling."
+  },
+  "airtablePersistencePlan": {
+    "ok": true,
+    "dryRun": true,
+    "version": "gdi-full-e2e-airtable-persistence-contract-v1",
+    "hotelId": "recaokE8psIbuVeuH",
+    "runId": "gdi_e2e_14seg_mwtfekg0_4e159c",
+    "candidateCount": 0,
+    "plannedWriteCount": 0,
+    "deferredAuditOnly": 0,
+    "byTable": {},
+    "plans": [],
+    "mutationGuard": {
+      "blocked": true,
+      "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+      "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+    },
+    "readBackContract": {
+      "required": true,
+      "rule": "API 200 alone is insufficient; identity field must read back equal to planned identityKey before CREATED/UPDATED is certified.",
+      "outcomes": {
+        "CREATED": "CREATED",
+        "UPDATED": "UPDATED",
+        "UNCHANGED": "UNCHANGED",
+        "DUPLICATE_LINKED": "DUPLICATE_LINKED",
+        "DEFERRED": "DEFERRED",
+        "FAILED": "FAILED"
+      }
+    }
+  }
+}

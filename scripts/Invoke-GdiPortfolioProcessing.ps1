@@ -85,7 +85,7 @@ param(
 
   [string]$HotelsFile = '',
 
-  [ValidateSet('Preview', 'FullE2E', 'Rehearsal', 'Resume', 'AuditOnly', 'PaidPilotPreflight', 'PaidPilotExecute', 'PaidPilotReplay')]
+  [ValidateSet('Preview', 'FullE2E', 'Rehearsal', 'Resume', 'AuditOnly', 'PaidPilotPreflight', 'PaidPilotExecute', 'PaidPilotReplay', 'DesignHotelsLivePreflight', 'DesignHotelsLiveExecute', 'DesignHotelsLiveReplay', 'CohortPreflight', 'CohortExecute', 'CohortReplay')]
   [string]$Mode = 'Rehearsal',
 
   [ValidateRange(0, 5000)]
@@ -161,6 +161,51 @@ if ($Mode -eq 'PaidPilotExecute') {
     Write-FailClosed 'Paid pilot refuses publication and production writes.'
   }
 }
+if ($Mode -eq 'DesignHotelsLiveExecute') {
+  if (-not $AllowLivePilot) {
+    Write-FailClosed 'DesignHotelsLiveExecute requires -AllowLivePilot.'
+  }
+  if (-not $AuthorizePaidResearch) {
+    Write-FailClosed 'DesignHotelsLiveExecute requires -AuthorizePaidResearch.'
+  }
+  if ($BudgetUSD -le 0 -or $BudgetUSD -gt 12) {
+    Write-FailClosed 'DesignHotelsLiveExecute requires -BudgetUSD in (0, 12].'
+  }
+  if ($PerHotelBudgetUSD -le 0 -or $PerHotelBudgetUSD -gt 4) {
+    Write-FailClosed 'DesignHotelsLiveExecute requires -PerHotelBudgetUSD in (0, 4].'
+  }
+  if ($FounderSpendConfirmation -ne 'FOUNDER_GDI_DESIGN_HOTELS_LIVE_RESEARCH_12') {
+    Write-FailClosed 'DesignHotelsLiveExecute requires -FounderSpendConfirmation FOUNDER_GDI_DESIGN_HOTELS_LIVE_RESEARCH_12.'
+  }
+  if ($AuthorizePublication -or $AuthorizeProductionWrites) {
+    Write-FailClosed 'Design Hotels live research refuses publication and production writes.'
+  }
+}
+if ($Mode -eq 'CohortPreflight' -or $Mode -eq 'CohortExecute' -or $Mode -eq 'CohortReplay') {
+  if (-not $HotelsFile -and -not $HotelId -and -not $Hotels) {
+    Write-FailClosed 'Cohort modes require -HotelsFile, -Hotels, or -HotelId (dynamic cohort — no hard-coded hotel list).'
+  }
+}
+if ($Mode -eq 'CohortExecute') {
+  if (-not $AllowLivePilot) {
+    Write-FailClosed 'CohortExecute requires -AllowLivePilot.'
+  }
+  if (-not $AuthorizePaidResearch) {
+    Write-FailClosed 'CohortExecute requires -AuthorizePaidResearch.'
+  }
+  if ($BudgetUSD -le 0 -or $BudgetUSD -gt 5000) {
+    Write-FailClosed 'CohortExecute requires -BudgetUSD greater than zero.'
+  }
+  if ($PerHotelBudgetUSD -le 0) {
+    Write-FailClosed 'CohortExecute requires -PerHotelBudgetUSD greater than zero.'
+  }
+  if ($FounderSpendConfirmation -ne 'FOUNDER_GDI_UNIVERSAL_COHORT_PAID') {
+    Write-FailClosed 'CohortExecute requires -FounderSpendConfirmation FOUNDER_GDI_UNIVERSAL_COHORT_PAID.'
+  }
+  if ($AuthorizePublication -or $AuthorizeProductionWrites) {
+    Write-FailClosed 'Universal cohort processing refuses publication and production writes.'
+  }
+}
 
 if (-not $RepoPath) {
   $RepoPath = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -225,7 +270,13 @@ if ($runLeisure) {
 }
 
 $isPaidPilotMode = ($Mode -eq 'PaidPilotPreflight' -or $Mode -eq 'PaidPilotExecute' -or $Mode -eq 'PaidPilotReplay')
-$runner = if ($isPaidPilotMode) {
+$isDhLiveMode = ($Mode -eq 'DesignHotelsLivePreflight' -or $Mode -eq 'DesignHotelsLiveExecute' -or $Mode -eq 'DesignHotelsLiveReplay')
+$isUniversalCohortMode = ($Mode -eq 'CohortPreflight' -or $Mode -eq 'CohortExecute' -or $Mode -eq 'CohortReplay')
+$runner = if ($isUniversalCohortMode) {
+  Join-Path $resolvedRepo 'scripts\gdi-universal-cohort-processing-v2.mjs'
+} elseif ($isDhLiveMode) {
+  Join-Path $resolvedRepo 'scripts\gdi-design-hotels-live-research-pilot-v1.mjs'
+} elseif ($isPaidPilotMode) {
   Join-Path $resolvedRepo 'scripts\gdi-portfolio-cert-v1-1-paid-pilot.mjs'
 } else {
   Join-Path $resolvedRepo 'scripts\gdi-portfolio-processing-certification-v1.mjs'
@@ -243,6 +294,12 @@ $modeArg = switch ($Mode) {
   'PaidPilotPreflight' { 'preflight' }
   'PaidPilotExecute' { 'execute-paid' }
   'PaidPilotReplay' { 'replay' }
+  'DesignHotelsLivePreflight' { 'preflight' }
+  'DesignHotelsLiveExecute' { 'execute-paid' }
+  'DesignHotelsLiveReplay' { 'replay' }
+  'CohortPreflight' { 'preflight' }
+  'CohortExecute' { 'execute-paid' }
+  'CohortReplay' { 'replay' }
   default { $Mode.ToLowerInvariant() }
 }
 
@@ -254,8 +311,18 @@ if ($Mode -eq 'PaidPilotExecute') {
   $nodeArgs += @('--confirm-founder-spend-go', $FounderSpendConfirmation)
   $env:GDI_EXA_AGENT_LIVE = '1'
 }
+if ($Mode -eq 'DesignHotelsLiveExecute') {
+  $nodeArgs += @('--confirm-founder-spend-go', $FounderSpendConfirmation)
+  $env:GDI_EXA_AGENT_LIVE = '1'
+}
+if ($Mode -eq 'CohortExecute') {
+  $nodeArgs += @('--confirm-founder-spend-go', $FounderSpendConfirmation)
+  $env:GDI_EXA_AGENT_LIVE = '1'
+  if ($BudgetUSD -gt 0) { $nodeArgs += @('--budget-usd', ([string][double]$BudgetUSD)) }
+  if ($PerHotelBudgetUSD -gt 0) { $nodeArgs += @('--per-hotel-budget-usd', ([string][double]$PerHotelBudgetUSD)) }
+}
 
-if (-not $isPaidPilotMode) {
+if (-not $isPaidPilotMode -and -not $isDhLiveMode -and -not $isUniversalCohortMode) {
   $hotelList = New-Object System.Collections.Generic.List[string]
   if ($HotelId) { [void]$hotelList.Add($HotelId.Trim()) }
   if ($Hotels) {
@@ -271,15 +338,35 @@ if (-not $isPaidPilotMode) {
   }
 }
 
+if ($isUniversalCohortMode) {
+  $hotelList = New-Object System.Collections.Generic.List[string]
+  if ($HotelId) { [void]$hotelList.Add($HotelId.Trim()) }
+  if ($Hotels) {
+    foreach ($part in ($Hotels -split '[,;\s]+')) {
+      if ($part.Trim()) { [void]$hotelList.Add($part.Trim()) }
+    }
+  }
+  if ($HotelsFile) {
+    $nodeArgs += @('--hotels-file', $HotelsFile)
+  }
+  elseif ($hotelList.Count -gt 0) {
+    $nodeArgs += @('--hotels', ($hotelList -join ','))
+  }
+  if ($Mode -eq 'CohortPreflight' -or $Mode -eq 'CohortReplay') {
+    if ($BudgetUSD -gt 0) { $nodeArgs += @('--budget-usd', ([string][double]$BudgetUSD)) }
+    if ($PerHotelBudgetUSD -gt 0) { $nodeArgs += @('--per-hotel-budget-usd', ([string][double]$PerHotelBudgetUSD)) }
+  }
+}
+
 if ($ReportPath) { $nodeArgs += @('--out', $ReportPath) }
 if ($PortfolioRunId) { $nodeArgs += @('--portfolio-run-id', $PortfolioRunId) }
-if (-not $isPaidPilotMode -and ($Mode -eq 'Resume' -or $ResumeState)) {
+if (-not $isPaidPilotMode -and -not $isDhLiveMode -and -not $isUniversalCohortMode -and ($Mode -eq 'Resume' -or $ResumeState)) {
   $nodeArgs += '--resume'
   if ($ResumeState) { $nodeArgs += @('--state', $ResumeState) }
 }
 if ($MaxCandidates) { $nodeArgs += @('--max-candidates', [string]$MaxCandidates) }
 
-if (-not $isPaidPilotMode -and $AllowLivePilot) {
+if (-not $isPaidPilotMode -and -not $isDhLiveMode -and -not $isUniversalCohortMode -and $AllowLivePilot) {
   $nodeArgs += '--allow-live-pilot'
   if ($AuthorizePaidResearch) { $nodeArgs += '--authorize-paid-research' }
   if ($AuthorizePublication) { $nodeArgs += '--authorize-publication' }

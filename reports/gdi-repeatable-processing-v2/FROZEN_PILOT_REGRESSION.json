@@ -1,0 +1,1100 @@
+{
+  "contract": "gdi-repeatable-processing-v2",
+  "mode": "ZERO_PAID_FROZEN_REPLAY",
+  "paidSpendUsd": 0,
+  "hotelsFile": "reports/gdi-repeatable-processing-v2/design-hotels-pilot-cohort-hotels.txt",
+  "hotelsFileParseOk": true,
+  "hotelIds": [
+    "rece0NdV9FCnaFlVS",
+    "recaokE8psIbuVeuH",
+    "rec1t35e3sPerzxYu"
+  ],
+  "configValidation": {
+    "contract": "gdi-hotel-config-proposal-v2",
+    "mode": "validate-design-hotels-pilot",
+    "ok": true,
+    "results": [
+      {
+        "hotelId": "rece0NdV9FCnaFlVS",
+        "proposalOk": true,
+        "unresolved": [],
+        "hardBlockers": [],
+        "validation": {
+          "ok": true,
+          "hotelId": "rece0NdV9FCnaFlVS",
+          "checks": [
+            {
+              "name": "hotelId_match",
+              "ok": true,
+              "detail": {
+                "proposed": "rece0NdV9FCnaFlVS",
+                "pilot": "rece0NdV9FCnaFlVS"
+              }
+            },
+            {
+              "name": "displayName_compatible",
+              "ok": true,
+              "detail": {
+                "proposed": "Condesa DF Hotel",
+                "pilot": "Condesa DF Hotel"
+              }
+            },
+            {
+              "name": "country_match",
+              "ok": true,
+              "detail": {
+                "proposed": "Mexico",
+                "pilot": "Mexico"
+              }
+            },
+            {
+              "name": "city_compatible",
+              "ok": true,
+              "detail": {
+                "proposed": "Mexico City",
+                "pilot": "Mexico City"
+              }
+            },
+            {
+              "name": "rooms_match_when_both_known",
+              "ok": true,
+              "detail": {
+                "proposed": 40,
+                "pilot": 40
+              }
+            },
+            {
+              "name": "demandTerritory_present",
+              "ok": true,
+              "detail": {
+                "proposedLabel": "Mexico City"
+              }
+            }
+          ],
+          "failed": []
+        },
+        "existingConfigLoaded": true
+      },
+      {
+        "hotelId": "recaokE8psIbuVeuH",
+        "proposalOk": true,
+        "unresolved": [],
+        "hardBlockers": [],
+        "validation": {
+          "ok": true,
+          "hotelId": "recaokE8psIbuVeuH",
+          "checks": [
+            {
+              "name": "hotelId_match",
+              "ok": true,
+              "detail": {
+                "proposed": "recaokE8psIbuVeuH",
+                "pilot": "recaokE8psIbuVeuH"
+              }
+            },
+            {
+              "name": "displayName_compatible",
+              "ok": true,
+              "detail": {
+                "proposed": "LaLuna Boutique Hotels & Villas",
+                "pilot": "LaLuna Boutique Hotels & Villas"
+              }
+            },
+            {
+              "name": "country_match",
+              "ok": true,
+              "detail": {
+                "proposed": "Grenada",
+                "pilot": "Grenada"
+              }
+            },
+            {
+              "name": "city_compatible",
+              "ok": true,
+              "detail": {
+                "proposed": "St. George's",
+                "pilot": "St. George's"
+              }
+            },
+            {
+              "name": "rooms_match_when_both_known",
+              "ok": true,
+              "detail": {
+                "proposed": 16,
+                "pilot": 16
+              }
+            },
+            {
+              "name": "demandTerritory_present",
+              "ok": true,
+              "detail": {
+                "proposedLabel": "Grenada"
+              }
+            }
+          ],
+          "failed": []
+        },
+        "existingConfigLoaded": true
+      },
+      {
+        "hotelId": "rec1t35e3sPerzxYu",
+        "proposalOk": true,
+        "unresolved": [],
+        "hardBlockers": [],
+        "validation": {
+          "ok": true,
+          "hotelId": "rec1t35e3sPerzxYu",
+          "checks": [
+            {
+              "name": "hotelId_match",
+              "ok": true,
+              "detail": {
+                "proposed": "rec1t35e3sPerzxYu",
+                "pilot": "rec1t35e3sPerzxYu"
+              }
+            },
+            {
+              "name": "displayName_compatible",
+              "ok": true,
+              "detail": {
+                "proposed": "Memmo Príncipe Real",
+                "pilot": "Memmo Príncipe Real"
+              }
+            },
+            {
+              "name": "country_match",
+              "ok": true,
+              "detail": {
+                "proposed": "Portugal",
+                "pilot": "Portugal"
+              }
+            },
+            {
+              "name": "city_compatible",
+              "ok": true,
+              "detail": {
+                "proposed": "Lisbon",
+                "pilot": "Lisbon"
+              }
+            },
+            {
+              "name": "rooms_match_when_both_known",
+              "ok": true,
+              "detail": {
+                "proposed": 41,
+                "pilot": 41
+              }
+            },
+            {
+              "name": "demandTerritory_present",
+              "ok": true,
+              "detail": {
+                "proposedLabel": "Lisbon"
+              }
+            }
+          ],
+          "failed": []
+        },
+        "existingConfigLoaded": true
+      }
+    ]
+  },
+  "hotelResults": [
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "hotelName": "Condesa DF Hotel",
+      "candidatesBefore": 87,
+      "candidatesAfterDedupe": 82,
+      "duplicatesRemoved": 5,
+      "duplicateClusters": 5,
+      "dedupeDecisions": [
+        {
+          "clusterKey": "latin american studies|undated|lasa2027 xlv international",
+          "canonicalId": "disc_61a39dd0b4c5",
+          "suppressedIds": [
+            "disc_7513037b7996"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "associations_conferences_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "asociaci n mexicana de profesionales inmobiliarios|2026|lv congreso internacional inmobiliario ampi 2026",
+          "canonicalId": "disc_ef9b6e4d6a0e",
+          "suppressedIds": [
+            "disc_15b60ae3b640"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "asociaci n mexicana de hepato pancreato biliar|2026|xiv congreso amhpb 2026",
+          "canonicalId": "disc_2faa46f92bb6",
+          "suppressedIds": [
+            "disc_af478c069b85"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "world for public opinion research|2026|wapor 2026",
+          "canonicalId": "disc_0ca4947f4e8e",
+          "suppressedIds": [
+            "disc_242398026539"
+          ],
+          "segmentAssociations": [
+            "associations_conferences_events",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "kio|undated|construction and future operation of critical digital infras",
+          "canonicalId": "disc_4527c4df6782",
+          "suppressedIds": [
+            "disc_75fde0b827f4"
+          ],
+          "segmentAssociations": [
+            "corporate_accounts_scaling",
+            "projects_infrastructure"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        }
+      ],
+      "historicalDeepSelectedIds": [
+        "disc_0ca4947f4e8e",
+        "disc_1342860c1693",
+        "disc_2017a6cef8cd",
+        "disc_227427613732"
+      ],
+      "historicalDeepSelectedCount": 4,
+      "v2DeepSelectedIds": [
+        "disc_0ca4947f4e8e",
+        "disc_1342860c1693",
+        "disc_2017a6cef8cd",
+        "disc_227427613732"
+      ],
+      "v2DeepSelectedCount": 4,
+      "crossSegmentDuplicatesSkippedAtSelection": 0,
+      "hotelFitNotes": [
+        {
+          "opportunityId": "disc_0ca4947f4e8e",
+          "title": "WAPOR 2026 Annual Conference",
+          "organizationName": "World Association for Public Opinion Research",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 40,
+            "meetingRooms": 7,
+            "classification": "urban",
+            "notes": [
+              "urban_meetings_corporate_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_1342860c1693",
+          "title": "New Mexico City office and GDC supporting Spanish-, Portuguese-, and English-language customer implementations across Latin America.",
+          "organizationName": "Salesforce",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 40,
+            "meetingRooms": 7,
+            "classification": "urban",
+            "notes": [
+              "urban_meetings_corporate_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_2017a6cef8cd",
+          "title": "IAFMHS 2027 Mexico City Conference",
+          "organizationName": "International Association of Forensic Mental Health Services",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 40,
+            "meetingRooms": 7,
+            "classification": "urban",
+            "notes": [
+              "urban_meetings_corporate_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_227427613732",
+          "title": "SAH 79th Annual International Conference 2026",
+          "organizationName": "Society of Architectural Historians",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 40,
+            "meetingRooms": 7,
+            "classification": "urban",
+            "notes": [
+              "urban_meetings_corporate_boost"
+            ]
+          }
+        }
+      ],
+      "contactAnalysis": {
+        "hotelId": "rece0NdV9FCnaFlVS",
+        "hotelName": null,
+        "opportunityCount": 4,
+        "namedStakeholderCount": 0,
+        "gaps": [
+          {
+            "opportunityId": "disc_0ca4947f4e8e",
+            "title": "WAPOR 2026 Annual Conference",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_1342860c1693",
+            "title": "New Mexico City office and GDC supporting Spanish-, Portuguese-, and English-language customer implementations across Latin America.",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_2017a6cef8cd",
+            "title": "IAFMHS 2027 Mexico City Conference",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_227427613732",
+            "title": "SAH 79th Annual International Conference 2026",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          }
+        ],
+        "diagnosis": "NO_NAMED_STAKEHOLDERS — prioritize destination organizers / DMC / association event managers on public pages before next paid deep"
+      },
+      "retentionSmoke": {
+        "retain": true,
+        "reasonCode": "VERIFIED_NAME_WITHOUT_EMAIL_OK",
+        "salesReady": false,
+        "preservedFields": {
+          "name": "Example Verified Buyer",
+          "role": "Travel Procurement",
+          "employer": "Example Corp",
+          "email": null,
+          "sourceUrl": "https://example.com/team",
+          "relevance": null
+        },
+        "paidEnrichment": {
+          "surfe": false,
+          "findymail": false,
+          "pdl": false,
+          "fullenrich": false
+        }
+      },
+      "carphaCase": null,
+      "advantageCase": null
+    },
+    {
+      "hotelId": "recaokE8psIbuVeuH",
+      "hotelName": "LaLuna Boutique Hotels & Villas",
+      "candidatesBefore": 66,
+      "candidatesAfterDedupe": 50,
+      "duplicatesRemoved": 16,
+      "duplicateClusters": 12,
+      "dedupeDecisions": [
+        {
+          "clusterKey": "carpha|undated|71st carpha health research",
+          "canonicalId": "disc_1a5feb366e7d",
+          "suppressedIds": [
+            "disc_41e9602e7ab8",
+            "disc_023923963f08",
+            "disc_1e5fc8b680cf"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "government_public_sector",
+            "social_special_events",
+            "corporate_celebrations_private_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "ctlpa|2027|ctlpa regional 2027",
+          "canonicalId": "disc_401b61d8be89",
+          "suppressedIds": [
+            "disc_f48345a2b025",
+            "disc_0990d56346fa",
+            "disc_f8938e28ec56"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "corporate_meetings_incentives",
+            "corporate_celebrations_private_events",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "toronto trucking|2027|tta 2027 convention",
+          "canonicalId": "disc_3ab2d083fc1f",
+          "suppressedIds": [
+            "disc_4d1b950228b5"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "corporate_celebrations_private_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "caribbean water and wastewater nawasa gswma|undated|35th cwwa exhibition",
+          "canonicalId": "disc_2e57f54e7806",
+          "suppressedIds": [
+            "disc_f5ff48bf83df"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "caribbean telecommunications union office of the prime minister of grenada|undated|22nd caribbean internet governance forum 5th caribbean youth",
+          "canonicalId": "disc_53964d206eab",
+          "suppressedIds": [
+            "disc_222d59d86472"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "grenada homecoming government and investment stakeholders|2026|diaspora homecoming forum 2026",
+          "canonicalId": "disc_8141b25c4c8f",
+          "suppressedIds": [
+            "disc_d27f6498bf7b"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "caribbean development bank oecs commission government of grenada|2026|2026 oecs procurement fair",
+          "canonicalId": "disc_e2c63f07302f",
+          "suppressedIds": [
+            "disc_195bf3842200"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "st george s university|undated|sgu 50th anniversary celebration",
+          "canonicalId": "disc_e1c327e4b32e",
+          "suppressedIds": [
+            "disc_28ba4af34a85"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "sgusom|2027|the art of medicine 2027",
+          "canonicalId": "disc_6d2cfa6b0a9a",
+          "suppressedIds": [
+            "disc_ac2793844079"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "grenada diaspora homecoming|undated|grenada diaspora homecoming forum",
+          "canonicalId": "disc_fff22a3510dc",
+          "suppressedIds": [
+            "disc_236e37a34c03"
+          ],
+          "segmentAssociations": [
+            "corporate_celebrations_private_events",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "st george s university|2027|sgu 2027 education summit",
+          "canonicalId": "disc_3af591a6d040",
+          "suppressedIds": [
+            "disc_cdd107a012da"
+          ],
+          "segmentAssociations": [
+            "corporate_celebrations_private_events",
+            "government_public_sector"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "national medical regions i and vi|2025|nma region i vi joint regional 2025",
+          "canonicalId": "disc_601fe800845b",
+          "suppressedIds": [
+            "disc_74afadf3f391"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "corporate_celebrations_private_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        }
+      ],
+      "historicalDeepSelectedIds": [
+        "disc_a6def3588729",
+        "disc_f8938e28ec56",
+        "disc_db8429d00434",
+        "disc_023923963f08"
+      ],
+      "historicalDeepSelectedCount": 4,
+      "v2DeepSelectedIds": [
+        "disc_a6def3588729",
+        "disc_565e00da530a",
+        "disc_db8429d00434",
+        "disc_b44d2bc786de"
+      ],
+      "v2DeepSelectedCount": 4,
+      "crossSegmentDuplicatesSkippedAtSelection": 0,
+      "hotelFitNotes": [
+        {
+          "opportunityId": "disc_a6def3588729",
+          "title": "CARPHA 71st Annual Health Research Conference 2027",
+          "organizationName": "Caribbean Public Health Agency (CARPHA)",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 16,
+            "meetingRooms": null,
+            "classification": "leisure_destination",
+            "notes": [
+              "small_inventory_small_group_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_565e00da530a",
+          "title": "3rd Annual Conference of Directors of Public Sector Entities",
+          "organizationName": "Government of Grenada Ministry of Finance / Grenada Accredited Directors Association",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 16,
+            "meetingRooms": null,
+            "classification": "leisure_destination",
+            "notes": [
+              "small_inventory_small_group_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_db8429d00434",
+          "title": "Pure Grenada Sailing Week 2027",
+          "organizationName": "Grenada Sailing Week Board",
+          "fit": {
+            "score": 0.85,
+            "boostPoints": 18,
+            "rooms": 16,
+            "meetingRooms": null,
+            "classification": "leisure_destination",
+            "notes": [
+              "small_inventory_small_group_boost",
+              "leisure_destination_fit_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_b44d2bc786de",
+          "title": "Spicemas 2027 Carnival programme",
+          "organizationName": "Spicemas Corporation",
+          "fit": {
+            "score": 0.8,
+            "boostPoints": 8,
+            "rooms": 16,
+            "meetingRooms": null,
+            "classification": "leisure_destination",
+            "notes": [
+              "small_inventory_small_group_boost"
+            ]
+          }
+        }
+      ],
+      "contactAnalysis": {
+        "hotelId": "recaokE8psIbuVeuH",
+        "hotelName": null,
+        "opportunityCount": 4,
+        "namedStakeholderCount": 0,
+        "gaps": [
+          {
+            "opportunityId": "disc_a6def3588729",
+            "title": "CARPHA 71st Annual Health Research Conference 2027",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_f8938e28ec56",
+            "title": "Annual Regional CTLPA Conference 2027",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_db8429d00434",
+            "title": "Pure Grenada Sailing Week 2027",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_023923963f08",
+            "title": "CARPHA 71st Annual Health Research Conference",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          }
+        ],
+        "diagnosis": "NO_NAMED_STAKEHOLDERS — prioritize destination organizers / DMC / association event managers on public pages before next paid deep"
+      },
+      "retentionSmoke": {
+        "retain": true,
+        "reasonCode": "VERIFIED_NAME_WITHOUT_EMAIL_OK",
+        "salesReady": false,
+        "preservedFields": {
+          "name": "Example Verified Buyer",
+          "role": "Travel Procurement",
+          "employer": "Example Corp",
+          "email": null,
+          "sourceUrl": "https://example.com/team",
+          "relevance": null
+        },
+        "paidEnrichment": {
+          "surfe": false,
+          "findymail": false,
+          "pdl": false,
+          "fullenrich": false
+        }
+      },
+      "carphaCase": {
+        "beforeHadBoth": true,
+        "afterCanonicalOnly": true,
+        "suppressedPeer": {
+          "clusterKey": "carpha|undated|71st carpha health research",
+          "canonicalId": "disc_1a5feb366e7d",
+          "suppressedIds": [
+            "disc_41e9602e7ab8",
+            "disc_023923963f08",
+            "disc_1e5fc8b680cf"
+          ],
+          "segmentAssociations": [
+            "travel_trade_group_intermediaries",
+            "government_public_sector",
+            "social_special_events",
+            "corporate_celebrations_private_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        }
+      },
+      "advantageCase": null
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "hotelName": "Memmo Príncipe Real",
+      "candidatesBefore": 61,
+      "candidatesAfterDedupe": 56,
+      "duplicatesRemoved": 5,
+      "duplicateClusters": 4,
+      "dedupeDecisions": [
+        {
+          "clusterKey": "advantage travel|2027|advantage travel partnership 2027",
+          "canonicalId": "disc_9cd2c082c05d",
+          "suppressedIds": [
+            "disc_5f2e1fb36e8b",
+            "disc_51073448c775"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "associations_conferences_events",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "academy of marketing science|2027|ams world marketing 2027",
+          "canonicalId": "disc_2c3842f604ab",
+          "suppressedIds": [
+            "disc_bc595e9f54aa"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "associations_conferences_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "international of ultrasound in obstetrics and gynecology|2027|isuog world 2027",
+          "canonicalId": "disc_16f864a75b0a",
+          "suppressedIds": [
+            "disc_d5aa5e815e05"
+          ],
+          "segmentAssociations": [
+            "associations_conferences_events",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        },
+        {
+          "clusterKey": "ccb|undated|official ccb page describes auditoriums rooms and foyers for",
+          "canonicalId": "disc_874e43c094a3",
+          "suppressedIds": [
+            "disc_67653731f2a7"
+          ],
+          "segmentAssociations": [
+            "preferred_lodging_partnerships"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        }
+      ],
+      "historicalDeepSelectedIds": [
+        "disc_8e730047c1b9",
+        "disc_62b0361d0b7e",
+        "disc_9cd2c082c05d",
+        "disc_51073448c775"
+      ],
+      "historicalDeepSelectedCount": 4,
+      "v2DeepSelectedIds": [
+        "disc_16a2b933626a",
+        "disc_62b0361d0b7e",
+        "disc_9cd2c082c05d",
+        "disc_ba65fb0baacd"
+      ],
+      "v2DeepSelectedCount": 4,
+      "crossSegmentDuplicatesSkippedAtSelection": 0,
+      "hotelFitNotes": [
+        {
+          "opportunityId": "disc_16a2b933626a",
+          "title": "ESIL Annual Conference 2027",
+          "organizationName": "European Society of International Law",
+          "fit": {
+            "score": 0.75,
+            "boostPoints": 6,
+            "rooms": 41,
+            "meetingRooms": null,
+            "classification": "urban_boutique",
+            "notes": [
+              "urban_boutique_corporate_travel_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_62b0361d0b7e",
+          "title": "TDCX opened its first Portugal campus in central Lisbon on 11 September 2026 as a multilingual EMEA customer-experience, sales and client-support hub; it plans a second Lisbon building as early as 2027.",
+          "organizationName": "TDCX",
+          "fit": {
+            "score": 0.75,
+            "boostPoints": 6,
+            "rooms": 41,
+            "meetingRooms": null,
+            "classification": "urban_boutique",
+            "notes": [
+              "urban_boutique_corporate_travel_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_9cd2c082c05d",
+          "title": "Advantage Travel Partnership Annual Conference 2027",
+          "organizationName": "Advantage Travel Partnership",
+          "fit": {
+            "score": 0.75,
+            "boostPoints": 6,
+            "rooms": 41,
+            "meetingRooms": null,
+            "classification": "urban_boutique",
+            "notes": [
+              "urban_boutique_corporate_travel_boost"
+            ]
+          }
+        },
+        {
+          "opportunityId": "disc_ba65fb0baacd",
+          "title": "Novo Futuro 3rd Annual Solidarity Dinner",
+          "organizationName": "Novo Futuro Association",
+          "fit": {
+            "score": 0.75,
+            "boostPoints": 6,
+            "rooms": 41,
+            "meetingRooms": null,
+            "classification": "urban_boutique",
+            "notes": [
+              "urban_boutique_corporate_travel_boost"
+            ]
+          }
+        }
+      ],
+      "contactAnalysis": {
+        "hotelId": "rec1t35e3sPerzxYu",
+        "hotelName": null,
+        "opportunityCount": 4,
+        "namedStakeholderCount": 0,
+        "gaps": [
+          {
+            "opportunityId": "disc_8e730047c1b9",
+            "title": "ESICM LIVES 2026 Annual Congress",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_62b0361d0b7e",
+            "title": "TDCX opened its first Portugal campus in central Lisbon on 11 September 2026 as a multilingual EMEA customer-experience, sales and client-support hub; it plans a second Lisbon building as early as 2027.",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_9cd2c082c05d",
+            "title": "Advantage Travel Partnership Annual Conference 2027",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          },
+          {
+            "opportunityId": "disc_51073448c775",
+            "title": "Advantage Travel Partnership Annual Conference 2027",
+            "recommendedBuyerRoles": [
+              "meeting_event_organizer",
+              "corporate_travel_procurement_buyer",
+              "association_event_manager",
+              "destination_event_coordinator",
+              "corporate_project_workforce_travel_decision_maker",
+              "sales_or_sourcing_entry_point"
+            ],
+            "recommendedSources": [
+              "official_org_staff_directory",
+              "event_about_or_committee_page",
+              "press_release_named_spokesperson",
+              "linkedin_public_role_page",
+              "destination_dmc_or_cvb_contact",
+              "conference_housing_bureau_contact"
+            ]
+          }
+        ],
+        "diagnosis": "NO_NAMED_STAKEHOLDERS — prioritize destination organizers / DMC / association event managers on public pages before next paid deep"
+      },
+      "retentionSmoke": {
+        "retain": true,
+        "reasonCode": "VERIFIED_NAME_WITHOUT_EMAIL_OK",
+        "salesReady": false,
+        "preservedFields": {
+          "name": "Example Verified Buyer",
+          "role": "Travel Procurement",
+          "employer": "Example Corp",
+          "email": null,
+          "sourceUrl": "https://example.com/team",
+          "relevance": null
+        },
+        "paidEnrichment": {
+          "surfe": false,
+          "findymail": false,
+          "pdl": false,
+          "fullenrich": false
+        }
+      },
+      "carphaCase": null,
+      "advantageCase": {
+        "beforeHadBoth": true,
+        "afterCanonicalOnly": true,
+        "suppressedPeer": {
+          "clusterKey": "advantage travel|2027|advantage travel partnership 2027",
+          "canonicalId": "disc_9cd2c082c05d",
+          "suppressedIds": [
+            "disc_5f2e1fb36e8b",
+            "disc_51073448c775"
+          ],
+          "segmentAssociations": [
+            "corporate_meetings_incentives",
+            "associations_conferences_events",
+            "social_special_events"
+          ],
+          "reason": "CROSS_SEGMENT_SAME_PROGRAM"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "totalDuplicatesRemoved": 26,
+    "carphaDeduped": true,
+    "advantageDeduped": true,
+    "salesReadyCount": 0,
+    "configValidationOk": true
+  }
+}
