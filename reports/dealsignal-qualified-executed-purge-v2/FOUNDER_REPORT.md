@@ -51,10 +51,11 @@ Historical disposition forces MONITOR priority, historical narrative (no “upco
 
 ## J–K. Tests / browser
 
-- `npm run test:dealsignal-qualified-commercial-eligibility-v1`  
-- `npm run test:deal-opportunities-reader`  
-- `npm run test:deal-opportunities-drawer-v2`  
-- Live reader smoke + browser verification recorded in PR completion notes.
+- `npm run test:dealsignal-qualified-commercial-eligibility-v1` — PASS  
+- `npm run test:deal-opportunities-reader` — PASS  
+- `npm run test:deal-opportunities-drawer-v2` — PASS  
+- Live Airtable reader smoke (`scripts/dealsignal-qualified-purge-live-smoke.mjs`) — **PASS: Qualified 45 → 13**; all founder defect IDs on watch with Historical status + MONITOR drawer; sources preserved (`LIVE_READER_SMOKE.json`).  
+- Browser page: worktree server start requires `DEALALITY_ALLOW_WORKTREE_SERVER=1` + authenticated Memberstack session; UI uses the same `/api/deal-opportunities` reader path exercised by live smoke. Authenticated UI re-check recommended after merge on primary `:8080`.
 
 ## L. Defect regressions (must stay out of Qualified)
 
