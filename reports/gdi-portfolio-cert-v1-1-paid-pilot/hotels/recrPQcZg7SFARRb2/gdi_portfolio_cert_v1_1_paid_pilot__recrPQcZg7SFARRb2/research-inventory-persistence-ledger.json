@@ -1,0 +1,125 @@
+{
+  "version": "gdi-full-e2e-research-persistence-bridge-v1",
+  "at": "2026-11-23T11:00:15.890Z",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "runId": "gdi_portfolio_cert_v1_1_paid_pilot__recrPQcZg7SFARRb2",
+  "destinationTable": "GDI Hotel Research Opportunities",
+  "destinationTableId": "tblbkDj0vhQLfrssV",
+  "dryRun": true,
+  "simulationStore": false,
+  "authorization": {
+    "applyRequested": false,
+    "authorizeResearchPersistence": false,
+    "exactWriteSetAuthorization": null,
+    "envUnlocked": false,
+    "authorizePaidResearch": true,
+    "productionUnlocked": false,
+    "blockers": [
+      {
+        "code": "AUTHORIZE_RESEARCH_PERSISTENCE_REQUIRED"
+      },
+      {
+        "code": "EXACT_WRITE_SET_AUTHORIZATION_REQUIRED"
+      },
+      {
+        "code": "ENV_PRODUCTION_GATE_OFF",
+        "env": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES"
+      }
+    ],
+    "note": "Paid research authorization does not unlock Airtable research persistence.",
+    "activation": {
+      "disabledByDefault": true,
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "requiresExactWriteSetAuthorization": true,
+      "separateFromGdoWrites": true,
+      "separateFromPublication": true,
+      "separateFromPaidResearchAuth": true
+    }
+  },
+  "researchCompletedIndependently": true,
+  "gdoWrites": 0,
+  "publicationWrites": 0,
+  "airtableProductionGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  },
+  "counts": {
+    "candidatesBeforeDedupe": 4,
+    "candidates": 4,
+    "DUPLICATES_RESOLVED": 0,
+    "WOULD_CREATE": 0,
+    "WOULD_UPDATE": 0,
+    "UNCHANGED": 0,
+    "CREATED": 0,
+    "UPDATED": 0,
+    "FAILED": 4,
+    "SKIPPED_FORBIDDEN": 0,
+    "SKIPPED_BUDGET": 0
+  },
+  "duplicatesResolved": [],
+  "rows": [
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "opportunityId": "disc_cd8f10005345",
+      "action": "FAILED",
+      "code": "UPSERT_THREW",
+      "error": "gdi_hotel_research_airtable_not_configured",
+      "outcome": "FAILED",
+      "recoverable": true
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "opportunityId": "disc_b7fc48bf6995",
+      "action": "FAILED",
+      "code": "UPSERT_THREW",
+      "error": "gdi_hotel_research_airtable_not_configured",
+      "outcome": "FAILED",
+      "recoverable": true
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "opportunityId": "disc_a1a0378bf466",
+      "action": "FAILED",
+      "code": "UPSERT_THREW",
+      "error": "gdi_hotel_research_airtable_not_configured",
+      "outcome": "FAILED",
+      "recoverable": true
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "opportunityId": "disc_77bac9a0d82a",
+      "action": "FAILED",
+      "code": "UPSERT_THREW",
+      "error": "gdi_hotel_research_airtable_not_configured",
+      "outcome": "FAILED",
+      "recoverable": true
+    }
+  ],
+  "readBack": [],
+  "ok": false,
+  "writesUsed": 0,
+  "writeBudget": null,
+  "executionSummary": {
+    "opportunitiesResearched": 4,
+    "uniqueCandidates": 4,
+    "newResearchOpportunities": 0,
+    "materiallyUpdatedOpportunities": 0,
+    "unchangedOpportunities": 0,
+    "duplicatesResolved": 0,
+    "exploratoryResearchOnly": 0,
+    "airtable": {
+      "CREATE": 0,
+      "UPDATE": 0,
+      "UNCHANGED": 0,
+      "WOULD_CREATE": 0,
+      "WOULD_UPDATE": 0,
+      "FAILED": 4
+    },
+    "failedWrites": 4,
+    "verifiedReadBacks": 0,
+    "dryRun": true,
+    "gdoWrites": 0,
+    "publicationWrites": 0
+  }
+}

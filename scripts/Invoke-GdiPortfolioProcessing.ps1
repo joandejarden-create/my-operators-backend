@@ -70,16 +70,21 @@ param(
 
   [string]$HotelsFile = '',
 
-  [ValidateSet('Preview', 'FullE2E', 'Rehearsal', 'Resume', 'AuditOnly')]
+  [ValidateSet('Preview', 'FullE2E', 'Rehearsal', 'Resume', 'AuditOnly', 'PaidPilotPreflight', 'PaidPilotExecute', 'PaidPilotReplay')]
   [string]$Mode = 'Rehearsal',
 
   [ValidateRange(0, 5000)]
   [decimal]$BudgetUSD = 0,
 
+  [ValidateRange(0, 100)]
+  [decimal]$PerHotelBudgetUSD = 0,
+
   [switch]$AuthorizePaidResearch,
   [switch]$AuthorizePublication,
   [switch]$AuthorizeProductionWrites,
   [switch]$AllowLivePilot,
+
+  [string]$FounderSpendConfirmation = '',
 
   [string]$ReportPath = '',
 
@@ -115,6 +120,26 @@ if (
 if ($Mode -eq 'Rehearsal' -and ($AuthorizePaidResearch -or $AuthorizePublication -or $BudgetUSD -gt 0)) {
   Write-FailClosed 'Rehearsal mode refuses paid research and publication. Use Mode FullE2E with -AllowLivePilot only after founder GO.'
 }
+if ($Mode -eq 'PaidPilotExecute') {
+  if (-not $AllowLivePilot) {
+    Write-FailClosed 'PaidPilotExecute requires -AllowLivePilot.'
+  }
+  if (-not $AuthorizePaidResearch) {
+    Write-FailClosed 'PaidPilotExecute requires -AuthorizePaidResearch.'
+  }
+  if ($BudgetUSD -le 0 -or $BudgetUSD -gt 25) {
+    Write-FailClosed 'PaidPilotExecute requires -BudgetUSD in (0, 25].'
+  }
+  if ($PerHotelBudgetUSD -le 0 -or $PerHotelBudgetUSD -gt 12.5) {
+    Write-FailClosed 'PaidPilotExecute requires -PerHotelBudgetUSD in (0, 12.5].'
+  }
+  if ($FounderSpendConfirmation -ne 'FOUNDER_GDI_PORTFOLIO_CERT_V1_1_PAID_25') {
+    Write-FailClosed 'PaidPilotExecute requires -FounderSpendConfirmation FOUNDER_GDI_PORTFOLIO_CERT_V1_1_PAID_25.'
+  }
+  if ($AuthorizePublication -or $AuthorizeProductionWrites) {
+    Write-FailClosed 'Paid pilot refuses publication and production writes.'
+  }
+}
 
 if (-not $RepoPath) {
   $RepoPath = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -124,9 +149,14 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   Write-FailClosed 'Node.js is not on PATH.'
 }
 
-$runner = Join-Path $resolvedRepo 'scripts\gdi-portfolio-processing-certification-v1.mjs'
+$isPaidPilotMode = ($Mode -eq 'PaidPilotPreflight' -or $Mode -eq 'PaidPilotExecute' -or $Mode -eq 'PaidPilotReplay')
+$runner = if ($isPaidPilotMode) {
+  Join-Path $resolvedRepo 'scripts\gdi-portfolio-cert-v1-1-paid-pilot.mjs'
+} else {
+  Join-Path $resolvedRepo 'scripts\gdi-portfolio-processing-certification-v1.mjs'
+}
 if (-not (Test-Path -LiteralPath $runner)) {
-  Write-FailClosed "Missing portfolio certification runner: $runner"
+  Write-FailClosed "Missing portfolio runner: $runner"
 }
 
 $modeArg = switch ($Mode) {
@@ -135,6 +165,9 @@ $modeArg = switch ($Mode) {
   'Preview' { 'preview' }
   'Resume' { 'resume' }
   'Rehearsal' { 'rehearsal' }
+  'PaidPilotPreflight' { 'preflight' }
+  'PaidPilotExecute' { 'execute-paid' }
+  'PaidPilotReplay' { 'replay' }
   default { $Mode.ToLowerInvariant() }
 }
 
@@ -142,30 +175,36 @@ $nodeArgs = @(
   $runner,
   '--mode', $modeArg
 )
+if ($Mode -eq 'PaidPilotExecute') {
+  $nodeArgs += @('--confirm-founder-spend-go', $FounderSpendConfirmation)
+  $env:GDI_EXA_AGENT_LIVE = '1'
+}
 
-$hotelList = New-Object System.Collections.Generic.List[string]
-if ($HotelId) { [void]$hotelList.Add($HotelId.Trim()) }
-if ($Hotels) {
-  foreach ($part in ($Hotels -split '[,;\s]+')) {
-    if ($part.Trim()) { [void]$hotelList.Add($part.Trim()) }
+if (-not $isPaidPilotMode) {
+  $hotelList = New-Object System.Collections.Generic.List[string]
+  if ($HotelId) { [void]$hotelList.Add($HotelId.Trim()) }
+  if ($Hotels) {
+    foreach ($part in ($Hotels -split '[,;\s]+')) {
+      if ($part.Trim()) { [void]$hotelList.Add($part.Trim()) }
+    }
   }
-}
-if ($HotelsFile) {
-  $nodeArgs += @('--hotels-file', $HotelsFile)
-}
-elseif ($hotelList.Count -gt 0) {
-  $nodeArgs += @('--hotels', ($hotelList -join ','))
+  if ($HotelsFile) {
+    $nodeArgs += @('--hotels-file', $HotelsFile)
+  }
+  elseif ($hotelList.Count -gt 0) {
+    $nodeArgs += @('--hotels', ($hotelList -join ','))
+  }
 }
 
 if ($ReportPath) { $nodeArgs += @('--out', $ReportPath) }
 if ($PortfolioRunId) { $nodeArgs += @('--portfolio-run-id', $PortfolioRunId) }
-if ($Mode -eq 'Resume' -or $ResumeState) {
+if (-not $isPaidPilotMode -and ($Mode -eq 'Resume' -or $ResumeState)) {
   $nodeArgs += '--resume'
   if ($ResumeState) { $nodeArgs += @('--state', $ResumeState) }
 }
 if ($MaxCandidates) { $nodeArgs += @('--max-candidates', [string]$MaxCandidates) }
 
-if ($AllowLivePilot) {
+if (-not $isPaidPilotMode -and $AllowLivePilot) {
   $nodeArgs += '--allow-live-pilot'
   if ($AuthorizePaidResearch) { $nodeArgs += '--authorize-paid-research' }
   if ($AuthorizePublication) { $nodeArgs += '--authorize-publication' }
