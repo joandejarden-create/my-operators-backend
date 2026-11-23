@@ -5,6 +5,7 @@
 **Baseline:** Design Hotels Commercial Certification V1 (PR #574)  
 **Worktree:** `C:\Users\joand\AppData\Local\Temp\dealality-gdi-repeatable-processing-v2-20261123`  
 **Branch:** `feat/gdi-repeatable-processing-v2`  
+**PR:** [#576](https://github.com/joandejarden-create/my-operators-backend/pull/576) — **OPEN**  
 **Paid spend this task:** **$0**  
 **Airtable writes:** none  
 **Customer publication:** none  
