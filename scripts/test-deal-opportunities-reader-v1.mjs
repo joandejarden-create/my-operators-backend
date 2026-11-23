@@ -30,7 +30,7 @@ const serverSrc = fs.readFileSync(serverPath, "utf8");
 assert.match(readerSrc, /CUSTOMER_BLOCKED/);
 assert.match(apiSrc, /CUSTOMER_BLOCKED/);
 assert.match(readerSrc, /publicationState:\s*"CUSTOMER_BLOCKED"/);
-assert.doesNotMatch(readerSrc, /buildDrawerV2|drawer-v2/);
+assert.match(readerSrc, /buildDrawerV2|drawerV2/);
 assert.doesNotMatch(readerSrc, /surfe/i);
 assert.match(readerSrc, /PRINCIPAL_OPEN_SIGNAL/);
 assert.match(readerSrc, /PORTFOLIO_CHILD_NOT_COUNTED/);
