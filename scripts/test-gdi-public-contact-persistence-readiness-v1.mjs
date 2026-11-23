@@ -97,4 +97,41 @@ check("persist hook no-ops without founder authorization", async () => {
   assert.ok(out.reason);
 });
 
+check("hypothetical readiness can exclude LIVE_WRITES_DISABLED only", () => {
+  const r = assessPublicContactPersistenceReadiness({
+    opportunity: {
+      id: "opp-4",
+      organizationName: "Lopez Events",
+      contactDataOrigin: "PUBLIC_SOURCE",
+      primaryContact: {
+        name: "Maria Lopez",
+        role: "Director of Housing",
+        title: "Director of Housing",
+        email: "maria@lopez-events.example",
+        sourceUrl: "https://lopez-events.example/team",
+        channelSourceUrl: "https://lopez-events.example/team",
+      },
+    },
+    verification: {
+      hasVerifiedDirectEmail: true,
+      hasVerifiedDirectPhone: false,
+      hasVerifiedOrgEmailRoute: false,
+      hasVerifiedOrgPhoneRoute: false,
+      overallStatus: PUBLIC_CONTACT_VERIFICATION_STATUS.VERIFIED_DIRECT,
+      email: {
+        status: PUBLIC_CONTACT_VERIFICATION_STATUS.VERIFIED_DIRECT,
+        sourceUrl: "https://lopez-events.example/team",
+        origin: "PUBLIC_SOURCE",
+        channelKind: "DIRECT_WORK_EMAIL",
+      },
+      phone: { status: PUBLIC_CONTACT_VERIFICATION_STATUS.NOT_FOUND },
+    },
+    excludeLiveWritesDisabledBlock: true,
+  });
+  assert.equal(r.execute, false);
+  assert.equal(r.gatePassed, true);
+  assert.equal(r.hypotheticalGatePassedExcludingLiveWrite, true);
+  assert.ok(!r.blocks.includes(PERSISTENCE_BLOCK_REASONS.LIVE_WRITES_DISABLED));
+});
+
 console.log(`\n${passed} checks passed`);

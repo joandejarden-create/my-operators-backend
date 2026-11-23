@@ -1,0 +1,4716 @@
+{
+  "summary": {
+    "schema": "gdi-contact-intelligence-v2-1-stage2-reeval-v1",
+    "evaluatedAt": "2026-11-23T08:50:18.870Z",
+    "publicationState": "CUSTOMER_BLOCKED",
+    "freezePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-contact-intel-v2-1-20261123\\reports\\gdi-contact-intelligence-v2-stage2-eval\\STAGE2_COHORT_FREEZE.json",
+    "freezeDistinctPeople": 80,
+    "cohortSize": 80,
+    "costUsd": 0,
+    "paidProvidersAttempted": {
+      "surfe": false,
+      "findymail": false,
+      "pdl": false,
+      "prospeo": false,
+      "fullenrich": false,
+      "paidPublicSearch": false
+    },
+    "baselineV2": {
+      "verifiedDirectEmail": 33,
+      "verifiedDirectPhone": 31,
+      "verifiedOrgEmail": 4,
+      "verifiedOrgPhone": 0,
+      "unresolvedContacts": 35,
+      "reusedContacts": 0,
+      "searchAttemptsPages": 112
+    },
+    "before": {
+      "verifiedDirectEmail": 31,
+      "verifiedDirectPhone": 24,
+      "verifiedOrgEmail": 4,
+      "verifiedOrgPhone": 0
+    },
+    "after": {
+      "verifiedDirectEmail": 33,
+      "verifiedDirectPhone": 32,
+      "verifiedOrgEmail": 4,
+      "verifiedOrgPhone": 0
+    },
+    "incrementalVerified": {
+      "directEmail": 2,
+      "directPhone": 8,
+      "orgEmailRoute": 0,
+      "orgPhoneRoute": 0
+    },
+    "wrongPersonOrEmployerRejections": 11,
+    "unresolvedContacts": 34,
+    "reusedContacts": 9,
+    "avoidedDuplicatePageFetches": 8,
+    "crossHotelReuseOpportunities": 22,
+    "searchAttemptsPages": 144,
+    "persistence": {
+      "actualGatePassed": 0,
+      "hypotheticalExcludingLiveWrite": 39,
+      "classification": "PERSISTENCE_DESIGNED",
+      "liveWrites": "DISABLED",
+      "hypotheticalBlockCounts": {
+        "NO_VERIFIED_PUBLIC_CHANNEL": 34,
+        "MISSING_SOURCE_EVIDENCE": 20,
+        "EMPLOYER_OR_ROLE_UNVERIFIED": 11
+      }
+    },
+    "unresolvedClassification": {
+      "byPrimary": {
+        "A_NAMED_PERSON_UNVERIFIED": 10,
+        "B_EMPLOYER_UNVERIFIED": 0,
+        "C_COMPANY_DOMAIN_UNCERTAIN": 0,
+        "D_DIRECT_WORK_EMAIL_MISSING": 9,
+        "E_DIRECT_BUSINESS_PHONE_MISSING": 0,
+        "F_EVIDENCE_FOUND_VERIFICATION_FAILED": 0,
+        "G_RESEARCH_EXHAUSTED": 12,
+        "H_RETRIEVAL_PARSING_MATCHING_DEFECT": 3
+      },
+      "byRecovery": {
+        "HIGH": 9,
+        "MEDIUM": 3,
+        "LOW": 12,
+        "NONE": 10
+      },
+      "prioritizedCount": 12
+    },
+    "metricsLedger": {
+      "version": "gdi-public-contact-research-metrics-v1",
+      "generatedAt": "2026-11-23T08:50:18.870Z",
+      "totals": {
+        "namedContactsResearched": 69,
+        "distinctPersonKeys": 69,
+        "verifiedDirectEmailFinds": 33,
+        "verifiedDirectPhoneFinds": 31,
+        "verifiedOrgEmailRoutes": 3,
+        "verifiedOrgPhoneRoutes": 0,
+        "notFoundEmail": 33,
+        "notFoundPhone": 38,
+        "candidateUnverified": 0,
+        "staleOrConflicted": 0,
+        "surfeEmailWouldBeRequired": 33,
+        "surfePhoneWouldBeRequired": 38,
+        "surfeLookupsAvoidedEmail": 33,
+        "surfeLookupsAvoidedPhone": 31,
+        "fullEnrichFallbackEligible": 0,
+        "crossHotelReuses": 0,
+        "paidPublicSearchRuns": 0,
+        "estimatedPaidSearchCostUsd": 0,
+        "researchMsTotal": 140104,
+        "persistBlocked": 69
+      },
+      "rates": {
+        "publicWorkEmailDiscoveryRate": 47.8,
+        "publicDirectPhoneDiscoveryRate": 44.9,
+        "pctRequiringSurfeEmail": 47.8,
+        "avgResearchMs": 2030
+      },
+      "privacy": {
+        "includesEmails": false,
+        "includesPhones": false,
+        "includesProviderPayloads": false
+      }
+    }
+  },
+  "rows": [
+    {
+      "personIdentityKey": "c95fb015798102a4",
+      "name": "Adam Grosswirth",
+      "organization": "National Alliance for Musical Theatre",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "44520a5824116477",
+      "name": "Josh Cacchione",
+      "organization": "The Broadway League",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "1935d6c044c3dfad",
+      "name": "Larry Schiffer",
+      "organization": "ARIAS U.S.",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "aaab5abbe6e12cef",
+      "name": "EMRG Media",
+      "organization": "EMRG Media",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "67fe74b04193ba08",
+      "name": "IAFL Secretary",
+      "organization": "International Academy of Family Lawyers",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "f8b1b9c88716d28f",
+      "name": "Ariela Kiradjian",
+      "organization": "Boutique & Luxury Lodging Association",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PARTIAL_PUBLIC_CHANNELS",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "7743dad54a4e0ff3",
+      "name": "Toni Vitale Chan",
+      "organization": "Futures Industry Association (FIA)",
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "b1966a971676fc89",
+      "name": "Randy Tedder",
+      "organization": "Palm Beach Juniors Volleyball",
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "3d846a91ea23d6f5",
+      "name": "Spain Shines",
+      "organization": "Interiors from Spain",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "d41823e45bedc4b9",
+      "name": "Booth Booth",
+      "organization": "Interested in Exhibiting",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": true
+    },
+    {
+      "personIdentityKey": "2a75a559221e03e5",
+      "name": "Aztron Medtech",
+      "organization": "Powered by A2Z Events",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": true
+    },
+    {
+      "personIdentityKey": "19ab677752b07c0e",
+      "name": "Boutique Design New",
+      "organization": "Onda, Castellon Spain http://www.gayafores.es",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": true
+    },
+    {
+      "personIdentityKey": "47c3ea909a25ea2c",
+      "name": "Michel Lafleur",
+      "organization": "Faculty of Sociology, University of A Coruña",
+      "hotelId": "rec2PVBDavppGpenm",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "44f5b064e0b57fa8",
+      "name": "Survey Software",
+      "organization": "Cvent Supplier Network",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": true
+    },
+    {
+      "personIdentityKey": "ad002a4bc7e276b8",
+      "name": "Boutique Design New",
+      "organization": "GBOC Korea Co., Ltd",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "6bbd6be9ed01df56",
+      "name": "Boutique Design New",
+      "organization": "Italian Trade Agency & Ceramics of Italy",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "1e37e83f4bcc8c14",
+      "name": "Booth Booth",
+      "organization": "Supporters & Sponsors",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": true
+    },
+    {
+      "personIdentityKey": "7a503fd772c1a933",
+      "name": "David Kolb",
+      "organization": "Clearwater",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "e6fb2198128184cd",
+      "name": "Booth Booth",
+      "organization": "Scan Exhibitors with Colleqt",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": true
+    },
+    {
+      "personIdentityKey": "464e5cde102ab615",
+      "name": "Johnson Matt Rossman",
+      "organization": "Buying Legal Council",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "5623cda832f35623",
+      "name": "Boutique Design New",
+      "organization": "Decor Singapore Pte Ltd / Aerahaus",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "NO_VERIFIED_NAMED_PERSON",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": true,
+      "personNameGate": false,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "cbc9dc9b8db21299",
+      "name": "David Mendoza Martínez",
+      "organization": "Secretaría de Desarrollo Económico de Jalisco; Secretaría de Turismo de Jalisco; Gobierno de Guadalajara; Gobierno de Zapopan",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "32ee80efd36380bb",
+      "name": "Ruth Guillermina Galván Calderón",
+      "organization": "Sociedad Mexicana de Nutrición y Endocrinología A.C.",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "880e2c22ae3703e2",
+      "name": "David Alberto Prado Arredondo",
+      "organization": "Consejo Municipal del Deporte de Guadalajara (COMUDE Guadalajara)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "fa8427aacb0a88a9",
+      "name": "Marcelo Natalini",
+      "organization": "Latam Business School",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "fed47a819446b9d7",
+      "name": "Alfonso Franco",
+      "organization": "Universidad de Guadalajara y Congreso del Estado de Jalisco",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "42aba43a698928d9",
+      "name": "Jorge Medina",
+      "organization": "Impulsora del Desarrollo y el Empleo en América Latina, S.A.B. de C.V. (IDEAL / Grupo IDEAL) in relation to Centro SICT Jalisco",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "a99e58574e0e185e",
+      "name": "Karla Zapata Espinoza",
+      "organization": "Teatro Diana / Centro Cultural Diana (Universidad de Guadalajara)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "49fd8934f14e360b",
+      "name": "Ricardo Garcia Mira",
+      "organization": "IAPS Sustainability Network / UDC People-Environment Research Group",
+      "hotelId": "rec2PVBDavppGpenm",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "e7de2a1e3c4ae426",
+      "name": "Colonial Dames",
+      "organization": "Colonial Dames of America",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "bb508fd8fd2aa250",
+      "name": "Nadine Thompson",
+      "organization": "Kansas City",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "335408a92b395d2b",
+      "name": "Enquire Beyond",
+      "organization": "FIFA",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ccb75fc8cf116b96",
+      "name": "Nadine Thompson",
+      "organization": "Exhibitor Success Webinar Series",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "72a3360f52cec797",
+      "name": "Climate Monitoring",
+      "organization": "Various Corporations",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "45482b91e892c919",
+      "name": "Diego Calvanese Free",
+      "organization": "International Joint Conferences on Artificial Intelligence",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "18a356b780ec555c",
+      "name": "Nadine Thompson",
+      "organization": "Exhibitor Application",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "b55852d7f55d0aa6",
+      "name": "Brandom Maga",
+      "organization": "Italian German Exhibition Company Mexico (IGEC)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "43d351b32f7aedd4",
+      "name": "Alejandra Vázquez",
+      "organization": "IGECO (Italian German Exhibition Company)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "933b94ee480defc4",
+      "name": "Mary Cunningham",
+      "organization": "Canadian Association for Medical Education (CAME)",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ab57ad7eeecd043d",
+      "name": "Christina Yeh",
+      "organization": "OBIO",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PARTIAL_PUBLIC_CHANNELS",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "97e2398252720641",
+      "name": "Edmun Natkunarajah",
+      "organization": "Association of Canadian College and University Ombudspersons",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_ORGANIZATION_ROUTE",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": true,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PARTIAL_PUBLIC_CHANNELS",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "7b09d131bd352ec3",
+      "name": "Sasha Basiri",
+      "organization": "Ontario Veterinary Medical Association",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "7ecf861d8f737e75",
+      "name": "Adam Jordan",
+      "organization": "InsuranceERM",
+      "hotelId": "recIwaP1etgx2g9nA",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "8608e44c0c6d2be9",
+      "name": "Brad Roos",
+      "organization": "Maryland State Youth Soccer Association (MSYSA)",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "30c8be100609c135",
+      "name": "Dedra Benjamin",
+      "organization": "Urgent Care Association",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ac59ff5f3b217b8f",
+      "name": "Mary Kate Connor",
+      "organization": "Aledade",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ec85936bb503915d",
+      "name": "Dan Harris",
+      "organization": "IWLCA / Elite Tournaments - IWLCA Champions Cup",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "a3b8ac8ded2641c9",
+      "name": "Heather Guay Yoo",
+      "organization": "LINDER Global Events",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "13b2a1cacae0f5d6",
+      "name": "Kady Chambers",
+      "organization": "Strathmore",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "a9eb27c82a67b822",
+      "name": "Melanie Goff",
+      "organization": "The Cordell",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "895afafe8ce42ebb",
+      "name": "Candelario Zapata",
+      "organization": "NIH IRP / Division of International Services",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "48593e5d8374fe3b",
+      "name": "Laura Marler",
+      "organization": "NIH Intramural Postdoctoral Fellowship / OITE",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "f25dab91066501c3",
+      "name": "Celeste Jáuregui",
+      "organization": "Colegio Mexicano de Inmunología Clínica y Alergia (CMICA)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "bf6ea14b339b1338",
+      "name": "Abraham Yasir Maciel Montoya",
+      "organization": "Gobierno de Guadalajara",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 1,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "fc98d09f48d3b91e",
+      "name": "Mark Christianson Figueroa",
+      "organization": "Asociación Mexicana de Hoteles y Moteles / Asociación de Hoteles de Jalisco",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 1,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "c0458d269dd2f2f9",
+      "name": "Abir Chermiti",
+      "organization": "IEEE World Technology Summits / IEEE",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 1,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "EMPLOYER_OR_ROLE_UNVERIFIED",
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "3d8cd7d9b7904d7f",
+      "name": "Gissella Palma",
+      "organization": "NürnbergMesse North America",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "515e5634d10718e1",
+      "name": "María José Gómez",
+      "organization": "Messe Berlin",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ee6e7c114d32b118",
+      "name": "Alan Benabib",
+      "organization": "HYROX Mexico",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "8ef508c0c8c34cb4",
+      "name": "Alberto Zetina",
+      "organization": "Amazon México",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "9f52a163da16178e",
+      "name": "Natasha Joyner",
+      "organization": "World Physiotherapy",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "522557a42e8a1593",
+      "name": "Eduardo Basulto Jiménez",
+      "organization": "HostDime",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "9a37880b18c063df",
+      "name": "Willinton Giraldo Bedoya",
+      "organization": "Tiendas Bara (FEMSA)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "d3d576936df198ab",
+      "name": "Megan Mauracher",
+      "organization": "Informa Canada",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelCount": 1,
+      "coverage": "weak",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "MISSING_SOURCE_EVIDENCE"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "808fc4e51b70ad71",
+      "name": "Valentina Corio",
+      "organization": "Banca Ifis",
+      "hotelId": "rece0or38cxo3Fymb",
+      "hotelCount": 1,
+      "coverage": "strong",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ffb84e5370269ba0",
+      "name": "Francesco Francavilla",
+      "organization": "Red Bull",
+      "hotelId": "rece0or38cxo3Fymb",
+      "hotelCount": 1,
+      "coverage": "strong",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 3,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "a5f4da265034ca97",
+      "name": "Katie Hollis",
+      "organization": "Society of Industrial and Office Realtors",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "46bb3a1d13c32ef7",
+      "name": "Jennifer Kearney",
+      "organization": "New York State School Boards Association",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "ec0b071bac6139db",
+      "name": "Michele Smith Koontz",
+      "organization": "Society for the Study of Social Problems",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": true,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "5878e33394b1b739",
+      "name": "Kathi Allmendinger",
+      "organization": "Maximice Events Group",
+      "hotelId": "rec82D9zpB8fede1I",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "NOT_FOUND",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_RESEARCH_INCOMPLETE",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 2,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL",
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": false,
+      "hypotheticalBlocks": [
+        "NO_VERIFIED_PUBLIC_CHANNEL"
+      ],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "891b6bea9d8e60a4",
+      "name": "Maritza Jeanette Medina García",
+      "organization": "Gobierno de Jalisco / Secretaría de Infraestructura y Obra Pública (SIOP)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "985dc6c0b0ecf936",
+      "name": "Genesis Jardinico",
+      "organization": "Forum on Education Abroad",
+      "hotelId": "recG66DQJKP2c0UNh",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "d87fa4ad6f03c5ab",
+      "name": "Chris Caravello",
+      "organization": "Bluewater Movements / Quest for the Crest Sailfish Series",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "1a8f89d5a14b0c4a",
+      "name": "Mark Baron",
+      "organization": "Delray Beach Open",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "7cb291c29a82f175",
+      "name": "Chris Caravello",
+      "organization": "Bluewater Movements",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "33b16859ead69fd9",
+      "name": "Oli Henry",
+      "organization": "Insurance Asset Risk",
+      "hotelId": "recIwaP1etgx2g9nA",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "NOT_FOUND",
+        "directEmail": true,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "PUBLIC_CHANNELS_VERIFIED",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 4,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "3c61e4682e7e3302",
+      "name": "Brittany Salazar",
+      "organization": "National Association of Development Organizations (NADO) / DDAA",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "3ab1938a676e73fe",
+      "name": "Sabrina Bracken",
+      "organization": "AHIMA",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "e8bc99edf9a2ae6e",
+      "name": "Karen Wetzel",
+      "organization": "NIST / National Initiative for Cybersecurity Education (NICE)",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    },
+    {
+      "personIdentityKey": "564160e764de02ac",
+      "name": "Kelly McMahon",
+      "organization": "American Medical Women's Association (AMWA)",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelCount": 1,
+      "coverage": "moderate",
+      "before": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "after": {
+        "emailStatus": "VERIFIED_DIRECT",
+        "phoneStatus": "VERIFIED_DIRECT",
+        "directEmail": true,
+        "directPhone": true,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "incremental": {
+        "directEmail": false,
+        "directPhone": false,
+        "orgEmail": false,
+        "orgPhone": false
+      },
+      "researchStatus": "REUSED_EXISTING",
+      "stoppingReason": null,
+      "crossHotelReuse": false,
+      "pagesFetched": 0,
+      "paidPublicSearchUsed": false,
+      "surfeAttempted": false,
+      "persistAttempted": false,
+      "persistenceBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "persistenceGatePassed": false,
+      "hypotheticalPersistOk": true,
+      "hypotheticalBlocks": [],
+      "identityRejection": false,
+      "personNameGate": true,
+      "weakEmployer": false
+    }
+  ],
+  "classification": {
+    "version": "gdi-contact-intelligence-v2-1-unresolved-classification-v1",
+    "uniquePeople": 34,
+    "byPrimary": {
+      "A_NAMED_PERSON_UNVERIFIED": 10,
+      "B_EMPLOYER_UNVERIFIED": 0,
+      "C_COMPANY_DOMAIN_UNCERTAIN": 0,
+      "D_DIRECT_WORK_EMAIL_MISSING": 9,
+      "E_DIRECT_BUSINESS_PHONE_MISSING": 0,
+      "F_EVIDENCE_FOUND_VERIFICATION_FAILED": 0,
+      "G_RESEARCH_EXHAUSTED": 12,
+      "H_RETRIEVAL_PARSING_MATCHING_DEFECT": 3
+    },
+    "byRecovery": {
+      "HIGH": 9,
+      "MEDIUM": 3,
+      "LOW": 12,
+      "NONE": 10
+    },
+    "prioritizedForFreeResearch": [
+      {
+        "personIdentityKey": "47c3ea909a25ea2c",
+        "name": "Michel Lafleur",
+        "organization": "Faculty of Sociology, University of A Coruña",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "464e5cde102ab615",
+        "name": "Johnson Matt Rossman",
+        "organization": "Buying Legal Council",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "cbc9dc9b8db21299",
+        "name": "David Mendoza Martínez",
+        "organization": "Secretaría de Desarrollo Económico de Jalisco; Secretaría de Turismo de Jalisco; Gobierno de Guadalajara; Gobierno de Zapopan",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING",
+          "C_COMPANY_DOMAIN_UNCERTAIN"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "32ee80efd36380bb",
+        "name": "Ruth Guillermina Galván Calderón",
+        "organization": "Sociedad Mexicana de Nutrición y Endocrinología A.C.",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "880e2c22ae3703e2",
+        "name": "David Alberto Prado Arredondo",
+        "organization": "Consejo Municipal del Deporte de Guadalajara (COMUDE Guadalajara)",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "fa8427aacb0a88a9",
+        "name": "Marcelo Natalini",
+        "organization": "Latam Business School",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "fed47a819446b9d7",
+        "name": "Alfonso Franco",
+        "organization": "Universidad de Guadalajara y Congreso del Estado de Jalisco",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "42aba43a698928d9",
+        "name": "Jorge Medina",
+        "organization": "Impulsora del Desarrollo y el Empleo en América Latina, S.A.B. de C.V. (IDEAL / Grupo IDEAL) in relation to Centro SICT Jalisco",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING",
+          "C_COMPANY_DOMAIN_UNCERTAIN"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "5878e33394b1b739",
+        "name": "Kathi Allmendinger",
+        "organization": "Maximice Events Group",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "bf6ea14b339b1338",
+        "name": "Abraham Yasir Maciel Montoya",
+        "organization": "Gobierno de Guadalajara",
+        "primary": "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+        "secondary": [
+          "C_COMPANY_DOMAIN_UNCERTAIN",
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "MEDIUM",
+        "notes": [
+          "Thin source coverage; likely seed-URL / matching gap."
+        ],
+        "pagesFetched": 1,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "fc98d09f48d3b91e",
+        "name": "Mark Christianson Figueroa",
+        "organization": "Asociación Mexicana de Hoteles y Moteles / Asociación de Hoteles de Jalisco",
+        "primary": "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+        "secondary": [
+          "C_COMPANY_DOMAIN_UNCERTAIN",
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "MEDIUM",
+        "notes": [
+          "Thin source coverage; likely seed-URL / matching gap."
+        ],
+        "pagesFetched": 1,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "c0458d269dd2f2f9",
+        "name": "Abir Chermiti",
+        "organization": "IEEE World Technology Summits / IEEE",
+        "primary": "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+        "secondary": [
+          "C_COMPANY_DOMAIN_UNCERTAIN",
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "MEDIUM",
+        "notes": [
+          "Thin source coverage; likely seed-URL / matching gap."
+        ],
+        "pagesFetched": 1,
+        "hotelCount": 1
+      }
+    ],
+    "classifications": [
+      {
+        "personIdentityKey": "b1966a971676fc89",
+        "name": "Randy Tedder",
+        "organization": "Palm Beach Juniors Volleyball",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "3d846a91ea23d6f5",
+        "name": "Spain Shines",
+        "organization": "Interiors from Spain",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "d41823e45bedc4b9",
+        "name": "Booth Booth",
+        "organization": "Interested in Exhibiting",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "2a75a559221e03e5",
+        "name": "Aztron Medtech",
+        "organization": "Powered by A2Z Events",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+          "C_COMPANY_DOMAIN_UNCERTAIN"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "19ab677752b07c0e",
+        "name": "Boutique Design New",
+        "organization": "Onda, Castellon Spain http://www.gayafores.es",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+          "C_COMPANY_DOMAIN_UNCERTAIN"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "47c3ea909a25ea2c",
+        "name": "Michel Lafleur",
+        "organization": "Faculty of Sociology, University of A Coruña",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "44f5b064e0b57fa8",
+        "name": "Survey Software",
+        "organization": "Cvent Supplier Network",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "ad002a4bc7e276b8",
+        "name": "Boutique Design New",
+        "organization": "GBOC Korea Co., Ltd",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "6bbd6be9ed01df56",
+        "name": "Boutique Design New",
+        "organization": "Italian Trade Agency & Ceramics of Italy",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "1e37e83f4bcc8c14",
+        "name": "Booth Booth",
+        "organization": "Supporters & Sponsors",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "7a503fd772c1a933",
+        "name": "David Kolb",
+        "organization": "Clearwater",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "e6fb2198128184cd",
+        "name": "Booth Booth",
+        "organization": "Scan Exhibitors with Colleqt",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "464e5cde102ab615",
+        "name": "Johnson Matt Rossman",
+        "organization": "Buying Legal Council",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "5623cda832f35623",
+        "name": "Boutique Design New",
+        "organization": "Decor Singapore Pte Ltd / Aerahaus",
+        "primary": "A_NAMED_PERSON_UNVERIFIED",
+        "secondary": [
+          "H_RETRIEVAL_PARSING_MATCHING_DEFECT"
+        ],
+        "recoveryPotential": "NONE",
+        "notes": [
+          "Name fails person-identity gate (org/UI placeholder likely)."
+        ],
+        "pagesFetched": 0,
+        "hotelCount": 2
+      },
+      {
+        "personIdentityKey": "cbc9dc9b8db21299",
+        "name": "David Mendoza Martínez",
+        "organization": "Secretaría de Desarrollo Económico de Jalisco; Secretaría de Turismo de Jalisco; Gobierno de Guadalajara; Gobierno de Zapopan",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING",
+          "C_COMPANY_DOMAIN_UNCERTAIN"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "32ee80efd36380bb",
+        "name": "Ruth Guillermina Galván Calderón",
+        "organization": "Sociedad Mexicana de Nutrición y Endocrinología A.C.",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "880e2c22ae3703e2",
+        "name": "David Alberto Prado Arredondo",
+        "organization": "Consejo Municipal del Deporte de Guadalajara (COMUDE Guadalajara)",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "fa8427aacb0a88a9",
+        "name": "Marcelo Natalini",
+        "organization": "Latam Business School",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "fed47a819446b9d7",
+        "name": "Alfonso Franco",
+        "organization": "Universidad de Guadalajara y Congreso del Estado de Jalisco",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "42aba43a698928d9",
+        "name": "Jorge Medina",
+        "organization": "Impulsora del Desarrollo y el Empleo en América Latina, S.A.B. de C.V. (IDEAL / Grupo IDEAL) in relation to Centro SICT Jalisco",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING",
+          "C_COMPANY_DOMAIN_UNCERTAIN"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "f25dab91066501c3",
+        "name": "Celeste Jáuregui",
+        "organization": "Colegio Mexicano de Inmunología Clínica y Alergia (CMICA)",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "bf6ea14b339b1338",
+        "name": "Abraham Yasir Maciel Montoya",
+        "organization": "Gobierno de Guadalajara",
+        "primary": "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+        "secondary": [
+          "C_COMPANY_DOMAIN_UNCERTAIN",
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "MEDIUM",
+        "notes": [
+          "Thin source coverage; likely seed-URL / matching gap."
+        ],
+        "pagesFetched": 1,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "fc98d09f48d3b91e",
+        "name": "Mark Christianson Figueroa",
+        "organization": "Asociación Mexicana de Hoteles y Moteles / Asociación de Hoteles de Jalisco",
+        "primary": "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+        "secondary": [
+          "C_COMPANY_DOMAIN_UNCERTAIN",
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "MEDIUM",
+        "notes": [
+          "Thin source coverage; likely seed-URL / matching gap."
+        ],
+        "pagesFetched": 1,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "c0458d269dd2f2f9",
+        "name": "Abir Chermiti",
+        "organization": "IEEE World Technology Summits / IEEE",
+        "primary": "H_RETRIEVAL_PARSING_MATCHING_DEFECT",
+        "secondary": [
+          "C_COMPANY_DOMAIN_UNCERTAIN",
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "MEDIUM",
+        "notes": [
+          "Thin source coverage; likely seed-URL / matching gap."
+        ],
+        "pagesFetched": 1,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "3d8cd7d9b7904d7f",
+        "name": "Gissella Palma",
+        "organization": "NürnbergMesse North America",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "515e5634d10718e1",
+        "name": "María José Gómez",
+        "organization": "Messe Berlin",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "ee6e7c114d32b118",
+        "name": "Alan Benabib",
+        "organization": "HYROX Mexico",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "8ef508c0c8c34cb4",
+        "name": "Alberto Zetina",
+        "organization": "Amazon México",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "9f52a163da16178e",
+        "name": "Natasha Joyner",
+        "organization": "World Physiotherapy",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "9a37880b18c063df",
+        "name": "Willinton Giraldo Bedoya",
+        "organization": "Tiendas Bara (FEMSA)",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "d3d576936df198ab",
+        "name": "Megan Mauracher",
+        "organization": "Informa Canada",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 4,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "808fc4e51b70ad71",
+        "name": "Valentina Corio",
+        "organization": "Banca Ifis",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 3,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "ffb84e5370269ba0",
+        "name": "Francesco Francavilla",
+        "organization": "Red Bull",
+        "primary": "G_RESEARCH_EXHAUSTED",
+        "secondary": [
+          "D_DIRECT_WORK_EMAIL_MISSING",
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "LOW",
+        "notes": [
+          "Budgeted free page fetches exhausted without verified channels."
+        ],
+        "pagesFetched": 3,
+        "hotelCount": 1
+      },
+      {
+        "personIdentityKey": "5878e33394b1b739",
+        "name": "Kathi Allmendinger",
+        "organization": "Maximice Events Group",
+        "primary": "D_DIRECT_WORK_EMAIL_MISSING",
+        "secondary": [
+          "E_DIRECT_BUSINESS_PHONE_MISSING"
+        ],
+        "recoveryPotential": "HIGH",
+        "notes": [
+          "Person + employer appear identity-viable; public channels not recovered."
+        ],
+        "pagesFetched": 2,
+        "hotelCount": 1
+      }
+    ]
+  }
+}
