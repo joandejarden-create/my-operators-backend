@@ -120,6 +120,7 @@ For meaningful product, platform, data, or AI-output work, read the relevant doc
 
 ## Common mistakes (append when you fix one)
 
+- Counting completed/committed/renewed/retained/awarded hotel deals as open **Qualified** Opportunities (e.g. AC Cartagena reflag, GHL–Sonesta MFA to 2034, appointed operators) — preserve as Historical/Committed/Retained; Qualified only when BCT/MCT exists, remains unresolved, and a credible competitive pathway is evidenced. Gate: `lib/hotel-intelligence/dealsignal/dealsignal-qualified-opportunity-classification-v1.js` · `npm run test:dealsignal-qualified-opportunity-classification-v1` · rule `.cursor/rules/dealsignal-qualified-opportunity-classification.mdc`.
 - Putting Dealality infrastructure in customer dossiers (Census, Airtable, Webhound, Research Center, fixtures, auto_promote, ontology codes) — reports are external-facing; see `docs/data-intelligence/hotel-intelligence-external-facing-report-copy.md`.
 - Treating STR Market/Submarket as product geography — use Dealality Market + corridor Submarket instead.
 - Explaining census gaps as "STR-sourced" or leaving `a Member of Design Hotels` in census `name` — use Affiliation + canonical property names.
