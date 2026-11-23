@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "contract": "gdi-portfolio-cert-v1-1-paid-pilot",
+  "aggregateCeilingUsd": 25,
+  "sumPerHotelCaps": 25,
+  "aggregateSpentUsd": 0,
+  "aggregateRemainingUsd": 25,
+  "quote": {
+    "bounded": true,
+    "maxUsd": 0.1,
+    "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+    "sources": [
+      "https://exa.ai/docs/reference/agent-api-guide",
+      "https://exa.ai/docs/admin/pricing"
+    ],
+    "asOf": "2026-10-24"
+  },
+  "hotelLedgers": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "authorizationId": "FOUNDER_GDI_PORTFOLIO_CERT_V1_1_BETHESDA_12_50",
+      "durablePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-portfolio-cert-v1-20261123-111805\\data\\group-demand-intelligence\\paid-budget-ledgers\\FOUNDER_GDI_PORTFOLIO_CERT_V1_1_BETHESDA_12_50.json",
+      "hardCeilingUsd": 12.5,
+      "spentUsd": 0,
+      "remainingUsd": 12.5,
+      "canAffordOneMediumCall": true,
+      "affordReason": null,
+      "ledgerVersion": "gdi-authorized-paid-budget-ledger-v1"
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "authorizationId": "FOUNDER_GDI_PORTFOLIO_CERT_V1_1_YOTEL_12_50",
+      "durablePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-portfolio-cert-v1-20261123-111805\\data\\group-demand-intelligence\\paid-budget-ledgers\\FOUNDER_GDI_PORTFOLIO_CERT_V1_1_YOTEL_12_50.json",
+      "hardCeilingUsd": 12.5,
+      "spentUsd": 0,
+      "remainingUsd": 12.5,
+      "canAffordOneMediumCall": true,
+      "affordReason": null,
+      "ledgerVersion": "gdi-authorized-paid-budget-ledger-v1"
+    }
+  ],
+  "errors": [],
+  "concurrency": "SEQUENTIAL_ONLY",
+  "retrySafe": "Durable per-hotel ledgers resume spentUsd; retries cannot reset ceiling",
+  "publicationAuthorized": false,
+  "airtableApplyAuthorized": false,
+  "surfeAuthorized": false
+}
