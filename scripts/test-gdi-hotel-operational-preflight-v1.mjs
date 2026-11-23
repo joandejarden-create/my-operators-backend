@@ -10,6 +10,7 @@ import {
 import {
   DESIGN_HOTELS_PILOT_COHORT_V1,
   MEMMO_PRINCIPE_REAL_TARGET_V1_1,
+  ANTIGUA_REMOVED_FROM_COHORT_ONLY,
 } from "./gdi-design-hotels-operational-pilot-v1.mjs";
 import { listFourteenWorkflowSegmentIds } from "../lib/group-demand-intelligence/research/universal-contact-research-contract-v1.js";
 
@@ -35,15 +36,23 @@ check("fourteen_segments_universe", () => {
 });
 
 check("meeting_facilities_not_required", () => {
-  const pf = runHotelOperationalPreflight("recGL1epYhEle5SDM");
+  const pf = runHotelOperationalPreflight("rec1t35e3sPerzxYu");
   assert.equal(pf.checks.roomsAndMeetingSpace.meetingFacilitiesRequired, false);
   assert.equal(pf.readyForDryRun, true);
   assert.equal(pf.processingClass, HOTEL_PROCESSING_CLASS.NEW_HOTEL);
+  assert.equal(pf.hotel.roomsCount, 41);
+  assert.equal(pf.hotel.marshaCode, "LISDM");
 });
 
 check("design_hotels_cohort_preflight", () => {
   const ids = DESIGN_HOTELS_PILOT_COHORT_V1.map((h) => h.hpcId);
   assert.ok(ids.every(Boolean), "runnable cohort must use verified HPC IDs only");
+  assert.deepEqual(ids, [
+    "rece0NdV9FCnaFlVS",
+    "recaokE8psIbuVeuH",
+    "rec1t35e3sPerzxYu",
+  ]);
+  assert.ok(!ids.includes("recGL1epYhEle5SDM"), "Antigua must not be in runnable cohort");
   const batch = runHotelOperationalPreflightBatch(ids);
   assert.equal(batch.count, 3);
   assert.equal(batch.readyCount, 3);
@@ -55,7 +64,7 @@ check("design_hotels_cohort_preflight", () => {
     DEMAND_MIX_POSTURE.LEISURE_DESTINATION
   );
   assert.equal(
-    byId.recGL1epYhEle5SDM.demandMixPosture,
+    byId.rec1t35e3sPerzxYu.demandMixPosture,
     DEMAND_MIX_POSTURE.BOUTIQUE_LIMITED_MEETINGS
   );
   for (const r of batch.results) {
@@ -66,14 +75,16 @@ check("design_hotels_cohort_preflight", () => {
   }
 });
 
-check("memmo_europe_target_has_no_invented_hpc", () => {
-  assert.equal(MEMMO_PRINCIPE_REAL_TARGET_V1_1.hpcId, null);
+check("memmo_europe_hpc_verified_enrolled", () => {
+  assert.equal(MEMMO_PRINCIPE_REAL_TARGET_V1_1.hpcId, "rec1t35e3sPerzxYu");
   assert.equal(MEMMO_PRINCIPE_REAL_TARGET_V1_1.marriottMarsha, "LISDM");
-  assert.equal(MEMMO_PRINCIPE_REAL_TARGET_V1_1.status, "BLOCKED_PENDING_VERIFIED_HPC_ID");
+  assert.equal(MEMMO_PRINCIPE_REAL_TARGET_V1_1.status, "HPC_VERIFIED_ENROLLED");
   assert.equal(
     DESIGN_HOTELS_PILOT_COHORT_V1[2].cohortRole,
-    "HOTEL_3_INTERIM_PENDING_MEMMO_HPC"
+    "HOTEL_3_EUROPE_VERIFIED"
   );
+  assert.equal(ANTIGUA_REMOVED_FROM_COHORT_ONLY.hpcRecordDeleted, false);
+  assert.equal(ANTIGUA_REMOVED_FROM_COHORT_ONLY.hpcId, "recGL1epYhEle5SDM");
 });
 
 check("invalid_hotel_incomplete", () => {

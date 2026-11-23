@@ -6,7 +6,7 @@
 SELECT HOTEL → PREFLIGHT → AUTHORIZE BUDGET → RUN GDI → VERIFY QUALITY → SAVE APPROVED BASELINE
 ```
 
-**V1.1 Europe note:** Preferred Hotel 3 = Memmo Príncipe Real (MARSHA `LISDM`, 41 rooms). Runnable cohort keeps Good Hotel Antigua as **interim** until a verified HPC `rec…` exists. Do not invent IDs. Operational $0 success ≠ commercial quality certification.
+**V1.2 Europe note:** Hotel 3 = Memmo Príncipe Real HPC `rec1t35e3sPerzxYu` (MARSHA `LISDM`, 41 rooms, Lisbon). Antigua removed from this cohort only. Operational $0 success ≠ commercial quality certification.
 
 ## Prerequisites
 

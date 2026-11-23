@@ -4,7 +4,7 @@
 **Status:** Operational preparation complete — **STOP** for founder approval of the exact three hotels + research budget before paid execution  
 **Worktree:** isolated clean from `origin/main` (dirty `ws-gdi` preserved)
 
-> **V1.1 supersession:** Preferred Hotel 3 = Memmo Príncipe Real (Lisbon). **No verified Dealality HPC ID** → Antigua retained as **interim** Hotel 3 only. Full V1.1 deliverables: [`FOUNDER_REPORT_V1_1.md`](./FOUNDER_REPORT_V1_1.md) · paid plan [`paid-research-plan-v1-1.json`](./paid-research-plan-v1-1.json).
+> **V1.2 supersession:** Hotel 3 = **Memmo Príncipe Real** HPC `rec1t35e3sPerzxYu` (Lisbon). Antigua removed from cohort only. See [`FOUNDER_REPORT_V1_2.md`](./FOUNDER_REPORT_V1_2.md).
 
 ---
 
