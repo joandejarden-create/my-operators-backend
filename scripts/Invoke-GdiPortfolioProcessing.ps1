@@ -210,6 +210,7 @@ if (-not $isPaidPilotMode -and $AllowLivePilot) {
   if ($AuthorizePublication) { $nodeArgs += '--authorize-publication' }
   if ($AuthorizeProductionWrites) { $nodeArgs += '--authorize-production-writes' }
   if ($BudgetUSD -gt 0) { $nodeArgs += @('--budget-usd', ([string][double]$BudgetUSD)) }
+  if ($PerHotelBudgetUSD -gt 0) { $nodeArgs += @('--per-hotel-budget-usd', ([string][double]$PerHotelBudgetUSD)) }
 }
 
 Write-Host "GDI Portfolio Processing: Mode=$Mode BudgetUSD=$BudgetUSD AllowLivePilot=$([bool]$AllowLivePilot.IsPresent)" -ForegroundColor Cyan

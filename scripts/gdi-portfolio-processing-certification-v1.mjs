@@ -129,6 +129,7 @@ const authorizePaidResearch = has("--authorize-paid-research");
 const authorizePublication = has("--authorize-publication");
 const authorizeProductionWrites = has("--authorize-production-writes");
 const budgetCeilingUsd = Number(arg("--budget-usd") || 0) || 0;
+const perHotelBudgetUsd = Number(arg("--per-hotel-budget-usd") || 0) || 0;
 
 // Certification CLI refuses paid/publish unless --allow-live-pilot (founder only).
 if (
@@ -173,6 +174,7 @@ const result = await runPortfolioOrchestrator({
   authorizeProductionWrites:
     has("--allow-live-pilot") && authorizeProductionWrites,
   budgetCeilingUsd: has("--allow-live-pilot") ? budgetCeilingUsd : 0,
+  perHotelBudgetUsd: has("--allow-live-pilot") ? perHotelBudgetUsd : 0,
   maxCandidates: Number(arg("--max-candidates") || 8) || 8,
 });
 
