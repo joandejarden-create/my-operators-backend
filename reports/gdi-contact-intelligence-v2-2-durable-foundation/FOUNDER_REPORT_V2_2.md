@@ -3,6 +3,7 @@
 **Status:** Implementation complete · PR ready · **STOP** before schema mutation / live persistence / customer publication / production deploy  
 **Base:** `origin/main` (includes merged PR #554 @ `653fd98fd`)  
 **Branch:** `feat/gdi-contact-intelligence-v2-2-durable-foundation`  
+**PR:** [#558](https://github.com/joandejarden-create/my-operators-backend/pull/558) — `OPEN` · `AWAITING_INTEGRATION_CONTROLLER`  
 **Persistence classification:** `PERSISTENCE_DESIGNED` (writes still DISABLED)
 
 ---
