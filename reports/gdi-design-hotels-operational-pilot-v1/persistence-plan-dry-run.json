@@ -1,0 +1,47 @@
+{
+  "version": "gdi-design-hotels-operational-pilot-v1-persistence-plan",
+  "mode": "DRY_RUN",
+  "executed": false,
+  "airtableWrites": 0,
+  "customerPublications": 0,
+  "hotels": [
+    {
+      "hpcId": "rece0NdV9FCnaFlVS",
+      "operation": "CREATE_RESEARCH_INVENTORY_BASELINE_WHEN_AUTHORIZED",
+      "target": "Hotel Research Inventory (not GDO publication)",
+      "idempotencyKey": "dh-pilot-v1:rece0NdV9FCnaFlVS",
+      "requires": [
+        "FOUNDER_HOTEL_APPROVAL",
+        "FOUNDER_BUDGET_APPROVAL",
+        "AIRTABLE_RESEARCH_INVENTORY_APPLY",
+        "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1"
+      ]
+    },
+    {
+      "hpcId": "recaokE8psIbuVeuH",
+      "operation": "CREATE_RESEARCH_INVENTORY_BASELINE_WHEN_AUTHORIZED",
+      "target": "Hotel Research Inventory (not GDO publication)",
+      "idempotencyKey": "dh-pilot-v1:recaokE8psIbuVeuH",
+      "requires": [
+        "FOUNDER_HOTEL_APPROVAL",
+        "FOUNDER_BUDGET_APPROVAL",
+        "AIRTABLE_RESEARCH_INVENTORY_APPLY",
+        "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1"
+      ]
+    },
+    {
+      "hpcId": "recGL1epYhEle5SDM",
+      "operation": "CREATE_RESEARCH_INVENTORY_BASELINE_WHEN_AUTHORIZED",
+      "target": "Hotel Research Inventory (not GDO publication)",
+      "idempotencyKey": "dh-pilot-v1:recGL1epYhEle5SDM",
+      "requires": [
+        "FOUNDER_HOTEL_APPROVAL",
+        "FOUNDER_BUDGET_APPROVAL",
+        "AIRTABLE_RESEARCH_INVENTORY_APPLY",
+        "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1"
+      ]
+    }
+  ],
+  "readBackVerification": "Required after apply — compare opportunityId set + commercial fields",
+  "stopForFounderReview": true
+}
