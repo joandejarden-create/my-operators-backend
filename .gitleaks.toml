@@ -320,4 +320,6 @@ description = "Allow Airtable base, record, field, and table identifiers"
 regexTarget = "secret"
 regexes = [
   '''^(?:app|rec|fld|tbl)[A-Za-z0-9]{14}$''',
+  # Local JS variable name mistaken for a credential when paired with airtableId: (PR #555).
+  '''^discoveryRecordId$''',
 ]
