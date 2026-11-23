@@ -116,7 +116,7 @@ check("api_returns_recovery_without_silent_fallback", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, /gdi-customer-ui-regression-inventory-contacts-v1/);
+  assert.match(html, /gdi-customer-ui-regression-v1-1/);
 });
 
 check("inventories_unchanged_pointers", () => {

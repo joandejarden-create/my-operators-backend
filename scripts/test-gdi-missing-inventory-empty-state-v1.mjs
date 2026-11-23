@@ -112,13 +112,10 @@ check("representative_hotels_availability_inspectable", () => {
 });
 
 check("cache_bust_updated", () => {
+  assert.match(html, /app\.js\?v=gdi-customer-ui-regression-v1-1/);
   assert.match(
     html,
-    /app\.js\?v=gdi-customer-ui-regression-inventory-contacts-v1/,
-  );
-  assert.match(
-    html,
-    /dealality-gdi-ui\.js\?v=gdi-customer-ui-regression-inventory-contacts-v1/,
+    /dealality-gdi-ui\.js\?v=gdi-customer-ui-regression-v1-1/,
   );
 });
 

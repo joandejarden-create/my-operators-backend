@@ -4004,22 +4004,16 @@
   function filterOpportunities(rows, filters) {
     filters = filters || {};
     rows = (rows || []).slice();
-    // Deduplicate by stable opportunity id (preserve first). Distinct editions
-    // with different ids remain. Empty id falls back to title+org key.
+    // Deduplicate by stable opportunity id only (preserve first). Distinct
+    // opportunities with different ids remain even when titles/orgs match.
+    // Do not collapse on event/organization name alone.
     var seenIds = {};
     rows = rows.filter(function (o) {
       if (!o) return false;
       var id = String(o.id || o.opportunityId || "").trim();
-      var key =
-        id ||
-        [
-          String(o.displayTitle || o.title || "").trim().toLowerCase(),
-          String(o.organizationName || o.company || "").trim().toLowerCase(),
-          String(o.eventStartDate || o.tileEventStartDate || "").trim(),
-        ].join("::");
-      if (!key || key === "::") return true;
-      if (seenIds[key]) return false;
-      seenIds[key] = true;
+      if (!id) return true;
+      if (seenIds[id]) return false;
+      seenIds[id] = true;
       return true;
     });
     // Defense-in-depth: default commercial browse must never render research

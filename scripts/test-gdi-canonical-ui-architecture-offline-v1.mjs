@@ -44,17 +44,30 @@ const EXPECTED_FP =
   "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f";
 
 check("html_cache_marker_architecture_v1", () => {
+  // Architecture gate: both customer shells must load the shared UI module
+  // through a cache-busted script URL. Do NOT freeze a historical ?v= string —
+  // cache markers intentionally change when customer-facing JS ships.
+  const markerRe =
+    /\/js\/group-demand-intelligence\/dealality-gdi-ui\.js\?v=[A-Za-z0-9][A-Za-z0-9._-]*/;
+  const markers = [];
   for (const rel of [
     "public/group-demand-intelligence.html",
     "public/group-demand-intelligence-share.html",
   ]) {
     const html = fs.readFileSync(path.join(ROOT, rel), "utf8");
-    assert.match(
+    assert.match(html, markerRe, `${rel} must wire dealality-gdi-ui.js with ?v=`);
+    assert.doesNotMatch(
       html,
-      /dealality-gdi-ui\.js\?v=gdi-no-login-alert-v1/,
-      rel,
+      /\/js\/group-demand-intelligence\/dealality-gdi-ui\.js["']/,
+      `${rel} must not load dealality-gdi-ui.js without a cache marker`,
     );
+    const m = html.match(markerRe);
+    markers.push(m ? m[0] : null);
   }
+  assert.ok(
+    markers.every(Boolean),
+    "auth + share shells must both reference dealality-gdi-ui.js?v=…",
+  );
 });
 
 check("shared_ui_prefers_canonical_contract", () => {
