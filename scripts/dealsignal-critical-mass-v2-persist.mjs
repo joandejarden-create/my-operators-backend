@@ -146,7 +146,7 @@ for (const c of candidates) {
     continue;
   }
 
-  let discoveryRecordId = invExisting?.id || null;
+  let inventoryRecId = invExisting?.id || null;
   if (!APPLY) {
     ledger.operations.push({
       id: c.discoveryPropertyId,
@@ -164,10 +164,10 @@ for (const c of candidates) {
       ledger.summary.errors += 1;
       continue;
     }
-    discoveryRecordId = created.json.id;
-    ledger.operations.push({ id: c.discoveryPropertyId, action: "INV_CREATE", airtableId: discoveryRecordId });
+    inventoryRecId = created.json.id;
+    ledger.operations.push({ id: c.discoveryPropertyId, action: "INV_CREATE", airtableId: inventoryRecId });
     ledger.summary.creates += 1;
-    ledger.readBack.push({ discoveryPropertyId: c.discoveryPropertyId, airtableId: discoveryRecordId });
+    ledger.readBack.push({ discoveryPropertyId: c.discoveryPropertyId, airtableId: inventoryRecId });
     await new Promise((r) => setTimeout(r, 250));
   }
 
@@ -216,7 +216,7 @@ for (const c of candidates) {
     ledger.operations.push({ id: c.findingId, action: "FIND_NOOP", airtableId: findExisting.id });
     ledger.summary.noops += 1;
   } else {
-    const fields = buildCommercialFindingFields(findingPayload, discoveryRecordId);
+    const fields = buildCommercialFindingFields(findingPayload, inventoryRecId);
     const created = await createRecord(findingsTableId, fields);
     if (!created.ok) {
       ledger.errors.push({ id: c.findingId, err: created.json });
