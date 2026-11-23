@@ -46,12 +46,13 @@ Without a GDI hotel config, live discovery fail-closes on `HOTEL_PROFILE_UNRESOL
 
 ### Current Design Hotels Live mode constraint
 
-`DesignHotelsLivePreflight|Execute|Replay` currently execute the **fixed pilot cohort** (Condesa, LaLuna, Memmo) defined in `gdi-design-hotels-live-research-pilot-v1.js`.
+`DesignHotelsLivePreflight|Execute|Replay` currently execute the **fixed pilot cohort** (Condesa, LaLuna, Memmo) defined in `gdi-design-hotels-live-research-pilot-v1.js` — **historical regression only**.
 
-To process **additional** Design Hotels without changing that locked pilot:
+To process **additional** Design Hotels (or any brand) without hotel-specific development:
 
-- Seed configs, then use portfolio `FullE2E` / PaidPilot paths with explicit founder GO and dual budget flags, **or**
-- Request a focused engineering change to accept `-Hotels` / `-HotelsFile` into Design Hotels Live modes (not done in this certification).
+- Use **Universal Operating Procedure V2** — `docs/data-intelligence/gdi-universal-operating-procedure-v2.md`
+- PowerShell modes `CohortPreflight|CohortExecute|CohortReplay` with `-HotelsFile` / `-HotelId` (Repeatable Processing V2)
+- Or seed configs and use portfolio `FullE2E` / PaidPilot paths with explicit founder GO and dual budget flags
 
 Do **not** create a new hotel-specific runner.
 
