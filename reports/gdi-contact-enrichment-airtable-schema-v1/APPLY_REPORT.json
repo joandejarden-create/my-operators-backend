@@ -1,0 +1,386 @@
+{
+  "contract": "gdi-contact-enrichment-airtable-schema-v1",
+  "mode": "apply",
+  "at": "2026-11-23T18:35:03.102Z",
+  "blocked": false,
+  "blockReasons": [],
+  "safety": {
+    "findymailApi": false,
+    "surfeApi": false,
+    "contactRecordWrites": false,
+    "syntheticUsageRecords": false,
+    "deletions": false,
+    "renames": false
+  },
+  "verification": {
+    "gdiBase": {
+      "baseId": "appa2cE7FTRmIbB32",
+      "tableCount": 37,
+      "referenceTable": {
+        "id": "tblDwW2jpbKBBtpko",
+        "name": "Hotel Event Spaces"
+      },
+      "groupDemandOpportunities": {
+        "id": "tblRuReslJMwsfRQj",
+        "name": "Group Demand Opportunities"
+      }
+    }
+  },
+  "usageEvents": {
+    "baseId": "appa2cE7FTRmIbB32",
+    "tableName": "GDI Contact Enrichment Usage Events",
+    "tableId": "tblvUJlik63pETitY",
+    "createdTable": false,
+    "wouldCreateTable": false,
+    "wouldCreateFields": [],
+    "createdFields": [],
+    "skippedExisting": [
+      "Provider",
+      "Lookup Outcome",
+      "Credits Charged",
+      "Cost Estimate USD",
+      "Person Identity Hash",
+      "Hotel ID",
+      "Opportunity ID",
+      "Request Origin",
+      "Event At",
+      "Data Environment",
+      "Schema Version",
+      "Provider Request Reference",
+      "Notes",
+      "Lookup Event ID"
+    ],
+    "errors": [],
+    "primaryField": "Lookup Event ID",
+    "preexistingUsageLikeTables": [
+      {
+        "id": "tblvUJlik63pETitY",
+        "name": "GDI Contact Enrichment Usage Events"
+      }
+    ]
+  },
+  "hiContactChannels": {
+    "baseId": "appCCUsuGsE1ifoLk",
+    "tableName": "HI Contact Channels",
+    "tableId": "tblqC7C4ypy5Zojyw",
+    "wouldCreateFields": [],
+    "createdFields": [],
+    "skippedExisting": [
+      "Last Checked At",
+      "License / Retention Class",
+      "Retention Expires At",
+      "Provider Request ID"
+    ],
+    "errors": [],
+    "recordCountBefore": null,
+    "recordCountAfter": null,
+    "sampleRecordIdBefore": "rec0xK5IHmAmfF3IP",
+    "listOkBefore": true,
+    "sampleRecordIdAfter": "rec0xK5IHmAmfF3IP",
+    "listOkAfter": true,
+    "sampleRecordUnchanged": true
+  },
+  "readBack": {
+    "usageEvents": {
+      "ok": true,
+      "table": {
+        "id": "tblvUJlik63pETitY",
+        "name": "GDI Contact Enrichment Usage Events",
+        "primaryFieldId": "fldJn6IMVoqNDxX9B",
+        "fields": [
+          {
+            "id": "fldJn6IMVoqNDxX9B",
+            "name": "Lookup Event ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldanrtIK5UEYCHEM",
+            "name": "Provider",
+            "type": "singleSelect",
+            "choices": [
+              "Findymail",
+              "Surfe",
+              "Public Research",
+              "Reuse",
+              "Other"
+            ]
+          },
+          {
+            "id": "fldf1OIMoW51E93K2",
+            "name": "Lookup Outcome",
+            "type": "singleSelect",
+            "choices": [
+              "REUSE_HIT",
+              "LOOKUP_FOUND",
+              "LOOKUP_MISS",
+              "LOOKUP_SUPPRESSED",
+              "LOOKUP_STALE_REFRESH",
+              "LOOKUP_BLOCKED",
+              "LOOKUP_ERROR"
+            ]
+          },
+          {
+            "id": "fldRnU1K2D4L5jedD",
+            "name": "Credits Charged",
+            "type": "number"
+          },
+          {
+            "id": "fldAMvuBbIG6UcYrj",
+            "name": "Cost Estimate USD",
+            "type": "currency"
+          },
+          {
+            "id": "fldvw4DFnTfWX0gy1",
+            "name": "Person Identity Hash",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldN9R6QRP3N0f0eS",
+            "name": "Hotel ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldA2aguKBXHhx1Y2",
+            "name": "Opportunity ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldCtfG0PyCDvluPi",
+            "name": "Request Origin",
+            "type": "singleSelect",
+            "choices": [
+              "GDI Opportunity",
+              "Hotel Explorer",
+              "Contact Intelligence",
+              "Admin",
+              "Other"
+            ]
+          },
+          {
+            "id": "fldKOSQkzFHyGrkKJ",
+            "name": "Event At",
+            "type": "dateTime"
+          },
+          {
+            "id": "fldfs7i6Zb6T9hMtp",
+            "name": "Data Environment",
+            "type": "singleSelect",
+            "choices": [
+              "Development",
+              "Staging",
+              "Production"
+            ]
+          },
+          {
+            "id": "fldaGStWc66Q5W1fw",
+            "name": "Schema Version",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fld5BTA9c0oVyby3Q",
+            "name": "Provider Request Reference",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldU5KTLXOd7cCpEp",
+            "name": "Notes",
+            "type": "multilineText"
+          }
+        ]
+      }
+    },
+    "hiContactChannels": {
+      "ok": true,
+      "table": {
+        "id": "tblqC7C4ypy5Zojyw",
+        "name": "HI Contact Channels",
+        "primaryFieldId": "fldSPz6EXrA6FUO6E",
+        "fields": [
+          {
+            "id": "fldSPz6EXrA6FUO6E",
+            "name": "Channel ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldJSjLMuypHpVG3c",
+            "name": "Subject Type",
+            "type": "singleSelect",
+            "choices": [
+              "Person",
+              "Organization"
+            ]
+          },
+          {
+            "id": "fldZ5CEnhGHrfiAa2",
+            "name": "Subject ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldbRIbrPXdWpFgqb",
+            "name": "Channel Kind",
+            "type": "singleSelect",
+            "choices": [
+              "Email",
+              "Telephone",
+              "LinkedIn",
+              "Other"
+            ]
+          },
+          {
+            "id": "fldoA4I76BXpVBJtd",
+            "name": "Channel Value",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldEBOUkaSJy8S9S2",
+            "name": "Classification",
+            "type": "singleSelect",
+            "choices": [
+              "Public",
+              "Direct Personal",
+              "General / Switchboard",
+              "Inferred",
+              "Unknown"
+            ]
+          },
+          {
+            "id": "fldXnpHkQeqc7Ok7N",
+            "name": "Verification Status",
+            "type": "singleSelect",
+            "choices": [
+              "Unverified",
+              "Inferred",
+              "Public Listed",
+              "Verified Direct",
+              "Do Not Publish"
+            ]
+          },
+          {
+            "id": "fldL61phFziCI6XUC",
+            "name": "Source Name",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldQbe5yXDlPp6Gs9",
+            "name": "Source URL",
+            "type": "url"
+          },
+          {
+            "id": "fldtu6IgqNtipcm8k",
+            "name": "Observed At",
+            "type": "dateTime"
+          },
+          {
+            "id": "fldORmMEUuIMWqq3Z",
+            "name": "Provider",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldPd9JrAX0gEJVv4",
+            "name": "Usage Provenance",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldPeJFev159BWBjU",
+            "name": "Access / Publication Restriction",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldA0zXiCAym6ZaPX",
+            "name": "Dedupe Key",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldaBmnCJH3ZtKrk9",
+            "name": "Publication State",
+            "type": "singleSelect",
+            "choices": [
+              "INTERNAL_ONLY",
+              "STAGED",
+              "APPROVED_INTERNAL",
+              "CUSTOMER_BLOCKED",
+              "CUSTOMER_PUBLISHED"
+            ]
+          },
+          {
+            "id": "fldXS1JKcFh7CbJLj",
+            "name": "Schema Version",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldSnHlNk0Wgr97aj",
+            "name": "Notes",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld3xFDYQuG5D8Mhh",
+            "name": "Person",
+            "type": "multipleRecordLinks"
+          },
+          {
+            "id": "fldh3gvuor20IINRu",
+            "name": "Organization",
+            "type": "multipleRecordLinks"
+          },
+          {
+            "id": "fldyUP3ylAUP8uPUi",
+            "name": "Last Checked At",
+            "type": "dateTime"
+          },
+          {
+            "id": "fldkJEwy47xROXmys",
+            "name": "License / Retention Class",
+            "type": "singleSelect",
+            "choices": [
+              "PUBLIC_LISTED",
+              "PROVIDER_LICENSED_INTERNAL",
+              "PROVIDER_LICENSED_CUSTOMER_DURABLE",
+              "PROVIDER_LICENSED_EXPORT_OK",
+              "SUPPRESSED",
+              "OPT_OUT",
+              "EXPIRED"
+            ]
+          },
+          {
+            "id": "fldeIWS3vz8s4NyrE",
+            "name": "Retention Expires At",
+            "type": "date"
+          },
+          {
+            "id": "fld4xwUDV3AQ2MBa8",
+            "name": "Provider Request ID",
+            "type": "singleLineText"
+          }
+        ]
+      }
+    },
+    "choiceValidation": {
+      "providerOk": true,
+      "outcomeOk": true,
+      "fieldNamesPresent": true,
+      "noPiiFields": true
+    },
+    "hiEnrichmentFieldsPresent": {
+      "lastCheckedAt": {
+        "name": "Last Checked At",
+        "present": true,
+        "id": "fldyUP3ylAUP8uPUi"
+      },
+      "licenseRetentionClass": {
+        "name": "License / Retention Class",
+        "present": true,
+        "id": "fldkJEwy47xROXmys"
+      },
+      "retentionExpiresAt": {
+        "name": "Retention Expires At",
+        "present": true,
+        "id": "fldeIWS3vz8s4NyrE"
+      },
+      "providerRequestId": {
+        "name": "Provider Request ID",
+        "present": true,
+        "id": "fld4xwUDV3AQ2MBa8"
+      }
+    }
+  }
+}
