@@ -146,7 +146,9 @@ Ledgers unchanged: Condesa 1.2 / LaLuna 1.0 / Memmo 1.0
 
 ## PR / integration
 
-Focused certification PR from this worktree (configs + runner wiring + reports).  
-Integration Controller owns merge.
+Focused certification PR: **#574** — https://github.com/joandejarden-create/my-operators-backend/pull/574  
+(configs + runner wiring + evidence reports/ledgers). Integration Controller owns merge.
+
+**Final state:** `AWAITING_INTEGRATION_CONTROLLER`
 
 **STOP** — no additional paid research, Airtable persistence, customer publication, portfolio expansion, or weekly automation.
