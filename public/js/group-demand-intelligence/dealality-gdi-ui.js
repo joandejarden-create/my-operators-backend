@@ -314,6 +314,25 @@
       .replace(/"/g, "&quot;");
   }
 
+  /**
+   * Strip empty / malformed parentheticals like "(: )" or "( )" that leak from
+   * incomplete organization/location templates. Preserve legitimate "(City)".
+   */
+  function scrubMalformedParentheticals(raw) {
+    var s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (!s) return "";
+    // Empty / punctuation-only parentheticals: "(: )", "( )", "(. )", "(—)"
+    s = s.replace(/\(\s*[:.·—–\-]*\s*\)/g, "");
+    s = s.replace(/\(\s*:\s*[^)]*\)/g, function (m) {
+      var inner = m.replace(/^\(\s*:?\s*|\s*\)$/g, "").trim();
+      return inner ? "(" + inner + ")" : "";
+    });
+    // Collapse leftover "word: ." artifacts after empty paren scrub
+    s = s.replace(/:\s*\.\s+/g, ". ");
+    s = s.replace(/\s{2,}/g, " ").trim();
+    return s;
+  }
+
   /** Allow only http(s) for external source links — reject javascript:/data:/file:. */
   function isSafeHttpUrl(url) {
     var s = String(url == null ? "" : url).trim();
@@ -1463,7 +1482,9 @@
       ) {
         return esc(ov.tileClassificationLine);
       }
-      var orgShortEvents = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
+      var orgShortEvents = scrubMalformedParentheticals(org)
+        .replace(/\s*\([^)]*\)\s*$/, "")
+        .trim();
       orgShortEvents = orgShortEvents
         .replace(
           /,?\s*(S\.?\s*C\.?|S\.?\s*A\.?\s*(?:de\s*)?C\.?\s*V\.?|S\.?\s*de\s*R\.?\s*L\.?[^.]*|Inc\.?|LLC|Ltd\.?)\s*$/i,
@@ -3983,6 +4004,24 @@
   function filterOpportunities(rows, filters) {
     filters = filters || {};
     rows = (rows || []).slice();
+    // Deduplicate by stable opportunity id (preserve first). Distinct editions
+    // with different ids remain. Empty id falls back to title+org key.
+    var seenIds = {};
+    rows = rows.filter(function (o) {
+      if (!o) return false;
+      var id = String(o.id || o.opportunityId || "").trim();
+      var key =
+        id ||
+        [
+          String(o.displayTitle || o.title || "").trim().toLowerCase(),
+          String(o.organizationName || o.company || "").trim().toLowerCase(),
+          String(o.eventStartDate || o.tileEventStartDate || "").trim(),
+        ].join("::");
+      if (!key || key === "::") return true;
+      if (seenIds[key]) return false;
+      seenIds[key] = true;
+      return true;
+    });
     // Defense-in-depth: default commercial browse must never render research
     // themes / archive DQ / research-pipeline-only. Prefer API stamps; also
     // check raw priority (not remapped priorityFilterKey) and known IDs.
@@ -4811,6 +4850,17 @@
     linked = linked || {};
     it = it || {};
     var CONTACT_RESEARCH_REQUIRED = "Contact Research Required";
+    function isContactGapLabel(raw) {
+      var t = String(raw || "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+      return (
+        t === "contact research required" ||
+        t === "buyer not yet identified" ||
+        t === "contact not yet identified"
+      );
+    }
     var canon = readCanonicalCustomerPresentation(it, linked);
     /**
      * Frozen card subtitle contract:
@@ -4831,7 +4881,14 @@
         "";
       return String(raw || "").replace(/\s+/g, " ").trim();
     }
-    if (canon && canon.contact && canon.contact.name) {
+    // Never treat gap copy as a person name — fall through to primaryContact.
+    if (
+      canon &&
+      canon.contact &&
+      canon.contact.name &&
+      !isContactGapLabel(canon.contact.name) &&
+      String(canon.contact.kind || "") !== "none"
+    ) {
       return {
         kind: "named",
         name: String(canon.contact.name).replace(/\s+/g, " ").trim(),
@@ -4844,10 +4901,19 @@
     if (
       canon &&
       canon.contact &&
-      (canon.contact.kind === "none" ||
-        String(canon.contact.name || "") === CONTACT_RESEARCH_REQUIRED)
+      canon.contact.name &&
+      !isContactGapLabel(canon.contact.name) &&
+      looksLikePersonNameLocal(canon.contact.name)
     ) {
-      return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
+      // kind may be stale "none" while a real name survived — still show name.
+      return {
+        kind: "named",
+        name: String(canon.contact.name).replace(/\s+/g, " ").trim(),
+        role: frozenCardContactSubtitle(
+          linked.tileContactPreview || it.tileContactPreview,
+          canon.contact
+        ),
+      };
     }
     var preview =
       linked.tileContactPreview ||
@@ -6066,7 +6132,9 @@
       "";
     var title =
       toProperCaseDisplayTitle(
-        scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true })
+        scrubMalformedParentheticals(
+          scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true })
+        )
       ) || "—";
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
@@ -6103,13 +6171,15 @@
       linked.summaryWhat ||
       "";
     // Scrub broken research lead-ins that survived older shadow rows
-    whatRaw = String(whatRaw || "")
-      .replace(/^On\s*,\s*/i, "")
-      .replace(/^On\s+\d{4}-\d{2}-\d{2},\s*public materials described\s+/i, "")
-      // Title/label debris only — do not strip intentional "scaling corporate account" prose.
-      .replace(/\bScaling Corporate Account\b/g, "corporate account")
-      .replace(/\b(local activity|local growth activity)\b/gi, "commercial expansion")
-      .trim();
+    whatRaw = scrubMalformedParentheticals(
+      String(whatRaw || "")
+        .replace(/^On\s*,\s*/i, "")
+        .replace(/^On\s+\d{4}-\d{2}-\d{2},\s*public materials described\s+/i, "")
+        // Title/label debris only — do not strip intentional "scaling corporate account" prose.
+        .replace(/\bScaling Corporate Account\b/g, "corporate account")
+        .replace(/\b(local activity|local growth activity)\b/gi, "commercial expansion")
+        .trim()
+    );
     if (isAssessmentStatusProse(whatRaw) || isActionOrWhyNowContamination(whatRaw)) {
       whatRaw = "";
     }
