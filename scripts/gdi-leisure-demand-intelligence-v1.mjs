@@ -69,7 +69,7 @@ function parseArgs(argv) {
   return out;
 }
 
-function main() {
+async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   if (args.coverageOnly) {
@@ -107,7 +107,7 @@ function main() {
     needPeriodContext = JSON.parse(args.needPeriodJson);
   }
 
-  const result = runLeisureModules({
+  const result = await runLeisureModules({
     hotelId: args.hotelId,
     hotelProfile,
     modules: args.modules,
@@ -126,4 +126,7 @@ function main() {
   if (!result.ok) process.exit(2);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

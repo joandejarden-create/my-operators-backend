@@ -31,9 +31,9 @@ const REPORT = path.join(ROOT, "reports/gdi-leisure-demand-intelligence-v1");
 fs.mkdirSync(REPORT, { recursive: true });
 
 const results = [];
-function check(name, fn) {
+async function check(name, fn) {
   try {
-    fn();
+    await fn();
     results.push({ name, ok: true });
     console.log(`PASS ${name}`);
   } catch (err) {
@@ -43,13 +43,13 @@ function check(name, fn) {
   }
 }
 
-check("six_modules_registered", () => {
+await check("six_modules_registered", () => {
   const ids = listLeisureModuleIds();
   assert.equal(ids.length, 6);
   for (const id of ids) assert.ok(getLeisureModule(id));
 });
 
-check("coverage_matrix_links_fourteen_segments", () => {
+await check("coverage_matrix_links_fourteen_segments", () => {
   const matrix = buildLeisureFourteenSegmentCoverageMatrix();
   assert.equal(matrix.length, 6);
   for (const row of matrix) {
@@ -58,7 +58,7 @@ check("coverage_matrix_links_fourteen_segments", () => {
   }
 });
 
-check("powershell_entrypoints_exist", () => {
+await check("powershell_entrypoints_exist", () => {
   const files = [
     "Invoke-GdiLeisureEvents.ps1",
     "Invoke-GdiLeisureSports.ps1",
@@ -76,8 +76,8 @@ check("powershell_entrypoints_exist", () => {
   }
 });
 
-check("independent_module_invoke_fixture", () => {
-  const r = runLeisureModules({
+await check("independent_module_invoke_fixture", async () => {
+  const r = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     modules: ["leisure_events"],
     researchMode: "fixture",
@@ -88,8 +88,8 @@ check("independent_module_invoke_fixture", () => {
   assert.ok(r.opportunityCount >= 1);
 });
 
-check("orchestrator_all_six_modules", () => {
-  const r = runLeisureModules({
+await check("orchestrator_all_six_modules", async () => {
+  const r = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     hotelProfile: {
       hotelId: "recaokE8psIbuVeuH",
@@ -106,14 +106,14 @@ check("orchestrator_all_six_modules", () => {
   assert.ok(fs.existsSync(path.join(REPORT, "cert-all-six/leisure-run.json")));
 });
 
-check("leisure_disabled_leaves_gdi_unchanged", () => {
+await check("leisure_disabled_leaves_gdi_unchanged", () => {
   const d = runLeisureOrchestratorDisabledCheck();
   assert.equal(d.leisureEnabled, false);
   assert.deepEqual(d.modulesInvoked, []);
   assert.equal(d.fourteenSegmentsUnchanged, true);
 });
 
-check("canonical_opportunity_contract_fields", () => {
+await check("canonical_opportunity_contract_fields", () => {
   const c = buildLeisureOpportunityContract({
     hotelId: "recTEST",
     leisureModuleId: "leisure_distribution",
@@ -129,8 +129,8 @@ check("canonical_opportunity_contract_fields", () => {
   assert.equal(c.publicationEligible, false);
 });
 
-check("cross_segment_dedupe_carnival", () => {
-  const r = runLeisureModules({
+await check("cross_segment_dedupe_carnival", async () => {
+  const r = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     modules: ["leisure_events", "leisure_sports"],
     researchMode: "fixture",
@@ -144,7 +144,7 @@ check("cross_segment_dedupe_carnival", () => {
   assert.ok(sportsResult.suppressedCount >= 1);
 });
 
-check("commercial_pathway_rules", () => {
+await check("commercial_pathway_rules", () => {
   const campaign = classifyLeisureCommercialPathway({
     leisureCommercialPathway: "CAMPAIGN_DRIVEN",
   });
@@ -162,7 +162,7 @@ check("commercial_pathway_rules", () => {
   assert.equal(eventOnly.ok, false);
 });
 
-check("need_period_optional_unknown", () => {
+await check("need_period_optional_unknown", () => {
   const u = evaluateLeisureNeedPeriod({ demandGenerator: "X" }, null);
   assert.equal(u.status, NEED_PERIOD_STATUS.NEED_PERIOD_UNKNOWN);
   assert.equal(u.inventedMetrics, false);
@@ -176,7 +176,7 @@ check("need_period_optional_unknown", () => {
   assert.equal(o.status, NEED_PERIOD_STATUS.OVERLAP);
 });
 
-check("budget_authorization_fail_closed", () => {
+await check("budget_authorization_fail_closed", async () => {
   const a = assertLeisureRunAuthorization({ budgetUsd: 5 });
   assert.equal(a.ok, false);
   const b = assertLeisureRunAuthorization({
@@ -184,7 +184,7 @@ check("budget_authorization_fail_closed", () => {
     authorizePaidResearch: true,
   });
   assert.equal(b.ok, false);
-  const c = runLeisureModules({
+  const c = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     modules: ["leisure_events"],
     budgetUsd: 1,
@@ -197,14 +197,14 @@ check("budget_authorization_fail_closed", () => {
   assert.equal(c.spentUsd ?? 0, 0);
 });
 
-check("zero_paid_replay", () => {
-  const r1 = runLeisureModules({
+await check("zero_paid_replay", async () => {
+  const r1 = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     modules: ["leisure_distribution"],
     researchMode: "fixture",
     writeArtifacts: false,
   });
-  const r2 = runLeisureModules({
+  const r2 = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     modules: ["leisure_distribution"],
     researchMode: "replay",
@@ -215,7 +215,7 @@ check("zero_paid_replay", () => {
   assert.equal(r1.opportunityCount, r2.opportunityCount);
 });
 
-check("hotel_module_selection_presets", () => {
+await check("hotel_module_selection_presets", () => {
   const laluna = selectLeisureModulesForHotel({ hotelId: "recaokE8psIbuVeuH" });
   assert.equal(laluna.source, "hpc_preset");
   assert.ok(laluna.moduleIds.includes("leisure_distribution"));
@@ -223,8 +223,8 @@ check("hotel_module_selection_presets", () => {
   assert.ok(LEISURE_HOTEL_PROFILE_PRESETS.rece0NdV9FCnaFlVS);
 });
 
-check("no_publication_or_airtable_flags", () => {
-  const r = runLeisureModules({
+await check("no_publication_or_airtable_flags", async () => {
+  const r = await runLeisureModules({
     hotelId: "recaokE8psIbuVeuH",
     modules: ["leisure_attractions"],
     authorizePublication: true,
@@ -234,13 +234,13 @@ check("no_publication_or_airtable_flags", () => {
   assert.equal(r.error, "PUBLICATION_NOT_AUTHORIZED_IN_LDI_V1");
 });
 
-check("adp_linkage_design_only", () => {
+await check("adp_linkage_design_only", () => {
   const d = designLeisureAdpLinkage();
   assert.equal(d.requiredForLdi, false);
   assert.equal(d.thisPhase.adpResearch, "NONE");
 });
 
-check("inventory_compatible_dedupe_api", () => {
+await check("inventory_compatible_dedupe_api", () => {
   const existing = [
     {
       id: "gdi_existing_1",

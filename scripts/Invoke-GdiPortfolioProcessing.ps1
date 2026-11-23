@@ -195,7 +195,9 @@ if ($runLeisure) {
     Write-FailClosed 'Leisure portfolio path currently requires -HotelId (HotelsFile multi-hotel leisure batch: invoke per hotel or pass modules via Node CLI).'
   }
   $modArg = if ($LeisureModules -and $LeisureModules.Trim().Length -gt 0) { $LeisureModules } else { 'all' }
-  $ldiMode = 'fixture'
+  # Preview/Rehearsal/FullE2E use mock_live ($0 mocked providers → STAGED plan).
+  # AuditOnly coverage stays fixture/coverage-only above.
+  $ldiMode = if ($Mode -eq 'Preview' -or $Mode -eq 'Rehearsal' -or $Mode -eq 'FullE2E') { 'mock_live' } else { 'fixture' }
   $ldiArgs = @(
     $ldiRunner,
     '--hotel-id', $HotelId,
@@ -204,14 +206,14 @@ if ($runLeisure) {
     '--budget-usd', ([string][double]$BudgetUSD)
   )
   if ($ReportPath) { $ldiArgs += @('--out', $ReportPath) }
-  Write-Host "GDI Portfolio Processing + Leisure: HotelId=$HotelId Modules=$modArg" -ForegroundColor Cyan
+  Write-Host "GDI Portfolio Processing + Leisure: HotelId=$HotelId Modules=$modArg Mode=$ldiMode" -ForegroundColor Cyan
   Push-Location $resolvedRepo
   try {
     & node @ldiArgs
     if ($LASTEXITCODE -ne 0) {
       throw "GDI leisure runner exited with code $LASTEXITCODE"
     }
-    Write-Host 'Leisure module run finished ($0 fixture path). Fourteen-segment Full E2E unchanged unless separately invoked.' -ForegroundColor Green
+    Write-Host "Leisure module run finished (`$0 $ldiMode path). Feeds same GDI inventory gates; no separate LDI DB." -ForegroundColor Green
   }
   finally {
     Pop-Location
