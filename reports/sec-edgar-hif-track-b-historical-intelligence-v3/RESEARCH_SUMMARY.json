@@ -1,0 +1,121 @@
+{
+  "asOf": "2026-11-21",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "researchCostUsd": 0,
+  "documentsInvestigatedEstimate": {
+    "managementDiscoveryPass": 40,
+    "curatedExhibitsAndReports": 12,
+    "ukIhGPortfolioDocs": 3,
+    "parkAndLoanInstrumentsReviewed": 3,
+    "eftsHitListingsReviewed": 24,
+    "totalApprox": 82,
+    "note": "Document-research objective. Automated 8-K extractor rows were not auto-persisted because hotel-name quality was low."
+  },
+  "sourceProductivity": [
+    {
+      "family": "SVC_EX10_SONESTA_SCHEDULE",
+      "documents": 1,
+      "yielding": 1,
+      "namedHotels": 1,
+      "note": "Allegro recovery from split HTML line"
+    },
+    {
+      "family": "SOTHERLY_EX10_OUR_TOWN_MASTER",
+      "documents": 1,
+      "yielding": 1,
+      "namedHotels": 10,
+      "agreements": 10,
+      "expiration": "2035-03-31",
+      "noticePeriods": "90-day manager renewal notice; 30-day lessee response"
+    },
+    {
+      "family": "SEC_MGMT_DISCOVERY_PASS_EX10_8K_10K",
+      "documents": 40,
+      "yieldingDocs": 40,
+      "extractedRows": 331,
+      "incrementalRaw": 76,
+      "duplicates": 255,
+      "persistEligibleAfterQa": 0,
+      "note": "High duplicate/noise rate. Not used for Airtable creates."
+    },
+    {
+      "family": "HR_RATINGS_FIBRAHOTEL",
+      "documents": 1,
+      "yielding": 1,
+      "namedHotels": 4,
+      "leasesCommenced": 2,
+      "nearTermSignals": 1
+    },
+    {
+      "family": "CHOICE_FRANCHISOR_PAGE",
+      "documents": 1,
+      "yielding": 1,
+      "namedHotels": 1,
+      "currentStatusConfirmations": 1
+    },
+    {
+      "family": "IHG_UK_CORPORATE",
+      "documents": 3,
+      "yielding": 0,
+      "namedHotels": 0,
+      "note": "Portfolio-only; staged"
+    },
+    {
+      "family": "ASHFORD_CMCT_PARK_LOAN_OR_PORTFOLIO",
+      "documents": 3,
+      "yielding": 0,
+      "staged": 3
+    }
+  ],
+  "matrix": {
+    "distinctHotels": 18,
+    "contractualEvents": 18,
+    "byCountry": {
+      "US": {
+        "hotels": 11,
+        "events": 11,
+        "byAgreementType": {
+          "MANAGEMENT": 11
+        },
+        "byTiming": {
+          "BEYOND_60_MONTHS": 11
+        },
+        "byStatus": {
+          "AGREEMENT_EXTENDED_OR_AMENDED": 11
+        }
+      },
+      "MX": {
+        "hotels": 6,
+        "events": 6,
+        "byAgreementType": {
+          "LEASE": 2,
+          "UNRESOLVED": 4
+        },
+        "byTiming": {
+          "HISTORICAL_DATE": 2,
+          "UNDATED_OR_IMPRECISE": 4
+        },
+        "byStatus": {
+          "BRAND_CHANGED": 3,
+          "HISTORICALLY_VERIFIED_CURRENT_UNKNOWN": 3
+        }
+      },
+      "BR": {
+        "hotels": 1,
+        "events": 1,
+        "byAgreementType": {
+          "UNRESOLVED": 1
+        },
+        "byTiming": {
+          "UNDATED_OR_IMPRECISE": 1
+        },
+        "byStatus": {
+          "CURRENTLY_CORROBORATED": 1
+        }
+      }
+    }
+  },
+  "qualifiedTrackAHandoffs": 0,
+  "trackAResearchCandidates": 1,
+  "pr546State": "OPEN_AWAITING_INTEGRATION"
+}
