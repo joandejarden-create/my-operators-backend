@@ -1,0 +1,501 @@
+{
+  "asOf": "2026-11-23T09:47:38.058Z",
+  "mode": "READ_ONLY_AUDIT",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "airtableWrites": 0,
+  "pr557": {
+    "status": "MERGED",
+    "mergeCommit": "06efe1eb7c3e5b67296608d6bae9f269b304bc37",
+    "note": "Do not repeat identity-matching; this audit verifies relationships only"
+  },
+  "summary": {
+    "hotelsAudited": 4,
+    "hotelsWithHpcLinkOk": 4,
+    "claimedFindingsPresentLive": 5,
+    "trackCSyntheticFindingIds": 2,
+    "mismatchCauses": 2
+  },
+  "findingMismatchCauses": [
+    {
+      "hotel": "Holiday Inn Monterrey Valle",
+      "claimedFindingId": "find_ds_cala_v1_finn_hi_monterrey_valle_2026",
+      "claimedDiscoveryPropertyId": "disc_ds_cala_v1_finn_hi_monterrey_valle_2026",
+      "code": "TRACK_C_SYNTHETIC_FINDING_ID_NEVER_IN_TRACK_A_CORPUS",
+      "detail": "Track C invented findingId + discoveryPropertyId for identity linking. Track A CALA Discovery V1 RESEARCH_CANDIDATES never emitted hotel-level findings for Monterrey Valle or Puebla La Noria — only portfolio-parent FINN internalization + named Courtyard/Yucatán/Cabo/Santander. Identity inventory exists; DealSignal finding row does not.",
+      "inventoryExists": true,
+      "findingExistsLive": false,
+      "recommendedRepair": "Map hotel cards to parent finding find_ds_cala_v1_finn_internalization_franchise_2026 (evidence of HI conversions/franchise renewals) OR create Track A–authorized hotel-level findings later — do not invent duplicate navigation findings. Preserve Track C discoveryPropertyId inventory as identity SoT with HPC link."
+    },
+    {
+      "hotel": "Holiday Inn Puebla La Noria",
+      "claimedFindingId": "find_ds_cala_v1_finn_hi_puebla_la_noria_2026",
+      "claimedDiscoveryPropertyId": "disc_ds_cala_v1_finn_hi_puebla_la_noria_2026",
+      "code": "TRACK_C_SYNTHETIC_FINDING_ID_NEVER_IN_TRACK_A_CORPUS",
+      "detail": "Track C invented findingId + discoveryPropertyId for identity linking. Track A CALA Discovery V1 RESEARCH_CANDIDATES never emitted hotel-level findings for Monterrey Valle or Puebla La Noria — only portfolio-parent FINN internalization + named Courtyard/Yucatán/Cabo/Santander. Identity inventory exists; DealSignal finding row does not.",
+      "inventoryExists": true,
+      "findingExistsLive": false,
+      "recommendedRepair": "Map hotel cards to parent finding find_ds_cala_v1_finn_internalization_franchise_2026 (evidence of HI conversions/franchise renewals) OR create Track A–authorized hotel-level findings later — do not invent duplicate navigation findings. Preserve Track C discoveryPropertyId inventory as identity SoT with HPC link."
+    }
+  ],
+  "parentFindingInternalization": {
+    "airtableId": "recp0bShKmxpOFQ2N",
+    "findingId": "find_ds_cala_v1_finn_internalization_franchise_2026",
+    "discoveryProperty": [
+      "rec246OEIvYAfRJFD"
+    ],
+    "findingType": "OTHER",
+    "fieldName": "COMMERCIAL_SIGNAL_OTHER",
+    "valueObserved": "Fibra Inn completed internalization of operations for 28 hotels (Jan 15, 2026) via Aimbridge Latam termination (Ps.172.3m). Governance policy: upon expiration of remaining third-party HMAs, hotels fol",
+    "sourceUrl": "https://fibrainn.mx/storage/docs/fibra-inn-finaliza-proceso-de-internalizacion-de-la-operacion-en-28-hoteles.pdf",
+    "verificationStatus": "EVIDENCE_SUPPORTED",
+    "hpcPromotionStatus": "NOT_PROMOTED",
+    "relatedOrgName": "Fibra Inn (Trust DB/1616)",
+    "notesSnippet": "CUSTOMER_BLOCKED | DEALSIGNAL_CALA_V1 | MEXICO | PORTFOLIO_PARENT | first100=NO | MCT largely closed; BCT franchise path open || THESIS: | 1 What: Mexican hotel FIBRA internalized day-to-day ops for 2"
+  },
+  "rows": [
+    {
+      "label": "Courtyard Playa del Carmen",
+      "kind": "HOTEL",
+      "discoveryPropertyId": "disc_ds_cala_v1_finn_courtyard_pdc_2026",
+      "findingIdClaimed": "find_ds_cala_v1_finn_courtyard_pdc_committed_2026",
+      "trackACorpusHasFindingId": true,
+      "trackACorpusHasDiscoveryPropertyId": true,
+      "trackCInventedFinding": false,
+      "inventory": {
+        "airtableId": "rec7o2TuInz6WdFAV",
+        "discoveryPropertyId": "disc_ds_cala_v1_finn_courtyard_pdc_2026",
+        "hotelNameRaw": "Courtyard by Marriott Playa del Carmen (ex Wyndham Garden)",
+        "hpcMatchStatus": "MATCHED",
+        "hpcHotel": [
+          "rechcqksn3VfFD3c6"
+        ],
+        "currentBrand": "Courtyard",
+        "identityClass": "VERIFIED_PROPERTY",
+        "country": "Mexico",
+        "city": "Playa del Carmen",
+        "address": "Avenida Aviación Lote 5 y 6 Manzana 29, Fraccionamiento Playacar Fase II",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_finn_courtyard_pdc_committed_2026 | action=HOTEL | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_OWNER_HQ | owner_verified=Fibra Inn (FINN13 / T",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": {
+        "airtableId": "recVfM6WjPHIIKp3V",
+        "findingId": "find_ds_cala_v1_finn_courtyard_pdc_committed_2026",
+        "discoveryProperty": [
+          "rec7o2TuInz6WdFAV"
+        ],
+        "findingType": "BRAND_AFFILIATION",
+        "fieldName": "COMMERCIAL_OPPORTUNITY_BCT",
+        "valueObserved": "BMV event: Wyndham Garden Playa del Carmen converts to Courtyard by Marriott with operations start 5 Oct 2026. | relevance=VERIFIED_RELEVANT | timing=ACTIVE_DECISION | priority=PRIORITY_B | first100=N",
+        "sourceUrl": "https://www.bmv.com.mx/docs-pub/eventfid/eventfid_1593193_1616_1.pdf",
+        "verificationStatus": "EVIDENCE_SUPPORTED",
+        "hpcPromotionStatus": "NOT_PROMOTED",
+        "relatedOrgName": "Fibra Inn",
+        "notesSnippet": "CUSTOMER_BLOCKED | DEALSIGNAL_CALA_V1 | COMMITTED | closed control | first100=NO || THESIS: | 1 What: Brand conversion to Courtyard completed/announced for Oct 2026 opening. | 2 Why: Pattern evidence "
+      },
+      "findingsLinkedToInventory": [],
+      "hpc": {
+        "ok": true,
+        "id": "rechcqksn3VfFD3c6",
+        "name": "Courtyard By Marriott Playa del Carmen Quintana Roo",
+        "canonicalName": "Courtyard By Marriott Playa del Carmen Quintana Roo",
+        "brand": "Courtyard by Marriott",
+        "brandFamily": "Marriott International",
+        "family": "Marriott",
+        "address": "Avenida Aviación Lote 5 y 6 Manzana 29, Fraccionamiento Playacar Fase II",
+        "city": "Playa del Carmen",
+        "country": "Mexico",
+        "officialUrl": "https://www.marriott.com/en-us/hotels/cunpy-courtyard-playa-del-carmen-quintana-roo/overview",
+        "affiliationStatus": "Branded",
+        "productionUseStatus": "Census Only / Not Owner-Facing",
+        "radarDisplayStatus": "Public List Eligible"
+      },
+      "hpcInventoryLinkOk": true,
+      "siblingHpc": {
+        "ok": true,
+        "id": "recf65FZ1FuVVqIrz",
+        "name": "Wyndham Garden Playa del Carmen",
+        "canonicalName": "Wyndham Garden Playa del Carmen",
+        "brand": "Wyndham Garden",
+        "brandFamily": "Wyndham Hotels & Resorts",
+        "family": "Wyndham",
+        "address": "Av Aviacion Lote 5 Manzana Colonia Playacar",
+        "city": "Playa del Carmen",
+        "country": "Mexico",
+        "officialUrl": "https://www.wyndhamhotels.com/wyndham-garden/playa-del-carmen-mexico/wy-garden-playa-del-carmen/overview",
+        "affiliationStatus": "Branded",
+        "productionUseStatus": "Census Only / Not Owner-Facing",
+        "radarDisplayStatus": "Hold"
+      },
+      "mismatchCause": null,
+      "hotelExplorer": {
+        "deepLinkTarget": "http://localhost:8080/app#/opportunity-radar (open HE by HPC rechcqksn3VfFD3c6)",
+        "hpcRecordId": "rechcqksn3VfFD3c6",
+        "status": "HPC_RESOLVABLE",
+        "note": "HE open-by-id is client-owned; Track C provides HPC ID only"
+      }
+    },
+    {
+      "label": "The Yucatán Resort Playa del Carmen",
+      "kind": "HOTEL",
+      "discoveryPropertyId": "disc_ds_cala_v1_fiho_yucatan_resort_2026",
+      "findingIdClaimed": "find_ds_cala_v1_fiho_yucatan_resort_lease_2026",
+      "trackACorpusHasFindingId": true,
+      "trackACorpusHasDiscoveryPropertyId": true,
+      "trackCInventedFinding": false,
+      "inventory": {
+        "airtableId": "recKfUmMDG5JJDUpP",
+        "discoveryPropertyId": "disc_ds_cala_v1_fiho_yucatan_resort_2026",
+        "hotelNameRaw": "The Yucatán Resort Playa del Carmen",
+        "hpcMatchStatus": "MATCHED",
+        "hpcHotel": [
+          "recY9Cxxo1iAbJgOt"
+        ],
+        "currentBrand": "Tapestry Collection by Hilton",
+        "identityClass": "VERIFIED_PROPERTY",
+        "country": "Mexico",
+        "city": "Playa del Carmen",
+        "address": "Avenida 1 Norte, entre 30 y 32, Gonzalo Guerrero",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_fiho_yucatan_resort_lease_2026 | action=HOTEL | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_OWNER_HQ | owner_verified=FibraHotel (FIHO 12 / Tr",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": {
+        "airtableId": "rec3YUdLkWthuLmrM",
+        "findingId": "find_ds_cala_v1_fiho_yucatan_resort_lease_2026",
+        "discoveryProperty": [
+          "recKfUmMDG5JJDUpP"
+        ],
+        "findingType": "OTHER",
+        "fieldName": "COMMERCIAL_SIGNAL_OTHER",
+        "valueObserved": "FIHO suspended operations at The Yucatán Resort Playa del Carmen on 30 Apr 2026 to include it in the lease portfolio (fixed-rent arrendamiento model), following Villahermosa and Ciudad del Carmen InHo",
+        "sourceUrl": "https://bmv.com.mx/docs-pub/eventfid/eventfid_1574632_1596_1.pdf",
+        "verificationStatus": "EVIDENCE_SUPPORTED",
+        "hpcPromotionStatus": "NOT_PROMOTED",
+        "relatedOrgName": "FibraHotel",
+        "notesSnippet": "CUSTOMER_BLOCKED | DEALSIGNAL_CALA_V1 | MEXICO | lease-model early engagement | first100=NO || THESIS: | 1 What: Owner closed the resort temporarily to shift it into fixed-rent lease portfolio. | 2 Wh"
+      },
+      "findingsLinkedToInventory": [],
+      "hpc": {
+        "ok": true,
+        "id": "recY9Cxxo1iAbJgOt",
+        "name": "The Yucatan Playa del Carmen, Tapestry Collection by Hilton",
+        "canonicalName": "The Yucatan Playa del Carmen, Tapestry Collection by Hilton",
+        "brand": "Tapestry Collection by Hilton",
+        "brandFamily": "Hilton",
+        "family": "Hilton",
+        "address": "Avenida 1 Norte, entre 30 y 32",
+        "city": "Playa del Carmen",
+        "country": "Mexico",
+        "officialUrl": "https://www.hilton.com/en/hotels/czmpdup-the-yucatan-playa-del-carmen/",
+        "affiliationStatus": "Soft-Branded / Collection",
+        "productionUseStatus": "Census Only / Not Owner-Facing",
+        "radarDisplayStatus": "Public Map Eligible"
+      },
+      "hpcInventoryLinkOk": true,
+      "siblingHpc": null,
+      "mismatchCause": null,
+      "hotelExplorer": {
+        "deepLinkTarget": "http://localhost:8080/app#/opportunity-radar (open HE by HPC recY9Cxxo1iAbJgOt)",
+        "hpcRecordId": "recY9Cxxo1iAbJgOt",
+        "status": "HPC_RESOLVABLE",
+        "note": "HE open-by-id is client-owned; Track C provides HPC ID only"
+      }
+    },
+    {
+      "label": "Holiday Inn Monterrey Valle",
+      "kind": "HOTEL",
+      "discoveryPropertyId": "disc_ds_cala_v1_finn_hi_monterrey_valle_2026",
+      "findingIdClaimed": "find_ds_cala_v1_finn_hi_monterrey_valle_2026",
+      "trackACorpusHasFindingId": false,
+      "trackACorpusHasDiscoveryPropertyId": false,
+      "trackCInventedFinding": true,
+      "inventory": {
+        "airtableId": "recybUV4mSeEBbkzs",
+        "discoveryPropertyId": "disc_ds_cala_v1_finn_hi_monterrey_valle_2026",
+        "hotelNameRaw": "Holiday Inn Monterrey Valle",
+        "hpcMatchStatus": "MATCHED",
+        "hpcHotel": [
+          "recJRNuLr8fEiGImt"
+        ],
+        "currentBrand": "Holiday Inn",
+        "historicalAliases": "Holiday Inn Monterrey Valle by IHG",
+        "identityClass": "VERIFIED_PROPERTY",
+        "country": "Mexico",
+        "city": "San Pedro Garza García",
+        "address": "Avenida Lázaro Cárdenas 2305, Colonia Residencial San Agustín",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_finn_hi_monterrey_valle_2026 | action=HOTEL | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_OWNER_HQ | owner_verified=Fibra Inn (FINN13 / Trust ",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": null,
+      "findingsLinkedToInventory": [],
+      "hpc": {
+        "ok": true,
+        "id": "recJRNuLr8fEiGImt",
+        "name": "Holiday Inn Monterrey Valle",
+        "canonicalName": "Holiday Inn Monterrey Valle",
+        "brand": "Holiday Inn",
+        "brandFamily": "IHG",
+        "family": "IHG",
+        "address": "Av Lázaro Cárdenas 2305, Residencial San Agustín 1er Sector, 66260 Monterrey, N.L.",
+        "city": "Monterrey",
+        "country": "Mexico",
+        "officialUrl": "https://www.ihg.com/holidayinn/hotels/us/en/monterrey/mtyzv/hoteldetail",
+        "affiliationStatus": "Branded",
+        "productionUseStatus": "Census Only / Not Owner-Facing",
+        "radarDisplayStatus": "Hold"
+      },
+      "hpcInventoryLinkOk": true,
+      "siblingHpc": null,
+      "mismatchCause": {
+        "code": "TRACK_C_SYNTHETIC_FINDING_ID_NEVER_IN_TRACK_A_CORPUS",
+        "detail": "Track C invented findingId + discoveryPropertyId for identity linking. Track A CALA Discovery V1 RESEARCH_CANDIDATES never emitted hotel-level findings for Monterrey Valle or Puebla La Noria — only portfolio-parent FINN internalization + named Courtyard/Yucatán/Cabo/Santander. Identity inventory exists; DealSignal finding row does not."
+      },
+      "hotelExplorer": {
+        "deepLinkTarget": "http://localhost:8080/app#/opportunity-radar (open HE by HPC recJRNuLr8fEiGImt)",
+        "hpcRecordId": "recJRNuLr8fEiGImt",
+        "status": "HPC_RESOLVABLE",
+        "note": "HE open-by-id is client-owned; Track C provides HPC ID only"
+      }
+    },
+    {
+      "label": "Holiday Inn Puebla La Noria",
+      "kind": "HOTEL",
+      "discoveryPropertyId": "disc_ds_cala_v1_finn_hi_puebla_la_noria_2026",
+      "findingIdClaimed": "find_ds_cala_v1_finn_hi_puebla_la_noria_2026",
+      "trackACorpusHasFindingId": false,
+      "trackACorpusHasDiscoveryPropertyId": false,
+      "trackCInventedFinding": true,
+      "inventory": {
+        "airtableId": "recWSdTxyluZJuBdy",
+        "discoveryPropertyId": "disc_ds_cala_v1_finn_hi_puebla_la_noria_2026",
+        "hotelNameRaw": "Holiday Inn Puebla La Noria",
+        "hpcMatchStatus": "MATCHED",
+        "hpcHotel": [
+          "recfpT5RJBZAORXs2"
+        ],
+        "currentBrand": "Holiday Inn",
+        "historicalAliases": "Holiday Inn Puebla La Noria Hotel; Holiday Inn La Noria",
+        "identityClass": "VERIFIED_PROPERTY",
+        "country": "Mexico",
+        "city": "Puebla",
+        "address": "Circuito Interior Juan Pablo II 1936, Col. Ex-Hacienda La Noria",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_finn_hi_puebla_la_noria_2026 | action=HOTEL | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_OWNER_HQ | owner_verified=Fibra Inn (FINN13 / Trust ",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": null,
+      "findingsLinkedToInventory": [],
+      "hpc": {
+        "ok": true,
+        "id": "recfpT5RJBZAORXs2",
+        "name": "Holiday Inn Puebla La Noria",
+        "canonicalName": "Holiday Inn Puebla La Noria",
+        "brand": "Holiday Inn",
+        "brandFamily": "IHG",
+        "family": "IHG",
+        "address": "CIRC. INTERIOR JUAN PABLO II : 1936",
+        "city": "Puebla",
+        "country": "Mexico",
+        "officialUrl": "https://www.ihg.com/holidayinn/hotels/us/en/puebla/pueln/hoteldetail",
+        "affiliationStatus": "Branded",
+        "productionUseStatus": "Census Only / Not Owner-Facing",
+        "radarDisplayStatus": "Hold"
+      },
+      "hpcInventoryLinkOk": true,
+      "siblingHpc": null,
+      "mismatchCause": {
+        "code": "TRACK_C_SYNTHETIC_FINDING_ID_NEVER_IN_TRACK_A_CORPUS",
+        "detail": "Track C invented findingId + discoveryPropertyId for identity linking. Track A CALA Discovery V1 RESEARCH_CANDIDATES never emitted hotel-level findings for Monterrey Valle or Puebla La Noria — only portfolio-parent FINN internalization + named Courtyard/Yucatán/Cabo/Santander. Identity inventory exists; DealSignal finding row does not."
+      },
+      "hotelExplorer": {
+        "deepLinkTarget": "http://localhost:8080/app#/opportunity-radar (open HE by HPC recfpT5RJBZAORXs2)",
+        "hpcRecordId": "recfpT5RJBZAORXs2",
+        "status": "HPC_RESOLVABLE",
+        "note": "HE open-by-id is client-owned; Track C provides HPC ID only"
+      }
+    },
+    {
+      "label": "Fibra Inn internalization parent",
+      "kind": "PARENT",
+      "discoveryPropertyId": "disc_ds_cala_v1_finn_internalization_parent_2026",
+      "findingIdClaimed": "find_ds_cala_v1_finn_internalization_franchise_2026",
+      "trackACorpusHasFindingId": true,
+      "trackACorpusHasDiscoveryPropertyId": true,
+      "trackCInventedFinding": false,
+      "inventory": {
+        "airtableId": "rec246OEIvYAfRJFD",
+        "discoveryPropertyId": "disc_ds_cala_v1_finn_internalization_parent_2026",
+        "hotelNameRaw": "Fibra Inn — Internalization + Franchise Flexibility Portfolio (parent)",
+        "hpcMatchStatus": "DISCOVERED_NOT_IN_HPC",
+        "hpcHotel": [],
+        "identityClass": "GENERIC_BRAND_OR_COMPANY",
+        "country": "Mexico",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_finn_internalization_franchise_2026 | action=PARENT_ONLY | skipHpc=PORTFOLIO_PARENT_NOT_HOTEL | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_OW",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": {
+        "airtableId": "recp0bShKmxpOFQ2N",
+        "findingId": "find_ds_cala_v1_finn_internalization_franchise_2026",
+        "discoveryProperty": [
+          "rec246OEIvYAfRJFD"
+        ],
+        "findingType": "OTHER",
+        "fieldName": "COMMERCIAL_SIGNAL_OTHER",
+        "valueObserved": "Fibra Inn completed internalization of operations for 28 hotels (Jan 15, 2026) via Aimbridge Latam termination (Ps.172.3m). Governance policy: upon expiration of remaining third-party HMAs, hotels fol",
+        "sourceUrl": "https://fibrainn.mx/storage/docs/fibra-inn-finaliza-proceso-de-internalizacion-de-la-operacion-en-28-hoteles.pdf",
+        "verificationStatus": "EVIDENCE_SUPPORTED",
+        "hpcPromotionStatus": "NOT_PROMOTED",
+        "relatedOrgName": "Fibra Inn (Trust DB/1616)",
+        "notesSnippet": "CUSTOMER_BLOCKED | DEALSIGNAL_CALA_V1 | MEXICO | PORTFOLIO_PARENT | first100=NO | MCT largely closed; BCT franchise path open || THESIS: | 1 What: Mexican hotel FIBRA internalized day-to-day ops for 2"
+      },
+      "findingsLinkedToInventory": [],
+      "hpc": null,
+      "hpcInventoryLinkOk": null,
+      "siblingHpc": null,
+      "mismatchCause": null,
+      "hotelExplorer": {
+        "status": "NOT_APPLICABLE_NO_HOTEL_HPC"
+      }
+    },
+    {
+      "label": "Cabo Rojo destination parent",
+      "kind": "PARENT",
+      "discoveryPropertyId": "disc_ds_cala_v1_cabo_rojo_puntacana_2026",
+      "findingIdClaimed": "find_ds_cala_v1_cabo_rojo_puntacana_committed_2026",
+      "trackACorpusHasFindingId": true,
+      "trackACorpusHasDiscoveryPropertyId": true,
+      "trackCInventedFinding": false,
+      "inventory": {
+        "airtableId": "recHxLD2MNFyj3U1d",
+        "discoveryPropertyId": "disc_ds_cala_v1_cabo_rojo_puntacana_2026",
+        "hotelNameRaw": "Cabo Rojo / Pedernales Tourism Destination — Strategic Partner (portfolio parent)",
+        "hpcMatchStatus": "DISCOVERED_NOT_IN_HPC",
+        "hpcHotel": [],
+        "identityClass": "GENERIC_BRAND_OR_COMPANY",
+        "country": "Dominican Republic",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_cabo_rojo_puntacana_committed_2026 | action=PARENT_ONLY | skipHpc=DESTINATION_PARENT_NOT_HOTEL | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_O",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": {
+        "airtableId": "recgql2bLPxnck3SJ",
+        "findingId": "find_ds_cala_v1_cabo_rojo_puntacana_committed_2026",
+        "discoveryProperty": [
+          "recHxLD2MNFyj3U1d"
+        ],
+        "findingType": "OTHER",
+        "fieldName": "COMMERCIAL_SIGNAL_OTHER",
+        "valueObserved": "Pro-Pedernales awarded Consorcio Cabo Rojo (Grupo Puntacana, AFI Reservas, AFI Popular) as strategic minority partner for development/operation/maintenance of Cabo Rojo destination (FID-SE-0001). Fitu",
+        "sourceUrl": "https://propedernales.do/licitacion-adjudica-a-consorcio-cabo-rojo-encabezado-por-grupo-puntacana-como-socio-minoritario-del-gobierno-para-el-desarrollo-turistico-de-pedernales/",
+        "verificationStatus": "EVIDENCE_SUPPORTED",
+        "hpcPromotionStatus": "NOT_PROMOTED",
+        "relatedOrgName": "Consorcio Cabo Rojo / Grupo Puntacana",
+        "notesSnippet": "CUSTOMER_BLOCKED | DEALSIGNAL_CALA_V1 | DO | COMMITTED destination partner | residual brand pipeline | first100=NO || THESIS: | 1 What: National tourism destination PPP partner selected. | 2 Why: Futu"
+      },
+      "findingsLinkedToInventory": [],
+      "hpc": null,
+      "hpcInventoryLinkOk": null,
+      "siblingHpc": null,
+      "mismatchCause": null,
+      "hotelExplorer": {
+        "status": "NOT_APPLICABLE_NO_HOTEL_HPC"
+      }
+    },
+    {
+      "label": "Santander concession watch",
+      "kind": "UNRESOLVED",
+      "discoveryPropertyId": "disc_ds_cala_v1_santander_concession_watch_2026",
+      "findingIdClaimed": "find_ds_cala_v1_santander_concession_watch_2026",
+      "trackACorpusHasFindingId": true,
+      "trackACorpusHasDiscoveryPropertyId": true,
+      "trackCInventedFinding": false,
+      "inventory": {
+        "airtableId": "recYZAjXjFc0XrEEH",
+        "discoveryPropertyId": "disc_ds_cala_v1_santander_concession_watch_2026",
+        "hotelNameRaw": "Departamento de Santander — 20-year operación/administración concesión (identity TBD)",
+        "hpcMatchStatus": "DISCOVERED_NOT_IN_HPC",
+        "hpcHotel": [],
+        "identityClass": "AMBIGUOUS_PROPERTY",
+        "country": "Colombia",
+        "city": "Bucaramanga",
+        "notesSnippet": "CUSTOMER_BLOCKED | Track C CALA Discovery V1 identity | handoffFrom=DEALSIGNAL_CALA_DISCOVERY_V1 | finding=find_ds_cala_v1_santander_concession_watch_2026 | action=UNRESOLVED | skipHpc=HOTEL_IDENTITY_UNPROVEN | do_not_requalify_commercial | geography=HOTEL_PROPERTY_NOT_OWNER_HQ |",
+        "publicationState": "CUSTOMER_BLOCKED"
+      },
+      "inventoryDuplicateCount": 1,
+      "findingByClaimedId": {
+        "airtableId": "recG3XFQSxrnI3VK7",
+        "findingId": "find_ds_cala_v1_santander_concession_watch_2026",
+        "discoveryProperty": [
+          "recYZAjXjFc0XrEEH"
+        ],
+        "findingType": "OTHER",
+        "fieldName": "COMMERCIAL_SIGNAL_OTHER",
+        "valueObserved": "SECOP II licitación AD-LP-26-05: 20-year concesión for operación, administración, mantenimiento and explotación económica of a departmental inmueble; offer close 26 Nov 2026. Hotel identity not confir",
+        "sourceUrl": "https://procesosecop.com/proceso/CO1.REQ.11369786",
+        "verificationStatus": "EVIDENCE_SUPPORTED",
+        "hpcPromotionStatus": "NOT_PROMOTED",
+        "relatedOrgName": "Departamento de Santander",
+        "notesSnippet": "CUSTOMER_BLOCKED | DEALSIGNAL_CALA_V1 | CO | WATCHLIST | hotel identity TBD | false-positive control | first100=NO || THESIS: | 1 What: Public 20-year ops/admin concession tender in Santander. | 2 Why"
+      },
+      "findingsLinkedToInventory": [],
+      "hpc": null,
+      "hpcInventoryLinkOk": null,
+      "siblingHpc": null,
+      "mismatchCause": null,
+      "hotelExplorer": {
+        "status": "NOT_APPLICABLE_NO_HOTEL_HPC"
+      }
+    }
+  ],
+  "proposedRelationshipCorrections": [
+    {
+      "id": "CORR_1_MONTERREY_PUEBLA_FINDING_ALIGNMENT",
+      "severity": "NAVIGATION",
+      "action": "MAPPING_ONLY",
+      "liveWriteRequired": false,
+      "description": "Treat find_ds_cala_v1_finn_hi_monterrey_valle_2026 and find_ds_cala_v1_finn_hi_puebla_la_noria_2026 as NON-CORPUS alias labels stored only in inventory notes — not DealSignal Finding IDs. DealSignal card navigation for these hotels should use parent finding find_ds_cala_v1_finn_internalization_franchise_2026 (historical franchise/conversion evidence) while hotel identity continues via disc_ds_cala_v1_finn_hi_* → HPC. Optionally later: Track A may authorize true hotel-level findings with new IDs — do not duplicate now."
+    },
+    {
+      "id": "CORR_2_VERIFY_COURTYARD_YUCATAN_FINDING_LINKS",
+      "severity": "RELATIONSHIP",
+      "action": "IF_UNLINKED_PATCH_FINDING_DISCOVERY_PROPERTY",
+      "liveWriteRequired": true,
+      "requiresFounderApproval": true,
+      "description": "If Courtyard/Yucatán findings exist but Discovery Property link ≠ matched inventory, PATCH link only (preserve Finding ID, source URL, evidence). No new findings."
+    },
+    {
+      "id": "CORR_3_COURTYARD_WYNDHAM_STEWARDSHIP",
+      "severity": "IDENTITY",
+      "action": "ALIAS_RELATIONSHIP_DOC_ONLY",
+      "liveWriteRequired": false,
+      "requiresFounderApprovalForMerge": true,
+      "description": "Canonical current brand record = rechcqksn3VfFD3c6 (Courtyard). Historical = recf65FZ1FuVVqIrz (Wyndham Garden). Same physical Playacar property. Recommend steward alias / DUPLICATE_ALIAS inventory note; do NOT merge/delete without separate founder approval."
+    }
+  ],
+  "unresolvedEvidenceRequired": [
+    {
+      "entity": "Santander Bucaramanga",
+      "need": "Official SECOP II pliego confirming hotel use of the departmental inmueble",
+      "doNot": "Create HPC from aggregator listing alone"
+    },
+    {
+      "entity": "Cabo Rojo",
+      "need": "Named individual hotel brands/operators within destination",
+      "doNot": "Create destination as hotel HPC"
+    },
+    {
+      "entity": "Fibra Inn internalization portfolio",
+      "need": "None for hotel identity — keep as PARENT; hotel-level facts live on Courtyard/HI records",
+      "doNot": "Treat parent as hotel"
+    },
+    {
+      "entity": "Yucatán Resort operator",
+      "need": "FIHO disclosure naming lease counterparty / brand under arrendamiento",
+      "doNot": "Infer Playa Hotels & Resorts as current operator after Apr 2026 suspension"
+    }
+  ],
+  "requestedAirtableMutationsForApproval": []
+}
