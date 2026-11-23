@@ -915,7 +915,7 @@ export async function getGdiOpportunities(req, res) {
           message:
             "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel, CURRENT published inventory, or live research.",
           founderMessage:
-            "No staged version available for this hotel.",
+            "No opportunities are available for this property in the selected preview.",
           hotelId,
           publication: pkgResolved.meta || null,
           detail: pkgResolved.detail || null,
@@ -943,7 +943,7 @@ export async function getGdiOpportunities(req, res) {
           message:
             "Authenticated founder preview requested CURRENT publication package, but none is available for this hotel. Refusing to fall back to STAGED, another hotel, or live research.",
           founderMessage:
-            "No published version available for this hotel.",
+            "No opportunities are available for this property yet.",
           hotelId,
           publication: pkgResolved.meta || null,
           detail: pkgResolved.detail || null,
