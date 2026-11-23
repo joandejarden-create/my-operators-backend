@@ -75,7 +75,7 @@ Sales Ready / Market Scope **unchanged**.
 
 ---
 
-## 5. Tests and CI status (local)
+## 5. Tests and CI status
 
 | Check | Result |
 |---|---|
@@ -83,21 +83,21 @@ Sales Ready / Market Scope **unchanged**.
 | `test:gdi-customer-ui-regression-inventory-contacts-v1` | PASS (+ restriction / auth cases) |
 | `test:gdi-missing-inventory-empty-state-v1` | PASS |
 | `test:gdi-founder-preview-missing-staged-nav-v1` | PASS |
-| `test:gdi-opportunity-card-quality-v1` | PASS |
-| `test:gdi-market-scope-toggle-v1` | PASS |
-| Full GDI recovery suite scripts | PASS |
+| Full GDI recovery suite (`test:gdi-regression-recovery-v1`) | PASS |
 | Card dedupe | By stable opportunity **id** only (no title/org collapse) |
-
-Await GitHub Actions green on the updated PR head.
+| GitHub `GDI recovery regression suite` | **PASS** |
+| GitHub gitleaks + ADP/Radar/mirror/research-audit checks | **PASS** |
 
 ---
 
 ## 6. Final PR HEAD and merge readiness
 
 - Worktree: `C:\Users\joand\AppData\Local\Temp\dealality-gdi-ui-regression-v1-1-20261123`
-- Branch pushed to update **PR #575** head (`feat/gdi-customer-ui-regression-inventory-contacts-v1`)
-- Dirty `ws-gdi` preserved
+- PR: https://github.com/joandejarden-create/my-operators-backend/pull/575
+- HEAD: `fa6008c74f25b1a77dbc5c47331a6397b8b3f557`
+- Branch: `feat/gdi-customer-ui-regression-inventory-contacts-v1`
+- Dirty `ws-gdi` preserved (not used for this fix)
 - Integration Controller owns merge
-- **Merge readiness:** READY after GitHub CI green on latest HEAD
+- **Merge readiness: READY_FOR_INTEGRATION_CONTROLLER**
 
-**STOP** if CI fails or authorization protections cannot be verified. Otherwise hand **PR #575** to Integration Controller.
+Hand **PR #575** to Integration Controller for controlled merge.
