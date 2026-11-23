@@ -1,0 +1,32 @@
+{
+  "asOf": "2026-11-23T10:00:00.000Z",
+  "batchDir": "reports/sec-edgar-hif-track-b-decision-window-v4",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "coverageAudit54": {
+    "reApplied": false,
+    "note": "tb_gsca_* IDs not present in this batch; prior 54 records left untouched"
+  },
+  "firstApplyCore": {
+    "creates": 33,
+    "noops": 3,
+    "failures": 4,
+    "inventory": 9,
+    "findings": 12,
+    "contracts": 12,
+    "milestones": 0,
+    "note": "Milestone creates initially failed on invalid Milestone Type select options; inventory/findings/contracts succeeded"
+  },
+  "milestoneRepairApply": {
+    "creates": 4,
+    "noops": 36,
+    "failures": 0,
+    "milestones": 4,
+    "note": "Used COMMENCEMENT/TERMINATION/OTHER only (existing Airtable choices)"
+  },
+  "finalIdempotencyReApply": {
+    "creates": 0,
+    "noops": 40,
+    "failures": 0,
+    "milestones": 0
+  }
+}

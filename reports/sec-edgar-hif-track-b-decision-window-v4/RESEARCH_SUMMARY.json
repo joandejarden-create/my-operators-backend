@@ -1,0 +1,155 @@
+{
+  "asOf": "2026-11-23T09:57:05.793Z",
+  "wave": "B25",
+  "pr556": {
+    "state": "MERGED",
+    "mergeCommit": "05b9d23162e3f5e9e94547494010db9e6236ae78"
+  },
+  "pr549": {
+    "state": "MERGED",
+    "note": "Same merge commit as #556 — content superseded/included"
+  },
+  "coverage": {
+    "asOf": "2026-11-23T09:57:05.793Z",
+    "baseline": {
+      "DISCOVERED": 11940,
+      "RETRIEVED_CHECKPOINT": 50,
+      "EXTRACTED": 50,
+      "EXHIBITS_ENUMERATED": 47,
+      "EXHIBITS_PROCESSED": 28,
+      "CACHE_FILES": 72
+    },
+    "stages": {
+      "DISCOVERED": 11940,
+      "RETRIEVED": 50,
+      "EXTRACTED": 50,
+      "PROPERTY_MATCHED": "PARTIAL — prior waves + this batch PENDING_HPC_SEARCH",
+      "CONTRACT_VERIFIED": 12,
+      "DECISION_WINDOW_ASSESSED": 16,
+      "CUSTOMER_ELIGIBLE": 0
+    },
+    "dedupNotes": [
+      "Eligible filing accessions are inventory units; amended filings / exhibits / identical contracts are not separate opportunities.",
+      "Coverage-audit APLE/RHP 54 Airtable records are NOT re-applied.",
+      "Desert Ridge analysis dossier is persistEligible=false to avoid duplicate contract rows.",
+      "SVC Hyatt 17 / Radisson 7 are portfolio watches (unnamed hotels) — staged only."
+    ],
+    "thisWaveDocumentsExamined": [
+      {
+        "registrant": "DiamondRock Hospitality",
+        "form": "10-K YE2025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1298946/000129894626000013/drh-20251231.htm",
+        "yield": "HIGH — hotel-level franchise + HMA tables"
+      },
+      {
+        "registrant": "Service Properties Trust",
+        "form": "10-K YE2025",
+        "url": "https://www.sec.gov/Archives/edgar/data/945394/000094539426000012/svc-20251231.htm",
+        "yield": "MEDIUM — named Crowne Plaza IHG day-exact; Hyatt/Radisson portfolios unnamed"
+      },
+      {
+        "registrant": "Host Hotels & Resorts",
+        "form": "10-K YE2025",
+        "yield": "LOW — no hotel-level franchise/HMA expiry schedule in examined sections"
+      },
+      {
+        "registrant": "Sunstone Hotel Investors",
+        "form": "10-K YE2025",
+        "yield": "LOW — distant HMA years 2041/2048; no near-term hotel schedule"
+      },
+      {
+        "registrant": "Ashford Hospitality Trust",
+        "form": "10-K YE2025",
+        "yield": "LOW — franchise 2026–2049 / HMA 2026–2038 ranges only; no hotel-level table extracted"
+      },
+      {
+        "registrant": "Ryman (Desert Ridge deep dive)",
+        "form": "10-K YE2025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1040829/000110465926019035/rhp-20251231x10k.htm",
+        "yield": "ANALYSIS — auto-renewal mechanics; class D not E"
+      },
+      {
+        "registrant": "Pebblebrook / Chatham",
+        "form": "prior ISE wave",
+        "yield": "SKIP — already commercially assessed in #556; avoid re-extraction"
+      }
+    ]
+  },
+  "rankedQueue": [
+    {
+      "rank": 1,
+      "registrant": "diamondrock-hospitality",
+      "rationale": "Named hotel franchise + HMA tables with month precision and at-will flags — highest decision-window density",
+      "status": "PROCESSED_THIS_WAVE"
+    },
+    {
+      "rank": 2,
+      "registrant": "service-properties-trust",
+      "rationale": "Day-exact portfolio/IHG HMA dates; need named-hotel schedule for Hyatt/Radisson",
+      "status": "PARTIAL_THIS_WAVE"
+    },
+    {
+      "rank": 3,
+      "registrant": "pebblebrook-hotel-trust",
+      "rationale": "Prior ISE: Margaritaville HMA terminable Sep 2026 — do not reprocess",
+      "status": "PRIOR_WAVE_COMPLETE"
+    },
+    {
+      "rank": 4,
+      "registrant": "chatham-lodging-trust",
+      "rationale": "Prior ISE: 33 franchise years + Holtsville 2026 — do not reprocess",
+      "status": "PRIOR_WAVE_COMPLETE"
+    },
+    {
+      "rank": 5,
+      "registrant": "ashford-hospitality-trust",
+      "rationale": "Largest eligible inventory but YE2025 10-K lacks hotel-level schedule; next=EX-10 search not mass 8-K",
+      "status": "DEFERRED_EX10"
+    },
+    {
+      "rank": 6,
+      "registrant": "host-hotels-resorts",
+      "rationale": "No hotel-level expiry table in YE2025 examined sections; next=specific EX-10/termination exhibits",
+      "status": "DEFERRED_EX10"
+    },
+    {
+      "rank": 7,
+      "registrant": "sunstone-hotel-investors",
+      "rationale": "Long-dated HMAs only in examined sections; low near-term yield",
+      "status": "DEPRIORITIZED"
+    }
+  ],
+  "windowClassCounts": {
+    "D_POTENTIAL_DECISION_WINDOW": 8,
+    "C_FORWARD_CONTRACTUAL_WATCH": 2,
+    "A_HISTORICAL_COMPLETED": 3,
+    "B_ACTIVE_NO_NEAR_TERM": 3
+  },
+  "gapTest": {
+    "dossiers": 16,
+    "persistEligible": 12,
+    "staged": 4
+  },
+  "yieldMetrics": {
+    "documentsExamined": 7,
+    "documentsYieldingVerifiedHotelFacts": 2,
+    "newUniqueHotelFactsPersistable": 12,
+    "historicalCompleted": 3,
+    "futureContractualWatches": 5,
+    "potentialDecisionWindows": 8,
+    "verifiedActionableOpportunities": 0,
+    "canonicalHotelsMatched": 0,
+    "ownerOperatorAttribution": "Owner=DRH/SVC/RHP on all; operator named on HMA rows; franchisor brand-level",
+    "duplicatesAvoided": [
+      "coverage-audit 54 not re-applied",
+      "Desert Ridge contract not re-persisted",
+      "PEB/CLDT prior ISE not re-extracted"
+    ],
+    "researchCostUsd": 0,
+    "productiveFindingsPerDocument": 2.4,
+    "costPerUsefulSignal": 0,
+    "note": "Contract facts ≠ conversion opportunities. E count is intentionally 0."
+  },
+  "publicationState": "CUSTOMER_BLOCKED",
+  "researchCostUsd": 0
+}
