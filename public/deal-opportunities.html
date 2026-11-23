@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/css/dealality-wave-loader.css?v=3" />
 <link rel="stylesheet" href="/css/hotel-explorer.css?v=59" />
 <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=44" />
-<link rel="stylesheet" href="/css/deal-opportunities.css?v=18" />
+<link rel="stylesheet" href="/css/deal-opportunities.css?v=19" />
 <script>
 (function () {
   try {
@@ -65,22 +65,24 @@
       <label class="filter-label" for="q">Search</label>
       <div class="dop-search-field">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input class="filter-input" id="q" aria-label="Search opportunities" placeholder="Search hotel, owner, market…" />
+        <input class="filter-input" id="q" aria-label="Search opportunities" placeholder="Search hotel, owner, region, country…" />
       </div>
     </div>
     <div class="filter-group">
-      <label class="filter-label" for="region">Market</label>
-      <select class="filter-select" id="region" aria-label="Market">
-        <option value="all">All Markets</option>
-        <option value="US">United States</option>
-        <option value="Caribbean">Caribbean</option>
-        <option value="India">India</option>
-        <option value="Other">Other International</option>
+      <label class="filter-label" for="region">Region</label>
+      <select class="filter-select" id="region" aria-label="Region">
+        <option value="all">All Regions</option>
+        <option value="Europe">Europe</option>
+        <option value="CALA">CALA</option>
+        <option value="North America">North America</option>
+        <option value="Middle East &amp; Africa">Middle East &amp; Africa</option>
+        <option value="Asia Pacific">Asia Pacific</option>
+        <option value="Other">Other / Unspecified</option>
       </select>
     </div>
     <div class="filter-group">
       <label class="filter-label" for="country">Country</label>
-      <select class="filter-select" id="country" aria-label="Country">
+      <select class="filter-select" id="country" aria-label="Country — filtered by Region">
         <option value="all">All Countries</option>
       </select>
     </div>
@@ -379,7 +381,12 @@
     "Independent",
   ];
 
-  const CHAIN_SCALE_FALLBACK = "#6c72ff";
+  /** Neutral unknown — never use opportunity-type accent as a chain-scale stand-in. */
+  const CHAIN_SCALE_UNKNOWN_FILL =
+    (window.DealalityChainScaleTheme && window.DealalityChainScaleTheme.UNKNOWN_SCALE_FILL) || "#334155";
+  const CHAIN_SCALE_UNKNOWN_OUTLINE =
+    (window.DealalityChainScaleTheme && window.DealalityChainScaleTheme.UNKNOWN_SCALE_OUTLINE) || "#64748b";
+  const CHAIN_SCALE_INDEPENDENT = "#94a3b8";
 
   /** Brand / name → STR-style chain scale (soft-brand / flag patterns before parent flags). */
   const BRAND_SCALE_RULES = [
@@ -447,6 +454,9 @@
     metrics: null,
     brandLogoMap: {},
     brandLogoNames: [],
+    brandScaleMap: {},
+    brandScaleNames: [],
+    missingChainScaleIds: [],
     activeFilter: "qualified",
     chainScaleFilter: "all",
     sortKey: "name",
@@ -552,6 +562,238 @@
     if (!t) return "";
     if (/^[A-Za-z]{2}$/.test(t)) return t.toUpperCase();
     return toProperCase(t);
+  }
+
+  /**
+   * Presentation-only identity for the first column / card header.
+   * Does not mutate canonical o.name (sort/search/drawer keep raw values).
+   */
+  function pushChip(chips, label) {
+    const t = String(label || "").trim();
+    if (!t) return;
+    if (chips.some((c) => c.toLowerCase() === t.toLowerCase())) return;
+    chips.push(t);
+  }
+
+  function mapParenLabelToChip(raw, chips) {
+    const p = String(raw || "").trim();
+    if (!p) return;
+    if (/^revive$/i.test(p)) return pushChip(chips, "REVIVE");
+    if (/management\s+ending/i.test(p)) return pushChip(chips, "Management Ending");
+    if (/aimbridge|mct\s+replacement|portfolio/i.test(p)) return pushChip(chips, "Portfolio");
+    if (/fox\s*group/i.test(p)) return pushChip(chips, "Fox Group");
+    if (/gipuzkoa|andaluc[ií]a|sevilla|pateira|g[oó]is/i.test(p)) {
+      return pushChip(chips, toProperCase(p));
+    }
+    if (/^~?\d+\s*keys?$/i.test(p)) {
+      const n = p.match(/\d+/);
+      return pushChip(chips, n ? `~${n[0]} keys` : p);
+    }
+    // Skip city/state location parens — Market column already shows geography
+    if (/,/.test(p) || /\b(sp|sp\.|uk|usa|us)\b/i.test(p)) return;
+    // Short program / owner labels stay as chips; long prose is dropped from title
+    if (p.length <= 28 && !/\bwith\b|\bfor\b|\bfrom\b/i.test(p)) {
+      return pushChip(chips, toProperCase(p));
+    }
+  }
+
+  function stripDescriptiveDashSuffix(title, chips) {
+    const parts = String(title || "").split(/\s+[—–-]\s+/);
+    if (parts.length < 2) return String(title || "").trim();
+    const head = parts[0].trim();
+    const tail = parts.slice(1).join(" — ").trim();
+
+    function keepDashTail(text) {
+      // Preserve original casing when already mixed; only light-clean all-lowercase tails
+      const t = String(text || "").trim();
+      if (!t) return t;
+      if (t !== t.toLowerCase() && t !== t.toUpperCase()) return t;
+      return toProperCase(t);
+    }
+
+    // Keep asset-identifying site suffixes (Baha Mar — Fourth Hotel on Former Meliá…)
+    if (
+      /fourth hotel|former .+ site|hotel on |at embassy|casa da |fazenda /i.test(tail) &&
+      !/municipal|hostelero|room accommodation|tourism concession/i.test(tail)
+    ) {
+      let keep = tail.replace(/\s+tourism concession.*$/i, "").trim();
+      return `${head} — ${keepDashTail(keep)}`.replace(/\s+/g, " ").trim();
+    }
+
+    // "Revive Brasil — Fazenda Pau D'Alho tourism concession" → keep Fazenda name
+    if (/^fazenda\b/i.test(tail)) {
+      const asset = tail.replace(/\s+tourism concession.*$/i, "").trim();
+      pushChip(chips, "Concession");
+      return `${head} — ${keepDashTail(asset)}`.replace(/\s+/g, " ").trim();
+    }
+
+    if (/municipal|hostelero|room accommodation|alojamiento|bar-restaurante|centro de d[ií]a/i.test(tail)) {
+      pushChip(chips, "Municipal Lodging");
+      return head;
+    }
+    if (/eco-hotel|passivhaus/i.test(tail)) {
+      pushChip(chips, "Eco Hotel");
+      return head;
+    }
+    if (/tourism concession|\bconcession\b/i.test(tail)) {
+      pushChip(chips, "Concession");
+      return head;
+    }
+    if (/mct replacement|portfolio/i.test(tail)) {
+      pushChip(chips, "Portfolio");
+      return head;
+    }
+
+    // Short location qualifier already covered by Market column
+    if (tail.length <= 40 && /beach|island|balmoral|cable|downtown|airport|\//i.test(tail)) {
+      pushChip(chips, toProperCase(tail.split("/")[0].trim()));
+      return head;
+    }
+
+    if (tail.length > 48) {
+      return head;
+    }
+
+    return `${head} — ${toProperCase(tail)}`.replace(/\s+/g, " ").trim();
+  }
+
+  function opportunitySubtitle(o) {
+    const brandKey = opportunityBrandKey(o);
+    const subRaw = String(o?.sub || "").trim();
+    const cleanedSub = cleanBrandLabel(subRaw.replace(/\s*\([^)]*management\s+ending[^)]*\)/i, "").trim());
+    const isEnum = isBrandEnum(subRaw) || /^brand_affiliation$/i.test(subRaw);
+
+    if (/portfolio/i.test(String(o?.type || "")) || (o?.relatedHotels || []).length > 1) {
+      if (cleanedSub && !isEnum) {
+        // Compress "Marriott / Hilton / IHG premium select-service flags"
+        const compact = cleanedSub
+          .replace(/\s+premium select-service flags?/i, "")
+          .replace(/\s+flags?/i, "")
+          .trim();
+        if (compact && compact.length <= 42) return compact;
+      }
+      return "Portfolio";
+    }
+
+    if (isIndependentBrand(subRaw) || isIndependentBrand(cleanedSub)) return "Independent";
+
+    // Prefer brand name when it is a real affiliation (keep family tags like Kimpton (IHG))
+    const brandDisplay = String(subRaw || "")
+      .replace(/\s*\([^)]*management\s+ending[^)]*\)/i, "")
+      .trim();
+    if (
+      brandDisplay &&
+      !isEnum &&
+      !/^other$/i.test(brandDisplay) &&
+      brandDisplay.length <= 42 &&
+      !/^management$/i.test(brandDisplay) &&
+      !/^brand\s*conversion$/i.test(brandDisplay)
+    ) {
+      return brandDisplay;
+    }
+
+    if (o?.kind === "MCT") return "Management";
+    if (o?.kind === "BCT" || isEnum) return "Brand Affiliation";
+    if (o?.type) return toProperCase(o.type);
+    return brandKey !== "__unspecified__" ? toProperCase(o.sub) : "Commercial";
+  }
+
+  function inferAssetChips(o, title, chips) {
+    const name = String(o?.name || "");
+    const sub = String(o?.sub || "");
+    const blob = [name, sub, o?.type, title].join(" ");
+    if (/revive/i.test(blob)) pushChip(chips, "REVIVE");
+    if (/management\s+ending/i.test(sub) || /management\s+ending/i.test(name)) {
+      pushChip(chips, "Management Ending");
+    }
+    if (/portfolio|aimbridge|\bahip\b/i.test(blob)) pushChip(chips, "Portfolio");
+    if (
+      /municipal|hostelero|demanial|ostatu|centro de d[ií]a/i.test(blob) &&
+      !chips.some((c) => /municipal/i.test(c))
+    ) {
+      pushChip(chips, "Municipal");
+    }
+    if (/baha\s*mar|voir\s*beach/i.test(name)) pushChip(chips, "Strategic");
+    if (/midmarket|select-service/i.test(blob) && /ahip|aimbridge|portfolio/i.test(blob)) {
+      pushChip(chips, "Midmarket");
+    }
+    if (/\b(12-room|19 rooms|~?1[0-9]\s*rooms|boutique)\b/i.test(blob)) {
+      pushChip(chips, "Small Asset");
+    }
+    const roomsFact = (o?.facts || []).find(([l]) => /rooms|keys/i.test(String(l || "")));
+    if (roomsFact && roomsFact[1]) {
+      const n = String(roomsFact[1]).match(/(\d+)/);
+      if (n) pushChip(chips, `~${n[1]} keys`);
+    }
+  }
+
+  function formatOpportunityIdentity(o) {
+    const chips = [];
+    let raw = String(o?.name || "").trim() || "Unnamed opportunity";
+
+    // Pull key counts out of the title first
+    raw = raw.replace(/\(?\s*~?\s*(\d+)\s*-?\s*keys?\s*\)?/gi, (_, n) => {
+      pushChip(chips, `~${n} keys`);
+      return " ";
+    });
+
+    // Parenthetical program / owner / location labels → chips
+    const parens = [];
+    raw.replace(/\(([^)]+)\)/g, (_, inner) => {
+      parens.push(inner);
+      return "";
+    });
+    raw = raw.replace(/\s*\([^)]+\)\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+    parens.forEach((p) => mapParenLabelToChip(p, chips));
+
+    // Management-ending note often lives on sub, not name
+    if (/management\s+ending/i.test(String(o?.sub || ""))) {
+      pushChip(chips, "Management Ending");
+    }
+
+    raw = stripDescriptiveDashSuffix(raw, chips);
+    if (/\beco-hotel\b/i.test(raw)) {
+      pushChip(chips, "Eco Hotel");
+      raw = raw.replace(/\s*eco-hotel\b/gi, "").trim();
+    }
+    raw = raw.replace(/\s{2,}/g, " ").replace(/\s+[—–-]\s*$/g, "").trim();
+
+    // Title-case only when the kept identifying clause was lowercased
+    let title = raw;
+    if (/\b(fourth hotel|former )\b/i.test(title) && /fourth hotel on former/i.test(title)) {
+      title = title.replace(
+        /(—\s*)(.+)$/,
+        (_, dash, rest) => dash + toProperCase(rest)
+      );
+    }
+
+    inferAssetChips(o, title, chips);
+
+    // Cap chips for scanability
+    const subtitle = opportunitySubtitle(o);
+    const capped = chips.slice(0, 4);
+
+    return {
+      title: title || String(o?.name || "Unnamed opportunity"),
+      subtitle,
+      chips: capped,
+      fullName: String(o?.name || ""),
+    };
+  }
+
+  function identityCellHtml(o, logoClass) {
+    const idn = formatOpportunityIdentity(o);
+    const chipHtml = idn.chips.length
+      ? `<div class="dop-hotel-chips">${idn.chips
+          .map((c) => `<span class="dop-hotel-chip">${esc(c)}</span>`)
+          .join("")}</div>`
+      : "";
+    return `${logoHtml(o, logoClass)}
+      <div class="dop-hotel-copy">
+        <strong title="${esc(idn.fullName)}">${esc(idn.title)}</strong>
+        <small>${esc(idn.subtitle)}</small>
+        ${chipHtml}
+      </div>`;
   }
 
   /**
@@ -886,6 +1128,71 @@
     return formatCountryName(key) || toProperCase(key);
   }
 
+  /** Client mirror of server regionBucket — Dealality commercial regions. */
+  function regionFromCountry(country) {
+    const c = String(country || "").trim().toUpperCase().replace(/\./g, "");
+    if (!c) return "Other";
+    if (["US", "USA", "UNITED STATES", "CA", "CAN", "CANADA"].includes(c)) return "North America";
+    if (
+      /CARIB|TRINIDAD|TOBAGO|LATIN\s*AMERICA|CENTRAL\s*AMERICA|SOUTH\s*AMERICA/.test(c) ||
+      [
+        "MX", "MEX", "MEXICO", "BR", "BRA", "BRAZIL", "AR", "CL", "CO", "PE", "EC", "UY", "PY", "BO", "VE",
+        "GT", "HN", "SV", "NI", "CR", "PA", "BZ", "CU", "HT", "DO", "JM", "TT", "BB", "BS", "LC", "GD", "PR",
+        "TC", "VI", "KY", "CARIBBEAN", "BAHAMAS", "JAMAICA", "BARBADOS", "DOMINICAN REPUBLIC", "PUERTO RICO",
+        "TRINIDAD AND TOBAGO", "TURKS AND CAICOS", "COLOMBIA", "ARGENTINA", "CHILE", "PERU", "PANAMA",
+        "COSTA RICA", "BELIZE",
+      ].includes(c)
+    ) {
+      return "CALA";
+    }
+    if (
+      /EUROPE|UNITED\s*KINGDOM/.test(c) ||
+      [
+        "GB", "UK", "UNITED KINGDOM", "IE", "IRELAND", "ES", "SPAIN", "PT", "PORTUGAL", "FR", "FRANCE",
+        "DE", "GERMANY", "IT", "ITALY", "CH", "SWITZERLAND", "AT", "AUSTRIA", "NL", "NETHERLANDS",
+        "BE", "BELGIUM", "SE", "NO", "DK", "FI", "PL", "CZ", "HU", "RO", "GR", "GREECE", "HR",
+      ].includes(c)
+    ) {
+      return "Europe";
+    }
+    if (
+      /MIDDLE\s*EAST|AFRICA|GULF/.test(c) ||
+      [
+        "AE", "SA", "QA", "KW", "BH", "OM", "JO", "LB", "IL", "EG", "MA", "ZA", "NG", "KE",
+        "UNITED ARAB EMIRATES", "SAUDI ARABIA", "QATAR", "EGYPT", "SOUTH AFRICA", "MOROCCO", "KENYA", "NIGERIA",
+      ].includes(c)
+    ) {
+      return "Middle East & Africa";
+    }
+    if (
+      /ASIA|PACIFIC|OCEANIA/.test(c) ||
+      [
+        "IN", "IND", "INDIA", "CN", "JP", "KR", "HK", "TW", "SG", "MY", "TH", "VN", "PH", "ID",
+        "AU", "NZ", "MV", "MALDIVES", "AUSTRALIA", "SINGAPORE", "JAPAN", "CHINA",
+      ].includes(c)
+    ) {
+      return "Asia Pacific";
+    }
+    return "Other";
+  }
+
+  function opportunityRegion(o) {
+    const known = [
+      "Europe",
+      "CALA",
+      "North America",
+      "Middle East & Africa",
+      "Asia Pacific",
+      "Other",
+    ];
+    if (o && known.includes(o.region)) return o.region;
+    // Legacy market-filter buckets from older payloads
+    if (o && o.region === "US") return "North America";
+    if (o && o.region === "Caribbean") return "CALA";
+    if (o && o.region === "India") return "Asia Pacific";
+    return regionFromCountry(o && o.country);
+  }
+
   function normalizeChainScaleLabel(scale) {
     const theme = window.DealalityChainScaleTheme;
     if (theme && typeof theme.normalizeChainScaleLabel === "function") {
@@ -916,17 +1223,41 @@
     if (s.includes("upper midscale")) return "#2ecc71";
     if (s.includes("midscale")) return "#1abc9c";
     if (s.includes("economy")) return "#e67e22";
-    if (s.includes("independent")) return "#94a3b8";
+    if (s.includes("independent")) return CHAIN_SCALE_INDEPENDENT;
     return null;
   }
 
-  function inferScaleFromText(text) {
+  /** Soft brand→scale rules used only on verified brand/affiliation strings — never hotel names. */
+  function inferScaleFromBrandAttribute(text) {
     const raw = String(text || "").trim();
     if (!raw || isBrandEnum(raw)) return null;
     for (let i = 0; i < BRAND_SCALE_RULES.length; i++) {
       if (BRAND_SCALE_RULES[i].re.test(raw)) return BRAND_SCALE_RULES[i].scale;
     }
     return null;
+  }
+
+  function lookupBrandChainScale(query) {
+    const q0 = cleanBrandLabel(query).toLowerCase();
+    if (!q0) return null;
+    const aliased = BRAND_LOGO_ALIASES[q0] || q0;
+    const direct = state.brandScaleMap[aliased] || state.brandScaleMap[q0];
+    if (direct) return normalizeChainScaleLabel(direct);
+    let best = null;
+    let bestScore = 0;
+    (state.brandScaleNames || []).forEach((libName) => {
+      const n = libName.toLowerCase();
+      let score = 0;
+      // Strict match only — avoid parent-company bleed (e.g. Courtyard → Marriott Upper Upscale)
+      if (n === aliased || n === q0) score = 1000;
+      else if (n.startsWith(aliased + " ") || aliased.startsWith(n + " ")) score = 900;
+      else if (n.startsWith(q0 + " ") || q0.startsWith(n + " ")) score = 850;
+      if (score > bestScore && state.brandScaleMap[n]) {
+        bestScore = score;
+        best = normalizeChainScaleLabel(state.brandScaleMap[n]);
+      }
+    });
+    return bestScore >= 850 ? best : null;
   }
 
   function getOpportunityChainScales(o) {
@@ -937,44 +1268,60 @@
       if (CHAIN_SCALE_ORDER.includes(n) || n === "Independent") found.push(n);
     };
 
+    // 1) Explicit verified attributes on the opportunity payload
     if (Array.isArray(o?.chainScales) && o.chainScales.length) {
       o.chainScales.forEach(push);
     }
+    if (o?.chainScale) push(o.chainScale);
 
+    // 2) Brand Library Hotel Chain Scale for related property brands (portfolio / AHIP)
     const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
-    if (related.length) {
-      related.forEach((h) => {
-        push(inferScaleFromText(h.brand));
-        push(inferScaleFromText(h.name));
+    related.forEach((h) => {
+      const brand = cleanBrandLabel(h?.brand || "");
+      if (!brand) return;
+      const libScale = lookupBrandChainScale(brand);
+      if (libScale) push(libScale);
+      else if (isIndependentBrand(brand)) push("Independent");
+    });
+
+    // 3) Brand Library scale for the opportunity affiliation (o.sub) — not hotel name
+    if (!found.length || related.length === 0) {
+      const candidates = brandCandidates(o).filter((c) => !isBrandEnum(c));
+      candidates.forEach((c) => {
+        const libScale = lookupBrandChainScale(c);
+        if (libScale) push(libScale);
+        else if (isIndependentBrand(c)) push("Independent");
       });
     }
 
+    // 4) Soft brand-attribute rules only (affiliation / related brand — never hotel name alone)
     if (!found.length) {
-      push(inferScaleFromText(o?.sub));
-      push(inferScaleFromText(o?.name));
+      related.forEach((h) => push(inferScaleFromBrandAttribute(h?.brand)));
+      push(inferScaleFromBrandAttribute(o?.sub));
     }
 
-    // Portfolio subtitle without related brands: premium select-service → Upscale + Upper Midscale
-    if (!found.length && /marriott\s*\/\s*hilton\s*\/\s*ihg|premium select/i.test(String(o?.sub || ""))) {
-      push("Upscale");
-      push("Upper Midscale");
-    }
+    if (isIndependentBrand(o?.sub) && !found.length) push("Independent");
 
-    return found.sort(
+    const sorted = found.sort(
       (a, b) =>
         (CHAIN_SCALE_ORDER.indexOf(a) === -1 ? 99 : CHAIN_SCALE_ORDER.indexOf(a)) -
         (CHAIN_SCALE_ORDER.indexOf(b) === -1 ? 99 : CHAIN_SCALE_ORDER.indexOf(b))
     );
+
+    if (!sorted.length && o?.id) {
+      if (!state.missingChainScaleIds.includes(o.id)) state.missingChainScaleIds.push(o.id);
+    }
+    return sorted;
   }
 
-  /** Operator Explorer multi-scale stripe (vertical bands) — fallback tile only. */
+  /** Multi-scale vertical bands using exact Dealality chain-scale tokens. */
   function getChainScaleStripeBackground(chainScales) {
     const colors = [];
     (chainScales || []).forEach((scale) => {
       const color = getChainScaleColor(scale);
       if (color && colors.indexOf(color) === -1) colors.push(color);
     });
-    if (colors.length === 0) return CHAIN_SCALE_FALLBACK;
+    if (colors.length === 0) return CHAIN_SCALE_UNKNOWN_FILL;
     if (colors.length === 1) return colors[0];
     const step = 100 / colors.length;
     const stops = colors
@@ -985,6 +1332,14 @@
       })
       .join(", ");
     return "linear-gradient(to bottom, " + stops + ")";
+  }
+
+  function monoFgForFill(hex) {
+    const theme = window.DealalityChainScaleTheme;
+    const rgb = theme && typeof theme.parseHexRgb === "function" ? theme.parseHexRgb(hex) : null;
+    if (!rgb) return "#f8fafc";
+    const lum = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+    return lum > 0.55 ? "#0b1220" : "#f8fafc";
   }
 
   function cleanBrandLabel(text) {
@@ -1050,6 +1405,70 @@
     return bestScore >= 300 ? best : null;
   }
 
+  /** Preferred monogram / portfolio abbreviations for polished identity tiles. */
+  const IDENTITY_ABBREV = {
+    "four seasons": "FS",
+    "courtyard": "CY",
+    "courtyard by marriott": "CY",
+    "baha mar": "BM",
+    "revive brasil": "RB",
+    revive: "RB",
+    aimbridge: "AHIP",
+    "aimbridge hospitality": "AHIP",
+    ahip: "AHIP",
+    marriott: "MI",
+    hilton: "HLT",
+    hyatt: "H",
+    ihg: "IHG",
+    intercontinental: "IC",
+    radisson: "RD",
+    ascend: "ASC",
+    "design hotels": "DH",
+    condesa: "CD",
+    memmo: "MM",
+    laluna: "LL",
+    "la luna": "LL",
+  };
+
+  function monogramForOpportunity(o) {
+    const brand = cleanBrandLabel(o?.sub || "");
+    const hotel = String(o?.name || "").trim();
+    const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
+    const relatedBrand = related.map((h) => cleanBrandLabel(h.brand || h.name || "")).find(Boolean) || "";
+    // Portfolio / named-entity abbreviations take priority over child brand logos
+    const portfolioBlob = [hotel, String(o?.id || ""), brand].join(" ");
+    if (/ahip|aimbridge/i.test(portfolioBlob)) return "AHIP";
+    if (/baha\s*mar/i.test(portfolioBlob)) return "BM";
+    if (/revive\s*brasil|\brevive\b/i.test(portfolioBlob)) return "RB";
+    if (/four\s*seasons/i.test(portfolioBlob)) return "FS";
+    const sources = [brand, hotel, relatedBrand].filter(Boolean);
+    for (const src of sources) {
+      const key = src.toLowerCase();
+      if (IDENTITY_ABBREV[key]) return IDENTITY_ABBREV[key];
+      for (const [k, v] of Object.entries(IDENTITY_ABBREV)) {
+        if (key.includes(k)) return v;
+      }
+    }
+    const source = sources.find((s) => !isIndependentBrand(s) && !isBrandEnum(s)) || hotel || "?";
+    const words = String(source)
+      .replace(/[^a-zA-Z0-9\s&-]/g, " ")
+      .split(/[\s&-]+/)
+      .filter(Boolean);
+    if (!words.length) return "?";
+    if (words.length === 1) {
+      const w = words[0];
+      return (w.length <= 4 ? w : w.slice(0, 2)).toUpperCase();
+    }
+    const skip = new Set(["of", "the", "by", "and", "a", "an", "at", "in", "for", "hotels", "hotel", "resorts", "resort"]);
+    const significant = words.filter((w) => !skip.has(w.toLowerCase()));
+    if (significant.length === 1) {
+      const w = significant[0];
+      return (w.length <= 3 ? w : w.slice(0, 2)).toUpperCase();
+    }
+    const letters = significant.slice(0, 4).map((w) => w[0].toUpperCase());
+    return (letters.join("") || words[0].slice(0, 2).toUpperCase()).slice(0, 4);
+  }
+
   function resolveOpportunityLogo(o) {
     const candidates = brandCandidates(o);
     for (let i = 0; i < candidates.length; i++) {
@@ -1063,56 +1482,103 @@
         return { kind: "logo", label: hit.name, url: hit.url, id: hit.id };
       }
     }
-    if (isIndependentBrand(o?.sub) || /lakeville/i.test(String(o?.name || ""))) {
+    if (isIndependentBrand(o?.sub)) {
       return { kind: "independent", label: "Independent" };
     }
-    return { kind: "empty", label: candidates[0] || o?.name || "Brand" };
+    const mono = monogramForOpportunity(o);
+    return {
+      kind: "monogram",
+      label: candidates[0] || o?.name || "Brand",
+      monogram: mono,
+    };
   }
 
-  function scaleOutlineStyle(scales) {
+  /** Chain-scale fill + outline tokens for identity tiles (list + cards). */
+  function scaleTileStyle(scales) {
     const colors = [];
     (scales || []).forEach((scale) => {
       const color = getChainScaleColor(scale);
       if (color && colors.indexOf(color) === -1) colors.push(color);
     });
     if (colors.length === 0) {
-      return { multi: false, css: `--dop-scale-outline:${CHAIN_SCALE_FALLBACK}` };
+      return {
+        multi: false,
+        unknown: true,
+        css:
+          `--dop-scale-fill:${CHAIN_SCALE_UNKNOWN_FILL};` +
+          `--dop-scale-outline:${CHAIN_SCALE_UNKNOWN_OUTLINE};` +
+          `--dop-mono-fg:#e2e8f0`,
+      };
     }
     if (colors.length === 1) {
-      return { multi: false, css: `--dop-scale-outline:${colors[0]}` };
+      return {
+        multi: false,
+        unknown: false,
+        css:
+          `--dop-scale-fill:${colors[0]};` +
+          `--dop-scale-outline:${colors[0]};` +
+          `--dop-mono-fg:${monoFgForFill(colors[0])}`,
+      };
     }
+    const stripe = getChainScaleStripeBackground(scales);
     return {
       multi: true,
-      css: `--dop-scale-ring:${getChainScaleStripeBackground(scales)}`,
+      unknown: false,
+      css:
+        `--dop-scale-fill:${stripe};` +
+        `--dop-scale-ring:${stripe};` +
+        `--dop-scale-outline:transparent;` +
+        `--dop-mono-fg:#f8fafc`,
     };
   }
 
   function logoHtml(o, className) {
     const scales = getOpportunityChainScales(o);
     const scaleTitle = scales.length ? scales.join(" · ") : "Chain scale to verify";
-    const resolved = resolveOpportunityLogo(o);
+    let resolved = resolveOpportunityLogo(o);
+    // Mixed-scale portfolios: always show monogram on multicolor fill (logo would hide the stripe)
+    if (scales.length > 1 && resolved.kind === "logo") {
+      resolved = {
+        kind: "monogram",
+        label: resolved.label,
+        monogram: monogramForOpportunity(o),
+      };
+    }
     const title = resolved.label ? resolved.label + " · " + scaleTitle : scaleTitle;
-    const outline = scaleOutlineStyle(scales);
+    const tile = scaleTileStyle(scales);
+    const mono = resolved.monogram || monogramForOpportunity(o);
     const cls =
       className +
-      (outline.multi ? " has-multi-scale" : "") +
-      (resolved.kind === "independent" ? " is-independent" : "");
+      (tile.multi ? " has-multi-scale" : "") +
+      (tile.unknown ? " is-scale-unknown" : "") +
+      (resolved.kind === "independent" ? " is-independent" : "") +
+      (resolved.kind === "monogram" ? " is-monogram" : "") +
+      (resolved.kind === "logo" ? " has-logo" : "");
 
     if (resolved.kind === "logo" && resolved.url) {
+      // On load failure, promote monogram on the same chain-scale fill (never blank white).
+      const onErr =
+        "var p=this.parentElement;if(!p)return;p.classList.remove('has-logo');" +
+        "p.classList.add('is-monogram');this.remove();" +
+        "if(!p.querySelector('.dop-mono')){var s=document.createElement('span');s.className='dop-mono';s.textContent='" +
+        esc(mono).replace(/'/g, "\\'") +
+        "';p.appendChild(s);}";
       return (
-        `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">` +
-        `<img src="${esc(resolved.url)}" alt="" loading="lazy" decoding="async" ` +
-        `onerror="this.remove()"/>` +
+        `<div class="${cls}" style="${tile.css}" title="${esc(title)}" aria-hidden="true" data-mono="${esc(mono)}" data-scales="${esc(scales.join(','))}">` +
+        `<img src="${esc(resolved.url)}" alt="" loading="lazy" decoding="async" onerror="${onErr}"/>` +
         `</div>`
       );
     }
 
     if (resolved.kind === "independent") {
-      return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">${INDEPENDENT_LOGO_SVG}</div>`;
+      return `<div class="${cls}" style="${tile.css}" title="${esc(title)}" aria-hidden="true">${INDEPENDENT_LOGO_SVG}</div>`;
     }
 
-    // Logo unavailable — outline only (no letter initials)
-    return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true"></div>`;
+    return (
+      `<div class="${cls}" style="${tile.css}" title="${esc(title)}" aria-hidden="true" data-scales="${esc(scales.join(','))}">` +
+      `<span class="dop-mono">${esc(mono)}</span>` +
+      `</div>`
+    );
   }
 
   async function loadBrandLogoMap() {
@@ -1127,23 +1593,34 @@
       const arr = Array.isArray(data.brands) ? data.brands : [];
       const map = {};
       const names = [];
+      const scaleMap = {};
+      const scaleNames = [];
       arr.forEach((b) => {
         const name = String((b && b.name) || "").trim();
         const id = String((b && b.id) || "").trim();
-        const hasLogo = Boolean(String((b && b.logo) || "").trim());
-        if (!name || !id || !hasLogo) return;
+        if (!name || !id) return;
         const key = name.toLowerCase();
+        const scale = String((b && b.chainScale) || "").trim();
+        if (scale) {
+          scaleMap[key] = scale;
+          scaleNames.push(name);
+        }
+        const hasLogo = Boolean(String((b && b.logo) || "").trim());
+        if (!hasLogo) return;
         map[key] = {
           id,
           name,
           url: "/api/brand-library/logo/" + encodeURIComponent(id),
+          chainScale: scale || "",
         };
         names.push(name);
       });
       state.brandLogoMap = map;
       state.brandLogoNames = names;
+      state.brandScaleMap = scaleMap;
+      state.brandScaleNames = scaleNames;
     } catch (_) {
-      /* keep empty map — tiles show chain-scale outline only */
+      /* keep empty maps — tiles fall back to neutral unknown treatment */
     }
   }
 
@@ -1176,9 +1653,11 @@
     const sel = $("country");
     if (!sel) return;
     const prev = sel.value || "all";
+    const region = ($("region") && $("region").value) || "all";
     const countries = new Map();
     let hasUnspecified = false;
     state.opps.forEach((o) => {
+      if (region !== "all" && opportunityRegion(o) !== region) return;
       const key = opportunityCountryKey(o);
       if (key === "__unspecified__") {
         hasUnspecified = true;
@@ -1186,7 +1665,9 @@
       }
       countries.set(key, opportunityCountryLabel(key));
     });
-    const options = [["all", "All Countries"]];
+    const allLabel =
+      region === "all" ? "All Countries" : "All Countries in " + region;
+    const options = [["all", allLabel]];
     [...countries.entries()]
       .sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: "base" }))
       .forEach(([value, label]) => options.push([value, label]));
@@ -1334,7 +1815,7 @@
     if (state.activeFilter === "watch" && o.group !== "watch") return false;
     if (state.activeFilter === "BCT" && !(o.group === "qualified" && o.kind === "BCT")) return false;
     if (state.activeFilter === "MCT" && !(o.group === "qualified" && o.kind === "MCT")) return false;
-    if (r !== "all" && o.region !== r) return false;
+    if (r !== "all" && opportunityRegion(o) !== r) return false;
     if (c !== "all" && opportunityCountryKey(o) !== c) return false;
     if (b !== "all" && opportunityBrandKey(o) !== b) return false;
     if (t !== "all" && opportunityHorizonKey(o) !== t) return false;
@@ -1345,6 +1826,7 @@
         o.sub,
         o.city,
         o.country,
+        opportunityRegion(o),
         opportunityCountryLabel(opportunityCountryKey(o)),
         o.trigger,
         o.type,
@@ -1396,7 +1878,7 @@
     CHAIN_SCALE_ORDER.forEach((label) => {
       const key = label.toLowerCase();
       const n = counts[key] || 0;
-      const color = getChainScaleColor(label) || CHAIN_SCALE_FALLBACK;
+      const color = getChainScaleColor(label) || CHAIN_SCALE_UNKNOWN_OUTLINE;
       const cls =
         "chain-scale-legend-item" +
         (active === key ? " active" : "") +
@@ -1487,8 +1969,7 @@
       items
         .map(
           (o) => `<tr tabindex="0" data-id="${esc(o.id)}">
-        <td><div class="dop-hotel">${logoHtml(o, "dop-hotel-logo")}
-        <div><strong>${esc(o.name)}</strong><small>${esc(toProperCase(o.sub))}</small></div></div></td>
+        <td><div class="dop-hotel">${identityCellHtml(o, "dop-hotel-logo")}</div></td>
         <td>${badge(o)}</td><td>${esc(formatMarketDisplay(o))}</td><td><div class="dop-trigger">${esc(cleanTrigger(o))}</div></td>
         <td><div class="dop-date">${esc(o.window)}</div></td>
         <td><div class="dop-access-cell">${accessActions(o)}</div></td></tr>`
@@ -1502,12 +1983,19 @@
             o.group === "watch" ? "kind-watch" : o.kind === "MCT" ? "kind-mct" : o.kind === "OTHER" ? "kind-other" : "kind-bct";
           const badgeCls = o.kind === "MCT" ? "mct" : o.kind === "OTHER" ? "other" : "";
           const blurb = humanWhySnippet(o) || cleanTrigger(o) || "Commercial context requires additional research.";
-          return `<article class="dop-opp-card ${kindClass}" tabindex="0" data-id="${esc(o.id)}" role="button" aria-label="Open ${esc(o.name)}">
+          const idn = formatOpportunityIdentity(o);
+          const cardChips = idn.chips.length
+            ? `<div class="dop-hotel-chips">${idn.chips
+                .map((c) => `<span class="dop-hotel-chip">${esc(c)}</span>`)
+                .join("")}</div>`
+            : "";
+          return `<article class="dop-opp-card ${kindClass}" tabindex="0" data-id="${esc(o.id)}" role="button" aria-label="Open ${esc(idn.title)}">
           <div class="dop-opp-card__header">
             ${logoHtml(o, "dop-opp-card__logo")}
             <div class="dop-opp-card__info">
-              <h3 class="dop-opp-card__name" title="${esc(o.name)}">${esc(o.name)}</h3>
-              <div class="dop-opp-card__type">${esc(formatMarketDisplay(o))}</div>
+              <h3 class="dop-opp-card__name" title="${esc(idn.fullName)}">${esc(idn.title)}</h3>
+              <div class="dop-opp-card__type">${esc(idn.subtitle)} · ${esc(formatMarketDisplay(o))}</div>
+              ${cardChips}
               <div class="dop-opp-card__badges"><span class="dop-opp-card__badge ${badgeCls}">${esc(toProperCase(o.type))}</span></div>
             </div>
           </div>
@@ -2079,7 +2567,10 @@
     render();
   });
   $("q").addEventListener("input", render);
-  $("region").addEventListener("change", render);
+  $("region").addEventListener("change", () => {
+    populateCountryFilter();
+    render();
+  });
   $("country")?.addEventListener("change", render);
   $("brand").addEventListener("change", render);
   $("timing").addEventListener("change", render);
@@ -2103,7 +2594,6 @@
   $("resetBtn").addEventListener("click", () => {
     $("q").value = "";
     $("region").value = "all";
-    if ($("country")) $("country").value = "all";
     if ($("brand")) $("brand").value = "all";
     if ($("timing")) $("timing").value = "all";
     if ($("decisionWindow")) $("decisionWindow").value = "all";
@@ -2112,6 +2602,7 @@
     state.sortKey = "name";
     state.sortDir = 1;
     if ($("sortSelect")) $("sortSelect").value = "name";
+    populateCountryFilter();
     renderTabs();
     render();
     showToast("View reset", "info");

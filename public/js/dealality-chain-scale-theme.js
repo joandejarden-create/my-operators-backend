@@ -31,8 +31,13 @@
     if (s.indexOf("upper midscale") !== -1) return "#2ecc71";
     if (s.indexOf("midscale") !== -1) return "#1abc9c";
     if (s.indexOf("economy") !== -1) return "#e67e22";
+    if (s.indexOf("independent") !== -1) return "#94a3b8";
     return null;
   }
+
+  /** Neutral fill when chain scale is unverified / missing (not an opportunity-type color). */
+  var UNKNOWN_SCALE_FILL = "#334155";
+  var UNKNOWN_SCALE_OUTLINE = "#64748b";
 
   function normalizeChainScaleLabel(scale) {
     if (!scale) return "";
@@ -43,6 +48,7 @@
     if (s.indexOf("upper midscale") !== -1) return "Upper Midscale";
     if (s.indexOf("midscale") !== -1) return "Midscale";
     if (s.indexOf("economy") !== -1) return "Economy";
+    if (s.indexOf("independent") !== -1) return "Independent";
     return String(scale).trim();
   }
 
@@ -127,6 +133,8 @@
 
   global.DealalityChainScaleTheme = {
     FALLBACK_ACCENT: FALLBACK_ACCENT,
+    UNKNOWN_SCALE_FILL: UNKNOWN_SCALE_FILL,
+    UNKNOWN_SCALE_OUTLINE: UNKNOWN_SCALE_OUTLINE,
     THEME_VAR_NAMES: THEME_VAR_NAMES,
     chainStripeColor: chainStripeColor,
     normalizeChainScaleLabel: normalizeChainScaleLabel,
