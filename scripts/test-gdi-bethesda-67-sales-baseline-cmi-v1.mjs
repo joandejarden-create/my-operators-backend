@@ -15,6 +15,7 @@ import {
 } from "../lib/group-demand-intelligence/bethesda-67-sales-baseline-cmi-v1.js";
 import { filterCustomerFacingOpportunities } from "../lib/group-demand-intelligence/customer-visibility.js";
 import { filterSalespersonView } from "../lib/group-demand-intelligence/opportunity-factory.js";
+import { isCustomerSurfaceActiveEligible } from "../lib/group-demand-intelligence/customer-surface-revalidation-v1.js";
 import { mergeBethesdaInternalResearchOpportunities } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
 import {
   opportunityMatchesTypeFilter,
@@ -72,16 +73,38 @@ check("customer_stays_at_19_without_approval", () => {
     }),
     false
   );
-  const facing = filterCustomerFacingOpportunities(
-    filterSalespersonView(doc.opportunities || []),
-    { hotelId: BETHESDA_HOTEL_ID, forceApproved: false }
+  // Allowlist size remains 19 (publication authorization). Customer list count is
+  // the surface-active subset of that allowlist — past-closed published events
+  // (e.g. Bethesda Premier Cup after eventEndDate) correctly drop from facing.
+  assert.equal(manifest.publishedIds.length, 19, "published allowlist stays 19");
+  const salesperson = filterSalespersonView(doc.opportunities || []);
+  const byId = new Map(salesperson.map((o) => [o.id, o]));
+  const publishedSurfaceActive = manifest.publishedIds.filter((id) => {
+    const row = byId.get(id);
+    return row && isCustomerSurfaceActiveEligible(row, { hotelId: BETHESDA_HOTEL_ID });
+  });
+  const facing = filterCustomerFacingOpportunities(salesperson, {
+    hotelId: BETHESDA_HOTEL_ID,
+    forceApproved: false,
+  });
+  assert.equal(
+    facing.length,
+    publishedSurfaceActive.length,
+    `customer facing must equal surface-active published subset (allowlist=19, active=${publishedSurfaceActive.length}, facing=${facing.length})`
   );
-  assert.equal(facing.length, 19);
-  for (const id of manifest.publishedIds) {
-    assert.ok(facing.some((o) => o.id === id), `missing published ${id}`);
+  for (const id of publishedSurfaceActive) {
+    assert.ok(facing.some((o) => o.id === id), `missing surface-active published ${id}`);
   }
   for (const id of manifest.stagedIds) {
     assert.ok(!facing.some((o) => o.id === id), `staged leaked ${id}`);
+  }
+  // Document known temporal exclusion when present (do not weaken surface gates).
+  const premier = byId.get("gdi_opp_bethesda_premier_cup_2026");
+  if (premier && !isCustomerSurfaceActiveEligible(premier, { hotelId: BETHESDA_HOTEL_ID })) {
+    assert.ok(
+      !facing.some((o) => o.id === "gdi_opp_bethesda_premier_cup_2026"),
+      "past-closed Premier Cup must not appear on customer facing"
+    );
   }
 });
 
@@ -162,6 +185,40 @@ check("no_cross_hotel_baseline_replication", () => {
     { hotelId: "recOTHERHOTEL0001" }
   );
   assert.equal(other[0].salesBaselineMembership, "OUTSIDE_67_BASELINE");
+});
+
+check("hotel_block_synonym_verifies_edition_specific_cmi", () => {
+  const [row] = annotateInventoryPopulations(
+    [
+      {
+        id: "probe_aha_hotel_block_synonym",
+        title: "AHA Annual Membership Meeting 2027",
+        eventStartDate: "2027-04-18",
+        competitorHotel: "Marriott Marquis Washington, DC",
+        competitorVenueStatus: "CONFIRMED_EVENT_VENUE",
+        competitorVenueConfirmed: true,
+        competitorBookingEvidenceClass: "VERIFIED_BOOKING",
+        competitorBookingClaim:
+          "AHA hotel block expires March 17, 2027 at Marriott Marquis Washington, D.C.",
+        evidence: [
+          {
+            url: "https://annualmeeting.aha.org/hotel-travel-0",
+            statement: "hotel block 2027",
+            accepted: true,
+          },
+        ],
+      },
+    ],
+    { hotelId: BETHESDA_HOTEL_ID }
+  );
+  assert.equal(row.competitiveStatus, "VERIFIED");
+  assert.equal(row.competitiveMarketScopeEligible, true);
+  assert.ok(
+    (row.inventoryPopulations || []).includes(
+      INVENTORY_POPULATION.COMPETITIVE_MARKET_INTELLIGENCE
+    )
+  );
+  assert.equal(row.hotelMarketScopeEligible, false);
 });
 
 console.log(
