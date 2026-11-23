@@ -1,0 +1,115 @@
+{
+  "version": "gdi-design-hotels-paid-research-plan-v1-1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "generatedAt": "2026-11-23",
+  "governance": {
+    "paidResearchAuthorized": false,
+    "airtableProductionWrites": false,
+    "customerPublication": false,
+    "paidContactEnrichment": false,
+    "weeklyAutomation": false,
+    "stopForFounderReview": true
+  },
+  "informedBy": {
+    "priorPilot": "Portfolio Cert V1.1 Bethesda + YOTEL $2 controlled pilot (PR #564)",
+    "priorYieldCertified": false,
+    "note": "Use $2 pilot for cost shape only — do not assume commercial yield certification."
+  },
+  "europeSlot": {
+    "preferredHotel": "Memmo Príncipe Real",
+    "marriottMarsha": "LISDM",
+    "hpcId": "rec1t35e3sPerzxYu",
+    "status": "HPC_VERIFIED_ENROLLED",
+    "antiguaRemovedFromCohortOnly": {
+      "name": "Good Hotel Antigua",
+      "hpcId": "recGL1epYhEle5SDM",
+      "note": "Removed from pilot cohort only; HPC and research retained."
+    }
+  },
+  "portfolioCeilingUsd": 60,
+  "hotels": [
+    {
+      "name": "Condesa DF Hotel",
+      "hpcId": "rece0NdV9FCnaFlVS",
+      "posture": "URBAN_MEETINGS",
+      "proposedBudgetUsd": { "min": 15, "max": 20 },
+      "maxCandidates": 8,
+      "deepResearchCap": 3,
+      "prioritizedSegments": [
+        "corporate_meetings_incentives",
+        "associations_conferences_events",
+        "corporate_accounts_scaling",
+        "government_public_sector",
+        "projects_infrastructure"
+      ],
+      "publicSourceContacts": true,
+      "competitorCommitmentVerification": true,
+      "targetUsefulProspects": "10-15 if independently supported — do not manufacture"
+    },
+    {
+      "name": "LaLuna Boutique Hotels & Villas",
+      "hpcId": "recaokE8psIbuVeuH",
+      "posture": "LEISURE_DESTINATION",
+      "proposedBudgetUsd": { "min": 12, "max": 18 },
+      "maxCandidates": 8,
+      "deepResearchCap": 3,
+      "prioritizedSegments": [
+        "travel_trade_group_intermediaries",
+        "sports_entertainment",
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "publicSourceContacts": true,
+      "competitorCommitmentVerification": true,
+      "targetUsefulProspects": "10-15 if independently supported — do not manufacture"
+    },
+    {
+      "name": "Memmo Príncipe Real",
+      "hpcId": "rec1t35e3sPerzxYu",
+      "posture": "BOUTIQUE_LIMITED_MEETINGS",
+      "proposedBudgetUsd": { "min": 12, "max": 18 },
+      "maxCandidates": 8,
+      "deepResearchCap": 3,
+      "prioritizedSegments": [
+        "corporate_meetings_incentives",
+        "travel_trade_group_intermediaries",
+        "social_special_events",
+        "preferred_lodging_partnerships"
+      ],
+      "publicSourceContacts": true,
+      "competitorCommitmentVerification": true,
+      "targetUsefulProspects": "10-15 if independently supported — do not manufacture",
+      "note": "European boutique / limited meetings — Lisbon market"
+    }
+  ],
+  "providerCallAllocation": {
+    "discovery": "Prioritize hotel demand-mix segments; cover remaining of 14 categories only when residual budget allows",
+    "deepResearch": "≤3 high-confidence candidates per hotel",
+    "contactResearch": "Public-source only in this plan; Surfe/Findymail require separate GO",
+    "competitorCommitments": "Map to Competitive Market Scope via existing classifier (#570 preferred merged)"
+  },
+  "stopConditions": [
+    "Portfolio BudgetUSD exhausted",
+    "Design Hotels affiliation becomes uncertain mid-run",
+    "Hotel 3 still interim and founder required Europe-only paid",
+    "Quality gates fail (dedupe, invented Sales Ready, missing Market Scope fields)",
+    "Any production Airtable or publication flag without separate GO"
+  ],
+  "expectedOutputs": [
+    "Per-hotel discovery inventory with Market Scope classifications",
+    "Screened candidate set with deep-research notes where spent",
+    "Public-source decision-maker / contact leads (unverified email policy)",
+    "Competitor commitment flags for Competitive scope",
+    "Dedupe report / continuation state for Resume",
+    "Hotel-facing opportunity report drafts (unpublished)"
+  ],
+  "commercialQualityGates": [
+    "Credible future lodging or meeting demand",
+    "Market-level opportunities without requiring RFP",
+    "Existing Hotel / Competitive Market Scope classification present",
+    "No invented Sales Ready / contact certainty",
+    "No manufactured prospects to hit 10–15 numeric target",
+    "Execution complete ≠ commercially certified; publication separate"
+  ],
+  "powershellPaidAfterGo": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -Mode FullE2E -HotelsFile reports\\gdi-design-hotels-operational-pilot-v1\\design-hotels-pilot-cohort-hotels.txt -BudgetUSD 60 -AuthorizePaidResearch -AllowLivePilot"
+}
