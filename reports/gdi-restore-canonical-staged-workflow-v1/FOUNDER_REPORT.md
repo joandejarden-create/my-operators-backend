@@ -181,10 +181,15 @@ Evidence: `screenshots/condesa-staged-empty.png`, `TEST_RESULTS.json`.
 
 ## 12. PR / CI / integration status
 
-- Implementation complete in restore worktree; PR to be opened against `main`.
-- Integration Controller owns merge.
-- GDI chat must report **`AWAITING_INTEGRATION_CONTROLLER`** after PR open — do not merge from this stream.
-- Outstanding related PRs (IC queue): prior Repeatable / Visibility items as applicable — this restore is independent and should merge before treating Design Hotels research UI as founder staging.
+| Item | Value |
+|------|-------|
+| PR | [#579](https://github.com/joandejarden-create/my-operators-backend/pull/579) |
+| Status | **OPEN** |
+| Head SHA | `fd7353348` |
+| CI precheck | PASS (gitleaks + concurrency) |
+| Merge | Integration Controller only |
+| `ws-gdi` | Preserved dirty on unrelated Surfe/contact branch — **not switched** |
+| Temp WT | `dealality-gdi-restore-staged-workflow-v1-20261123` |
 
 ### Final cycle state (this task)
 
