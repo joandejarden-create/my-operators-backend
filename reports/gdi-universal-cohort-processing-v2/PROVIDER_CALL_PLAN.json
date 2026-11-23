@@ -1,0 +1,412 @@
+{
+  "ok": true,
+  "executeReady": false,
+  "contract": "gdi-universal-cohort-processing-v2",
+  "generatedAt": "2026-11-23T16:23:42.857Z",
+  "canonicalEngine": "gdi-canonical-full-e2e-entry-v1",
+  "caps": {
+    "ok": true,
+    "contract": "gdi-portfolio-cert-v1-1-paid-pilot",
+    "aggregateCeilingUsd": 12,
+    "sumPerHotelCaps": 12,
+    "aggregateSpentUsd": 0,
+    "aggregateRemainingUsd": 12,
+    "quote": {
+      "bounded": true,
+      "maxUsd": 0.1,
+      "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    },
+    "hotelLedgers": [
+      {
+        "hotelId": "rece0NdV9FCnaFlVS",
+        "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_rece0NdV9FCnaFlVS_USD_4",
+        "durablePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-repeatable-processing-v2-20261123\\data\\group-demand-intelligence\\paid-budget-ledgers\\FOUNDER_GDI_UNIVERSAL_COHORT_rece0NdV9FCnaFlVS_USD_4.json",
+        "hardCeilingUsd": 4,
+        "spentUsd": 0,
+        "remainingUsd": 4,
+        "canAffordOneMediumCall": true,
+        "affordReason": null,
+        "ledgerVersion": "gdi-authorized-paid-budget-ledger-v1"
+      },
+      {
+        "hotelId": "recaokE8psIbuVeuH",
+        "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_recaokE8psIbuVeuH_USD_4",
+        "durablePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-repeatable-processing-v2-20261123\\data\\group-demand-intelligence\\paid-budget-ledgers\\FOUNDER_GDI_UNIVERSAL_COHORT_recaokE8psIbuVeuH_USD_4.json",
+        "hardCeilingUsd": 4,
+        "spentUsd": 0,
+        "remainingUsd": 4,
+        "canAffordOneMediumCall": true,
+        "affordReason": null,
+        "ledgerVersion": "gdi-authorized-paid-budget-ledger-v1"
+      },
+      {
+        "hotelId": "rec1t35e3sPerzxYu",
+        "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_rec1t35e3sPerzxYu_USD_4",
+        "durablePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-repeatable-processing-v2-20261123\\data\\group-demand-intelligence\\paid-budget-ledgers\\FOUNDER_GDI_UNIVERSAL_COHORT_rec1t35e3sPerzxYu_USD_4.json",
+        "hardCeilingUsd": 4,
+        "spentUsd": 0,
+        "remainingUsd": 4,
+        "canAffordOneMediumCall": true,
+        "affordReason": null,
+        "ledgerVersion": "gdi-authorized-paid-budget-ledger-v1"
+      }
+    ],
+    "errors": [],
+    "concurrency": "SEQUENTIAL_ONLY",
+    "retrySafe": "Durable per-hotel ledgers resume spentUsd; retries cannot reset ceiling",
+    "publicationAuthorized": false,
+    "airtableApplyAuthorized": false,
+    "surfeAuthorized": false
+  },
+  "hotelPlans": [
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "hotelName": "Condesa DF Hotel",
+      "identity": {
+        "ok": true,
+        "hotelId": "rece0NdV9FCnaFlVS",
+        "hotelName": null,
+        "city": null,
+        "country": null,
+        "brand": null,
+        "hasProfile": false,
+        "hasOpportunityStore": false,
+        "opportunityCount": 0,
+        "opportunityIds": [],
+        "profilePath": null,
+        "opportunityStorePath": null
+      },
+      "eligibilityOk": true,
+      "baselineOpportunityCount": 0,
+      "baselineOpportunityIds": [],
+      "prioritySegments": [
+        "travel_trade_group_intermediaries",
+        "social_special_events",
+        "corporate_celebrations_private_events",
+        "sports_entertainment",
+        "corporate_meetings_incentives",
+        "government_public_sector",
+        "preferred_lodging_partnerships"
+      ],
+      "skippedSegmentsCostOrRelevance": [
+        "associations_conferences_events",
+        "corporate_accounts_scaling",
+        "education_scientific",
+        "projects_infrastructure",
+        "local_catering_day_meetings",
+        "relocation_extended_stay",
+        "professional_event_planners"
+      ],
+      "skippedReason": "NOT_IN_PILOT_PRIORITY_SET_COST_RELEVANCE",
+      "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_rece0NdV9FCnaFlVS_USD_4",
+      "perHotelCeilingUsd": 4,
+      "remainingUsd": 4,
+      "quoteUnitMaxUsd": 0.1,
+      "maxAffordableMediumCalls": 40,
+      "maxCandidatesPerHotel": 4,
+      "providers": [
+        {
+          "provider": "exa_agent",
+          "operations": [
+            "discovery",
+            "deep_research"
+          ],
+          "effort": "medium",
+          "quotedMaxUsdPerCall": 0.1,
+          "bounded": true,
+          "authorized": true
+        },
+        {
+          "provider": "surfe",
+          "authorized": false,
+          "note": "HOLD — founder excluded paid Surfe for this pilot"
+        },
+        {
+          "provider": "findymail",
+          "authorized": false
+        },
+        {
+          "provider": "pdl",
+          "authorized": false
+        },
+        {
+          "provider": "fullenrich",
+          "authorized": false
+        }
+      ],
+      "expectedSpendBandUsd": {
+        "min": 0,
+        "max": 4,
+        "note": "Actual spend depends on retained candidates and early stop; do not force budget consumption"
+      }
+    },
+    {
+      "hotelId": "recaokE8psIbuVeuH",
+      "hotelName": "LaLuna Boutique Hotels & Villas",
+      "identity": {
+        "ok": true,
+        "hotelId": "recaokE8psIbuVeuH",
+        "hotelName": null,
+        "city": null,
+        "country": null,
+        "brand": null,
+        "hasProfile": false,
+        "hasOpportunityStore": false,
+        "opportunityCount": 0,
+        "opportunityIds": [],
+        "profilePath": null,
+        "opportunityStorePath": null
+      },
+      "eligibilityOk": true,
+      "baselineOpportunityCount": 0,
+      "baselineOpportunityIds": [],
+      "prioritySegments": [
+        "travel_trade_group_intermediaries",
+        "social_special_events",
+        "corporate_celebrations_private_events",
+        "sports_entertainment",
+        "corporate_meetings_incentives",
+        "government_public_sector",
+        "preferred_lodging_partnerships"
+      ],
+      "skippedSegmentsCostOrRelevance": [
+        "associations_conferences_events",
+        "corporate_accounts_scaling",
+        "education_scientific",
+        "projects_infrastructure",
+        "local_catering_day_meetings",
+        "relocation_extended_stay",
+        "professional_event_planners"
+      ],
+      "skippedReason": "NOT_IN_PILOT_PRIORITY_SET_COST_RELEVANCE",
+      "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_recaokE8psIbuVeuH_USD_4",
+      "perHotelCeilingUsd": 4,
+      "remainingUsd": 4,
+      "quoteUnitMaxUsd": 0.1,
+      "maxAffordableMediumCalls": 40,
+      "maxCandidatesPerHotel": 4,
+      "providers": [
+        {
+          "provider": "exa_agent",
+          "operations": [
+            "discovery",
+            "deep_research"
+          ],
+          "effort": "medium",
+          "quotedMaxUsdPerCall": 0.1,
+          "bounded": true,
+          "authorized": true
+        },
+        {
+          "provider": "surfe",
+          "authorized": false,
+          "note": "HOLD — founder excluded paid Surfe for this pilot"
+        },
+        {
+          "provider": "findymail",
+          "authorized": false
+        },
+        {
+          "provider": "pdl",
+          "authorized": false
+        },
+        {
+          "provider": "fullenrich",
+          "authorized": false
+        }
+      ],
+      "expectedSpendBandUsd": {
+        "min": 0,
+        "max": 4,
+        "note": "Actual spend depends on retained candidates and early stop; do not force budget consumption"
+      }
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "hotelName": "Memmo Príncipe Real",
+      "identity": {
+        "ok": true,
+        "hotelId": "rec1t35e3sPerzxYu",
+        "hotelName": null,
+        "city": null,
+        "country": null,
+        "brand": null,
+        "hasProfile": false,
+        "hasOpportunityStore": false,
+        "opportunityCount": 0,
+        "opportunityIds": [],
+        "profilePath": null,
+        "opportunityStorePath": null
+      },
+      "eligibilityOk": true,
+      "baselineOpportunityCount": 0,
+      "baselineOpportunityIds": [],
+      "prioritySegments": [
+        "corporate_meetings_incentives",
+        "associations_conferences_events",
+        "corporate_accounts_scaling",
+        "projects_infrastructure",
+        "professional_event_planners",
+        "government_public_sector",
+        "social_special_events"
+      ],
+      "skippedSegmentsCostOrRelevance": [
+        "sports_entertainment",
+        "education_scientific",
+        "local_catering_day_meetings",
+        "corporate_celebrations_private_events",
+        "travel_trade_group_intermediaries",
+        "relocation_extended_stay",
+        "preferred_lodging_partnerships"
+      ],
+      "skippedReason": "NOT_IN_PILOT_PRIORITY_SET_COST_RELEVANCE",
+      "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_rec1t35e3sPerzxYu_USD_4",
+      "perHotelCeilingUsd": 4,
+      "remainingUsd": 4,
+      "quoteUnitMaxUsd": 0.1,
+      "maxAffordableMediumCalls": 40,
+      "maxCandidatesPerHotel": 4,
+      "providers": [
+        {
+          "provider": "exa_agent",
+          "operations": [
+            "discovery",
+            "deep_research"
+          ],
+          "effort": "medium",
+          "quotedMaxUsdPerCall": 0.1,
+          "bounded": true,
+          "authorized": true
+        },
+        {
+          "provider": "surfe",
+          "authorized": false,
+          "note": "HOLD — founder excluded paid Surfe for this pilot"
+        },
+        {
+          "provider": "findymail",
+          "authorized": false
+        },
+        {
+          "provider": "pdl",
+          "authorized": false
+        },
+        {
+          "provider": "fullenrich",
+          "authorized": false
+        }
+      ],
+      "expectedSpendBandUsd": {
+        "min": 0,
+        "max": 4,
+        "note": "Actual spend depends on retained candidates and early stop; do not force budget consumption"
+      }
+    }
+  ],
+  "fourteenSegmentIds": [
+    "associations_conferences_events",
+    "corporate_accounts_scaling",
+    "corporate_meetings_incentives",
+    "government_public_sector",
+    "sports_entertainment",
+    "education_scientific",
+    "projects_infrastructure",
+    "social_special_events",
+    "local_catering_day_meetings",
+    "corporate_celebrations_private_events",
+    "travel_trade_group_intermediaries",
+    "relocation_extended_stay",
+    "preferred_lodging_partnerships",
+    "professional_event_planners"
+  ],
+  "safety": {
+    "aggregateCeilingUsd": 12,
+    "perHotelCeilingUsd": 12.5,
+    "sequentialOnly": true,
+    "publication": false,
+    "airtableApply": false,
+    "surfe": false,
+    "weeklyAutomation": false,
+    "forceSpendForbidden": true,
+    "findymail": false,
+    "designHotelsHardcoded": false
+  },
+  "env": {
+    "exaKeyPresent": true,
+    "gdiExaAgentLive": false
+  },
+  "blockers": [],
+  "executeBlockers": [
+    {
+      "code": "GDI_EXA_AGENT_LIVE_ENV_OFF",
+      "note": "Set GDI_EXA_AGENT_LIVE=1 only for the paid execution window"
+    }
+  ],
+  "spendAuthorized": false,
+  "note": "PREFLIGHT ONLY — no provider calls executed",
+  "hotelIds": [
+    "rece0NdV9FCnaFlVS",
+    "recaokE8psIbuVeuH",
+    "rec1t35e3sPerzxYu"
+  ],
+  "hotels": [
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "hotelName": "Condesa DF Hotel",
+      "market": "Mexico City",
+      "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_rece0NdV9FCnaFlVS_USD_4",
+      "perHotelCeilingUsd": 4,
+      "prioritySegments": [
+        "travel_trade_group_intermediaries",
+        "social_special_events",
+        "corporate_celebrations_private_events",
+        "sports_entertainment",
+        "corporate_meetings_incentives",
+        "government_public_sector",
+        "preferred_lodging_partnerships"
+      ],
+      "configSource": "existing_gdi_config"
+    },
+    {
+      "hotelId": "recaokE8psIbuVeuH",
+      "hotelName": "LaLuna Boutique Hotels & Villas",
+      "market": "Grenada",
+      "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_recaokE8psIbuVeuH_USD_4",
+      "perHotelCeilingUsd": 4,
+      "prioritySegments": [
+        "travel_trade_group_intermediaries",
+        "social_special_events",
+        "corporate_celebrations_private_events",
+        "sports_entertainment",
+        "corporate_meetings_incentives",
+        "government_public_sector",
+        "preferred_lodging_partnerships"
+      ],
+      "configSource": "existing_gdi_config"
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "hotelName": "Memmo Príncipe Real",
+      "market": "Lisbon",
+      "authorizationId": "FOUNDER_GDI_UNIVERSAL_COHORT_rec1t35e3sPerzxYu_USD_4",
+      "perHotelCeilingUsd": 4,
+      "prioritySegments": [
+        "corporate_meetings_incentives",
+        "associations_conferences_events",
+        "corporate_accounts_scaling",
+        "projects_infrastructure",
+        "professional_event_planners",
+        "government_public_sector",
+        "social_special_events"
+      ],
+      "configSource": "existing_gdi_config"
+    }
+  ],
+  "aggregateCeilingUsd": 12,
+  "founderSpendPhrase": "FOUNDER_GDI_UNIVERSAL_COHORT_PAID"
+}
