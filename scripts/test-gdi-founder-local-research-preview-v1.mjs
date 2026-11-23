@@ -56,17 +56,23 @@ const html = fs.readFileSync(
   "utf8",
 );
 
-check("localhost_default_is_research_not_staged", () => {
+check("localhost_default_is_staged_finalized_packages", () => {
   assert.match(appJs, /resolveFounderInventoryMode/);
-  assert.match(appJs, /if \(isLocalFounderHost\(\)\) return "research"/);
+  // Canonical Full E2E founder review: localhost defaults to STAGED.
+  assert.match(appJs, /if \(isLocalFounderHost\(\)\) return "staged"/);
   assert.doesNotMatch(
     appJs,
-    /Local founder review: when STAGED ≠ CURRENT, localhost must load/,
+    /if \(isLocalFounderHost\(\)\) return "research"/,
   );
-  // Auto-staged localhost default removed.
-  assert.doesNotMatch(
+});
+
+check("explicit_research_diagnostic_still_supported", () => {
+  assert.match(appJs, /inventory === "research"/);
+  assert.match(appJs, /live=1/);
+  assert.match(appJs, /applyFounderInventoryMode\("research"\)/);
+  assert.match(
     appJs,
-    /if \(isLocalFounderHost\(\)\) return true;\s*return false;/,
+    /never as a silent substitute for STAGED|Research remains available only via explicit/,
   );
 });
 
@@ -77,11 +83,12 @@ check("explicit_staged_still_supported", () => {
 });
 
 check("inventory_mode_controls_present", () => {
-  // Mode switching lives in the app shell sidebar; report keeps recovery + apply helpers.
-  assert.match(appJs, /Open Research Preview/);
+  // Mode switching lives in the app shell; Research is explicit-only.
   assert.match(appJs, /applyFounderInventoryMode/);
   assert.match(appJs, /notifyShellHotelContext/);
   assert.match(appJs, /resolveFounderInventoryMode/);
+  assert.match(appJs, /applyFounderInventoryMode\("research"\)/);
+  assert.match(appJs, /applyFounderInventoryMode\("published"\)/);
 });
 
 check("castillo_and_san_diego_have_research_without_staged", () => {
@@ -122,15 +129,12 @@ check("share_path_cannot_use_live_research_default", () => {
 });
 
 check("hotel_switch_clears_preview_params", () => {
-  assert.match(appJs, /Switching properties clears incompatible/);
   assert.match(appJs, /url\.searchParams\.delete\("preview"\)/);
+  assert.match(appJs, /url\.searchParams\.delete\("inventory"\)/);
 });
 
 check("cache_bust", () => {
-  assert.match(
-    html,
-    /gdi-sidebar-inventory-toggle-v1|gdi-founder-local-research-preview-v1/,
-  );
+  assert.match(html, /gdi-restore-canonical-staged-workflow-v1/);
 });
 
 check("no_hardcoded_castillo_or_sandiego_exception", () => {

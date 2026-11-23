@@ -38,6 +38,11 @@ assert.match(appJs, /wantsExplicitStagedPreview/);
 assert.match(appJs, /isLocalFounderHost/, "localhost must default to STAGED");
 assert.match(
   appJs,
+  /if \(isLocalFounderHost\(\)\) return "staged"/,
+  "localhost founder default must be STAGED finalized packages",
+);
+assert.match(
+  appJs,
   /path \+= "&preview=staged"/,
   "detail URL must propagate founder staged preview with list",
 );

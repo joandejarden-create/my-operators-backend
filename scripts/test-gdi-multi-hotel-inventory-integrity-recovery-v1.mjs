@@ -66,8 +66,13 @@ check("api_force_live_skips_customer_facing_filter", () => {
   assert.match(apiSrc, /researchInventoryIntegrity/);
 });
 
-check("localhost_still_defaults_to_research_mode", () => {
-  assert.match(appJs, /if \(isLocalFounderHost\(\)\) return "research"/);
+check("localhost_defaults_to_staged_research_remains_explicit", () => {
+  assert.match(appJs, /if \(isLocalFounderHost\(\)\) return "staged"/);
+  assert.doesNotMatch(
+    appJs,
+    /if \(isLocalFounderHost\(\)\) return "research"/,
+  );
+  // Research diagnostic still available via explicit live=1 path.
   assert.match(appJs, /q\.push\("live=1"\)/);
 });
 
