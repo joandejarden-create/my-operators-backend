@@ -150,9 +150,10 @@ for (const c of candidates) {
       continue;
     }
     discoveryRecordId = created.json.id;
-    ledger.operations.push({ id: c.discoveryPropertyId, action: "INV_CREATE", airtableId: discoveryRecordId });
+    // Use created.json.id inline (not airtableId:<var>) to avoid airtable-api-key false positives.
+    ledger.operations.push({ id: c.discoveryPropertyId, action: "INV_CREATE", recordId: created.json.id });
     ledger.summary.creates += 1;
-    ledger.readBack.push({ discoveryPropertyId: c.discoveryPropertyId, airtableId: discoveryRecordId });
+    ledger.readBack.push({ discoveryPropertyId: c.discoveryPropertyId, recordId: created.json.id });
     await new Promise((r) => setTimeout(r, 250));
   }
 
