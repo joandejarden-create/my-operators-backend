@@ -810,7 +810,11 @@
   }
 
   function authHeaders() {
-    const h = { Accept: "application/json" };
+    const h = {
+      Accept: "application/json",
+      // Required for local DEV_AUTH_BYPASS admin internal-preview authorization.
+      "X-Dealality-Owner-App": "1",
+    };
     try {
       const t =
         (window.MemberStack?.getToken && window.MemberStack.getToken()) ||
@@ -822,6 +826,16 @@
       if (bearer) h.Authorization = "Bearer " + bearer;
     } catch (_) {}
     return h;
+  }
+
+  /** Founder/admin internal preview of CM permanent-rule Qualified (CUSTOMER_BLOCKED). */
+  function dealOpportunitiesApiUrl() {
+    const params = new URLSearchParams(window.location.search || "");
+    const disable =
+      params.get("founderPreview") === "0" || params.get("noFounderPreview") === "1";
+    return disable
+      ? "/api/deal-opportunities"
+      : "/api/deal-opportunities?founderPreview=1";
   }
 
   function badge(o) {
@@ -1993,7 +2007,7 @@
       else setPageLoading(true, `Retrying Deal Capture… (${n}/3)`);
       $("count").innerHTML = n > 1 ? `Retrying… <strong>${n}</strong>` : "Loading…";
       const [res] = await Promise.all([
-        fetch("/api/deal-opportunities", {
+        fetch(dealOpportunitiesApiUrl(), {
           headers: authHeaders(),
           credentials: "same-origin",
           cache: "no-store",
@@ -2005,10 +2019,14 @@
         throw new Error(data.message || data.error || "Load failed (" + res.status + ")");
       }
       state.opps = data.opportunities || [];
+      state.founderPreview = data.founderPreview || null;
       paintMetrics(data.metrics || {});
-      populateBrandFilter();
-      populateCountryFilter();
-      populateDecisionWindowFilter();
+      if (typeof repopulateFiltersForTab === "function") repopulateFiltersForTab();
+      else {
+        populateBrandFilter();
+        populateCountryFilter();
+        populateDecisionWindowFilter();
+      }
       renderTabs();
       render();
       $("loadError").hidden = true;
