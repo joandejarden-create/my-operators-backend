@@ -1,0 +1,46 @@
+{
+  "at": "2026-11-23T19:30:00.000Z",
+  "restoreServer": {
+    "port": 8098,
+    "appMarker": "gdi-restore-canonical-staged-workflow-v1"
+  },
+  "preRestore8080": {
+    "port": 8080,
+    "appMarker": "gdi-customer-ui-regression-v1-1",
+    "note": "Still serving pre-restore code until merge + restart"
+  },
+  "checks": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "name": "Bethesda Marriott",
+      "url": "http://127.0.0.1:8098/group-demand-intelligence.html?hotelId=recLuxvwwxID7U2B8",
+      "showing": "Showing 67 of 67",
+      "contactResearchRequiredVisible": false,
+      "result": "PASS_STAGED_DEFAULT"
+    },
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "name": "Condesa DF",
+      "url": "http://127.0.0.1:8098/group-demand-intelligence.html?hotelId=rece0NdV9FCnaFlVS",
+      "showing": "Showing 0 of 0",
+      "apiStaged": "409 STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
+      "contactResearchRequiredVisible": false,
+      "researchSubstitute": false,
+      "emptyStateOffersViewResearch": true,
+      "result": "PASS_EMPTY_STAGED_FAIL_CLOSED"
+    },
+    {
+      "hotelId": "recIwaP1etgx2g9nA",
+      "name": "Cambridge Beaches Resort & Spa",
+      "url": "http://127.0.0.1:8098/group-demand-intelligence.html?hotelId=recIwaP1etgx2g9nA",
+      "showing": "Showing 0 of 0",
+      "hasStagedPublication": false,
+      "hasCurrentPublication": false,
+      "result": "PASS_PUBLICATION_CONTROLS_UNCHANGED"
+    }
+  ],
+  "screenshots": [
+    "screenshots/condesa-staged-empty.png",
+    "screenshots/bethesda-staged-67.png"
+  ]
+}

@@ -907,13 +907,14 @@
       ) {
         return "research";
       }
-      // Local founder development: inspect existing hotel research without
-      // requiring STAGED or CUSTOMER_PUBLISHED packages.
-      if (isLocalFounderHost()) return "research";
+      // Local founder review: default to STAGED finalized packages (Full E2E
+      // contract). Research remains available only via explicit
+      // ?inventory=research / ?live=1 — never as a silent substitute for STAGED.
+      if (isLocalFounderHost()) return "staged";
       // Production authenticated: customer-visible CURRENT package by default.
       return "published";
     } catch (e) {
-      return isLocalFounderHost() ? "research" : "published";
+      return isLocalFounderHost() ? "staged" : "published";
     }
   }
 
@@ -2057,9 +2058,9 @@
         presentationMode +
         '" role="status">' +
         (presentationMode === "LIVE_RESEARCH"
-          ? "<strong>Diag — Research store</strong> · Not the customer publication."
+          ? "<strong>Diag — Research store</strong> · Internal diagnostic only — not founder STAGED review."
           : presentationMode === "FOUNDER_STAGED_PREVIEW"
-            ? "<strong>Diag — Explicit STAGED</strong> · Fail-closed when missing. Localhost default is Research Preview."
+            ? "<strong>Diag — STAGED</strong> · Finalized packages only. Fail-closed when missing. Localhost founder default."
             : "<strong>Diag — Published CURRENT</strong> · Same contract as external share.") +
         "</div>";
     }
