@@ -97,6 +97,10 @@ import {
 } from "./api/hotel-explorer-demand-access.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
+  getDealOpportunities,
+  getDealOpportunityById,
+} from "./api/deal-opportunities.js";
+import {
   getOwnerIntelligenceMeta,
   listOwnerIntelligenceOwners,
   getOwnerIntelligenceOwner,
@@ -1049,6 +1053,20 @@ app.get(
 
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)
 app.get("/api/he-airtable-graph/hotel/:recordId", getHeAirtableGraphHotel);
+
+// Deal Opportunities — HIF commercial intelligence (founder local preview, CUSTOMER_BLOCKED)
+app.get(
+  "/api/deal-opportunities",
+  memberstackAuth,
+  requireDealalityUser,
+  getDealOpportunities
+);
+app.get(
+  "/api/deal-opportunities/:id",
+  memberstackAuth,
+  requireDealalityUser,
+  getDealOpportunityById
+);
 
 // Packet 2.8B-2 — Owner Intelligence (org-level portfolio / control graph)
 app.get("/api/owner-intelligence/meta", getOwnerIntelligenceMeta);

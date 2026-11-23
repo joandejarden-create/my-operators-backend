@@ -1,0 +1,1827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<title>Dealality | Deal Capture</title>
+<link rel="stylesheet" href="/css/deal-workspace-shell.css?v=dop2" />
+<link rel="stylesheet" href="/css/dealality-wave-loader.css?v=3" />
+<link rel="stylesheet" href="/css/hotel-explorer.css?v=59" />
+<link rel="stylesheet" href="/css/hotel-detail-panel.css?v=44" />
+<link rel="stylesheet" href="/css/deal-opportunities.css?v=17" />
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(window.location.search || "");
+    var inFrame = false;
+    try { inFrame = window !== window.top; } catch (e) { inFrame = true; }
+    if (inFrame || params.get("embed") === "1") {
+      document.documentElement.classList.add("embed-mode");
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.classList.add("embed-mode");
+      });
+      // Body may already be parsing — apply immediately when available
+      if (document.body) document.body.classList.add("embed-mode");
+    }
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="dop-root">
+<div id="dopPageLoading" class="dop-page-loading show" aria-live="polite" aria-busy="true"></div>
+<div class="dop-page">
+  <header class="dashboard-header aiv-dashboard-header">
+    <div class="dashboard-header-left">
+      <div class="dashboard-title-container">
+        <h1>Deal Capture</h1>
+      </div>
+      <p class="aiv-header-subtitle">Dealality identifies hotel commercial decisions that matter most, shows which opportunities are action-ready, and connects evidence to Hotel Explorer for diligence. Live HIF data · CUSTOMER_BLOCKED.</p>
+    </div>
+    <div class="dop-header-right">
+      <aside class="aiv-disclaimer-box" role="note">
+        <div class="aiv-disclaimer-box__title">Methodology</div>
+        <ul class="aiv-disclaimer-box__list">
+          <li class="aiv-disclaimer-box__item">Based on structured HIF discovery of brand conversion, management, and portfolio commercial signals.</li>
+          <li class="aiv-disclaimer-box__item">Findings are research-assisted and observational. Teams should validate before outreach.</li>
+          <li class="aiv-disclaimer-box__item">Dealality qualifies by evidence confidence, decision timing, and access pathway. It does not guarantee deal outcomes.</li>
+        </ul>
+      </aside>
+      <div class="dop-kpi-compact" aria-label="Opportunity metrics">
+        <article class="dop-metric"><div class="dop-metric-label">Qualified</div><div class="dop-metric-num" id="mQualified">—</div><div class="dop-metric-sub" id="mQualifiedSub" hidden>Loading…</div></article>
+        <article class="dop-metric"><div class="dop-metric-label">Properties</div><div class="dop-metric-num" id="mProps">—</div><div class="dop-metric-sub" id="mPropsSub" hidden></div></article>
+        <article class="dop-metric"><div class="dop-metric-label">Countries</div><div class="dop-metric-num" id="mCountries">—</div><div class="dop-metric-sub" id="mCountriesSub" hidden></div></article>
+        <article class="dop-metric"><div class="dop-metric-label">Contacts</div><div class="dop-metric-num" id="mContacts">00</div><div class="dop-metric-sub" hidden>Pending</div></article>
+      </div>
+    </div>
+  </header>
+
+  <div id="loadError" class="dop-error-banner" hidden></div>
+
+  <nav class="bdd-section-nav dop-section-nav" id="tabs" role="tablist" aria-label="Opportunity categories"></nav>
+
+  <section class="filters-section dop-filters-section" aria-label="Opportunity filters">
+    <div class="filter-group dop-filter-search">
+      <label class="filter-label" for="q">Search</label>
+      <div class="dop-search-field">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input class="filter-input" id="q" aria-label="Search opportunities" placeholder="Search hotel, owner, market…" />
+      </div>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="region">Market</label>
+      <select class="filter-select" id="region" aria-label="Market">
+        <option value="all">All Markets</option>
+        <option value="US">United States</option>
+        <option value="Caribbean">Caribbean</option>
+        <option value="India">India</option>
+        <option value="Other">Other International</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="country">Country</label>
+      <select class="filter-select" id="country" aria-label="Country">
+        <option value="all">All Countries</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="brand">Hotel Brand</label>
+      <select class="filter-select" id="brand" aria-label="Hotel Brand">
+        <option value="all">All Brands</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="timing">Timing</label>
+      <select class="filter-select" id="timing" aria-label="Timing — estimated decision horizon">
+        <option value="all">All Timing</option>
+        <option value="0_6">0–6 months</option>
+        <option value="6_12">6–12 months</option>
+        <option value="12_24">12–24 months</option>
+        <option value="unknown">Timing to verify</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="decisionWindow">Decision Window</label>
+      <select class="filter-select" id="decisionWindow" aria-label="Decision Window — year or date of decision">
+        <option value="all">All Decision Windows</option>
+      </select>
+    </div>
+    <div class="filter-group dop-filter-actions aiv-filter-actions">
+      <span class="filter-label">&nbsp;</span>
+      <button type="button" class="btn-clear" id="resetBtn" aria-label="Reset View">
+        Reset View
+        <span class="filter-count-badge" id="filterCountBadge" style="display: none;" aria-hidden="true">0</span>
+      </button>
+    </div>
+  </section>
+
+  <div class="chain-scale-legend dop-chain-scale-legend" id="chainScaleLegend" role="group" aria-label="Chain scale filters">
+    <span class="dop-chain-scale-legend__title">Chain Scale</span>
+    <button type="button" class="chain-scale-legend-item active" data-scale="all" id="chainScaleQuickAll">All</button>
+  </div>
+
+  <div class="dop-results-toolbar">
+    <div class="dop-results-count" id="count" aria-live="polite">Showing <strong>0</strong> of <strong>0</strong> Opportunities</div>
+    <div class="dop-results-toolbar-sort">
+      <button type="button" class="dop-export-btn" id="exportBtn" title="Local preview only">Export CSV</button>
+      <button type="button" class="dop-sort-icon" id="sortDirBtn" title="Toggle sort direction" aria-label="Toggle sort direction">⇅</button>
+      <select class="filter-select sort-select" id="sortSelect" aria-label="Sort opportunities">
+        <option value="name">Name (A-Z)</option>
+        <option value="type">Opportunity type</option>
+        <option value="city">Market</option>
+        <option value="window">Decision Window</option>
+        <option value="access">Access</option>
+      </select>
+      <div class="dop-view-toggle" role="group" aria-label="Layout">
+        <button type="button" class="dop-view-toggle__btn is-active" id="tableBtn" aria-pressed="true">List</button>
+        <button type="button" class="dop-view-toggle__btn" id="cardsBtn" aria-pressed="false">Tiles</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="dop-panel" id="oppPanel">
+    <div class="dop-table-wrap">
+      <table class="deals-table dop-table" id="oppTable">
+        <thead>
+          <tr>
+            <th data-sort="name" scope="col">Hotel / portfolio <span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></th>
+            <th data-sort="type" scope="col">Opportunity type <span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></th>
+            <th data-sort="city" scope="col">Market <span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></th>
+            <th data-sort="trigger" scope="col">Commercial trigger <span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></th>
+            <th data-sort="window" scope="col">Decision Window <span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></th>
+            <th class="no-sort" scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="body"><tr><td colspan="6"><div class="dop-loading">Loading HIF opportunities…</div></td></tr></tbody>
+      </table>
+    </div>
+    <div class="dop-cards" id="cards"></div>
+  </section>
+
+  <div class="dop-insight">
+    <article class="dop-panel dop-insight-card">
+      <div class="dop-insight-flex">
+        <div class="dop-insight-icon" aria-hidden="true">P</div>
+        <div>
+          <h3>Portfolio intelligence — AHIP</h3>
+          <p>One prospective management decision spans the remaining Aimbridge-managed portfolio. Dealality keeps the commercial mandate together while enabling property-by-property Hotel Explorer evaluation.</p>
+          <div class="dop-pills" id="ahipPills"><span class="dop-pill">Loading portfolio…</span></div>
+          <button class="dop-btn" style="margin-top:14px" type="button" id="ahipBtn">Explore portfolio</button>
+        </div>
+      </div>
+    </article>
+    <article class="dop-panel dop-insight-card">
+      <div class="dop-insight-flex">
+        <div class="dop-insight-icon" aria-hidden="true">i</div>
+        <div>
+          <h3>Intelligence, not just listings</h3>
+          <p>Every opportunity connects supporting evidence, commercial decision timing, ownership/operator context where verified, and Hotel Explorer when an HPC identity exists. Missing facts are labeled as requiring research.</p>
+          <div class="dop-pills"><span class="dop-pill">Source-backed</span><span class="dop-pill">CUSTOMER_BLOCKED</span><span class="dop-pill">Hotel Explorer linked</span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="dop-note-banner">LOCAL FOUNDER PREVIEW · Connected to HIF Airtable discovery inventory/findings on appCCUsuGsE1ifoLk. Not customer-published. Contact enrichment remains blocked.</div>
+</div>
+
+<div class="dop-shade" id="shade"></div>
+<aside class="dop-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Opportunity detail" aria-hidden="true">
+  <div class="dop-drawer-top">
+    <div>
+      <div class="dop-eyebrow">Dealality / Opportunity intelligence</div>
+      <h2 id="dTitle"></h2>
+      <p id="dLocation"></p>
+    </div>
+    <button class="dop-drawer-close" type="button" aria-label="Close opportunity drawer" id="drawerClose">×</button>
+  </div>
+  <div class="dop-drawer-content">
+    <div class="dop-drawer-kpis">
+      <div class="dop-drawer-kpi"><label>Opportunity</label><b id="dType"></b></div>
+      <div class="dop-drawer-kpi"><label>Decision Window</label><b id="dDate"></b></div>
+      <div class="dop-drawer-kpi"><label>Access assessment</label><b id="dAccess"></b></div>
+    </div>
+    <div class="dop-ds">
+      <h3>Why this matters</h3>
+      <p id="dWhy"></p>
+      <ul class="dop-why-context" id="dWhyContext" aria-label="Commercial context"></ul>
+      <div class="dop-assessment" id="dAssessment"></div>
+    </div>
+    <div class="dop-ds"><h3>Commercial intelligence</h3><div class="dop-fact-list" id="dFacts"></div></div>
+    <div class="dop-ds"><h3>Related hotels</h3><div class="dop-related" id="dRelated"></div></div>
+    <div class="dop-ds"><h3>Source signals</h3><div id="dSources"></div></div>
+    <div class="dop-ds"><h3>Recommended next steps</h3><p id="dNext"></p></div>
+    <div class="dop-ds"><h3>Hotel Explorer</h3><div class="dop-he-warning" id="dHE"></div></div>
+  </div>
+  <div class="dop-drawer-actions">
+    <button class="dop-btn" type="button" id="watchlistBtn">Add to watchlist</button>
+    <button class="dop-btn dop-btn-primary" type="button" id="heBtn">View Hotel Explorer</button>
+  </div>
+</aside>
+
+<div id="dopToast" class="bdd-toast dop-toast" role="status" aria-live="polite" aria-atomic="true">
+  <div class="toast-wave-container" aria-hidden="true">
+    <div class="wave-container">
+      <div class="wave wave-1"></div>
+      <div class="wave wave-2"></div>
+      <div class="wave wave-3"></div>
+      <div class="wave-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+    </div>
+  </div>
+  <div class="toast-message" id="dopToastMsg"></div>
+</div>
+
+<script src="/js/dealality-wave-loader.js"></script>
+<script src="/js/dealality-chain-scale-theme.js"></script>
+<script src="/js/hotel-explorer.js?v=59"></script>
+<script>
+(function () {
+  const SORT_HTML =
+    '<span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
+
+  const TAB_ICONS = {
+    qualified:
+      '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/><path d="M12 3l2.1 4.2L19 8l-3.4 3.3.8 4.7L12 14.2 7.6 16l.8-4.7L5 8l4.9-.8L12 3z"/></svg>',
+    BCT:
+      '<svg viewBox="0 0 24 24"><path d="M4 7h11"/><path d="M4 12h16"/><path d="M4 17h9"/><path d="M17 4v6"/><path d="M20 7h-6"/></svg>',
+    MCT:
+      '<svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21V8l6-4 6 4v13"/><path d="M10 21v-5h4v5"/></svg>',
+    watch:
+      '<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    all:
+      '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+  };
+
+  /* Match My Deals action icon SVGs (16×16, stroke 2, vertical more dots). */
+  const ICON_VIEW =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const ICON_HE =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-6h4v6"/></svg>';
+  const ICON_MORE =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>';
+
+  const CODE_MAP = {
+    VERIFIED_RELEVANT: "Verified relevant",
+    "0_6_MONTHS": "Next 0–6 months",
+    "6_12_MONTHS": "Next 6–12 months",
+    "12_24_MONTHS": "12–24 months",
+    ACCESSIBLE_PROBABLE: "Probable access",
+    ACCESSIBLE_CONFIRMED: "Confirmed access",
+    ACCESSIBLE_LIMITED: "Limited access",
+    OWNER_LED_PRIVATE_DECISION: "Owner-led private decision",
+    OPERATOR_LED: "Operator-led pathway",
+    OWNER_ASSET_MANAGEMENT: "Owner / asset management",
+    PRIORITY_A: "Priority A",
+    PRIORITY_B: "Priority B",
+    PRIORITY_C: "Priority C",
+    YES: "Yes",
+    NO: "No",
+    HIGH: "High",
+    MEDIUM: "Medium",
+    LOW: "Low",
+    MANAGEMENT: "Management",
+    BRAND: "Brand conversion",
+    BRAND_CONVERSION: "Brand conversion",
+    PORTFOLIO: "Portfolio",
+    CUSTOMER_BLOCKED: "Founder preview only",
+    COMMERCIAL_OPPORTUNITY_MCT: "Management contract opportunity",
+    COMMERCIAL_OPPORTUNITY_BCT: "Brand conversion opportunity",
+    COMMERCIAL_OPPORTUNITY_PORTFOLIO: "Portfolio management opportunity",
+    PRINCIPAL_OPEN_SIGNAL: "Open principal signal",
+  };
+
+  const ASSESS_LABELS = {
+    relevance: "Relevance",
+    timing: "Timing",
+    accessibility: "Access",
+    pathway: "Pathway",
+    engage: "Engage",
+    priority: "Priority",
+    first100: "First 100",
+  };
+
+  const HIDDEN_FACT_LABELS = new Set([
+    "Finding ID",
+    "Discovery Property ID",
+    "HPC identity",
+    "Airtable Finding ID",
+    "Airtable Inventory ID",
+  ]);
+
+  const CHAIN_SCALE_ORDER = [
+    "Luxury",
+    "Upper Upscale",
+    "Upscale",
+    "Upper Midscale",
+    "Midscale",
+    "Economy",
+    "Independent",
+  ];
+
+  const CHAIN_SCALE_FALLBACK = "#6c72ff";
+
+  /** Brand / name → STR-style chain scale (soft-brand / flag patterns before parent flags). */
+  const BRAND_SCALE_RULES = [
+    {
+      re: /four seasons|ritz.?carlton|st\.?\s*regis|waldorf|mandarin oriental|park hyatt|jw marriott|\bw hotels?\b|luxury collection|edition\b|conrad\b/i,
+      scale: "Luxury",
+    },
+    {
+      re: /hampton|holiday inn express|fairfield|home\s*2|candlewood|towneplace|comfort suites/i,
+      scale: "Upper Midscale",
+    },
+    {
+      re: /courtyard|hilton garden|residence inn|springhill|aloft|ac hotels|hyatt place|hyatt house|homewood|staybridge|sonesta select|sonesta es|\bsonesta\b|\bmercure\b/i,
+      scale: "Upscale",
+    },
+    {
+      re: /embassy suites|marriott marquis|westin|sheraton|renaissance|autograph|curio|tribute|kimpton|canopy|delta hotels|crowne plaza|royal sonesta|\bvoco\b|grand mercure|fiesta americana|radisson|the luxury collection/i,
+      scale: "Upper Upscale",
+    },
+    { re: /\bhilton\b(?!\s*garden)/i, scale: "Upper Upscale" },
+    { re: /\bmarriott\b/i, scale: "Upper Upscale" },
+    {
+      re: /holiday inn\b|comfort inn|quality (inn|suites)|best western|\bwyndham\b/i,
+      scale: "Midscale",
+    },
+    {
+      re: /motel 6|super 8|days inn|red roof|econolodge|travelodge/i,
+      scale: "Economy",
+    },
+    { re: /\bindependent\b|\binhouse\b|lakeville/i, scale: "Independent" },
+  ];
+
+  const BRAND_LOGO_ALIASES = {
+    hilton: "hilton hotels & resorts",
+    "hilton hotels": "hilton hotels & resorts",
+    kimpton: "kimpton hotels",
+    "kimpton (ihg)": "kimpton hotels",
+    voco: "voco hotels",
+    hampton: "hampton by hilton",
+    "hampton inn": "hampton by hilton",
+    "hampton inn & suites": "hampton by hilton",
+    fairfield: "fairfield by marriott",
+    "fairfield inn": "fairfield by marriott",
+    "fairfield inn & suites": "fairfield by marriott",
+    home2: "home2 suites by hilton",
+    "home2 suites": "home2 suites by hilton",
+    courtyard: "courtyard by marriott",
+    "residence inn": "residence inn by marriott",
+    "springhill suites": "springhill suites by marriott",
+    "ac hotels": "ac hotels by marriott",
+    "delta hotels": "delta hotels by marriott",
+    radisson: "radisson by choice",
+    "radisson (choice)": "radisson by choice",
+    westin: "westin",
+    mercure: "mercure",
+  };
+
+  const INDEPENDENT_LOGO_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-5h6v5"/>' +
+    '<path d="M9 11h.01M15 11h.01M9 15h.01M15 15h.01"/></svg>';
+
+  const state = {
+    opps: [],
+    metrics: null,
+    brandLogoMap: {},
+    brandLogoNames: [],
+    activeFilter: "qualified",
+    chainScaleFilter: "all",
+    sortKey: "name",
+    sortDir: 1,
+    current: null,
+    lastFocus: null,
+    toastTimer: null,
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) =>
+    String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function humanCode(v) {
+    const raw = String(v || "").trim();
+    if (!raw) return "—";
+    if (CODE_MAP[raw]) return CODE_MAP[raw];
+    if (/^[A-Z0-9_]+$/.test(raw)) {
+      return raw
+        .toLowerCase()
+        .split("_")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+    }
+    return raw;
+  }
+
+  /** Display Proper Case for hotel sub-lines and opportunity type badges. */
+  function toProperCase(v) {
+    const mapped = humanCode(v);
+    if (!mapped || mapped === "—") return mapped;
+    return String(mapped)
+      .replace(/_+/g, " ")
+      .trim()
+      .split(/\s+/)
+      .map((w) => {
+        if (!w) return w;
+        // Preserve ISO-like dates (2026-09-30)
+        if (/^\d{4}-\d{2}-\d{2}/.test(w)) return w;
+        const lower = w.toLowerCase();
+        if (["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "as"].includes(lower)) {
+          return lower;
+        }
+        // Keep dotted abbreviations like St.
+        if (/^[A-Za-z]\.$/.test(w) || /^[A-Za-z]{1,2}\.$/.test(w)) {
+          return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+        }
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
+      })
+      .join(" ")
+      .replace(/^[a-z]/, (c) => c.toUpperCase());
+  }
+
+  const COUNTRY_NAMES = {
+    US: "United States",
+    USA: "United States",
+    TT: "Trinidad and Tobago",
+    IN: "India",
+    BR: "Brazil",
+    CA: "Canada",
+    MX: "Mexico",
+    DO: "Dominican Republic",
+    PR: "Puerto Rico",
+    GB: "United Kingdom",
+    UK: "United Kingdom",
+    ES: "Spain",
+    PT: "Portugal",
+    MV: "Maldives",
+    TC: "Turks and Caicos",
+    JM: "Jamaica",
+    BB: "Barbados",
+    BS: "Bahamas",
+    CU: "Cuba",
+    HT: "Haiti",
+    LC: "Saint Lucia",
+    GD: "Grenada",
+  };
+
+  function formatCountryName(codeOrName) {
+    const raw = String(codeOrName || "").trim();
+    if (!raw) return "";
+    const key = raw.toUpperCase().replace(/\./g, "");
+    if (COUNTRY_NAMES[key]) return COUNTRY_NAMES[key];
+    if (/^[A-Za-z]{2,3}$/.test(raw) && COUNTRY_NAMES[raw.toUpperCase()]) {
+      return COUNTRY_NAMES[raw.toUpperCase()];
+    }
+    // Already a full name
+    if (raw.length > 3) return toProperCase(raw);
+    return raw.toUpperCase();
+  }
+
+  /** US/CA-style region codes stay UPPERCASE (CO, MN, CA); longer regions Proper Case. */
+  function formatRegionToken(token) {
+    const t = String(token || "").trim();
+    if (!t) return "";
+    if (/^[A-Za-z]{2}$/.test(t)) return t.toUpperCase();
+    return toProperCase(t);
+  }
+
+  /** City / portfolio place labels — Proper Case without mangling state/country codes. */
+  function formatPlaceToken(token) {
+    const t = String(token || "").trim();
+    if (!t) return "";
+    if (/^[A-Za-z]{2}$/.test(t)) return t.toUpperCase();
+    return toProperCase(t);
+  }
+
+  /**
+   * Market column: "Denver, CO, United States" — write out countries; keep state codes as CO/MN/CA.
+   */
+  function formatMarketDisplay(o) {
+    const raw = String(o?.city || "").trim();
+    if (!raw || /^market to verify$/i.test(raw)) return "Market to verify";
+
+    const parts = raw.split(",").map((p) => p.trim()).filter(Boolean);
+    if (!parts.length) return "Market to verify";
+
+    const fieldCountry = formatCountryName(o?.country || "");
+
+    if (parts.length >= 3) {
+      const countryRaw = parts[parts.length - 1];
+      const regionRaw = parts[parts.length - 2];
+      const cityRaw = parts.slice(0, -2).join(", ");
+      const country =
+        formatCountryName(countryRaw) ||
+        fieldCountry ||
+        formatPlaceToken(countryRaw);
+      return [formatPlaceToken(cityRaw), formatRegionToken(regionRaw), country]
+        .filter(Boolean)
+        .join(", ");
+    }
+
+    if (parts.length === 2) {
+      const maybeCountry = parts[1];
+      const isCode = /^[A-Za-z]{2,3}$/.test(maybeCountry) || Boolean(COUNTRY_NAMES[maybeCountry.toUpperCase()]);
+      if (isCode || fieldCountry) {
+        return [
+          formatPlaceToken(parts[0]),
+          formatCountryName(maybeCountry) || fieldCountry,
+        ]
+          .filter(Boolean)
+          .join(", ");
+      }
+      return [formatPlaceToken(parts[0]), formatRegionToken(parts[1])].join(", ");
+    }
+
+    if (fieldCountry && !COUNTRY_NAMES[parts[0].toUpperCase()]) {
+      return [formatPlaceToken(parts[0]), fieldCountry].filter(Boolean).join(", ");
+    }
+    return formatCountryName(parts[0]) || formatPlaceToken(parts[0]);
+  }
+
+  function parseWhy(raw) {
+    const text = String(raw || "");
+    const parts = text.split("|").map((p) => p.trim()).filter(Boolean);
+    const narrative = [];
+    const chips = [];
+    for (const part of parts) {
+      const m = part.match(/^([a-zA-Z0-9_]+)=(.*)$/);
+      if (m) {
+        const key = m[1].toLowerCase();
+        chips.push({ key, label: ASSESS_LABELS[key] || humanCode(m[1]), value: humanCode(m[2]) });
+      } else {
+        narrative.push(part);
+      }
+    }
+    return {
+      summary: narrative.join(" ").trim() || "Commercial context requires additional research confirmation.",
+      chips,
+    };
+  }
+
+  /** Strip internal research jargon from narrative text. */
+  function scrubResearchJargon(text, hotelName) {
+    let out = String(text || "");
+    out = out
+      .replace(/^Track\s+[A-Z]\s+handoff:\s*/i, "")
+      .replace(/\bTrack\s+[A-Z]\s+handoff\b/gi, "")
+      .replace(/\bfranchise\/management signal for\s+/i, "Franchise or management signal at ")
+      .replace(/\bfranchise\/management signal\b/gi, "franchise or management signal")
+      .replace(/\bCOMMERCIAL_SIGNAL_[A-Z0-9_]+\b/g, "")
+      .replace(/\bCOMMERCIAL_OPPORTUNITY_[A-Z0-9_]+\b/g, "")
+      .replace(/\bdo_not_requalify\b/gi, "")
+      .replace(/\bFIRST_100\b/gi, "")
+      .replace(/\bedital\b/gi, "tender")
+      .replace(/\bkeys ref\b/gi, "keys")
+      .replace(/\bmin\b/gi, "minimum")
+      .replace(/\s{2,}/g, " ")
+      .replace(/\s*[|·:;,-]+\s*$/g, "")
+      .trim();
+
+    if (hotelName) {
+      const escaped = String(hotelName).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      out = out.replace(new RegExp("\\s+for\\s+" + escaped + "\\.?$", "i"), "");
+      out = out.replace(new RegExp("^" + escaped + "\\s*[-–:]\\s*", "i"), "");
+    }
+    return out.trim();
+  }
+
+  function isWeakWhyNarrative(text) {
+    const t = String(text || "").trim();
+    if (!t || t.length < 28) return true;
+    return /handoff|requires additional research|commercial signal retained|signal for\b/i.test(t);
+  }
+
+  /** Short customer-facing commercial trigger (no internal codes / Track handoffs). */
+  function cleanTrigger(o) {
+    let text = scrubResearchJargon(parseWhy(o?.trigger || o?.why || "").summary, o?.name);
+
+    if (!text || isWeakWhyNarrative(text)) {
+      if (o?.kind === "BCT") text = "Brand conversion signal under review";
+      else if (o?.kind === "MCT") text = "Management opportunity signal under review";
+      else if (o?.group === "watch") text = "Emerging commercial signal — verify before outreach";
+      else text = "Commercial signal requires verification";
+    }
+
+    if (text.length > 110) text = text.slice(0, 107).replace(/\s+\S*$/, "") + "…";
+    return text;
+  }
+
+  /**
+   * Drawer “Why this matters” — plain-language lead + actionable context.
+   * Avoids raw Track handoff lines that leave founders unsure what to do.
+   */
+  function buildWhyMatters(o) {
+    const parsed = parseWhy(o?.why || "");
+    const scrubbed = scrubResearchJargon(parsed.summary, o?.name);
+    const market = formatMarketDisplay(o);
+    const brandKey = opportunityBrandKey(o);
+    const brand = brandKey !== "__unspecified__" ? toProperCase(o.sub) : "";
+    const type = toProperCase(o.type);
+    const windowLabel = o.window || "Timing to verify";
+    const access = o.access || "Access to assess";
+    const hotel = o.name || "This property";
+
+    let lead = scrubbed;
+    if (isWeakWhyNarrative(scrubbed) || /franchise or management signal at\b/i.test(scrubbed)) {
+      if (o.kind === "BCT") {
+        lead =
+          hotel +
+          " shows a brand conversion signal" +
+          (brand ? " while currently affiliated with " + brand : "") +
+          ". An owner or operator may be evaluating a franchise, flag, or rebrand pathway.";
+      } else if (o.kind === "MCT") {
+        lead =
+          hotel +
+          " shows a management-contract signal" +
+          (brand ? " (" + brand + ")" : "") +
+          ". A third-party management or operator decision may open a commercial engagement pathway.";
+      } else if (o.group === "watch") {
+        lead =
+          hotel +
+          " is on the emerging watchlist based on a commercial signal that still needs stronger open-process evidence before outreach.";
+      } else if (o.type && /portfolio/i.test(o.type)) {
+        lead =
+          hotel +
+          " represents a portfolio-level management mandate. Treat this as one commercial decision spanning multiple properties, then diligence each hotel in Hotel Explorer.";
+      } else {
+        lead =
+          hotel +
+          " carries a commercial intelligence signal that may indicate an upcoming brand or management decision. Confirm whether an open process exists before outreach.";
+      }
+      // Keep a cleaned fragment as a second sentence when it still adds detail
+      if (scrubbed && scrubbed.length > 20 && !/handoff|signal at\b/i.test(scrubbed) && scrubbed.toLowerCase() !== lead.toLowerCase()) {
+        lead = lead + " Reported detail: " + scrubbed.replace(/\.$/, "") + ".";
+      }
+    } else if (scrubbed && !/[.!?]$/.test(scrubbed)) {
+      lead = scrubbed + ".";
+    }
+
+    const context = [];
+    context.push("What it is: " + type + ".");
+    if (brand) context.push("Current affiliation: " + brand + ".");
+    context.push("Where: " + market + ".");
+    context.push("Timing: " + opportunityHorizonLabel(opportunityHorizonKey(o)) + ".");
+    context.push("Decision window: " + windowLabel + ".");
+    context.push("Access: " + access + ".");
+    if (Array.isArray(o.relatedHotels) && o.relatedHotels.length > 1) {
+      context.push("Scope: " + o.relatedHotels.length + " related hotels are linked to this mandate.");
+    }
+    if (o.group === "qualified") {
+      context.push(
+        "What to do: verify the latest owner/operator decision timetable, confirm the engagement pathway, and open Hotel Explorer when a property identity is linked."
+      );
+    } else {
+      context.push(
+        "What to do: monitor for affirmative open-process evidence; do not treat this as outreach-ready until access and timing are confirmed."
+      );
+    }
+
+    return { lead, context, chips: parsed.chips };
+  }
+
+  function sourceTitle(s) {
+    const title = String(s?.title || "").trim();
+    const url = String(s?.url || "").trim();
+    if (title && !/^https?:\/\//i.test(title)) return title;
+    try {
+      const u = new URL(url || title);
+      const host = u.hostname.replace(/^www\./, "");
+      const slug = decodeURIComponent(u.pathname.split("/").filter(Boolean).pop() || "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\.[a-z0-9]+$/i, "")
+        .trim();
+      if (slug) return slug.charAt(0).toUpperCase() + slug.slice(1) + " · " + host;
+      return host;
+    } catch (_) {
+      return title || url || "Research source";
+    }
+  }
+
+  function setPageLoading(on, mainText) {
+    const host = $("dopPageLoading");
+    if (!host) return;
+    if (!on) {
+      host.classList.remove("show");
+      host.setAttribute("aria-busy", "false");
+      host.innerHTML = "";
+      return;
+    }
+    host.setAttribute("aria-busy", "true");
+    host.classList.add("show");
+    const label = mainText || "Loading Deal Capture…";
+    if (window.DealalityWaveLoader && typeof window.DealalityWaveLoader.toastHtml === "function") {
+      host.innerHTML = window.DealalityWaveLoader.toastHtml(label, {
+        hostClass: "dealality-loading-toast-host",
+      });
+    } else if (window.DealalityWaveLoader && typeof window.DealalityWaveLoader.html === "function") {
+      host.innerHTML = window.DealalityWaveLoader.html(label, {
+        fixed: false,
+        compact: true,
+        progress: false,
+        size: "sm",
+      });
+    } else {
+      host.innerHTML =
+        '<div class="dealality-loading-toast-host"><div class="loading dealality-wave-loader dealality-wave-loader--compact dealality-wave-loader--toast" role="status">' +
+        '<div class="loading-content"><div class="wave-container" aria-hidden="true">' +
+        '<div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div>' +
+        '</div><div><div class="loading-text-main">' +
+        esc(label) +
+        "</div></div></div></div></div>";
+    }
+  }
+
+  function showToast(message, kind) {
+    const el = $("dopToast");
+    const msg = $("dopToastMsg");
+    if (!el || !msg) return;
+    msg.textContent = message;
+    el.classList.remove("toast-success", "toast-error", "toast-info", "toast-warn", "show");
+    const k = kind || "info";
+    if (k === "success") el.classList.add("toast-success");
+    else if (k === "error") el.classList.add("toast-error");
+    else if (k === "warn" || k === "warning") el.classList.add("toast-warn");
+    else el.classList.add("toast-info");
+    void el.offsetWidth;
+    el.classList.add("show");
+    if (state.toastTimer) clearTimeout(state.toastTimer);
+    state.toastTimer = setTimeout(() => el.classList.remove("show"), 4200);
+  }
+
+  function authHeaders() {
+    const h = { Accept: "application/json" };
+    try {
+      const t =
+        (window.MemberStack?.getToken && window.MemberStack.getToken()) ||
+        localStorage.getItem("_ms-mem") ||
+        localStorage.getItem("msToken") ||
+        sessionStorage.getItem("msToken");
+      const parentTok = new URLSearchParams(window.location.search).get("msToken");
+      const bearer = parentTok || (typeof t === "string" && t.length > 20 ? t : null);
+      if (bearer) h.Authorization = "Bearer " + bearer;
+    } catch (_) {}
+    return h;
+  }
+
+  function badge(o) {
+    const cls = o.kind === "MCT" ? "mct" : o.kind === "OTHER" ? "other" : "";
+    return `<span class="dop-type ${cls}">${esc(toProperCase(o.type))}</span>`;
+  }
+  function statusEl(o) {
+    const c = o.status === "Award pending" ? "watch" : o.group === "watch" ? "maybe" : "";
+    return `<span class="dop-state ${c}">${esc(o.status)}</span>`;
+  }
+
+  function accessActions(o) {
+    const heReady = Boolean(o.he?.ready && o.he?.hpcRecordId);
+    return `<div class="action-icons">
+      <button type="button" class="action-icon" data-action="view" data-id="${esc(o.id)}" title="View intelligence" aria-label="View intelligence for ${esc(o.name)}">${ICON_VIEW}</button>
+      <button type="button" class="action-icon" data-action="he" data-id="${esc(o.id)}" data-hpc="${esc(o.he?.hpcRecordId || "")}" data-name="${esc(o.name)}" title="${heReady ? "Open Hotel Explorer" : "Hotel Explorer pending"}" aria-label="${heReady ? "Open Hotel Explorer" : "Hotel Explorer pending"}" ${heReady ? "" : "disabled"}>${ICON_HE}</button>
+      <button type="button" class="action-icon action-icon--more" data-action="more" data-id="${esc(o.id)}" title="More" aria-label="More actions for ${esc(o.name)}">${ICON_MORE}</button>
+    </div>`;
+  }
+
+  function isBrandEnum(sub) {
+    const raw = String(sub || "").trim();
+    return Boolean(raw) && /^[A-Z0-9_]+$/.test(raw) && !/[a-z]/.test(raw);
+  }
+
+  function opportunityBrandKey(o) {
+    const raw = String(o?.sub || "").trim();
+    if (!raw || isBrandEnum(raw)) return "__unspecified__";
+    return raw;
+  }
+
+  /** Stable country filter key (ISO when known). */
+  function opportunityCountryKey(o) {
+    const raw = String(o?.country || "").trim();
+    if (!raw) return "__unspecified__";
+    const upper = raw.toUpperCase().replace(/\./g, "");
+    if (COUNTRY_NAMES[upper]) return upper;
+    const lower = raw.toLowerCase();
+    for (const [code, name] of Object.entries(COUNTRY_NAMES)) {
+      if (String(name).toLowerCase() === lower) return code;
+    }
+    return raw;
+  }
+
+  function opportunityCountryLabel(key) {
+    if (!key || key === "__unspecified__") return "Unspecified";
+    if (COUNTRY_NAMES[key]) return COUNTRY_NAMES[key];
+    return formatCountryName(key) || toProperCase(key);
+  }
+
+  function normalizeChainScaleLabel(scale) {
+    const theme = window.DealalityChainScaleTheme;
+    if (theme && typeof theme.normalizeChainScaleLabel === "function") {
+      const n = theme.normalizeChainScaleLabel(scale);
+      if (n) return n;
+    }
+    const s = String(scale || "").toLowerCase();
+    if (s.includes("luxury")) return "Luxury";
+    if (s.includes("upper upscale")) return "Upper Upscale";
+    if (s.includes("upscale") && !s.includes("upper")) return "Upscale";
+    if (s.includes("upper midscale")) return "Upper Midscale";
+    if (s.includes("midscale")) return "Midscale";
+    if (s.includes("economy")) return "Economy";
+    if (s.includes("independent")) return "Independent";
+    return String(scale || "").trim();
+  }
+
+  function getChainScaleColor(scale) {
+    const theme = window.DealalityChainScaleTheme;
+    if (theme && typeof theme.chainStripeColor === "function") {
+      const hex = theme.chainStripeColor(scale);
+      if (hex) return hex;
+    }
+    const s = String(scale || "").toLowerCase();
+    if (s.includes("luxury")) return "#d4af37";
+    if (s.includes("upper upscale")) return "#9b59b6";
+    if (s.includes("upscale") && !s.includes("upper")) return "#3498db";
+    if (s.includes("upper midscale")) return "#2ecc71";
+    if (s.includes("midscale")) return "#1abc9c";
+    if (s.includes("economy")) return "#e67e22";
+    if (s.includes("independent")) return "#94a3b8";
+    return null;
+  }
+
+  function inferScaleFromText(text) {
+    const raw = String(text || "").trim();
+    if (!raw || isBrandEnum(raw)) return null;
+    for (let i = 0; i < BRAND_SCALE_RULES.length; i++) {
+      if (BRAND_SCALE_RULES[i].re.test(raw)) return BRAND_SCALE_RULES[i].scale;
+    }
+    return null;
+  }
+
+  function getOpportunityChainScales(o) {
+    const found = [];
+    const push = (label) => {
+      const n = normalizeChainScaleLabel(label);
+      if (!n || found.includes(n)) return;
+      if (CHAIN_SCALE_ORDER.includes(n) || n === "Independent") found.push(n);
+    };
+
+    if (Array.isArray(o?.chainScales) && o.chainScales.length) {
+      o.chainScales.forEach(push);
+    }
+
+    const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
+    if (related.length) {
+      related.forEach((h) => {
+        push(inferScaleFromText(h.brand));
+        push(inferScaleFromText(h.name));
+      });
+    }
+
+    if (!found.length) {
+      push(inferScaleFromText(o?.sub));
+      push(inferScaleFromText(o?.name));
+    }
+
+    // Portfolio subtitle without related brands: premium select-service → Upscale + Upper Midscale
+    if (!found.length && /marriott\s*\/\s*hilton\s*\/\s*ihg|premium select/i.test(String(o?.sub || ""))) {
+      push("Upscale");
+      push("Upper Midscale");
+    }
+
+    return found.sort(
+      (a, b) =>
+        (CHAIN_SCALE_ORDER.indexOf(a) === -1 ? 99 : CHAIN_SCALE_ORDER.indexOf(a)) -
+        (CHAIN_SCALE_ORDER.indexOf(b) === -1 ? 99 : CHAIN_SCALE_ORDER.indexOf(b))
+    );
+  }
+
+  /** Operator Explorer multi-scale stripe (vertical bands) — fallback tile only. */
+  function getChainScaleStripeBackground(chainScales) {
+    const colors = [];
+    (chainScales || []).forEach((scale) => {
+      const color = getChainScaleColor(scale);
+      if (color && colors.indexOf(color) === -1) colors.push(color);
+    });
+    if (colors.length === 0) return CHAIN_SCALE_FALLBACK;
+    if (colors.length === 1) return colors[0];
+    const step = 100 / colors.length;
+    const stops = colors
+      .map((color, index) => {
+        const start = (index * step).toFixed(3);
+        const end = ((index + 1) * step).toFixed(3);
+        return color + " " + start + "%, " + color + " " + end + "%";
+      })
+      .join(", ");
+    return "linear-gradient(to bottom, " + stops + ")";
+  }
+
+  function cleanBrandLabel(text) {
+    return String(text || "")
+      .replace(/\s*\([^)]*\)\s*/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function isIndependentBrand(text) {
+    const s = cleanBrandLabel(text).toLowerCase();
+    return Boolean(s) && (/^independent\b/.test(s) || s === "inhouse" || /\bindependent\b/.test(s));
+  }
+
+  /** Ordered brand candidates for an opportunity — pick first resolvable logo. */
+  function brandCandidates(o) {
+    const out = [];
+    const push = (raw) => {
+      const s = cleanBrandLabel(raw);
+      if (!s || isBrandEnum(s)) return;
+      if (/marriott\s*\/\s*hilton\s*\/\s*ihg/i.test(s)) return;
+      if (!out.some((x) => x.toLowerCase() === s.toLowerCase())) out.push(s);
+    };
+    const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
+    // Multi-hotel: prefer a concrete related property brand (pick one)
+    related.forEach((h) => {
+      push(h.brand);
+      push(h.name);
+    });
+    push(o?.sub);
+    push(o?.name);
+    return out;
+  }
+
+  function lookupBrandLogo(query) {
+    const q0 = cleanBrandLabel(query).toLowerCase();
+    if (!q0) return null;
+    const aliased = BRAND_LOGO_ALIASES[q0] || q0;
+    const direct = state.brandLogoMap[aliased] || state.brandLogoMap[q0];
+    if (direct && direct.url) {
+      return { name: direct.name || aliased, url: direct.url, id: direct.id };
+    }
+    let best = null;
+    let bestScore = 0;
+    (state.brandLogoNames || []).forEach((libName) => {
+      const n = libName.toLowerCase();
+      let score = 0;
+      if (n === aliased || n === q0) score = 1000;
+      else if (n.startsWith(aliased + " ") || n.startsWith(q0 + " ")) score = 850;
+      else if (q0.includes(n) && n.length >= 6) score = 700 + n.length;
+      else if (aliased.length >= 5 && n.includes(aliased)) score = 500 + aliased.length;
+      else if (q0.length >= 5 && n.includes(q0)) score = 450 + q0.length;
+      else if (aliased.length >= 8 && aliased.includes(n)) score = 300 + n.length;
+      if (score > bestScore && state.brandLogoMap[n] && state.brandLogoMap[n].url) {
+        bestScore = score;
+        best = {
+          name: libName,
+          url: state.brandLogoMap[n].url,
+          id: state.brandLogoMap[n].id,
+        };
+      }
+    });
+    return bestScore >= 300 ? best : null;
+  }
+
+  function resolveOpportunityLogo(o) {
+    const candidates = brandCandidates(o);
+    for (let i = 0; i < candidates.length; i++) {
+      if (isIndependentBrand(candidates[i])) {
+        return { kind: "independent", label: "Independent" };
+      }
+    }
+    for (let i = 0; i < candidates.length; i++) {
+      const hit = lookupBrandLogo(candidates[i]);
+      if (hit && hit.url) {
+        return { kind: "logo", label: hit.name, url: hit.url, id: hit.id };
+      }
+    }
+    if (isIndependentBrand(o?.sub) || /lakeville/i.test(String(o?.name || ""))) {
+      return { kind: "independent", label: "Independent" };
+    }
+    return { kind: "empty", label: candidates[0] || o?.name || "Brand" };
+  }
+
+  function scaleOutlineStyle(scales) {
+    const colors = [];
+    (scales || []).forEach((scale) => {
+      const color = getChainScaleColor(scale);
+      if (color && colors.indexOf(color) === -1) colors.push(color);
+    });
+    if (colors.length === 0) {
+      return { multi: false, css: `--dop-scale-outline:${CHAIN_SCALE_FALLBACK}` };
+    }
+    if (colors.length === 1) {
+      return { multi: false, css: `--dop-scale-outline:${colors[0]}` };
+    }
+    return {
+      multi: true,
+      css: `--dop-scale-ring:${getChainScaleStripeBackground(scales)}`,
+    };
+  }
+
+  function logoHtml(o, className) {
+    const scales = getOpportunityChainScales(o);
+    const scaleTitle = scales.length ? scales.join(" · ") : "Chain scale to verify";
+    const resolved = resolveOpportunityLogo(o);
+    const title = resolved.label ? resolved.label + " · " + scaleTitle : scaleTitle;
+    const outline = scaleOutlineStyle(scales);
+    const cls =
+      className +
+      (outline.multi ? " has-multi-scale" : "") +
+      (resolved.kind === "independent" ? " is-independent" : "");
+
+    if (resolved.kind === "logo" && resolved.url) {
+      return (
+        `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">` +
+        `<img src="${esc(resolved.url)}" alt="" loading="lazy" decoding="async" ` +
+        `onerror="this.remove()"/>` +
+        `</div>`
+      );
+    }
+
+    if (resolved.kind === "independent") {
+      return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">${INDEPENDENT_LOGO_SVG}</div>`;
+    }
+
+    // Logo unavailable — outline only (no letter initials)
+    return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true"></div>`;
+  }
+
+  async function loadBrandLogoMap() {
+    try {
+      const res = await fetch("/api/brand-library/brands", {
+        headers: authHeaders(),
+        credentials: "same-origin",
+        cache: "force-cache",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      const arr = Array.isArray(data.brands) ? data.brands : [];
+      const map = {};
+      const names = [];
+      arr.forEach((b) => {
+        const name = String((b && b.name) || "").trim();
+        const id = String((b && b.id) || "").trim();
+        const hasLogo = Boolean(String((b && b.logo) || "").trim());
+        if (!name || !id || !hasLogo) return;
+        const key = name.toLowerCase();
+        map[key] = {
+          id,
+          name,
+          url: "/api/brand-library/logo/" + encodeURIComponent(id),
+        };
+        names.push(name);
+      });
+      state.brandLogoMap = map;
+      state.brandLogoNames = names;
+    } catch (_) {
+      /* keep empty map — tiles show chain-scale outline only */
+    }
+  }
+
+  function populateBrandFilter() {
+    const sel = $("brand");
+    if (!sel) return;
+    const prev = sel.value || "all";
+    const brands = new Map();
+    let hasUnspecified = false;
+    state.opps.forEach((o) => {
+      const key = opportunityBrandKey(o);
+      if (key === "__unspecified__") {
+        hasUnspecified = true;
+        return;
+      }
+      brands.set(key, toProperCase(key));
+    });
+    const options = [['all', 'All Brands']];
+    [...brands.entries()]
+      .sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: "base" }))
+      .forEach(([value, label]) => options.push([value, label]));
+    if (hasUnspecified) options.push(["__unspecified__", "Unspecified"]);
+    sel.innerHTML = options
+      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
+      .join("");
+    sel.value = options.some(([v]) => v === prev) ? prev : "all";
+  }
+
+  function populateCountryFilter() {
+    const sel = $("country");
+    if (!sel) return;
+    const prev = sel.value || "all";
+    const countries = new Map();
+    let hasUnspecified = false;
+    state.opps.forEach((o) => {
+      const key = opportunityCountryKey(o);
+      if (key === "__unspecified__") {
+        hasUnspecified = true;
+        return;
+      }
+      countries.set(key, opportunityCountryLabel(key));
+    });
+    const options = [["all", "All Countries"]];
+    [...countries.entries()]
+      .sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: "base" }))
+      .forEach(([value, label]) => options.push([value, label]));
+    if (hasUnspecified) options.push(["__unspecified__", "Unspecified"]);
+    sel.innerHTML = options
+      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
+      .join("");
+    sel.value = options.some(([v]) => v === prev) ? prev : "all";
+  }
+
+  const MONTH_INDEX = {
+    jan: 0,
+    january: 0,
+    feb: 1,
+    february: 1,
+    mar: 2,
+    march: 2,
+    apr: 3,
+    april: 3,
+    may: 4,
+    jun: 5,
+    june: 5,
+    jul: 6,
+    july: 6,
+    aug: 7,
+    august: 7,
+    sep: 8,
+    sept: 8,
+    september: 8,
+    oct: 9,
+    october: 9,
+    nov: 10,
+    november: 10,
+    dec: 11,
+    december: 11,
+  };
+
+  /** Decision Window key = calendar label from data (year / month-year). */
+  function opportunityDecisionWindowKey(o) {
+    const w = String(o?.window || "").trim();
+    if (!w || /^timing to verify$/i.test(w) || /^to verify$/i.test(w)) return "unknown";
+    return w;
+  }
+
+  function opportunityDecisionWindowLabel(key) {
+    if (!key || key === "unknown") return "Timing to verify";
+    return key;
+  }
+
+  function populateDecisionWindowFilter() {
+    const sel = $("decisionWindow");
+    if (!sel) return;
+    const prev = sel.value || "all";
+    const windows = new Map();
+    state.opps.forEach((o) => {
+      const key = opportunityDecisionWindowKey(o);
+      windows.set(key, opportunityDecisionWindowLabel(key));
+    });
+    const options = [["all", "All Decision Windows"]];
+    [...windows.entries()]
+      .sort((a, b) => {
+        if (a[0] === "unknown") return 1;
+        if (b[0] === "unknown") return -1;
+        return a[1].localeCompare(b[1], undefined, { sensitivity: "base", numeric: true });
+      })
+      .forEach(([value, label]) => options.push([value, label]));
+    sel.innerHTML = options
+      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
+      .join("");
+    sel.value = options.some(([v]) => v === prev) ? prev : "all";
+  }
+
+  /** Approximate decision date from window / year for horizon bucketing. */
+  function estimateDecisionDate(o) {
+    const w = String(o?.window || "").trim();
+    const yearRaw = String(o?.year || "").trim();
+    if (!w && (!yearRaw || yearRaw === "unknown")) return null;
+    if (/current evaluation|award pending|month-to-month/i.test(w)) return new Date();
+
+    const byEnd = w.match(/by end of\s+(20\d{2})/i);
+    if (byEnd) return new Date(Number(byEnd[1]), 11, 31);
+
+    const monYear = w.match(/^(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(20\d{2})$/i);
+    if (monYear) {
+      const mi = MONTH_INDEX[monYear[1].toLowerCase()];
+      if (mi != null) return new Date(Number(monYear[2]), mi, 15);
+    }
+
+    if (/^20\d{2}$/.test(w)) return new Date(Number(w), 5, 30);
+    if (/^20\d{2}$/.test(yearRaw)) return new Date(Number(yearRaw), 5, 30);
+    return null;
+  }
+
+  /**
+   * Timing horizon: when we estimate the decision needs to be made.
+   * Buckets: 0_6 | 6_12 | 12_24 | unknown
+   * Prefer explicit timing= chip in why text when present.
+   */
+  function opportunityHorizonKey(o) {
+    if (o?.timingHorizon) {
+      const th = String(o.timingHorizon).toUpperCase();
+      if (/NOW_ACTIVE|0_6/.test(th)) return "0_6";
+      if (/6_12/.test(th)) return "6_12";
+      if (/12_24/.test(th)) return "12_24";
+      if (/UNKNOWN|HISTORICAL|VERIFY/.test(th)) return "unknown";
+    }
+
+    const chips = parseWhy(o?.why || "").chips || [];
+    const timingChip = chips.find((c) => c.key === "timing");
+    if (timingChip) {
+      const raw = String(timingChip.value || "").toUpperCase().replace(/\s+/g, "_");
+      const code = String(
+        Object.keys(CODE_MAP).find((k) => CODE_MAP[k] === timingChip.value) || raw
+      ).toUpperCase();
+      if (/NOW_ACTIVE|0_6|NEXT_0/.test(code) || /0–6|0-6/i.test(timingChip.value)) return "0_6";
+      if (/6_12|NEXT_6/.test(code) || /6–12|6-12/i.test(timingChip.value)) return "6_12";
+      if (/12_24/.test(code) || /12–24|12-24/i.test(timingChip.value)) return "12_24";
+    }
+
+    const d = estimateDecisionDate(o);
+    if (!d || Number.isNaN(d.getTime())) return "unknown";
+    const months = (d.getTime() - Date.now()) / (1000 * 60 * 60 * 24 * 30.4375);
+    if (months <= 6) return "0_6";
+    if (months <= 12) return "6_12";
+    if (months <= 24) return "12_24";
+    return "12_24";
+  }
+
+  function opportunityHorizonLabel(key) {
+    if (key === "0_6") return "0–6 months";
+    if (key === "6_12") return "6–12 months";
+    if (key === "12_24") return "12–24 months";
+    return "Timing to verify";
+  }
+
+  function matchesBaseFilters(o, opts) {
+    const skipChain = Boolean(opts && opts.skipChainScale);
+    const q = $("q").value.trim().toLowerCase();
+    const r = $("region").value;
+    const c = $("country")?.value || "all";
+    const b = $("brand")?.value || "all";
+    const t = $("timing")?.value || "all";
+    const dw = $("decisionWindow")?.value || "all";
+    if (state.activeFilter === "qualified" && o.group !== "qualified") return false;
+    if (state.activeFilter === "watch" && o.group !== "watch") return false;
+    if (state.activeFilter === "BCT" && !(o.group === "qualified" && o.kind === "BCT")) return false;
+    if (state.activeFilter === "MCT" && !(o.group === "qualified" && o.kind === "MCT")) return false;
+    if (r !== "all" && o.region !== r) return false;
+    if (c !== "all" && opportunityCountryKey(o) !== c) return false;
+    if (b !== "all" && opportunityBrandKey(o) !== b) return false;
+    if (t !== "all" && opportunityHorizonKey(o) !== t) return false;
+    if (dw !== "all" && opportunityDecisionWindowKey(o) !== dw) return false;
+    if (q) {
+      const hay = [
+        o.name,
+        o.sub,
+        o.city,
+        o.country,
+        opportunityCountryLabel(opportunityCountryKey(o)),
+        o.trigger,
+        o.type,
+        o.id,
+      ]
+        .join(" ")
+        .toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    if (!skipChain && state.chainScaleFilter && state.chainScaleFilter !== "all") {
+      const want = normalizeChainScaleLabel(state.chainScaleFilter).toLowerCase();
+      const scales = getOpportunityChainScales(o).map((s) => s.toLowerCase());
+      if (!scales.includes(want)) return false;
+    }
+    return true;
+  }
+
+  function selection() {
+    let rows = state.opps.filter((o) => matchesBaseFilters(o));
+    rows = rows.slice().sort((a, b) => {
+      const av = String(a[state.sortKey] || "").toLowerCase();
+      const bv = String(b[state.sortKey] || "").toLowerCase();
+      if (av < bv) return -1 * state.sortDir;
+      if (av > bv) return 1 * state.sortDir;
+      return 0;
+    });
+    return rows;
+  }
+
+  function renderChainScaleLegend() {
+    const host = $("chainScaleLegend");
+    if (!host) return;
+    const pool = state.opps.filter((o) => matchesBaseFilters(o, { skipChainScale: true }));
+    const counts = { all: pool.length };
+    CHAIN_SCALE_ORDER.forEach((s) => {
+      counts[s.toLowerCase()] = 0;
+    });
+    pool.forEach((o) => {
+      getOpportunityChainScales(o).forEach((s) => {
+        const key = s.toLowerCase();
+        counts[key] = (counts[key] || 0) + 1;
+      });
+    });
+
+    const active = (state.chainScaleFilter || "all").toLowerCase();
+    const chips = [
+      `<button type="button" class="chain-scale-legend-item${active === "all" ? " active" : ""}" data-scale="all">All (${counts.all})</button>`,
+    ];
+    CHAIN_SCALE_ORDER.forEach((label) => {
+      const key = label.toLowerCase();
+      const n = counts[key] || 0;
+      const color = getChainScaleColor(label) || CHAIN_SCALE_FALLBACK;
+      const cls =
+        "chain-scale-legend-item" +
+        (active === key ? " active" : "") +
+        (n === 0 ? " no-records" : "");
+      chips.push(
+        `<button type="button" class="${cls}" data-scale="${esc(key)}" ${n === 0 ? "disabled" : ""}>` +
+          `<div class="chain-scale-legend-swatch" style="background:${color}"></div>` +
+          `<span class="chain-scale-legend-label">${esc(label)} (${n})</span></button>`
+      );
+    });
+    host.innerHTML =
+      '<span class="dop-chain-scale-legend__title">Chain Scale</span>' + chips.join("");
+  }
+
+  function updateSortHeaders() {
+    document.querySelectorAll("#oppTable th[data-sort]").forEach((th) => {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.getAttribute("data-sort") === state.sortKey) {
+        th.classList.add(state.sortDir === 1 ? "sort-asc" : "sort-desc");
+      }
+    });
+  }
+
+  function renderTabs() {
+    // Explicit two-line labels (no counts). All Intelligence last (far right).
+    const tabs = [
+      ["qualified", "Qualified", "opportunities", "Qualified opportunities"],
+      ["BCT", "Brand", "conversion", "Brand conversion"],
+      ["MCT", "Management", "opportunities", "Management opportunities"],
+      ["watch", "Emerging &", "watchlist", "Emerging & watchlist"],
+      ["all", "All", "intelligence", "All intelligence"],
+    ];
+    $("tabs").innerHTML = tabs
+      .map(([id, line1, line2, ariaLabel]) => {
+        const active = state.activeFilter === id;
+        return `<button type="button" role="tab" aria-label="${esc(ariaLabel)}" aria-selected="${active ? "true" : "false"}" class="section-nav-item${active ? " active" : ""}" data-filter="${id}">
+          <div class="section-nav-icon" aria-hidden="true">${TAB_ICONS[id] || TAB_ICONS.all}</div>
+          <span class="section-nav-label"><span class="section-nav-label__line">${esc(line1)}</span><span class="section-nav-label__line">${esc(line2)}</span></span>
+        </button>`;
+      })
+      .join("");
+  }
+
+  function humanWhySnippet(o) {
+    // Prefer the same plain-language lead used in the drawer (not raw Track handoffs).
+    try {
+      return buildWhyMatters(o).lead;
+    } catch (_) {
+      return scrubResearchJargon(parseWhy(o.why).summary, o?.name);
+    }
+  }
+
+  function countActiveFilters() {
+    let n = 0;
+    if (($("q")?.value || "").trim()) n += 1;
+    if (($("region")?.value || "all") !== "all") n += 1;
+    if (($("country")?.value || "all") !== "all") n += 1;
+    if (($("brand")?.value || "all") !== "all") n += 1;
+    if (($("timing")?.value || "all") !== "all") n += 1;
+    if (($("decisionWindow")?.value || "all") !== "all") n += 1;
+    if (state.chainScaleFilter && state.chainScaleFilter !== "all") n += 1;
+    if (state.activeFilter && state.activeFilter !== "qualified") n += 1;
+    return n;
+  }
+
+  function updateFilterBadge() {
+    const badge = $("filterCountBadge");
+    if (!badge) return;
+    const n = countActiveFilters();
+    badge.textContent = String(n);
+    if (n > 0) {
+      badge.style.display = "inline-flex";
+      badge.setAttribute("aria-hidden", "false");
+      badge.setAttribute("aria-label", n + " active filters");
+    } else {
+      badge.style.display = "none";
+      badge.setAttribute("aria-hidden", "true");
+      badge.removeAttribute("aria-label");
+    }
+  }
+
+  function render() {
+    const items = selection();
+    updateSortHeaders();
+    updateFilterBadge();
+    renderChainScaleLegend();
+    $("body").innerHTML =
+      items
+        .map(
+          (o) => `<tr tabindex="0" data-id="${esc(o.id)}">
+        <td><div class="dop-hotel">${logoHtml(o, "dop-hotel-logo")}
+        <div><strong>${esc(o.name)}</strong><small>${esc(toProperCase(o.sub))}</small></div></div></td>
+        <td>${badge(o)}</td><td>${esc(formatMarketDisplay(o))}</td><td><div class="dop-trigger">${esc(cleanTrigger(o))}</div></td>
+        <td><div class="dop-date">${esc(o.window)}</div></td>
+        <td><div class="dop-access-cell">${accessActions(o)}</div></td></tr>`
+        )
+        .join("") || `<tr><td colspan="6"><div class="dop-empty">No opportunities match these filters.</div></td></tr>`;
+
+    $("cards").innerHTML =
+      items
+        .map((o) => {
+          const kindClass =
+            o.group === "watch" ? "kind-watch" : o.kind === "MCT" ? "kind-mct" : o.kind === "OTHER" ? "kind-other" : "kind-bct";
+          const badgeCls = o.kind === "MCT" ? "mct" : o.kind === "OTHER" ? "other" : "";
+          const blurb = humanWhySnippet(o) || cleanTrigger(o) || "Commercial context requires additional research.";
+          return `<article class="dop-opp-card ${kindClass}" tabindex="0" data-id="${esc(o.id)}" role="button" aria-label="Open ${esc(o.name)}">
+          <div class="dop-opp-card__header">
+            ${logoHtml(o, "dop-opp-card__logo")}
+            <div class="dop-opp-card__info">
+              <h3 class="dop-opp-card__name" title="${esc(o.name)}">${esc(o.name)}</h3>
+              <div class="dop-opp-card__type">${esc(formatMarketDisplay(o))}</div>
+              <div class="dop-opp-card__badges"><span class="dop-opp-card__badge ${badgeCls}">${esc(toProperCase(o.type))}</span></div>
+            </div>
+          </div>
+          <div class="dop-opp-card__meta">${esc(o.window || "Timing to verify")} · ${esc(o.access || "Access to assess")}</div>
+          <p class="dop-opp-card__description">${esc(blurb)}</p>
+          <div class="dop-opp-card__footer">
+            ${statusEl(o)}
+            <div class="dop-opp-card__actions">
+              ${accessActions(o)}
+              <button type="button" class="dop-opp-card__more-btn" data-action="view" data-id="${esc(o.id)}">View more</button>
+            </div>
+          </div>
+        </article>`;
+        })
+        .join("") || '<div class="dop-empty">No opportunities match these filters.</div>';
+
+    const totalPool =
+      state.activeFilter === "all"
+        ? state.opps.length
+        : state.activeFilter === "watch"
+          ? state.opps.filter((o) => o.group === "watch").length
+          : state.activeFilter === "BCT"
+            ? state.opps.filter((o) => o.group === "qualified" && o.kind === "BCT").length
+            : state.activeFilter === "MCT"
+              ? state.opps.filter((o) => o.group === "qualified" && o.kind === "MCT").length
+              : state.opps.filter((o) => o.group === "qualified").length;
+    $("count").innerHTML =
+      `Showing <strong>${items.length}</strong> of <strong>${totalPool}</strong> Opportunities`;
+    const sortSel = $("sortSelect");
+    if (sortSel && sortSel.value !== state.sortKey) sortSel.value = state.sortKey;
+  }
+
+  function buildFacts(o) {
+    const parsed = parseWhy(o.why);
+    const rows = [];
+    rows.push(["Commercial decision", humanCode(o.fieldName || o.type)]);
+    rows.push(["Opportunity class", o.findingType ? humanCode(o.findingType) : o.kind === "BCT" ? "Brand conversion" : o.kind === "MCT" ? "Management" : o.type]);
+    if (o.sub) rows.push(["Current affiliation", toProperCase(o.sub)]);
+    rows.push(["Market", formatMarketDisplay(o)]);
+    rows.push(["Decision Window", o.window || "Timing to verify"]);
+    rows.push(["Access outlook", o.access || "To assess"]);
+
+    (o.facts || []).forEach(([label, value]) => {
+      if (HIDDEN_FACT_LABELS.has(label)) return;
+      if (/commercial decision/i.test(label)) return;
+      rows.push([label, humanCode(value)]);
+    });
+
+    if (o.he?.ready) rows.push(["Hotel Explorer", "Linked and ready to open"]);
+    else rows.push(["Hotel Explorer", "Identity research pending"]);
+
+    if (o.publicationState) rows.push(["Publication", humanCode(o.publicationState).replace(/_/g, " ")]);
+
+    // Prefer unique labels
+    const seen = new Set();
+    return rows.filter(([l]) => {
+      const k = l.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+  }
+
+  function showDrawer(id) {
+    const o = state.opps.find((x) => x.id === id);
+    if (!o) return;
+    state.current = o;
+    state.lastFocus = document.activeElement;
+    showToast("Opening opportunity intelligence…", "info");
+    const whyMatter = buildWhyMatters(o);
+
+    $("dTitle").textContent = o.name;
+    $("dLocation").textContent = [formatMarketDisplay(o), o.sub ? toProperCase(o.sub) : ""].filter(Boolean).join(" · ");
+    $("dType").textContent = toProperCase(o.type);
+    $("dDate").textContent = o.window;
+    $("dAccess").textContent = o.access;
+    $("dWhy").textContent = whyMatter.lead;
+    const whyCtx = $("dWhyContext");
+    if (whyCtx) {
+      whyCtx.innerHTML = (whyMatter.context || [])
+        .map((line) => `<li>${esc(line)}</li>`)
+        .join("");
+    }
+    $("dAssessment").innerHTML = whyMatter.chips
+      .map((c) => `<div class="dop-chip"><span>${esc(c.label)}</span><strong>${esc(c.value)}</strong></div>`)
+      .join("");
+
+    $("dFacts").innerHTML = buildFacts(o)
+      .map(([l, v]) => `<div class="dop-fact"><span>${esc(l)}</span><strong>${esc(v)}</strong></div>`)
+      .join("");
+
+    $("dSources").innerHTML =
+      (o.sources || [])
+        .map((s) => {
+          const label = sourceTitle(s);
+          const title = s.url
+            ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
+            : `<b>${esc(label)}</b>`;
+          const caption = s.caption
+            ? String(s.caption).replace(/CUSTOMER_BLOCKED/g, "Founder preview only")
+            : "Reported research reference · founder preview";
+          return `<div class="dop-evidence"><div>${title}<small>${esc(caption)}</small></div></div>`;
+        })
+        .join("") || `<p style="margin:0;color:var(--dop-muted-2);font-size:12px">No public source links attached yet.</p>`;
+
+    $("dNext").textContent = o.next || "Confirm decision timing, engagement pathway, and contact readiness before outreach.";
+    const he = o.he || {};
+    $("dHE").innerHTML = `<strong>${he.ready ? "Ready to open" : "Research pending"}</strong><div>${esc(
+      he.ready
+        ? "A verified Hotel Property Census identity is linked. Open Hotel Explorer for the property profile."
+        : he.message || "Hotel Explorer will unlock once a verified HPC identity is linked."
+    )}</div>`;
+    $("heBtn").disabled = !he.ready;
+    $("heBtn").textContent = he.ready ? "View Hotel Explorer" : "Hotel Explorer pending";
+
+    if (o.relatedHotels && o.relatedHotels.length) {
+      $("dRelated").innerHTML = o.relatedHotels
+        .map((h) => {
+          const ready = Boolean(h.hpcRecordId);
+          return `<button type="button" data-hpc="${esc(h.hpcRecordId || "")}" data-name="${esc(h.name)}" ${ready ? "" : "disabled"}>
+            <strong>${esc(h.name)}</strong><br/><small>${esc([h.city, h.stateRegion, h.country].filter(Boolean).join(", ") || "Market to verify")} · ${ready ? "Open Hotel Explorer" : "Profile pending"}</small>
+          </button>`;
+        })
+        .join("");
+    } else {
+      $("dRelated").innerHTML = `<p style="margin:0;color:var(--dop-muted-2,#7e89ac);font-size:12px">No related portfolio hotels linked on this opportunity.</p>`;
+    }
+
+    $("drawer").classList.add("visible");
+    $("shade").classList.add("visible");
+    $("drawer").setAttribute("aria-hidden", "false");
+    $("drawerClose").focus();
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeDrawer() {
+    $("drawer").classList.remove("visible");
+    $("shade").classList.remove("visible");
+    $("drawer").setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (state.lastFocus && state.lastFocus.focus) state.lastFocus.focus();
+  }
+
+  function openHotelExplorer(hpcId, name) {
+    if (!hpcId) {
+      showToast("Hotel Explorer is unavailable for this property — profile identity is missing.", "warn");
+      return;
+    }
+    if (window.HotelExplorer && typeof window.HotelExplorer.open === "function") {
+      window.HotelExplorer.open({ id: hpcId, recordId: hpcId, name: name || hpcId });
+      return;
+    }
+    showToast("Hotel Explorer is not available in this shell yet.", "error");
+  }
+
+  function paintMetrics(m) {
+    state.metrics = m;
+    $("mQualified").textContent = String(m.qualifiedDecisions).padStart(2, "0");
+    $("mQualifiedSub").textContent = `${m.brandCount} brand · ${m.managementCount} management`;
+    $("mProps").textContent = String(m.propertiesRepresented).padStart(2, "0");
+    $("mPropsSub").textContent =
+      m.propertiesRepresented > m.qualifiedDecisions
+        ? `Including portfolio components (${m.propertiesRepresented - m.qualifiedDecisions}+ beyond parent deals)`
+        : "Qualified opportunity properties";
+    $("mCountries").textContent = String(m.countriesCovered).padStart(2, "0");
+    $("mCountriesSub").textContent = (m.countryLabels || []).slice(0, 6).join(" · ") || "From qualified set";
+    $("mContacts").textContent = String(m.actionReadyContacts || 0).padStart(2, "0");
+
+    const ahip = state.opps.find((o) => /ahip/i.test(o.id) || /AHIP/i.test(o.name));
+    if (ahip) {
+      const n = ahip.relatedHotels?.length || 0;
+      $("ahipPills").innerHTML = [
+        n ? `<span class="dop-pill">${n} linked properties</span>` : "",
+        ahip.window ? `<span class="dop-pill">${esc(ahip.window)}</span>` : "",
+        `<span class="dop-pill">One parent MCT</span>`,
+      ]
+        .filter(Boolean)
+        .join("");
+      $("ahipBtn").onclick = () => showDrawer(ahip.id);
+    } else {
+      $("ahipPills").innerHTML = `<span class="dop-pill">AHIP parent not in current qualified set</span>`;
+      $("ahipBtn").disabled = true;
+    }
+  }
+
+  async function load(attempt) {
+    const n = attempt || 1;
+    try {
+      if (n === 1) setPageLoading(true, "Loading Deal Capture…");
+      else setPageLoading(true, `Retrying Deal Capture… (${n}/3)`);
+      $("count").innerHTML = n > 1 ? `Retrying… <strong>${n}</strong>` : "Loading…";
+      const [res] = await Promise.all([
+        fetch("/api/deal-opportunities", {
+          headers: authHeaders(),
+          credentials: "same-origin",
+          cache: "no-store",
+        }),
+        n === 1 ? loadBrandLogoMap() : Promise.resolve(),
+      ]);
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || data.error || "Load failed (" + res.status + ")");
+      }
+      state.opps = data.opportunities || [];
+      paintMetrics(data.metrics || {});
+      populateBrandFilter();
+      populateCountryFilter();
+      populateDecisionWindowFilter();
+      renderTabs();
+      render();
+      $("loadError").hidden = true;
+      setPageLoading(false);
+    } catch (err) {
+      if (n < 3) {
+        setTimeout(() => load(n + 1), 800 * n);
+        return;
+      }
+      setPageLoading(false);
+      $("loadError").hidden = false;
+      $("loadError").textContent =
+        "Could not load HIF opportunities: " + (err && err.message ? err.message : String(err));
+      $("body").innerHTML = `<tr><td colspan="6"><div class="dop-empty">Unable to load opportunities.</div></td></tr>`;
+      showToast("Data loading failed. Check the network and try again.", "error");
+    }
+  }
+
+  function handleActionClick(e) {
+    const btn = e.target.closest(".action-icon[data-action]");
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const id = btn.getAttribute("data-id");
+    const action = btn.getAttribute("data-action");
+    if (action === "view" || action === "more") {
+      showDrawer(id);
+      return;
+    }
+    if (action === "he") {
+      if (btn.disabled) {
+        showToast("Hotel Explorer unavailable — profile identity pending.", "warn");
+        return;
+      }
+      openHotelExplorer(btn.getAttribute("data-hpc"), btn.getAttribute("data-name"));
+    }
+  }
+
+  $("tabs").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-filter]");
+    if (!btn) return;
+    state.activeFilter = btn.getAttribute("data-filter");
+    renderTabs();
+    render();
+  });
+  $("chainScaleLegend")?.addEventListener("click", (e) => {
+    const btn = e.target.closest(".chain-scale-legend-item[data-scale]");
+    if (!btn || btn.disabled || btn.classList.contains("no-records")) return;
+    state.chainScaleFilter = (btn.getAttribute("data-scale") || "all").toLowerCase();
+    render();
+  });
+  $("q").addEventListener("input", render);
+  $("region").addEventListener("change", render);
+  $("country")?.addEventListener("change", render);
+  $("brand").addEventListener("change", render);
+  $("timing").addEventListener("change", render);
+  $("decisionWindow")?.addEventListener("change", render);
+  $("tableBtn").addEventListener("click", () => {
+    $("oppPanel").classList.remove("dop-cards-mode");
+    $("tableBtn").classList.add("is-active");
+    $("cardsBtn").classList.remove("is-active");
+    $("tableBtn").setAttribute("aria-pressed", "true");
+    $("cardsBtn").setAttribute("aria-pressed", "false");
+    showToast("List view ready", "success");
+  });
+  $("cardsBtn").addEventListener("click", () => {
+    $("oppPanel").classList.add("dop-cards-mode");
+    $("cardsBtn").classList.add("is-active");
+    $("tableBtn").classList.remove("is-active");
+    $("cardsBtn").setAttribute("aria-pressed", "true");
+    $("tableBtn").setAttribute("aria-pressed", "false");
+    showToast("Tiles view ready", "success");
+  });
+  $("resetBtn").addEventListener("click", () => {
+    $("q").value = "";
+    $("region").value = "all";
+    if ($("country")) $("country").value = "all";
+    if ($("brand")) $("brand").value = "all";
+    if ($("timing")) $("timing").value = "all";
+    if ($("decisionWindow")) $("decisionWindow").value = "all";
+    state.activeFilter = "qualified";
+    state.chainScaleFilter = "all";
+    state.sortKey = "name";
+    state.sortDir = 1;
+    if ($("sortSelect")) $("sortSelect").value = "name";
+    renderTabs();
+    render();
+    showToast("View reset", "info");
+  });
+  $("sortSelect").addEventListener("change", () => {
+    state.sortKey = $("sortSelect").value || "name";
+    state.sortDir = 1;
+    render();
+  });
+  $("sortDirBtn").addEventListener("click", () => {
+    state.sortDir *= -1;
+    render();
+  });
+  $("body").addEventListener("click", (e) => {
+    if (e.target.closest(".action-icon")) {
+      handleActionClick(e);
+      return;
+    }
+    const tr = e.target.closest("tr[data-id]");
+    if (tr) showDrawer(tr.getAttribute("data-id"));
+  });
+  $("body").addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const tr = e.target.closest("tr[data-id]");
+    if (tr) showDrawer(tr.getAttribute("data-id"));
+  });
+  $("cards").addEventListener("click", (e) => {
+    if (e.target.closest(".action-icon")) {
+      handleActionClick(e);
+      return;
+    }
+    const more = e.target.closest(".dop-opp-card__more-btn[data-action='view']");
+    if (more) {
+      e.preventDefault();
+      e.stopPropagation();
+      showDrawer(more.getAttribute("data-id"));
+      return;
+    }
+    const card = e.target.closest(".dop-opp-card[data-id]");
+    if (card) showDrawer(card.getAttribute("data-id"));
+  });
+  document.querySelectorAll("#oppTable th[data-sort]").forEach((th) => {
+    th.addEventListener("click", () => {
+      const key = th.getAttribute("data-sort");
+      if (state.sortKey === key) state.sortDir *= -1;
+      else {
+        state.sortKey = key;
+        state.sortDir = 1;
+      }
+      render();
+    });
+  });
+  $("shade").addEventListener("click", closeDrawer);
+  $("drawerClose").addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
+  });
+  $("heBtn").addEventListener("click", () => {
+    const o = state.current;
+    if (!o?.he?.ready || !o.he.hpcRecordId) {
+      showToast("Hotel Explorer cannot open — profile identity is not ready.", "warn");
+      return;
+    }
+    openHotelExplorer(o.he.hpcRecordId, o.name);
+  });
+  $("dRelated").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-hpc]");
+    if (!btn) return;
+    if (btn.disabled) {
+      showToast("Hotel Explorer unavailable — profile identity pending.", "warn");
+      return;
+    }
+    openHotelExplorer(btn.getAttribute("data-hpc"), btn.getAttribute("data-name"));
+  });
+  $("watchlistBtn").addEventListener("click", () => {
+    showToast("Watchlist persistence is not connected in this CUSTOMER_BLOCKED local preview.", "info");
+  });
+  $("exportBtn").addEventListener("click", () => {
+    showToast("Export is disabled in this CUSTOMER_BLOCKED local preview.", "warn");
+  });
+
+  window.__dealOpportunities = {
+    showDrawer,
+    closeDrawer,
+    showToast,
+    getState: () => state,
+    reload: load,
+  };
+
+  setPageLoading(true, "Loading Deal Capture…");
+  load();
+})();
+</script>
+</body>
+</html>
