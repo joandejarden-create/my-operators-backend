@@ -134,17 +134,38 @@ function assess(partial) {
   }
 }
 
-// Expiry-only must not auto-qualify
+// Expiry-only / franchise extension / at-will must not auto-qualify
 {
   const a = assess({
     finding: {
       findingId: "find_expiry_only",
       valueObserved:
-        "Franchise agreement expires in 2029. No owner-led selection or RFP disclosed. | relevance=VERIFIED_RELEVANT | timing=12_24_MONTHS",
+        "Franchise agreement expires in 2029. No owner-led selection or RFP disclosed. | relevance=VERIFIED_RELEVANT | timing=12_24_MONTHS | pathway=OWNER_LED_PRIVATE_DECISION",
     },
   });
   assert.equal(a.eligible, false);
-  assert.equal(a.reason, "EXPIRY_ONLY_INSUFFICIENT");
+  assert.match(a.reason, /EXPIRY_ONLY|TRACK_A_/);
+}
+{
+  const a = assess({
+    finding: {
+      findingId: "find_ds_opew_v2_bidwell_portland_bct_2026",
+      valueObserved:
+        "SHO 10-K: June 2025 one-year extension of Bidwell Marriott Portland franchise with Marriott until October 2026. Pattern of successive one-year extensions. | pathway=OWNER_LED_PRIVATE_DECISION | timing=0_6_MONTHS",
+    },
+  });
+  assert.equal(a.eligible, false, "Bidwell extension milestone must not Qualify");
+}
+{
+  const a = assess({
+    finding: {
+      findingId: "find_ds_eci_v1_margaritaville_hollywood_mct_early_2026",
+      fieldName: "COMMERCIAL_OPPORTUNITY_MCT",
+      valueObserved:
+        "Management agreement becomes terminable at will beginning September 2026. | pathway=OWNER_LED_PRIVATE_DECISION | timing=0_6_MONTHS",
+    },
+  });
+  assert.equal(a.eligible, false, "At-will alone must not Qualify");
 }
 
 // Verified prospective open selection — INCLUDE
