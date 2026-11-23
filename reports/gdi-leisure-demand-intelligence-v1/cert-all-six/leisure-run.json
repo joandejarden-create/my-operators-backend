@@ -1,0 +1,706 @@
+{
+  "schema": "gdi-leisure-module-runner-v1",
+  "hotelId": "recaokE8psIbuVeuH",
+  "selection": {
+    "hotelId": "recaokE8psIbuVeuH",
+    "source": "force_modules",
+    "moduleIds": [
+      "leisure_events",
+      "leisure_sports",
+      "leisure_attractions",
+      "leisure_universities",
+      "leisure_destination",
+      "leisure_distribution"
+    ],
+    "rationale": "Explicit module list from orchestrator / PowerShell"
+  },
+  "moduleIds": [
+    "leisure_events",
+    "leisure_sports",
+    "leisure_attractions",
+    "leisure_universities",
+    "leisure_destination",
+    "leisure_distribution"
+  ],
+  "researchMode": "fixture",
+  "spentUsd": 0,
+  "authorizePaidResearch": false,
+  "publication": false,
+  "findymail": false,
+  "surfe": false,
+  "moduleResults": [
+    {
+      "leisureModuleId": "leisure_events",
+      "label": "Festivals, concerts and cultural events",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "researchMode": "fixture",
+      "segmentWiring": [
+        {
+          "segmentId": "associations_conferences_events",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "assoc_strategies_plus_segment_executor"
+          }
+        },
+        {
+          "segmentId": "social_special_events",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "venue_discovery_queries"
+          }
+        },
+        {
+          "segmentId": "corporate_celebrations_private_events",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "destination_recognition_celebration_filter"
+          }
+        }
+      ],
+      "fixtureCount": 2,
+      "acceptedCount": 2,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "status": "FIXTURE_COMPLETE",
+      "spentUsd": 0,
+      "paidCalls": 0
+    },
+    {
+      "leisureModuleId": "leisure_sports",
+      "label": "Participatory sports and recreational travel",
+      "coverage": "OVERLAP_WRAPPER",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "researchMode": "fixture",
+      "segmentWiring": [
+        {
+          "segmentId": "sports_entertainment",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "base_of_demand_sports_entertainment"
+          }
+        }
+      ],
+      "fixtureCount": 2,
+      "acceptedCount": 1,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "suppressedOpportunityId": "gdi_ldi_5d49f4e3b635",
+          "clusterKey": "3207fd67ba13413b",
+          "canonicalOpportunityId": "gdi_ldi_8e4c75788f27",
+          "reason": "CROSS_SEGMENT_SAME_DEMAND_GENERATOR",
+          "preservedSegmentAssociations": [
+            "associations_conferences_events",
+            "social_special_events",
+            "corporate_celebrations_private_events",
+            "sports_entertainment",
+            "leisure_sports"
+          ],
+          "leisurePathway": "DIRECTLY_ADDRESSABLE"
+        }
+      ],
+      "status": "FIXTURE_COMPLETE",
+      "spentUsd": 0,
+      "paidCalls": 0
+    },
+    {
+      "leisureModuleId": "leisure_attractions",
+      "label": "Attractions and destination experiences",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "researchMode": "fixture",
+      "segmentWiring": [
+        {
+          "segmentId": "preferred_lodging_partnerships",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "preferred_lodging_prompt_builder"
+          }
+        },
+        {
+          "segmentId": "travel_trade_group_intermediaries",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "professional_planner_queries"
+          }
+        }
+      ],
+      "fixtureCount": 1,
+      "acceptedCount": 1,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "status": "FIXTURE_COMPLETE",
+      "spentUsd": 0,
+      "paidCalls": 0
+    },
+    {
+      "leisureModuleId": "leisure_universities",
+      "label": "Universities and visiting-friends-and-relatives demand",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "researchMode": "fixture",
+      "segmentWiring": [
+        {
+          "segmentId": "education_scientific",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "medical_assoc_plus_pharma_base"
+          }
+        }
+      ],
+      "fixtureCount": 1,
+      "acceptedCount": 1,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "status": "FIXTURE_COMPLETE",
+      "spentUsd": 0,
+      "paidCalls": 0
+    },
+    {
+      "leisureModuleId": "leisure_destination",
+      "label": "Destination demand shifts and special occasions",
+      "coverage": "GAP",
+      "implementationMode": "SPECIALIZATION_OVER_EXISTING_QUERIES",
+      "researchMode": "fixture",
+      "segmentWiring": [
+        {
+          "segmentId": "social_special_events",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "venue_discovery_queries"
+          }
+        },
+        {
+          "segmentId": "corporate_celebrations_private_events",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "destination_recognition_celebration_filter"
+          }
+        }
+      ],
+      "fixtureCount": 1,
+      "acceptedCount": 1,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "status": "FIXTURE_COMPLETE",
+      "spentUsd": 0,
+      "paidCalls": 0
+    },
+    {
+      "leisureModuleId": "leisure_distribution",
+      "label": "Leisure distribution and referral relationships",
+      "coverage": "OVERLAP_WRAPPER",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "researchMode": "fixture",
+      "segmentWiring": [
+        {
+          "segmentId": "travel_trade_group_intermediaries",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "professional_planner_queries"
+          }
+        },
+        {
+          "segmentId": "preferred_lodging_partnerships",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "preferred_lodging_prompt_builder"
+          }
+        },
+        {
+          "segmentId": "professional_event_planners",
+          "executor": {
+            "classification": "PARTIAL_EXECUTOR",
+            "strategy": "professional_event_planner_prompt_builder"
+          }
+        }
+      ],
+      "fixtureCount": 1,
+      "acceptedCount": 1,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "status": "FIXTURE_COMPLETE",
+      "spentUsd": 0,
+      "paidCalls": 0
+    }
+  ],
+  "opportunities": [
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_8e4c75788f27",
+      "demandGenerator": "Spice Mas Carnival Week",
+      "organization": "Grenada Carnival Committee",
+      "demandFamily": "leisure",
+      "leisureSubtype": "cultural_events_festivals_concerts",
+      "leisureModuleId": "leisure_events",
+      "commercialOpportunityType": "DIRECTLY_ADDRESSABLE",
+      "leisureCommercialPathway": "DIRECTLY_ADDRESSABLE",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": {
+        "start": "2027-08-10",
+        "end": "2027-08-16",
+        "label": "Carnival Week 2027"
+      },
+      "geographicRelevance": "Grenada island-wide; lodging near south coast",
+      "nonlocalVisitorEvidence": "Regional Caribbean visitor marketing pages reference offshore arrivals",
+      "roomNightDemandMechanism": "Multi-night leisure stays during festival peak",
+      "hotelFit": {
+        "summary": "Boutique leisure resort fit for nonlocal festival visitors",
+        "score": "MEDIUM"
+      },
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": {
+        "role": "Festival operations / lodging liaison",
+        "name": null
+      },
+      "sourceUrls": [
+        "https://example.invalid/grenada-carnival-2027"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Qualify lodging partner / overflow pathway with festival ops",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Confirm 2027 edition dates and housing owner on official source",
+      "segmentAssociations": [
+        "associations_conferences_events",
+        "social_special_events",
+        "corporate_celebrations_private_events",
+        "sports_entertainment",
+        "leisure_sports"
+      ],
+      "adpLinkageHint": null,
+      "year": "2027",
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false,
+      "leisureModuleAssociations": [
+        "leisure_sports"
+      ]
+    },
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_7e374a9924e1",
+      "demandGenerator": "Lisbon Music Week City Campaign",
+      "organization": "Lisbon Tourism Board",
+      "demandFamily": "leisure",
+      "leisureSubtype": "cultural_events_festivals_concerts",
+      "leisureModuleId": "leisure_events",
+      "commercialOpportunityType": "CAMPAIGN_DRIVEN",
+      "leisureCommercialPathway": "CAMPAIGN_DRIVEN",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": {
+        "label": "Shoulder music weekends 2027"
+      },
+      "geographicRelevance": "Lisbon city centre",
+      "nonlocalVisitorEvidence": "City campaign targets international short-break visitors",
+      "roomNightDemandMechanism": "Weekend leisure stays driven by concerts",
+      "hotelFit": {
+        "summary": "Urban boutique suitable for music-weekend campaign packaging",
+        "score": "MEDIUM"
+      },
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": null,
+      "sourceUrls": [
+        "https://example.invalid/lisbon-music-week"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Build campaign package; personal buyer not required",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Verify campaign calendar URLs",
+      "segmentAssociations": [
+        "associations_conferences_events",
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "adpLinkageHint": null,
+      "year": "2027",
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false
+    },
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_664e0d69751c",
+      "demandGenerator": "Grenada Sailing Week Participatory Regatta",
+      "organization": "Grenada Sailing Association",
+      "demandFamily": "leisure",
+      "leisureSubtype": "participatory_sports_recreation",
+      "leisureModuleId": "leisure_sports",
+      "commercialOpportunityType": "DIRECTLY_ADDRESSABLE",
+      "leisureCommercialPathway": "DIRECTLY_ADDRESSABLE",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": {
+        "start": "2027-01-28",
+        "end": "2027-02-02"
+      },
+      "geographicRelevance": "South coast Grenada",
+      "nonlocalVisitorEvidence": "International yacht crews require multi-night lodging",
+      "roomNightDemandMechanism": "Crew and owner lodging blocks",
+      "hotelFit": null,
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": {
+        "role": "Regatta housing coordinator",
+        "name": null
+      },
+      "sourceUrls": [
+        "https://example.invalid/grenada-sailing-week"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Open with housing coordinator for overflow / preferred lodging",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Confirm 2027 edition and housing process",
+      "segmentAssociations": [
+        "sports_entertainment"
+      ],
+      "adpLinkageHint": null,
+      "year": "2027",
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false
+    },
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_8b381a80fa61",
+      "demandGenerator": "Underwater Sculpture Park Experience Packages",
+      "organization": "Moliniere Underwater Sculpture Park Operator",
+      "demandFamily": "leisure",
+      "leisureSubtype": "attractions_destination_experiences",
+      "leisureModuleId": "leisure_attractions",
+      "commercialOpportunityType": "PARTNERSHIP_DRIVEN",
+      "leisureCommercialPathway": "PARTNERSHIP_DRIVEN",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": null,
+      "geographicRelevance": "Grenada west coast day-trip catchment",
+      "nonlocalVisitorEvidence": "Attraction markets overnight island visitors",
+      "roomNightDemandMechanism": "Referral partnership driving resort stays",
+      "hotelFit": null,
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": {
+        "role": "Partnerships / business development",
+        "name": null
+      },
+      "sourceUrls": [
+        "https://example.invalid/moliniere-partnership"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Propose reciprocal referral / package partnership",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Identify BD owner and package terms",
+      "segmentAssociations": [
+        "preferred_lodging_partnerships",
+        "travel_trade_group_intermediaries"
+      ],
+      "adpLinkageHint": null,
+      "year": null,
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false
+    },
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_9c9497887c4f",
+      "demandGenerator": "UNAM Graduation & Parents Weekend Lodging Campaign",
+      "organization": "Universidad Nacional Autónoma de México",
+      "demandFamily": "leisure",
+      "leisureSubtype": "university_vfr",
+      "leisureModuleId": "leisure_universities",
+      "commercialOpportunityType": "CAMPAIGN_DRIVEN",
+      "leisureCommercialPathway": "CAMPAIGN_DRIVEN",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": {
+        "label": "Graduation season 2027"
+      },
+      "geographicRelevance": "Mexico City Condesa / Roma catchment",
+      "nonlocalVisitorEvidence": "Family VFR travel for ceremonies",
+      "roomNightDemandMechanism": "Parents and relatives weekend stays",
+      "hotelFit": null,
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": null,
+      "sourceUrls": [
+        "https://example.invalid/unam-graduation"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Campaign packaging for graduation weekends — not Sales Ready from event alone",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Confirm ceremony calendar and housing partners",
+      "segmentAssociations": [
+        "education_scientific"
+      ],
+      "adpLinkageHint": null,
+      "year": "2027",
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false
+    },
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_2be19c8cdb0a",
+      "demandGenerator": "Grenada Shoulder-Season Special Occasion Getaways",
+      "organization": "Grenada Tourism Authority",
+      "demandFamily": "leisure",
+      "leisureSubtype": "destination_demand_special_occasions",
+      "leisureModuleId": "leisure_destination",
+      "commercialOpportunityType": "CAMPAIGN_DRIVEN",
+      "leisureCommercialPathway": "CAMPAIGN_DRIVEN",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": {
+        "label": "May–June shoulder 2027"
+      },
+      "geographicRelevance": "Grenada leisure resorts",
+      "nonlocalVisitorEvidence": "Destination marketing for anniversary / honeymoon occasions",
+      "roomNightDemandMechanism": "Occasion-driven multi-night leisure stays in shoulder",
+      "hotelFit": null,
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": null,
+      "sourceUrls": [
+        "https://example.invalid/grenada-shoulder"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Revenue campaign for shoulder occasions; need-period optional",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Align with authorized hotel need windows when available",
+      "segmentAssociations": [
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "adpLinkageHint": null,
+      "year": "2027",
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false
+    },
+    {
+      "schema": "gdi-leisure-opportunity-contract-v1",
+      "hotelId": "recaokE8psIbuVeuH",
+      "opportunityId": "gdi_ldi_33cab1af3761",
+      "demandGenerator": "Caribbean DMC Leisure Referral Partnership",
+      "organization": "Island Pathways DMC",
+      "demandFamily": "leisure",
+      "leisureSubtype": "leisure_distribution_referral",
+      "leisureModuleId": "leisure_distribution",
+      "commercialOpportunityType": "PARTNERSHIP_DRIVEN",
+      "leisureCommercialPathway": "PARTNERSHIP_DRIVEN",
+      "pathwayBasis": "explicit_field",
+      "eventOrRecurringDates": null,
+      "geographicRelevance": "Grenada inbound leisure",
+      "nonlocalVisitorEvidence": "DMC places leisure FIT and small groups into island hotels",
+      "roomNightDemandMechanism": "Referral / contracted allotment pathway",
+      "hotelFit": null,
+      "needPeriodRelevance": {
+        "status": "NEED_PERIOD_UNKNOWN",
+        "overlaps": [],
+        "inventedMetrics": false,
+        "note": "Approved need-period information unavailable — leisure demand not rejected."
+      },
+      "competitiveCommitments": null,
+      "marketScopeClass": "Hotel",
+      "commercialDecisionMakerOrEntryPoint": {
+        "role": "Hotel partnerships manager",
+        "name": null
+      },
+      "sourceUrls": [
+        "https://example.invalid/island-pathways-dmc"
+      ],
+      "verificationStatus": "FIXTURE_UNVERIFIED",
+      "recommendedSalesOrMarketingAction": "Open partnership discussion with DMC hotel partnerships manager",
+      "researchCompleteness": "PARTIAL",
+      "nextResearchStep": "Verify DMC territory coverage and preferred hotel list",
+      "segmentAssociations": [
+        "travel_trade_group_intermediaries",
+        "preferred_lodging_partnerships",
+        "professional_event_planners"
+      ],
+      "adpLinkageHint": null,
+      "year": null,
+      "salesReady": false,
+      "publicationEligible": false,
+      "paidEnrichmentUsed": false
+    }
+  ],
+  "coverageMatrix": [
+    {
+      "leisureModuleId": "leisure_events",
+      "label": "Festivals, concerts and cultural events",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "associations_conferences_events",
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "secondarySegments": [
+        "professional_event_planners"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:associations_conferences_events",
+        "runSegmentDiscoveryExecutor:social_special_events"
+      ],
+      "preferredPathways": [
+        "DIRECTLY_ADDRESSABLE",
+        "CAMPAIGN_DRIVEN"
+      ],
+      "notes": "Reuses events/social discovery; leisure specialization = nonlocal leisure visitor evidence + festival/concert filters (not association MICE-only)."
+    },
+    {
+      "leisureModuleId": "leisure_sports",
+      "label": "Participatory sports and recreational travel",
+      "coverage": "OVERLAP_WRAPPER",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "sports_entertainment"
+      ],
+      "secondarySegments": [
+        "preferred_lodging_partnerships",
+        "travel_trade_group_intermediaries"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:sports_entertainment",
+        "Invoke-GdiSportsHousingHunter.ps1"
+      ],
+      "preferredPathways": [
+        "DIRECTLY_ADDRESSABLE",
+        "PARTNERSHIP_DRIVEN"
+      ],
+      "notes": "Wraps sports_entertainment + sports housing hunter; filters participatory / recreational travel (not spectator-only unless lodging mechanism proven)."
+    },
+    {
+      "leisureModuleId": "leisure_attractions",
+      "label": "Attractions and destination experiences",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "preferred_lodging_partnerships",
+        "travel_trade_group_intermediaries"
+      ],
+      "secondarySegments": [
+        "social_special_events"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:preferred_lodging_partnerships",
+        "Invoke-GdiVenueLodgingPartnershipsTrack.ps1"
+      ],
+      "preferredPathways": [
+        "PARTNERSHIP_DRIVEN",
+        "CAMPAIGN_DRIVEN"
+      ],
+      "notes": "Partnership-first attractions/experiences; reuses preferred lodging + venue lodging tracks with leisure partnership qualification."
+    },
+    {
+      "leisureModuleId": "leisure_universities",
+      "label": "Universities and visiting-friends-and-relatives demand",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "education_scientific"
+      ],
+      "secondarySegments": [
+        "relocation_extended_stay",
+        "social_special_events"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:education_scientific",
+        "Invoke-GdiUniversityDemandHunter.ps1"
+      ],
+      "preferredPathways": [
+        "CAMPAIGN_DRIVEN",
+        "DIRECTLY_ADDRESSABLE"
+      ],
+      "notes": "Education segment is conference-heavy; leisure module specializes graduation / parents weekend / VFR / alumni leisure travel."
+    },
+    {
+      "leisureModuleId": "leisure_destination",
+      "label": "Destination demand shifts and special occasions",
+      "coverage": "GAP",
+      "implementationMode": "SPECIALIZATION_OVER_EXISTING_QUERIES",
+      "primarySegments": [
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "secondarySegments": [
+        "government_public_sector"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:social_special_events",
+        "need-date fourteen strategy relevance"
+      ],
+      "preferredPathways": [
+        "CAMPAIGN_DRIVEN",
+        "DIRECTLY_ADDRESSABLE"
+      ],
+      "notes": "Largest net-new leisure framing (shoulder/holiday/occasion shifts); still uses shared discovery executor + need-period contract — no new DB."
+    },
+    {
+      "leisureModuleId": "leisure_distribution",
+      "label": "Leisure distribution and referral relationships",
+      "coverage": "OVERLAP_WRAPPER",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "travel_trade_group_intermediaries",
+        "preferred_lodging_partnerships",
+        "professional_event_planners"
+      ],
+      "secondarySegments": [],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:travel_trade_group_intermediaries",
+        "Invoke-GdiPlannerPartnershipsTrack.ps1"
+      ],
+      "preferredPathways": [
+        "PARTNERSHIP_DRIVEN"
+      ],
+      "notes": "DMC / OTA leisure / destination bureau / referral partners — wraps travel trade + preferred lodging + planner tracks."
+    }
+  ],
+  "investigatedUrls": [],
+  "resume": {
+    "resumable": true,
+    "replaySafe": true
+  }
+}

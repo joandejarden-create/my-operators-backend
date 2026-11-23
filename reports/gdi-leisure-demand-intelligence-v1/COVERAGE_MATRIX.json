@@ -1,0 +1,191 @@
+{
+  "coverageMatrix": [
+    {
+      "leisureModuleId": "leisure_events",
+      "label": "Festivals, concerts and cultural events",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "associations_conferences_events",
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "secondarySegments": [
+        "professional_event_planners"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:associations_conferences_events",
+        "runSegmentDiscoveryExecutor:social_special_events"
+      ],
+      "preferredPathways": [
+        "DIRECTLY_ADDRESSABLE",
+        "CAMPAIGN_DRIVEN"
+      ],
+      "notes": "Reuses events/social discovery; leisure specialization = nonlocal leisure visitor evidence + festival/concert filters (not association MICE-only)."
+    },
+    {
+      "leisureModuleId": "leisure_sports",
+      "label": "Participatory sports and recreational travel",
+      "coverage": "OVERLAP_WRAPPER",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "sports_entertainment"
+      ],
+      "secondarySegments": [
+        "preferred_lodging_partnerships",
+        "travel_trade_group_intermediaries"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:sports_entertainment",
+        "Invoke-GdiSportsHousingHunter.ps1"
+      ],
+      "preferredPathways": [
+        "DIRECTLY_ADDRESSABLE",
+        "PARTNERSHIP_DRIVEN"
+      ],
+      "notes": "Wraps sports_entertainment + sports housing hunter; filters participatory / recreational travel (not spectator-only unless lodging mechanism proven)."
+    },
+    {
+      "leisureModuleId": "leisure_attractions",
+      "label": "Attractions and destination experiences",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "preferred_lodging_partnerships",
+        "travel_trade_group_intermediaries"
+      ],
+      "secondarySegments": [
+        "social_special_events"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:preferred_lodging_partnerships",
+        "Invoke-GdiVenueLodgingPartnershipsTrack.ps1"
+      ],
+      "preferredPathways": [
+        "PARTNERSHIP_DRIVEN",
+        "CAMPAIGN_DRIVEN"
+      ],
+      "notes": "Partnership-first attractions/experiences; reuses preferred lodging + venue lodging tracks with leisure partnership qualification."
+    },
+    {
+      "leisureModuleId": "leisure_universities",
+      "label": "Universities and visiting-friends-and-relatives demand",
+      "coverage": "PARTIAL",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "education_scientific"
+      ],
+      "secondarySegments": [
+        "relocation_extended_stay",
+        "social_special_events"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:education_scientific",
+        "Invoke-GdiUniversityDemandHunter.ps1"
+      ],
+      "preferredPathways": [
+        "CAMPAIGN_DRIVEN",
+        "DIRECTLY_ADDRESSABLE"
+      ],
+      "notes": "Education segment is conference-heavy; leisure module specializes graduation / parents weekend / VFR / alumni leisure travel."
+    },
+    {
+      "leisureModuleId": "leisure_destination",
+      "label": "Destination demand shifts and special occasions",
+      "coverage": "GAP",
+      "implementationMode": "SPECIALIZATION_OVER_EXISTING_QUERIES",
+      "primarySegments": [
+        "social_special_events",
+        "corporate_celebrations_private_events"
+      ],
+      "secondarySegments": [
+        "government_public_sector"
+      ],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:social_special_events",
+        "need-date fourteen strategy relevance"
+      ],
+      "preferredPathways": [
+        "CAMPAIGN_DRIVEN",
+        "DIRECTLY_ADDRESSABLE"
+      ],
+      "notes": "Largest net-new leisure framing (shoulder/holiday/occasion shifts); still uses shared discovery executor + need-period contract — no new DB."
+    },
+    {
+      "leisureModuleId": "leisure_distribution",
+      "label": "Leisure distribution and referral relationships",
+      "coverage": "OVERLAP_WRAPPER",
+      "implementationMode": "WRAPPER_PLUS_QUALIFICATION",
+      "primarySegments": [
+        "travel_trade_group_intermediaries",
+        "preferred_lodging_partnerships",
+        "professional_event_planners"
+      ],
+      "secondarySegments": [],
+      "reuseHandlers": [
+        "runSegmentDiscoveryExecutor:travel_trade_group_intermediaries",
+        "Invoke-GdiPlannerPartnershipsTrack.ps1"
+      ],
+      "preferredPathways": [
+        "PARTNERSHIP_DRIVEN"
+      ],
+      "notes": "DMC / OTA leisure / destination bureau / referral partners — wraps travel trade + preferred lodging + planner tracks."
+    }
+  ],
+  "modules": [
+    "leisure_events",
+    "leisure_sports",
+    "leisure_attractions",
+    "leisure_universities",
+    "leisure_destination",
+    "leisure_distribution"
+  ],
+  "adpLinkage": {
+    "schema": "gdi-leisure-adp-linkage-design-v1",
+    "requiredForLdi": false,
+    "autoCustomerAdpRecommendations": false,
+    "proposedLinks": [
+      {
+        "from": "verified_leisure_event_or_attraction",
+        "to": "adp_ai_hotel_discovery_positioning_candidate",
+        "condition": "Only when independent ADP evidence validates a positioning opportunity; never auto-emit customer ADP copy from LDI alone."
+      },
+      {
+        "from": "campaign_driven_destination_demand",
+        "to": "adp_seasonality_or_intent_signal_watch",
+        "condition": "Internal watchlist only until ADP Full E2E evidence gate passes."
+      }
+    ],
+    "thisPhase": {
+      "adpAudits": "NONE",
+      "adpResearch": "NONE",
+      "customerFacingAdp": "NONE"
+    }
+  },
+  "schemaGaps": {
+    "reuseExisting": [
+      "GDO primaryContact* / opportunityPayloadJson",
+      "demandFamily / opportunityType / hotelFit fields",
+      "Market Scope Hotel|Competitive|All (UI + DTO)",
+      "HI Contact Channels for durable emails (future Findymail)"
+    ],
+    "gapsRequiringFounderSchemaGo": [
+      {
+        "field": "leisureModuleId",
+        "rationale": "Typed select would aid filtering; currently payload-only OK",
+        "requiredForV1": false
+      },
+      {
+        "field": "leisureCommercialPathway",
+        "rationale": "DIRECTLY_ADDRESSABLE | PARTNERSHIP_DRIVEN | CAMPAIGN_DRIVEN",
+        "requiredForV1": false
+      },
+      {
+        "field": "needPeriodRelevanceStatus",
+        "rationale": "NEED_PERIOD_UNKNOWN | OVERLAP | NO_OVERLAP without inventing ADR",
+        "requiredForV1": false
+      }
+    ],
+    "airtableWritesThisPhase": "NONE"
+  }
+}
