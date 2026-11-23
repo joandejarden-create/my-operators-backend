@@ -902,6 +902,23 @@ body.dop-root.embed-mode .dop-page {
     linear-gradient(rgba(16, 25, 53, 0.92), rgba(16, 25, 53, 0.92)) padding-box,
     var(--dop-scale-ring, var(--dop-border)) border-box;
 }
+/* Neutral glyph when no verified logo — never a blank white square */
+.dop-hotel-logo.is-fallback {
+  background: #eef1f6;
+  color: #6b738a;
+  padding: 6px;
+}
+.dop-hotel-logo.is-fallback.has-multi-scale {
+  background:
+    linear-gradient(#eef1f6, #eef1f6) padding-box,
+    var(--dop-scale-ring, var(--dop-border)) border-box;
+}
+.dop-hotel-logo.is-fallback svg,
+.dop-hotel-logo.is-independent svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .dop-hotel strong {
   font-size: 13px;
   color: var(--dop-text);

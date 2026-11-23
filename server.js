@@ -295,6 +295,7 @@ import {
   getBrandExplorerComparePublishStatus,
 } from "./api/brand-explorer-compare-publish.js";
 import { getBrandExplorerPresentationImage } from "./api/brand-explorer-presentation-image.js";
+import { getBrandLibraryLogo } from "./api/brand-library-logo.js";
 import {
   getBrandExplorerBatchPortfolio,
   getBrandExplorerBatchBrand,
@@ -3469,6 +3470,7 @@ app.get("/api/capital-provider-explorer/provider", optionalDealalityAuth, getCap
 // Brand Library API endpoints
 app.get("/api/brand-library/operational-support", getOperationalSupportByBrandId);
 app.get("/api/brand-library/brands", getBrandLibraryBrands);
+app.get("/api/brand-library/logo/:recordId", getBrandLibraryLogo);
 app.get("/api/brand-library/brand", getBrandLibraryBrandById);
 // Brand Explorer Comparison Studio — local founder review + gated publish (default DRY_RUN; no production writes until founder activation)
 app.get("/api/brand-library/presentation-image/:recordId", getBrandExplorerPresentationImage);
