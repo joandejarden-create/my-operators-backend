@@ -1,0 +1,253 @@
+{
+  "version": "gdi-full-e2e-research-persistence-bridge-v1",
+  "at": "2026-11-23T14:32:45.438Z",
+  "hotelId": "rece0NdV9FCnaFlVS",
+  "runId": "gdi_dh_live_20261123141330__rece0NdV9FCnaFlVS",
+  "destinationTable": "GDI Hotel Research Opportunities",
+  "destinationTableId": "tblbkDj0vhQLfrssV",
+  "dryRun": true,
+  "simulationStore": false,
+  "authorization": {
+    "applyRequested": false,
+    "authorizeResearchPersistence": false,
+    "exactWriteSetAuthorization": null,
+    "envUnlocked": false,
+    "authorizePaidResearch": true,
+    "productionUnlocked": false,
+    "blockers": [
+      {
+        "code": "AUTHORIZE_RESEARCH_PERSISTENCE_REQUIRED"
+      },
+      {
+        "code": "EXACT_WRITE_SET_AUTHORIZATION_REQUIRED"
+      },
+      {
+        "code": "ENV_PRODUCTION_GATE_OFF",
+        "env": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES"
+      }
+    ],
+    "note": "Paid research authorization does not unlock Airtable research persistence.",
+    "activation": {
+      "disabledByDefault": true,
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "requiresExactWriteSetAuthorization": true,
+      "separateFromGdoWrites": true,
+      "separateFromPublication": true,
+      "separateFromPaidResearchAuth": true
+    }
+  },
+  "researchCompletedIndependently": true,
+  "gdoWrites": 0,
+  "publicationWrites": 0,
+  "airtableProductionGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  },
+  "counts": {
+    "candidatesBeforeDedupe": 4,
+    "candidates": 4,
+    "DUPLICATES_RESOLVED": 0,
+    "WOULD_CREATE": 4,
+    "WOULD_UPDATE": 0,
+    "UNCHANGED": 0,
+    "CREATED": 0,
+    "UPDATED": 0,
+    "FAILED": 0,
+    "SKIPPED_FORBIDDEN": 0,
+    "SKIPPED_BUDGET": 0
+  },
+  "duplicatesResolved": [],
+  "rows": [
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_0ca4947f4e8e",
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_0ca4947f4e8e",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "EXPLORATORY",
+      "exploratory": true,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "payloadChars": 4325,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [
+          "Organization contact desk"
+        ],
+        "sourceEvidenceUrls": [
+          "https://wapor.org/events/annual-conference/current-conference/conference-venue-and-accommodation/"
+        ],
+        "payloadContactNames": [
+          "Organization contact desk"
+        ],
+        "payloadEvidenceUrls": [
+          "https://wapor.org/events/annual-conference/current-conference/conference-venue-and-accommodation/"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW"
+    },
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_1342860c1693",
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_1342860c1693",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "exploratory": false,
+      "commercialEligibilityStatus": "CUSTOMER_ELIGIBLE_CANDIDATE",
+      "disposition": null,
+      "payloadChars": 9035,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [
+          "Daniel Roy",
+          "Tania Contreras Chávez",
+          "Teddy Oberts, CPSM",
+          "Vanessa Gomez"
+        ],
+        "sourceEvidenceUrls": [
+          "https://www.salesforce.com/news/press-releases/2025/11/12/mexico-city-office-opening/",
+          "https://www.salesforce.com/news/press-releases/2025/10/08/mexico-investment/",
+          "https://www.salesforce.com/company/locations/",
+          "https://www.salesforce.com/blog/salesforce-mexico-global-delivery-center-careers/",
+          "https://cloud.mail.salesforce.com/workshop-detail?workshopId=9AB8364F-2CB5-4437-9FF4-4FCE45729461",
+          "https://mexicodreamin.com/",
+          "https://linkedin.com/in/taniacontreraschavez",
+          "https://linkedin.com/in/teddyoberts",
+          "https://linkedin.com/in/danielroy-procurement",
+          "https://linkedin.com/in/vanessa-gomez-marketing",
+          "https://www.salesforce.com/mx/sales/contact/contact-us/?d=70130000000lwC2",
+          "https://www.salesforce.com/company/legal/supplier-agreements/"
+        ],
+        "payloadContactNames": [
+          "Daniel Roy",
+          "Tania Contreras Chávez",
+          "Teddy Oberts, CPSM",
+          "Vanessa Gomez"
+        ],
+        "payloadEvidenceUrls": [
+          "https://www.salesforce.com/news/press-releases/2025/11/12/mexico-city-office-opening/",
+          "https://www.salesforce.com/news/press-releases/2025/10/08/mexico-investment/",
+          "https://www.salesforce.com/company/locations/",
+          "https://www.salesforce.com/blog/salesforce-mexico-global-delivery-center-careers/",
+          "https://cloud.mail.salesforce.com/workshop-detail?workshopId=9AB8364F-2CB5-4437-9FF4-4FCE45729461",
+          "https://mexicodreamin.com/",
+          "https://linkedin.com/in/taniacontreraschavez",
+          "https://linkedin.com/in/teddyoberts",
+          "https://linkedin.com/in/danielroy-procurement",
+          "https://linkedin.com/in/vanessa-gomez-marketing",
+          "https://www.salesforce.com/mx/sales/contact/contact-us/?d=70130000000lwC2",
+          "https://www.salesforce.com/company/legal/supplier-agreements/"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "GDO_QUALIFIED_PENDING_AUTHORIZATION"
+    },
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_2017a6cef8cd",
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_2017a6cef8cd",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "EXPLORATORY",
+      "exploratory": true,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "payloadChars": 3676,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [],
+        "sourceEvidenceUrls": [
+          "https://www.iafmhs.org/page-18456"
+        ],
+        "payloadContactNames": [],
+        "payloadEvidenceUrls": [
+          "https://www.iafmhs.org/page-18456"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW"
+    },
+    {
+      "hotelId": "rece0NdV9FCnaFlVS",
+      "opportunityId": "disc_227427613732",
+      "compositeKey": "rece0NdV9FCnaFlVS::disc_227427613732",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "EXPLORATORY",
+      "exploratory": true,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "payloadChars": 3806,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [],
+        "sourceEvidenceUrls": [
+          "https://www.sah.org/conferences/mexico-2026/travel-information"
+        ],
+        "payloadContactNames": [],
+        "payloadEvidenceUrls": [
+          "https://www.sah.org/conferences/mexico-2026/travel-information"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW"
+    }
+  ],
+  "readBack": [],
+  "ok": true,
+  "writesUsed": 0,
+  "writeBudget": null,
+  "executionSummary": {
+    "opportunitiesResearched": 4,
+    "uniqueCandidates": 4,
+    "newResearchOpportunities": 4,
+    "materiallyUpdatedOpportunities": 0,
+    "unchangedOpportunities": 0,
+    "duplicatesResolved": 0,
+    "exploratoryResearchOnly": 3,
+    "airtable": {
+      "CREATE": 0,
+      "UPDATE": 0,
+      "UNCHANGED": 0,
+      "WOULD_CREATE": 4,
+      "WOULD_UPDATE": 0,
+      "FAILED": 0
+    },
+    "failedWrites": 0,
+    "verifiedReadBacks": 0,
+    "dryRun": true,
+    "gdoWrites": 0,
+    "publicationWrites": 0
+  }
+}

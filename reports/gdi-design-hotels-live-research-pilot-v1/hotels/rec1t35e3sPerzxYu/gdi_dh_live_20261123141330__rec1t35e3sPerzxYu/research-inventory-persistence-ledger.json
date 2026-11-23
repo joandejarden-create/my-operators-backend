@@ -1,0 +1,241 @@
+{
+  "version": "gdi-full-e2e-research-persistence-bridge-v1",
+  "at": "2026-11-23T15:06:04.722Z",
+  "hotelId": "rec1t35e3sPerzxYu",
+  "runId": "gdi_dh_live_20261123141330__rec1t35e3sPerzxYu",
+  "destinationTable": "GDI Hotel Research Opportunities",
+  "destinationTableId": "tblbkDj0vhQLfrssV",
+  "dryRun": true,
+  "simulationStore": false,
+  "authorization": {
+    "applyRequested": false,
+    "authorizeResearchPersistence": false,
+    "exactWriteSetAuthorization": null,
+    "envUnlocked": false,
+    "authorizePaidResearch": true,
+    "productionUnlocked": false,
+    "blockers": [
+      {
+        "code": "AUTHORIZE_RESEARCH_PERSISTENCE_REQUIRED"
+      },
+      {
+        "code": "EXACT_WRITE_SET_AUTHORIZATION_REQUIRED"
+      },
+      {
+        "code": "ENV_PRODUCTION_GATE_OFF",
+        "env": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES"
+      }
+    ],
+    "note": "Paid research authorization does not unlock Airtable research persistence.",
+    "activation": {
+      "disabledByDefault": true,
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "requiresExactWriteSetAuthorization": true,
+      "separateFromGdoWrites": true,
+      "separateFromPublication": true,
+      "separateFromPaidResearchAuth": true
+    }
+  },
+  "researchCompletedIndependently": true,
+  "gdoWrites": 0,
+  "publicationWrites": 0,
+  "airtableProductionGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  },
+  "counts": {
+    "candidatesBeforeDedupe": 4,
+    "candidates": 4,
+    "DUPLICATES_RESOLVED": 0,
+    "WOULD_CREATE": 4,
+    "WOULD_UPDATE": 0,
+    "UNCHANGED": 0,
+    "CREATED": 0,
+    "UPDATED": 0,
+    "FAILED": 0,
+    "SKIPPED_FORBIDDEN": 0,
+    "SKIPPED_BUDGET": 0
+  },
+  "duplicatesResolved": [],
+  "rows": [
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_8e730047c1b9",
+      "compositeKey": "rec1t35e3sPerzxYu::disc_8e730047c1b9",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "EXPLORATORY",
+      "exploratory": true,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "payloadChars": 3767,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [],
+        "sourceEvidenceUrls": [
+          "https://www.esicm.org/events/39th-annual-congress-lisbon/"
+        ],
+        "payloadContactNames": [],
+        "payloadEvidenceUrls": [
+          "https://www.esicm.org/events/39th-annual-congress-lisbon/"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW"
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_62b0361d0b7e",
+      "compositeKey": "rec1t35e3sPerzxYu::disc_62b0361d0b7e",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "exploratory": false,
+      "commercialEligibilityStatus": "CUSTOMER_ELIGIBLE_CANDIDATE",
+      "disposition": null,
+      "payloadChars": 8445,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [
+          "Paulo Pereira",
+          "Sophie Chelmick"
+        ],
+        "sourceEvidenceUrls": [
+          "https://www.tdcx.com/about/news-and-updates/press-releases/tdcx-opens-lisbon-campus-as-its-next-european-growth-engine/",
+          "https://www.tdcx.com/",
+          "https://jobs.tdcx.com/job/Sales-Development-Representative%2C-Western-Europe/1370694166/",
+          "https://jobs.tdcx.com/job/HR-Business-Partner/1369437466/",
+          "https://jobs.tdcx.com/job/HR-Admin-%26-Facilities/1367542666/",
+          "https://www.tdcx.com/contact/",
+          "https://linkedin.com/in/paulojeapereira",
+          "https://www.linkedin.com/in/sophiechelmick/",
+          "https://memmohotels.com/principereal",
+          "https://portugalglobal.pt/en/news/2026/setembro/tdcx-opens-lisbon-campus-as-european-growth-hub/"
+        ],
+        "payloadContactNames": [
+          "Paulo Pereira",
+          "Sophie Chelmick"
+        ],
+        "payloadEvidenceUrls": [
+          "https://www.tdcx.com/about/news-and-updates/press-releases/tdcx-opens-lisbon-campus-as-its-next-european-growth-engine/",
+          "https://www.tdcx.com/",
+          "https://jobs.tdcx.com/job/Sales-Development-Representative%2C-Western-Europe/1370694166/",
+          "https://jobs.tdcx.com/job/HR-Business-Partner/1369437466/",
+          "https://jobs.tdcx.com/job/HR-Admin-%26-Facilities/1367542666/",
+          "https://www.tdcx.com/contact/",
+          "https://linkedin.com/in/paulojeapereira",
+          "https://www.linkedin.com/in/sophiechelmick/",
+          "https://memmohotels.com/principereal",
+          "https://portugalglobal.pt/en/news/2026/setembro/tdcx-opens-lisbon-campus-as-european-growth-hub/"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "GDO_QUALIFIED_PENDING_AUTHORIZATION"
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_9cd2c082c05d",
+      "compositeKey": "rec1t35e3sPerzxYu::disc_9cd2c082c05d",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "EXPLORATORY",
+      "exploratory": true,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "payloadChars": 4071,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [],
+        "sourceEvidenceUrls": [
+          "https://www.advantagetravelpartnership.com/advantage-travel-partnership-confirms-lisbon-for-2027-annual-conference"
+        ],
+        "payloadContactNames": [],
+        "payloadEvidenceUrls": [
+          "https://www.advantagetravelpartnership.com/advantage-travel-partnership-confirms-lisbon-for-2027-annual-conference"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW"
+    },
+    {
+      "hotelId": "rec1t35e3sPerzxYu",
+      "opportunityId": "disc_51073448c775",
+      "compositeKey": "rec1t35e3sPerzxYu::disc_51073448c775",
+      "action": "WOULD_CREATE",
+      "airtableRecordId": null,
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "EXPLORATORY",
+      "exploratory": true,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "payloadChars": 3760,
+      "persistenceSource": "chain.persistenceOpportunities",
+      "preservation": {
+        "sourceContactNames": [],
+        "sourceEvidenceUrls": [
+          "https://www.advantagetravelpartnership.com/advantage-conference"
+        ],
+        "payloadContactNames": [],
+        "payloadEvidenceUrls": [
+          "https://www.advantagetravelpartnership.com/advantage-conference"
+        ],
+        "missingContacts": [],
+        "missingEvidence": [],
+        "filesystemOnlyEvidenceRefs": []
+      },
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW"
+    }
+  ],
+  "readBack": [],
+  "ok": true,
+  "writesUsed": 0,
+  "writeBudget": null,
+  "executionSummary": {
+    "opportunitiesResearched": 4,
+    "uniqueCandidates": 4,
+    "newResearchOpportunities": 4,
+    "materiallyUpdatedOpportunities": 0,
+    "unchangedOpportunities": 0,
+    "duplicatesResolved": 0,
+    "exploratoryResearchOnly": 3,
+    "airtable": {
+      "CREATE": 0,
+      "UPDATE": 0,
+      "UNCHANGED": 0,
+      "WOULD_CREATE": 4,
+      "WOULD_UPDATE": 0,
+      "FAILED": 0
+    },
+    "failedWrites": 0,
+    "verifiedReadBacks": 0,
+    "dryRun": true,
+    "gdoWrites": 0,
+    "publicationWrites": 0
+  }
+}
