@@ -9,7 +9,9 @@
 <link rel="stylesheet" href="/css/dealality-wave-loader.css?v=3" />
 <link rel="stylesheet" href="/css/hotel-explorer.css?v=59" />
 <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=44" />
-<link rel="stylesheet" href="/css/deal-opportunities.css?v=18" />
+<link rel="stylesheet" href="/css/deal-opportunities.css?v=19" />
+<script src="/js/deal-opportunities-tab-filters-v1.js?v=2"></script>
+<script src="/js/deal-opportunities-brand-logos-v1.js?v=2"></script>
 <script>
 (function () {
   try {
@@ -985,7 +987,26 @@
     return Boolean(s) && (/^independent\b/.test(s) || s === "inhouse" || /\bindependent\b/.test(s));
   }
 
-  /** Ordered brand candidates for an opportunity — pick first resolvable logo. */
+  /** True when row is a multi-brand portfolio / operator — do not pick one hotel flag. */
+  function isPortfolioIdentity(o) {
+    const sub = cleanBrandLabel(o?.sub);
+    const name = String(o?.name || "");
+    if (/marriott\s*\/\s*hilton\s*\/\s*ihg/i.test(sub)) return true;
+    if (/[\/|]/.test(sub) && /hilton|marriott|ihg|hyatt/i.test(sub)) return true;
+    if (/\b(ahip|aimbridge|portfolio|multi[- ]brand)\b/i.test(sub + " " + name)) return true;
+    const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
+    if (related.length >= 2) {
+      const brands = new Set(
+        related
+          .map((h) => cleanBrandLabel(h?.brand || "").toLowerCase())
+          .filter(Boolean),
+      );
+      if (brands.size >= 2) return true;
+    }
+    return false;
+  }
+
+  /** Ordered brand candidates — current identity first; never former-as-current. */
   function brandCandidates(o) {
     const out = [];
     const push = (raw) => {
@@ -994,23 +1015,33 @@
       if (/marriott\s*\/\s*hilton\s*\/\s*ihg/i.test(s)) return;
       if (!out.some((x) => x.toLowerCase() === s.toLowerCase())) out.push(s);
     };
-    const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
-    // Multi-hotel: prefer a concrete related property brand (pick one)
-    related.forEach((h) => {
-      push(h.brand);
-      push(h.name);
-    });
+    // Current commercial identity (sub line) before property name
     push(o?.sub);
+    push(o?.currentBrand || o?.brandCurrent || o?.hotelBrand || o?.brand);
+    // Single-property rows may use related hotel brand; portfolios handled separately
+    if (!isPortfolioIdentity(o)) {
+      const related = Array.isArray(o?.relatedHotels) ? o.relatedHotels : [];
+      related.forEach((h) => {
+        push(h.brand);
+      });
+    }
     push(o?.name);
     return out;
   }
 
   function lookupBrandLogo(query) {
+    const Logos = window.DealSignalBrandLogos;
+    if (Logos && typeof Logos.resolveBrandLogoUrl === "function") {
+      const hit = Logos.resolveBrandLogoUrl(query, state.brandLogoMap);
+      if (hit && hit.url) {
+        return { name: hit.name || query, url: hit.url, id: hit.id };
+      }
+    }
     const q0 = cleanBrandLabel(query).toLowerCase();
     if (!q0) return null;
     const aliased = BRAND_LOGO_ALIASES[q0] || q0;
     const direct = state.brandLogoMap[aliased] || state.brandLogoMap[q0];
-    if (direct && direct.url) {
+    if (direct && direct.url && !/^\/api\/brand-library\/logo\//i.test(direct.url)) {
       return { name: direct.name || aliased, url: direct.url, id: direct.id };
     }
     let best = null;
@@ -1037,6 +1068,9 @@
   }
 
   function resolveOpportunityLogo(o) {
+    if (isPortfolioIdentity(o)) {
+      return { kind: "fallback", label: cleanBrandLabel(o?.sub) || "Portfolio" };
+    }
     const candidates = brandCandidates(o);
     for (let i = 0; i < candidates.length; i++) {
       if (isIndependentBrand(candidates[i])) {
@@ -1052,7 +1086,7 @@
     if (isIndependentBrand(o?.sub) || /lakeville/i.test(String(o?.name || ""))) {
       return { kind: "independent", label: "Independent" };
     }
-    return { kind: "empty", label: candidates[0] || o?.name || "Brand" };
+    return { kind: "fallback", label: candidates[0] || o?.name || "Brand" };
   }
 
   function scaleOutlineStyle(scales) {
@@ -1079,108 +1113,151 @@
     const resolved = resolveOpportunityLogo(o);
     const title = resolved.label ? resolved.label + " · " + scaleTitle : scaleTitle;
     const outline = scaleOutlineStyle(scales);
+    const isIndependent = resolved.kind === "independent";
+    const isFallback = resolved.kind === "fallback" || resolved.kind === "empty";
     const cls =
       className +
       (outline.multi ? " has-multi-scale" : "") +
-      (resolved.kind === "independent" ? " is-independent" : "");
+      (isIndependent ? " is-independent" : "") +
+      (isFallback ? " is-fallback" : "");
 
     if (resolved.kind === "logo" && resolved.url) {
       return (
-        `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">` +
-        `<img src="${esc(resolved.url)}" alt="" loading="lazy" decoding="async" ` +
-        `onerror="this.remove()"/>` +
+        `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true" data-dop-logo-fallback="1">` +
+        `<img src="${esc(resolved.url)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ` +
+        `onerror="window.__dopLogoImgError&&window.__dopLogoImgError(this)"/>` +
         `</div>`
       );
     }
 
-    if (resolved.kind === "independent") {
+    if (isIndependent) {
       return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">${INDEPENDENT_LOGO_SVG}</div>`;
     }
 
-    // Logo unavailable — outline only (no letter initials)
-    return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true"></div>`;
+    // Graceful neutral fallback — never a blank white square
+    return `<div class="${cls}" style="${outline.css}" title="${esc(title)}" aria-hidden="true">${INDEPENDENT_LOGO_SVG}</div>`;
   }
 
   async function loadBrandLogoMap() {
     try {
-      const res = await fetch("/api/brand-library/brands", {
+      // Airtable attachment URLs are short-lived signed links — never force-cache.
+      const res = await fetch("/api/brand-library/brands?logo=1&_=" + Date.now(), {
         headers: authHeaders(),
         credentials: "same-origin",
-        cache: "force-cache",
+        cache: "no-store",
       });
       if (!res.ok) return;
       const data = await res.json();
       const arr = Array.isArray(data.brands) ? data.brands : [];
+      const Logos = window.DealSignalBrandLogos;
+      if (Logos && typeof Logos.buildBrandLogoMap === "function") {
+        const map = Logos.buildBrandLogoMap(arr, BRAND_LOGO_ALIASES);
+        state.brandLogoMap = map;
+        state.brandLogoNames = Object.keys(map)
+          .map((k) => (map[k] && map[k].name) || k)
+          .filter((n, i, a) => a.indexOf(n) === i);
+        return;
+      }
       const map = {};
       const names = [];
       arr.forEach((b) => {
         const name = String((b && b.name) || "").trim();
         const id = String((b && b.id) || "").trim();
-        const hasLogo = Boolean(String((b && b.logo) || "").trim());
-        if (!name || !id || !hasLogo) return;
+        const logo = String((b && b.logo) || "").trim();
+        if (!name || !logo) return;
+        if (!/^https?:\/\//i.test(logo) && !logo.startsWith("//")) return;
         const key = name.toLowerCase();
         map[key] = {
           id,
           name,
-          url: "/api/brand-library/logo/" + encodeURIComponent(id),
+          url: logo.startsWith("//") ? "https:" + logo : logo,
         };
         names.push(name);
       });
       state.brandLogoMap = map;
       state.brandLogoNames = names;
     } catch (_) {
-      /* keep empty map — tiles show chain-scale outline only */
+      /* keep empty map — tiles show graceful fallback glyph */
     }
+  }
+
+  function currentTabUniverse() {
+    const F = window.DealSignalOpportunityFilters;
+    if (F && typeof F.tabUniverse === "function") {
+      return F.tabUniverse(state.opps, state.activeFilter);
+    }
+    return (state.opps || []).filter((o) => {
+      const f = state.activeFilter;
+      if (f === "all") return true;
+      if (f === "qualified") return o.group === "qualified";
+      if (f === "watch") return o.group === "watch";
+      if (f === "BCT") return o.group === "qualified" && o.kind === "BCT";
+      if (f === "MCT") return o.group === "qualified" && o.kind === "MCT";
+      return true;
+    });
+  }
+
+  function applySelectOptions(sel, options, prev) {
+    const F = window.DealSignalOpportunityFilters;
+    const resolved =
+      F && typeof F.resolveSelectValue === "function"
+        ? F.resolveSelectValue(options, prev)
+        : options.some(([v]) => String(v) === String(prev))
+          ? prev
+          : "all";
+    sel.innerHTML = options
+      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
+      .join("");
+    sel.value = resolved;
+    return resolved;
+  }
+
+  function populateRegionFilter() {
+    const sel = $("region");
+    if (!sel) return;
+    const F = window.DealSignalOpportunityFilters;
+    const universe = currentTabUniverse();
+    const options =
+      F && typeof F.deriveRegionOptions === "function"
+        ? F.deriveRegionOptions(universe)
+        : [["all", "All Markets"]];
+    applySelectOptions(sel, options, sel.value || "all");
   }
 
   function populateBrandFilter() {
     const sel = $("brand");
     if (!sel) return;
-    const prev = sel.value || "all";
-    const brands = new Map();
-    let hasUnspecified = false;
-    state.opps.forEach((o) => {
-      const key = opportunityBrandKey(o);
-      if (key === "__unspecified__") {
-        hasUnspecified = true;
-        return;
-      }
-      brands.set(key, toProperCase(key));
-    });
-    const options = [['all', 'All Brands']];
-    [...brands.entries()]
-      .sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: "base" }))
-      .forEach(([value, label]) => options.push([value, label]));
-    if (hasUnspecified) options.push(["__unspecified__", "Unspecified"]);
-    sel.innerHTML = options
-      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
-      .join("");
-    sel.value = options.some(([v]) => v === prev) ? prev : "all";
+    const F = window.DealSignalOpportunityFilters;
+    const universe = currentTabUniverse();
+    const options =
+      F && typeof F.deriveBrandOptions === "function"
+        ? F.deriveBrandOptions(universe, opportunityBrandKey, (k) => toProperCase(k))
+        : [["all", "All Brands"]];
+    applySelectOptions(sel, options, sel.value || "all");
   }
 
   function populateCountryFilter() {
     const sel = $("country");
     if (!sel) return;
-    const prev = sel.value || "all";
-    const countries = new Map();
-    let hasUnspecified = false;
-    state.opps.forEach((o) => {
-      const key = opportunityCountryKey(o);
-      if (key === "__unspecified__") {
-        hasUnspecified = true;
-        return;
-      }
-      countries.set(key, opportunityCountryLabel(key));
-    });
-    const options = [["all", "All Countries"]];
-    [...countries.entries()]
-      .sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: "base" }))
-      .forEach(([value, label]) => options.push([value, label]));
-    if (hasUnspecified) options.push(["__unspecified__", "Unspecified"]);
-    sel.innerHTML = options
-      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
-      .join("");
-    sel.value = options.some(([v]) => v === prev) ? prev : "all";
+    const F = window.DealSignalOpportunityFilters;
+    const universe = currentTabUniverse();
+    const options =
+      F && typeof F.deriveCountryOptions === "function"
+        ? F.deriveCountryOptions(universe, opportunityCountryKey, opportunityCountryLabel)
+        : [["all", "All Countries"]];
+    applySelectOptions(sel, options, sel.value || "all");
+  }
+
+  function populateTimingFilter() {
+    const sel = $("timing");
+    if (!sel) return;
+    const F = window.DealSignalOpportunityFilters;
+    const universe = currentTabUniverse();
+    const options =
+      F && typeof F.deriveTimingOptions === "function"
+        ? F.deriveTimingOptions(universe, opportunityHorizonKey, opportunityHorizonLabel)
+        : [["all", "All Timing"]];
+    applySelectOptions(sel, options, sel.value || "all");
   }
 
   const MONTH_INDEX = {
@@ -1225,24 +1302,41 @@
   function populateDecisionWindowFilter() {
     const sel = $("decisionWindow");
     if (!sel) return;
-    const prev = sel.value || "all";
-    const windows = new Map();
-    state.opps.forEach((o) => {
-      const key = opportunityDecisionWindowKey(o);
-      windows.set(key, opportunityDecisionWindowLabel(key));
-    });
-    const options = [["all", "All Decision Windows"]];
-    [...windows.entries()]
-      .sort((a, b) => {
-        if (a[0] === "unknown") return 1;
-        if (b[0] === "unknown") return -1;
-        return a[1].localeCompare(b[1], undefined, { sensitivity: "base", numeric: true });
-      })
-      .forEach(([value, label]) => options.push([value, label]));
-    sel.innerHTML = options
-      .map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`)
-      .join("");
-    sel.value = options.some(([v]) => v === prev) ? prev : "all";
+    const F = window.DealSignalOpportunityFilters;
+    const universe = currentTabUniverse();
+    const options =
+      F && typeof F.deriveDecisionWindowOptions === "function"
+        ? F.deriveDecisionWindowOptions(
+            universe,
+            opportunityDecisionWindowKey,
+            opportunityDecisionWindowLabel,
+          )
+        : [["all", "All Decision Windows"]];
+    applySelectOptions(sel, options, sel.value || "all");
+  }
+
+  /** Rebuild all dropdowns from the active tab's eligible universe; reset invalid selections. */
+  function repopulateFiltersForTab() {
+    populateRegionFilter();
+    populateCountryFilter();
+    populateBrandFilter();
+    populateTimingFilter();
+    populateDecisionWindowFilter();
+    const F = window.DealSignalOpportunityFilters;
+    const universe = currentTabUniverse();
+    if (state.chainScaleFilter && state.chainScaleFilter !== "all") {
+      const present =
+        F && typeof F.chainScalePresentInUniverse === "function"
+          ? F.chainScalePresentInUniverse(universe, getOpportunityChainScales)
+          : new Set(
+              universe.flatMap((o) =>
+                getOpportunityChainScales(o).map((s) => String(s).toLowerCase()),
+              ),
+            );
+      if (!present.has(String(state.chainScaleFilter).toLowerCase())) {
+        state.chainScaleFilter = "all";
+      }
+    }
   }
 
   /** Approximate decision date from window / year for horizon bucketing. */
@@ -2006,9 +2100,7 @@
       }
       state.opps = data.opportunities || [];
       paintMetrics(data.metrics || {});
-      populateBrandFilter();
-      populateCountryFilter();
-      populateDecisionWindowFilter();
+      repopulateFiltersForTab();
       renderTabs();
       render();
       $("loadError").hidden = true;
@@ -2051,6 +2143,7 @@
     const btn = e.target.closest("[data-filter]");
     if (!btn) return;
     state.activeFilter = btn.getAttribute("data-filter");
+    repopulateFiltersForTab();
     renderTabs();
     render();
   });
@@ -2084,16 +2177,17 @@
   });
   $("resetBtn").addEventListener("click", () => {
     $("q").value = "";
-    $("region").value = "all";
-    if ($("country")) $("country").value = "all";
-    if ($("brand")) $("brand").value = "all";
-    if ($("timing")) $("timing").value = "all";
-    if ($("decisionWindow")) $("decisionWindow").value = "all";
     state.activeFilter = "qualified";
     state.chainScaleFilter = "all";
     state.sortKey = "name";
     state.sortDir = 1;
     if ($("sortSelect")) $("sortSelect").value = "name";
+    repopulateFiltersForTab();
+    if ($("region")) $("region").value = "all";
+    if ($("country")) $("country").value = "all";
+    if ($("brand")) $("brand").value = "all";
+    if ($("timing")) $("timing").value = "all";
+    if ($("decisionWindow")) $("decisionWindow").value = "all";
     renderTabs();
     render();
     showToast("View reset", "info");
@@ -2172,8 +2266,71 @@
     showToast("Watchlist persistence is not connected in this CUSTOMER_BLOCKED local preview.", "info");
   });
   $("exportBtn").addEventListener("click", () => {
-    showToast("Export is disabled in this CUSTOMER_BLOCKED local preview.", "warn");
+    try {
+      const rows = selection();
+      const headers = [
+        "Name",
+        "Brand",
+        "Type",
+        "Country",
+        "Market",
+        "City",
+        "Timing",
+        "Decision Window",
+        "Group",
+        "Kind",
+      ];
+      const escapeCsv = (v) => {
+        const s = String(v ?? "");
+        return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      };
+      const lines = [headers.join(",")].concat(
+        rows.map((o) =>
+          [
+            o.name,
+            o.sub,
+            o.type,
+            opportunityCountryLabel(opportunityCountryKey(o)),
+            o.region,
+            o.city,
+            opportunityHorizonLabel(opportunityHorizonKey(o)),
+            opportunityDecisionWindowLabel(opportunityDecisionWindowKey(o)),
+            o.group,
+            o.kind,
+          ]
+            .map(escapeCsv)
+            .join(","),
+        ),
+      );
+      const blob = new Blob([lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `dealsignal-opportunities-${state.activeFilter}-${rows.length}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      showToast(`Exported ${rows.length} filtered row${rows.length === 1 ? "" : "s"} (local only)`, "success");
+    } catch (err) {
+      showToast("CSV export failed: " + (err && err.message ? err.message : String(err)), "error");
+    }
   });
+
+  window.__dopLogoImgError = function (img) {
+    try {
+      if (!img) return;
+      img.onerror = null;
+      const p = img.parentElement;
+      if (!p) return;
+      p.classList.add("is-fallback");
+      p.innerHTML = INDEPENDENT_LOGO_SVG;
+    } catch (_) {
+      try {
+        img.remove();
+      } catch (_) {}
+    }
+  };
 
   window.__dealOpportunities = {
     showDrawer,
@@ -2181,6 +2338,10 @@
     showToast,
     getState: () => state,
     reload: load,
+    currentTabUniverse,
+    repopulateFiltersForTab,
+    resolveOpportunityLogo,
+    selection,
   };
 
   setPageLoading(true, "Loading Deal Capture…");
