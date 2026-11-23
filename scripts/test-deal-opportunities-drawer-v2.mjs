@@ -85,8 +85,42 @@ assert.match(readerSrc, /drawerV2/);
 
 const html = fs.readFileSync(path.join(ROOT, "public/deal-opportunities.html"), "utf8");
 assert.match(html, /showDrawerV2/);
-assert.match(html, /Portfolio opportunity/i);
+assert.match(html, /Why Approach This Owner/i);
+assert.match(html, /Related Portfolio Opportunities/i);
+assert.match(html, /What We Don't Know/i);
 assert.match(html, /CUSTOMER_BLOCKED|DealSignal|Deal Opportunities/);
+assert.ok(v2.handoffUsed?.handoffId, "Bidwell must resolve DRAWER_HANDOFF");
+assert.ok(v2.commercialStatusVerification?.summary, "Bidwell commercial status verification required");
+assert.ok(v2.whyExists?.conversationAngle);
+
+const atlanta = buildDrawerV2({
+  finding: {
+    findingId: "find_ds_opew_v2_cp_atlanta_ravinia_mct_bct_2026",
+    fieldName: "COMMERCIAL_OPPORTUNITY_OTHER",
+    valueObserved: "Sale + IHG HMA expiry",
+    evidenceSnippet: "SVC marketing Atlanta Perimeter",
+    sourceUrl: "https://www.sec.gov/Archives/edgar/data/945394/000094539426000060/svc_093026xexhibitx992.htm",
+    confidence: "HIGH",
+    effectiveDate: "2027-01-31",
+  },
+  inventory: {
+    hotelName: "Crowne Plaza Atlanta Perimeter at Ravinia",
+    discoveryPropertyId: "disc_ds_opew_v2_cp_atlanta_ravinia_svc_2026",
+  },
+  opportunity: {
+    name: "Crowne Plaza Atlanta Perimeter at Ravinia",
+    group: "watch",
+    kind: "OTHER",
+    type: "Other",
+    status: "Emerging",
+    he: { ready: false },
+    relatedHotels: [],
+  },
+  relatedHotels: [],
+});
+assert.equal(atlanta.engagementPriority, "ENGAGE NOW");
+assert.match(atlanta.commercialStatusVerification?.outcome || "", /BUYER_SIDE/i);
+assert.match(String(atlanta.whyNewPartnerRelevant?.limits || ""), /buyer|SVC|sale/i);
 
 console.log("OK deal-opportunities-drawer-v2 smoke", {
   priority: v2.engagementPriority,
@@ -94,4 +128,6 @@ console.log("OK deal-opportunities-drawer-v2 smoke", {
   people: v2.decisionMakers.people.map((p) => p.name),
   handoff: v2.handoffUsed,
   overlay: v2.overlayUsed,
+  bidwellStatus: v2.commercialStatusVerification?.outcome,
+  atlantaStatus: atlanta.commercialStatusVerification?.outcome,
 });

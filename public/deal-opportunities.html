@@ -197,61 +197,62 @@
     <button class="dop-drawer-close" type="button" aria-label="Close opportunity drawer" id="drawerClose">×</button>
   </div>
   <div class="dop-drawer-content">
-    <!-- Section 1 — Executive Opportunity Summary -->
+    <!-- Executive KPIs (header) -->
     <div class="dop-ds" id="secExec">
-      <h3>1 · Executive opportunity summary</h3>
+      <h3>Opportunity snapshot</h3>
       <div class="dop-drawer-kpis" id="dKpis"></div>
       <div class="dop-fact-list" id="dExecFacts"></div>
+      <div class="dop-status-verify" id="dStatusVerify" hidden></div>
     </div>
-    <!-- Section 2 — Why This Opportunity Exists -->
+    <!-- 1 · Why Approach This Owner? -->
     <div class="dop-ds" id="secWhy">
-      <h3>2 · Why this opportunity exists</h3>
+      <h3>1 · Why Approach This Owner?</h3>
       <div class="dop-thesis" id="dThesis"></div>
     </div>
-    <!-- Section 3 — Owner Background -->
+    <!-- 2 · Owner Background -->
     <div class="dop-ds" id="secOwner">
-      <h3>3 · Owner background</h3>
+      <h3>2 · Owner Background</h3>
       <div class="dop-fact-list" id="dOwner"></div>
     </div>
-    <!-- Section 4 — Contractual and Commercial Context -->
+    <!-- 3 · What Could Trigger a Change? -->
     <div class="dop-ds" id="secContract">
-      <h3>4 · Contractual and commercial context</h3>
-      <p class="dop-caveat">Labels show FACT / SUPPORTED INFERENCE / UNKNOWN. Dealality does not claim the underlying hotel contract unless a public agreement was examined.</p>
+      <h3>3 · What Could Trigger a Change?</h3>
+      <p class="dop-caveat">Labels show FACT / SUPPORTED INFERENCE / UNKNOWN. Contractual flexibility is not the same as owner intention to replace a partner.</p>
       <div class="dop-fact-list" id="dContract"></div>
     </div>
-    <!-- Section 5 — Why a New Partner Might Be Relevant -->
-    <div class="dop-ds" id="secPartner">
-      <h3>5 · Why a new partner might be relevant</h3>
-      <div id="dPartner"></div>
-    </div>
-    <!-- Section 6 — Decision-Makers and Engagement Pathways -->
-    <div class="dop-ds" id="secPeople">
-      <h3>6 · Decision-makers and engagement pathways</h3>
-      <div id="dPeople"></div>
-    </div>
-    <!-- Section 7 — When to Engage -->
+    <!-- 4 · When to Engage -->
     <div class="dop-ds" id="secTiming">
-      <h3>7 · When to engage</h3>
+      <h3>4 · When to Engage</h3>
       <div id="dTiming"></div>
     </div>
-    <!-- Section 8 — Portfolio Opportunity -->
+    <!-- 5 · Who Is Involved? -->
+    <div class="dop-ds" id="secPeople">
+      <h3>5 · Who Is Involved?</h3>
+      <div id="dPeople"></div>
+    </div>
+    <!-- 6 · Commercial Opportunity -->
+    <div class="dop-ds" id="secPartner">
+      <h3>6 · Commercial Opportunity</h3>
+      <div id="dPartner"></div>
+    </div>
+    <!-- 7 · Related Portfolio Opportunities -->
     <div class="dop-ds" id="secPortfolio">
-      <h3>8 · Portfolio opportunity</h3>
+      <h3>7 · Related Portfolio Opportunities</h3>
       <div id="dPortfolio"></div>
     </div>
-    <!-- Section 9 — Supporting Evidence -->
+    <!-- 8 · Supporting Evidence -->
     <div class="dop-ds" id="secEvidence">
-      <h3>9 · Supporting evidence</h3>
+      <h3>8 · Supporting Evidence</h3>
       <div id="dSources"></div>
     </div>
-    <!-- Section 10 — What We Still Need to Know -->
+    <!-- 9 · What We Don't Know -->
     <div class="dop-ds" id="secGaps">
-      <h3>10 · What we still need to know</h3>
+      <h3>9 · What We Don't Know</h3>
       <ul class="dop-gap-list" id="dGaps"></ul>
     </div>
-    <!-- Section 11 — Recommended Next Steps -->
+    <!-- 10 · Recommended Next Step -->
     <div class="dop-ds" id="secNext">
-      <h3>11 · Recommended next steps</h3>
+      <h3>10 · Recommended Next Step</h3>
       <div id="dNext"></div>
     </div>
     <div class="dop-ds"><h3>Related hotels</h3><div class="dop-related" id="dRelated"></div></div>
@@ -1640,12 +1641,30 @@
       { label: "Access assessment", value: o.access },
     ]);
 
+    const statusVerify = v2.commercialStatusVerification || null;
+    const statusEl = $("dStatusVerify");
+    if (statusEl) {
+      if (statusVerify && (statusVerify.summary || statusVerify.asOf)) {
+        statusEl.hidden = false;
+        statusEl.innerHTML = `<div class="dop-thesis-block"><label>Commercial status check</label><p>${esc(
+          statusVerify.summary || ""
+        )}</p><small>${esc(
+          [statusVerify.asOf ? `Checked ${statusVerify.asOf}` : null, statusVerify.outcome || null]
+            .filter(Boolean)
+            .join(" · ")
+        )}</small></div>`;
+      } else {
+        statusEl.hidden = true;
+        statusEl.innerHTML = "";
+      }
+    }
+
     const why = v2.whyExists || {};
     $("dThesis").innerHTML = `
+      <div class="dop-thesis-block"><label>Commercial thesis</label><p>${esc(why.whyItMatters || why.whatIsChanging || "—")}</p></div>
       <div class="dop-thesis-block"><label>What is changing</label><p>${esc(why.whatIsChanging || "—")}</p></div>
-      <div class="dop-thesis-block"><label>Why it matters</label><p>${esc(why.whyItMatters || "—")}</p></div>
+      <div class="dop-thesis-block"><label>Potential conversation</label><p>${esc(why.conversationAngle || why.confirmedProspectiveDecision || "—")}</p></div>
       <div class="dop-thesis-block"><label>Evidence supporting the thesis</label><p>${esc(why.evidenceSupports || "Source evidence attached below where available.")}</p></div>
-      <div class="dop-thesis-block"><label>Prospective decision status</label><p>${esc(why.confirmedProspectiveDecision || "—")}</p></div>
       ${
         (why.remainsUncertain || []).length
           ? `<div class="dop-thesis-block"><label>Remains uncertain</label><ul class="dop-gap-list">${why.remainsUncertain
@@ -1678,8 +1697,12 @@
         ])}</div>`
       : "";
     $("dPartner").innerHTML = `
-      <p>${esc(partner.perspective || "Insufficient evidence to frame partner relevance yet.")}</p>
-      <p class="dop-caveat">${esc(partner.posture || "Commercial discussion opportunity — not a prediction of conversion.")}</p>
+      <div class="dop-thesis-block"><label>Why a competing brand / operator may be relevant</label><p>${esc(
+        partner.perspective || "Insufficient evidence to frame partner relevance yet."
+      )}</p></div>
+      <div class="dop-thesis-block"><label>Limitations</label><p class="dop-caveat">${esc(
+        partner.limits || partner.posture || "Commercial discussion opportunity — not a prediction of conversion."
+      )}</p></div>
       ${claimHtml}`;
 
     const dm = v2.decisionMakers || {};
