@@ -120,12 +120,17 @@ Optional **future** (separate approval only):
 
 ## 8. PR and CI status
 
-- Mapping + audit + dry-run test packaged for one focused PR.
+- **PR:** [#559](https://github.com/joandejarden-create/my-operators-backend/pull/559) — `OPEN`
+- Branch: `feat/hif-track-c-v7-relationship-integrity`
+- Local precheck: `dealality:ci-precheck` **PASS** (gitleaks)
+- Unit: `test:hif-track-c-v7-relationship-integrity` **PASS**
 - Integration Controller owns merge.
 - No Airtable re-apply of previously verified records.
-- Dirty product worktrees / Exa cache preserved on prior branch.
+- Dirty `ws-hif-v6-track-c` / Exa cache preserved; V7 shipped from isolated worktree `C:\Dev\dealality\wt-hif-track-c-v7`.
 
 **STOP for founder review** before any destructive identity change, expanded live writes, HPC merge, or publication.
+
+**Status:** `AWAITING_INTEGRATION_CONTROLLER`
 
 ---
 
