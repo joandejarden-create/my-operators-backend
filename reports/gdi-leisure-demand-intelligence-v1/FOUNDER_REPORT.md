@@ -3,6 +3,8 @@
 **Date:** 2026-11-23  
 **Authorization:** GO — $0 architecture and controlled implementation  
 **Branch:** `feat/gdi-leisure-demand-intelligence-v1`  
+**PR:** [#577](https://github.com/joandejarden-create/my-operators-backend/pull/577) — **OPEN**  
+**HEAD:** `7668be3e267d900e9799d140cd6fdd48ce36c310`  
 **Worktree:** `C:\Users\joand\AppData\Local\Temp\dealality-gdi-leisure-v1-20261123174605`  
 **Paid spend:** **$0**  
 **Findymail / Surfe / Airtable writes / publication / deploy:** **none**
@@ -159,7 +161,15 @@ Exact ceiling requires separate founder spend phrase — not authorized here.
 
 ## 14. PR and CI status
 
-PR opened after push — Integration Controller owns merge. Local: `test:gdi-leisure-demand-intelligence-v1` PASS.
+| Item | Status |
+|---|---|
+| PR | [#577](https://github.com/joandejarden-create/my-operators-backend/pull/577) **OPEN** |
+| HEAD | `7668be3e267d900e9799d140cd6fdd48ce36c310` |
+| Local test | `test:gdi-leisure-demand-intelligence-v1` **PASS** |
+| Local ci-precheck | **PASS** |
+| Merge | Integration Controller owns merge |
+
+`AWAITING_INTEGRATION_CONTROLLER`
 
 ---
 
