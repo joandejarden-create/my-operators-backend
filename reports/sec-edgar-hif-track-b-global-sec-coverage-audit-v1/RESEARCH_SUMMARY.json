@@ -1,0 +1,82 @@
+{
+  "asOf": "2026-11-23T09:27:49.104Z",
+  "wave": "B24",
+  "discoveryMethod": "TRACK_B_GLOBAL_SEC_COVERAGE_AUDIT_V1",
+  "publicationState": "CUSTOMER_BLOCKED",
+  "researchCostUsd": 0,
+  "inventoryStages": {
+    "DISCOVERED": 11940,
+    "RETRIEVED": 52,
+    "EXTRACTED": 50,
+    "HOTEL_MATCHED": "PARTIAL — prior waves; not re-counted in this audit (see Track C / HPC gates)",
+    "COMMERCIALLY_ASSESSED": "34 prior global-wave dossiers + Track B ISE/CALA waves (separate reports)",
+    "PERSISTED": "Prior waves via foundation/global-waves persist; this audit batch persists separately",
+    "UNPROCESSED": 11890
+  },
+  "reconcile": {
+    "reported29ValidatedCiks": {
+      "claim": "29 validated registrant CIKs",
+      "evidence": {
+        "registryV24Companies": 32,
+        "registryWithCik": 31,
+        "eligibleIndexCompanies": 27
+      },
+      "reconciliation": "Closest live evidence is registry V24 with CIK (31) or eligible-filing index companies (27). The '29' figure is an approximate prior wave narrative, not a separate validated-processed set. None of these counts equal fully analyzed registrants."
+    },
+    "reported11940EligibleFilings": {
+      "claim": "11,940 eligible filings",
+      "evidence": {
+        "eligibleFoundSum": 11940,
+        "source": "data/sec-edgar/eligible-filings/_index.json"
+      },
+      "reconciliation": "CONFIRMED as DISCOVERED inventory sum across 27 index companies. Not analyzed count."
+    },
+    "reportedCmbsHundreds": {
+      "claim": "CMBS findings involving hundreds of properties",
+      "evidence": {
+        "cmbsPilotDocsOk": 21,
+        "cmbsPilotHotelLevelDates": 57,
+        "cmbs424BDocs": 16,
+        "globalWaveCmbsUnresolvedAgreementType": 21
+      },
+      "reconciliation": "CMBS pilot V1 verified 57 hotel-level contract dates from ~21 OK documents (16 CMBS 424B + REIT schedules). Global historical waves retained 21 CMBS dossiers with unresolved agreement type. 'Hundreds of properties' overstates commercially assessed yield; raw CMBS collateral tables can list large portfolios, but executed hotel-matched commercial assessment remains tens, not hundreds."
+    }
+  },
+  "saturation": {
+    "verdict": "NOT_SATURATED",
+    "discoveredVsExtractedPct": 0.419,
+    "narrative": "Eligible discovery inventory (11,940) far exceeds checkpoint-extracted filings (~50 OK). Commercial assessment has concentrated on high-yield owner schedules and CMBS tables, not bulk filing exhaustion. Do not describe SEC/CMBS as exhausted."
+  },
+  "gapTest": {
+    "filingsAnalyzed": 2,
+    "filings": [
+      {
+        "registrant": "Apple Hospitality REIT",
+        "form": "10-K",
+        "url": "https://www.sec.gov/Archives/edgar/data/1418121/000119312526064008/aple-20251231.htm",
+        "yield": "9 named Marriott→third-party HMA transitions Jan 2026 + portfolio HMA structure"
+      },
+      {
+        "registrant": "Ryman Hospitality Properties",
+        "form": "10-K",
+        "url": "https://www.sec.gov/Archives/edgar/data/1040829/000110465926019035/rhp-20251231x10k.htm",
+        "yield": "9 named Marriott HMA year expirations incl. Desert Ridge 2027"
+      },
+      {
+        "registrant": "Summit Hotel Properties",
+        "form": "10-K",
+        "yield": "NEGATIVE — no hotel-level franchise/HMA expiry table",
+        "notPersisted": true
+      }
+    ],
+    "dossiers": 19,
+    "persistEligible": 18,
+    "staged": 1,
+    "historicalCommercialFindings": 10,
+    "forwardLookingFindings": 9
+  },
+  "paidSourceProposal": {
+    "needed": false,
+    "note": "No paid authorization used. Future: optional sec-api.io bulk exhibit download for Ashford/PEB EX-10 waves — estimate $50–150/mo if free EDGAR rate limits block; defer until named-schedule queue exhausted."
+  }
+}
