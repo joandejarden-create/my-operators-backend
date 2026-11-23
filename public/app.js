@@ -85,7 +85,13 @@
         '/deal-compare': { file: '/deal-compare.html', title: 'Deal Compare' },
         '/market-alerts': { file: '/market-alerts.html', title: 'Market Alerts' },
         '/opportunity-radar': { file: '/deal-capture-radar-with-ranked-list.html', title: 'The Radar' },
-        '/deal-opportunities': { file: '/deal-opportunities.html', title: 'Deal Opportunities' },
+        '/deal-opportunities': {
+            file: '/deal-opportunities.html',
+            title: 'Deal Opportunities',
+            // Founder/admin only — injects founderPreview=1 for Critical-Mass Qualified review.
+            // Does not change CUSTOMER_BLOCKED publication or mix records into GDI.
+            founderDealSignalPreview: true
+        },
         '/scout-market-map': { file: '/app/scout-market-map.html', title: 'Scout Market Map' },
         // Retired route kept as archived source file only (public/management-operator-radar.html).
         // Intentionally removed from active app shell routing/navigation.
@@ -267,7 +273,7 @@
                     icon: NAV_ICONS.market,
                     children: [
                         { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Deal Opportunities', route: '/deal-opportunities', roles: ['owner', 'brand', 'operator', 'admin'] },
+                        { label: 'Deal Opportunities', route: '/deal-opportunities', roles: ['owner', 'brand', 'operator', 'admin'], hint: 'DealSignal hotel contract conversion opportunities' },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['owner', 'brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
@@ -526,6 +532,11 @@
      * Platform admins only — never for ordinary customers.
      */
     function shouldEnableBeFounderProductPreview() {
+        return hasAdminNavAccess();
+    }
+
+    /** Founder/admin DealSignal preview — promotes CM Qualified for internal review only. */
+    function shouldEnableDealOpportunitiesFounderPreview() {
         return hasAdminNavAccess();
     }
 
@@ -1499,6 +1510,14 @@
             ) {
                 u.searchParams.set('beInternalPreview', '1');
             }
+            // Founder/admin Deal Opportunities: surface Critical-Mass Qualified via founderPreview.
+            if (
+                mapped.founderDealSignalPreview &&
+                shouldEnableDealOpportunitiesFounderPreview() &&
+                !u.searchParams.get('founderPreview')
+            ) {
+                u.searchParams.set('founderPreview', '1');
+            }
             url = u.pathname + u.search;
         } catch (_hashQsErr) {
             /* keep base embed URL */
@@ -1941,6 +1960,31 @@
                 var hqStr = hq.toString();
                 routeQuery = hqStr ? '?' + hqStr : '';
             } catch (_hqErr) {
+                /* keep existing routeQuery */
+            }
+        }
+        // Founder/admin Deal Opportunities: put founderPreview=1 on the app hash / embed.
+        if (
+            ROUTES[target] &&
+            ROUTES[target].founderDealSignalPreview &&
+            shouldEnableDealOpportunitiesFounderPreview()
+        ) {
+            try {
+                var dopHq = new URLSearchParams(
+                    routeQuery && routeQuery.charAt(0) === '?' ? routeQuery.slice(1) : routeQuery || ''
+                );
+                if (!routeQuery) {
+                    getHashQueryParams().forEach(function (value, key) {
+                        if (!dopHq.has(key)) dopHq.set(key, value);
+                    });
+                }
+                if (!dopHq.get('founderPreview')) {
+                    dopHq.set('founderPreview', '1');
+                    founderPreviewInjected = true;
+                }
+                var dopHqStr = dopHq.toString();
+                routeQuery = dopHqStr ? '?' + dopHqStr : '';
+            } catch (_dopQsErr) {
                 /* keep existing routeQuery */
             }
         }
