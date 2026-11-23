@@ -1,0 +1,245 @@
+{
+  "version": "gdi-reuse-prior-intelligence-v1",
+  "hotelId": "rec1t35e3sPerzxYu",
+  "asOf": "2026-11-23T14:04:51.783Z",
+  "opportunityCount": 0,
+  "demandGeneratorFit": {
+    "ok": true,
+    "reason": "skipped",
+    "status": "skipped",
+    "count": 0
+  },
+  "demandPrograms": {
+    "ok": true,
+    "reason": "skipped",
+    "status": "skipped",
+    "count": 0
+  },
+  "demandGeneratorSignals": {
+    "ok": true,
+    "reason": "skipped",
+    "status": "skipped",
+    "count": 0
+  },
+  "privateEventIntelligence": {
+    "source": "none",
+    "airtableOk": false,
+    "airtableReason": "skip_airtable_explicit",
+    "liveAirtable": {
+      "attempted": false,
+      "ok": false,
+      "reason": "skip_airtable_explicit",
+      "venues": 0,
+      "fits": 0,
+      "signals": 0
+    },
+    "fixtureFallback": {
+      "used": false,
+      "reason": "blocked_no_automatic_fixture_fallback",
+      "corpusHotelId": null,
+      "airtableReason": "skip_airtable_explicit"
+    },
+    "counts": {
+      "venues": 0,
+      "fits": 0,
+      "signals": 0,
+      "rows": 0,
+      "byDisposition": {
+        "venue_referral_partnership_account": 0,
+        "specific_event_related_lodging_prospect": 0,
+        "potential_meeting_or_ancillary_hospitality": 0,
+        "background_market_intelligence_only": 0,
+        "rejected_insufficient_travel_or_procurement": 0,
+        "internal_only_not_customer_facing": 0,
+        "already_linked_gdi_opportunity": 0
+      }
+    }
+  },
+  "researchPathSelection": {
+    "version": "gdi-research-path-selection-v1",
+    "hotelId": "rec1t35e3sPerzxYu",
+    "displayName": null,
+    "peRelevance": {
+      "relevant": true,
+      "reason": "no_config_fail_open_assess"
+    },
+    "dgRelevance": {
+      "relevant": true,
+      "reason": "no_config_fail_open"
+    },
+    "summary": {
+      "executed": 0,
+      "reused_existing_evidence": 1,
+      "not_applicable": 0,
+      "blocked": 7,
+      "incomplete": 5
+    },
+    "paths": [
+      {
+        "pathId": "opportunity_store_reuse",
+        "status": "reused_existing_evidence",
+        "selectionRule": "always_before_paid_discovery",
+        "note": "Existing opportunities including internal/enrichment/DQ",
+        "evidencePresent": true,
+        "opportunityCount": 0,
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "demand_generators",
+        "status": "blocked",
+        "selectionRule": "config_segments_anchors",
+        "reason": "skip_airtable_explicit",
+        "note": "Path remains relevant — small/zero local count is not irrelevance",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "hotel_generator_fit",
+        "status": "blocked",
+        "selectionRule": "hotel_id_linked_fits",
+        "reason": "skip_airtable_explicit",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "demand_programs",
+        "status": "blocked",
+        "selectionRule": "programs_under_generators",
+        "reason": "skip_airtable_explicit",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "demand_generator_signals",
+        "status": "blocked",
+        "selectionRule": "signals_for_fitted_generators",
+        "reason": "skip_airtable_explicit",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "private_event_venues",
+        "status": "blocked",
+        "selectionRule": "meeting_social_positioning_and_fail_open_nearby_venues",
+        "reason": "skip_airtable_explicit",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "hotel_venue_fit",
+        "status": "blocked",
+        "selectionRule": "hotel_specific_venue_fit_edges",
+        "reason": "skip_airtable_explicit",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "private_event_signals",
+        "status": "blocked",
+        "selectionRule": "signals_linked_to_venues_in_catchment",
+        "reason": "skip_airtable_explicit",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "geographic_expansion",
+        "status": "incomplete",
+        "selectionRule": "configured_territory_corridor_expansion",
+        "reason": "territory_missing_still_incomplete_not_na",
+        "territoryLabel": null,
+        "note": "Do not claim no demand from unused expansion; plan≠paid search",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "contact_resolution",
+        "status": "incomplete",
+        "selectionRule": "qualified_or_enrichment_queue_with_inadequate_routes_only",
+        "reason": "awaiting_targeted_contact_plan",
+        "targetCount": 0,
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "feedback_driven_research",
+        "status": "incomplete",
+        "selectionRule": "operator_feedback_and_share_validation_inform_next_need",
+        "reason": "no_feedback_yet_path_still_open",
+        "count": 0,
+        "hintCount": 0,
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "parallel_discovery",
+        "status": "incomplete",
+        "selectionRule": "optional_gap_fill_after_reuse",
+        "reason": "run_discovery_not_requested",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      },
+      {
+        "pathId": "native_blind_discovery",
+        "status": "incomplete",
+        "selectionRule": "native_before_paid_escalation_when_gaps",
+        "reason": "native_not_yet_planned_in_this_run",
+        "mode": null,
+        "note": "Plan/dry-run is coordinator execution of the path; paid live requires --authorize-native",
+        "recordedAt": "2026-11-23T14:04:51.958Z"
+      }
+    ],
+    "evidence": {
+      "opportunityCount": 0,
+      "dgFitCount": 0,
+      "dgCount": 0,
+      "programCount": 0,
+      "dgSignalCount": 0,
+      "peVenueCount": 0,
+      "peFitCount": 0,
+      "peSignalCount": 0,
+      "peFixtureUsed": false,
+      "peLiveEmptySuccess": false,
+      "airtableBlocked": true,
+      "airtableBlockReason": "skip_airtable_explicit",
+      "feedbackCount": 0,
+      "feedbackDrivenHintCount": 0,
+      "contactTargets": 0,
+      "contactExecuted": false,
+      "nativePlannedOrExecuted": false,
+      "nativeMode": null,
+      "geographicPlanned": false
+    },
+    "notes": [
+      "Every path is recorded — silent skips are forbidden.",
+      "Not every path must produce prospects.",
+      "A small existing database is not evidence a path is irrelevant.",
+      "Webhound is retired and is not listed as an executable path."
+    ]
+  },
+  "feedbackItemCount": 0,
+  "shareValidationItemCount": 0,
+  "feedbackDrivenResearch": {
+    "hintCount": 0,
+    "discoveryQueryHints": [],
+    "note": "Feedback/share-validation drives nextResearchNeed and optional discovery hints; does not auto-qualify"
+  },
+  "counts": {
+    "already_facing": 0,
+    "enrichment_needed": 0,
+    "fit_assessment_needed": 0,
+    "stale_evidence": 0,
+    "rejected_with_reason": 0,
+    "unresolved": 0,
+    "demand_generator_candidate": 0,
+    "feedback_disposition": 0,
+    "private_event_intelligence": 0
+  },
+  "rows": [],
+  "gapsBeforePaidDiscovery": {
+    "enrichmentNeeded": 0,
+    "fitAssessmentNeeded": 0,
+    "dgCandidatesNotFacing": 0,
+    "privateEventRows": 0,
+    "unresolved": 0,
+    "stale": 0,
+    "feedbackDisposition": 0
+  },
+  "notes": [
+    "A source record or DG fit is not automatic qualification.",
+    "A rejected occasion does not exclude the organization for all future occasions.",
+    "Webhound is retired as a live provider; historical evidence is preserved.",
+    "Private Event Venues / Hotel Venue Fit / Private Event Signals are first-class reuse paths.",
+    "Demand Programs and Demand Generator Signals are loaded into the reuse ledger when Airtable is configured.",
+    "Empty Airtable reads are empty_success, not failures, and fixtures are never reported as live success.",
+    "Nearby venue event ≠ traveling guests or open hotel procurement."
+  ]
+}

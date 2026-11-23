@@ -1,0 +1,1891 @@
+{
+  "contract": "gdi-canonical-full-e2e-entry-v1",
+  "at": "2026-11-23T15:33:59.974Z",
+  "hotelId": "rec1t35e3sPerzxYu",
+  "mode": "dry-run",
+  "runId": "gdi_e2e_14seg_mwtfekra_800c39",
+  "preflight": {
+    "ok": true,
+    "hotelId": "rec1t35e3sPerzxYu",
+    "mode": "dry-run",
+    "fixtureMode": true,
+    "explicitDryRun": true,
+    "authorizePaidDiscovery": false,
+    "authorizePaidResearch": false,
+    "authorizeExaAgentLive": false,
+    "budgetCeilingUsd": 0,
+    "authorizePublish": false,
+    "publicationAuthorized": false,
+    "enableApifyOrchestration": false,
+    "errors": [],
+    "contract": "gdi-canonical-full-e2e-entry-v1"
+  },
+  "liveReadiness": null,
+  "chainVersion": "gdi-original-full-e2e-research-chain-v1",
+  "discovery": {
+    "cellCount": 7,
+    "extracted": 26,
+    "costUsd": 0,
+    "freshRetrievalCells": 0,
+    "resumedCells": 0,
+    "paidBudgetRemainingUsd": null,
+    "cells": [
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "corporate_meetings_incentives",
+        "startedAt": "2026-11-23T15:33:58.481Z",
+        "finishedAt": "2026-11-23T15:33:58.491Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@corporate_meetings_incentives",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "destination_corporate_demand_strategies",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 3,
+        "providerCallCount": 0,
+        "cacheHits": 3,
+        "freshRetrievals": 0,
+        "rawResults": 3,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 17,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_05ff8223c943",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_meetings_incentives",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_incentive_program_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_meetings_incentives_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_meetings_incentives_q1",
+              "intent": "destination_incentive_program_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination incentive program en lisbon"
+          },
+          {
+            "candidateId": "disc_4eebadc4aa19",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_meetings_incentives",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_sales_kickoff_retreat_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_meetings_incentives_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_meetings_incentives_q2",
+              "intent": "destination_sales_kickoff_retreat_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summ",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination sales kickoff retreat en lisbon"
+          },
+          {
+            "candidateId": "disc_ea2d6d8f3e50",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_meetings_incentives",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_company_first_recognition_training_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_meetings_incentives_q3"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_meetings_incentives_q3",
+              "intent": "destination_company_first_recognition_training_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"Lisbon\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (Cancun",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination company first recognition training en lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "corporate_meetings_incentives_q1",
+            "segmentId": "corporate_meetings_incentives",
+            "intent": "destination_incentive_program_en",
+            "query": "(\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "incentive_case_studies",
+              "hr_program_pages"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_meetings_incentives_q2",
+            "segmentId": "corporate_meetings_incentives",
+            "intent": "destination_sales_kickoff_retreat_en",
+            "query": "(\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "sales_ops_announcements"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_meetings_incentives_q3",
+            "segmentId": "corporate_meetings_incentives",
+            "intent": "destination_company_first_recognition_training_en",
+            "query": "\"Lisbon\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (Cancun OR Cancún OR destination OR resort-style) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "hr_program_pages",
+              "corp_news"
+            ],
+            "weight": 5
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\corporate_meetings_incentives.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.491Z",
+          "fingerprint": "280ed981e3a1",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 17,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "corporate_accounts_scaling",
+        "startedAt": "2026-11-23T15:33:58.503Z",
+        "finishedAt": "2026-11-23T15:33:58.990Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@corporate_accounts_scaling",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "scaling_strategies_plus_segment_executor",
+        "sourceFamily": "scaling_strategies",
+        "queryCount": 4,
+        "providerCallCount": 0,
+        "cacheHits": 4,
+        "freshRetrievals": 0,
+        "rawResults": 4,
+        "extractedCandidates": 4,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 4,
+        "persistedResearchCandidates": 8,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_002dd9a2df47",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_accounts_scaling",
+            "organizationName": null,
+            "title": "Fixture demand signal — local_office_expansion_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_accounts_scaling_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_accounts_scaling_q1",
+              "intent": "local_office_expansion_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"Lisbon\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodgin",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal local office expansion en lisbon"
+          },
+          {
+            "candidateId": "disc_8dd2dd664433",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_accounts_scaling",
+            "organizationName": null,
+            "title": "Fixture demand signal — local_training_meetings_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_accounts_scaling_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_accounts_scaling_q2",
+              "intent": "local_training_meetings_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"Lisbon\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -ho",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal local training meetings en lisbon"
+          },
+          {
+            "candidateId": "disc_a9e449dd8d37",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_accounts_scaling",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_incentive_program_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_accounts_scaling_q3"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_accounts_scaling_q3",
+              "intent": "destination_incentive_program_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination incentive program en lisbon"
+          },
+          {
+            "candidateId": "disc_b89141f4c076",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "corporate_accounts_scaling",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_sales_kickoff_retreat_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/corporate_accounts_scaling_q4"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "corporate_accounts_scaling_q4",
+              "intent": "destination_sales_kickoff_retreat_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summ",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination sales kickoff retreat en lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "corporate_accounts_scaling_q1",
+            "segmentId": "corporate_accounts_scaling",
+            "intent": "local_office_expansion_en",
+            "query": "\"Lisbon\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodging OR \"project team\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_announcements"
+            ],
+            "weight": 4
+          },
+          {
+            "id": "corporate_accounts_scaling_q2",
+            "segmentId": "corporate_accounts_scaling",
+            "intent": "local_training_meetings_en",
+            "query": "\"Lisbon\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "training_calendars",
+              "corp_news"
+            ],
+            "weight": 4
+          },
+          {
+            "id": "corporate_accounts_scaling_q3",
+            "segmentId": "corporate_accounts_scaling",
+            "intent": "destination_incentive_program_en",
+            "query": "(\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "incentive_case_studies",
+              "hr_program_pages"
+            ],
+            "weight": 6
+          },
+          {
+            "id": "corporate_accounts_scaling_q4",
+            "segmentId": "corporate_accounts_scaling",
+            "intent": "destination_sales_kickoff_retreat_en",
+            "query": "(\"Lisbon\" OR \"Lisbon\" OR \"Lisboa\" OR \"Príncipe Real\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": [
+              "corp_news",
+              "sales_ops_announcements"
+            ],
+            "weight": 6
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 4
+        },
+        "specializedRunner": {
+          "ok": true,
+          "executed": false,
+          "hotelResolved": true,
+          "skippedReason": "preview_or_preflight"
+        },
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\corporate_accounts_scaling.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:58.990Z",
+          "fingerprint": "deb1d2967297",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 8,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "associations_conferences_events",
+        "startedAt": "2026-11-23T15:33:58.997Z",
+        "finishedAt": "2026-11-23T15:33:59.486Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@associations_conferences_events",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "assoc_strategies_plus_segment_executor",
+        "sourceFamily": "association_strategies",
+        "queryCount": 10,
+        "providerCallCount": 0,
+        "cacheHits": 10,
+        "freshRetrievals": 0,
+        "rawResults": 10,
+        "extractedCandidates": 10,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 10,
+        "persistedResearchCandidates": 25,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_fa4fd5ae35f5",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_city_housing_sede_es — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q1",
+              "intent": "assoc_city_housing_sede_es",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (congreso OR convención OR expo OR cumbre) (\"hotel sede\" OR \"sede hotel\" OR \"hoteles oficiales\" OR hospedaje OR alojamiento OR \"bloque de habitacione",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc city housing sede es lisbon"
+          },
+          {
+            "candidateId": "disc_28fcee9233bf",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — events_recurring_competitive_capture_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q2",
+              "intent": "events_recurring_competitive_capture_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (\"annual incentive\" OR \"president's club\" OR \"sales incentive\" OR \"recognition trip\" OR \"dealer trip\" OR \"gold trip\" OR \"passport to paradise\") (hote",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal events recurring competitive capture en lisbon"
+          },
+          {
+            "candidateId": "disc_750a05eba837",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_city_congress_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q3"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q3",
+              "intent": "assoc_city_congress_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (association OR society OR federation OR colegio OR cámara) (congress OR conference OR \"annual meeting\" OR board meeting OR workshop) (2025 OR 2026 O",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc city congress en lisbon"
+          },
+          {
+            "candidateId": "disc_0c5d41f2dc0d",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_city_medical_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q4"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q4",
+              "intent": "assoc_city_medical_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc city medical en lisbon"
+          },
+          {
+            "candidateId": "disc_aa8578f1f429",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_city_congress_es — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q5"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q5",
+              "intent": "assoc_city_congress_es",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (asociación OR colegio OR cámara OR federación) (congreso OR convención OR asamblea OR \"junta de consejo\" OR taller) (2025 OR 2026 OR 2027) -hotel -h",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc city congress es lisbon"
+          },
+          {
+            "candidateId": "disc_ed1e164cf9b4",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_city_prior_host_es — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q6"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q6",
+              "intent": "assoc_city_prior_host_es",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (congreso OR convención) (\"edición anterior\" OR \"ediciones anteriores\" OR \"se realizó en\" OR \"tuvo lugar en\" OR \"hotel sede\") (Marriott OR Hilton OR",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc city prior host es lisbon"
+          },
+          {
+            "candidateId": "disc_046d6c3b80fe",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — events_recurring_congress_history_es — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q7"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q7",
+              "intent": "events_recurring_congress_history_es",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (congreso OR convención OR \"viaje de incentivo\" OR \"retiro corporativo\") (\"edición\" OR anual OR \"ediciones anteriores\" OR \"hotel sede\") (2023 OR 2024",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal events recurring congress history es lisbon"
+          },
+          {
+            "candidateId": "disc_1c85f669508a",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — events_incentive_viaje_es — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q8"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q8",
+              "intent": "events_incentive_viaje_es",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (\"viaje de incentivo\" OR \"viaje de reconocimiento\" OR \"premio a distribuidores\" OR \"convención de ventas\") (resort OR hotel OR destino) -hotel -hotel",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal events incentive viaje es lisbon"
+          },
+          {
+            "candidateId": "disc_74dbb13da832",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_city_midsize_meetings_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q9"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q9",
+              "intent": "assoc_city_midsize_meetings_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (association OR society) (\"committee meeting\" OR \"board meeting\" OR \"executive meeting\" OR \"professional development\" OR workshop OR \"training semina",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc city midsize meetings en lisbon"
+          },
+          {
+            "candidateId": "disc_21f5d44dc32d",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "associations_conferences_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — assoc_citywide_ancillary_en — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/associations_conferences_events_q10"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "associations_conferences_events_q10",
+              "intent": "assoc_citywide_ancillary_en",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: (\"Lisbon\") (\"convention center\" OR \"centro de convenciones\" OR Centro Citibanamex OR Banamex) (congress OR exhibition OR trade show) (hotel OR overflow OR speak",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal assoc citywide ancillary en lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "associations_conferences_events_q1",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_city_housing_sede_es",
+            "query": "(\"Lisbon\") (congreso OR convención OR expo OR cumbre) (\"hotel sede\" OR \"sede hotel\" OR \"hoteles oficiales\" OR hospedaje OR alojamiento OR \"bloque de habitaciones\" OR \"agencia de viajes\" OR PCO OR \"organizador de congresos\") (2025 OR 2026 OR 2027)",
+            "language": "es",
+            "sourceTypes": null,
+            "weight": 7
+          },
+          {
+            "id": "associations_conferences_events_q2",
+            "segmentId": "associations_conferences_events",
+            "intent": "events_recurring_competitive_capture_en",
+            "query": "(\"Lisbon\") (\"annual incentive\" OR \"president's club\" OR \"sales incentive\" OR \"recognition trip\" OR \"dealer trip\" OR \"gold trip\" OR \"passport to paradise\") (hotel OR resort OR \"hosted at\" OR \"took place\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": null,
+            "weight": 7
+          },
+          {
+            "id": "associations_conferences_events_q3",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_city_congress_en",
+            "query": "(\"Lisbon\") (association OR society OR federation OR colegio OR cámara) (congress OR conference OR \"annual meeting\" OR board meeting OR workshop) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": null,
+            "weight": 6
+          },
+          {
+            "id": "associations_conferences_events_q4",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_city_medical_en",
+            "query": "(\"Lisbon\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": null,
+            "weight": 6
+          },
+          {
+            "id": "associations_conferences_events_q5",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_city_congress_es",
+            "query": "(\"Lisbon\") (asociación OR colegio OR cámara OR federación) (congreso OR convención OR asamblea OR \"junta de consejo\" OR taller) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": "es",
+            "sourceTypes": null,
+            "weight": 6
+          },
+          {
+            "id": "associations_conferences_events_q6",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_city_prior_host_es",
+            "query": "(\"Lisbon\") (congreso OR convención) (\"edición anterior\" OR \"ediciones anteriores\" OR \"se realizó en\" OR \"tuvo lugar en\" OR \"hotel sede\") (Marriott OR Hilton OR Hyatt OR \"Fiesta Americana\" OR Westin OR InterContinental OR Live Aqua)",
+            "language": "es",
+            "sourceTypes": null,
+            "weight": 6
+          },
+          {
+            "id": "associations_conferences_events_q7",
+            "segmentId": "associations_conferences_events",
+            "intent": "events_recurring_congress_history_es",
+            "query": "(\"Lisbon\") (congreso OR convención OR \"viaje de incentivo\" OR \"retiro corporativo\") (\"edición\" OR anual OR \"ediciones anteriores\" OR \"hotel sede\") (2023 OR 2024 OR 2025 OR 2026)",
+            "language": "es",
+            "sourceTypes": null,
+            "weight": 6
+          },
+          {
+            "id": "associations_conferences_events_q8",
+            "segmentId": "associations_conferences_events",
+            "intent": "events_incentive_viaje_es",
+            "query": "(\"Lisbon\") (\"viaje de incentivo\" OR \"viaje de reconocimiento\" OR \"premio a distribuidores\" OR \"convención de ventas\") (resort OR hotel OR destino) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": "es",
+            "sourceTypes": null,
+            "weight": 6
+          },
+          {
+            "id": "associations_conferences_events_q9",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_city_midsize_meetings_en",
+            "query": "(\"Lisbon\") (association OR society) (\"committee meeting\" OR \"board meeting\" OR \"executive meeting\" OR \"professional development\" OR workshop OR \"training seminar\") (hotel OR venue OR \"meeting space\" OR lodging) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": null,
+            "weight": 5
+          },
+          {
+            "id": "associations_conferences_events_q10",
+            "segmentId": "associations_conferences_events",
+            "intent": "assoc_citywide_ancillary_en",
+            "query": "(\"Lisbon\") (\"convention center\" OR \"centro de convenciones\" OR Centro Citibanamex OR Banamex) (congress OR exhibition OR trade show) (hotel OR overflow OR speakers OR lodging OR \"room block\") (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+            "language": null,
+            "sourceTypes": null,
+            "weight": 5
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 10
+        },
+        "specializedRunner": {
+          "ok": true,
+          "executed": false,
+          "hotelResolved": true,
+          "skippedReason": "preview_or_preflight"
+        },
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\associations_conferences_events.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:59.486Z",
+          "fingerprint": "d2be52238841",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 25,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "professional_event_planners",
+        "startedAt": "2026-11-23T15:33:59.495Z",
+        "finishedAt": "2026-11-23T15:33:59.500Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@professional_event_planners",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "professional_event_planner_prompt_builder",
+        "sourceFamily": "planner_prompt",
+        "queryCount": 3,
+        "providerCallCount": 0,
+        "cacheHits": 3,
+        "freshRetrievals": 0,
+        "rawResults": 3,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 11,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_7a28e8bafeae",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "professional_event_planners",
+            "organizationName": null,
+            "title": "Fixture demand signal — professional_event_planner_prompt — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pep_prompt"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pep_prompt",
+              "intent": "professional_event_planner_prompt",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Task: PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP_DISCOVERY | Discover actual planning companies, DMCs, meeting planners, and event-management businesses serving the",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal professional event planner prompt lisbon"
+          },
+          {
+            "candidateId": "disc_61fadeae59c2",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "professional_event_planners",
+            "organizationName": null,
+            "title": "Fixture demand signal — planner_dmc_firm — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pep_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pep_q1",
+              "intent": "planner_dmc_firm",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Lisbon (\"event planner\" OR \"meeting planner\" OR \"wedding planner\" OR DMC OR \"destination management\" OR \"event management company\" OR PCO) (hotel OR \"room block",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal planner dmc firm lisbon"
+          },
+          {
+            "candidateId": "disc_bb98ab28431e",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "professional_event_planners",
+            "organizationName": null,
+            "title": "Fixture demand signal — planner_not_conference_brand — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pep_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pep_q2",
+              "intent": "planner_not_conference_brand",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Lisbon (\"planned by\" OR \"produced by\" OR \"event management by\") (planner OR DMC OR \"event company\") (wedding OR corporate OR gala) hotel",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal planner not conference brand lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "pep_prompt",
+            "segmentId": "professional_event_planners",
+            "intent": "professional_event_planner_prompt",
+            "query": "Task: PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP_DISCOVERY | Discover actual planning companies, DMCs, meeting planners, and event-management businesses serving the hotel (verified hotel address, the hotel market) that can influence hotel bookings — guestroom blocks, wedding accommodation, banquets/catering, meeting space, private dining, or resort celebrations. | The commercial target is the planner / intermediary firm — not the conference, association, or host organization alone. | Conferences, galas, and published events are evidence of planner activity; use them to identify the credited planner, PCO, DMC, or event-management company. Do not substitute the conference brand for the planner identity. | Prioritize firms with evidence of recurring or multi-client event production and genuine hotel-sourcing influence — not directory popularity rankings. | Include planners physically based in the market AND planners demonstrably producing events in the destination even if their office is elsewhere. | Do NOT classify generic decorators, florists, photographers, equipment suppliers, or entertainment vendors as demand producers unless hotel-sourcing influence is independently evidenced. | Separate office location, verified service area, and actual event destination history. | Do not invent client counts, annual weddings, contracts, or production volume. | Local terminology: wedding planner; destination wedding planner; corporate event management company; event planning agency; meeting planner; boutique event producer | Channels: official_planner_websites, verified_planner_portfolios,"
+          },
+          {
+            "id": "pep_q1",
+            "segmentId": "professional_event_planners",
+            "intent": "planner_dmc_firm",
+            "query": "Lisbon (\"event planner\" OR \"meeting planner\" OR \"wedding planner\" OR DMC OR \"destination management\" OR \"event management company\" OR PCO) (hotel OR \"room block\" OR banquet OR catering) (portfolio OR clients OR \"preferred hotels\") -\"annual conference agenda\""
+          },
+          {
+            "id": "pep_q2",
+            "segmentId": "professional_event_planners",
+            "intent": "planner_not_conference_brand",
+            "query": "Lisbon (\"planned by\" OR \"produced by\" OR \"event management by\") (planner OR DMC OR \"event company\") (wedding OR corporate OR gala) hotel"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\professional_event_planners.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:59.500Z",
+          "fingerprint": "d51e1ea87ce6",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 11,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false,
+        "apifyAccounting": {
+          "status": "SKIPPED",
+          "reason": "APIFY_NOT_ORCHESTRATED",
+          "dispatched": false,
+          "mock": false
+        }
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "travel_trade_group_intermediaries",
+        "startedAt": "2026-11-23T15:33:59.513Z",
+        "finishedAt": "2026-11-23T15:33:59.519Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@travel_trade_group_intermediaries",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "professional_planner_queries",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 5,
+        "providerCallCount": 0,
+        "cacheHits": 5,
+        "freshRetrievals": 0,
+        "rawResults": 5,
+        "extractedCandidates": 1,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 1,
+        "persistedResearchCandidates": 13,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_77858f224891",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "travel_trade_group_intermediaries",
+            "organizationName": null,
+            "title": "Fixture demand signal — travel_trade — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/trade_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "trade_q1",
+              "intent": "travel_trade",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: \"Lisbon\" (\"meeting planner\" OR \"corporate event planner\" OR \"conference planner\") (hotel OR venue) (portfolio OR clients) -yelp -directory",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal travel trade lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "trade_q1",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"Lisbon\" (\"meeting planner\" OR \"corporate event planner\" OR \"conference planner\") (hotel OR venue) (portfolio OR clients) -yelp -directory"
+          },
+          {
+            "id": "trade_q2",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"Lisbon\" (\"association management\" OR AMC OR \"meeting planning firm\") (chapter OR conference) hotel -yelp"
+          },
+          {
+            "id": "trade_q3",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"Lisbon\" (\"wedding planner\" OR \"social events\" OR mitzvah planner) (hotel OR banquet) -guestlist -children -yelp"
+          },
+          {
+            "id": "trade_q4",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"Lisbon\" (\"gala planner\" OR \"fundraising event\" OR \"nonprofit events\") (planner OR agency) hotel"
+          },
+          {
+            "id": "trade_q5",
+            "segmentId": "travel_trade_group_intermediaries",
+            "intent": "travel_trade",
+            "query": "\"Lisbon\" (\"destination management\" OR DMC OR \"incentive travel\") (agency OR planner) hotel lodging"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 1
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\travel_trade_group_intermediaries.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:59.519Z",
+          "fingerprint": "be89db649867",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 13,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "social_special_events",
+        "startedAt": "2026-11-23T15:33:59.527Z",
+        "finishedAt": "2026-11-23T15:33:59.531Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@social_special_events",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "venue_discovery_queries",
+        "sourceFamily": "segment_adapter",
+        "queryCount": 2,
+        "providerCallCount": 0,
+        "cacheHits": 2,
+        "freshRetrievals": 0,
+        "rawResults": 2,
+        "extractedCandidates": 2,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 2,
+        "persistedResearchCandidates": 16,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_aa584dc2afd8",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "social_special_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — destination_wedding — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/social_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "social_q1",
+              "intent": "destination_wedding",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Lisbon destination wedding hotel block OR wedding packages 2026 2027",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal destination wedding lisbon"
+          },
+          {
+            "candidateId": "disc_e65acc29285b",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "social_special_events",
+            "organizationName": null,
+            "title": "Fixture demand signal — social_gala — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/social_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "social_q2",
+              "intent": "social_gala",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Lisbon gala OR fundraising dinner hotel venue",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal social gala lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "social_q1",
+            "segmentId": "social_special_events",
+            "intent": "destination_wedding",
+            "query": "Lisbon destination wedding hotel block OR wedding packages 2026 2027"
+          },
+          {
+            "id": "social_q2",
+            "segmentId": "social_special_events",
+            "intent": "social_gala",
+            "query": "Lisbon gala OR fundraising dinner hotel venue"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 2
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\social_special_events.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:59.532Z",
+          "fingerprint": "5bd2b8187632",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 16,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false,
+        "apifyAccounting": {
+          "status": "SKIPPED",
+          "reason": "APIFY_NOT_ORCHESTRATED",
+          "dispatched": false,
+          "mock": false
+        }
+      },
+      {
+        "version": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+        "registryVersion": "gdi-full-e2e-fourteen-segment-discovery-executor-registry-v1",
+        "hotelId": "rec1t35e3sPerzxYu",
+        "segmentId": "preferred_lodging_partnerships",
+        "startedAt": "2026-11-23T15:33:59.548Z",
+        "finishedAt": "2026-11-23T15:33:59.554Z",
+        "executorInvoked": true,
+        "executorId": "runSegmentDiscoveryExecutor@preferred_lodging_partnerships",
+        "executorAbs": null,
+        "classification": "EXECUTION_PARTIAL",
+        "strategy": "preferred_lodging_prompt_builder",
+        "sourceFamily": "preferred_lodging_prompt",
+        "queryCount": 3,
+        "providerCallCount": 0,
+        "cacheHits": 3,
+        "freshRetrievals": 0,
+        "rawResults": 3,
+        "extractedCandidates": 3,
+        "validatedCandidates": 0,
+        "deduplicatedCandidates": 3,
+        "persistedResearchCandidates": 9,
+        "rejections": [],
+        "researchCostUsd": 0,
+        "stopReason": "FIXTURE_PROVIDER_ONLY",
+        "retrievalMode": "FIXTURE",
+        "candidates": [
+          {
+            "candidateId": "disc_9b917af0637a",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "preferred_lodging_partnerships",
+            "organizationName": null,
+            "title": "Fixture demand signal — preferred_lodging_prompt — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pref_prompt"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pref_prompt",
+              "intent": "preferred_lodging_prompt",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hote",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal preferred lodging prompt lisbon"
+          },
+          {
+            "candidateId": "disc_93420fc20d0c",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "preferred_lodging_partnerships",
+            "organizationName": null,
+            "title": "Fixture demand signal — preferred_lodging_referral_venues — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pref_q1"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pref_q1",
+              "intent": "preferred_lodging_referral_venues",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Lisbon (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR overflow",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal preferred lodging referral venues lisbon"
+          },
+          {
+            "candidateId": "disc_6c0ffe204bd5",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "segmentId": "preferred_lodging_partnerships",
+            "organizationName": null,
+            "title": "Fixture demand signal — complementary_venue_no_guestrooms — Lisbon",
+            "stage": "A_DISCOVERY",
+            "sourceFamily": "FIXTURE",
+            "evidenceUrls": [
+              "https://example.invalid/fixture/pref_q2"
+            ],
+            "hasSourceEvidence": false,
+            "unsupportedNameOnly": true,
+            "fixtureOnly": true,
+            "historical": false,
+            "provenance": {
+              "queryId": "pref_q2",
+              "intent": "complementary_venue_no_guestrooms",
+              "retrievalMode": "FIXTURE",
+              "excerpt": "Deterministic fixture hit for query: Lisbon event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)",
+              "discoveryYieldLabel": "FIXTURE",
+              "claimsGenuineNewDiscovery": false
+            },
+            "discoveryYieldLabel": "FIXTURE",
+            "discoveryNoveltyKinds": [
+              "NONE"
+            ],
+            "claimsGenuineNewDiscovery": false,
+            "organizationKey": null,
+            "programKey": "::fixture demand signal complementary venue no guestrooms lisbon"
+          }
+        ],
+        "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+        "hotelName": "Memmo Príncipe Real",
+        "hotelCity": "Lisbon",
+        "executionStatus": "EXECUTION_PARTIAL",
+        "querySpecs": [
+          {
+            "id": "pref_prompt",
+            "segmentId": "preferred_lodging_partnerships",
+            "intent": "preferred_lodging_prompt",
+            "query": "Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hotel guestrooms or groups — weddings, private celebrations, banquets, cultural/private functions, clubs, museums, entertainment destinations, and complementary event facilities. | A competing event venue can be a valuable Preferred Lodging partner when it has no guestrooms or only complementary / overflow lodging need. | Do NOT reject a venue merely because it offers meeting space, banquet halls, or catering — those often create overnight guest referral demand for a nearby hotel. | Prefer venues without a full competing guestroom inventory; still assess limited on-site lodging for overflow partnership potential (use UNKNOWN when not evidenced). | Exclude generic restaurants unless a documented event format credibly creates overnight visitors. | Return venue name, address, website, event types, on-site lodging status if published, and any lodging-partner language. | Do not invent distances, drive times, annual wedding counts, or room-night forecasts. | Venue types: wedding_reception_venue, standalone_banquet_hall, private_event_facility, independent_conference_event_venue, museum_event_rental, garden_or_historic_property, country_club_or_private_club_outside_events, cultural_institution_event_space, entertainment_destination_event_venue, waterfront_or_rooftop_event_venue"
+          },
+          {
+            "id": "pref_q1",
+            "segmentId": "preferred_lodging_partnerships",
+            "intent": "preferred_lodging_referral_venues",
+            "query": "Lisbon (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR overflow OR \"guest accommodations\") -restaurant-only"
+          },
+          {
+            "id": "pref_q2",
+            "segmentId": "preferred_lodging_partnerships",
+            "intent": "complementary_venue_no_guestrooms",
+            "query": "Lisbon event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)"
+          }
+        ],
+        "historicalLedgerPath": null,
+        "historicalRawForSegment": 0,
+        "discoveryYieldCounts": {
+          "FIXTURE": 3
+        },
+        "specializedRunner": null,
+        "runnerOk": true,
+        "runnerNote": null,
+        "discoveryCompleted": false,
+        "resumedFromCheckpoint": false,
+        "liveSkipReason": "LIVE_PROVIDER_ALREADY_COMPLETED",
+        "publicationOccurred": false,
+        "airtableWrites": 0,
+        "ok": true,
+        "durableStatePath": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\data\\group-demand-intelligence\\hotels\\rec1t35e3sPerzxYu\\full-e2e-fourteen-segment-state\\preferred_lodging_partnerships.json",
+        "durableExecutionStatus": "EXECUTION_PARTIAL",
+        "cumulativeCostUsd": 0.1,
+        "lastSuccessfulCheckpoint": {
+          "kind": "FIXTURE_CHECKPOINT",
+          "at": "2026-11-23T15:33:59.554Z",
+          "fingerprint": "60ee3a77addd",
+          "researchRunId": "gdi_disc_run_mwtfekwd_aa4a69",
+          "executionStatus": "EXECUTION_PARTIAL",
+          "providerRunIds": [],
+          "extractedCount": 9,
+          "costUsdCumulative": 0.1
+        },
+        "commercialResearchComplete": false,
+        "apifyAccounting": {
+          "status": "SKIPPED",
+          "reason": "APIFY_NOT_ORCHESTRATED",
+          "dispatched": false,
+          "mock": false
+        }
+      }
+    ]
+  },
+  "processedCount": 0,
+  "spentUsd": 0,
+  "remainingUsd": null,
+  "hardCeilingUsd": 0,
+  "budgetsRespected": true,
+  "outputsIngested": true,
+  "authorizeExaAgentLive": false,
+  "allowLiveExaDeepSeed": false,
+  "publicationOccurred": false,
+  "publicationAuthorized": false,
+  "airtableWrites": 0,
+  "researchPersistencePlanned": false,
+  "sharedIntelligenceReuse": {
+    "version": "gdi-reuse-prior-intelligence-v1",
+    "skipAirtable": true,
+    "rowCount": 0,
+    "additionalInventoryOrgKeys": 0,
+    "path": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\reports\\gdi-design-hotels-live-research-pilot-v1\\replay\\rec1t35e3sPerzxYu\\replay_1a2090ae395\\shared-intelligence-reuse\\reuse-ledger.json",
+    "note": "Existing reuse-prior-intelligence ledger; no new shared model."
+  },
+  "researchPersistence": null,
+  "apifyDefault": "APIFY_NOT_ORCHESTRATED",
+  "verdict": "FULL_E2E_EXECUTION_COMPLETE",
+  "researchCompleteness": "DEEP_RESEARCH_COMPLETED",
+  "coverageStatus": "PARTIAL_COVERAGE",
+  "segmentCoverage": {
+    "version": "gdi-segment-coverage-accounting-v1",
+    "coverageStatus": "PARTIAL_COVERAGE",
+    "allowPartial": true,
+    "maxCandidates": 8,
+    "perSegment": {
+      "corporate_meetings_incentives": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "corporate_accounts_scaling": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 4
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "associations_conferences_events": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 10
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "professional_event_planners": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "travel_trade_group_intermediaries": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 1
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "social_special_events": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 2
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      },
+      "preferred_lodging_partnerships": {
+        "discoveryCellStatus": "EXECUTED_NON_LIVE",
+        "retrievalMode": "FIXTURE",
+        "yieldCounts": {
+          "FIXTURE": 3
+        },
+        "retained": 0,
+        "selected": 0,
+        "deferred": 0,
+        "deepProcessed": 0,
+        "blocked": false,
+        "skipped": 0,
+        "coverageStatus": "PARTIAL_COVERAGE",
+        "reasons": [
+          "FIXTURE_OR_HISTORICAL_ONLY",
+          "ZERO_YIELD_EVALUATED"
+        ],
+        "zeroRealDiscoveryEvaluated": true
+      }
+    },
+    "totals": {
+      "plannedSegments": 7,
+      "segmentsFullyCovered": 0,
+      "segmentsWithLiveDiscovery": 0,
+      "segmentsZeroYieldEvaluated": 7,
+      "segmentsUnexecuted": 0,
+      "retained": 0,
+      "selected": 0,
+      "deferred": 0,
+      "processed": 0,
+      "syntheticCorpusCount": 0
+    },
+    "partialReasons": [
+      "AUTHORIZED_PARTIAL_RUN",
+      "FIXTURE_OR_HISTORICAL_ONLY",
+      "DISCOVERY_NOT_LIVE"
+    ],
+    "fullCoverageClaimAllowed": false,
+    "runOkWhenPartialAuthorized": true,
+    "note": "FULL_COVERAGE requires live discovery evaluation for every planned segment with no deep-cap truncation and no synthetic corpus evidence."
+  },
+  "discoveryYieldCounts": {},
+  "fullE2eCompleteClaimAllowed": false,
+  "certificate": {
+    "schema": "gdi-full-e2e-execution-observability-v1/certificate",
+    "runId": "gdi_e2e_14seg_mwtfekra_800c39",
+    "hotelId": "rec1t35e3sPerzxYu",
+    "verdict": "FULL_E2E_EXECUTION_COMPLETE",
+    "researchCompleteness": "DEEP_RESEARCH_COMPLETED",
+    "discoveryPhaseOnly": false,
+    "deepResearchRequired": true,
+    "deepResearchIncompleteSegments": [],
+    "fourteenSegmentPlanEvaluated": true,
+    "segmentsExecuted": [
+      "associations_conferences_events",
+      "corporate_accounts_scaling",
+      "corporate_meetings_incentives",
+      "social_special_events",
+      "travel_trade_group_intermediaries",
+      "preferred_lodging_partnerships",
+      "professional_event_planners"
+    ],
+    "segmentsDeliberatelySkipped": [
+      "associations_conferences_events",
+      "corporate_accounts_scaling",
+      "corporate_meetings_incentives",
+      "government_public_sector",
+      "sports_entertainment",
+      "education_scientific",
+      "projects_infrastructure",
+      "local_catering_day_meetings",
+      "corporate_celebrations_private_events",
+      "travel_trade_group_intermediaries",
+      "relocation_extended_stay"
+    ],
+    "segmentsFailed": [],
+    "providersExecuted": [
+      "fixture_deterministic",
+      "apify"
+    ],
+    "requiredStagesCompleted": true,
+    "budgetsRespected": true,
+    "outputsIngested": true,
+    "customerVisibilityGatesPassed": null,
+    "stagedPublicationGenerated": false,
+    "founderApprovalStillRequired": true,
+    "publicationAuthorized": false,
+    "silentSkipFindings": [
+      {
+        "segmentId": "associations_conferences_events",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      },
+      {
+        "segmentId": "associations_conferences_events",
+        "kind": "CACHE_ONLY",
+        "reason": "routed_only_through_cached_or_fixture_data"
+      },
+      {
+        "segmentId": "corporate_accounts_scaling",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      },
+      {
+        "segmentId": "corporate_accounts_scaling",
+        "kind": "CACHE_ONLY",
+        "reason": "routed_only_through_cached_or_fixture_data"
+      },
+      {
+        "segmentId": "corporate_meetings_incentives",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      },
+      {
+        "segmentId": "corporate_meetings_incentives",
+        "kind": "CACHE_ONLY",
+        "reason": "routed_only_through_cached_or_fixture_data"
+      },
+      {
+        "segmentId": "government_public_sector",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "sports_entertainment",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "education_scientific",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "projects_infrastructure",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "social_special_events",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      },
+      {
+        "segmentId": "local_catering_day_meetings",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "corporate_celebrations_private_events",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "travel_trade_group_intermediaries",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      },
+      {
+        "segmentId": "travel_trade_group_intermediaries",
+        "kind": "CACHE_ONLY",
+        "reason": "routed_only_through_cached_or_fixture_data"
+      },
+      {
+        "segmentId": "relocation_extended_stay",
+        "kind": "NEVER_SCHEDULED",
+        "reason": "not_in_planned_scope"
+      },
+      {
+        "segmentId": "preferred_lodging_partnerships",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      },
+      {
+        "segmentId": "professional_event_planners",
+        "kind": "COMPLETED_ZERO_QUALIFIED",
+        "reason": "completed_with_zero_qualified"
+      }
+    ],
+    "note": "Operational execution certificate — not a commercial quality or publish authorization.",
+    "certifiedAt": "2026-11-23T15:33:59.970Z"
+  },
+  "outDir": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gdi-dh-live-research-v1-20261123\\reports\\gdi-design-hotels-live-research-pilot-v1\\replay\\rec1t35e3sPerzxYu\\replay_1a2090ae395"
+}
