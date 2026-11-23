@@ -1,10 +1,42 @@
 {
-  "version": "gdi-design-hotels-operational-pilot-v1",
-  "generatedAt": "2026-11-23T12:36:57.180Z",
+  "version": "gdi-design-hotels-operational-pilot-v1-1",
+  "generatedAt": "2026-11-23T12:48:27.905Z",
   "paidResearch": false,
   "airtableWrites": false,
   "customerPublication": false,
+  "europeReplacement": {
+    "preferred": {
+      "name": "Memmo Príncipe Real",
+      "postureIntent": "BOUTIQUE_LIMITED_MEETINGS",
+      "country": "Portugal",
+      "city": "Lisbon",
+      "hpcId": null,
+      "marriottMarsha": "LISDM",
+      "affiliation": "Design Hotels",
+      "roomsOfficial": 41,
+      "designHotelsUrl": "https://www.designhotels.com/hotels/portugal/lisbon/memmo-principe-real/",
+      "marriottUrl": "https://www.marriott.com/en-us/hotels/lisdm-memmo-principe-real-lisbon-a-member-of-design-hotels/overview/",
+      "status": "BLOCKED_PENDING_VERIFIED_HPC_ID",
+      "rationale": "Preferred European boutique / limited-meetings replacement. Official Design Hotels + Marriott (LISDM) verified; Dealality HPC ID not found in accessible inventory."
+    },
+    "hpcVerified": false,
+    "europeanAlternativesWithVerifiedHpcIds": [],
+    "interimHotel3": {
+      "hpcId": "recGL1epYhEle5SDM",
+      "name": "Good Hotel Antigua",
+      "postureIntent": "BOUTIQUE_LIMITED_MEETINGS",
+      "country": "Guatemala",
+      "city": "Antigua Guatemala",
+      "cohortRole": "HOTEL_3_INTERIM_PENDING_MEMMO_HPC",
+      "rationale": "INTERIM only — retains boutique/limited-meetings posture for $0 certification until Memmo Príncipe Real has a verified HPC ID. Not deleted from census."
+    },
+    "stopReason": "Memmo Príncipe Real lacks a verifiable Dealality HPC ID. No speculative substitution. Antigua retained as interim Hotel 3 only."
+  },
   "prBaseline": {
+    "designHotelsOperationalPilotV1": {
+      "pr": 571,
+      "status": "OPEN"
+    },
     "portfolioCertificationV1": {
       "pr": 562,
       "status": "MERGED"
@@ -30,13 +62,14 @@
       "status": "MERGED"
     }
   },
-  "cohort": [
+  "runnableCohort": [
     {
       "hpcId": "rece0NdV9FCnaFlVS",
       "name": "Condesa DF Hotel",
       "postureIntent": "URBAN_MEETINGS",
       "country": "Mexico",
       "city": "Mexico City",
+      "cohortRole": "HOTEL_1_RETAINED",
       "rationale": "Urban CDMX Design Hotels member with documented multi-event meeting inventory (7 event spaces)."
     },
     {
@@ -45,6 +78,7 @@
       "postureIntent": "LEISURE_DESTINATION",
       "country": "Grenada",
       "city": "St. George's",
+      "cohortRole": "HOTEL_2_RETAINED",
       "rationale": "Caribbean leisure / destination villa resort — room-night and leisure-group demand; geographic diversification outside Mexico."
     },
     {
@@ -53,9 +87,82 @@
       "postureIntent": "BOUTIQUE_LIMITED_MEETINGS",
       "country": "Guatemala",
       "city": "Antigua Guatemala",
-      "rationale": "Independent boutique with co-working (limited meetings) — validates room-night GDI without requiring conference plant."
+      "cohortRole": "HOTEL_3_INTERIM_PENDING_MEMMO_HPC",
+      "rationale": "INTERIM only — retains boutique/limited-meetings posture for $0 certification until Memmo Príncipe Real has a verified HPC ID. Not deleted from census."
     }
   ],
+  "targetCohortV1_1": [
+    {
+      "hpcId": "rece0NdV9FCnaFlVS",
+      "name": "Condesa DF Hotel",
+      "postureIntent": "URBAN_MEETINGS",
+      "country": "Mexico",
+      "city": "Mexico City",
+      "cohortRole": "HOTEL_1_RETAINED",
+      "rationale": "Urban CDMX Design Hotels member with documented multi-event meeting inventory (7 event spaces)."
+    },
+    {
+      "hpcId": "recaokE8psIbuVeuH",
+      "name": "LaLuna Boutique Hotels & Villas",
+      "postureIntent": "LEISURE_DESTINATION",
+      "country": "Grenada",
+      "city": "St. George's",
+      "cohortRole": "HOTEL_2_RETAINED",
+      "rationale": "Caribbean leisure / destination villa resort — room-night and leisure-group demand; geographic diversification outside Mexico."
+    },
+    {
+      "hpcId": null,
+      "name": "Memmo Príncipe Real",
+      "postureIntent": "BOUTIQUE_LIMITED_MEETINGS",
+      "country": "Portugal",
+      "city": "Lisbon",
+      "cohortRole": "HOTEL_3_PREFERRED_EUROPE",
+      "status": "BLOCKED_PENDING_VERIFIED_HPC_ID",
+      "marriottMarsha": "LISDM",
+      "rationale": "Preferred European boutique / limited-meetings replacement. Official Design Hotels + Marriott (LISDM) verified; Dealality HPC ID not found in accessible inventory."
+    }
+  ],
+  "memmoIdentity": {
+    "version": "gdi-design-hotels-operational-pilot-v1-1",
+    "property": "Memmo Príncipe Real",
+    "preferredCity": "Lisbon",
+    "preferredCountry": "Portugal",
+    "dealalityHpcId": null,
+    "hpcStatus": "NOT_FOUND_IN_ACCESSIBLE_DEALALITY_INVENTORY",
+    "doNotInventHpcId": true,
+    "officialIdentity": {
+      "designHotelsUrl": "https://www.designhotels.com/hotels/portugal/lisbon/memmo-principe-real/",
+      "marriottUrl": "https://www.marriott.com/en-us/hotels/lisdm-memmo-principe-real-lisbon-a-member-of-design-hotels/overview/",
+      "marriottMarsha": "LISDM",
+      "affiliation": "Design Hotels",
+      "affiliationConfidence": "HIGH_OFFICIAL",
+      "rooms": 41,
+      "meetingFacilitiesPublic": "Not advertised as multi-event conference plant; boutique / limited meetings posture",
+      "address": "Rua D. Pedro V 56 J, 1250-094 Lisbon, Portugal"
+    },
+    "localCensusIndex": {
+      "designHotelsCalaAuditContains": false,
+      "note": "Design Hotels census audit/plans in-repo are CALA-scoped; Europe properties are outside that index."
+    },
+    "airtableHpcLookup": {
+      "attempted": true,
+      "mode": "READ_ONLY",
+      "result": "NOT_AUTHORIZED_OR_INACCESSIBLE",
+      "note": "Hotel Property Census queries with available credentials returned 403; cannot confirm or deny live HPC presence from this environment."
+    },
+    "europeanAlternativesWithVerifiedHpcIds": [],
+    "europeanAlternativesNote": "No European Design Hotels properties with verified existing Dealality HPC IDs were found in accessible inventory. Do not speculative-substitute.",
+    "censusEnrollmentCandidatesOfficialOnly": [
+      {
+        "name": "Memmo Príncipe Real",
+        "country": "Portugal",
+        "city": "Lisbon",
+        "marsha": "LISDM",
+        "designHotelsUrl": "https://www.designhotels.com/hotels/portugal/lisbon/memmo-principe-real/",
+        "role": "PREFERRED_REPLACEMENT_PENDING_HPC"
+      }
+    ]
+  },
   "affiliationFlags": [
     {
       "hpcId": "recOIzFTFK8vTDTJp",
@@ -503,18 +610,22 @@
     "preview": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -Mode Preview -HotelsFile reports\\gdi-design-hotels-operational-pilot-v1\\design-hotels-pilot-cohort-hotels.txt",
     "rehearsal": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -Mode Rehearsal -HotelsFile reports\\gdi-design-hotels-operational-pilot-v1\\design-hotels-pilot-cohort-hotels.txt",
     "resume": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -Mode Resume -ResumeState <state.json> -HotelsFile reports\\gdi-design-hotels-operational-pilot-v1\\design-hotels-pilot-cohort-hotels.txt",
-    "note": "Same command for all three hotels. Paid FullE2E requires separate founder GO + -AllowLivePilot -AuthorizePaidResearch -BudgetUSD."
+    "singleHotelPreview": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -HotelId rece0NdV9FCnaFlVS -Mode Preview",
+    "paidFullE2eNotAuthorized": ".\\scripts\\Invoke-GdiPortfolioProcessing.ps1 -Mode FullE2E -HotelsFile reports\\gdi-design-hotels-operational-pilot-v1\\design-hotels-pilot-cohort-hotels.txt -BudgetUSD <N> -AuthorizePaidResearch -AllowLivePilot",
+    "note": "Same command for all runnable hotels. Paid FullE2E requires separate founder GO. Swap Antigua→Memmo only after verified HPC ID."
   },
   "projectedCostPerHotelUsd": {
     "preflight": 0,
     "rehearsal": 0,
     "proposedLivePilotBand": "8–25 (founder authorize; not executed)",
-    "note": "Subject to Exa/agent rates and MaxCandidates; enforce portfolio BudgetUSD ceiling."
+    "aggregateThreeHotelCeilingSuggestedUsd": 60,
+    "note": "Informed by V1.1 $2 Bethesda/YOTEL pilot economics — that yield was not commercially certified. Enforce portfolio BudgetUSD."
   },
   "engineReady": {
     "dryRunPreview": true,
     "paidExecution": false,
-    "reason": "All three hotels pass $0 operational preflight / dry-run readiness. Paid execution blocked until founder approves hotels + budget. Upstream PRs #564/#566/#567/#570 remain OPEN — IC merge recommended before paid."
+    "europeSlotReady": false,
+    "reason": "Runnable interim cohort (Mexico / Grenada / Antigua interim) passes $0 preflight. Europe Memmo slot BLOCKED pending HPC enrollment. Paid execution blocked until founder hotel+budget GO; prefer IC merge of #564/#566/#567/#570 first."
   },
   "processingClassCounts": {
     "NEW_HOTEL": 3,

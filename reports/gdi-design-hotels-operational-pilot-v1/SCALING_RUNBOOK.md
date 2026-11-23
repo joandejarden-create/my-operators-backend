@@ -1,4 +1,4 @@
-# GDI Design Hotels — Scaling Runbook V1
+# GDI Design Hotels — Scaling Runbook V1 / V1.1
 
 **Objective:** Process another Design Hotels property as an operational task, not a custom software project.
 
@@ -6,9 +6,11 @@
 SELECT HOTEL → PREFLIGHT → AUTHORIZE BUDGET → RUN GDI → VERIFY QUALITY → SAVE APPROVED BASELINE
 ```
 
+**V1.1 Europe note:** Preferred Hotel 3 = Memmo Príncipe Real (MARSHA `LISDM`, 41 rooms). Runnable cohort keeps Good Hotel Antigua as **interim** until a verified HPC `rec…` exists. Do not invent IDs. Operational $0 success ≠ commercial quality certification.
+
 ## Prerequisites
 
-- Canonical HPC record ID (`rec…`)
+- Canonical HPC record ID (`rec…`) — **required**; enrollment first for Europe properties missing from census
 - Design Hotels affiliation confirmed (or flagged)
 - Repo checkout with Portfolio Processing Certification V1 (`Invoke-GdiPortfolioProcessing.ps1`)
 - Node on PATH
@@ -91,11 +93,27 @@ Rehearsal / Preview / fixture paths must not duplicate paid spend. Re-run with `
 | Blocker | Action |
 |---|---|
 | Invalid HPC ID | Stop hotel; continue peers |
+| Preferred hotel lacks HPC (e.g. Memmo LISDM) | Enroll in census; keep interim Hotel 3 for $0 only; **no speculative Europe swap** |
 | Affiliation uncertain | Flag for founder; do not invent brand |
 | Rooms unknown | Proceed (do not invent); enrich later |
 | No meeting facilities | **Eligible** — prioritize room-night segments |
 | Paid auth missing | Stay on Preview/Rehearsal |
 | Partial research | `RESEARCH_CONTINUATION` — resume, do not reset IDs |
+
+## Exact command matrix (V1.1)
+
+| Intent | Command |
+|---|---|
+| Single hotel dry-run | `.\scripts\Invoke-GdiPortfolioProcessing.ps1 -HotelId <rec> -Mode Preview` |
+| Three-hotel Preview | `-Mode Preview -HotelsFile reports\gdi-design-hotels-operational-pilot-v1\design-hotels-pilot-cohort-hotels.txt` |
+| Three-hotel Rehearsal ($0) | `-Mode Rehearsal -HotelsFile …\design-hotels-pilot-cohort-hotels.txt` |
+| Resume | `-Mode Resume -ResumeState <state.json> -HotelsFile …` |
+| Authorized paid | `-Mode FullE2E -HotelsFile … -BudgetUSD <N> -AuthorizePaidResearch -AllowLivePilot` |
+| Zero-paid replay | Preview/Rehearsal without live/paid flags |
+| Certification package | `npm run gdi:design-hotels-operational-pilot-v1` (or `node scripts/gdi-design-hotels-operational-pilot-v1.mjs`) |
+
+**Operational execution success** = Preview/Rehearsal pass, $0, stable IDs.  
+**Commercial quality certification** = separate founder gate after paid outputs meet quality gates (see `paid-research-plan-v1-1.json`).
 
 ## Weekly Change
 
