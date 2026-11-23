@@ -189,7 +189,9 @@ Economics after fix: contactsGained=1, actionable=8, canonicalSalesReady=0, rese
 
 ## 12. PR / CI
 
-- See PR description after open; required local suites listed in test plan.
+- PR #566: https://github.com/joandejarden-create/my-operators-backend/pull/566 — OPEN (Integration Controller owns merge).
+- PR #564 (V1.1): still OPEN / CI green — merge before or with V1.2 sequencing by IC.
+- Local: V1.2 recovery, V1.1 pilot, selection register, contact intel V1.2, CMI eligibility, actionability, drawer parity, portfolio cert, `dealality:ci-precheck` (gitleaks PASS).
 
 ## 13. Recommendation for second paid pilot
 
