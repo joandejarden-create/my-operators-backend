@@ -16,6 +16,7 @@ import {
   assertOpportunityReadableForInventoryAudience,
   resolveSalesTeamInventoryHotelAllowlist,
   loadBethesda67SalesBaselineManifest,
+  isBethesda67CustomerPublicationApproved,
   selectBethesdaSalesOpportunityInventory,
   annotateInventoryPopulations,
   buildInventoryPopulationCounts,
@@ -257,14 +258,26 @@ check("list_select_published_is_19_sales_is_67", () => {
     console.log("SKIP list_select (no local opportunities store)");
     return;
   }
+  // Isolate pre-approval published allowlist (Decision A receipt expands default).
   const pub = selectBethesdaSalesOpportunityInventory(surface, {
     inventoryAudience: GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED,
+    forceApproved: false,
   });
   const sales = selectBethesdaSalesOpportunityInventory(surface, {
     salesTeamInventory: true,
   });
   assert.equal(pub.selected.length, 19);
   assert.equal(sales.selected.length, 67);
+  if (isBethesda67CustomerPublicationApproved({ hotelId: BETHESDA_HOTEL_ID })) {
+    const pubApproved = selectBethesdaSalesOpportunityInventory(surface, {
+      inventoryAudience: GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED,
+    });
+    assert.equal(
+      pubApproved.selected.length,
+      67,
+      "Decision A approval expands published selection to full baseline 67"
+    );
+  }
 });
 
 check("preserved_67_plus_verified_cmi_under_sales_audience", () => {
