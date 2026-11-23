@@ -14,6 +14,7 @@ import {
   BETHESDA_PUBLISHED_CUSTOMER_LIST_SCOPE,
   GDI_INVENTORY_AUDIENCE,
   loadBethesda67SalesBaselineManifest,
+  isBethesda67CustomerPublicationApproved,
   selectBethesdaSalesOpportunityInventory,
   resolveGdiInventoryAudience,
   annotateInventoryPopulations,
@@ -71,10 +72,37 @@ check("root_cause_customer_facing_collapses_67_to_19", () => {
     surface.some((o) => o.id === id)
   );
   assert.equal(baselineOnSurface.length, 67);
-  const facing = filterCustomerFacingOpportunities(surface, {
+  // Without publication approval: collapse to published allowlist ∩ surface-active.
+  // (Decision A receipt on disk expands default facing — forceApproved:false isolates gate.)
+  const facingUnapproved = filterCustomerFacingOpportunities(surface, {
+    hotelId: BETHESDA_HOTEL_ID,
+    forceApproved: false,
+  });
+  assert.ok(
+    facingUnapproved.length <= 19,
+    `unapproved facing must not exceed published-19 allowlist (got ${facingUnapproved.length})`
+  );
+  assert.ok(
+    facingUnapproved.every((o) => manifest.publishedIds.includes(o.id)),
+    "unapproved facing must be subset of published-19 allowlist"
+  );
+  // With Decision A approval present, customer publication may expand to full 67.
+  const facingDefault = filterCustomerFacingOpportunities(surface, {
     hotelId: BETHESDA_HOTEL_ID,
   });
-  assert.equal(facing.length, 19, "customer filter is the 67→19 collapse point");
+  if (isBethesda67CustomerPublicationApproved({ hotelId: BETHESDA_HOTEL_ID })) {
+    assert.equal(
+      facingDefault.length,
+      67,
+      "Decision A approval expands customer-facing baseline to 67"
+    );
+  } else {
+    assert.equal(
+      facingDefault.length,
+      facingUnapproved.length,
+      "without approval, default facing matches unapproved collapse"
+    );
+  }
 });
 
 check("sales_team_select_returns_exact_67", () => {

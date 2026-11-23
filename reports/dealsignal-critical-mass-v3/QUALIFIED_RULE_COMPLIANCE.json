@@ -1,0 +1,31 @@
+{
+  "ruleId": "dealsignal-qualified-opportunity-classification-v1",
+  "wave": "DEALSIGNAL_CRITICAL_MASS_V3",
+  "asOf": "2026-11-23",
+  "gatesRequired": [
+    "BCT_MCT_DECISION_PRESENT",
+    "DECISION_UNRESOLVED",
+    "CREDIBLE_COMPETITIVE_PATHWAY"
+  ],
+  "neverQualified": [
+    "COMMITTED",
+    "AWARDED",
+    "RETAINED",
+    "RENEWED",
+    "HISTORICAL_EXECUTED",
+    "CONTRACTUAL_WATCH_ALONE"
+  ],
+  "thisWave": {
+    "candidates": 10,
+    "qualified": 3,
+    "committedClosedCorrections": 3,
+    "emergingProspective": 2,
+    "earlyOrAmbiguous": 2,
+    "rejectedInflation": true,
+    "note": "Bergantín / Cap Cana / casino adjacency intentionally failed Qualified gate; Aena / Lucayan Hilton / LPIA persisted as COMMITTED_CLOSED"
+  },
+  "tests": {
+    "script": "scripts/test-dealsignal-qualified-opportunity-classification-v1.mjs",
+    "result": "10/10 PASS"
+  }
+}
