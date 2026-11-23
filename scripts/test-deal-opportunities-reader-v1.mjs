@@ -32,8 +32,15 @@ assert.match(apiSrc, /CUSTOMER_BLOCKED/);
 assert.match(readerSrc, /publicationState:\s*"CUSTOMER_BLOCKED"/);
 assert.match(readerSrc, /buildDrawerV2|drawerV2/);
 assert.doesNotMatch(readerSrc, /surfe/i);
-assert.match(readerSrc, /PRINCIPAL_OPEN_SIGNAL/);
-assert.match(readerSrc, /PORTFOLIO_CHILD_NOT_COUNTED/);
+assert.match(readerSrc, /assessCommercialEligibility|PRINCIPAL_PROSPECTIVE_OPEN/);
+assert.match(readerSrc, /commercial-eligibility-v1/);
+assert.match(
+  fs.readFileSync(
+    path.join(ROOT, "lib/hotel-intelligence/deal-opportunities/hif-deal-opportunities-commercial-eligibility-v1.js"),
+    "utf8",
+  ),
+  /PORTFOLIO_CHILD_NOT_COUNTED/,
+);
 assert.match(readerSrc, /verifiedCoreBctMctDecisions/);
 
 assert.match(appSrc, /['"]\/deal-opportunities['"]/);
