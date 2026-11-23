@@ -96,7 +96,9 @@ Frozen investigatedUrls still empty on **8/8** (V1.1 defect). V1.2/V1.3 propagat
 
 ## 11. CI results
 
-- See PR checks after open; local suites in test plan.
+- PR #567: https://github.com/joandejarden-create/my-operators-backend/pull/567 — OPEN (IC owns merge).
+- Depends on #564 → #566 (both still OPEN, CI green).
+- Local: V1.3 + V1.2 + V1.1 pilot + selection register + contact intel V1.2 + `dealality:ci-precheck` (gitleaks PASS).
 
 ## 12. Readiness verdict
 
