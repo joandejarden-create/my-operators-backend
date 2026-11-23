@@ -87,8 +87,9 @@ Leisure opportunities must enter the **same** finalized GDI STAGED inventory aft
 
 | Item | Value |
 |------|-------|
-| This PR | Opened after push |
-| Merge order | IC: merge #577 then this PR **or** merge this branch (includes #577 tip + live integration) |
+| This PR | [#581](https://github.com/joandejarden-create/my-operators-backend/pull/581) **OPEN** |
+| Depends on | [#577](https://github.com/joandejarden-create/my-operators-backend/pull/577) |
+| Merge order | IC: merge #577 then #581 **or** merge #581 (includes #577 tip + live integration) |
 | `ws-gdi` | Dirty work **preserved** |
 
 ### Cycle state
