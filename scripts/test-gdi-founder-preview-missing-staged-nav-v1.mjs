@@ -90,8 +90,10 @@ check("ui_uses_compact_empty_state_not_full_page_error", () => {
   assert.doesNotMatch(appJs, /Staged preview unavailable/);
   assert.match(appJs, /applyMissingInventoryEmptyState/);
   assert.match(appJs, /gdi-empty--inventory-unavailable/);
-  assert.match(appJs, /No staged version available for this hotel/);
-  assert.match(appJs, /No published version available for this hotel/);
+  assert.doesNotMatch(appJs, /No staged version available for this hotel/);
+  assert.doesNotMatch(appJs, /No published version available for this hotel/);
+  assert.match(appJs, /No opportunities are available for this property/);
+  assert.match(appJs, /customerFacingMissingInventoryMessage/);
   assert.match(appJs, /data-gdi-recovery="view-research"/);
   assert.match(appJs, /STAGED_PUBLICATION_PREVIEW_UNAVAILABLE/);
   assert.match(appJs, /CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE/);
@@ -114,7 +116,7 @@ check("api_returns_recovery_without_silent_fallback", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, /gdi-missing-inventory-empty-state-v1/);
+  assert.match(html, /gdi-customer-ui-regression-v1-1/);
 });
 
 check("inventories_unchanged_pointers", () => {

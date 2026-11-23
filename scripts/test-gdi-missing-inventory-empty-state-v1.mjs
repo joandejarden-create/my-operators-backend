@@ -64,8 +64,10 @@ check("compact_empty_state_helpers_present", () => {
   assert.match(appJs, /applyMissingInventoryEmptyState/);
   assert.match(appJs, /inventoryUnavailableEmptyHtml/);
   assert.match(appJs, /gdi-empty--inventory-unavailable/);
-  assert.match(appJs, /No staged version available for this hotel/);
-  assert.match(appJs, /No published version available for this hotel/);
+  assert.doesNotMatch(appJs, /No staged version available for this hotel/);
+  assert.doesNotMatch(appJs, /No published version available for this hotel/);
+  assert.match(appJs, /No opportunities are available for this property/);
+  assert.match(appJs, /customerFacingMissingInventoryMessage/);
   assert.match(appJs, /data-gdi-recovery="view-research"/);
   assert.match(css, /\.gdi-empty--inventory-unavailable/);
 });
@@ -110,10 +112,10 @@ check("representative_hotels_availability_inspectable", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, /app\.js\?v=gdi-missing-inventory-empty-state-v1/);
+  assert.match(html, /app\.js\?v=gdi-customer-ui-regression-v1-1/);
   assert.match(
     html,
-    /group-demand-intelligence\.css\?v=gdi-missing-inventory-empty-state-v1/,
+    /dealality-gdi-ui\.js\?v=gdi-customer-ui-regression-v1-1/,
   );
 });
 

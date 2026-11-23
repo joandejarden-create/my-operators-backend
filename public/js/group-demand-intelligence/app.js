@@ -460,6 +460,19 @@
     );
   }
 
+  function customerFacingMissingInventoryMessage(mode, data) {
+    data = data || {};
+    var recovery = data.recovery || {};
+    // Never leak internal staged/publication implementation terminology.
+    if (mode === "published") {
+      return "No opportunities are available for this property yet.";
+    }
+    if (recovery.hasCurrentPublication === true) {
+      return "No opportunities are available in this preview. You can view the published inventory or switch to Research.";
+    }
+    return "No opportunities are available for this property in the selected view. Switch to Research to review hotel research findings when available.";
+  }
+
   function applyMissingInventoryEmptyState(err) {
     var data = (err && err.data) || {};
     var code = String(data.error || (err && err.code) || "");
@@ -471,11 +484,7 @@
     state.inventoryEmpty = {
       mode: mode,
       code: code,
-      message:
-        data.founderMessage ||
-        (mode === "published"
-          ? "No published version available for this hotel."
-          : "No staged version available for this hotel."),
+      message: customerFacingMissingInventoryMessage(mode, data),
       recovery: data.recovery || null,
     };
   }
