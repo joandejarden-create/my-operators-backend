@@ -1,0 +1,343 @@
+{
+  "schema": "gdi-contact-intelligence-v2-1-airtable-dry-run-v1",
+  "generatedAt": "2026-11-23T08:51:05.161Z",
+  "liveWrites": false,
+  "schemaChanges": false,
+  "destination": "EXISTING_GDO_AND_RESEARCH_INVENTORY_EMBEDDED_PRIMARY_CONTACT",
+  "createNewContactsTable": false,
+  "requested": 10,
+  "selected": 8,
+  "shortfallReason": "Only 8 contacts met all non-write hypothetical gates with verified direct email+phone and person/employer identity.",
+  "duplicateBlocked": 0,
+  "idempotency": {
+    "dedupeKeyStrategy": "name|organization|email",
+    "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+    "secondPassWouldCreateDuplicates": false
+  },
+  "dataModelRecommendation": {
+    "adequateForCanonicalPersonAndMultiHotelReuse": "PARTIAL",
+    "note": "Embedded primaryContact* supports opportunity-scoped channels and provenance fields, but multi-hotel person reuse still requires personIdentityKey + source evidence on each opportunity (or a governed person-index). Do not create a new Contacts table until founder confirms cross-hotel person SoT requirements."
+  },
+  "proposals": [
+    {
+      "personIdentityKey": "c95fb015798102a4",
+      "name": "Adam Grosswirth",
+      "organization": "National Alliance for Musical Theatre",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "adam grosswirth|national alliance for musical theatre|email_redacted",
+        "fields": {
+          "personName": "Adam Grosswirth",
+          "company": "National Alliance for Musical Theatre",
+          "role": "Member Services Director",
+          "opportunityId": "gdi_opp_namt_fall_conference_festival_of_new_musicals_0",
+          "opportunityTitle": "NAMT Fall Conference + Festival of New Musicals",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://namt.org/contact/",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "44520a5824116477",
+      "name": "Josh Cacchione",
+      "organization": "The Broadway League",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "josh cacchione|the broadway league|email_redacted",
+        "fields": {
+          "personName": "Josh Cacchione",
+          "company": "The Broadway League",
+          "role": "Senior Manager of Partnership and Events",
+          "opportunityId": "gdi_opp_2026_education_engagement_forum_1",
+          "opportunityTitle": "2026 Education & Engagement Forum",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://www.broadwayleague.com/about/staff/",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "1935d6c044c3dfad",
+      "name": "Larry Schiffer",
+      "organization": "ARIAS U.S.",
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "hotelCount": 3,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "larry schiffer|arias u s|email_redacted",
+        "fields": {
+          "personName": "Larry Schiffer",
+          "company": "ARIAS U.S.",
+          "role": "Executive Director",
+          "opportunityId": "gdi_opp_arias_u_s_fall_conference_4",
+          "opportunityTitle": "ARIAS U.S. Fall Conference",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://www.arias-us.org/2026-fall-conference/",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "933b94ee480defc4",
+      "name": "Mary Cunningham",
+      "organization": "Canadian Association for Medical Education (CAME)",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelCount": 1,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "mary cunningham|canadian association for medical education|email_redacted",
+        "fields": {
+          "personName": "Mary Cunningham",
+          "company": "Canadian Association for Medical Education",
+          "role": "Association Manager",
+          "opportunityId": "rb_gdi_free_clime_2027",
+          "opportunityTitle": "CLIME 1.0 — Canadian Leadership Institute for Medical Education",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://www.came-acem.ca/professional-development/clime/",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": false
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "a5f4da265034ca97",
+      "name": "Katie Hollis",
+      "organization": "Society of Industrial and Office Realtors",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "katie hollis|sior|email_redacted",
+        "fields": {
+          "personName": "Katie Hollis",
+          "company": "SIOR",
+          "role": "Director of Events and Programs",
+          "opportunityId": "gdi_opp_790a7cea8c321ada",
+          "opportunityTitle": "SIOR Fall Event",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://sior.com/who-we-are/hq-team",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "46bb3a1d13c32ef7",
+      "name": "Jennifer Kearney",
+      "organization": "New York State School Boards Association",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "jennifer kearney|new york state school boards association|email_redacted",
+        "fields": {
+          "personName": "Jennifer Kearney",
+          "company": "New York State School Boards Association",
+          "role": "Convention and Events",
+          "opportunityId": "gdi_opp_f07d86ab80b5f956",
+          "opportunityTitle": "NYSSBA Annual Convention & Education Expo",
+          "classification": "NAMED_DIRECT_BUYER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://www.nyssba.org/index.php?src=directory&srctype=staff_lister&submenu=about_nyssba10&view=staff",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "ec0b071bac6139db",
+      "name": "Michele Smith Koontz",
+      "organization": "Society for the Study of Social Problems",
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelCount": 2,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "michele smith koontz|society for the study of social problems|email_redacted",
+        "fields": {
+          "personName": "Michele Smith Koontz",
+          "company": "Society for the Study of Social Problems",
+          "role": "Administrative Officer & Meeting Manager",
+          "opportunityId": "gdi_opp_267d801f2fa39f9e",
+          "opportunityTitle": "76th Annual Meeting",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://www.sssp1.org/index.cfm/m/396/Contact_Us",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-23",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    },
+    {
+      "personIdentityKey": "891b6bea9d8e60a4",
+      "name": "Maritza Jeanette Medina García",
+      "organization": "Gobierno de Jalisco / Secretaría de Infraestructura y Obra Pública (SIOP)",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelCount": 1,
+      "hypotheticalReady": true,
+      "actualBlocks": [
+        "LIVE_WRITES_DISABLED"
+      ],
+      "proposal": {
+        "action": "UPSERT_PROPOSED_DRY_RUN",
+        "execute": false,
+        "target": "Existing GDI opportunity / embedded contact intelligence (no new Contacts table)",
+        "dedupeKey": "maritza jeanette medina garcia|secretaria de infraestructura y obra publica gobierno de jalisco|email_redacted",
+        "fields": {
+          "personName": "Maritza Jeanette Medina García",
+          "company": "Secretaría de Infraestructura y Obra Pública, Gobierno de Jalisco",
+          "role": "Directora de Recursos Materiales, SIOP",
+          "opportunityId": "disc_b4661c17bd92",
+          "opportunityTitle": "Distrito Urbano Expo Guadalajara – Nodo Expo, túnel vehicular y renovación del espacio público",
+          "classification": "NAMED_RELEVANT_INFLUENCER",
+          "routeType": "DIRECT",
+          "sourceUrl": "https://info.jalisco.gob.mx/dependencia/secretaria-de-infraestructura-y-obra-publica?page=14",
+          "verificationStatus": "PUBLICLY_VERIFIED",
+          "lastVerifiedDate": "2026-11-20",
+          "provenance": "PUBLIC_SOURCE",
+          "permittedUse": "CUSTOMER_FACING_WHEN_PUBLISHED",
+          "surfeDerived": false
+        },
+        "overwritePolicy": "DO_NOT_OVERWRITE_NEWER_VERIFIED_WITH_STALE_OR_BLANK",
+        "liveWrite": false,
+        "channelsPresent": {
+          "directEmail": true,
+          "directPhone": true
+        }
+      },
+      "simulatedReadBackParity": true,
+      "correctionDeletionBehavior": "DRY_RUN_ONLY — correction/deletion would clear embedded primaryContact* fields on the same dedupeKey without creating orphan contact rows"
+    }
+  ]
+}
