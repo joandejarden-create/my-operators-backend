@@ -4,12 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<title>Dealality | Deal Capture</title>
+<title>Dealality | DealSignal</title>
 <link rel="stylesheet" href="/css/deal-workspace-shell.css?v=dop2" />
 <link rel="stylesheet" href="/css/dealality-wave-loader.css?v=3" />
 <link rel="stylesheet" href="/css/hotel-explorer.css?v=59" />
 <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=44" />
-<link rel="stylesheet" href="/css/deal-opportunities.css?v=17" />
+<link rel="stylesheet" href="/css/deal-opportunities.css?v=18" />
 <script>
 (function () {
   try {
@@ -34,9 +34,9 @@
   <header class="dashboard-header aiv-dashboard-header">
     <div class="dashboard-header-left">
       <div class="dashboard-title-container">
-        <h1>Deal Capture</h1>
+        <h1>DealSignal</h1>
       </div>
-      <p class="aiv-header-subtitle">Dealality identifies hotel commercial decisions that matter most, shows which opportunities are action-ready, and connects evidence to Hotel Explorer for diligence. Live HIF data · CUSTOMER_BLOCKED.</p>
+      <p class="aiv-header-subtitle">Dealality identifies hotel commercial decisions that matter most, shows why the opportunity exists, who controls it, when to engage, and connects evidence to Hotel Explorer. Live HIF data · CUSTOMER_BLOCKED.</p>
     </div>
     <div class="dop-header-right">
       <aside class="aiv-disclaimer-box" role="note">
@@ -185,32 +185,89 @@
 </div>
 
 <div class="dop-shade" id="shade"></div>
-<aside class="dop-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Opportunity detail" aria-hidden="true">
+<aside class="dop-drawer dop-drawer-v2" id="drawer" role="dialog" aria-modal="true" aria-label="DealSignal opportunity detail" aria-hidden="true">
   <div class="dop-drawer-top">
     <div>
-      <div class="dop-eyebrow">Dealality / Opportunity intelligence</div>
+      <div class="dop-eyebrow">Dealality · DealSignal</div>
       <h2 id="dTitle"></h2>
       <p id="dLocation"></p>
+      <p class="dop-drawer-headline" id="dHeadline"></p>
+      <div class="dop-drawer-meta" id="dMeta"></div>
     </div>
     <button class="dop-drawer-close" type="button" aria-label="Close opportunity drawer" id="drawerClose">×</button>
   </div>
   <div class="dop-drawer-content">
-    <div class="dop-drawer-kpis">
-      <div class="dop-drawer-kpi"><label>Opportunity</label><b id="dType"></b></div>
-      <div class="dop-drawer-kpi"><label>Decision Window</label><b id="dDate"></b></div>
-      <div class="dop-drawer-kpi"><label>Access assessment</label><b id="dAccess"></b></div>
+    <!-- Executive KPIs (header) -->
+    <div class="dop-ds" id="secExec">
+      <h3>Opportunity snapshot</h3>
+      <div class="dop-drawer-kpis" id="dKpis"></div>
+      <div class="dop-fact-list" id="dExecFacts"></div>
+      <div class="dop-status-verify" id="dStatusVerify" hidden></div>
     </div>
-    <div class="dop-ds">
+    <!-- 1 · Why Approach This Owner? -->
+    <div class="dop-ds" id="secWhy">
+      <h3>1 · Why Approach This Owner?</h3>
+      <div class="dop-thesis" id="dThesis"></div>
+    </div>
+    <!-- 2 · Owner Background -->
+    <div class="dop-ds" id="secOwner">
+      <h3>2 · Owner Background</h3>
+      <div class="dop-fact-list" id="dOwner"></div>
+    </div>
+    <!-- 3 · What Could Trigger a Change? -->
+    <div class="dop-ds" id="secContract">
+      <h3>3 · What Could Trigger a Change?</h3>
+      <p class="dop-caveat">Labels show FACT / SUPPORTED INFERENCE / UNKNOWN. Contractual flexibility is not the same as owner intention to replace a partner.</p>
+      <div class="dop-fact-list" id="dContract"></div>
+    </div>
+    <!-- 4 · When to Engage -->
+    <div class="dop-ds" id="secTiming">
+      <h3>4 · When to Engage</h3>
+      <div id="dTiming"></div>
+    </div>
+    <!-- 5 · Who Is Involved? -->
+    <div class="dop-ds" id="secPeople">
+      <h3>5 · Who Is Involved?</h3>
+      <div id="dPeople"></div>
+    </div>
+    <!-- 6 · Commercial Opportunity -->
+    <div class="dop-ds" id="secPartner">
+      <h3>6 · Commercial Opportunity</h3>
+      <div id="dPartner"></div>
+    </div>
+    <!-- 7 · Related Portfolio Opportunities -->
+    <div class="dop-ds" id="secPortfolio">
+      <h3>7 · Related Portfolio Opportunities</h3>
+      <div id="dPortfolio"></div>
+    </div>
+    <!-- 8 · Supporting Evidence -->
+    <div class="dop-ds" id="secEvidence">
+      <h3>8 · Supporting Evidence</h3>
+      <div id="dSources"></div>
+    </div>
+    <!-- 9 · What We Don't Know -->
+    <div class="dop-ds" id="secGaps">
+      <h3>9 · What We Don't Know</h3>
+      <ul class="dop-gap-list" id="dGaps"></ul>
+    </div>
+    <!-- 10 · Recommended Next Step -->
+    <div class="dop-ds" id="secNext">
+      <h3>10 · Recommended Next Step</h3>
+      <div id="dNext"></div>
+    </div>
+    <div class="dop-ds"><h3>Related hotels</h3><div class="dop-related" id="dRelated"></div></div>
+    <div class="dop-ds"><h3>Hotel Explorer</h3><div class="dop-he-warning" id="dHE"></div></div>
+    <!-- Legacy fallback anchors (hidden when V2 paints) -->
+    <div class="dop-ds dop-legacy-only" id="legacyWhy" hidden>
       <h3>Why this matters</h3>
       <p id="dWhy"></p>
       <ul class="dop-why-context" id="dWhyContext" aria-label="Commercial context"></ul>
       <div class="dop-assessment" id="dAssessment"></div>
     </div>
-    <div class="dop-ds"><h3>Commercial intelligence</h3><div class="dop-fact-list" id="dFacts"></div></div>
-    <div class="dop-ds"><h3>Related hotels</h3><div class="dop-related" id="dRelated"></div></div>
-    <div class="dop-ds"><h3>Source signals</h3><div id="dSources"></div></div>
-    <div class="dop-ds"><h3>Recommended next steps</h3><p id="dNext"></p></div>
-    <div class="dop-ds"><h3>Hotel Explorer</h3><div class="dop-he-warning" id="dHE"></div></div>
+    <div class="dop-ds dop-legacy-only" id="legacyFacts" hidden>
+      <h3>Commercial intelligence</h3>
+      <div class="dop-fact-list" id="dFacts"></div>
+    </div>
   </div>
   <div class="dop-drawer-actions">
     <button class="dop-btn" type="button" id="watchlistBtn">Add to watchlist</button>
@@ -1500,34 +1557,314 @@
     });
   }
 
-  function showDrawer(id) {
-    const o = state.opps.find((x) => x.id === id);
-    if (!o) return;
-    state.current = o;
-    state.lastFocus = document.activeElement;
-    showToast("Opening opportunity intelligence…", "info");
-    const whyMatter = buildWhyMatters(o);
+  function factKindBadge(kind) {
+    const k = String(kind || "UNKNOWN").toUpperCase();
+    const cls =
+      k === "FACT" ? "dop-kind-fact" : k === "SUPPORTED_INFERENCE" ? "dop-kind-inf" : "dop-kind-unk";
+    const label = k === "SUPPORTED_INFERENCE" ? "SUPPORTED INFERENCE" : k;
+    return `<span class="dop-kind ${cls}">${esc(label)}</span>`;
+  }
 
+  function renderFactRows(rows) {
+    if (!rows || !rows.length) {
+      return `<div class="dop-fact"><span>Status</span><strong>No verified fields on this record yet.</strong></div>`;
+    }
+    return rows
+      .map((r) => {
+        const label = r.label || r[0];
+        const value = r.value != null ? r.value : r[1];
+        const kind = r.kind || null;
+        return `<div class="dop-fact"><span>${esc(label)}${kind ? " " + factKindBadge(kind) : ""}</span><strong>${esc(
+          value == null || value === "" ? "Unknown" : value
+        )}</strong></div>`;
+      })
+      .join("");
+  }
+
+  function strengthClass(s) {
+    const v = String(s || "").toLowerCase();
+    if (v === "strong") return "dop-strength-strong";
+    if (v === "moderate") return "dop-strength-mod";
+    return "dop-strength-lim";
+  }
+
+  function priorityClass(p) {
+    const v = String(p || "").toUpperCase();
+    if (v.includes("ENGAGE")) return "dop-prio-now";
+    if (v.includes("BUILD")) return "dop-prio-build";
+    return "dop-prio-mon";
+  }
+
+  function showDrawerV2(o, v2) {
+    const ex = v2.executiveSummary || {};
+    $("dTitle").textContent = ex.name || o.name;
+    $("dLocation").textContent = [ex.market, ex.country].filter(Boolean).join(" · ") || formatMarketDisplay(o);
+    $("dHeadline").textContent = ex.headline || o.trigger || "";
+    $("dMeta").innerHTML = [
+      v2.evidenceStrength
+        ? `<span class="dop-meta-chip ${strengthClass(v2.evidenceStrength)}">Evidence · ${esc(v2.evidenceStrength)}</span>`
+        : "",
+      v2.engagementPriority
+        ? `<span class="dop-meta-chip ${priorityClass(v2.engagementPriority)}">${esc(v2.engagementPriority)}</span>`
+        : "",
+      `<span class="dop-meta-chip">CUSTOMER_BLOCKED</span>`,
+    ]
+      .filter(Boolean)
+      .join("");
+
+    $("dKpis").innerHTML = [
+      ["Opportunity", toProperCase(ex.opportunityType || o.type)],
+      ["Decision window", ex.decisionWindow || o.window || "Unknown"],
+      ["Engagement", v2.engagementPriority || "MONITOR"],
+    ]
+      .map(
+        ([l, v]) =>
+          `<div class="dop-drawer-kpi"><label>${esc(l)}</label><b>${esc(v)}</b></div>`
+      )
+      .join("");
+
+    $("dExecFacts").innerHTML = renderFactRows([
+      { label: "Current brand", value: ex.currentBrand },
+      { label: "Current management", value: ex.currentOperator },
+      { label: "Owner / sponsor", value: ex.ownerSponsor },
+      { label: "Commercial status", value: ex.commercialStatus },
+      { label: "Research maturity", value: ex.researchMaturity },
+      {
+        label: "Hotels / rooms affected",
+        value:
+          ex.hotelsAffected != null || ex.roomsAffected != null
+            ? [ex.hotelsAffected != null ? `${ex.hotelsAffected} hotel(s)` : null, ex.roomsAffected != null ? `${ex.roomsAffected} rooms` : null]
+                .filter(Boolean)
+                .join(" · ")
+            : "Unknown",
+      },
+      { label: "Access assessment", value: o.access },
+    ]);
+
+    const statusVerify = v2.commercialStatusVerification || null;
+    const statusEl = $("dStatusVerify");
+    if (statusEl) {
+      if (statusVerify && (statusVerify.summary || statusVerify.asOf)) {
+        statusEl.hidden = false;
+        statusEl.innerHTML = `<div class="dop-thesis-block"><label>Commercial status check</label><p>${esc(
+          statusVerify.summary || ""
+        )}</p><small>${esc(
+          [statusVerify.asOf ? `Checked ${statusVerify.asOf}` : null, statusVerify.outcome || null]
+            .filter(Boolean)
+            .join(" · ")
+        )}</small></div>`;
+      } else {
+        statusEl.hidden = true;
+        statusEl.innerHTML = "";
+      }
+    }
+
+    const why = v2.whyExists || {};
+    $("dThesis").innerHTML = `
+      <div class="dop-thesis-block"><label>Commercial thesis</label><p>${esc(why.whyItMatters || why.whatIsChanging || "—")}</p></div>
+      <div class="dop-thesis-block"><label>What is changing</label><p>${esc(why.whatIsChanging || "—")}</p></div>
+      <div class="dop-thesis-block"><label>Potential conversation</label><p>${esc(why.conversationAngle || why.confirmedProspectiveDecision || "—")}</p></div>
+      <div class="dop-thesis-block"><label>Evidence supporting the thesis</label><p>${esc(why.evidenceSupports || "Source evidence attached below where available.")}</p></div>
+      ${
+        (why.remainsUncertain || []).length
+          ? `<div class="dop-thesis-block"><label>Remains uncertain</label><ul class="dop-gap-list">${why.remainsUncertain
+              .map((u) => `<li>${esc(u)}</li>`)
+              .join("")}</ul></div>`
+          : ""
+      }`;
+
+    const ob = v2.ownerBackground || {};
+    $("dOwner").innerHTML = renderFactRows([
+      { label: "Owner / sponsor", value: (ob.owners || []).join("; ") || "Unknown", kind: (ob.owners || []).length ? "FACT" : "UNKNOWN" },
+      { label: "Asset management org", value: ob.assetManagementOrg || "Unknown", kind: ob.assetManagementOrg ? "FACT" : "UNKNOWN" },
+      { label: "Owner profile / strategy", value: ob.ownerProfile || "Unknown", kind: ob.ownerProfile ? "SUPPORTED_INFERENCE" : "UNKNOWN" },
+      { label: "Holdings note", value: ob.holdingsNote || "Unknown", kind: "SUPPORTED_INFERENCE" },
+      { label: "Brand / operator relationships", value: ob.brandOperatorRelationships || "Unknown", kind: ob.brandOperatorRelationships ? "FACT" : "UNKNOWN" },
+      { label: "Recent capital developments", value: ob.recentCapitalDevelopments || "Unknown", kind: "UNKNOWN" },
+    ]);
+
+    $("dContract").innerHTML = renderFactRows(v2.contractualContext || []);
+
+    const partner = v2.whyNewPartnerRelevant || {};
+    const claimClasses = partner.claimClasses || (v2.whyExists && v2.whyExists.claimClasses) || null;
+    const claimHtml = claimClasses
+      ? `<div class="dop-fact-list" style="margin-top:10px">${renderFactRows([
+          { label: "Verified contractual fact", value: claimClasses.verifiedContractualFact, kind: claimClasses.verifiedContractualFact ? "FACT" : "UNKNOWN" },
+          { label: "Verified owner statement", value: claimClasses.verifiedOwnerStatement, kind: claimClasses.verifiedOwnerStatement ? "FACT" : "UNKNOWN" },
+          { label: "Supported inference", value: claimClasses.supportedInference, kind: claimClasses.supportedInference ? "SUPPORTED_INFERENCE" : "UNKNOWN" },
+          { label: "Commercial hypothesis", value: claimClasses.hypothesis, kind: claimClasses.hypothesis ? "SUPPORTED_INFERENCE" : "UNKNOWN" },
+          { label: "Unknown", value: claimClasses.unknown, kind: "UNKNOWN" },
+        ])}</div>`
+      : "";
+    $("dPartner").innerHTML = `
+      <div class="dop-thesis-block"><label>Why a competing brand / operator may be relevant</label><p>${esc(
+        partner.perspective || "Insufficient evidence to frame partner relevance yet."
+      )}</p></div>
+      <div class="dop-thesis-block"><label>Limitations</label><p class="dop-caveat">${esc(
+        partner.limits || partner.posture || "Commercial discussion opportunity — not a prediction of conversion."
+      )}</p></div>
+      ${claimHtml}`;
+
+    const dm = v2.decisionMakers || {};
+    const people = dm.people || [];
+    const orgs = dm.organizations || [];
+    let peopleHtml = "";
+    if (people.length) {
+      peopleHtml = people
+        .map((p) => {
+          const profile = p.publicProfileUrl
+            ? `<a href="${esc(p.publicProfileUrl)}" target="_blank" rel="noopener noreferrer">Public profile</a>`
+            : "";
+          const contact = p.contact
+            ? `<small>${esc(typeof p.contact === "string" ? p.contact : JSON.stringify(p.contact))}</small>`
+            : `<small class="dop-contact-needed">Contact research required</small>`;
+          return `<div class="dop-person">
+            <strong>${esc(p.name || "Unknown")}</strong>
+            <span>${esc([p.role, p.organization].filter(Boolean).join(" · ") || "Role to verify")}</span>
+            <small>${esc(p.source || "Source to verify")}${profile ? " · " + profile : ""}</small>
+            ${contact}
+          </div>`;
+        })
+        .join("");
+    } else {
+      peopleHtml = `<p class="dop-empty-inline">Named executives not yet verified on this record.</p>`;
+    }
+    const orgHtml = orgs.length
+      ? `<div class="dop-org-list">${orgs
+          .map((og) => `<div class="dop-person"><strong>${esc(og.name)}</strong><span>${esc(og.role || "Organization")}</span></div>`)
+          .join("")}</div>`
+      : "";
+    $("dPeople").innerHTML = `${peopleHtml}${orgHtml}<p class="dop-caveat">${esc(dm.contactStatus || "Contact research required")}. ${esc(
+      dm.note || ""
+    )}</p>`;
+
+    const when = v2.whenToEngage || {};
+    const keyDateRows = (when.keyDates || []).map((d) => ({
+      label: d.label || "Date",
+      value: `${d.date || "Unknown"}${d.class ? ` · ${d.class}` : ""}`,
+      kind: /VERIFIED/i.test(d.class || "") ? "FACT" : /INDICATIVE|RECOMMENDED/i.test(d.class || "") ? "SUPPORTED_INFERENCE" : "UNKNOWN",
+    }));
+    $("dTiming").innerHTML = `
+      <div class="dop-priority-banner ${priorityClass(when.priority)}">
+        <strong>${esc(when.priority || "MONITOR")}</strong>
+        <span>${esc(when.reason || "")}</span>
+        <span>${esc(when.caveat || "")}</span>
+      </div>
+      <div class="dop-fact-list" style="margin-top:10px">
+        ${renderFactRows([
+          { label: "Verified agreement dates", value: (when.verifiedAgreementDates || []).join(", ") || "Unknown", kind: (when.verifiedAgreementDates || []).length ? "FACT" : "UNKNOWN" },
+          { label: "Notice deadlines", value: (when.noticeDeadlines || []).join(", ") || "Unknown", kind: "UNKNOWN" },
+          { label: "Capital milestones", value: (when.capitalMilestones || []).join(", ") || "Unknown", kind: (when.capitalMilestones || []).length ? "SUPPORTED_INFERENCE" : "UNKNOWN" },
+          { label: "Indicative decision period", value: when.indicativeDecisionPeriod || "Unknown", kind: when.indicativeDecisionPeriod && !/unknown/i.test(when.indicativeDecisionPeriod) ? "FACT" : "UNKNOWN" },
+          { label: "Timing horizon", value: when.timingHorizon || "Unknown", kind: when.timingHorizon ? "SUPPORTED_INFERENCE" : "UNKNOWN" },
+          ...keyDateRows,
+        ])}
+      </div>`;
+
+    const portfolio = v2.portfolioOpportunity;
+    const secPortfolio = $("secPortfolio");
+    if (portfolio && (portfolio.relatedHotels || []).length) {
+      if (secPortfolio) secPortfolio.hidden = false;
+      $("dPortfolio").innerHTML = `
+        <p class="dop-caveat">${esc(portfolio.note || "Portfolio-linked hotels for diligence — not separate open conversions.")}</p>
+        ${portfolio.ownerOrganization ? `<div class="dop-fact-list">${renderFactRows([{ label: "Owner organization", value: portfolio.ownerOrganization, kind: "FACT" }, { label: "Engagement angle", value: portfolio.angle || "Unknown", kind: portfolio.angle ? "SUPPORTED_INFERENCE" : "UNKNOWN" }, { label: "Hotels linked", value: portfolio.hotelsLinked, kind: "FACT" }])}</div>` : ""}
+        <div class="dop-related" style="margin-top:10px">${(portfolio.relatedHotels || [])
+          .map((h) => {
+            const ready = Boolean(h.hpcRecordId);
+            return `<button type="button" data-hpc="${esc(h.hpcRecordId || "")}" data-name="${esc(h.name || "")}" ${ready ? "" : "disabled"}>
+              <strong>${esc(h.name || "Hotel")}</strong><br/><small>${esc([h.brand, h.market].filter(Boolean).join(" · ") || "Market to verify")} · ${ready ? "Open Hotel Explorer" : "Profile pending"}</small>
+            </button>`;
+          })
+          .join("")}</div>`;
+    } else {
+      if (secPortfolio) secPortfolio.hidden = true;
+      $("dPortfolio").innerHTML = "";
+    }
+
+    const sources = v2.supportingEvidence || o.sources || [];
+    $("dSources").innerHTML =
+      sources
+        .map((s) => {
+          const label = s.title || sourceTitle(s) || "Source";
+          const title = s.url
+            ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
+            : `<b>${esc(label)}</b>`;
+          const bits = [
+            s.publisher,
+            s.date,
+            s.primarySecondary,
+            s.claim || s.caption,
+            s.limitations,
+          ]
+            .filter(Boolean)
+            .map((x) => String(x).replace(/CUSTOMER_BLOCKED/g, "Founder preview only"));
+          return `<div class="dop-evidence"><div>${title}<small>${esc(bits.join(" · ") || "Reported research reference")}</small></div></div>`;
+        })
+        .join("") ||
+      `<p class="dop-empty-inline">No public source links attached yet.</p>`;
+
+    const gaps = v2.stillNeedToKnow || [];
+    $("dGaps").innerHTML = gaps.length
+      ? gaps.map((g) => `<li>${esc(g)}</li>`).join("")
+      : `<li>No material research gaps flagged on this record.</li>`;
+
+    const next = v2.recommendedNextSteps || {};
+    const research = next.researchTasks || [];
+    const engage = next.engagementActions || [];
+    $("dNext").innerHTML = `
+      <div class="dop-next-col">
+        <label>Research tasks</label>
+        <ul class="dop-gap-list">${
+          research.length ? research.map((t) => `<li>${esc(t)}</li>`).join("") : "<li>None flagged.</li>"
+        }</ul>
+      </div>
+      <div class="dop-next-col">
+        <label>Suggested commercial engagement</label>
+        <ul class="dop-gap-list">${
+          engage.length ? engage.map((t) => `<li>${esc(t)}</li>`).join("") : "<li>Monitor only until timing and access are confirmed.</li>"
+        }</ul>
+      </div>`;
+
+    document.querySelectorAll(".dop-legacy-only").forEach((el) => {
+      el.hidden = true;
+    });
+  }
+
+  function showDrawerLegacy(o) {
+    const whyMatter = buildWhyMatters(o);
     $("dTitle").textContent = o.name;
     $("dLocation").textContent = [formatMarketDisplay(o), o.sub ? toProperCase(o.sub) : ""].filter(Boolean).join(" · ");
-    $("dType").textContent = toProperCase(o.type);
-    $("dDate").textContent = o.window;
-    $("dAccess").textContent = o.access;
+    $("dHeadline").textContent = "";
+    $("dMeta").innerHTML = `<span class="dop-meta-chip">CUSTOMER_BLOCKED</span>`;
+    $("dKpis").innerHTML = [
+      ["Opportunity", toProperCase(o.type)],
+      ["Decision window", o.window],
+      ["Access assessment", o.access],
+    ]
+      .map(([l, v]) => `<div class="dop-drawer-kpi"><label>${esc(l)}</label><b>${esc(v)}</b></div>`)
+      .join("");
+    $("dExecFacts").innerHTML = "";
+    $("dThesis").innerHTML = "";
+    $("dOwner").innerHTML = "";
+    $("dContract").innerHTML = "";
+    $("dPartner").innerHTML = "";
+    $("dPeople").innerHTML = "";
+    $("dTiming").innerHTML = "";
+    $("dGaps").innerHTML = "";
+    document.querySelectorAll(".dop-legacy-only").forEach((el) => {
+      el.hidden = false;
+    });
     $("dWhy").textContent = whyMatter.lead;
     const whyCtx = $("dWhyContext");
     if (whyCtx) {
-      whyCtx.innerHTML = (whyMatter.context || [])
-        .map((line) => `<li>${esc(line)}</li>`)
-        .join("");
+      whyCtx.innerHTML = (whyMatter.context || []).map((line) => `<li>${esc(line)}</li>`).join("");
     }
     $("dAssessment").innerHTML = whyMatter.chips
       .map((c) => `<div class="dop-chip"><span>${esc(c.label)}</span><strong>${esc(c.value)}</strong></div>`)
       .join("");
-
     $("dFacts").innerHTML = buildFacts(o)
       .map(([l, v]) => `<div class="dop-fact"><span>${esc(l)}</span><strong>${esc(v)}</strong></div>`)
       .join("");
-
     $("dSources").innerHTML =
       (o.sources || [])
         .map((s) => {
@@ -1540,9 +1877,25 @@
             : "Reported research reference · founder preview";
           return `<div class="dop-evidence"><div>${title}<small>${esc(caption)}</small></div></div>`;
         })
-        .join("") || `<p style="margin:0;color:var(--dop-muted-2);font-size:12px">No public source links attached yet.</p>`;
+        .join("") || `<p class="dop-empty-inline">No public source links attached yet.</p>`;
+    $("dNext").innerHTML = `<p>${esc(
+      o.next || "Confirm decision timing, engagement pathway, and contact readiness before outreach."
+    )}</p>`;
+  }
 
-    $("dNext").textContent = o.next || "Confirm decision timing, engagement pathway, and contact readiness before outreach.";
+  function showDrawer(id) {
+    const o = state.opps.find((x) => x.id === id);
+    if (!o) return;
+    state.current = o;
+    state.lastFocus = document.activeElement;
+    showToast("Opening opportunity intelligence…", "info");
+
+    if (o.drawerV2 && o.drawerV2.version) {
+      showDrawerV2(o, o.drawerV2);
+    } else {
+      showDrawerLegacy(o);
+    }
+
     const he = o.he || {};
     $("dHE").innerHTML = `<strong>${he.ready ? "Ready to open" : "Research pending"}</strong><div>${esc(
       he.ready
@@ -1562,7 +1915,7 @@
         })
         .join("");
     } else {
-      $("dRelated").innerHTML = `<p style="margin:0;color:var(--dop-muted-2,#7e89ac);font-size:12px">No related portfolio hotels linked on this opportunity.</p>`;
+      $("dRelated").innerHTML = `<p class="dop-empty-inline">No related portfolio hotels linked on this opportunity.</p>`;
     }
 
     $("drawer").classList.add("visible");
@@ -1605,7 +1958,14 @@
     $("mCountriesSub").textContent = (m.countryLabels || []).slice(0, 6).join(" · ") || "From qualified set";
     $("mContacts").textContent = String(m.actionReadyContacts || 0).padStart(2, "0");
 
-    const ahip = state.opps.find((o) => /ahip/i.test(o.id) || /AHIP/i.test(o.name));
+    const ahipCandidates = state.opps.filter(
+      (o) => /ahip/i.test(o.id) || /AHIP/i.test(o.name) || /Aimbridge MCT/i.test(o.name || "")
+    );
+    const ahip =
+      ahipCandidates.find((o) => (o.relatedHotels || []).length > 1) ||
+      ahipCandidates.find((o) => o.group === "qualified") ||
+      ahipCandidates[0] ||
+      null;
     if (ahip) {
       const n = ahip.relatedHotels?.length || 0;
       $("ahipPills").innerHTML = [
@@ -1615,6 +1975,7 @@
       ]
         .filter(Boolean)
         .join("");
+      $("ahipBtn").disabled = false;
       $("ahipBtn").onclick = () => showDrawer(ahip.id);
     } else {
       $("ahipPills").innerHTML = `<span class="dop-pill">AHIP parent not in current qualified set</span>`;

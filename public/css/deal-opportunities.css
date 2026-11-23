@@ -1416,6 +1416,211 @@ body.dop-root.embed-mode .dop-page {
   border-left: 1px solid var(--dop-border);
   color: var(--dop-muted);
 }
+.dop-drawer.dop-drawer-v2 {
+  width: min(680px, 100vw);
+}
+.dop-drawer-headline {
+  margin: 10px 0 0 !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: var(--dop-text) !important;
+  max-width: 52ch;
+}
+.dop-drawer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.dop-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--dop-border);
+  color: var(--dop-muted-2);
+  background: rgba(8, 15, 37, 0.45);
+}
+.dop-strength-strong {
+  border-color: rgba(46, 184, 138, 0.45);
+  color: #7ddec0;
+}
+.dop-strength-mod {
+  border-color: rgba(174, 185, 225, 0.45);
+  color: var(--dop-accent-2, #aeb9e1);
+}
+.dop-strength-lim {
+  border-color: rgba(214, 158, 46, 0.4);
+  color: #e0b85c;
+}
+.dop-prio-now {
+  border-color: rgba(46, 184, 138, 0.5);
+  color: #7ddec0;
+}
+.dop-prio-build {
+  border-color: rgba(108, 114, 255, 0.45);
+  color: #a8acf8;
+}
+.dop-prio-mon {
+  border-color: var(--dop-border);
+  color: var(--dop-muted-2);
+}
+.dop-kind {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: middle;
+  font-weight: 650;
+}
+.dop-kind-fact {
+  background: rgba(46, 184, 138, 0.12);
+  color: #7ddec0;
+}
+.dop-kind-inf {
+  background: rgba(108, 114, 255, 0.12);
+  color: #a8acf8;
+}
+.dop-kind-unk {
+  background: rgba(126, 137, 172, 0.12);
+  color: var(--dop-muted-2);
+}
+.dop-caveat {
+  margin: 0 0 10px !important;
+  font-size: 11.5px !important;
+  line-height: 1.5 !important;
+  color: var(--dop-muted-2) !important;
+}
+.dop-thesis {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.dop-status-verify {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--dop-accent, #2f6fed);
+  background: rgba(47, 111, 237, 0.06);
+  border-radius: 0 8px 8px 0;
+}
+.dop-status-verify small {
+  display: block;
+  margin-top: 6px;
+  color: var(--dop-muted-2);
+  font-size: 11px;
+}
+.dop-thesis-block label,
+.dop-next-col label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dop-muted-2);
+  margin-bottom: 4px;
+}
+.dop-thesis-block p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--dop-muted);
+}
+.dop-gap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.dop-gap-list li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--dop-text);
+}
+.dop-gap-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dop-accent, #aeb9e1);
+  opacity: 0.7;
+}
+.dop-person {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--dop-border);
+  border-radius: 8px;
+  background: rgba(8, 15, 37, 0.4);
+  margin-bottom: 8px;
+}
+.dop-person strong {
+  color: var(--dop-text);
+  font-size: 13px;
+}
+.dop-person span {
+  font-size: 12px;
+  color: var(--dop-muted);
+}
+.dop-person small {
+  font-size: 11px;
+  color: var(--dop-muted-2);
+}
+.dop-person a {
+  color: var(--dop-accent-2);
+}
+.dop-contact-needed {
+  color: #e0b85c !important;
+}
+.dop-org-list {
+  margin-top: 4px;
+}
+.dop-priority-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--dop-border);
+  background: rgba(8, 15, 37, 0.5);
+}
+.dop-priority-banner strong {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dop-priority-banner span {
+  font-size: 11.5px;
+  color: var(--dop-muted-2);
+  line-height: 1.45;
+}
+.dop-priority-banner.dop-prio-now {
+  border-color: rgba(46, 184, 138, 0.4);
+  background: rgba(46, 184, 138, 0.08);
+}
+.dop-priority-banner.dop-prio-build {
+  border-color: rgba(108, 114, 255, 0.35);
+  background: rgba(108, 114, 255, 0.08);
+}
+.dop-next-col {
+  margin-bottom: 14px;
+}
+.dop-empty-inline {
+  margin: 0;
+  color: var(--dop-muted-2);
+  font-size: 12px;
+}
 .dop-drawer.visible {
   transform: translateX(0);
 }
