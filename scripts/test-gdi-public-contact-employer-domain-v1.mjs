@@ -57,6 +57,13 @@ check("org-as-person names rejected", () => {
   assert.equal(looksLikePersonName("Learning Futures New York"), false);
   assert.equal(looksLikePersonName("Amy Drow"), true);
   assert.equal(looksLikePersonName("Shaniece Rigans"), true);
+  // V2.1 Stage-2 placeholders
+  assert.equal(looksLikePersonName("Booth Booth"), false);
+  assert.equal(looksLikePersonName("Spain Shines"), false);
+  assert.equal(looksLikePersonName("Survey Software"), false);
+  assert.equal(looksLikePersonName("Boutique Design New"), false);
+  assert.equal(looksLikePersonName("Aztron Medtech"), false);
+  assert.equal(looksLikePersonName("Randy Tedder"), true);
 });
 
 check("research budget stops at max and after unproductive streak", () => {

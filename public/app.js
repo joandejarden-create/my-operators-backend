@@ -85,6 +85,7 @@
         '/deal-compare': { file: '/deal-compare.html', title: 'Deal Compare' },
         '/market-alerts': { file: '/market-alerts.html', title: 'Market Alerts' },
         '/opportunity-radar': { file: '/deal-capture-radar-with-ranked-list.html', title: 'The Radar' },
+        '/deal-opportunities': { file: '/deal-opportunities.html', title: 'Deal Opportunities' },
         '/scout-market-map': { file: '/app/scout-market-map.html', title: 'Scout Market Map' },
         // Retired route kept as archived source file only (public/management-operator-radar.html).
         // Intentionally removed from active app shell routing/navigation.
@@ -266,6 +267,7 @@
                     icon: NAV_ICONS.market,
                     children: [
                         { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
+                        { label: 'Deal Opportunities', route: '/deal-opportunities', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['owner', 'brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
@@ -424,6 +426,7 @@
         '/deal-compare.html': '/deal-compare',
         '/market-alerts.html': '/market-alerts',
         '/deal-capture-radar-with-ranked-list.html': '/opportunity-radar',
+        '/deal-opportunities.html': '/deal-opportunities',
         '/app/scout-market-map.html': '/scout-market-map',
         '/operator-intelligence-radar-with-list.html': '/opportunity-radar',
         '/loi-database-dashboard.html': '/loi-database-dashboard',

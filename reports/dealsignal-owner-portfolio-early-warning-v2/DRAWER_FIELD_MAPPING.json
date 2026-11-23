@@ -1,0 +1,95 @@
+{
+  "asOf": "2026-11-23T01:00:00.000Z",
+  "audience": "INTEGRATION_CONTROLLER",
+  "uiModification": "NONE",
+  "schemaChanges": "NONE — map into existing fields or notes",
+  "mapping": [
+    {
+      "drawerSection": "Opportunity identity",
+      "sources": ["Discovery Inventory.hotelName", "Discovery Findings.findingId", "notes wave tags"],
+      "gap": null
+    },
+    {
+      "drawerSection": "Commercial status",
+      "sources": ["Finding notes commercialStatus tag OR commercialRelevance + verificationStatus proxies"],
+      "gap": "No dedicated Emerging/Watchlist/Committed select — encode in notes / research maturity until IC adds supported option"
+    },
+    {
+      "drawerSection": "Opportunity type",
+      "sources": ["MAP_DISCOVERY_FINDINGS commercialCategory / commercialThesis category"],
+      "gap": null
+    },
+    {
+      "drawerSection": "Research maturity",
+      "sources": ["notes: IDENTIFIED|INVESTIGATED|VETTED"],
+      "gap": "No dedicated select — notes only"
+    },
+    {
+      "drawerSection": "Owner identity and background",
+      "sources": ["decisionParty", "notes THESIS OwnerStrategy", "DRAWER_HANDOFF.C_ownerBackground"],
+      "gap": "Structured owner profile not a first-class Airtable object in HIF discovery tables"
+    },
+    {
+      "drawerSection": "Current brand/operator",
+      "sources": ["Inventory.currentBrand", "notes currentOperator"],
+      "gap": "Operator often notes-only"
+    },
+    {
+      "drawerSection": "Why the opportunity exists",
+      "sources": ["commercialTrigger", "commercialThesis"],
+      "gap": null
+    },
+    {
+      "drawerSection": "Commercial catalyst",
+      "sources": ["commercialTrigger", "nextDecisionDate"],
+      "gap": null
+    },
+    {
+      "drawerSection": "Why another partner might be relevant",
+      "sources": ["notes THESIS: 4 Plausible / 5 Limits", "DRAWER_HANDOFF.E"],
+      "gap": "Parse THESIS block from notes"
+    },
+    {
+      "drawerSection": "Contractual facts",
+      "sources": ["decisionEvidence", "sources[]", "nextDecisionDate", "timingClass in notes"],
+      "gap": "timingClass not a schema field — notes / drawer JSON"
+    },
+    {
+      "drawerSection": "Decision and engagement window",
+      "sources": ["commercialTiming", "nextDecisionDate", "engagementPriority in notes"],
+      "gap": "ENGAGE_NOW|BUILD_RELATIONSHIP|MONITOR not schema select — notes + drawer JSON"
+    },
+    {
+      "drawerSection": "Named executives",
+      "sources": ["notes executives JSON / DRAWER_HANDOFF.F"],
+      "gap": "No contacts table write this wave; no Surfe; roles in handoff JSON"
+    },
+    {
+      "drawerSection": "Engagement pathways",
+      "sources": ["engagementRoute", "DRAWER_HANDOFF.G"],
+      "gap": null
+    },
+    {
+      "drawerSection": "Affected hotels and rooms",
+      "sources": ["Inventory link", "rooms in candidates JSON", "hotelsNote for portfolio parents"],
+      "gap": "Portfolio parent cardinality must be enforced in UI (1 decision ≠ N opens)"
+    },
+    {
+      "drawerSection": "Supporting citations",
+      "sources": ["sourceUrl", "sources[]", "decisionEvidence"],
+      "gap": "Full citation metadata (accessDate, independence) richer in DRAWER_HANDOFF than Airtable columns"
+    },
+    {
+      "drawerSection": "Contradictions / unknowns",
+      "sources": ["gaps[]", "DRAWER_HANDOFF.J", "notes Limits"],
+      "gap": null
+    },
+    {
+      "drawerSection": "Suggested next commercial step",
+      "sources": ["recommendedAction / discussionAngle", "engagementPriority"],
+      "gap": null
+    }
+  ],
+  "drawerJsonAuthority": "reports/dealsignal-owner-portfolio-early-warning-v2/DRAWER_HANDOFF.json (+ CONTINUATION append)",
+  "instruction": "Prefer DRAWER_HANDOFF for client-ready copy; Airtable holds durable IDs and core commercial fields; do not invent schema options"
+}
