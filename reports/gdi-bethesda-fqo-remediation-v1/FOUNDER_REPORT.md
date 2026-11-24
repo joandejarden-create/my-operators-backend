@@ -128,7 +128,9 @@ Research inventory → hotel-wide disposition → qualified candidate → packag
 - Candidate SHA256: `e299e5b6e70d01fc462d26e4697af73036143b029d08ecde42a1638abacefb46`  
 - Checksums: `reports/gdi-bethesda-fqo-remediation-v1/CHECKSUMS.json`  
 - Tests: FQO 24 PASS · hotel-wide 18 PASS  
-- PR: *(filled after open)*  
+- PR: https://github.com/joandejarden-create/my-operators-backend/pull/597  
+- Tip commit: `b008b80d5fe21b1de4a7012f5d32c961d0f50020`  
+
 
 ---
 
