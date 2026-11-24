@@ -391,7 +391,7 @@
       '<div class="gdi-error" role="alert"><p>' +
       esc(msg) +
       "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p>" +
-      '<p class="gdi-error__nav"><button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">View Research</button></p></div>';
+      '<p class="gdi-error__nav"><button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="retry-load">Retry</button></p></div>';
     wireRecoveryActions({ hasCurrentPublication: false });
   }
 
@@ -437,10 +437,21 @@
         });
       });
     }
+    // Research mode remains available via explicit admin/diagnostic URLs only —
+    // not from the normal STAGED empty/error chrome.
     var research = root.querySelector('[data-gdi-recovery="view-research"]');
     if (research) {
       research.addEventListener("click", function () {
         applyFounderInventoryMode("research");
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+    var retry = root.querySelector('[data-gdi-recovery="retry-load"]');
+    if (retry) {
+      retry.addEventListener("click", function () {
         setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
         loadAll().catch(function (err) {
           handleLoadFailure(err);
@@ -462,15 +473,15 @@
 
   function customerFacingMissingInventoryMessage(mode, data) {
     data = data || {};
-    var recovery = data.recovery || {};
-    // Never leak internal staged/publication implementation terminology.
+    // Founder STAGED review + published inventory: neutral empty copy only.
+    // Do not push internal Research workflow instructions into the normal UI.
+    if (mode === "staged") {
+      return "No finalized opportunities are available for this property.";
+    }
     if (mode === "published") {
       return "No opportunities are available for this property yet.";
     }
-    if (recovery.hasCurrentPublication === true) {
-      return "No opportunities are available in this preview. You can view the published inventory or switch to Research.";
-    }
-    return "No opportunities are available for this property in the selected view. Switch to Research to review hotel research findings when available.";
+    return "No opportunities are available for this property in the selected view.";
   }
 
   function applyMissingInventoryEmptyState(err) {
@@ -493,9 +504,11 @@
     var empty = state.inventoryEmpty;
     if (!empty) return "";
     var recovery = empty.recovery || {};
+    // Optional published inventory escape hatch only — never "View Research"
+    // in the normal founder STAGED / published empty state.
     var publishedBtn =
       empty.mode === "staged" && recovery.hasCurrentPublication === true
-        ? '<button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button> '
+        ? '<p class="gdi-empty__actions"><button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button></p>'
         : "";
     return (
       '<div class="gdi-empty gdi-empty--inventory-unavailable" role="status" data-gdi-inventory-empty="' +
@@ -504,10 +517,7 @@
       "<p>" +
       esc(empty.message) +
       "</p>" +
-      '<p class="gdi-empty__actions">' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">View Research</button> ' +
       publishedBtn +
-      "</p>" +
       "</div>"
     );
   }
