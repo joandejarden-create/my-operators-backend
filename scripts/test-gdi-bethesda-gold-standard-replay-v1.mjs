@@ -47,6 +47,8 @@ function pass(name) {
 }
 
 {
+  const QUALITY =
+    "gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1";
   const staged = path.join(
     ROOT,
     "lib/group-demand-intelligence/bundled-publication-packages",
@@ -59,17 +61,29 @@ function pass(name) {
     HOTEL,
     "CURRENT.json",
   );
-  // LF-normalized freeze SHAs (CRLF raw Windows hashes differ; pointers unchanged)
-  assert.equal(
-    sha(staged),
-    "3ffa591efa85692a60b3fac97b6a3e7bc7dd158d9d414ca1b8d35c23221160f5",
-  );
+  // CURRENT freeze unchanged (customer publication). STAGED advanced to certified 68.
   assert.equal(
     sha(current),
     "cc6bc678df252819c26ec1d6d6184d594a2bb452734e978a1e4b974d4eca545d",
   );
   const stagedJson = JSON.parse(fs.readFileSync(staged, "utf8"));
-  assert.equal(stagedJson.publicationVersion || stagedJson.version, GOLD);
+  assert.equal(stagedJson.publicationVersion || stagedJson.version, QUALITY);
+  assert.equal(
+    String(stagedJson.contentFingerprintSha256 || "").toLowerCase(),
+    "b6ae36c2319180e89fee7d7e18b147220c55be213be92f8a673e976baf45b461",
+  );
+  assert.equal(
+    sha(staged),
+    "7bd4d687b8a3702f884c096b208b46954b9b9e9ae2b99536943834f9a623c595",
+  );
+  // Historical 67 STAGED rollback artifact must remain available
+  const rollback = path.join(
+    ROOT,
+    "reports/gdi-bethesda-staged-activation-68-v1/rollback/STAGED.before.json",
+  );
+  assert.ok(fs.existsSync(rollback), "prior 67 STAGED rollback missing");
+  const prior = JSON.parse(fs.readFileSync(rollback, "utf8"));
+  assert.equal(prior.publicationVersion, GOLD);
   pass("staged_current_pointers_match_freeze_checksums");
 }
 
