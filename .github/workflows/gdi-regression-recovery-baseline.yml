@@ -113,6 +113,11 @@ jobs:
       - name: Full customer consistency audit smoke (3 hotels)
         run: npm run test:gdi-full-customer-consistency-audit-v1
 
+      - name: Portfolio Qualified Opportunity standard + reconcile gate
+        run: |
+          npm run test:gdi-finalized-qualified-opportunity-v1
+          npm run test:gdi-portfolio-qualified-opportunities-v1
+
       - name: Buyer-WHO E2E recovery + permanent Full E2E
         run: |
           npm run test:gdi-buyer-who-e2e-recovery-v1
