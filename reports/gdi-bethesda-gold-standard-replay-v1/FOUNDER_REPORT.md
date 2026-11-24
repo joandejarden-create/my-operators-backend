@@ -33,7 +33,8 @@ Dominant root causes: FQO evidence-URL gate vs presentation package shape; histo
 10. `10_TECHNICAL_REGRESSIONS_AND_ROOT_CAUSES.md`  
 11. `11_MINIMAL_REMEDIATION_PLAN.md`  
 12. `12_WYNDHAM_WATERSTONE_READINESS.md`  
-13. `13_PR_AND_TEST_EVIDENCE.md`
+13. `13_PR_AND_TEST_EVIDENCE.md`  
+14. `14_SIX_LEISURE_CATEGORIES_INTEGRATION_AUDIT.md` + matrix JSON — six LDI categories vs canonical E2E (0 fully executed; 5 partial; 1 defined-not-executed)
 
 ## PR
 
