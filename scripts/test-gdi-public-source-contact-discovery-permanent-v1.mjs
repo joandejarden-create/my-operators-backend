@@ -15,7 +15,11 @@ import {
   decideEnrichmentChannels,
   publicContactPersonKey,
   isRoleOrGenericMailbox,
+  emailLocalPartMatchesPerson,
+  isPersonLinkedInProfileUrl,
+  PUBLIC_CONTACT_CHANNEL_KIND,
 } from "../lib/group-demand-intelligence/presentation/gdi-public-contact-verification-v1.js";
+import { assessWhoHowCompletenessGates } from "../lib/group-demand-intelligence/workflow/gdi-who-how-contact-intelligence-restore-v1.js";
 import {
   runPublicContactDiscoveryWorkflow,
   clearPublicContactResearchCacheForTests,
@@ -217,6 +221,130 @@ check("modules do not call Surfe or FullEnrich clients", () => {
     const src = fs.readFileSync(path.join(ROOT, rel), "utf8");
     assert.doesNotMatch(src, /createSurfe|getSurfeCredits|fullenrich\.io|FULLENRICH_API_KEY/);
   }
+});
+
+check("shared org inbox contacto@ is never DIRECT_WORK_EMAIL", () => {
+  assert.equal(isRoleOrGenericMailbox("contacto@amegendoscopia.org.mx"), true);
+  const c = classifyPublicContactChannel({
+    channel: "email",
+    value: "contacto@amegendoscopia.org.mx",
+    personName: "Mayra Membrillo Garduño",
+    organizationName: "AMEG",
+    contact: {
+      channelSourceUrl:
+        "https://amegendoscopia.org.mx/eventos/ecos-endoscopicos-internacionales",
+      contactDataOrigin: "PUBLIC_SOURCE",
+      channelLastVerifiedAt: new Date().toISOString().slice(0, 10),
+    },
+  });
+  assert.equal(c.kind, PUBLIC_CONTACT_CHANNEL_KIND.ORGANIZATION_EMAIL_ROUTE);
+  assert.equal(
+    c.status,
+    PUBLIC_CONTACT_VERIFICATION_STATUS.VERIFIED_ORGANIZATION_ROUTE,
+  );
+  assert.notEqual(c.kind, PUBLIC_CONTACT_CHANNEL_KIND.DIRECT_WORK_EMAIL);
+});
+
+check("person-specific email retains DIRECT_WORK_EMAIL", () => {
+  assert.equal(
+    emailLocalPartMatchesPerson(
+      "llawrence@grenadaco-opbank.com",
+      "Larry Lawrence",
+    ),
+    true,
+  );
+  const c = classifyPublicContactChannel({
+    channel: "email",
+    value: "llawrence@grenadaco-opbank.com",
+    personName: "Larry Lawrence",
+    organizationName: "Grenada Co-operative Bank",
+    contact: {
+      channelSourceUrl: "https://imrtgrenada.com/",
+      contactDataOrigin: "PUBLIC_SOURCE",
+      channelLastVerifiedAt: new Date().toISOString().slice(0, 10),
+    },
+  });
+  assert.equal(c.kind, PUBLIC_CONTACT_CHANNEL_KIND.DIRECT_WORK_EMAIL);
+  assert.equal(c.status, PUBLIC_CONTACT_VERIFICATION_STATUS.VERIFIED_DIRECT);
+});
+
+check("organization switchboard phone is not verified personal direct", () => {
+  const c = classifyPublicContactChannel({
+    channel: "phone",
+    value: "+1 473 440 2111",
+    personName: "Larry Lawrence",
+    organizationName: "Grenada Co-operative Bank",
+    contact: {
+      phoneType: "switchboard",
+      channelSourceUrl: "https://imrtgrenada.com/",
+      contactDataOrigin: "PUBLIC_SOURCE",
+      channelLastVerifiedAt: new Date().toISOString().slice(0, 10),
+    },
+  });
+  assert.equal(c.kind, PUBLIC_CONTACT_CHANNEL_KIND.ORGANIZATION_PHONE_ROUTE);
+  assert.equal(
+    c.status,
+    PUBLIC_CONTACT_VERIFICATION_STATUS.VERIFIED_ORGANIZATION_ROUTE,
+  );
+});
+
+check("person LinkedIn /in/ accepted; company /posts/ rejected", () => {
+  assert.equal(
+    isPersonLinkedInProfileUrl("https://linkedin.com/in/giovanni-conca-684bab12"),
+    true,
+  );
+  assert.equal(
+    isPersonLinkedInProfileUrl(
+      "https://www.linkedin.com/posts/afcona-additives_salesmeeting-teamspirit-lisbon-activity-7445077546477670401-DI27",
+    ),
+    false,
+  );
+});
+
+check("missing personal email does not invalidate WHO; Sales Ready independent", () => {
+  const gates = assessWhoHowCompletenessGates({
+    organizationName: "Advantage Travel Partnership",
+    primaryContact: {
+      name: "Pelin Dede",
+      role: "Head of Supplier Partnerships, Lodging",
+      organization: "Advantage Travel Partnership",
+      sourceUrl:
+        "https://www.advantagetravelpartnership.com/new-partnership-with-shr",
+    },
+    secondaryContact: {
+      name: "Sonia Michaels",
+      role: "Head of Events",
+      organization: "Advantage Travel Partnership",
+    },
+    howContactResearchAttempted: true,
+    howContactResearchStatus: "HOW_ATTEMPTED_NO_CHANNEL",
+  });
+  assert.equal(gates.whoComplete, true);
+  assert.equal(gates.whoSecondaryComplete, true);
+  assert.equal(gates.channels.emailDirect, false);
+  assert.equal(gates.salesReady, false);
+});
+
+check("org inbox route does not set emailDirect or auto Sales Ready", () => {
+  const gates = assessWhoHowCompletenessGates({
+    organizationName: "AMEG",
+    primaryContact: {
+      name: "Mayra Membrillo Garduño",
+      email: "contacto@amegendoscopia.org.mx",
+      organization: "AMEG",
+      channelSourceUrl:
+        "https://amegendoscopia.org.mx/eventos/ecos-endoscopicos-internacionales",
+      contactDataOrigin: "PUBLIC_SOURCE",
+      channelLastVerifiedAt: new Date().toISOString().slice(0, 10),
+    },
+    howContactResearchAttempted: true,
+  });
+  assert.equal(gates.whoComplete, true);
+  assert.equal(gates.verification.hasVerifiedOrgEmailRoute, true);
+  assert.equal(gates.verification.hasVerifiedDirectEmail, false);
+  assert.equal(gates.channels.emailDirect, false);
+  assert.equal(gates.salesReady, false);
+  assert.equal(gates.howResearchStatus, "HOW_PARTIAL_CHANNELS");
 });
 
 console.log(
