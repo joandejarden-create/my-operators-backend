@@ -1,6 +1,6 @@
 # Portfolio-wide GDI Qualified Opportunities — Reconciliation
 
-**As of:** 2026-11-24T20:16:11.957Z
+**As of:** 2026-11-24T20:20:28.819Z
 **STAGED activation:** NOT performed (founder approval required)
 **Paid research:** none executed
 
@@ -22,7 +22,7 @@
 | The Mayflower Hotel, Autograph Collection | 0 | 0 | 0 | — | — | NO_RESEARCH_OR_PUBLICATION |
 | Memmo Príncipe Real | 0 | 0 | 0 | gdi_dh_best_contact_restore_rec1t35e3sPerzxYu_20261124 (0/11 FQO FQO_PACKAGE_INCOMPLETE); gdi_dh_buyer_who_recovery_rec1t35e3sPerzxYu_20261124 (0/11 FQO FQO_PACKAGE_INCOMPLETE); gdi_dh_contact_hardened_rec1t35e3sPerzxYu_20261124 (0/14 FQO FQO_PACKAGE_INCOMPLETE); gdi_dh_named_coverage_rec1t35e3sPerzxYu_20261124 (0/11 FQO FQO_PACKAGE_INCOMPLETE); gdi_dh_v3_staged_rec1t35e3sPerzxYu_20261124 (0/43 FQO FQO_PACKAGE_INCOMPLETE) | gdi_dh_who_how_rec1t35e3sPerzxYu_20261124 (11) | EXISTING_STAGED_BELOW_FQO_STANDARD:11 |
 | AC Hotel A Coruña | 39 | 1 | 2 | — | — | — |
-| Hilton New York Times Square | 45 | 9 | 10 | — | — | — |
+| Hilton New York Times Square | 45 | 9 | 10 | gdi_hilton_ts_paid_research_v1_20261124 (6/6 FQO FQO_PACKAGE_CERTIFIED); gdi_hilton_ts_reprocess_v1_20261124 (6/8 FQO FQO_PACKAGE_INCOMPLETE); gdi_hilton_ts_research_completion_v1_20261124 (4/5 FQO FQO_PACKAGE_INCOMPLETE) | — | — |
 | Castillo Hotel Son Vida | 20 | 0 | 0 | — | — | NO_FQO_PASS_YET |
 | rec8hHupaSwiWI3r7 | 0 | 0 | 0 | — | — | NOT_IN_SELECTABLE_CATALOG; NO_RESEARCH_OR_PUBLICATION |
 | rec9Tp0WBb2uk6w3u | 0 | 0 | 0 | — | — | NOT_IN_SELECTABLE_CATALOG; NO_RESEARCH_OR_PUBLICATION |
@@ -64,11 +64,3 @@
 
 ## STOP
 Founder approval required before consolidating/activating any STAGED batch.
-
-## IC integration correction (2026-11-24)
-
-- Hilton ID reconcile: see `reports/gdi-portfolio-integration-ic-v1/HILTON_TS_OPPORTUNITY_ID_RECONCILIATION.md`
-- FQO contract hardened: `sources[].url` evidence, `Date.parse(Date.now())` future-date fix, competitive Westin detection
-- Activation batch no longer emits `PROPOSED_FQO_CANDIDATE_*` placeholders � only FQO-certified versioned packages
-- Hotel identity: provisional `gdi_hotel_*` aliases collapse to canonical `rec�` IDs
-- STAGED activation: **still NOT performed**
