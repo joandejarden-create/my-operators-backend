@@ -31,7 +31,12 @@ Artifacts: `05_HILTON_HOTEL_WIDE_MANIFEST.json`, `06_HILTON_STAGED_CANDIDATE_EXA
 
 `npm run test:gdi-hotel-wide-finalization-stage-v1` — **PASS**
 
+## PR
+
+- **#595** https://github.com/joandejarden-create/my-operators-backend/pull/595  
+- Tip: `3f1983c6e`  
+- Stacks on FQO policy PR #593  
+
 ## STOP
 
-Ready for Integration Controller. No publication activation in this PR.
-Stacks on FQO policy PR #593.
+**AWAITING_INTEGRATION_CONTROLLER.** No publication activation in this PR.
