@@ -205,7 +205,7 @@ check("8_ui_no_view_research_in_staged_empty", () => {
   const slice = app.slice(i, i + 900);
   assert.match(
     slice,
-    /No finalized opportunities are available for this property/,
+    /No Qualified Opportunities are available for this property/,
   );
   assert.doesNotMatch(slice, /View Research/);
   assert.doesNotMatch(slice, /Switch to Research to review/);
