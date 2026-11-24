@@ -122,9 +122,10 @@ Registered in `.github/workflows/gdi-regression-recovery-baseline.yml`.
 
 ## 9. PR and Integration Controller status
 
-- PR: opened for Integration Controller merge (URL in chat closeout).
+- PR: [#591](https://github.com/joandejarden-create/my-operators-backend/pull/591) — OPEN
+- HEAD: `8f27b062e`
 - Product chat does **not** merge.
-- Status after PR open: `AWAITING_INTEGRATION_CONTROLLER`
+- Status: `AWAITING_INTEGRATION_CONTROLLER`
 
 ---
 
