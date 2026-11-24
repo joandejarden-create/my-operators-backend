@@ -223,6 +223,57 @@ await checkAsync("05_ladder_exhausts_agent_eligible", async () => {
   assert.equal(elig.reason, EXA_AGENT_CONTACT_ESCALATION_REASON.ELIGIBLE);
 });
 
+await checkAsync("05b_truncated_ladder_without_auth_blocks_agent", async () => {
+  const elig = evaluateExaAgentContactEscalationEligibility({
+    opportunity: baseOpp,
+    ladderExhausted: false,
+    ladderTruncatedByMaxStrategies: true,
+    opts: {
+      ...authBudget,
+      hasVerifiedNamedPerson: false,
+      authorizeExaAgentTruncatedLadderEscalation: false,
+    },
+  });
+  assert.equal(elig.eligible, false);
+  assert.equal(
+    elig.reason,
+    EXA_AGENT_CONTACT_ESCALATION_REASON.LADDER_TRUNCATED_WITHOUT_AUTH,
+  );
+
+  const r = await runBuyerAlternativePersonResearch(
+    { ...baseOpp, namedStakeholders: [] },
+    {
+      ...authBudget,
+      maxStrategies: 2,
+      authorizePaidResearch: false,
+      authorizeExaAgentTruncatedLadderEscalation: false,
+      mockExaAgentContactStructured: mockPrimary,
+    },
+  );
+  assert.equal(r.trace.ladderTruncatedByMaxStrategies, true);
+  assert.equal(r.trace.ladderExhausted, false);
+  assert.equal(r.trace.exaAgentContactEscalation?.attempted, false);
+  assert.equal(
+    r.trace.exaAgentContactEscalation?.reason,
+    EXA_AGENT_CONTACT_ESCALATION_REASON.LADDER_TRUNCATED_WITHOUT_AUTH,
+  );
+  assert.equal(r.trace.exaAgentContactEscalation?.providerCalled, false);
+});
+
+await checkAsync("05c_truncated_ladder_with_auth_allows_agent", async () => {
+  const elig = evaluateExaAgentContactEscalationEligibility({
+    opportunity: baseOpp,
+    ladderExhausted: false,
+    ladderTruncatedByMaxStrategies: true,
+    opts: {
+      ...authBudget,
+      hasVerifiedNamedPerson: false,
+      authorizeExaAgentTruncatedLadderEscalation: true,
+    },
+  });
+  assert.equal(elig.eligible, true);
+});
+
 await checkAsync("06_agent_flag_off_no_provider_call", async () => {
   const elig = evaluateExaAgentContactEscalationEligibility({
     opportunity: baseOpp,
@@ -311,6 +362,7 @@ await checkAsync("12_agent_valid_alternative_commercial_ranking", async () => {
     {
       ...authBudget,
       maxStrategies: 2,
+      authorizeExaAgentTruncatedLadderEscalation: true,
       authorizePaidResearch: false,
       mockExaAgentContactStructured: mockAlt,
     },
@@ -429,6 +481,7 @@ await checkAsync("17_primary_secondary_identities_distinct", async () => {
     {
       ...authBudget,
       maxStrategies: 2,
+      authorizeExaAgentTruncatedLadderEscalation: true,
       authorizePaidResearch: false,
       mockExaAgentContactStructured: mockBoth,
     },
