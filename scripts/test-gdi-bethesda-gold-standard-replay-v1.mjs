@@ -19,8 +19,14 @@ const REPORT = path.join(
   "reports/gdi-bethesda-gold-standard-replay-v1",
 );
 
+/**
+ * Freeze checksums must be newline-invariant: Windows checkouts may keep CRLF
+ * while Linux CI normalizes to LF. Hash LF-normalized bytes only.
+ */
 function sha(p) {
-  return createHash("sha256").update(fs.readFileSync(p)).digest("hex");
+  const raw = fs.readFileSync(p);
+  const lf = Buffer.from(raw.toString("utf8").replace(/\r\n/g, "\n"));
+  return createHash("sha256").update(lf).digest("hex");
 }
 
 function pass(name) {
@@ -53,13 +59,14 @@ function pass(name) {
     HOTEL,
     "CURRENT.json",
   );
+  // LF-normalized freeze SHAs (CRLF raw Windows hashes differ; pointers unchanged)
   assert.equal(
     sha(staged),
-    "f2a4f70b3fb104ee8c59c91648c35e5062de6f29565800a0015f55a2e875e6aa",
+    "3ffa591efa85692a60b3fac97b6a3e7bc7dd158d9d414ca1b8d35c23221160f5",
   );
   assert.equal(
     sha(current),
-    "db4eb0ca7d3e5b08ed160293f085b06260096347e7720f26c4dca6ca4606ce9c",
+    "cc6bc678df252819c26ec1d6d6184d594a2bb452734e978a1e4b974d4eca545d",
   );
   const stagedJson = JSON.parse(fs.readFileSync(staged, "utf8"));
   assert.equal(stagedJson.publicationVersion || stagedJson.version, GOLD);
@@ -135,10 +142,13 @@ function pass(name) {
     ),
     "utf8",
   );
-  assert.ok(src.includes("thesis.length >="));
-  assert.ok(src.includes("action.length >="));
-  assert.ok(/Westin New York at Times Square/.test(src));
-  pass("fqo_defects_documented_in_source_for_remediation");
+  // Remediaton complete: length shortcuts + NYC incumbent hardcode must stay gone.
+  assert.ok(!src.includes("thesis.length >="));
+  assert.ok(!src.includes("action.length >="));
+  assert.ok(!/Westin New York at Times Square/.test(src));
+  assert.ok(src.includes("HISTORICAL_PRESENTATION_PROVENANCE"));
+  assert.ok(src.includes("LABELED_ORGANIZATIONAL_ROUTE"));
+  pass("fqo_r1_r4_remediation_markers_present");
 }
 
 console.log("\nOK test-gdi-bethesda-gold-standard-replay-v1");
