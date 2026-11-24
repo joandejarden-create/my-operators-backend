@@ -881,10 +881,10 @@
   }
 
   /**
-   * Founder inventory views are separate from customer publication.
-   * research = hotel research store (no STAGED/CURRENT required)
-   * staged = explicit STAGED package only (fail-closed)
+   * Founder inventory views (FQO policy):
+   * staged = explicit STAGED Finalized Qualified packages only (fail-closed)
    * published = CURRENT customer package only
+   * research = authorized admin escape only (?gdiAdminResearch=1) — not a UI tab
    */
   function resolveFounderInventoryMode() {
     try {
@@ -897,11 +897,15 @@
       var preview = String(params.get("preview") || "")
         .trim()
         .toLowerCase();
+      var adminResearch = String(params.get("gdiAdminResearch") || "") === "1";
       if (
-        inventory === "research" ||
-        inventory === "development" ||
-        inventory === "dev" ||
-        inventory === "live"
+        adminResearch &&
+        (inventory === "research" ||
+          inventory === "development" ||
+          inventory === "dev" ||
+          inventory === "live" ||
+          String(params.get("live") || "") === "1" ||
+          String(params.get("publicationPackage") || "") === "0")
       ) {
         return "research";
       }
@@ -911,17 +915,9 @@
       }
       if (preview === "staged") return "staged";
       if (preview === "current" || preview === "published") return "published";
-      if (
-        String(params.get("live") || "") === "1" ||
-        String(params.get("publicationPackage") || "") === "0"
-      ) {
-        return "research";
-      }
-      // Local founder review: default to STAGED finalized packages (Full E2E
-      // contract). Research remains available only via explicit
-      // ?inventory=research / ?live=1 — never as a silent substitute for STAGED.
+      // Local founder review: STAGED finalized packages only. No Research tab /
+      // no silent research fallback when STAGED is missing.
       if (isLocalFounderHost()) return "staged";
-      // Production authenticated: customer-visible CURRENT package by default.
       return "published";
     } catch (e) {
       return isLocalFounderHost() ? "staged" : "published";
@@ -967,6 +963,8 @@
       url.searchParams.delete("inventory");
       url.searchParams.delete("gdiInventory");
       if (next === "research") {
+        // Admin-only — not exposed in local presentation chrome.
+        url.searchParams.set("gdiAdminResearch", "1");
         url.searchParams.set("inventory", "research");
         url.searchParams.set("live", "1");
       } else if (next === "staged") {

@@ -21,7 +21,7 @@
     var gdiInventoryCompareLabel = document.getElementById('gdiInventoryCompareLabel');
     var gdiInventoryCompareTooltip = document.getElementById('gdiInventoryCompareTooltip');
     var GDI_INVENTORY_STORAGE_KEY = 'dealality_gdi_inventory_mode';
-    var gdiInventoryMode = 'research';
+    var gdiInventoryMode = 'staged';
     var gdiCompareHotelId = '';
     var gdiCompareHotelLabel = '';
     /**
@@ -1169,11 +1169,20 @@
             )
                 .trim()
                 .toLowerCase();
+            // Local presentation: STAGED / Published only. Research is not a UI mode.
+            // Authorized admin research escape: ?gdiAdminResearch=1 (optionally with live=1).
+            var adminResearch =
+                String(hashQs.get('gdiAdminResearch') || parentQs.get('gdiAdminResearch') || '') ===
+                '1';
             if (
-                inventory === 'research' ||
-                inventory === 'development' ||
-                inventory === 'dev' ||
-                inventory === 'live'
+                adminResearch &&
+                (inventory === 'research' ||
+                    inventory === 'development' ||
+                    inventory === 'dev' ||
+                    inventory === 'live' ||
+                    String(hashQs.get('live') || parentQs.get('live') || '') === '1' ||
+                    String(hashQs.get('publicationPackage') || parentQs.get('publicationPackage') || '') ===
+                        '0')
             ) {
                 return 'research';
             }
@@ -1184,18 +1193,14 @@
                 .toLowerCase();
             if (preview === 'staged') return 'staged';
             if (preview === 'current' || preview === 'published') return 'published';
-            if (
-                String(hashQs.get('live') || parentQs.get('live') || '') === '1' ||
-                String(hashQs.get('publicationPackage') || parentQs.get('publicationPackage') || '') ===
-                    '0'
-            ) {
-                return 'research';
-            }
+            // Ignore legacy ?inventory=research / ?live=1 without admin flag — do not
+            // surface research store in the local GDI presentation.
             var stored = readStoredGdiInventoryMode();
-            if (stored) return stored;
-            return isLocalFounderShellHost() ? 'research' : 'published';
+            if (stored === 'staged' || stored === 'published') return stored;
+            // Local founder shell: Finalized STAGED review by default (FQO policy).
+            return isLocalFounderShellHost() ? 'staged' : 'published';
         } catch (_err) {
-            return isLocalFounderShellHost() ? 'research' : 'published';
+            return isLocalFounderShellHost() ? 'staged' : 'published';
         }
     }
 
