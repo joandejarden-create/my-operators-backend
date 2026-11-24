@@ -126,7 +126,7 @@ check("generic_organizational_inbox_only_fails", () => {
   assert.equal(r.finalizedQualified, false);
 });
 
-check("organization_switchboard_only_fails", () => {
+check("organization_route_without_label_or_channel_fails", () => {
   const switchboardOnly = evaluateFinalizedQualifiedOpportunity(
     baseOpp({
       primaryContact: {
@@ -134,12 +134,118 @@ check("organization_switchboard_only_fails", () => {
         role: "Director of Meetings",
       },
       organizationPhone: "+1 212-555-0199",
-      commercialContactRoute: "https://example.org/contact",
-      approvedCommercialRoute: "Official Example Association organizing / lodging channel",
     }),
   );
   assert.equal(switchboardOnly.finalizedQualified, false);
   assert.ok(switchboardOnly.reasons.includes("PERSON_SPECIFIC_CHANNEL_REQUIRED"));
+});
+
+check("named_person_plus_labeled_org_route_qualifies", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      primaryContact: {
+        name: "Jordan Lee",
+        role: "Director of Meetings",
+        organization: "Example Association",
+        email: "info@example.org",
+        emailType: "GENERIC_ORGANIZATION",
+        organizationContactRouteLabel:
+          "Official Example Association meetings / housing desk — ask for Jordan Lee",
+        askToBeDirectedTo: "Director of Meetings",
+      },
+    }),
+  );
+  assert.equal(r.finalizedQualified, true);
+  assert.ok(
+    r.gates.PERSON_SPECIFIC_CHANNEL.channels.some(
+      (c) => c.kind === "LABELED_ORGANIZATIONAL_ROUTE",
+    ),
+  );
+});
+
+check("short_but_complete_recommendation_qualifies", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      recommendedNextStep: "Call Jordan to propose housing.",
+      cardWhyNowLine: "",
+      recommendedSalesOrMarketingAction: "",
+    }),
+  );
+  assert.equal(r.finalizedQualified, true);
+});
+
+check("historical_provenance_without_toplevel_urls_qualifies", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      sourceUrls: [],
+      evidence: [],
+      sources: [],
+      seedUrls: [],
+      investigatedUrls: [],
+      cardWhyNowLine:
+        "Verified 2027 dates on the association wrap page for Bethesda lodging capture.",
+      primaryContact: {
+        name: "Jordan Lee",
+        role: "Director of Meetings",
+        organization: "Example Association",
+        email: "jordan.lee@example.org",
+        emailType: "DIRECT_WORK",
+        // no emailSource / sourceUrl — presentation-era contact without URL arrays
+      },
+      _historicalApprovedInventory: true,
+    }),
+  );
+  assert.equal(r.finalizedQualified, true);
+  assert.equal(
+    r.gates.EVIDENCE_BACKED_DEMAND.mode,
+    "HISTORICAL_PRESENTATION_PROVENANCE",
+  );
+});
+
+check("unsupported_speculation_without_urls_rejected", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      sourceUrls: [],
+      evidence: [],
+      sources: [],
+      seedUrls: [],
+      cardWhyNowLine: "Maybe a random exhibitor — speculation only, no evidence.",
+      summaryWhat: "speculation only",
+      whatIsHappening: "",
+      hotelOpportunityThesis: "unverified scrape",
+      primaryContact: {
+        name: "Jordan Lee",
+        role: "Director of Meetings",
+        email: "jordan.lee@example.org",
+        emailType: "DIRECT_WORK",
+      },
+    }),
+  );
+  assert.equal(r.finalizedQualified, false);
+  assert.ok(
+    r.reasons.includes("UNSUPPORTED_SPECULATION") ||
+      r.reasons.includes("MISSING_EVIDENCE_URLS"),
+  );
+});
+
+check("competitive_bethesda_market_incumbent_not_nyc_hardcode", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      marketScope: "COMPETITIVE",
+      competitiveContext: {
+        label: "CONFIRMED_COMPETITOR_BOOKING",
+        incumbentHotel: "Bethesda North Marriott Hotel & Conference Center",
+        pathway: "OVERFLOW_AND_FUTURE_CYCLE",
+      },
+      primaryContact: {
+        name: "Jordan Lee",
+        role: "Director of Meetings",
+        email: "jordan.lee@example.org",
+        relevanceEvidence: "Competitor hosted nearby; overflow pathway for Bethesda Marriott",
+      },
+    }),
+  );
+  assert.equal(r.finalizedQualified, true);
 });
 
 check("person_direct_phone_passes_channel_gate", () => {
@@ -159,9 +265,10 @@ check("person_direct_phone_passes_channel_gate", () => {
 check("wrong_market_or_missing_fit_fails", () => {
   const r = evaluateFinalizedQualifiedOpportunity(
     baseOpp({
-      hotelOpportunityThesis: "short",
+      hotelOpportunityThesis: "short unrelated blurb",
       whyThisHotel: "",
       whatIsHappening: "",
+      summaryWhat: "",
       hotelMarketScopeEligible: false,
     }),
   );

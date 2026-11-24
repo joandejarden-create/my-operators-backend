@@ -164,15 +164,33 @@ await check("rejected_records_not_resurrected", () => {
 });
 
 await check("previously_approved_review_when_eligibility_changes", () => {
-  const row = assignHotelWideDisposition(
+  // Named person + historical approval → retain (HOW gap is technical, not removal).
+  const retained = assignHotelWideDisposition(
     baseOpp({
       primaryContact: { name: "Jordan Lee", role: "Director of Meetings" },
     }),
     { sources: ["STAGED_PACKAGE"] },
   );
+  assert.equal(retained.disposition, HOTEL_WIDE_DISPOSITION.FINALIZATION_PASS);
+  assert.equal(retained.processingDisposition, "RETAINED_HISTORICAL_APPROVAL");
+
+  // Org-as-person on historically approved inventory → explicit founder review.
+  const orgAsPerson = assignHotelWideDisposition(
+    baseOpp({
+      primaryContact: {
+        name: "Maritz Global Events",
+        role: "Group Travel Coordinator",
+        askToBeDirectedTo: "Ask for housing desk",
+      },
+    }),
+    { sources: ["STAGED_PACKAGE"] },
+  );
   assert.equal(
-    row.disposition,
+    orgAsPerson.disposition,
     HOTEL_WIDE_DISPOSITION.PREVIOUSLY_APPROVED_REVIEW,
+  );
+  assert.ok(
+    (orgAsPerson.reasonCodes || []).some((r) => /NAMED_COMMERCIAL/.test(r)),
   );
 });
 
