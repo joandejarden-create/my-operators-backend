@@ -353,6 +353,46 @@ check("contract_id_stable", () => {
   assert.equal(GDI_CANONICAL_FULL_E2E_ENTRY_V1, "gdi-canonical-full-e2e-entry-v1");
 });
 
+await checkAsync("skip_hotel_wide_refused_outside_isolated_harness", async () => {
+  const r = await runCanonicalFullE2eResearch({
+    hotelId: HOTELS.yotel,
+    mode: "dry-run",
+    skipHpc: true,
+    maxCandidates: 1,
+    outDir: path.join(tmpRoot, "skip-refused"),
+    executionObservabilityRoot: obsRoot,
+    executionRunId: "p1c_skip_refused",
+    skipHotelWideFinalization: true,
+    // Missing allowIsolatedTestSkipHotelWideFinalization + isolatedTestHarness
+  });
+  assert.equal(r.hotelWideFinalization?.completionOutcome, "FULL_E2E_BLOCKED");
+  assert.equal(r.hotelWideFinalization?.ok, false);
+  assert.match(
+    String(r.hotelWideFinalization?.error || ""),
+    /refused outside isolated test/i,
+  );
+  assert.equal(r.summaryPath ? JSON.parse(fs.readFileSync(r.summaryPath, "utf8")).fullE2eCompleteClaimAllowed : true, false);
+});
+
+await checkAsync("isolated_test_skip_never_claims_full_e2e_complete", async () => {
+  const r = await runCanonicalFullE2eResearch({
+    hotelId: HOTELS.yotel,
+    mode: "fixture",
+    skipHpc: true,
+    maxCandidates: 1,
+    outDir: path.join(tmpRoot, "skip-isolated"),
+    executionObservabilityRoot: obsRoot,
+    executionRunId: "p1c_skip_isolated",
+    skipHotelWideFinalization: true,
+    allowIsolatedTestSkipHotelWideFinalization: true,
+    isolatedTestHarness: true,
+  });
+  const summary = JSON.parse(fs.readFileSync(r.summaryPath, "utf8"));
+  assert.equal(summary.hotelWideFinalization.skipped, true);
+  assert.equal(summary.hotelWideFinalization.isolatedTestSkip, true);
+  assert.equal(summary.fullE2eCompleteClaimAllowed, false);
+});
+
 const failed = results.filter((r) => !r.ok);
 console.log(
   JSON.stringify(

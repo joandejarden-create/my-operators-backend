@@ -175,10 +175,10 @@
         var confirmed = window.confirm(
           "Publish " +
             (plan.opportunityCount || 0) +
-            " approved opportunities to the customer link?\n\n" +
-            "Sales Ready: " +
-            (counts.SALES_READY || 0) +
-            " · Account Development: " +
+            " Qualified Opportunities to the customer link?\n\n" +
+            "Qualified: " +
+            (counts.SALES_READY || counts.FINALIZED_QUALIFIED || plan.opportunityCount || 0) +
+            " · Held / other: " +
             (counts.ACCOUNT_DEVELOPMENT || 0) +
             "\n\nPrevious publication is preserved for rollback. Share token is unchanged."
         );
@@ -437,18 +437,8 @@
         });
       });
     }
-    // Research mode remains available via explicit admin/diagnostic URLs only —
-    // not from the normal STAGED empty/error chrome.
-    var research = root.querySelector('[data-gdi-recovery="view-research"]');
-    if (research) {
-      research.addEventListener("click", function () {
-        applyFounderInventoryMode("research");
-        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
-        loadAll().catch(function (err) {
-          handleLoadFailure(err);
-        });
-      });
-    }
+    // Research browsing is not part of local presentation (FQO policy).
+    // Authorized admin research remains via ?gdiAdminResearch=1&live=1 only.
     var retry = root.querySelector('[data-gdi-recovery="retry-load"]');
     if (retry) {
       retry.addEventListener("click", function () {
@@ -473,15 +463,15 @@
 
   function customerFacingMissingInventoryMessage(mode, data) {
     data = data || {};
-    // Founder STAGED review + published inventory: neutral empty copy only.
-    // Do not push internal Research workflow instructions into the normal UI.
+    // Local presentation shows only activated Qualified Opportunity inventory.
+    // Do not surface Research View / raw research counts here.
     if (mode === "staged") {
-      return "No finalized opportunities are available for this property.";
+      return "No Qualified Opportunities are available for this property yet.";
     }
     if (mode === "published") {
-      return "No opportunities are available for this property yet.";
+      return "No Qualified Opportunities are available for this property yet.";
     }
-    return "No opportunities are available for this property in the selected view.";
+    return "No Qualified Opportunities are available for this property in the selected view.";
   }
 
   function applyMissingInventoryEmptyState(err) {
@@ -504,8 +494,7 @@
     var empty = state.inventoryEmpty;
     if (!empty) return "";
     var recovery = empty.recovery || {};
-    // Optional published inventory escape hatch only — never "View Research"
-    // in the normal founder STAGED / published empty state.
+    // Optional published inventory escape hatch only — never Research View CTA.
     var publishedBtn =
       empty.mode === "staged" && recovery.hasCurrentPublication === true
         ? '<p class="gdi-empty__actions"><button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button></p>'
