@@ -1,0 +1,128 @@
+{
+  "contract": "gdi-buyer-who-live-recovery-permanent-e2e-founder-report-v1",
+  "at": "2026-11-24T09:23:00.000Z",
+  "authorization": {
+    "exaMaxUsd": 11.6,
+    "findymail": "DISABLED",
+    "surfe": "DISABLED",
+    "airtableWrites": false,
+    "customerPublication": false,
+    "currentPointer": false
+  },
+  "A_recoveryResults": [
+    {
+      "hotel": "Condesa DF",
+      "candidates": 42,
+      "paidResearched": 42,
+      "namedPeopleFoundRaw": "many junk extractions rejected",
+      "verifiedRelevantBuyers": 2,
+      "newlyFinalized": 2,
+      "totalStaged": 4,
+      "exaSpendUsd": 0.332
+    },
+    {
+      "hotel": "LaLuna Boutique Hotels & Villas",
+      "candidates": 39,
+      "paidResearched": 39,
+      "verifiedRelevantBuyers": 1,
+      "newlyFinalized": 1,
+      "totalStaged": 3,
+      "exaSpendUsd": 0.312
+    },
+    {
+      "hotel": "Memmo Príncipe Real",
+      "candidates": 32,
+      "paidResearched": 32,
+      "verifiedRelevantBuyers": 0,
+      "newlyFinalized": 0,
+      "totalStaged": 11,
+      "exaSpendUsd": 0.248
+    }
+  ],
+  "A_totals": {
+    "candidates": 113,
+    "paidResearched": 113,
+    "verifiedRelevantBuyers": 3,
+    "newlyFinalized": 3,
+    "priorNamedPreserved": 15,
+    "totalStaged": 18,
+    "aggregateExaSpendUsd": 0.892,
+    "remainingBudgetUsd": 10.708
+  },
+  "verifiedBuyers": [
+    {
+      "hotel": "Condesa DF",
+      "opportunityId": "disc_8d4e91aaaf4f",
+      "organization": "International Society of Hospitality Consultants",
+      "name": "Lori Raleigh",
+      "role": "Executive Director",
+      "sourceUrl": "https://www.ishc.com/team"
+    },
+    {
+      "hotel": "Condesa DF",
+      "opportunityId": "disc_8a82b0e660d8",
+      "organization": "Fundación Por México",
+      "name": "Karla Mawcinitt",
+      "role": "Directora de Fundación Por México",
+      "sourceUrl": "https://es.linkedin.com/posts/fundacionpormexico_virtus2026-100mujeresporm%C3%A9xico-activity-7526072685223796738-_N90"
+    },
+    {
+      "hotel": "LaLuna Boutique Hotels & Villas",
+      "opportunityId": "disc_44afa27d0598",
+      "organization": "International Labour Organization with Grenada Ministry of Legal Affairs, Labour and Consumer Affairs and GTUC",
+      "name": "Joni Musabayana",
+      "role": "Director of the ILO Caribbean Office",
+      "sourceUrl": "https://www.ilo.org/resource/news/grenada-puts-decent-work-commitments-action"
+    }
+  ],
+  "B_contactIntelligenceQuality": {
+    "nameVerificationRate": "3/113 candidates after strict gates (pass-1 raw 3 junk rejected; reinforce 1 junk rejected; salvage 3 verified)",
+    "employerVerificationRate": "3/3 accepted buyers pass full-org or acronym affiliation",
+    "roleRelevance": "Executive Director / Directora / ILO Caribbean Director — commercial/organizational decision roles",
+    "duplicateContactsAvoided": true,
+    "incorrectCandidatesRejected": "Allianz Insurance, Le Plaza, When Location, Andrew Wilson/CHEP, Stella Blythe/CBRE, Pierre Mongeau/wrong society, venue/nav chrome extractions",
+    "publicProfessionalContactChannelCoverage": "source URLs present; direct email not required and not invented",
+    "remainingUnresolvedBuyerResearch": 110
+  },
+  "C_fullE2ePermanentIntegration": {
+    "newHotel": "BUYER_WHO_RESEARCH executed (mocked permanent cert)",
+    "existingHotel": "BUYER_WHO_RESEARCH executed (mocked permanent cert + Condesa live path)",
+    "portfolio": "BUYER_WHO_RESEARCH executed (mocked permanent cert)",
+    "leisure": "BUYER_WHO_RESEARCH executed (mocked permanent cert)",
+    "resume": "BUYER_WHO_RESEARCH stage present; contact state preserved",
+    "replay": "BUYER_WHO_RESEARCH stage present; $0 fixture/reuse when budget 0 / forceFixture",
+    "liveAuthFix": "Buyer-WHO live auth decoupled from allowLiveExaDeepSeed so resume/already-paid deep cells still attach live researcher when paid research + Exa authorized"
+  },
+  "D_governance": {
+    "actualExaCostUsd": 0.892,
+    "remainingBudgetUsd": 10.708,
+    "codeChanges": [
+      "lib/group-demand-intelligence/workflow/gdi-original-full-e2e-execution-restore-v1.js",
+      "lib/group-demand-intelligence/workflow/original-full-e2e-research-chain-v1.js",
+      "lib/group-demand-intelligence/workflow/gdi-buyer-who-permanent-full-e2e-v1.js",
+      "lib/group-demand-intelligence/research/deep-research-gdi-live-certification-v1.js",
+      "lib/group-demand-intelligence/research/autonomous-deep-research-recovery-v1.js",
+      "scripts/test-gdi-buyer-who-permanent-full-e2e-v1.mjs",
+      "scripts/gdi-design-hotels-buyer-who-live-recovery-v1.mjs",
+      "scripts/gdi-design-hotels-buyer-who-salvage-from-evidence-v1.mjs",
+      "scripts/gdi-design-hotels-buyer-who-restage-v1.mjs"
+    ],
+    "permanentRegressionTests": [
+      "npm run test:gdi-buyer-who-e2e-recovery-v1",
+      "npm run test:gdi-buyer-who-permanent-full-e2e-v1"
+    ],
+    "stagedPackageIds": [
+      "gdi_dh_buyer_who_recovery_rece0NdV9FCnaFlVS_20261124",
+      "gdi_dh_buyer_who_recovery_recaokE8psIbuVeuH_20261124",
+      "gdi_dh_buyer_who_recovery_rec1t35e3sPerzxYu_20261124"
+    ],
+    "historicalV3Preserved": true,
+    "bestContactRestorePreserved": true,
+    "blockers": [
+      "Exa-only public research yield is low for named buyers without Surfe/Findymail",
+      "110 opportunities remain unresolved for named-buyer finalization",
+      "Browser acceptance + serving-tree update require Integration Controller coordination",
+      "PR merge owned by Integration Controller"
+    ]
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "at": "2026-11-24T09:44:35.818Z",
+  "version": "gdi-who-how-contact-intelligence-restore-v1",
+  "status": "CERTIFICATION_PASS",
+  "checksPassed": 10,
+  "sequence": [
+    "DEMAND_DISCOVERY",
+    "DEEP_RESEARCH",
+    "WHO_IDENTIFICATION",
+    "PERSON_VERIFICATION",
+    "SECONDARY_PERSON_RESEARCH",
+    "HOW_CONTACT_CHANNEL_DISCOVERY",
+    "CONTACT_VERIFICATION",
+    "BEST_CONTACT_RANKING",
+    "COMMERCIAL_QUALIFICATION",
+    "FINALIZED_STAGED"
+  ],
+  "inventory": {
+    "who": [
+      {
+        "fn": "ensureBuyerWhoResearchExecuted",
+        "path": "research/autonomous-deep-research-recovery-v1.js",
+        "role": "Buyer-WHO identification after deep research",
+        "status": "active"
+      },
+      {
+        "fn": "runRestoredContactInvestigationPassAsync",
+        "path": "workflow/gdi-original-full-e2e-execution-restore-v1.js",
+        "role": "Classify people, official-source follow-up, secondary attempt",
+        "status": "active"
+      },
+      {
+        "fn": "evaluateNamedContactCoverageStandard",
+        "path": "workflow/gdi-named-contact-coverage-standard-v1.js",
+        "role": "Min-1 / target-2 named coverage + finalization disposition",
+        "status": "active"
+      },
+      {
+        "fn": "discover-who-v9 / who-discovery-apply",
+        "path": "contact-candidate/native-who-v3/*",
+        "role": "Native WHO discovery + apply",
+        "status": "active_library"
+      },
+      {
+        "fn": "opportunity-who-resolution-v1",
+        "path": "opportunity-who-resolution-v1.js",
+        "role": "Opportunity WHO resolution",
+        "status": "active_library"
+      },
+      {
+        "fn": "gdi-opportunity-contact-lineage-reuse-v1",
+        "path": "workflow/gdi-opportunity-contact-lineage-reuse-v1.js",
+        "role": "Identity reuse across opportunities",
+        "status": "active_library"
+      },
+      {
+        "fn": "secondary-named-contact-v1 / scaling-two-contact-standard-v1",
+        "path": "secondary-named-contact-v1.js",
+        "role": "Primary/secondary ranking presentation",
+        "status": "active_library"
+      }
+    ],
+    "how": [
+      {
+        "fn": "runPublicContactDiscoveryWorkflow",
+        "path": "presentation/gdi-public-contact-discovery-workflow-v1.js",
+        "role": "Public-first HOW after named person (no Surfe/FullEnrich auto)",
+        "status": "wired_here",
+        "priorBypass": "original-full-e2e-research-chain ran CONTACT_RESEARCH (WHO) but never invoked HOW workflow"
+      },
+      {
+        "fn": "discoverPublicContactChannels",
+        "path": "presentation/gdi-public-contact-discovery-v1.js",
+        "role": "Public channel discovery from URLs + optional paid search",
+        "status": "active_via_workflow"
+      },
+      {
+        "fn": "recoverPublicContactChannels",
+        "path": "presentation/gdi-public-contact-channel-hierarchy-v1.js",
+        "role": "Extract email/phone/LinkedIn from authoritative pages",
+        "status": "active_via_workflow"
+      },
+      {
+        "fn": "assessPublicContactVerification",
+        "path": "presentation/gdi-public-contact-verification-v1.js",
+        "role": "Verify channel ownership + status",
+        "status": "active"
+      },
+      {
+        "fn": "splitWhoHow",
+        "path": "contact-completeness-v1.js",
+        "role": "WHO/HOW field split helper",
+        "status": "active"
+      },
+      {
+        "fn": "buyer-contact-enrichment-v1",
+        "path": "workflow/buyer-contact-enrichment-v1.js",
+        "role": "Optional Surfe AFTER public HOW exhausted",
+        "status": "optional_paid_off"
+      },
+      {
+        "fn": "Findymail / Surfe / FullEnrich providers",
+        "path": "gdi-surfe-contact-provider-v1.js / gdi-fullenrich-contact-provider-v1.js",
+        "role": "Paid enrichment — never WHO engine; on-demand only",
+        "status": "optional_paid_off"
+      }
+    ]
+  },
+  "providers": {
+    "findymail": false,
+    "surfe": false,
+    "exaSpent": 0
+  }
+}
