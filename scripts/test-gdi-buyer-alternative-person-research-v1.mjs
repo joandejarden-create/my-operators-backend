@@ -410,7 +410,131 @@ check("18_stage_assert_and_finalization_identities", () => {
   assert.equal(howBefore.code, "HOW_BEFORE_ALTERNATIVE");
 });
 
-// Fix check 1 duplicate - remove empty sync stub was already replaced by async
+await checkAsync(
+  "19_unseeded_ladder_escalation_when_employer_fails",
+  async () => {
+    /**
+     * Exact live alternative-person trace expectations (mocked providers):
+     * IDEAL BUYER NOT FOUND
+     * → NEXT BUYER RESEARCH STRATEGY (call 1: wrong-employer person rejected)
+     * → ALTERNATIVE ROLE SEARCH (call 2: viable meetings buyer)
+     * → PERSON VERIFICATION / COMMERCIAL RANKING
+     * → SECONDARY CONTACT SEARCH
+     * → PUBLIC HOW DISCOVERY
+     */
+    let calls = 0;
+    const strategies = [];
+    const r = await runBuyerAlternativePersonResearch(
+      {
+        organizationName: "Acme Meetings Ltd",
+        title: "Annual sales kickoff lodging",
+        namedStakeholders: [],
+      },
+      {
+        authorizePaidResearch: true,
+        maxStrategies: 5,
+        researcher: {
+          execute: async ({ strategy }) => {
+            calls += 1;
+            strategies.push(strategy?.id || strategy?.label || `call_${calls}`);
+            if (calls === 1) {
+              // Strategy 1 finds no people → escalate to next strategy
+              return { people: [], namedStakeholders: [] };
+            }
+            // Strategy 2+ returns viable alternative role people
+            return {
+              people: [
+                {
+                  name: "Alex Meetings",
+                  title: "Director of Meetings",
+                  organization: "Acme Meetings Ltd",
+                  sourceUrl: "https://acme.example/team",
+                },
+                {
+                  name: "Blair Sourcing",
+                  title: "Sourcing Manager",
+                  organization: "Acme Meetings Ltd",
+                  sourceUrl: "https://acme.example/team",
+                },
+              ],
+            };
+          },
+        },
+      },
+    );
+
+    assert.ok(calls >= 2, "must escalate after first strategy fails to qualify");
+    assert.ok(
+      (r.trace.strategiesAttempted || []).length >= 2,
+      "strategiesAttempted must record ladder steps",
+    );
+    assert.equal(r.trace.researcherInvoked, true);
+    assert.equal(r.trace.rankingRan, true);
+    assert.equal(r.trace.secondaryResearchRan, true);
+    assert.ok(
+      r.opportunity.primaryContact?.name === "Alex Meetings" ||
+        r.opportunity.primaryContact?.name === "Blair Sourcing",
+      "qualified Acme person selected",
+    );
+    if (r.opportunity.secondaryContact?.name) {
+      assert.notEqual(
+        r.opportunity.secondaryContact.name,
+        r.opportunity.primaryContact.name,
+      );
+    }
+
+    const how = await runRestoredHowContactChannelDiscovery(r.opportunity, {
+      authorizePaidPublicSearch: false,
+      authorizeFindymail: false,
+      authorizeSurfe: false,
+      candidateUrls: ["https://acme.example/team"],
+      fetchImpl: async () => ({
+        ok: true,
+        text: async () =>
+          `<html><body>Contact Alex Meetings alex.meetings@acme.example</body></html>`,
+      }),
+    });
+    assert.equal(how.skipped, false);
+    assert.ok(
+      how.researchStatus === HOW_CONTACT_RESEARCH_STATUS.CHANNELS_VERIFIED ||
+        how.researchStatus === HOW_CONTACT_RESEARCH_STATUS.PARTIAL_CHANNELS ||
+        how.researchStatus === HOW_CONTACT_RESEARCH_STATUS.ATTEMPTED_NO_CHANNEL,
+    );
+
+    // Persist expected live-trace contract for founder review
+    fs.mkdirSync(OUT, { recursive: true });
+    fs.writeFileSync(
+      path.join(OUT, "LIVE_ALT_PERSON_TRACE_EXPECTATIONS.json"),
+      JSON.stringify(
+        {
+          contract: "gdi-unseeded-alt-person-ladder-trace-v1",
+          at: new Date().toISOString(),
+          expectedSequence: [
+            "IDEAL_BUYER_NOT_FOUND",
+            "NEXT_BUYER_RESEARCH_STRATEGY",
+            "ALTERNATIVE_ROLE_SEARCH",
+            "PERSON_VERIFICATION",
+            "COMMERCIAL_RANKING",
+            "SECONDARY_CONTACT_SEARCH",
+            "PUBLIC_HOW_DISCOVERY",
+          ],
+          mockedProof: {
+            researcherCalls: calls,
+            strategiesAttempted: (r.trace.strategiesAttempted || []).map(
+              (a) => a.strategyId,
+            ),
+            primary: r.opportunity.primaryContact?.name || null,
+            secondary: r.opportunity.secondaryContact?.name || null,
+            howStatus: how.researchStatus,
+          },
+          note: "Forthcoming live trial must use naturally unseeded cases — do not force paid searches merely to exercise the ladder.",
+        },
+        null,
+        2,
+      ),
+    );
+  },
+);
 
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(

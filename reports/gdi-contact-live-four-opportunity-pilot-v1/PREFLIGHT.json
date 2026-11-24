@@ -1,0 +1,210 @@
+{
+  "contract": "gdi-contact-live-four-opportunity-pilot-v1",
+  "mode": "PREFLIGHT",
+  "at": "2026-11-24T10:36:35.492Z",
+  "spendUsd": 0,
+  "criticalFail": false,
+  "checks": [
+    {
+      "id": "canonical_main_sha",
+      "ok": true,
+      "detail": {
+        "head": "c6272fb737fbacf0cf9916c331465659351a65b6",
+        "expected": "c6272fb737fbacf0cf9916c331465659351a65b6"
+      }
+    },
+    {
+      "id": "who_how_sequence",
+      "ok": true,
+      "detail": {
+        "sequence": [
+          "DEMAND_DISCOVERY",
+          "DEEP_RESEARCH",
+          "WHO_IDENTIFICATION",
+          "PERSON_VERIFICATION",
+          "BUYER_ALTERNATIVE_PERSON_RESEARCH",
+          "COMMERCIAL_CONTACT_RANKING",
+          "SECONDARY_PERSON_RESEARCH",
+          "HOW_CONTACT_CHANNEL_DISCOVERY",
+          "CONTACT_VERIFICATION",
+          "COMMERCIAL_QUALIFICATION",
+          "FINALIZED_STAGED"
+        ],
+        "pilotExecutes": [
+          "CONTACT_RESEARCH/BUYER_WHO (ensureBuyerWhoResearchExecuted)",
+          "BUYER_ALTERNATIVE_PERSON_RESEARCH",
+          "HOW_CONTACT_CHANNEL_DISCOVERY"
+        ]
+      }
+    },
+    {
+      "id": "alt_strategy_ladder",
+      "ok": true,
+      "detail": {
+        "strategies": 9
+      }
+    },
+    {
+      "id": "exa_api_key",
+      "ok": true,
+      "detail": {
+        "present": true
+      }
+    },
+    {
+      "id": "findymail_disabled",
+      "ok": true,
+      "detail": {
+        "authorized": false
+      }
+    },
+    {
+      "id": "surfe_disabled",
+      "ok": true,
+      "detail": {
+        "authorized": false
+      }
+    },
+    {
+      "id": "budget_hard_cap",
+      "ok": true,
+      "detail": {
+        "budgetUsd": 3,
+        "hardCap": 3
+      }
+    },
+    {
+      "id": "ledger_isolated",
+      "ok": true,
+      "detail": {
+        "version": "gdi-deep-research-gdi-integration-v1-live-ledger",
+        "currency": "USD",
+        "budgetUsd": 3,
+        "isolatedFromPriorResearchBalances": true,
+        "usesPriorBenchmarkBalances": false,
+        "usesRemainingV4Balances": false,
+        "reservedUsd": 0,
+        "estimatedSpentUsd": 0,
+        "exaCalls": 0,
+        "firecrawlCalls": 0,
+        "directRetrievals": 0,
+        "haltedPaidExecution": false,
+        "incidents": [],
+        "entries": [],
+        "updatedAt": "2026-11-24T10:36:35.467Z"
+      }
+    },
+    {
+      "id": "four_canonical_identities",
+      "ok": true,
+      "detail": {
+        "identities": [
+          {
+            "key": "rainbow_cup",
+            "opportunityId": "disc_69a16d5c89f9",
+            "hotelId": "recaokE8psIbuVeuH",
+            "found": true,
+            "organizationName": "Jason Gooding / event organizer not fully specified",
+            "title": "Rainbow Cup Grenada 2027"
+          },
+          {
+            "key": "meeting_point",
+            "opportunityId": "disc_e93837f2b647",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "found": true,
+            "organizationName": "Meeting Point",
+            "title": "Meeting Point congress and event pipeline"
+          },
+          {
+            "key": "ipba_2026",
+            "opportunityId": "disc_f37cfea74d4f",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "found": true,
+            "organizationName": "International Place Branding Association",
+            "title": "IPBA 2026. 10th Annual Conference"
+          },
+          {
+            "key": "ga_society",
+            "opportunityId": "disc_6280e5bb17d6",
+            "hotelId": "rec1t35e3sPerzxYu",
+            "found": true,
+            "organizationName": "Society for Medicinal Plant and Natural Product Research",
+            "title": "75th GA International Congress and Annual Meeting"
+          }
+        ]
+      }
+    },
+    {
+      "id": "live_researcher_attached",
+      "ok": true,
+      "detail": {
+        "hasExecute": true
+      }
+    },
+    {
+      "id": "fixture_substitution_disabled",
+      "ok": true,
+      "detail": {
+        "note": "Pilot uses createLiveDeepResearchResearcher only; no fixture researcher wiring"
+      }
+    },
+    {
+      "id": "commercial_ranking_available",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "how_discovery_available",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "id": "staged_requires_named_person",
+      "ok": true,
+      "detail": {}
+    }
+  ],
+  "identities": [
+    {
+      "key": "rainbow_cup",
+      "opportunityId": "disc_69a16d5c89f9",
+      "hotelId": "recaokE8psIbuVeuH",
+      "found": true,
+      "organizationName": "Jason Gooding / event organizer not fully specified",
+      "title": "Rainbow Cup Grenada 2027"
+    },
+    {
+      "key": "meeting_point",
+      "opportunityId": "disc_e93837f2b647",
+      "hotelId": "rec1t35e3sPerzxYu",
+      "found": true,
+      "organizationName": "Meeting Point",
+      "title": "Meeting Point congress and event pipeline"
+    },
+    {
+      "key": "ipba_2026",
+      "opportunityId": "disc_f37cfea74d4f",
+      "hotelId": "rec1t35e3sPerzxYu",
+      "found": true,
+      "organizationName": "International Place Branding Association",
+      "title": "IPBA 2026. 10th Annual Conference"
+    },
+    {
+      "key": "ga_society",
+      "opportunityId": "disc_6280e5bb17d6",
+      "hotelId": "rec1t35e3sPerzxYu",
+      "found": true,
+      "organizationName": "Society for Medicinal Plant and Natural Product Research",
+      "title": "75th GA International Congress and Annual Meeting"
+    }
+  ],
+  "authorization": {
+    "exaMaxUsd": 3,
+    "findymail": "DISABLED",
+    "surfe": "DISABLED",
+    "airtableWrites": false,
+    "currentPointer": false,
+    "autoStagedPointer": false,
+    "priorCarryForward": false
+  }
+}
