@@ -172,8 +172,12 @@ Remaining Agent-researched opportunities outside these 21 either never staged or
 ## 9. PR and CI status
 
 - Branch: `feat/gdi-exa-agent-quality-recovery-v1`
-- Local suites: quality-recovery, escalation, named-coverage, who-how, agent-recovery-hardening — **PASS**
-- `dealality:ci-precheck` — run before PR open
+- Commit: `9769bc8c4`
+- PR: **https://github.com/joandejarden-create/my-operators-backend/pull/589** (`OPEN`)
+- Local suites: quality-recovery, escalation, named-coverage, who-how, agent-recovery-hardening, ALT ladder, call-graph — **PASS**
+- `dealality:ci-precheck` — **PASS**
+- GitHub CI: pending on PR
+- Registered `ws-gdi` remains on unrelated dirty branch — preserved; shipped from tip-aligned worktree at `0956eea`
 - **Integration Controller owns merge** — GDI chat stops at open PR
 
 ---
