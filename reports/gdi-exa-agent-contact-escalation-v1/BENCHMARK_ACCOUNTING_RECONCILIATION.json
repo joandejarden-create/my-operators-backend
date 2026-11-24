@@ -1,0 +1,52 @@
+{
+  "contract": "gdi-exa-agent-contact-escalation-v1",
+  "source": "reports/gdi-exa-people-vs-agent-contact-benchmark-v1",
+  "at": "2026-11-24T12:55:00.000Z",
+  "note": "Do not rewrite historical paid results. Document definition alignment.",
+  "ledger": {
+    "budgetUsd": 1.5,
+    "estimatedSpentUsd": 0.248,
+    "entryCount": 14,
+    "byOperation": {
+      "people_search": { "count": 12, "impliedUsdAtLite": 0.048 },
+      "agent_run": { "count": 2, "impliedUsdAtMedium": 0.2 }
+    }
+  },
+  "executionSummary": {
+    "paidCalls": 14,
+    "spendUsd": 0.248
+  },
+  "scorecardStrict": {
+    "spendUsd": 0.248,
+    "methodBSpendUsd": 0.048,
+    "methodCSpendUsd": 0.2,
+    "howIncrementalSpendUsd": 0
+  },
+  "agentPrimaryHow": {
+    "spendAfterHow": 0.248,
+    "note": "HOW reused candidate URLs / public fetch; no additional Exa charge"
+  },
+  "reconciliation": {
+    "ledgerEqualsExecutionSpend": true,
+    "ledgerEntryCountEqualsPaidCalls": true,
+    "peopleSearchPlusAgentEqualsTotal": true,
+    "mathCheck": "12 * 0.004 + 2 * 0.100 = 0.248"
+  },
+  "discrepanciesDocumented": [
+    {
+      "item": "FOUNDER_REPORT narrative '16 lite calls' vs ledger 12 people_search",
+      "resolution": "Narrative overstated planned max queries; authoritative count is ledger people_search=12 (up to 8 queries/opp planned; some queries may have been fewer after halt/budget or query builder produced 6/opp).",
+      "action": "Treat live-ledger.json + SCORECARD_STRICT.json as SoT; do not alter historical ledger."
+    },
+    {
+      "item": "Raw EXECUTION_RESULTS Method B accepted counts vs STRICT",
+      "resolution": "First-pass verification injected demand-org hint (false employer). Strict rescored without re-spend. Adapter fixed going forward (not enabled in Full E2E).",
+      "action": "SCORECARD_STRICT is authoritative for yield; raw counts retained as audit evidence."
+    }
+  ],
+  "providerAuthorizationEvidence": {
+    "benchmarkUsed": "GDI_EXA_AGENT_LIVE=1 + authorizeExaAgentLive for Method C only",
+    "contactEscalationFlagInFullE2E": "authorizeExaAgentContactEscalation default false (this PR)",
+    "newPaidCallsThisPhase": 0
+  }
+}
