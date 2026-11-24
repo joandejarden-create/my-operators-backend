@@ -79,7 +79,12 @@ check("2_who_complete_without_email", () => {
 
 check("3_email_not_required_for_who_gate", () => {
   const coverage = evaluateNamedContactCoverageStandard({
-    primaryContact: { name: "Daniel Roy", role: "Sourcing Partner" },
+    organizationName: "Salesforce",
+    primaryContact: {
+      name: "Daniel Roy",
+      role: "Sourcing Partner",
+      organization: "Salesforce",
+    },
   });
   assert.equal(coverage.finalizeEligible, true);
   assert.equal(coverage.namedCount, 1);

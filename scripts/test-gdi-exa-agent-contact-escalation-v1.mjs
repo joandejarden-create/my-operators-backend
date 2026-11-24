@@ -353,6 +353,7 @@ await checkAsync("11_authorized_agent_valid_primary_verification", async () => {
   const cls = classifyVerifiedAgentCandidate(r.candidates[0], {
     organizationName: baseOpp.organizationName,
   });
+  // Lodging partnerships evidenced in Agent relationship text → DIRECT_BUYER
   assert.equal(cls.type, AGENT_CANDIDATE_TYPE.DIRECT_BUYER);
 });
 
@@ -440,22 +441,45 @@ await checkAsync("15_seniority_not_promoted_to_direct_buyer", async () => {
   assert.match(cls.reason, /SENIORITY_WITHOUT_LODGING/);
 });
 
-await checkAsync("16_homepage_only_cannot_finalize", async () => {
+await checkAsync("16_homepage_only_without_role_evidence_not_commercial", async () => {
   const v = verifyAndClassifyAgentCandidates(
     [
       {
         name: "Casey Homepage",
-        title: "Events Manager",
+        title: "Staff",
         currentOrganization: "Example Association (EXAORG)",
         organization: "Example Association (EXAORG)",
-        relevanceEvidence: "Events Manager at Example Association housing",
+        relevanceEvidence: "Listed on association homepage",
         sourceUrl: "https://example-association.org/",
       },
     ],
     { organizationName: baseOpp.organizationName },
   );
-  assert.equal(v.accepted.length, 0);
-  assert.equal(v.rejected[0]?.reason, "HOMEPAGE_ONLY_PROVENANCE");
+  assert.equal(v.accepted.length, 1);
+  assert.equal(
+    v.accepted[0].buyerClassification,
+    "RELEVANT_ORGANIZATIONAL_CONTACT",
+  );
+  assert.match(
+    v.accepted[0].agentClassificationReason || "",
+    /HOMEPAGE_ONLY_PROVENANCE/,
+  );
+});
+
+await checkAsync("16b_homepage_with_lodging_evidence_direct_but_weak_provenance", async () => {
+  const cls = classifyVerifiedAgentCandidate(
+    {
+      name: "Casey Housing",
+      title: "Housing Coordinator",
+      currentOrganization: "Example Association (EXAORG)",
+      organization: "Example Association (EXAORG)",
+      relevanceEvidence: "Housing coordinator for conference lodging",
+      sourceUrl: "https://example-association.org/",
+    },
+    { organizationName: baseOpp.organizationName },
+  );
+  assert.equal(cls.type, AGENT_CANDIDATE_TYPE.DIRECT_BUYER);
+  assert.equal(cls.provenanceWeak, true);
 });
 
 await checkAsync("17_primary_secondary_identities_distinct", async () => {

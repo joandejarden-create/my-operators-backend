@@ -98,8 +98,19 @@ check("2_one_named_finalizes_with_secondary_attempt_doc", () => {
 
 check("3_two_named_is_desired_coverage", () => {
   const ev = evaluateNamedContactCoverageStandard({
-    primaryContact: { name: "Jordan Lee", role: "Travel Manager" },
-    secondaryContact: { name: "Sam Ortiz", role: "Director of Meetings" },
+    organizationName: "Acme",
+    primaryContact: {
+      name: "Jordan Lee",
+      role: "Travel Manager",
+      organization: "Acme",
+      buyerClassification: "VERIFIED_VIABLE_ALTERNATIVE",
+    },
+    secondaryContact: {
+      name: "Sam Ortiz",
+      role: "Director of Meetings",
+      organization: "Acme",
+      buyerClassification: "SECONDARY_CONTACT",
+    },
   });
   assert.equal(ev.namedCount, 2);
   assert.equal(
@@ -113,7 +124,12 @@ check("4_package_gate_blocks_zero_named", () => {
     {
       id: "a",
       organizationName: "Acme",
-      primaryContact: { name: "Jordan Lee", role: "TM" },
+      primaryContact: {
+        name: "Jordan Lee",
+        role: "Travel Manager",
+        organization: "Acme",
+        buyerClassification: "VERIFIED_VIABLE_ALTERNATIVE",
+      },
       secondaryContactResearchStatus: "ATTEMPTED_NO_SECOND_VERIFIED",
       secondContactAttempted: true,
     },
@@ -134,7 +150,12 @@ check("5_package_gate_requires_secondary_attempt_docs_when_enabled", () => {
     [
       {
         id: "a",
-        primaryContact: { name: "Jordan Lee", role: "TM" },
+        primaryContact: {
+          name: "Jordan Lee",
+          role: "Travel Manager",
+          organization: "Acme",
+          buyerClassification: "VERIFIED_VIABLE_ALTERNATIVE",
+        },
       },
     ],
     { requireSecondaryAttemptDocumentation: true },
