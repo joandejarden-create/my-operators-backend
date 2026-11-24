@@ -4977,7 +4977,10 @@
         preview.displayName === CONTACT_RESEARCH_REQUIRED ||
         preview.displayName === "Buyer Not Yet Identified")
     ) {
-      return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
+      // Customer/STAGED tiles: omit internal gap labels as the primary contact line.
+      // Admin/research diagnostics may still resolve CONTACT_RESEARCH_REQUIRED via
+      // explicit research surfaces — not the normal opportunity card footer.
+      return { kind: "empty", name: "", role: "" };
     }
     // Client fallback when DTO missing — title first, then opportunity role.
     function fallbackRoleFromPerson(person) {
@@ -5050,17 +5053,15 @@
         role: toProperCaseContactRoleLabel(fallbackRoleFromPerson(sc)),
       };
     }
-    return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
+    return { kind: "empty", name: "", role: "" };
   }
 
   function compactTileContactHtml(block) {
     block = block || {};
     if (block.kind === "none" || block.kind === "empty" || !block.name) {
-      return (
-        '<div class="brand-card__contact-name brand-card__contact-name--unidentified">' +
-        esc(block.name || "Contact Research Required") +
-        "</div>"
-      );
+      // No verified named person — leave tile contact footer blank rather than
+      // displaying internal "Contact Research Required" / "Buyer Not Yet Identified".
+      return "";
     }
     var bits = [];
     bits.push(
@@ -7141,7 +7142,10 @@
           '<p class="gdi-contact-quality-quiet">' +
           esc(
             scrubCustomerFacingProse(
-              slot.researchGapCopy || "Contact Research Required."
+              slot.researchGapCopy &&
+                !/contact research required/i.test(String(slot.researchGapCopy))
+                ? slot.researchGapCopy
+                : "No verified person selected for outreach yet."
             )
           ) +
           "</p>"
@@ -7155,7 +7159,10 @@
         '<p class="gdi-contact-quality-quiet">' +
         esc(
           scrubCustomerFacingProse(
-            slot.researchGapCopy || "Contact Research Required."
+            slot.researchGapCopy &&
+              !/contact research required/i.test(String(slot.researchGapCopy))
+              ? slot.researchGapCopy
+              : "No verified person selected for outreach yet."
           )
         ) +
         "</p>" +
