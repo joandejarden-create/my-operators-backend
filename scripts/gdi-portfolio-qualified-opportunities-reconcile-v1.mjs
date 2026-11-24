@@ -71,7 +71,7 @@ function text(v) {
   return String(v == null ? "" : v).replace(/\s+/g, " ").trim();
 }
 
-function loadResearch(hotelId) {
+function loadResearchFromDir(hotelId) {
   const file = path.join(
     ROOT,
     "data/group-demand-intelligence/hotels",
@@ -89,6 +89,36 @@ function loadResearch(hotelId) {
   } catch {
     return [];
   }
+}
+
+/** Load research for canonical ID plus any provisional alias directories. */
+function loadResearch(hotelId) {
+  const dirs = new Set([hotelId]);
+  const configRoot = path.join(ROOT, "config/group-demand-intelligence/hotels");
+  if (fs.existsSync(configRoot)) {
+    for (const f of fs.readdirSync(configRoot)) {
+      if (!f.endsWith(".json")) continue;
+      try {
+        const cfg = JSON.parse(
+          fs.readFileSync(path.join(configRoot, f), "utf8"),
+        );
+        const provisional = f.replace(/\.json$/i, "");
+        const canonical = resolveCanonicalHotelId(provisional);
+        if (canonical === hotelId) dirs.add(provisional);
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+  const byOpp = new Map();
+  for (const dir of dirs) {
+    for (const o of loadResearchFromDir(dir)) {
+      const id = text(o.id || o.opportunityId);
+      if (!id) continue;
+      if (!byOpp.has(id)) byOpp.set(id, o);
+    }
+  }
+  return [...byOpp.values()];
 }
 
 function packageOpps(store, hotelId, kind) {
@@ -137,8 +167,104 @@ function marketScope(o) {
     o.marketScope || o.gdiMarketScope || o.competitiveMarketScope || "",
   ).toUpperCase();
   if (/COMPETITIVE|CMI/.test(s)) return "COMPETITIVE";
-  if (o.competitiveContext || o.incumbentHotelName) return "COMPETITIVE";
+  if (
+    o.competitiveContext ||
+    o.incumbentHotelName ||
+    o.incumbentHotel ||
+    o.competitorHotel ||
+    o.likelyCompetitor ||
+    o.competitiveMarketScopeEligible === true
+  ) {
+    return "COMPETITIVE";
+  }
+  const relevance = text(
+    o.primaryContact?.relevanceEvidence ||
+      o.competitiveStatusLabel ||
+      o.whyThisHotel ||
+      "",
+  );
+  if (
+    /Westin New York at Times Square|CONFIRMED_COMPETITOR|EVIDENCED_OVERFLOW|OVERFLOW_OPPORTUNITY/i.test(
+      relevance,
+    )
+  ) {
+    return "COMPETITIVE";
+  }
+  // Prefer FQO contract competitive detection when available
+  try {
+    const evaled = evaluateFinalizedQualifiedOpportunity(o);
+    if (evaled.competitive === true) return "COMPETITIVE";
+  } catch {
+    /* ignore */
+  }
   return "HOTEL";
+}
+
+/** Collapse provisional gdi_hotel_* aliases onto canonical Airtable rec… IDs. */
+function resolveCanonicalHotelId(hotelId) {
+  const id = text(hotelId);
+  if (!id) return id;
+  const cfgPath = path.join(
+    ROOT,
+    "config/group-demand-intelligence/hotels",
+    `${id}.json`,
+  );
+  if (!fs.existsSync(cfgPath)) return id;
+  try {
+    const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
+    const redirect = text(cfg.redirectTo || cfg.canonicalHotelId || "");
+    const resolved = text(cfg.hotelId || "");
+    if (redirect.startsWith("rec")) return redirect;
+    if (resolved.startsWith("rec") && id.startsWith("gdi_hotel_")) return resolved;
+    if (cfg.deprecatedProvisionalId && resolved.startsWith("rec")) return resolved;
+  } catch {
+    /* keep original */
+  }
+  return id;
+}
+
+function certifyCandidatePackage(pkg) {
+  const opps = Array.isArray(pkg?.opportunities) ? pkg.opportunities : [];
+  const rows = [];
+  let pass = 0;
+  let hotel = 0;
+  let competitive = 0;
+  let named = 0;
+  let channels = 0;
+  for (const o of opps) {
+    const evaled = evaluateFinalizedQualifiedOpportunity(o);
+    const scope = marketScope(o);
+    const ch = evaluatePersonSpecificOutreachChannel(o);
+    const nameOk = Boolean(
+      text(o.primaryContact?.name || o.primaryContactName || o.contactName),
+    );
+    if (nameOk) named += 1;
+    if (ch.ok) channels += 1;
+    if (evaled.finalizedQualified) {
+      pass += 1;
+      if (scope === "COMPETITIVE") competitive += 1;
+      else hotel += 1;
+    }
+    rows.push({
+      opportunityId: text(o.id || o.opportunityId),
+      disposition: dispositionFromEval(evaled),
+      reasons: evaled.reasons || [],
+      marketScope: scope,
+      namedPerson: nameOk,
+      personSpecificChannel: ch.ok,
+      channels: (ch.channels || []).map((c) => c.kind),
+    });
+  }
+  return {
+    opportunityCount: opps.length,
+    fqoPassCount: pass,
+    hotelCount: hotel,
+    competitiveCount: competitive,
+    namedPersonCoverage: named,
+    personSpecificChannelCoverage: channels,
+    allPass: opps.length > 0 && pass === opps.length,
+    rows,
+  };
 }
 
 function dispositionFromEval(evaled) {
@@ -185,7 +311,12 @@ function discoverHotelIds(store) {
   } catch {
     /* ignore */
   }
-  return [...ids].filter(Boolean).sort();
+  // Collapse provisional aliases onto canonical IDs; keep only one matrix row each.
+  const collapsed = new Set();
+  for (const id of ids) {
+    collapsed.add(resolveCanonicalHotelId(id));
+  }
+  return [...collapsed].filter(Boolean).sort();
 }
 
 function main() {
@@ -269,31 +400,68 @@ function main() {
       }
     }
 
-    // Candidate STAGED = FQO PASS from research (not activated). Prefer existing
-    // non-pointer candidate packages when present (e.g. Hilton #592).
+    // Candidate STAGED: only real versioned packages. Never invent PROPOSED_*
+    // placeholders. Certify each package under hardened FQO before listing as
+    // activatable. Funnel PASS counts remain informational only.
     const nonPointerCandidates = candidates.filter(
       (c) =>
         c.publicationVersion &&
         c.publicationVersion !== staged.pointer?.publicationVersion &&
         c.publicationVersion !== current.pointer?.publicationVersion,
     );
-    const candidateStagedLabel = nonPointerCandidates.length
-      ? nonPointerCandidates
-          .map((c) => `${c.publicationVersion} (${c.opportunityCount ?? "?"})`)
+    const certifiedCandidates = [];
+    for (const c of nonPointerCandidates) {
+      const loaded = store.loadPackage(hotelId, c.publicationVersion);
+      if (!loaded?.ok || !loaded.package) continue;
+      const cert = certifyCandidatePackage(loaded.package);
+      certifiedCandidates.push({
+        publicationVersion: c.publicationVersion,
+        publicationId: loaded.package.publicationId || null,
+        opportunityCount: cert.opportunityCount,
+        fqoPassCount: cert.fqoPassCount,
+        hotelCount: cert.hotelCount,
+        competitiveCount: cert.competitiveCount,
+        namedPersonCoverage: cert.namedPersonCoverage,
+        personSpecificChannelCoverage: cert.personSpecificChannelCoverage,
+        certificationResult: cert.allPass
+          ? "FQO_PACKAGE_CERTIFIED"
+          : "FQO_PACKAGE_INCOMPLETE",
+        pointerActivated: false,
+        activatable: cert.allPass === true,
+        rows: cert.rows,
+      });
+    }
+    const candidateStagedLabel = certifiedCandidates.length
+      ? certifiedCandidates
+          .map(
+            (c) =>
+              `${c.publicationVersion} (${c.fqoPassCount}/${c.opportunityCount} FQO ${c.certificationResult})`,
+          )
           .join("; ")
-      : qualified > 0
-        ? `PROPOSED_FQO_CANDIDATE_${qualified}`
-        : "—";
+      : "—";
 
-    if (qualified > 0 && !staged.pointer) {
+    for (const c of certifiedCandidates.filter((x) => x.activatable)) {
       candidateActivationBatch.push({
         hotelId,
         hotelName,
-        proposedQualifiedCount: qualified,
-        hotelScope,
-        competitiveScope,
-        existingCandidatePackages: nonPointerCandidates,
-        note: "Requires founder approval before STAGED pointer activation",
+        certifiedCandidatePackageVersion: c.publicationVersion,
+        publicationId: c.publicationId,
+        verifiedQualifiedCount: c.fqoPassCount,
+        hotelCount: c.hotelCount,
+        competitiveCount: c.competitiveCount,
+        namedPersonCoverage: c.namedPersonCoverage,
+        personSpecificChannelCoverage: c.personSpecificChannelCoverage,
+        certificationResult: c.certificationResult,
+        existingStagedVersion: staged.pointer?.publicationVersion || null,
+        existingCurrentVersion: current.pointer?.publicationVersion || null,
+        proposedAdditionsVsStaged: staged.pointer
+          ? "REVIEW_DIFF_REQUIRED"
+          : "NEW_STAGED_CANDIDATE",
+        proposedRemovalsVsStaged: staged.pointer
+          ? "REVIEW_DIFF_REQUIRED"
+          : "NONE",
+        rollbackReference: staged.pointer?.publicationVersion || null,
+        note: "Requires founder approval before STAGED pointer activation — not activated",
       });
     }
 
