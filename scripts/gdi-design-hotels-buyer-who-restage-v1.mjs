@@ -20,6 +20,12 @@ const {
   "../lib/group-demand-intelligence/workflow/gdi-buyer-who-permanent-full-e2e-v1.js"
 );
 const {
+  assertFinalizedPackageNamedContactCoverage,
+  attachNamedContactCoverageMetadata,
+} = await import(
+  "../lib/group-demand-intelligence/workflow/gdi-named-contact-coverage-standard-v1.js"
+);
+const {
   buildCustomerPublicationPackage,
   verifyPublicationPackageIntegrity,
 } = await import(
@@ -181,7 +187,26 @@ function main() {
       added.push(merged);
     }
 
-    const opportunities = [...(best.pkg.opportunities || []), ...added];
+    const opportunities = [...(best.pkg.opportunities || []), ...added].map(
+      (o) =>
+        attachNamedContactCoverageMetadata(o, {
+          secondContactAttempted: true,
+          secondContactFound: Boolean(o.secondaryContact?.name),
+          secondContactDisposition: o.secondaryContact?.name
+            ? "SECOND_VERIFIED"
+            : "Second relevant named contact not verified from available public evidence",
+        }),
+    );
+    const coverageGate = assertFinalizedPackageNamedContactCoverage(
+      opportunities,
+      { requireSecondaryAttemptDocumentation: true },
+    );
+    if (!coverageGate.ok) {
+      console.error(
+        `${hotel.hotelName}: named-contact coverage gate failed`,
+        coverageGate.blockers,
+      );
+    }
     const version = `gdi_dh_buyer_who_recovery_${hotel.hotelId}_${DATE}`;
     const pkg = buildCustomerPublicationPackage({
       hotelId: hotel.hotelId,
@@ -192,13 +217,14 @@ function main() {
       approvalStatus: "CANDIDATE",
       applicationCompatibilityVersion: "gdi-customer-app-compat-v1",
       notes:
-        "Buyer-WHO live recovery V1 — prior named contacts preserved; newly verified named buyers only. Historical V3 + best-contact restore packages preserved. No CURRENT.",
+        "Buyer-WHO live recovery V1 — prior named contacts preserved; newly verified named buyers only. Min-1 named contact coverage enforced. Historical V3 + best-contact restore packages preserved. No CURRENT.",
     });
     pkg.lineage = {
       preservedBestContactRestore: best.dirName,
       preservedV3: v3.dirName,
       recoveredNamedAdded: added.length,
       buyerWhoRecoveryContract: "gdi-design-hotels-buyer-who-live-recovery-v1",
+      namedContactCoverageStandard: "gdi-named-contact-coverage-standard-v1",
       currentPointerUpdated: false,
       customerPublication: false,
     };
@@ -206,12 +232,13 @@ function main() {
     const integrity = verifyPublicationPackageIntegrity(pkg);
     const written = store.writePackage(pkg);
     let staged = { ok: false, skipped: !applyPointer };
-    if (applyPointer && integrity.ok) {
+    if (applyPointer && integrity.ok && coverageGate.ok) {
       staged = store.stageForProduction({
         ...pkg,
         lifecycleState: GDI_PUBLICATION_LIFECYCLE_STATE.PRODUCTION_STAGED,
         gates: {
           integrity: { ok: integrity.ok },
+          namedContactCoverage: coverageGate,
           buyerWhoRecovery: true,
           priorBestContactPreserved: best.dirName,
           priorV3Preserved: v3.dirName,
