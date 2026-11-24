@@ -1,0 +1,40 @@
+{
+  "destination": {
+    "name": "GDI Hotel Research Opportunities",
+    "tableId": "tblbkDj0vhQLfrssV",
+    "adapter": "gdi-hotel-research-inventory-store-v1",
+    "identityField": "compositeKey",
+    "logicalUniqueKey": "(hotelId, opportunityId)"
+  },
+  "identity": "(hotelId, opportunityId) via compositeKey",
+  "fields": {
+    "compositeKey": "compositeKey",
+    "opportunityId": "opportunityId",
+    "hotelId": "hotelId",
+    "organizationName": "organizationName",
+    "researchLifecycleStatus": "researchLifecycleStatus",
+    "commercialEligibilityStatus": "commercialEligibilityStatus",
+    "demandThesis": "demandThesis",
+    "priority": "priority",
+    "title": "title",
+    "segment": "segment",
+    "sourceSummary": "sourceSummary",
+    "firstDiscoveredAt": "firstDiscoveredAt",
+    "firstDiscoveredRunId": "firstDiscoveredRunId",
+    "lastResearchedAt": "lastResearchedAt",
+    "lastMaterialChangeAt": "lastMaterialChangeAt",
+    "dgGeneratorId": "dgGeneratorId",
+    "researchPayloadJson": "researchPayloadJson",
+    "schemaVersion": "schemaVersion"
+  },
+  "payloadCarrier": "researchPayloadJson (slim commercial allowlist)",
+  "contactsInPayload": true,
+  "evidenceInPayload": true,
+  "fqoGatesInPayload": "via slim payload / disposition metadata when present",
+  "neverWrites": [
+    "Group Demand Opportunities (customer GDO)",
+    "STAGED.json",
+    "CURRENT.json",
+    "Surfe-returned contact details"
+  ]
+}
