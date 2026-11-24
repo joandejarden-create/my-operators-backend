@@ -2003,6 +2003,84 @@ button.gdi-tile-pill.is-filter-active {
   font-weight: 500;
 }
 
+/* —— Founder Research View (R1) —— */
+.gdi-inventory-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 8px 0 4px;
+  padding: 10px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.35);
+}
+.gdi-inventory-summary__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 7.5rem;
+}
+.gdi-inventory-summary__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.72);
+  font-weight: 600;
+}
+.gdi-inventory-summary__value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+.gdi-lifecycle-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 8px;
+}
+.gdi-lifecycle-nav__btn {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.45);
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.gdi-lifecycle-nav__btn.is-active {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.18);
+  color: #f0f9ff;
+}
+.gdi-research-view-banner {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  background: rgba(120, 53, 15, 0.28);
+  color: #fef3c7;
+}
+.gdi-research-view-banner p {
+  margin: 0 0 8px;
+}
+.gdi-research-view-banner__actions {
+  margin-top: 10px !important;
+}
+.gdi-empty--inventory-unavailable .gdi-empty__counts {
+  margin: 10px 0;
+  color: inherit;
+  opacity: 0.92;
+}
+.gdi-empty--inventory-unavailable .gdi-empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 /* —— GDI Final Preset Filter Bar ——
  * ONE horizontal row · Priority (auto) + Sales (1fr) · equal-height panels.
  * Titles left of chips on the same line · chips never wrap at desktop.

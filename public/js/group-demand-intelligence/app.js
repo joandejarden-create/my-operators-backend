@@ -437,18 +437,7 @@
         });
       });
     }
-    // Research mode remains available via explicit admin/diagnostic URLs only —
-    // not from the normal STAGED empty/error chrome.
-    var research = root.querySelector('[data-gdi-recovery="view-research"]');
-    if (research) {
-      research.addEventListener("click", function () {
-        applyFounderInventoryMode("research");
-        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
-        loadAll().catch(function (err) {
-          handleLoadFailure(err);
-        });
-      });
-    }
+    // Research / lifecycle navigation uses root event delegation (_gdiLifecycleDelegated).
     var retry = root.querySelector('[data-gdi-recovery="retry-load"]');
     if (retry) {
       retry.addEventListener("click", function () {
@@ -471,11 +460,64 @@
     );
   }
 
+  function researchInventoryCounts() {
+    var s = state.summary || {};
+    var recovery =
+      (state.inventoryEmpty && state.inventoryEmpty.recovery) || {};
+    var fromRecovery =
+      (state.inventoryEmpty && state.inventoryEmpty.researchSummary) ||
+      recovery.researchSummary ||
+      null;
+    var discovered = Number(
+      (fromRecovery && fromRecovery.discovered) != null
+        ? fromRecovery.discovered
+        : s.opportunitiesDiscovered != null
+          ? s.opportunitiesDiscovered
+          : 0
+    );
+    var qualified = Number(
+      (fromRecovery && fromRecovery.qualified) != null
+        ? fromRecovery.qualified
+        : s.qualifiedCount != null
+          ? s.qualifiedCount
+          : 0
+    );
+    if (!Number.isFinite(discovered)) discovered = 0;
+    if (!Number.isFinite(qualified)) qualified = 0;
+    return {
+      discovered: discovered,
+      qualified: qualified,
+      hasResearch: discovered > 0 || qualified > 0,
+    };
+  }
+
+  function finalizedStagedCount() {
+    if (state.inventoryEmpty && state.inventoryEmpty.mode === "staged") {
+      return 0;
+    }
+    if (resolveFounderInventoryMode() === "staged") {
+      return (state.opportunities || []).length;
+    }
+    var pub = state.publication || {};
+    if (pub.opportunityCount != null) return Number(pub.opportunityCount) || 0;
+    if (
+      String(pub.previewSource || "").toUpperCase() === "STAGED" &&
+      Array.isArray(state.opportunities)
+    ) {
+      return state.opportunities.length;
+    }
+    return null;
+  }
+
   function customerFacingMissingInventoryMessage(mode, data) {
     data = data || {};
-    // Founder STAGED review + published inventory: neutral empty copy only.
-    // Do not push internal Research workflow instructions into the normal UI.
+    var research =
+      (data.researchSummary && data.researchSummary.hasResearch) ||
+      researchInventoryCounts().hasResearch;
     if (mode === "staged") {
+      if (research) {
+        return "Research available — no finalized package yet";
+      }
       return "No finalized opportunities are available for this property.";
     }
     if (mode === "published") {
@@ -492,9 +534,26 @@
     state.opportunities = [];
     state.publication = null;
     state.visibilityWarning = null;
+    if (data.researchSummary && !state.summary) {
+      state.summary = {
+        opportunitiesDiscovered: data.researchSummary.discovered,
+        qualifiedCount: data.researchSummary.qualified,
+        lastResearchAt: data.researchSummary.lastResearchAt,
+        runStatus: data.researchSummary.runStatus,
+      };
+    } else if (data.researchSummary && state.summary) {
+      if (state.summary.opportunitiesDiscovered == null) {
+        state.summary.opportunitiesDiscovered = data.researchSummary.discovered;
+      }
+      if (state.summary.qualifiedCount == null) {
+        state.summary.qualifiedCount = data.researchSummary.qualified;
+      }
+    }
     state.inventoryEmpty = {
       mode: mode,
       code: code,
+      lifecycleState: data.lifecycleState || null,
+      researchSummary: data.researchSummary || null,
       message: customerFacingMissingInventoryMessage(mode, data),
       recovery: data.recovery || null,
     };
@@ -504,20 +563,51 @@
     var empty = state.inventoryEmpty;
     if (!empty) return "";
     var recovery = empty.recovery || {};
-    // Optional published inventory escape hatch only — never "View Research"
-    // in the normal founder STAGED / published empty state.
+    var counts = researchInventoryCounts();
+    var researchAvailable =
+      empty.mode === "staged" &&
+      (counts.hasResearch ||
+        (empty.researchSummary && empty.researchSummary.hasResearch));
     var publishedBtn =
       empty.mode === "staged" && recovery.hasCurrentPublication === true
-        ? '<p class="gdi-empty__actions"><button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button></p>'
+        ? '<button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button>'
+        : "";
+    var researchBtn = researchAvailable
+      ? '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">View Research Opportunities</button>'
+      : "";
+    var body = researchAvailable
+      ? "Demand opportunities have been identified for this property, but no finalized STAGED package is currently available. Review the research inventory to see the existing findings and their qualification status."
+      : empty.message;
+    var title = researchAvailable
+      ? "Research available — no finalized package yet"
+      : empty.message;
+    var countsHtml = researchAvailable
+      ? '<p class="gdi-empty__counts" data-gdi-research-empty-counts="1">' +
+        "<strong>Discovered:</strong> " +
+        esc(String(counts.discovered)) +
+        " · <strong>Qualified Research:</strong> " +
+        esc(String(counts.qualified)) +
+        " · <strong>Finalized STAGED:</strong> unavailable" +
+        "</p>"
+      : "";
+    var actions =
+      researchBtn || publishedBtn
+        ? '<p class="gdi-empty__actions">' + researchBtn + publishedBtn + "</p>"
         : "";
     return (
       '<div class="gdi-empty gdi-empty--inventory-unavailable" role="status" data-gdi-inventory-empty="' +
       esc(empty.mode) +
+      '" data-gdi-lifecycle-state="' +
+      esc(empty.lifecycleState || (researchAvailable ? "STAGED_UNAVAILABLE_RESEARCH_AVAILABLE" : "STAGED_UNAVAILABLE_NO_RESEARCH")) +
       '">' +
-      "<p>" +
-      esc(empty.message) +
-      "</p>" +
-      publishedBtn +
+      "<p><strong>" +
+      esc(title) +
+      "</strong></p>" +
+      (researchAvailable
+        ? "<p>" + esc(body) + "</p>"
+        : "") +
+      countsHtml +
+      actions +
       "</div>"
     );
   }
@@ -1205,6 +1295,13 @@
             "</div>"
           );
         }
+        if (resolveFounderInventoryMode() === "research") {
+          return (
+            '<div class="gdi-empty">' +
+            "No research opportunities match the current filters. Use Reset View to clear filters." +
+            "</div>"
+          );
+        }
         return '<div class="gdi-empty">No customer-ready opportunities match the current filters.</div>';
       }
       var warn = state.visibilityWarning;
@@ -1239,6 +1336,17 @@
     if (!state.hotelId) return "";
     var rows = filteredSorted();
     var q = [];
+    var mode = resolveFounderInventoryMode();
+    if (mode === "research") {
+      q.push("live=1");
+      q.push("inventory=research");
+    } else if (mode === "staged") {
+      q.push("preview=staged");
+      q.push("publicationPackage=1");
+    } else {
+      q.push("preview=current");
+      q.push("publicationPackage=1");
+    }
     var ids = rows
       .map(function (o) {
         return o.id || o.opportunityId;
@@ -1291,6 +1399,68 @@
       encodeURIComponent(state.hotelId) +
       "/opportunities/export.csv" +
       (q.length ? "?" + q.join("&") : "")
+    );
+  }
+
+  function founderLifecycleNavHtml() {
+    var mode = resolveFounderInventoryMode();
+    var finalizedActive = mode === "staged" || mode === "published";
+    var researchActive = mode === "research";
+    return (
+      '<nav class="gdi-lifecycle-nav" aria-label="Opportunity lifecycle" data-gdi-lifecycle-nav="1">' +
+      '<button type="button" class="gdi-lifecycle-nav__btn' +
+      (finalizedActive ? " is-active" : "") +
+      '" data-gdi-lifecycle-view="finalized" aria-pressed="' +
+      (finalizedActive ? "true" : "false") +
+      '">Finalized Opportunities</button>' +
+      '<button type="button" class="gdi-lifecycle-nav__btn' +
+      (researchActive ? " is-active" : "") +
+      '" data-gdi-lifecycle-view="research" aria-pressed="' +
+      (researchActive ? "true" : "false") +
+      '">Research Opportunities</button>' +
+      "</nav>"
+    );
+  }
+
+  function founderInventorySummaryHtml() {
+    var counts = researchInventoryCounts();
+    var staged = finalizedStagedCount();
+    var stagedLabel =
+      staged == null
+        ? "—"
+        : state.inventoryEmpty && state.inventoryEmpty.mode === "staged"
+          ? "unavailable"
+          : String(staged);
+    return (
+      '<div class="gdi-inventory-summary" data-gdi-inventory-summary="1" role="group" aria-label="Hotel inventory summary">' +
+      '<div class="gdi-inventory-summary__metric" data-metric="discovered">' +
+      '<span class="gdi-inventory-summary__label">Discovered</span>' +
+      '<span class="gdi-inventory-summary__value">' +
+      esc(String(counts.discovered)) +
+      "</span></div>" +
+      '<div class="gdi-inventory-summary__metric" data-metric="qualified">' +
+      '<span class="gdi-inventory-summary__label">Qualified Research</span>' +
+      '<span class="gdi-inventory-summary__value">' +
+      esc(String(counts.qualified)) +
+      "</span></div>" +
+      '<div class="gdi-inventory-summary__metric" data-metric="staged">' +
+      '<span class="gdi-inventory-summary__label">Finalized STAGED</span>' +
+      '<span class="gdi-inventory-summary__value">' +
+      esc(stagedLabel) +
+      "</span></div>" +
+      "</div>"
+    );
+  }
+
+  function researchViewBannerHtml() {
+    if (resolveFounderInventoryMode() !== "research") return "";
+    return (
+      '<div class="gdi-research-view-banner" role="status" data-gdi-research-view-banner="1">' +
+      "<p><strong>RESEARCH VIEW — NOT FINALIZED</strong></p>" +
+      "<p>These opportunities are research findings and may require additional evidence, contact verification or commercial qualification before they can be presented as finalized sales opportunities.</p>" +
+      '<p class="gdi-research-view-banner__actions">' +
+      '<button type="button" class="gdi-btn" data-gdi-lifecycle-view="finalized">Return to Finalized Opportunities</button>' +
+      "</p></div>"
     );
   }
 
@@ -2119,7 +2289,10 @@
             ),
             publishedUpdateLabel: "Last Published Update",
             actionHtml: propertyBarActionsHtml(),
-          })) +
+          }) +
+          founderInventorySummaryHtml() +
+          founderLifecycleNavHtml() +
+          researchViewBannerHtml()) +
       '<div id="gdiTabBody">' +
       '<div id="gdiTabOpportunities" class="gdi-tab-panel"' +
       (hideOpportunityChrome ? ' hidden aria-hidden="true"' : "") +
@@ -2272,7 +2445,7 @@
       });
     });
 
-    // Event delegation — Reset View must survive full root.innerHTML re-renders.
+    // Event delegation — Reset View / lifecycle must survive full root.innerHTML re-renders.
     if (!root._gdiResetViewDelegated) {
       root._gdiResetViewDelegated = true;
       root.addEventListener("click", function (e) {
@@ -2280,6 +2453,41 @@
         if (!t) return;
         e.preventDefault();
         resetBrowseView();
+      });
+    }
+    if (!root._gdiLifecycleDelegated) {
+      root._gdiLifecycleDelegated = true;
+      root.addEventListener("click", function (e) {
+        var recovery =
+          e.target && e.target.closest
+            ? e.target.closest(
+                '[data-gdi-recovery="view-research"], [data-gdi-lifecycle-view]'
+              )
+            : null;
+        if (!recovery) return;
+        var next = "";
+        if (recovery.getAttribute("data-gdi-recovery") === "view-research") {
+          next = "research";
+        } else {
+          next = String(recovery.getAttribute("data-gdi-lifecycle-view") || "")
+            .trim()
+            .toLowerCase();
+        }
+        if (next === "research") {
+          e.preventDefault();
+          applyFounderInventoryMode("research");
+        } else if (next === "finalized") {
+          e.preventDefault();
+          applyFounderInventoryMode(
+            resolveFounderInventoryMode() === "published" ? "published" : "staged"
+          );
+        } else {
+          return;
+        }
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
       });
     }
 
@@ -2292,9 +2500,9 @@
 
     wireBrowseControls();
     if (state.inventoryEmpty) {
-      var recovery = state.inventoryEmpty.recovery || {};
+      var recoveryOpts = state.inventoryEmpty.recovery || {};
       wireRecoveryActions({
-        hasCurrentPublication: recovery.hasCurrentPublication === true,
+        hasCurrentPublication: recoveryOpts.hasCurrentPublication === true,
       });
     }
 

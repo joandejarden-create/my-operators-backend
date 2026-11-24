@@ -67,6 +67,8 @@ check("compact_empty_state_helpers_present", () => {
   assert.doesNotMatch(appJs, /No staged version available for this hotel/);
   assert.doesNotMatch(appJs, /No published version available for this hotel/);
   assert.match(appJs, /No opportunities are available for this property/);
+  assert.match(appJs, /Research available — no finalized package yet/);
+  assert.match(appJs, /View Research Opportunities/);
   assert.match(appJs, /customerFacingMissingInventoryMessage/);
   assert.match(appJs, /data-gdi-recovery="view-research"/);
   assert.match(css, /\.gdi-empty--inventory-unavailable/);
@@ -112,7 +114,7 @@ check("representative_hotels_availability_inspectable", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, /app\.js\?v=gdi-restore-canonical-staged-workflow-v1/);
+  assert.match(html, /app\.js\?v=gdi-founder-research-view-v1/);
   assert.match(
     html,
     /dealality-gdi-ui\.js\?v=gdi-customer-ui-regression-v1-1/,

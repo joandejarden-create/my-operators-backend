@@ -536,6 +536,54 @@ function flagGate(req, res) {
   return false;
 }
 
+/**
+ * Lightweight research inventory summary for founder lifecycle chrome / 409 recovery.
+ * Does not promote research to STAGED and does not mutate stores.
+ */
+async function buildFounderResearchSummaryForHotel(hotelId) {
+  try {
+    const doc = await loadOppDoc(hotelId);
+    let summaryOpps = doc.opportunities || [];
+    if (isBethesdaInternalUnionHotel(hotelId)) {
+      const union = mergeBethesdaInternalResearchOpportunities(
+        hotelId,
+        summaryOpps,
+      );
+      summaryOpps = union.opportunities;
+    }
+    const summary = loadLatestSummary(hotelId, {
+      opportunities: summaryOpps,
+      opportunityDoc: doc,
+    });
+    const discovered = Number(
+      summary?.opportunitiesDiscovered ?? summaryOpps.length ?? 0,
+    );
+    const qualified = Number(
+      summary?.qualifiedCount ?? summary?.opportunityCount ?? 0,
+    );
+    return {
+      discovered: Number.isFinite(discovered) ? discovered : 0,
+      qualified: Number.isFinite(qualified) ? qualified : 0,
+      lastResearchAt: summary?.lastResearchAt || doc?.updatedAt || null,
+      runStatus: summary?.runStatus || null,
+      hasResearch:
+        (Number.isFinite(discovered) ? discovered : 0) > 0 ||
+        (Number.isFinite(qualified) ? qualified : 0) > 0 ||
+        summaryOpps.length > 0,
+      storeCount: summaryOpps.length,
+    };
+  } catch {
+    return {
+      discovered: 0,
+      qualified: 0,
+      lastResearchAt: null,
+      runStatus: null,
+      hasResearch: false,
+      storeCount: 0,
+    };
+  }
+}
+
 function sendGdiUpstreamError(res, err, route) {
   const code = err?.code || "server_error";
   const status =
@@ -870,6 +918,20 @@ export async function getGdiOpportunities(req, res) {
     const forceLive =
       String(req.query.live || "") === "1" ||
       String(req.query.publicationPackage || "") === "0";
+    if (forceLive) {
+      const { assertFounderResearchAccess } = await import(
+        "../lib/group-demand-intelligence/inventory/gdi-founder-research-access-v1.js"
+      );
+      const researchAuth = assertFounderResearchAccess(req);
+      if (!researchAuth.ok) {
+        return res.status(researchAuth.status).json({
+          ok: false,
+          error: researchAuth.error,
+          lifecycleState: "UNAUTHORIZED",
+          message: researchAuth.message,
+        });
+      }
+    }
     const wantPublicationPackage = !forceLive;
     if (wantPublicationPackage && hotelId) {
       const {
@@ -906,20 +968,30 @@ export async function getGdiOpportunities(req, res) {
         const { inspectFounderPreviewPublicationAvailability } = await import(
           "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js"
         );
+        const researchSummary =
+          await buildFounderResearchSummaryForHotel(hotelId);
         const availability = inspectFounderPreviewPublicationAvailability({
           hotelId,
+          researchSummary,
+          stagedCount: 0,
         });
+        const lifecycleState = researchSummary.hasResearch
+          ? "STAGED_UNAVAILABLE_RESEARCH_AVAILABLE"
+          : "STAGED_UNAVAILABLE_NO_RESEARCH";
         return res.status(409).json({
           ok: false,
           error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
+          lifecycleState,
           message:
             "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel, CURRENT published inventory, or live research.",
-          founderMessage:
-            "No opportunities are available for this property in the selected preview.",
+          founderMessage: researchSummary.hasResearch
+            ? "Research available — no finalized package yet"
+            : "No finalized opportunities are available for this property.",
           hotelId,
           publication: pkgResolved.meta || null,
           detail: pkgResolved.detail || null,
           recovery: availability,
+          researchSummary,
         });
       }
       if (
@@ -934,12 +1006,18 @@ export async function getGdiOpportunities(req, res) {
         const { inspectFounderPreviewPublicationAvailability } = await import(
           "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js"
         );
+        const researchSummary =
+          await buildFounderResearchSummaryForHotel(hotelId);
         const availability = inspectFounderPreviewPublicationAvailability({
           hotelId,
+          researchSummary,
         });
         return res.status(409).json({
           ok: false,
           error: "CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE",
+          lifecycleState: researchSummary.hasResearch
+            ? "CURRENT_UNAVAILABLE_RESEARCH_AVAILABLE"
+            : "CURRENT_UNAVAILABLE_NO_RESEARCH",
           message:
             "Authenticated founder preview requested CURRENT publication package, but none is available for this hotel. Refusing to fall back to STAGED, another hotel, or live research.",
           founderMessage:
@@ -948,6 +1026,7 @@ export async function getGdiOpportunities(req, res) {
           publication: pkgResolved.meta || null,
           detail: pkgResolved.detail || null,
           recovery: availability,
+          researchSummary,
         });
       }
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
@@ -1637,6 +1716,20 @@ export async function getGdiOpportunityDetail(req, res) {
     const forceLiveDetail =
       String(req.query.live || "") === "1" ||
       String(req.query.publicationPackage || "") === "0";
+    if (forceLiveDetail) {
+      const { assertFounderResearchAccess } = await import(
+        "../lib/group-demand-intelligence/inventory/gdi-founder-research-access-v1.js"
+      );
+      const researchAuth = assertFounderResearchAccess(req);
+      if (!researchAuth.ok) {
+        return res.status(researchAuth.status).json({
+          ok: false,
+          error: researchAuth.error,
+          lifecycleState: "UNAUTHORIZED",
+          message: researchAuth.message,
+        });
+      }
+    }
     const wantPublicationPackage = !forceLiveDetail;
     if (wantPublicationPackage && hotelId && opportunityId) {
       const {
@@ -2055,13 +2148,94 @@ export async function getGdiOpportunitiesExport(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
+  const forceLiveExport =
+    String(req.query.live || "") === "1" ||
+    String(req.query.publicationPackage || "") === "0" ||
+    String(req.query.inventory || "").toLowerCase() === "research";
+  const previewExport = String(req.query.preview || "")
+    .trim()
+    .toLowerCase();
+
+  if (forceLiveExport) {
+    const { assertFounderResearchAccess } = await import(
+      "../lib/group-demand-intelligence/inventory/gdi-founder-research-access-v1.js"
+    );
+    const researchAuth = assertFounderResearchAccess(req);
+    if (!researchAuth.ok) {
+      return res.status(researchAuth.status).json({
+        ok: false,
+        error: researchAuth.error,
+        lifecycleState: "UNAUTHORIZED",
+        message: researchAuth.message,
+      });
+    }
+  }
+
+  // Finalized lifecycle export must fail closed — never substitute research rows.
+  if (
+    !forceLiveExport &&
+    (previewExport === "staged" ||
+      previewExport === "current" ||
+      previewExport === "published")
+  ) {
+    const { resolvePreviewOpportunitiesFromPublicationPackage } = await import(
+      "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
+    );
+    const requireStaged = previewExport === "staged";
+    const pkgResolved = resolvePreviewOpportunitiesFromPublicationPackage({
+      hotelId,
+      forceLive: false,
+      preferStaged: requireStaged,
+      preview: requireStaged ? "staged" : "current",
+    });
+    const wantSource = requireStaged ? "STAGED" : "CURRENT";
+    if (
+      !(
+        pkgResolved.ok &&
+        pkgResolved.mode === "PACKAGE" &&
+        String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
+          wantSource
+      )
+    ) {
+      return res.status(409).json({
+        ok: false,
+        error: requireStaged
+          ? "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE"
+          : "CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE",
+        message:
+          "Finalized export unavailable for the selected lifecycle. Refusing to substitute research inventory.",
+        hotelId,
+      });
+    }
+    let packageRows = filterOpportunitiesForExport(
+      pkgResolved.opportunities || [],
+      req.query,
+    );
+    packageRows = await attachCommercialProgression(hotelId, packageRows);
+    const hotelsPkg = listRegisteredHotels();
+    const hotelPkg =
+      hotelsPkg.find((h) => h.hotelId === hotelId) ||
+      { hotelId, name: hotelId };
+    res.setHeader("X-GDI-Export-Lifecycle", wantSource);
+    return sendCustomerCsv(res, packageRows, hotelPkg);
+  }
 
   const doc = await loadOppDoc(hotelId);
   // Align Bethesda export with Opportunities list audience (sales-team 67 vs
   // published 19). Share/export routes that force published stay gated.
   let opportunities = doc.opportunities || [];
   const inventoryAudience = resolveGdiInventoryAudience(req, { hotelId });
-  if (isBethesdaInternalUnionHotel(hotelId)) {
+  if (forceLiveExport) {
+    if (isBethesdaInternalUnionHotel(hotelId)) {
+      const union = mergeBethesdaInternalResearchOpportunities(
+        hotelId,
+        opportunities,
+      );
+      opportunities = union.opportunities;
+    } else if (!includeDisqualified) {
+      opportunities = filterSalespersonView(opportunities);
+    }
+  } else if (isBethesdaInternalUnionHotel(hotelId)) {
     const union = mergeBethesdaInternalResearchOpportunities(
       hotelId,
       opportunities
@@ -2138,7 +2312,9 @@ export async function getGdiOpportunitiesExport(req, res) {
       hotelId,
     });
   }
-  opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
+  if (!forceLiveExport) {
+    opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
+  }
   opportunities = projectOpportunitiesCommercialQuality(opportunities);
   opportunities = annotateInventoryPopulations(opportunities, { hotelId });
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
@@ -2149,6 +2325,13 @@ export async function getGdiOpportunitiesExport(req, res) {
     hotels.find((h) => h.hotelId === hotelId) ||
     { hotelId, name: hotelId };
 
+  if (forceLiveExport) {
+    res.setHeader("X-GDI-Export-Lifecycle", "RESEARCH_NOT_FINALIZED");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="GDI-Research-Not-Finalized-${hotelId}.csv"`,
+    );
+  }
   return sendCustomerCsv(res, opportunities, hotel);
 }
 
