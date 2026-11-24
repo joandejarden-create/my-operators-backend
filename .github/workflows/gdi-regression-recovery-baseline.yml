@@ -21,6 +21,13 @@ on:
       - "scripts/test-gdi-opportunity-type-classification-v1.mjs"
       - "scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
       - "scripts/test-gdi-full-customer-consistency-audit-v1.mjs"
+      - "scripts/test-gdi-buyer-who-e2e-recovery-v1.mjs"
+      - "scripts/test-gdi-buyer-who-permanent-full-e2e-v1.mjs"
+      - "scripts/test-gdi-who-how-contact-intelligence-restore-v1.mjs"
+      - "scripts/test-gdi-buyer-alternative-person-research-v1.mjs"
+      - "scripts/test-gdi-named-contact-coverage-standard-v1.mjs"
+      - "scripts/test-gdi-full-e2e-contact-architecture-call-graph-v1.mjs"
+      - "scripts/test-gdi-best-suggested-contact-restore-v1.mjs"
       - "lib/group-demand-intelligence/customer-consistency/**"
       - "scripts/test-gdi-customer-facing-opportunity-title-contract-v1.mjs"
       - "scripts/test-gdi-surfe-on-demand-contact-reveal-v1.mjs"
@@ -47,6 +54,13 @@ on:
       - "scripts/test-gdi-regression-recovery-v1.mjs"
       - "scripts/test-gdi-opportunity-type-classification-v1.mjs"
       - "scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
+      - "scripts/test-gdi-buyer-who-e2e-recovery-v1.mjs"
+      - "scripts/test-gdi-buyer-who-permanent-full-e2e-v1.mjs"
+      - "scripts/test-gdi-who-how-contact-intelligence-restore-v1.mjs"
+      - "scripts/test-gdi-buyer-alternative-person-research-v1.mjs"
+      - "scripts/test-gdi-named-contact-coverage-standard-v1.mjs"
+      - "scripts/test-gdi-full-e2e-contact-architecture-call-graph-v1.mjs"
+      - "scripts/test-gdi-best-suggested-contact-restore-v1.mjs"
       - ".github/workflows/gdi-regression-recovery-baseline.yml"
 
 jobs:
@@ -94,3 +108,18 @@ jobs:
 
       - name: Full customer consistency audit smoke (3 hotels)
         run: npm run test:gdi-full-customer-consistency-audit-v1
+
+      - name: Buyer-WHO E2E recovery + permanent Full E2E
+        run: |
+          npm run test:gdi-buyer-who-e2e-recovery-v1
+          npm run test:gdi-buyer-who-permanent-full-e2e-v1
+          npm run test:gdi-best-suggested-contact-restore-v1
+
+      - name: Named-contact coverage + WHO/HOW + alternative-person ladder
+        run: |
+          npm run test:gdi-named-contact-coverage-standard-v1
+          npm run test:gdi-who-how-contact-intelligence-restore-v1
+          npm run test:gdi-buyer-alternative-person-research-v1
+
+      - name: Full E2E contact architecture call-graph (WHO→ALT→HOW)
+        run: npm run test:gdi-full-e2e-contact-architecture-call-graph-v1
