@@ -79,6 +79,8 @@
     visibilityWarning: null,
     /** Missing STAGED/CURRENT inventory — compact empty state, not full-page error. */
     inventoryEmpty: null,
+    /** True server/data failure — never disguise as legitimate empty inventory. */
+    loadError: null,
     drawerReturnFocusEl: null,
     contactRevealInFlight: Object.create(null),
   };
@@ -437,12 +439,21 @@
         });
       });
     }
-    // Research mode remains available via explicit admin/diagnostic URLs only —
-    // not from the normal STAGED empty/error chrome.
+    // Founder-only Research recovery — preserves selected hotel via inventory=research&live=1.
     var research = root.querySelector('[data-gdi-recovery="view-research"]');
-    if (research) {
+    if (research && opts.allowFounderResearch) {
       research.addEventListener("click", function () {
         applyFounderInventoryMode("research");
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+    var staged = root.querySelector('[data-gdi-recovery="view-staged"]');
+    if (staged) {
+      staged.addEventListener("click", function () {
+        applyFounderInventoryMode("staged");
         setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
         loadAll().catch(function (err) {
           handleLoadFailure(err);
@@ -471,11 +482,104 @@
     );
   }
 
+  /** Founder/admin Research inventory — never ordinary customer accounts. */
+  function canAccessFounderResearchInventory() {
+    if (state.isAdmin === true) return true;
+    if (isLocalFounderHost()) return true;
+    try {
+      var flag = state.flag || {};
+      if (flag.isAdmin === true || flag.founderResearchPreview === true) {
+        return true;
+      }
+    } catch (eFlag) {
+      /* ignore */
+    }
+    return false;
+  }
+
+  function researchInventoryCountsFromSummary() {
+    var s = state.summary || {};
+    var recovery = (state.inventoryEmpty && state.inventoryEmpty.recovery) || {};
+    // Prefer live summary API counts (authoritative for UI) over filesystem
+    // recovery inspection when both are present.
+    var discovered = Number(
+      s.opportunitiesDiscovered != null
+        ? s.opportunitiesDiscovered
+        : s.discoveredCount != null
+          ? s.discoveredCount
+          : recovery.discoveredCount
+    );
+    var qualified = Number(
+      s.qualifiedCount != null
+        ? s.qualifiedCount
+        : recovery.qualifiedInResearchCount
+    );
+    var finalized = Number(
+      recovery.finalizedStagedCount != null
+        ? recovery.finalizedStagedCount
+        : recovery.hasStagedPublication === true
+          ? recovery.stagedOpportunityCount
+          : 0
+    );
+    if (!Number.isFinite(discovered)) discovered = 0;
+    if (!Number.isFinite(qualified)) qualified = 0;
+    if (!Number.isFinite(finalized)) finalized = 0;
+    return {
+      discovered: discovered,
+      qualifiedInResearch: qualified,
+      finalizedStaged: finalized,
+      lastResearchAt:
+        s.lastResearchAt || recovery.lastResearchAt || null,
+      lastFinalizedAt:
+        s.lastPublishedUpdateAt || recovery.lastFinalizedAt || null,
+    };
+  }
+
+  /**
+   * Lifecycle states must not collapse into one empty screen:
+   * NO_RESEARCH | RESEARCH_AVAILABLE_NOT_FINALIZED | QUALIFIED_RESEARCH_AVAILABLE |
+   * FINALIZED_STAGED_AVAILABLE | DATA_LOAD_ERROR
+   */
+  function resolveInventoryLifecycleState() {
+    if (state.loadError) return "DATA_LOAD_ERROR";
+    if (wantsLiveResearchBrowse()) {
+      var liveCount = (state.opportunities || []).length;
+      if (liveCount > 0) {
+        var qLive = researchInventoryCountsFromSummary().qualifiedInResearch;
+        return qLive > 0
+          ? "QUALIFIED_RESEARCH_AVAILABLE"
+          : "RESEARCH_AVAILABLE_NOT_FINALIZED";
+      }
+      return "NO_RESEARCH_AVAILABLE";
+    }
+    if ((state.opportunities || []).length > 0) {
+      return "FINALIZED_STAGED_AVAILABLE";
+    }
+    if (state.inventoryEmpty) {
+      var counts = researchInventoryCountsFromSummary();
+      if (counts.qualifiedInResearch > 0) {
+        return "QUALIFIED_RESEARCH_AVAILABLE";
+      }
+      if (counts.discovered > 0) {
+        return "RESEARCH_AVAILABLE_NOT_FINALIZED";
+      }
+      return "NO_RESEARCH_AVAILABLE";
+    }
+    if ((state.opportunities || []).length === 0) {
+      return "NO_RESEARCH_AVAILABLE";
+    }
+    return "FINALIZED_STAGED_AVAILABLE";
+  }
+
   function customerFacingMissingInventoryMessage(mode, data) {
     data = data || {};
-    // Founder STAGED review + published inventory: neutral empty copy only.
-    // Do not push internal Research workflow instructions into the normal UI.
+    var counts = researchInventoryCountsFromSummary();
+    var researchPresent =
+      counts.discovered > 0 || counts.qualifiedInResearch > 0;
     if (mode === "staged") {
+      if (researchPresent && canAccessFounderResearchInventory()) {
+        return "No finalized opportunities are available for this property yet. Research opportunities are available for founder review.";
+      }
       return "No finalized opportunities are available for this property.";
     }
     if (mode === "published") {
@@ -492,32 +596,116 @@
     state.opportunities = [];
     state.publication = null;
     state.visibilityWarning = null;
+    state.loadError = null;
+    var recovery = data.recovery || {};
     state.inventoryEmpty = {
       mode: mode,
       code: code,
-      message: customerFacingMissingInventoryMessage(mode, data),
-      recovery: data.recovery || null,
+      message: "",
+      recovery: recovery,
     };
+    // Message depends on summary/recovery counts — compute after inventoryEmpty is set.
+    state.inventoryEmpty.message = customerFacingMissingInventoryMessage(
+      mode,
+      data
+    );
+    state.inventoryEmpty.lifecycleState = resolveInventoryLifecycleState();
+  }
+
+  function inventoryCountsMetaHtml(counts) {
+    counts = counts || researchInventoryCountsFromSummary();
+    // Never label a research stamp as the last finalized publication date.
+    var researchStamp = counts.lastResearchAt
+      ? formatHistoryDate(counts.lastResearchAt)
+      : "—";
+    var finalizedStamp = counts.lastFinalizedAt
+      ? formatHistoryDate(counts.lastFinalizedAt)
+      : "—";
+    return (
+      '<dl class="gdi-inventory-counts" data-gdi-inventory-counts="1">' +
+      "<div><dt>Discovered</dt><dd>" +
+      esc(String(counts.discovered)) +
+      "</dd></div>" +
+      "<div><dt>Qualified in research</dt><dd>" +
+      esc(String(counts.qualifiedInResearch)) +
+      "</dd></div>" +
+      "<div><dt>Finalized STAGED</dt><dd>" +
+      esc(String(counts.finalizedStaged)) +
+      "</dd></div>" +
+      "</dl>" +
+      '<p class="gdi-inventory-timestamps">' +
+      "<span>Last research: " +
+      esc(researchStamp) +
+      "</span>" +
+      "<span>Last finalized publication: " +
+      esc(finalizedStamp) +
+      "</span>" +
+      "</p>"
+    );
   }
 
   function inventoryUnavailableEmptyHtml() {
     var empty = state.inventoryEmpty;
     if (!empty) return "";
     var recovery = empty.recovery || {};
-    // Optional published inventory escape hatch only — never "View Research"
-    // in the normal founder STAGED / published empty state.
-    var publishedBtn =
-      empty.mode === "staged" && recovery.hasCurrentPublication === true
-        ? '<p class="gdi-empty__actions"><button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button></p>'
+    var counts = researchInventoryCountsFromSummary();
+    var lifecycle =
+      empty.lifecycleState || resolveInventoryLifecycleState();
+    var researchPresent =
+      counts.discovered > 0 || counts.qualifiedInResearch > 0;
+    var founderResearch = canAccessFounderResearchInventory();
+    var actions = [];
+    if (
+      empty.mode === "staged" &&
+      founderResearch &&
+      researchPresent
+    ) {
+      actions.push(
+        '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">VIEW RESEARCH</button>'
+      );
+    }
+    if (empty.mode === "staged" && recovery.hasCurrentPublication === true) {
+      actions.push(
+        '<button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button>'
+      );
+    }
+    var actionsHtml = actions.length
+      ? '<p class="gdi-empty__actions">' + actions.join("") + "</p>"
+      : "";
+    var countsHtml =
+      empty.mode === "staged" && founderResearch
+        ? inventoryCountsMetaHtml(counts)
         : "";
     return (
       '<div class="gdi-empty gdi-empty--inventory-unavailable" role="status" data-gdi-inventory-empty="' +
       esc(empty.mode) +
+      '" data-gdi-lifecycle-state="' +
+      esc(lifecycle) +
       '">' +
       "<p>" +
       esc(empty.message) +
       "</p>" +
-      publishedBtn +
+      countsHtml +
+      actionsHtml +
+      "</div>"
+    );
+  }
+
+  function founderResearchModeBannerHtml() {
+    if (!wantsLiveResearchBrowse() || !canAccessFounderResearchInventory()) {
+      return "";
+    }
+    var counts = researchInventoryCountsFromSummary();
+    var lifecycle = resolveInventoryLifecycleState();
+    return (
+      '<div class="gdi-research-mode-banner" role="status" data-gdi-lifecycle-state="' +
+      esc(lifecycle) +
+      '" data-gdi-inventory-view="research">' +
+      "<p><strong>RESEARCH / NOT FINALIZED</strong> — Founder review of hotel research inventory. Not customer-published STAGED.</p>" +
+      inventoryCountsMetaHtml(counts) +
+      '<p class="gdi-empty__actions">' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="view-staged">View Finalized STAGED</button>' +
+      "</p>" +
       "</div>"
     );
   }
@@ -536,9 +724,13 @@
         render();
       });
     }
-    showError(
-      (err && err.message) || "Failed to load Group & Demand Intelligence"
-    );
+    state.loadError = {
+      message:
+        (err && err.message) || "Failed to load Group & Demand Intelligence",
+      code: (err && err.code) || (err && err.data && err.data.error) || null,
+    };
+    state.inventoryEmpty = null;
+    showError(state.loadError.message);
     return Promise.resolve();
   }
 
@@ -1094,6 +1286,7 @@
           }),
         ]).then(function (scoped) {
           state.summary = scoped[0].summary;
+          state.loadError = null;
           if (scoped[1] && scoped[1].missingInventory) {
             applyMissingInventoryEmptyState(scoped[1].err);
           } else {
@@ -1108,6 +1301,7 @@
         });
       }
       state.summary = parts[2].summary;
+      state.loadError = null;
       if (parts[3] && parts[3].missingInventory) {
         applyMissingInventoryEmptyState(parts[3].err);
       } else {
@@ -2058,12 +2252,11 @@
     } catch (eDiag) {
       /* ignore */
     }
-    // Inventory mode chrome lives in the app shell sidebar (Research/Staged/
-    // Published + compact STAGED↔CURRENT indicator). Do not render a full-width
-    // inventory-status banner in the GDI report for any hotel or mode.
-    var presentationModeBanner = "";
+    // Compact founder Research chrome when ?live=1 / inventory=research.
+    // Diagnostic banner remains opt-in via ?gdiDiag=1 only.
+    var presentationModeBanner = founderResearchModeBannerHtml();
     if (wantsPresentationModeDiagnostics()) {
-      presentationModeBanner =
+      presentationModeBanner +=
         '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
         presentationMode +
         '" role="status">' +
@@ -2291,10 +2484,12 @@
     });
 
     wireBrowseControls();
-    if (state.inventoryEmpty) {
-      var recovery = state.inventoryEmpty.recovery || {};
+    if (state.inventoryEmpty || wantsLiveResearchBrowse()) {
+      var recovery =
+        (state.inventoryEmpty && state.inventoryEmpty.recovery) || {};
       wireRecoveryActions({
         hasCurrentPublication: recovery.hasCurrentPublication === true,
+        allowFounderResearch: canAccessFounderResearchInventory(),
       });
     }
 

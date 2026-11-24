@@ -79,27 +79,27 @@ check("bethesda_staged_and_current_intact", () => {
   assert.ok((staged.opportunities || []).length > 0);
 });
 
-check("design_hotels_have_no_staged_package", () => {
-  for (const id of [
-    "rece0NdV9FCnaFlVS",
-    "recaokE8psIbuVeuH",
-    "rec1t35e3sPerzxYu",
+check("design_hotels_staged_packages_preserved", () => {
+  // Post Design Hotels WHO/HOW waves: Condesa / LaLuna / Memmo carry STAGED.
+  // R1 must preserve these finalized packages (not assert absence).
+  for (const [id, expected] of [
+    ["rece0NdV9FCnaFlVS", 4],
+    ["recaokE8psIbuVeuH", 3],
+    ["rec1t35e3sPerzxYu", 11],
   ]) {
     const avail = inspectFounderPreviewPublicationAvailability({ hotelId: id });
-    assert.equal(avail.hasStagedPublication, false, id);
+    assert.equal(avail.hasStagedPublication, true, id);
     const staged = resolvePreviewOpportunitiesFromPublicationPackage({
       hotelId: id,
       preferStaged: true,
     });
-    assert.equal(staged.ok, false, id);
+    assert.equal(staged.ok, true, id);
+    assert.equal((staged.opportunities || []).length, expected, id);
   }
 });
 
 check("cache_marker_bumped_for_app_js", () => {
-  assert.match(
-    html,
-    /app\.js\?v=gdi-restore-canonical-staged-workflow-v1/,
-  );
+  assert.match(html, /app\.js\?v=gdi-inventory-visibility-r1/);
 });
 
 const failed = results.filter((r) => !r.ok);

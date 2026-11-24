@@ -807,6 +807,56 @@ body.gdi-page.embed-mode .gdi-shell {
   justify-content: center;
 }
 
+/* Founder inventory lifecycle counts + research mode chrome (R1). */
+.gdi-inventory-counts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 12px;
+  margin: 16px auto 8px;
+  max-width: 520px;
+  text-align: left;
+}
+.gdi-inventory-counts dt {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gdi-muted, #8b9bb8);
+}
+.gdi-inventory-counts dd {
+  margin: 2px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gdi-text, #d1dbf9);
+}
+.gdi-inventory-timestamps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: center;
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--gdi-muted, #8b9bb8);
+}
+.gdi-research-mode-banner {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(214, 158, 46, 0.45);
+  border-left: 4px solid #d69e2e;
+  border-radius: var(--gdi-radius-sm, 8px);
+  background: rgba(214, 158, 46, 0.08);
+  color: var(--gdi-text, #d1dbf9);
+}
+.gdi-research-mode-banner p {
+  margin: 0 0 8px;
+}
+.gdi-research-mode-banner .gdi-inventory-counts {
+  margin-top: 10px;
+}
+.gdi-research-mode-banner .gdi-empty__actions {
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
 /*
  * Drawer detail loader — reuse page toast wave orb / chrome, but static+centered in drawer body
  * (not the fixed top-right toast). Particles inherit from ai-visibility-shared.css.

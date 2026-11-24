@@ -134,7 +134,7 @@ check("hotel_switch_clears_preview_params", () => {
 });
 
 check("cache_bust", () => {
-  assert.match(html, /gdi-restore-canonical-staged-workflow-v1/);
+  assert.match(html, /gdi-inventory-visibility-r1/);
 });
 
 check("no_hardcoded_castillo_or_sandiego_exception", () => {

@@ -1193,9 +1193,11 @@
             }
             var stored = readStoredGdiInventoryMode();
             if (stored) return stored;
-            return isLocalFounderShellHost() ? 'research' : 'published';
+            // Local founder review defaults to STAGED finalized packages (R1).
+            // Research remains explicit via sidebar / ?inventory=research&live=1.
+            return isLocalFounderShellHost() ? 'staged' : 'published';
         } catch (_err) {
-            return isLocalFounderShellHost() ? 'research' : 'published';
+            return isLocalFounderShellHost() ? 'staged' : 'published';
         }
     }
 

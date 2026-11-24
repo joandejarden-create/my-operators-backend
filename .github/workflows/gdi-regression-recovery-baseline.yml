@@ -113,6 +113,12 @@ jobs:
       - name: Full customer consistency audit smoke (3 hotels)
         run: npm run test:gdi-full-customer-consistency-audit-v1
 
+      - name: Inventory visibility R1 (STAGED default + founder Research)
+        run: |
+          npm run test:gdi-inventory-visibility-r1
+          npm run test:gdi-missing-inventory-empty-state-v1
+          npm run test:gdi-founder-preview-missing-staged-nav-v1
+
       - name: Buyer-WHO E2E recovery + permanent Full E2E
         run: |
           npm run test:gdi-buyer-who-e2e-recovery-v1

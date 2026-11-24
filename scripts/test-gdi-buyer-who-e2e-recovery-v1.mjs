@@ -195,24 +195,26 @@ check("6_lineage_refuses_unrelated_org", () => {
   assert.equal(applied.reused, false);
 });
 
-check("8_ui_no_view_research_in_staged_empty", () => {
+check("8_ui_founder_gated_view_research_on_missing_staged", () => {
   const app = fs.readFileSync(
     path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
     "utf8",
   );
   const i = app.indexOf("function customerFacingMissingInventoryMessage");
   assert.ok(i >= 0);
-  const slice = app.slice(i, i + 900);
+  const slice = app.slice(i, i + 1200);
   assert.match(
     slice,
     /No finalized opportunities are available for this property/,
   );
-  assert.doesNotMatch(slice, /View Research/);
+  // R1: founder-only CTA — never unguarded customer research dump / old Switch copy.
   assert.doesNotMatch(slice, /Switch to Research to review/);
+  assert.match(app, /canAccessFounderResearchInventory/);
   const emptyFn = app.indexOf("function inventoryUnavailableEmptyHtml");
-  const emptySlice = app.slice(emptyFn, emptyFn + 700);
-  assert.doesNotMatch(emptySlice, />View Research</);
-  assert.doesNotMatch(emptySlice, /data-gdi-recovery="view-research"/);
+  const emptySlice = app.slice(emptyFn, emptyFn + 1800);
+  assert.match(emptySlice, /VIEW RESEARCH/);
+  assert.match(emptySlice, /data-gdi-recovery="view-research"/);
+  assert.match(emptySlice, /canAccessFounderResearchInventory/);
 });
 
 check("9_bethesda_cambridge_packages_untouched_by_helpers", () => {

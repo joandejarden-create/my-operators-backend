@@ -23,7 +23,7 @@ import { inspectFounderPreviewPublicationAvailability } from "../lib/group-deman
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CACHE_BUST_UI = "gdi-customer-ui-regression-v1-1";
-const CACHE_BUST_APP = "gdi-restore-canonical-staged-workflow-v1";
+const CACHE_BUST_APP = "gdi-inventory-visibility-r1";
 
 let failed = 0;
 function check(name, fn) {

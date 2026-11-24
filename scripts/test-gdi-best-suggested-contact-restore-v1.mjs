@@ -131,15 +131,16 @@ check("9_no_contact_research_required_on_tiles", () => {
   );
 });
 
-check("10_no_view_research_in_staged_empty", () => {
+check("10_founder_gated_view_research_on_missing_staged", () => {
   const app = read("public/js/group-demand-intelligence/app.js");
   assert.match(
     app,
-    /No finalized opportunities are available for this property\./,
+    /No finalized opportunities are available for this property/,
   );
-  assert.doesNotMatch(
+  assert.match(app, /canAccessFounderResearchInventory/);
+  assert.match(
     app,
-    /inventoryUnavailableEmptyHtml[\s\S]{0,600}view-research/,
+    /inventoryUnavailableEmptyHtml[\s\S]{0,2000}view-research/,
   );
   assert.doesNotMatch(
     app,

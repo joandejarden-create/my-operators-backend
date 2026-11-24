@@ -866,10 +866,44 @@ export async function getGdiOpportunities(req, res) {
 
     // Canonical customer surface: prefer approved PUBLICATION_PACKAGE whenever
     // a package resolves — same contract as external share. Research / live
-    // store browse: ?live=1 or ?publicationPackage=0.
+    // store browse: ?live=1 or ?publicationPackage=0 (founder/admin only).
     const forceLive =
       String(req.query.live || "") === "1" ||
       String(req.query.publicationPackage || "") === "0";
+    if (forceLive) {
+      const u = req.dealalityUser;
+      const isAdmin =
+        u?.isAdmin === true ||
+        u?.flags?.isAdmin === true ||
+        (Array.isArray(u?.workspaceAccess) &&
+          u.workspaceAccess.includes("Admin"));
+      // Local pilot-unauth remains founder QA on localhost. Authenticated
+      // ordinary customer accounts must not receive unfinalized research.
+      if (u && !isAdmin) {
+        try {
+          const { hasLocalDealalityAdminAccess } = await import(
+            "../lib/dealality/local-dealality-admin-access.js"
+          );
+          if (!hasLocalDealalityAdminAccess(u, req)) {
+            return res.status(403).json({
+              ok: false,
+              error: "RESEARCH_INVENTORY_FORBIDDEN",
+              message:
+                "Unfinalized research inventory is founder/admin only. Use finalized STAGED or published CURRENT inventory.",
+              hotelId,
+            });
+          }
+        } catch {
+          return res.status(403).json({
+            ok: false,
+            error: "RESEARCH_INVENTORY_FORBIDDEN",
+            message:
+              "Unfinalized research inventory is founder/admin only. Use finalized STAGED or published CURRENT inventory.",
+            hotelId,
+          });
+        }
+      }
+    }
     const wantPublicationPackage = !forceLive;
     if (wantPublicationPackage && hotelId) {
       const {
