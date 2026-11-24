@@ -1,0 +1,104 @@
+{
+  "contract": "gdi-contact-search-alternative-person-archaeology-v1",
+  "at": "2026-11-24T09:50:00.000Z",
+  "tips": {
+    "originMain": "a7171e4a3f9a477d0be56c4b85d2515b847d37ae",
+    "pr585": "5c4d41308e6ec383a3096fee9eddd72d0cbffc04"
+  },
+  "spendUsd": 0,
+  "verdict": "Libraries intact; Full E2E missing alternative-person ladder. PR585 restores HOW+min1 WHO gate but not ladder.",
+  "liveRecoveryYield": {
+    "candidates": 113,
+    "detailedRows": 110,
+    "zeroStakeholders": 95,
+    "withStakeholders": 15,
+    "newlyVerifiedNamed": 3,
+    "strategyLadderIterations": 0,
+    "howExecutedInLiveRecovery": false
+  },
+  "capabilities": [
+    {
+      "id": "buyer_identification_shallow_who",
+      "module": "research/autonomous-deep-research-recovery-v1.js#ensureBuyerWhoResearchExecuted",
+      "main": "ACTIVE",
+      "pr585": "ACTIVE",
+      "note": "≤5 fixed queries; no ladder"
+    },
+    {
+      "id": "role_ontology_priority",
+      "module": "contact-candidate/ontology.js#ROLE_PRIORITY_BY_FAMILY",
+      "main": "DISCONNECTED",
+      "pr585": "DISCONNECTED",
+      "introduced": "f565f21cf"
+    },
+    {
+      "id": "buyer_strategy_ladder",
+      "module": "scaling-buyer-research-strategies-v1.js#selectNextBuyerResearchStrategy",
+      "main": "DISCONNECTED",
+      "pr585": "DISCONNECTED",
+      "usedBy": ["scaling-intelligent-investigation-loop-v1", "buyer-recovery-planner-v1", "adaptive-*"]
+    },
+    {
+      "id": "buyer_recovery_planner",
+      "module": "buyer-recovery-planner-v1.js",
+      "main": "PARTIALLY_PRESERVED",
+      "pr585": "PARTIALLY_PRESERVED",
+      "note": "Offline recommendations only"
+    },
+    {
+      "id": "commercial_contact_ranking",
+      "module": "presentation/gdi-commercial-contact-selection-v1.js#selectBestCommercialContacts",
+      "main": "DISCONNECTED",
+      "pr585": "DISCONNECTED",
+      "introduced": "b5566d115"
+    },
+    {
+      "id": "primary_secondary_selection",
+      "module": "secondary-named-contact-v1.js / scaling-two-contact-standard-v1.js",
+      "main": "PARTIALLY_PRESERVED",
+      "pr585": "PARTIALLY_PRESERVED"
+    },
+    {
+      "id": "public_how",
+      "module": "presentation/gdi-public-contact-discovery-workflow-v1.js",
+      "main": "DISCONNECTED",
+      "pr585": "ACTIVE",
+      "wiredBy": "5c4d41308 HOW_CONTACT_CHANNEL_DISCOVERY"
+    },
+    {
+      "id": "named_min1_finalization",
+      "module": "workflow/gdi-named-contact-coverage-standard-v1.js",
+      "main": "NOT_PRESENT",
+      "pr585": "ACTIVE"
+    },
+    {
+      "id": "identity_reuse",
+      "module": "workflow/gdi-opportunity-contact-lineage-reuse-v1.js",
+      "main": "PARTIALLY_PRESERVED",
+      "pr585": "PARTIALLY_PRESERVED"
+    },
+    {
+      "id": "surfe_findymail",
+      "module": "workflow/buyer-contact-enrichment-v1.js",
+      "main": "OPTIONAL_PAID_OFF",
+      "pr585": "OPTIONAL_PAID_OFF"
+    }
+  ],
+  "regressionCommits": [
+    {
+      "sha": "eaca98603",
+      "date": "2026-11-11",
+      "effect": "Full E2E research chain restored without strategy ladder / commercial selection / HOW"
+    },
+    {
+      "sha": "b9f7ea999",
+      "effect": "PowerShell contact research reconciled to contact investigation pass only"
+    },
+    {
+      "sha": "5c4d41308",
+      "effect": "HOW + WHO/HOW gates restored; ladder still disconnected"
+    }
+  ],
+  "stop": true,
+  "implementationAuthorized": false
+}
