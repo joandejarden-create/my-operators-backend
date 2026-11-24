@@ -131,3 +131,8 @@ jobs:
 
       - name: Full E2E contact architecture call-graph (WHO→ALT→HOW)
         run: npm run test:gdi-full-e2e-contact-architecture-call-graph-v1
+
+      - name: Finalized Qualified Opportunity + hotel-wide Full E2E finalization
+        run: |
+          npm run test:gdi-finalized-qualified-opportunity-v1
+          npm run test:gdi-hotel-wide-finalization-stage-v1
