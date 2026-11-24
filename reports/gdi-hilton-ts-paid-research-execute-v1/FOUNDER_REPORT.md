@@ -64,3 +64,9 @@
 ## STOP
 
 Paid research + candidate package + this founder report complete. **Do not activate STAGED** without separate founder approval.
+
+## IC contact-matrix overlay (2026-11-24)
+
+Synced person-specific channels and COMPETITIVE Westin scope from `06_CONTACT_MATRIX.json` into the candidate package primaryContact fields (SCBWI LinkedIn; SSSP email/LinkedIn + marketScope COMPETITIVE; Boutique LinkedIn retained, generic inbox rejected for FQO).
+
+**STAGED pointer still NOT activated.**
