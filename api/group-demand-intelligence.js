@@ -986,54 +986,87 @@ export async function getGdiOpportunities(req, res) {
           pkgResolved.opportunities,
           validationDoc,
         );
-        // Founder main UI: never present pre-FQO research / placeholders from
-        // legacy STAGED packages. Runtime filter only — pointers unchanged.
+        // Presentation policy:
+        // - Legacy approved STAGED/CURRENT: soft safety only (no silent FQO wipe).
+        // - Non-activated candidates / new packages: strict FQO filter.
+        // Pointers are never written here.
         let fqoPresentationFilterV1 =
           pkgResolved.meta?.fqoPresentationFilterV1 || null;
+        let legacyApprovedInventoryCompatV1 = null;
         if (
           !fqoPresentationFilterV1 ||
           fqoPresentationFilterV1.enforced !== true
         ) {
           try {
             const {
+              isLegacyApprovedPublicationPreview,
+              filterLegacyApprovedPackageOpportunities,
+            } = await import(
+              "../lib/group-demand-intelligence/publication-package/gdi-legacy-approved-inventory-compat-v1.js"
+            );
+            const {
               filterPackageOpportunitiesToFqo,
               resolveLatestCertifiedCandidatePackage,
             } = await import(
               "../lib/group-demand-intelligence/publication-package/gdi-founder-fqo-presentation-filter-v1.js"
             );
-            const fqoFiltered = filterPackageOpportunitiesToFqo(withFeedback);
-            withFeedback = fqoFiltered.opportunities;
-            fqoPresentationFilterV1 = {
-              enforced: true,
-              beforeCount: fqoFiltered.beforeCount,
-              afterCount: fqoFiltered.afterCount,
-              droppedCount: fqoFiltered.droppedCount,
-              previewSource: pkgResolved.meta?.previewSource || null,
-            };
-            // Legacy STAGED that fails all FQO gates: prefer certified candidate
-            // preview (not activated) over empty / research fallback.
-            if (
-              fqoFiltered.afterCount === 0 &&
-              String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
-                "STAGED"
-            ) {
-              const candidate = resolveLatestCertifiedCandidatePackage({
-                hotelId,
-              });
+            if (isLegacyApprovedPublicationPreview(pkgResolved.meta || {})) {
+              const legacy = filterLegacyApprovedPackageOpportunities(
+                withFeedback,
+              );
+              withFeedback = legacy.opportunities;
+              legacyApprovedInventoryCompatV1 = {
+                applied: true,
+                mode: legacy.mode,
+                beforeCount: legacy.beforeCount,
+                afterCount: legacy.afterCount,
+                droppedCount: legacy.droppedCount,
+                previewSource: pkgResolved.meta?.previewSource || null,
+                publicationVersion:
+                  pkgResolved.meta?.publicationVersion || null,
+              };
+              fqoPresentationFilterV1 = {
+                enforced: false,
+                legacyApprovedBypass: true,
+                beforeCount: legacy.beforeCount,
+                afterCount: legacy.afterCount,
+                droppedCount: legacy.droppedCount,
+                previewSource: pkgResolved.meta?.previewSource || null,
+              };
+            } else {
+              const fqoFiltered = filterPackageOpportunitiesToFqo(withFeedback);
+              withFeedback = fqoFiltered.opportunities;
+              fqoPresentationFilterV1 = {
+                enforced: true,
+                beforeCount: fqoFiltered.beforeCount,
+                afterCount: fqoFiltered.afterCount,
+                droppedCount: fqoFiltered.droppedCount,
+                previewSource: pkgResolved.meta?.previewSource || null,
+              };
+              // No STAGED/CURRENT: optional certified-candidate preview only.
               if (
-                candidate.ok &&
-                (candidate.opportunities || []).length > 0
+                fqoFiltered.afterCount === 0 &&
+                String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
+                  "CANDIDATE_CERTIFIED_NOT_ACTIVATED"
               ) {
-                withFeedback = candidate.opportunities;
-                pkgResolved.meta = candidate.meta;
-                fqoPresentationFilterV1 =
-                  candidate.meta?.fqoPresentationFilterV1 ||
-                  fqoPresentationFilterV1;
+                const candidate = resolveLatestCertifiedCandidatePackage({
+                  hotelId,
+                });
+                if (
+                  candidate.ok &&
+                  (candidate.opportunities || []).length > 0
+                ) {
+                  withFeedback = candidate.opportunities;
+                  pkgResolved.meta = candidate.meta;
+                  fqoPresentationFilterV1 =
+                    candidate.meta?.fqoPresentationFilterV1 ||
+                    fqoPresentationFilterV1;
+                }
               }
             }
           } catch (fqoFilterErr) {
             console.error(
-              "[gdi] founder FQO presentation filter failed",
+              "[gdi] founder presentation filter failed",
               fqoFilterErr?.message || fqoFilterErr,
             );
           }
@@ -1095,11 +1128,14 @@ export async function getGdiOpportunities(req, res) {
           publication: {
             ...(pkgResolved.meta || {}),
             fqoPresentationFilterV1,
+            legacyApprovedInventoryCompatV1,
           },
           inventoryPopulationCounts:
             pkgResolved.meta?.inventoryPopulationCounts || null,
           listScope: "PUBLICATION_PACKAGE",
-          inventoryAudience: "QUALIFIED_OPPORTUNITIES_ONLY",
+          inventoryAudience: legacyApprovedInventoryCompatV1?.applied
+            ? "LEGACY_APPROVED_PUBLICATION_PACKAGE"
+            : "QUALIFIED_OPPORTUNITIES_ONLY",
           hotelNeedDateConfigV1,
         });
       }
