@@ -112,8 +112,8 @@ From reassess plan:
 ## 11. PR and CI
 
 - **Depends on / stacks:** PR [#583](https://github.com/joandejarden-create/my-operators-backend/pull/583) (all checks green, MERGEABLE) — IC should merge #583 then this, or merge this stack.
-- This PR: opened from `fix/gdi-buyer-who-e2e-recovery-v1`
-- Local: `test:gdi-buyer-who-e2e-recovery-v1` PASS; `test:gdi-best-suggested-contact-restore-v1` PASS; `dealality:ci-precheck` to be run before push
+- This PR: [#584](https://github.com/joandejarden-create/my-operators-backend/pull/584) OPEN — `fix/gdi-buyer-who-e2e-recovery-v1`
+- Local: `test:gdi-buyer-who-e2e-recovery-v1` PASS; `test:gdi-best-suggested-contact-restore-v1` PASS; `dealality:ci-precheck` PASS
 
 ---
 
