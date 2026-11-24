@@ -1,0 +1,221 @@
+{
+  "contract": "gdi-buyer-who-permanent-full-e2e-v1",
+  "at": "2026-11-24T09:22:29.567Z",
+  "paidCalls": 0,
+  "workflows": [
+    "new_hotel_full_e2e",
+    "existing_hotel_full_e2e",
+    "portfolio_full_e2e",
+    "leisure_demand_full_e2e",
+    "resume_full_e2e",
+    "replay_full_e2e"
+  ],
+  "traces": {
+    "new_hotel": {
+      "stages": [
+        "DEEP_RESEARCH_ELIGIBILITY",
+        "DEEP_RESEARCH",
+        "BUYER_WHO_RESEARCH"
+      ],
+      "buyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_who_established_role_relevant_dm",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.480Z"
+      },
+      "researcherCalls": 8,
+      "spent": 0.032
+    },
+    "existing_hotel": {
+      "stages": [
+        "DEEP_RESEARCH_ELIGIBILITY",
+        "DEEP_RESEARCH",
+        "BUYER_WHO_RESEARCH"
+      ],
+      "buyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_who_established_role_relevant_dm",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.502Z"
+      },
+      "researcherCalls": 8,
+      "spent": 0.032
+    },
+    "portfolio": {
+      "stages": [
+        "DEEP_RESEARCH_ELIGIBILITY",
+        "DEEP_RESEARCH",
+        "BUYER_WHO_RESEARCH"
+      ],
+      "buyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_who_established_role_relevant_dm",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.518Z"
+      },
+      "researcherCalls": 8,
+      "spent": 0.032
+    },
+    "leisure": {
+      "stages": [
+        "DEEP_RESEARCH_ELIGIBILITY",
+        "DEEP_RESEARCH",
+        "BUYER_WHO_RESEARCH"
+      ],
+      "buyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_intelligence_gap_forced_who_and_discovery_queries",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.533Z"
+      },
+      "researcherCalls": 8,
+      "spent": 0.032
+    },
+    "resume": {
+      "firstBuyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_intelligence_gap_forced_who_and_discovery_queries",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.541Z"
+      },
+      "secondBuyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": false,
+        "reason": "buyer_gap_closed_role_relevant_dm_present",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 0,
+        "urlsAttempted": 0,
+        "at": "2026-11-24T09:22:29.548Z"
+      },
+      "preservedName": "Jordan Lee"
+    },
+    "replay": {
+      "buyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_intelligence_gap_forced_who_and_discovery_queries",
+        "researcherSource": "fixture",
+        "liveAuthorized": false,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.557Z"
+      },
+      "spent": 0
+    },
+    "no_fixture_fallback": {
+      "stages": [
+        "DEEP_RESEARCH_ELIGIBILITY",
+        "DEEP_RESEARCH",
+        "BUYER_WHO_RESEARCH"
+      ],
+      "buyerWho": {
+        "stage": "BUYER_WHO_RESEARCH",
+        "executed": true,
+        "reason": "buyer_intelligence_gap_forced_who_and_discovery_queries",
+        "researcherSource": "injected",
+        "liveAuthorized": true,
+        "queriesAttempted": 5,
+        "urlsAttempted": 4,
+        "at": "2026-11-24T09:22:29.567Z"
+      },
+      "researcherCalls": 8,
+      "spent": 0.032
+    }
+  },
+  "results": [
+    {
+      "name": "1_new_hotel_invokes_buyer_who",
+      "ok": true
+    },
+    {
+      "name": "2_existing_hotel_invokes_buyer_who",
+      "ok": true
+    },
+    {
+      "name": "3_portfolio_invokes_buyer_who",
+      "ok": true
+    },
+    {
+      "name": "4_leisure_invokes_buyer_who",
+      "ok": true
+    },
+    {
+      "name": "5_resume_preserves_contact_state",
+      "ok": true
+    },
+    {
+      "name": "6_replay_reuses_without_paid_calls",
+      "ok": true
+    },
+    {
+      "name": "7_missing_buyer_fails_named_gate",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "8_verified_name_without_email_displayable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "9_junk_person_extraction_rejected",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "10_cross_hotel_person_reuse",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "11_original_opportunity_identity_survives",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "12_budget_exhaustion_stops_paid_calls",
+      "ok": true
+    },
+    {
+      "name": "13_no_live_mode_fixture_fallback",
+      "ok": true
+    },
+    {
+      "name": "14_staged_includes_selected_verified_contact",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "15_sales_ready_independently_gated",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "16_no_customer_publication_without_founder_approval",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "pass": true
+}
