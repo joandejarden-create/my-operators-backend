@@ -113,7 +113,9 @@ CI wire: `.github/workflows/gdi-regression-recovery-baseline.yml` now runs publi
 ## 6. PR and CI status
 
 - Feature branch: `feat/gdi-agent-recovery-hardening-v1`
-- PR: opened for Integration Controller review (see PR URL in completion note)
+- PR: **https://github.com/joandejarden-create/my-operators-backend/pull/588** (`OPEN`)
+- Local prechecks: `dealality:ci-precheck` PASS; hardening / public-source / WHO-HOW / Agent escalation suites PASS
+- GitHub CI: pending on PR
 - Merge: **not performed** (IC owns)
 - Registered `ws-gdi` remains on unrelated dirty branch — preserved; implementation shipped from tip-aligned worktree at `b554a08`
 
