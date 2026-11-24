@@ -1,0 +1,119 @@
+{
+  "contract": "gdi-bethesda-six-leisure-categories-integration-audit-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "auditedAt": "2026-11-24",
+  "paidSpendUsd": 0,
+  "canonicalFullE2eLeisureDefault": "OFF",
+  "notSynonymousWithLocalDemandTracks": [
+    "social_celebrations",
+    "planner_partnerships",
+    "venue_lodging_partnerships"
+  ],
+  "bethesdaLdiPreset": null,
+  "bethesdaAutoSelectedModules": [],
+  "rows": [
+    {
+      "category": "Festivals, concerts and cultural events",
+      "moduleId": "leisure_events",
+      "codeOwner": "gdi-leisure-module-registry-v1 / Invoke-GdiLeisureEvents.ps1; segments associations_conferences_events, social_special_events, corporate_celebrations_private_events",
+      "discoveryImplemented": true,
+      "discoveryNotes": "Segment executors + LDI fixtures/mock_live; leisure festival specialization not bound into canonical entry",
+      "executedInStandardE2e": false,
+      "overlappingSegmentsExecute": true,
+      "contactWorkflow": "PARTIAL_VIA_SEGMENT_CHAIN_ONLY",
+      "candidateProjection": "PARTIAL_VIA_SEGMENT_NOT_LDI",
+      "bethesdaCoverage": "ORGANIC_OVERLAP_NOT_LDI_MODULE",
+      "gap": "Wire LDI events into canonical; leisure-specific queries; FQO-aligned contacts",
+      "status": "PARTIALLY_IMPLEMENTED"
+    },
+    {
+      "category": "Participatory sports and recreational travel",
+      "moduleId": "leisure_sports",
+      "codeOwner": "gdi-leisure-module-registry-v1 / Invoke-GdiLeisureSports.ps1; segment sports_entertainment + sports housing hunter",
+      "discoveryImplemented": true,
+      "discoveryNotes": "sports_entertainment discovery exists; LDI participatory filter is wrapper-only",
+      "executedInStandardE2e": "PARTIAL",
+      "overlappingSegmentsExecute": true,
+      "contactWorkflow": "YES_WHEN_IN_FULL_E2E_CHAIN",
+      "candidateProjection": "YES_FOR_SPORTS_SEGMENT_ROWS",
+      "bethesdaCoverage": "STRONG_ORGANIC_TOURNAMENT_INVENTORY",
+      "gap": "Apply LDI participatory filter in-path; dedupe vs existing cups",
+      "status": "PARTIALLY_IMPLEMENTED"
+    },
+    {
+      "category": "Attractions and destination experience partnerships",
+      "moduleId": "leisure_attractions",
+      "codeOwner": "gdi-leisure-module-registry-v1 / Invoke-GdiLeisureAttractions.ps1; preferred_lodging_partnerships, travel_trade_group_intermediaries",
+      "discoveryImplemented": true,
+      "discoveryNotes": "Partnership segments exist; attractions leisure specialization is LDI wrapper",
+      "executedInStandardE2e": false,
+      "overlappingSegmentsExecute": true,
+      "contactWorkflow": "PARTIAL_VIA_PLP_PLANNER",
+      "candidateProjection": "PARTIAL",
+      "bethesdaCoverage": "THIN_ORGANIC",
+      "gap": "Attractions/experience partnership queries + Bethesda module selection",
+      "status": "PARTIALLY_IMPLEMENTED"
+    },
+    {
+      "category": "Universities and visiting-friends-and-relatives (VFR) demand",
+      "moduleId": "leisure_universities",
+      "codeOwner": "gdi-leisure-module-registry-v1 / Invoke-GdiLeisureUniversities.ps1; education_scientific + university hunter",
+      "discoveryImplemented": true,
+      "discoveryNotes": "Education segment conference-heavy; VFR/graduation leisure is LDI specialization",
+      "executedInStandardE2e": false,
+      "overlappingSegmentsExecute": true,
+      "contactWorkflow": "PARTIAL",
+      "candidateProjection": "PARTIAL",
+      "bethesdaCoverage": "PARTIAL_ORGANIC_HOMECOMING_ALUMNI",
+      "gap": "Explicit VFR/graduation query pack with named outreach pathway",
+      "status": "PARTIALLY_IMPLEMENTED"
+    },
+    {
+      "category": "Destination demand shifts and special occasions",
+      "moduleId": "leisure_destination",
+      "codeOwner": "gdi-leisure-module-registry-v1 / Invoke-GdiLeisureDestination.ps1; registry coverage GAP",
+      "discoveryImplemented": false,
+      "discoveryNotes": "Defined specialization over social/celebration + need-period; no dedicated destination-shift discovery pack",
+      "executedInStandardE2e": false,
+      "overlappingSegmentsExecute": true,
+      "contactWorkflow": "NOT_CONNECTED_AS_LDI",
+      "candidateProjection": "NO_LDI_STREAM",
+      "bethesdaCoverage": "ABSENT_AS_LDI_PRODUCT",
+      "gap": "Destination-shift queries + need-period linkage into canonical E2E",
+      "status": "DEFINED_NOT_EXECUTED"
+    },
+    {
+      "category": "Leisure distribution and referral relationships",
+      "moduleId": "leisure_distribution",
+      "codeOwner": "gdi-leisure-module-registry-v1 / Invoke-GdiLeisureDistribution.ps1; travel_trade, preferred_lodging, professional_event_planners",
+      "discoveryImplemented": true,
+      "discoveryNotes": "Trade/PLP/planner discovery exists; leisure DMC/OTA/CVB specialization is LDI wrapper",
+      "executedInStandardE2e": "PARTIAL",
+      "overlappingSegmentsExecute": true,
+      "contactWorkflow": "YES_WHEN_IN_FULL_E2E_CHAIN",
+      "candidateProjection": "YES_FOR_PLANNER_DMC_ROWS",
+      "bethesdaCoverage": "ORGANIC_DMC_PLANNER_PLP",
+      "gap": "Leisure referral qualification + dedupe vs planner track; Bethesda LDI preset",
+      "status": "PARTIALLY_IMPLEMENTED"
+    }
+  ],
+  "summaryCounts": {
+    "FULLY_EXECUTED": 0,
+    "PARTIALLY_IMPLEMENTED": 5,
+    "DEFINED_NOT_EXECUTED": 1,
+    "NOT_IMPLEMENTED": 0
+  },
+  "newDiscoveryRequiredFor": [
+    "leisure_events (true festival/concert leisure lodging)",
+    "leisure_attractions",
+    "leisure_universities (VFR/graduation)",
+    "leisure_destination",
+    "leisure_distribution (leisure OTA/CVB beyond generic planner/DMC)"
+  ],
+  "alreadyPresentViaFourteenSegmentNotLdi": [
+    "participatory sports tournaments in gold 67",
+    "planner/DMC/distribution-adjacent rows",
+    "limited university/alumni and cultural adjacency"
+  ]
+}

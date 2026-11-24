@@ -1,0 +1,35 @@
+{
+  "entry": "gdi-canonical-full-e2e-entry-v1 / runCanonicalFullE2eResearch",
+  "originalChainStages": [
+    "HOTEL_PROFILE",
+    "DISCOVERY",
+    "DEEP_RESEARCH",
+    "CONTACT_RESEARCH",
+    "COMMERCIAL_QUALIFICATION",
+    "SALES_INTELLIGENCE_OUTPUT",
+    "PERSISTENCE_AND_CONTINUATION"
+  ],
+  "founderRequestedStages": [
+    "DISCOVERY",
+    "DEMAND_VALIDATION",
+    "HOTEL_FIT",
+    "WHO_BUYER_RESEARCH",
+    "ALT_CONTACT_RESEARCH",
+    "PERSON_VERIFICATION",
+    "HOW_PUBLIC_CONTACT_RESEARCH",
+    "COMMERCIAL_QUALIFICATION",
+    "OPPORTUNITY_CLASSIFICATION",
+    "COMMERCIAL_RECOMMENDATION",
+    "HOTEL_WIDE_RECONCILIATION",
+    "FQO_CERTIFICATION",
+    "PRESENTATION_PROJECTION",
+    "VERSIONED_STAGED_CANDIDATE"
+  ],
+  "mappingNotes": [
+    "CHAIN_STAGES collapses WHO/ALT/HOW under CONTACT_RESEARCH (+ nested stage events)",
+    "HOTEL_WIDE_RECONCILIATION runs after chain via runHotelWideFinalizationStage",
+    "FQO_CERTIFICATION is applied inside hotel-wide dispositions + optional quality gate",
+    "PRESENTATION_PROJECTION occurs in chain SALES_INTELLIGENCE_OUTPUT / ten-section builders",
+    "Dry-run does not exercise live Exa WHO/HOW provider calls"
+  ]
+}

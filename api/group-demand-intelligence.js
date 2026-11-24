@@ -903,6 +903,36 @@ export async function getGdiOpportunities(req, res) {
           String(pkgResolved.meta?.previewSource || "").toUpperCase() === "STAGED"
         )
       ) {
+        // Local founder validation: serve latest FQO-certified candidate without
+        // activating STAGED/CURRENT pointers (previewSource marks not-activated).
+        try {
+          const { resolveLatestCertifiedCandidatePackage } = await import(
+            "../lib/group-demand-intelligence/publication-package/gdi-founder-fqo-presentation-filter-v1.js"
+          );
+          const candidate = resolveLatestCertifiedCandidatePackage({ hotelId });
+          if (candidate.ok && candidate.mode === "PACKAGE") {
+            Object.assign(pkgResolved, candidate);
+          }
+        } catch (candidateErr) {
+          console.error(
+            "[gdi] certified candidate preview resolve failed",
+            candidateErr?.message || candidateErr,
+          );
+        }
+      }
+      if (
+        requireStagedPreview &&
+        !(
+          pkgResolved.ok &&
+          pkgResolved.mode === "PACKAGE" &&
+          (
+            String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
+              "STAGED" ||
+            String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
+              "CANDIDATE_CERTIFIED_NOT_ACTIVATED"
+          )
+        )
+      ) {
         const { inspectFounderPreviewPublicationAvailability } = await import(
           "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js"
         );
@@ -956,6 +986,91 @@ export async function getGdiOpportunities(req, res) {
           pkgResolved.opportunities,
           validationDoc,
         );
+        // Presentation policy:
+        // - Legacy approved STAGED/CURRENT: soft safety only (no silent FQO wipe).
+        // - Non-activated candidates / new packages: strict FQO filter.
+        // Pointers are never written here.
+        let fqoPresentationFilterV1 =
+          pkgResolved.meta?.fqoPresentationFilterV1 || null;
+        let legacyApprovedInventoryCompatV1 = null;
+        if (
+          !fqoPresentationFilterV1 ||
+          fqoPresentationFilterV1.enforced !== true
+        ) {
+          try {
+            const {
+              isLegacyApprovedPublicationPreview,
+              filterLegacyApprovedPackageOpportunities,
+            } = await import(
+              "../lib/group-demand-intelligence/publication-package/gdi-legacy-approved-inventory-compat-v1.js"
+            );
+            const {
+              filterPackageOpportunitiesToFqo,
+              resolveLatestCertifiedCandidatePackage,
+            } = await import(
+              "../lib/group-demand-intelligence/publication-package/gdi-founder-fqo-presentation-filter-v1.js"
+            );
+            if (isLegacyApprovedPublicationPreview(pkgResolved.meta || {})) {
+              const legacy = filterLegacyApprovedPackageOpportunities(
+                withFeedback,
+              );
+              withFeedback = legacy.opportunities;
+              legacyApprovedInventoryCompatV1 = {
+                applied: true,
+                mode: legacy.mode,
+                beforeCount: legacy.beforeCount,
+                afterCount: legacy.afterCount,
+                droppedCount: legacy.droppedCount,
+                previewSource: pkgResolved.meta?.previewSource || null,
+                publicationVersion:
+                  pkgResolved.meta?.publicationVersion || null,
+              };
+              fqoPresentationFilterV1 = {
+                enforced: false,
+                legacyApprovedBypass: true,
+                beforeCount: legacy.beforeCount,
+                afterCount: legacy.afterCount,
+                droppedCount: legacy.droppedCount,
+                previewSource: pkgResolved.meta?.previewSource || null,
+              };
+            } else {
+              const fqoFiltered = filterPackageOpportunitiesToFqo(withFeedback);
+              withFeedback = fqoFiltered.opportunities;
+              fqoPresentationFilterV1 = {
+                enforced: true,
+                beforeCount: fqoFiltered.beforeCount,
+                afterCount: fqoFiltered.afterCount,
+                droppedCount: fqoFiltered.droppedCount,
+                previewSource: pkgResolved.meta?.previewSource || null,
+              };
+              // No STAGED/CURRENT: optional certified-candidate preview only.
+              if (
+                fqoFiltered.afterCount === 0 &&
+                String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
+                  "CANDIDATE_CERTIFIED_NOT_ACTIVATED"
+              ) {
+                const candidate = resolveLatestCertifiedCandidatePackage({
+                  hotelId,
+                });
+                if (
+                  candidate.ok &&
+                  (candidate.opportunities || []).length > 0
+                ) {
+                  withFeedback = candidate.opportunities;
+                  pkgResolved.meta = candidate.meta;
+                  fqoPresentationFilterV1 =
+                    candidate.meta?.fqoPresentationFilterV1 ||
+                    fqoPresentationFilterV1;
+                }
+              }
+            }
+          } catch (fqoFilterErr) {
+            console.error(
+              "[gdi] founder presentation filter failed",
+              fqoFilterErr?.message || fqoFilterErr,
+            );
+          }
+        }
         // Read-time presentation attach (tile contact + revenue icons + contract).
         // Does not alter package fingerprint — same resolvers as share.
         try {
@@ -1010,10 +1125,17 @@ export async function getGdiOpportunities(req, res) {
           ok: true,
           count: withFeedback.length,
           opportunities: withFeedback,
-          publication: pkgResolved.meta || null,
+          publication: {
+            ...(pkgResolved.meta || {}),
+            fqoPresentationFilterV1,
+            legacyApprovedInventoryCompatV1,
+          },
           inventoryPopulationCounts:
             pkgResolved.meta?.inventoryPopulationCounts || null,
           listScope: "PUBLICATION_PACKAGE",
+          inventoryAudience: legacyApprovedInventoryCompatV1?.applied
+            ? "LEGACY_APPROVED_PUBLICATION_PACKAGE"
+            : "QUALIFIED_OPPORTUNITIES_ONLY",
           hotelNeedDateConfigV1,
         });
       }
