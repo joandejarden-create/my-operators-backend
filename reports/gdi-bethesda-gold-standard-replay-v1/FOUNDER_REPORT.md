@@ -35,8 +35,16 @@ Dominant root causes: FQO evidence-URL gate vs presentation package shape; histo
 12. `12_WYNDHAM_WATERSTONE_READINESS.md`  
 13. `13_PR_AND_TEST_EVIDENCE.md`
 
+## PR
+
+- **#596** https://github.com/joandejarden-create/my-operators-backend/pull/596  
+- Tip: diagnostic branch `feat/gdi-bethesda-gold-standard-replay-v1`  
+- Status: **OPEN** — Integration Controller owns merge  
+
 ## STOP
 
-Await founder acceptance of Bethesda parity findings and remediation plan.  
+**Await founder acceptance** of Bethesda parity findings and remediation plan.  
 **Do not** begin Wyndham/Waterstone full reprocessing.  
 **Do not** deploy fixes or activate replacement STAGED in this wave.
+
+`AWAITING_INTEGRATION_CONTROLLER`
