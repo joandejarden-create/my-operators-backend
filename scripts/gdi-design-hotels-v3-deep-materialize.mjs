@@ -12,6 +12,11 @@ import {
 } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import { GDI_CROSS_SEGMENT_OPPORTUNITY_DEDUPE_V2 } from "../lib/group-demand-intelligence/research/gdi-cross-segment-opportunity-dedupe-v2.js";
 import { evaluateVerifiedCommercialRoute } from "../lib/group-demand-intelligence/presentation/gdi-verified-commercial-route-v1.js";
+import {
+  indexPriorNamedContactsByCluster,
+  applyContactLineageReuse,
+} from "../lib/group-demand-intelligence/workflow/gdi-opportunity-contact-lineage-reuse-v1.js";
+import { isPlausibleBuyerPersonName } from "../lib/group-demand-intelligence/workflow/gdi-original-full-e2e-execution-restore-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REPORT = path.join(
@@ -206,11 +211,22 @@ async function main() {
       bypassCache: true,
     });
     const existing = doc.opportunities || [];
+    const priorIndex = indexPriorNamedContactsByCluster(existing);
+    let lineageReused = 0;
+    const newOppsWithReuse = newOpps.map((o) => {
+      if (isPlausibleBuyerPersonName(o.primaryContact?.name)) return o;
+      const applied = applyContactLineageReuse(o, priorIndex);
+      if (applied.reused) {
+        lineageReused += 1;
+        return applied.opportunity;
+      }
+      return o;
+    });
     const existingIds = new Set(
       existing.map((o) => text(o.opportunityId || o.id)),
     );
     let added = 0;
-    for (const o of newOpps) {
+    for (const o of newOppsWithReuse) {
       if (existingIds.has(o.opportunityId)) {
         const ex = existing.find(
           (x) => text(x.opportunityId || x.id) === o.opportunityId,
@@ -220,8 +236,14 @@ async function main() {
           ex.deepResearched = true;
           ex.researchLifecycleStatus = "DEEP_RESEARCHED";
         }
-        if (o.primaryContact?.name && !ex.primaryContact?.name) {
+        if (
+          isPlausibleBuyerPersonName(o.primaryContact?.name) &&
+          !isPlausibleBuyerPersonName(ex.primaryContact?.name)
+        ) {
           ex.primaryContact = o.primaryContact;
+          if (o.contactLineageReuseV1) {
+            ex.contactLineageReuseV1 = o.contactLineageReuseV1;
+          }
         }
         if (o.approvedCommercialRoute && !ex.approvedCommercialRoute) {
           ex.approvedCommercialRoute = o.approvedCommercialRoute;
@@ -252,8 +274,11 @@ async function main() {
       runDir,
       newOpps: newOpps.length,
       added,
+      lineageReused,
       inventoryAfter: existing.length,
-      withPrimary: existing.filter((o) => o.primaryContact?.name).length,
+      withPrimary: existing.filter((o) =>
+        isPlausibleBuyerPersonName(o.primaryContact?.name),
+      ).length,
       withRoute: existing.filter((o) => o.approvedCommercialRoute).length,
       deep: existing.filter((o) => o.deepResearched).length,
     });
