@@ -1,4 +1,4 @@
-# Permanent GDI regression-recovery baseline.
+﻿# Permanent GDI regression-recovery baseline.
 # Locks PR #230/#231/#232 recoveries + title/sourcing/classification consistency
 # so approved customer-facing behavior cannot silently regress on GDI PRs.
 name: GDI regression recovery baseline
@@ -26,6 +26,7 @@ on:
       - "scripts/test-gdi-who-how-contact-intelligence-restore-v1.mjs"
       - "scripts/test-gdi-buyer-alternative-person-research-v1.mjs"
       - "scripts/test-gdi-named-contact-coverage-standard-v1.mjs"
+      - "scripts/test-gdi-primary-secondary-contact-uniqueness-v1.mjs"
       - "scripts/test-gdi-full-e2e-contact-architecture-call-graph-v1.mjs"
       - "scripts/test-gdi-best-suggested-contact-restore-v1.mjs"
       - "lib/group-demand-intelligence/customer-consistency/**"
@@ -59,6 +60,7 @@ on:
       - "scripts/test-gdi-who-how-contact-intelligence-restore-v1.mjs"
       - "scripts/test-gdi-buyer-alternative-person-research-v1.mjs"
       - "scripts/test-gdi-named-contact-coverage-standard-v1.mjs"
+      - "scripts/test-gdi-primary-secondary-contact-uniqueness-v1.mjs"
       - "scripts/test-gdi-full-e2e-contact-architecture-call-graph-v1.mjs"
       - "scripts/test-gdi-best-suggested-contact-restore-v1.mjs"
       - ".github/workflows/gdi-regression-recovery-baseline.yml"
@@ -117,6 +119,7 @@ jobs:
 
       - name: Named-contact coverage + WHO/HOW + alternative-person ladder
         run: |
+          npm run test:gdi-primary-secondary-contact-uniqueness-v1
           npm run test:gdi-named-contact-coverage-standard-v1
           npm run test:gdi-who-how-contact-intelligence-restore-v1
           npm run test:gdi-buyer-alternative-person-research-v1
