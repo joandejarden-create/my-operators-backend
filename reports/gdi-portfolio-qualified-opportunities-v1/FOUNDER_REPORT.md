@@ -72,10 +72,11 @@ Founder approval required before consolidating/activating any STAGED batch.
 
 ## PR / CI / localhost status (this wave)
 
-- Research View PRs #590 / #591: **CLOSED — superseded**
-- Integrate order for IC: **#593 ? #592**, then this portfolio PR
-- localhost:8080 at directive start was still serving `gdi-inventory-visibility-r1` (superseded Research View assets) — must refresh after #593+ merges
+- Portfolio PR: **https://github.com/joandejarden-create/my-operators-backend/pull/594** (OPEN)
+- Research View PRs #590 / #591: **CLOSED â€” superseded**
+- Integrate order for IC: **#593 â†’ #592 â†’ #594**
+- localhost:8080 at directive start was still serving `gdi-inventory-visibility-r1` (superseded Research View assets) â€” must refresh after #593+ merges
 - Design Hotels (Condesa / LaLuna / Memmo) restored to selectable catalog when STAGED/CURRENT packages exist
 - Permanent Full E2E gate module: `gdi-portfolio-qualified-opportunity-full-e2e-gate-v1`
-- **STOP** — no STAGED activation batch applied
+- **STOP** â€” no STAGED activation batch applied
 

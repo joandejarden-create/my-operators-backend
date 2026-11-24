@@ -135,7 +135,7 @@ check("10_no_view_research_in_staged_empty", () => {
   const app = read("public/js/group-demand-intelligence/app.js");
   assert.match(
     app,
-    /No finalized opportunities are available for this property\./,
+    /No Qualified Opportunities are available for this property/,
   );
   assert.doesNotMatch(
     app,
