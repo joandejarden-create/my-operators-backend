@@ -1,0 +1,32 @@
+{
+  "status": "AWAITING_FOUNDER_APPROVAL",
+  "executed": false,
+  "proposal": {
+    "mode": "SINGLE_RECORD_OR_TINY_SET",
+    "maxWrites": 1,
+    "destinationTable": "GDI Hotel Research Opportunities",
+    "destinationTableId": "tblbkDj0vhQLfrssV",
+    "preferredOpportunityId": "gdi_e2d_770e3b44ad97c1ae",
+    "airtableRecordId": null,
+    "action": "WOULD_CREATE",
+    "verify": [
+      "create_or_update",
+      "read_back_field_integrity",
+      "unchanged_rerun",
+      "idempotency",
+      "duplicate_protection",
+      "no_gdo_side_effects",
+      "no_staged_current_side_effects",
+      "reversible_via_prior_field_snapshot"
+    ],
+    "requiredAuth": [
+      "authorizeResearchPersistence=true",
+      "exactWriteSetAuthorization=FOUNDER_CANARY_<id>",
+      "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1",
+      "apply=true",
+      "readBack=true",
+      "writeBudget=1"
+    ]
+  },
+  "note": "Do not execute until founder approves exact canary identity."
+}

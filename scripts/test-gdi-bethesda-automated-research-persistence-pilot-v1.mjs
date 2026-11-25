@@ -19,6 +19,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 assert.equal(RESEARCH_PERSISTENCE_ACTIVATION.disabledByDefault, true);
 assert.ok(!MATERIAL_RESEARCH_FIELDS.includes(F.lastResearchedAt));
+assert.ok(
+  !MATERIAL_RESEARCH_FIELDS.includes(F.lastMaterialChangeAt),
+  "lastMaterialChangeAt must not alone force research inventory UPDATE",
+);
 
 const dedupe = dedupeResearchCandidatesByCompositeKey(
   [

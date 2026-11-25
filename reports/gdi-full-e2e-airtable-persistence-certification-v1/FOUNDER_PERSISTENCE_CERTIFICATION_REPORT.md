@@ -146,3 +146,21 @@ Tests run:
 - Not claimed: `FULL_E2E_VALIDATED` / `PERSISTENCE_CERTIFIED` for live Bethesda writes
 
 **STOP — no bulk production Airtable writes.**
+
+---
+
+## Amendment — P0 pre-write integrity gate (PR #599)
+
+Founder accepted Level 1 dry-run + Level 2 mock; **rejected** immediate 86 production writes pending integrity gate.
+
+Follow-on evidence: `reports/gdi-airtable-persistence-prewrite-integrity-gate-v1/FOUNDER_INTEGRITY_GATE_REPORT.md`
+
+| Gate | Result |
+|---|---|
+| `commercialEligibilityStatus=GLOBAL_ORG_ONLY` | Correct write-routing; hotel FQO in `researchPayloadJson.hotelSpecificQualification` |
+| Lossless merge vs live Airtable | Contacts / evidence / org preserved; no wipe of live research |
+| `lastMaterialChangeAt` | No longer material-diff driver |
+| Round-trip | 0 failures |
+| Canary | Prepared only — `gdi_e2d_770e3b44ad97c1ae` CREATE (awaiting founder GO) |
+
+**Integrity verdict: READY_FOR_CANARY** (not production-certified).
