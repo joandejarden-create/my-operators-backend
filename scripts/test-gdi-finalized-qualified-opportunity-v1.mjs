@@ -126,6 +126,227 @@ check("generic_organizational_inbox_only_fails", () => {
   assert.equal(r.finalizedQualified, false);
 });
 
+check("wyndham_defect_place_and_event_titles_are_not_person_names", () => {
+  for (const name of [
+    "San Diego",
+    "Minnesota NAHRO",
+    "Annual Symposium",
+    "Preventive Medicine",
+    "San Diego Comic",
+    "BIO International Convention",
+    "FHTGlobal Official International",
+  ]) {
+    const r = evaluateFinalizedQualifiedOpportunity(
+      baseOpp({
+        primaryContact: {
+          name,
+          role: "Scraped title",
+          email: "person@example.org",
+        },
+      }),
+    );
+    assert.equal(
+      r.finalizedQualified,
+      false,
+      `expected HOLD for fake person name: ${name}`,
+    );
+    assert.ok(
+      r.reasons.includes("NAMED_COMMERCIAL_PERSON_REQUIRED") ||
+        r.reasons.includes("NON_PERSON_OR_JUNK_CONTACT_NAME") ||
+        r.reasons.includes("NON_PERSON_CONTACT_NAME") ||
+        r.reasons.includes("ROLE_GLUED_PERSON_NAME"),
+      `expected commercial name reject for ${name}; got ${r.reasons.join(",")}`,
+    );
+  }
+});
+
+check("wyndham_defect_tickets_and_conventionhelp_are_functional_mailboxes", () => {
+  for (const email of [
+    "tickets@padres.com",
+    "conventionhelp@gbta.org",
+    "exhibits@nccn.org",
+    "westhousing@spargoinc.com",
+    "HQC-inquiry@qcells.com",
+  ]) {
+    const channel = evaluatePersonSpecificOutreachChannel(
+      baseOpp({
+        primaryContact: {
+          name: "Jordan Lee",
+          role: "Director of Meetings",
+          email,
+        },
+      }),
+    );
+    assert.equal(channel.ok, false, `expected reject for ${email}`);
+    assert.ok(
+      channel.rejected.some(
+        (x) => x.reason === "GENERIC_OR_FUNCTIONAL_ORGANIZATION_INBOX",
+      ),
+      `expected functional-inbox reject for ${email}`,
+    );
+  }
+});
+
+check("wyndham_defect_role_glued_and_non_person_names_fail", () => {
+  for (const [name, reason] of [
+    ["Jennifer Klein Senior", "ROLE_GLUED_PERSON_NAME"],
+    ["Michael Carter Regional", "ROLE_GLUED_PERSON_NAME"],
+    ["Sponsorship Opportunities", "NON_PERSON_CONTACT_NAME"],
+    ["Frequently Asked Questions", "NON_PERSON_CONTACT_NAME"],
+    ["Nolita House", "NON_PERSON_OR_JUNK_CONTACT_NAME"],
+    ["National Corporate", "NON_PERSON_OR_JUNK_CONTACT_NAME"],
+  ]) {
+    const r = evaluateFinalizedQualifiedOpportunity(
+      baseOpp({
+        primaryContact: {
+          name,
+          role: "Scraped",
+          email: "person@example.org",
+        },
+      }),
+    );
+    assert.equal(r.finalizedQualified, false, `expected fail for ${name}`);
+    assert.ok(
+      r.reasons.includes(reason) ||
+        r.reasons.includes("NAMED_COMMERCIAL_PERSON_REQUIRED") ||
+        r.reasons.includes("NON_PERSON_OR_JUNK_CONTACT_NAME"),
+      `expected commercial name reject for ${name}; got ${r.reasons.join(",")}`,
+    );
+  }
+});
+
+check("recurring_scaling_account_without_dated_event_can_qualify", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      eventStartDate: "",
+      futureDemandPathway: false,
+      segmentId: "corporate_accounts_scaling",
+      title: "ESET North America corporate account development",
+      organizationName: "ESET North America",
+      hotelOpportunityThesis:
+        "San Diego HQ expansion supports recurring corporate lodging and training-room demand at Wyndham San Diego Bayside — pursue preferred account relationship.",
+      whyThisHotel:
+        "Downtown waterfront lodging fit for recurring corporate account / training travel.",
+      whatIsHappening:
+        "Ongoing corporate account development for lodging partnership and training cohorts.",
+      futureCycleOrSourcingWindow:
+        "Recurring account development pathway — verify current travel volume.",
+      recommendedNextStep:
+        "Contact Stephanie to introduce Wyndham San Diego Bayside as preferred lodging partner.",
+      primaryContact: {
+        name: "Stephanie Pursglove",
+        role: "Events / Admin contact",
+        email: "stephanie.pursglove@eset.com",
+        emailType: "DIRECT_WORK",
+        emailSource: "https://example.org/eset-team",
+      },
+    }),
+  );
+  assert.equal(r.finalizedQualified, true);
+  assert.equal(r.gates.FUTURE_SOURCING_PATHWAY.recurringRelationshipPathway, true);
+});
+
+check("functional_email_plus_company_phone_without_linkedin_fails", () => {
+  const channel = evaluatePersonSpecificOutreachChannel(
+    baseOpp({
+      primaryContact: {
+        name: "Mary Ellen Martelli",
+        role: "Exhibits",
+        email: "exhibits@nccn.org",
+        phone: "1-215-690-0300",
+        phoneTypeLabel: "Direct / person phone",
+        askToBeDirectedTo:
+          "Ask to be directed to --- description: National Comprehensive Cancer Network employs 154 employees. Reveal contac (Mary Ellen Martelli)",
+      },
+    }),
+  );
+  assert.equal(channel.ok, false);
+  assert.ok(
+    channel.rejected.some(
+      (x) =>
+        x.reason ===
+        "PHONE_WITH_FUNCTIONAL_EMAIL_REQUIRES_LINKEDIN_OR_LABELED_ROUTE",
+    ),
+  );
+  const withLinkedin = evaluatePersonSpecificOutreachChannel(
+    baseOpp({
+      primaryContact: {
+        name: "Mary Ellen Martelli",
+        role: "Exhibits",
+        email: "exhibits@nccn.org",
+        phone: "1-215-690-0300",
+        linkedinUrl: "https://www.linkedin.com/in/mary-ellen-martelli",
+      },
+    }),
+  );
+  assert.equal(withLinkedin.ok, true);
+  assert.ok(
+    withLinkedin.channels.some((c) => c.kind === "PERSON_LINKEDIN"),
+  );
+});
+
+check("hiring_only_scaling_listing_without_lodging_evidence_fails_pathway", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      eventStartDate: "",
+      futureDemandPathway: false,
+      segmentId: "corporate_accounts_scaling",
+      hotelOpportunityThesis: "Company is hiring engineers in San Diego.",
+      whyThisHotel: "Company is hiring engineers in San Diego.",
+      whatIsHappening: "Open roles and job postings on the careers page.",
+      primaryContact: {
+        name: "Jordan Lee",
+        role: "Recruiter",
+        email: "jordan.lee@example.org",
+      },
+    }),
+  );
+  assert.equal(r.finalizedQualified, false);
+  assert.ok(r.reasons.includes("NO_VALID_FUTURE_SOURCING_PATHWAY"));
+});
+
+check("wyndham_defect_past_event_futureDemandPathway_stamp_alone_fails", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      eventStartDate: "2026-01-29",
+      futureDemandPathway: true,
+      hotelOpportunityThesis:
+        "This hotel has no verified current host or overflow role for this past San Diego Tech Scene cycle.",
+      whyThisHotel:
+        "This hotel has no verified current host or overflow role for this past San Diego Tech Scene cycle.",
+      whatIsHappening:
+        "San Diego Tech Scene event on 2026-01-29 at Marina Village Conference Center.",
+      primaryContact: {
+        name: "San Diego",
+        email: "kavin@sandiego.org",
+      },
+      _asOf: "2026-11-25T00:00:00.000Z",
+    }),
+  );
+  assert.equal(r.finalizedQualified, false);
+  assert.ok(r.reasons.includes("NO_VALID_FUTURE_SOURCING_PATHWAY"));
+  assert.ok(
+    r.reasons.includes("NAMED_COMMERCIAL_PERSON_REQUIRED") ||
+      r.reasons.includes("NON_PERSON_OR_JUNK_CONTACT_NAME") ||
+      r.reasons.includes("NON_PERSON_CONTACT_NAME"),
+  );
+  assert.ok(r.reasons.includes("MISSING_HOTEL_FIT_THESIS"));
+});
+
+check("wyndham_defect_negative_host_fit_language_fails", () => {
+  const r = evaluateFinalizedQualifiedOpportunity(
+    baseOpp({
+      hotelOpportunityThesis:
+        "This hotel has no verified current host or overflow role for this past AWMA West Coast Section cycle.",
+      whyThisHotel:
+        "This hotel has no verified current host or overflow role for this past AWMA West Coast Section cycle.",
+      hotelMarketScopeEligible: true,
+    }),
+  );
+  assert.equal(r.finalizedQualified, false);
+  assert.ok(r.reasons.includes("MISSING_HOTEL_FIT_THESIS"));
+});
+
 check("organization_route_without_label_or_channel_fails", () => {
   const switchboardOnly = evaluateFinalizedQualifiedOpportunity(
     baseOpp({
