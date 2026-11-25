@@ -1,0 +1,223 @@
+{
+  "contract": "gdi-canonical-full-e2e-standard-lock-v1",
+  "at": "2026-11-25T16:36:17.926Z",
+  "ok": true,
+  "enforcedCount": 14,
+  "totalRequirements": 14,
+  "requirements": [
+    {
+      "id": 1,
+      "title": "One canonical Full E2E execution pathway",
+      "enforcement": "ENFORCED",
+      "surface": "gdi-canonical-full-e2e-entry-v1",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 1,
+          "ok": true,
+          "detail": "gdi-canonical-full-e2e-entry-v1"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "All 14 demand segments remain supported",
+      "enforcement": "ENFORCED",
+      "surface": "listFourteenWorkflowSegmentIds()",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 2,
+          "ok": true,
+          "detail": "segmentCount=14"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Three-Layer Intelligence Contract enforced",
+      "enforcement": "ENFORCED",
+      "surface": "gdi-three-layer-intelligence-contract-v1",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 3,
+          "ok": true,
+          "detail": "gdi-three-layer-intelligence-contract-v1"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Airtable Research SoT enriched losslessly",
+      "enforcement": "ENFORCED",
+      "surface": "mergeProposedResearchInventoryFields → mergeResearchSotLossless",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 4,
+          "ok": true,
+          "detail": "lossless_merge_ok"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Existing verified intelligence cannot silently degrade",
+      "enforcement": "ENFORCED",
+      "surface": "SOT merge fail-closed + lossless guards",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 5,
+          "ok": true,
+          "detail": "CERTIFICATION_METADATA_ONLY"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Hotel-specific FQO independently evaluated",
+      "enforcement": "ENFORCED",
+      "surface": "assertMultiHotelFqoIndependence + hotelSpecificQualification",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 6,
+          "ok": true,
+          "detail": "Hotel A FQO approval does not approve Hotel B. Contacts may be reused but commercial relevance must be re-verified."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Only FQO-validated opportunities in production write set",
+      "enforcement": "ENFORCED",
+      "surface": "VALIDATED_FQO_ONLY + requireValidatedFqoWriteSet on canonical entry",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 7,
+          "ok": true,
+          "detail": "defaultProductionWriteSetPolicy=VALIDATED_FQO_ONLY"
+        },
+        {
+          "requirementId": 7,
+          "ok": true,
+          "detail": "evaluatePersistenceBoundaryGuard rejects non-VALIDATED policy"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Nonqualified research remains supporting intelligence",
+      "enforcement": "ENFORCED",
+      "surface": "filterValidatedFqoPersistenceWriteSet → DEFERRED_NONQUALIFIED",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 8,
+          "ok": true,
+          "detail": "kept=0 deferred=2"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Repeated execution is idempotent",
+      "enforcement": "ENFORCED",
+      "surface": "materialDiff + volatile payload key strip → UNCHANGED",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 9,
+          "ok": true,
+          "detail": "materialDiff + volatile keys + UNCHANGED path"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Cross-hotel reuse without transferring qualification",
+      "enforcement": "ENFORCED",
+      "surface": "reusePriorIntelligence + multi-hotel FQO independence",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 10,
+          "ok": true,
+          "detail": "canonical entry reuses prior intelligence + locks validated write set"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "STAGED and CURRENT independently controlled",
+      "enforcement": "ENFORCED",
+      "surface": "Research persistence, founder STAGED activation and customer CURRENT publication are separate, independently authorized operations.",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 11,
+          "ok": true,
+          "detail": "publicationIndependence principle"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Customer publication requires separate approval",
+      "enforcement": "ENFORCED",
+      "surface": "PUBLICATION_NOT_AUTHORIZED_IN_CANONICAL_RESEARCH_ENTRY",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 12,
+          "ok": true,
+          "detail": "canonical entry refuses authorizePublish"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Surfe remains explicit-click only",
+      "enforcement": "ENFORCED",
+      "surface": "chain authorizeSurfe:false; HCI UI explicit-click contract",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 13,
+          "ok": true,
+          "detail": "HCI user-initiated + chain Surfe off + HOW restore refuses Surfe auto"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "No unauthorized paid discovery or enrichment",
+      "enforcement": "ENFORCED",
+      "surface": "preflight LIVE_MODE_REQUIRES_PAID_AUTHORIZATION + budget ceiling",
+      "ok": true,
+      "findings": [
+        {
+          "requirementId": 14,
+          "ok": true,
+          "detail": "LIVE without paid auth blocked"
+        }
+      ]
+    }
+  ],
+  "gaps": [],
+  "productionExecutionControls": {
+    "researchInventoryEnvGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+    "requiresExactWriteSetAuthorization": true,
+    "separateFromGdo": true,
+    "separateFromPublication": true,
+    "separateFromPaidResearchAuth": true,
+    "defaultProductionWriteSetPolicy": "VALIDATED_FQO_ONLY",
+    "threeLayerWriteSetPolicy": "VALIDATED_FQO_ONLY"
+  },
+  "bethesdaRecertification": "NOT_REQUIRED — closed milestone; reopen only on regression",
+  "nextPhase": "PHASE_2_WYNDHAM_SAN_DIEGO_BAYSIDE",
+  "note": null
+}
