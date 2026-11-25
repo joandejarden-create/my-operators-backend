@@ -1,0 +1,35 @@
+{
+  "commercialGaps": {
+    "bethesdaUnlabeledCompetitivePursuit": 0,
+    "wyndhamCleanMissingCompetitorFields": 11,
+    "wyndhamHoldMissingNamedBuyer": 0,
+    "fqoCandidatesNeedingSixGate": 9,
+    "emergingNeedingWhoHow": 0
+  },
+  "prcRecommendation": {
+    "wire": "Optional opt-in stage in gdi-canonical-full-e2e-entry-v1 after shared reuse, before hotel-wide finalization",
+    "defaults": {
+      "dryRun": true,
+      "autoPromoteToFqo": false,
+      "persistence": "NONE — CAD enrich Layer-1 SoT only when separately authorized"
+    },
+    "minimalScope": [
+      "Call classifyCompetitiveAccountDiscovery / attachCompetitiveAccountDiscovery on research rows",
+      "Write competitiveAccountDiscovery onto Research SoT copies (lossless merge)",
+      "Keep VALIDATED_FQO_ONLY persistence unchanged",
+      "Surface counts Historical / Emerging / FQO_CANDIDATE in run reports",
+      "Do not mutate Bethesda or Wyndham certified pointers"
+    ],
+    "defer": [
+      "Paid Exa WHO/HOW continuation",
+      "Auto Surfe / Agent",
+      "UI product surface",
+      "PR-D enrichment apply"
+    ],
+    "goNoGo": {
+      "commerciallyUseful": true,
+      "rationale": "Bethesda: Not Competitive competitor labels stay Historical (23); Verified/Needs Verification with pursuit evidence enter FQO_CANDIDATE (9) without claiming FQO PASS. Wyndham CLEAN 11 has zero competitor fields — CAD correctly unclassified. HOLD Marquis/Bayfront rows stay Emerging/Historical research (Comic-Con/BIO/AUA/Padres). Commercially useful before Full E2E wire; PR-C should stay opt-in dry-run.",
+      "blockUntilFounderReview": true
+    }
+  }
+}

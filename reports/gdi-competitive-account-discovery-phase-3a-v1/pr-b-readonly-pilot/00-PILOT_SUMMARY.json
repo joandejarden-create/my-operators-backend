@@ -1,0 +1,115 @@
+{
+  "mode": "READ_ONLY_PILOT",
+  "mutations": {
+    "airtableApply": false,
+    "stagedActivate": false,
+    "currentPublish": false,
+    "paidResearch": false,
+    "bethesdaFreeze": true,
+    "wyndhamFreeze": true
+  },
+  "prAMergeCommit": "bef127cfd65d5789a78ac1ec20251ae715b54208",
+  "prA": 602,
+  "sources": {
+    "bethesda": {
+      "package": "lib/group-demand-intelligence/bundled-publication-packages/recLuxvwwxID7U2B8/gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1/package.json",
+      "count": 68,
+      "expected": 68
+    },
+    "wyndhamClean": {
+      "package": "lib/group-demand-intelligence/bundled-publication-packages/recnPB3Q02NO8Ma1o/gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92/package.json",
+      "count": 11,
+      "expected": 11
+    },
+    "wyndhamHold": {
+      "package": "lib/group-demand-intelligence/bundled-publication-packages/recnPB3Q02NO8Ma1o/gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_bd1e0ff3/package.json",
+      "holdInventory": "reports/gdi-wyndham-sd-bayside-commercial-quality-gate-v1/07-CONTINUATION_INVENTORY.json",
+      "count": 9,
+      "note": "HOLD-only = paid package minus CLEAN 11 ids; research preserved, not FQO"
+    }
+  },
+  "tallies": {
+    "bethesda_68": {
+      "byClass": {
+        "HISTORICAL_COMPETITIVE_INTEL": 23,
+        "EMERGING_COMPETITIVE_OPPORTUNITY": 0,
+        "FQO_CANDIDATE": 9,
+        "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 36
+      },
+      "byAttainability": {
+        "WINNABLE": 1,
+        "MONITOR": 59,
+        "OVERFLOW_ONLY": 8
+      },
+      "bySourcing": {
+        "INFERRED": 33,
+        "UNKNOWN": 35
+      },
+      "total": 68
+    },
+    "wyndham_clean_11": {
+      "byClass": {
+        "HISTORICAL_COMPETITIVE_INTEL": 0,
+        "EMERGING_COMPETITIVE_OPPORTUNITY": 0,
+        "FQO_CANDIDATE": 0,
+        "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 11
+      },
+      "byAttainability": {
+        "MONITOR": 11
+      },
+      "bySourcing": {
+        "INFERRED": 11
+      },
+      "total": 11
+    },
+    "wyndham_hold_research": {
+      "byClass": {
+        "HISTORICAL_COMPETITIVE_INTEL": 1,
+        "EMERGING_COMPETITIVE_OPPORTUNITY": 3,
+        "FQO_CANDIDATE": 0,
+        "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 5
+      },
+      "byAttainability": {
+        "MONITOR": 5,
+        "OVERFLOW_ONLY": 4
+      },
+      "bySourcing": {
+        "INFERRED": 3,
+        "UNKNOWN": 6
+      },
+      "total": 9
+    },
+    "combined": {
+      "byClass": {
+        "HISTORICAL_COMPETITIVE_INTEL": 24,
+        "EMERGING_COMPETITIVE_OPPORTUNITY": 3,
+        "FQO_CANDIDATE": 9,
+        "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 52
+      },
+      "byAttainability": {
+        "WINNABLE": 1,
+        "MONITOR": 75,
+        "OVERFLOW_ONLY": 12
+      },
+      "bySourcing": {
+        "INFERRED": 47,
+        "UNKNOWN": 41
+      },
+      "total": 88
+    }
+  },
+  "programKeyDedupeConflicts": {
+    "bethesda": [],
+    "wyndhamClean": [],
+    "wyndhamHold": [],
+    "crossHotelSameProgramKey": []
+  },
+  "governanceReminders": [
+    "FQO_CANDIDATE ≠ FQO PASS and does not authorize persistence",
+    "Historical venue ≠ incumbent contract",
+    "Competitor relationship ≠ available demand",
+    "Cross-hotel reuse does not transfer qualification",
+    "Never invent sourcing dates",
+    "Preserve Historical and Emerging even when FQO fails"
+  ]
+}
