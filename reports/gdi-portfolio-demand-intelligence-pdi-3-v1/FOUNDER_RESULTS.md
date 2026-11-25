@@ -1,7 +1,7 @@
 # GDI PDI-3 — Portfolio Demand Intelligence tab (hardened)
 
 ## Placement
-`Group & Demand Opportunities` · **Portfolio Demand Intelligence** · `Commercial Priorities`
+`Group & Demand Opportunities` · **Commercial Priorities** · `Portfolio Demand Intelligence` · How to Read This Report (right-rail info link)
 
 ## Hardening
 - `?pdiDemo=1` **only** on localhost / 127.0.0.1 / `[::1]` / 0.0.0.0 — ignored on production hosts

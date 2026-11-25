@@ -1,25 +1,316 @@
 /**
- * Hotel Commercial Priorities V2 — domain controls on the shared intake shell.
+ * Hotel Commercial Priorities — domain controls on the shared intake shell.
  * Tokens come from dealality-intake-form-shell.css (My Deals / Deal Setup).
+ * Redesign V1: hierarchy, hotel card, summary strip, section cards, sticky save.
  */
+
+/* ——— Page header + hotel identity ——— */
+
+.hcp-intake--redesign .hcp-page-header {
+  margin: 0 0 18px;
+  padding: 4px 0 0;
+}
+
+.hcp-intake--redesign .hcp-page-header h1 {
+  color: var(--neutral--100);
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.hcp-intake--redesign .hcp-page-subtitle {
+  color: var(--neutral--400);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.45;
+  max-width: 640px;
+  margin: 8px 0 0;
+}
+
+.hcp-intake--redesign .hcp-hotel-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  margin: 0 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(16, 25, 53, 0.92);
+}
+
+.hcp-intake--redesign .hcp-hotel-name {
+  margin: 0;
+  color: var(--neutral--100);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.hcp-intake--redesign .hcp-hotel-location {
+  margin: 4px 0 0;
+  color: var(--neutral--400);
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.hcp-intake--redesign .hcp-hotel-year {
+  margin: 8px 0 0;
+  color: var(--neutral--300);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.hcp-intake--redesign .hcp-hotel-save-badge {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.hcp-intake--redesign .hcp-hotel-save-badge.is-saved {
+  color: #7ddea8;
+  background: rgba(20, 202, 116, 0.12);
+  border-color: rgba(20, 202, 116, 0.35);
+}
+
+.hcp-intake--redesign .hcp-hotel-save-badge.is-dirty,
+.hcp-intake--redesign .hcp-hotel-save-badge.is-saving {
+  color: #f5d28a;
+  background: rgba(253, 181, 42, 0.12);
+  border-color: rgba(253, 181, 42, 0.35);
+}
+
+.hcp-intake--redesign .hcp-hotel-save-badge.is-error {
+  color: #ff9aa3;
+  background: rgba(255, 90, 101, 0.12);
+  border-color: rgba(255, 90, 101, 0.4);
+}
+
+/* ——— Compact commercial summary ——— */
+
+.hcp-intake--redesign .hcp-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 15, 37, 0.55);
+}
+
+.hcp-intake--redesign .hcp-summary-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 2px 6px;
+}
+
+.hcp-intake--redesign .hcp-summary-label {
+  color: var(--neutral--500);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hcp-intake--redesign .hcp-summary-value {
+  color: var(--neutral--100);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+/* ——— Section cards ——— */
+
+/*
+ * Shared outer width: section cards must match hotel identity + summary strip.
+ * Override intake-shell's legacy .form-sections-wrap max-width (920px) — do not
+ * re-introduce a narrower column for the My Deals redesign.
+ */
+.hcp-intake--single-page .form-sections-wrap,
+.hcp-intake--redesign .form-sections-wrap {
+  max-width: none;
+  width: 100%;
+  padding-bottom: 108px;
+}
+
+.hcp-intake--redesign .intake-container {
+  max-width: 100%;
+  width: 100%;
+}
+
+.hcp-intake--redesign .hcp-hotel-card,
+.hcp-intake--redesign .hcp-summary-strip,
+.hcp-intake--redesign .form-section.hcp-section-card,
+.hcp-intake--redesign .hcp-sticky-save {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hcp-intake--redesign .form-section.hcp-section-card {
+  display: block;
+  margin: 0 0 18px;
+  padding: 18px 18px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(16, 25, 53, 0.72);
+}
+
+.hcp-intake--redesign .hcp-section-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hcp-intake--redesign .hcp-section-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(108, 114, 255, 0.35);
+  background: rgba(108, 114, 255, 0.1);
+  color: #c5caff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hcp-intake--redesign .hcp-section-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.hcp-intake--redesign .hcp-section-titles .form-section-title {
+  margin-bottom: 4px;
+  font-size: 1.125rem;
+}
+
+.hcp-intake--redesign .hcp-section-titles .form-section-subtitle {
+  margin-bottom: 0;
+  max-width: none;
+}
+
+.hcp-intake--redesign .hcp-section-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.hcp-intake--redesign .hcp-counter {
+  color: var(--neutral--300);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.hcp-intake--redesign .hcp-limit-note {
+  color: #f5d28a;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.hcp-intake--redesign .hcp-subpanel {
+  padding: 12px 12px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 15, 37, 0.35);
+  min-width: 0;
+}
+
+.hcp-intake--redesign .hcp-subpanel-head {
+  margin-bottom: 10px;
+}
+
+.hcp-intake--redesign .hcp-subpanel-title {
+  margin: 0;
+  color: var(--neutral--100);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.hcp-intake--redesign .hcp-subpanel-help {
+  margin: 4px 0 0;
+  color: var(--neutral--500);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.hcp-intake--redesign .hcp-pref-grid,
+.hcp-intake--redesign .hcp-fit-grid,
+.hcp-intake--redesign .hcp-local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hcp-intake--redesign .hcp-notes-group {
+  margin-top: 16px;
+}
+
+.hcp-intake--redesign .hcp-textarea.form-input,
+.hcp-intake--redesign textarea.form-input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 84px;
+  resize: vertical;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral--600);
+  background: var(--secondary--color-1);
+  color: var(--neutral--100);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.hcp-intake--redesign .hcp-textarea.form-input:focus,
+.hcp-intake--redesign textarea.form-input:focus {
+  outline: 2px solid var(--accent--primary-1);
+  outline-offset: 1px;
+  border-color: var(--accent--primary-1);
+}
+
+.hcp-intake--redesign .hcp-textarea.form-input::placeholder {
+  color: var(--neutral--500);
+}
+
+/* ——— Month grid ——— */
+
+.hcp-intake .hcp-need-dates-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.hcp-intake .hcp-active-month-count {
+  margin: 0;
+  color: var(--neutral--100);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
 
 .hcp-intake .hcp-month-tiles {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 10px;
-  margin: 12px 0 20px;
-}
-
-@media (max-width: 900px) {
-  .hcp-intake .hcp-month-tiles {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 560px) {
-  .hcp-intake .hcp-month-tiles {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  margin: 4px 0 16px;
 }
 
 .hcp-intake .hcp-month-tile {
@@ -181,6 +472,32 @@
   cursor: not-allowed;
 }
 
+/* ——— Chips: stronger selected / hover / focus ——— */
+
+.hcp-intake--redesign .hcp-chip {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(8, 15, 37, 0.55);
+  color: var(--neutral--200);
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.hcp-intake--redesign .hcp-chip:hover {
+  border-color: rgba(154, 145, 251, 0.55);
+  color: var(--neutral--100);
+}
+
+.hcp-intake--redesign .hcp-chip.is-selected {
+  border-color: var(--accent--primary-1);
+  background: rgba(108, 114, 255, 0.22);
+  color: #e8eaff;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.25);
+}
+
 .hcp-intake .section-nav-item:focus-visible,
 .hcp-intake .hcp-chip:focus-visible,
 .hcp-intake .hcp-month-tile:focus-visible,
@@ -190,43 +507,21 @@
   outline-offset: 2px;
 }
 
-/* V3 single-page layout — all former wizard sections visible */
-.hcp-intake--single-page .form-sections-wrap {
-  max-width: 960px;
-  padding-bottom: 96px;
-}
-
-.hcp-intake--single-page .form-section.hcp-page-section {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.hcp-intake--single-page .hcp-section-divider {
-  border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 28px 0 24px;
-}
-
-.hcp-intake--single-page .hcp-month-tiles {
-  margin-top: 4px;
-}
+/* ——— Sticky save bar ——— */
 
 .hcp-intake--single-page .hcp-sticky-save {
   position: sticky;
   bottom: 0;
   z-index: 40;
-  margin-top: 32px;
-  padding: 14px 0 8px;
-  background: linear-gradient(
-    to top,
-    var(--neutral--800) 70%,
-    rgba(8, 15, 37, 0)
-  );
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: rgba(8, 15, 37, 0.96);
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  /* Gradient overlay must not intercept calendar / chip clicks. */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
   pointer-events: none;
 }
 
@@ -236,12 +531,67 @@
 }
 
 .hcp-intake--single-page .hcp-save-hint {
-  color: var(--neutral--500);
+  color: var(--neutral--400);
   font-size: 0.8125rem;
+  font-weight: 600;
   margin-right: auto;
 }
 
+.hcp-intake--single-page .hcp-save-hint.is-saved {
+  color: #7ddea8;
+}
+
+.hcp-intake--single-page .hcp-save-hint.is-dirty,
+.hcp-intake--single-page .hcp-save-hint.is-saving {
+  color: #f5d28a;
+}
+
+.hcp-intake--single-page .hcp-save-hint.is-error {
+  color: #ff9aa3;
+}
+
+/* ——— Responsive ——— */
+
+@media (max-width: 1100px) {
+  .hcp-intake .hcp-month-tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .hcp-intake--redesign .hcp-summary-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hcp-intake--redesign .hcp-pref-grid,
+  .hcp-intake--redesign .hcp-fit-grid,
+  .hcp-intake--redesign .hcp-local-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
+  .hcp-intake .hcp-month-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hcp-intake--redesign .hcp-hotel-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hcp-intake--redesign .hcp-hotel-save-badge {
+    align-self: flex-start;
+  }
+
+  .hcp-intake--redesign .hcp-summary-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .hcp-intake--redesign .hcp-page-header h1 {
+    font-size: 1.5rem;
+  }
+
   .hcp-intake--single-page .hcp-sticky-save {
     flex-direction: column;
     align-items: stretch;
@@ -249,5 +599,11 @@
 
   .hcp-intake--single-page .hcp-save-hint {
     margin-right: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .hcp-intake .hcp-month-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

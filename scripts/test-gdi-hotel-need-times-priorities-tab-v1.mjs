@@ -54,13 +54,21 @@ const tabSrc = fs.readFileSync(
   path.join(ROOT, "public/js/group-demand-intelligence/hotel-need-times-priorities-tab.js"),
   "utf8",
 );
-assert.match(tabSrc, /Weekday \/ weekend targeting/);
-assert.match(tabSrc, /Local demand audiences \/ participant sources/);
-assert.match(tabSrc, /Demand segments \(14 GDI strategies\)/);
-assert.match(tabSrc, /hcpDemandGen/);
-assert.match(tabSrc, /hcpExcludeSegment/);
+assert.match(tabSrc, /Commercial Priorities/);
+assert.match(tabSrc, /Revenue Priorities/);
+assert.match(tabSrc, /Need Dates/);
+assert.match(tabSrc, /Preferred Business/);
+assert.match(tabSrc, /Target Demand Segments/);
+assert.match(tabSrc, /Local Market Intelligence/);
+assert.match(tabSrc, /Hotel Fit & Constraints/);
+assert.match(tabSrc, /Hotel Team/);
+assert.match(tabSrc, /hcp-hotel-card/);
+assert.match(tabSrc, /hcp-summary-strip/);
+assert.match(tabSrc, /Additional preferences/);
 assert.match(tabSrc, /peakRoomsPreset/);
-assert.match(tabSrc, /commercialDraftDirty/);
+assert.match(tabSrc, /hcpRestrictionNotes/);
+assert.doesNotMatch(tabSrc, /Saved to Airtable/);
+assert.doesNotMatch(tabSrc, /retained from PR #216/i);
 
 const prefs = buildHotelPreferenceMatchExplanations({
   commercialProfile: {
@@ -174,6 +182,25 @@ assert.match(uiLib, /GDI_PRIORITIES_TAB/);
 assert.match(uiLib, /id: "priorities"/);
 assert.match(uiLib, /label: "Commercial Priorities"/);
 assert.match(uiLib, /id: "opportunities"/);
+assert.match(
+  uiLib,
+  /GDI_CUSTOMER_TABS\s*=\s*\[\s*GDI_MAIN_TAB\s*,\s*GDI_PRIORITIES_TAB\s*,\s*GDI_PORTFOLIO_TAB\s*\]/,
+);
+assert.match(uiLib, /adp-section-nav__actions gdi-section-nav__actions/);
+assert.doesNotMatch(uiLib, /gdi-section-nav__actions--after-priorities/);
+
+const hcpCss = fs.readFileSync(
+  path.join(ROOT, "public/css/hotel-commercial-priorities.css"),
+  "utf8",
+);
+assert.match(
+  hcpCss,
+  /\.hcp-intake--redesign\s+\.form-sections-wrap[\s\S]*?max-width:\s*none/,
+);
+assert.doesNotMatch(
+  hcpCss,
+  /\.hcp-intake--single-page\s+\.form-sections-wrap\s*\{\s*max-width:\s*960px/,
+);
 
 const html = fs.readFileSync(
   path.join(ROOT, "public/group-demand-intelligence.html"),

@@ -2192,6 +2192,7 @@
         if (!alreadyMounted) {
           window.DealalityGdiNeedTimesPrioritiesTab.mount(prioritiesRoot, {
             hotelId: state.hotelId,
+            hotelLabel: hotelLabelForId(state.hotelId),
             loading: document.getElementById("gdiLoading"),
             isolation: isolation,
           });

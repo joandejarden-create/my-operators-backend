@@ -2630,7 +2630,7 @@
     label: "Group & Demand\nOpportunities",
   };
 
-  /** PDI-3 — immediately left of Commercial Priorities */
+  /** PDI-3 — retained after Commercial Priorities (founder middle-tab order) */
   var GDI_PORTFOLIO_TAB = {
     id: "portfolio",
     label: "Portfolio Demand\nIntelligence",
@@ -2641,7 +2641,8 @@
     label: "Commercial Priorities",
   };
 
-  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PORTFOLIO_TAB, GDI_PRIORITIES_TAB];
+  /** Primary tabs: Opportunities → Commercial Priorities → Portfolio. How to Read stays a right-rail info link. */
+  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB, GDI_PORTFOLIO_TAB];
 
   /**
    * Customer/share property-bar status only.
@@ -2927,6 +2928,7 @@
           );
         })
         .join("") +
+      // How to Read is an informational action (right-rail), not a primary tab.
       '<div class="adp-section-nav__actions gdi-section-nav__actions">' +
       howToReadReportButtonHtml() +
       "</div>" +

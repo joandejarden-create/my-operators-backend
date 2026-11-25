@@ -1,12 +1,9 @@
 /**
  * GDI Tab 2 — Hotel Need Times & Commercial Priorities
  *
- * ORIGINAL UI recovered (not reconstructed): Hotel Commercial Priorities V3
- * from worktree feat/gdi-universal-need-date-intelligence-v1
- * (staged in index, never committed) + CSS from Railway lean stage twin.
- * Evidence: reports/gdi-commercial-priorities-original-uncommitted-recovery-v1/
- *
- * Mount/keep-alive API from PR #215. Optional specific-days from PR #216.
+ * GDI Tab 2 Commercial Priorities — My Deals intake-shell redesign.
+ * Preserves original contracts, persistence, and need-date workflows.
+ * Evidence lineage: reports/gdi-commercial-priorities-original-uncommitted-recovery-v1/
  * Supervisor soft-boosts remain server-side.
  */
 (function (global) {
@@ -27,41 +24,64 @@
     {
       id: "revenue",
       title: "Revenue Priorities",
-      subtitle: "Select the revenue streams that matter most for your hotel.",
+      subtitle: "Select up to five types of business you'd most like to attract.",
+      icon: "revenue",
     },
     {
       id: "need-dates",
       title: "Need Dates",
-      subtitle:
-        "Select months and periods where additional demand would be most valuable.",
+      subtitle: "Tell us when additional business would be most valuable.",
+      icon: "calendar",
     },
     {
       id: "preferred",
       title: "Preferred Business",
       subtitle: "Group size, meeting needs, booking windows, and stay preferences.",
+      icon: "preferred",
     },
     {
       id: "customers",
       title: "Target Demand Segments",
-      subtitle: "Choose preferred demand segments — no typing required.",
+      subtitle: "Choose preferred demand segments for your hotel.",
+      icon: "segments",
     },
     {
       id: "local-market",
       title: "Local Market Intelligence",
       subtitle:
         "Demand generators, local organizations, and existing account relationships.",
+      icon: "local",
     },
     {
       id: "fit",
       title: "Hotel Fit & Constraints",
-      subtitle: "Property advantages, meeting-space considerations, and restrictions.",
+      subtitle:
+        "Property advantages, meeting-space considerations, and restrictions.",
+      icon: "fit",
     },
     {
       id: "team",
       title: "Hotel Team",
-      subtitle: "Sales, revenue, and executive contacts for this property.",
+      subtitle:
+        "Identify the team members responsible for reviewing and pursuing opportunities.",
+      icon: "team",
     },
   ];
+
+  var BOOKING_WINDOW_LABELS = {
+    UNDER_30_DAYS: "Under 30 days",
+    "1_3_MONTHS": "1–3 months",
+    "3_6_MONTHS": "3–6 months",
+    "6_12_MONTHS": "6–12 months",
+    "12_PLUS_MONTHS": "12+ months",
+    FLEXIBLE: "Flexible",
+  };
+
+  var SEGMENT_MODE_LABELS = {
+    ALL_RELEVANT: "All relevant",
+    SELECT_SPECIFIC: "Specific segments",
+    NO_PREFERENCE: "No preference",
+  };
 
   var memberFetch =
     window.DealalityMemberstackAuth &&
@@ -109,12 +129,14 @@
 
   var state = {
     hotelId: resolveHotelId(),
+    hotelLabel: String(opts.hotelLabel || "").trim() || null,
     year: resolveYear(),
     airtable: useAirtableMode(),
     dashboard: null,
     profile: null,
     draft: null,
     dirty: false,
+    saving: false,
     selectedMonths: {},
     monthDraft: null,
     drawerMonth: null,
@@ -279,9 +301,160 @@
 
   function markDirty() {
     state.dirty = true;
-    var hint = root && root.querySelector(".hcp-save-hint");
-    if (hint) hint.textContent = "Unsaved changes";
     state.saveMessage = null;
+    state.error = null;
+    updateSaveChrome();
+  }
+
+  function sectionIconSvg(kind) {
+    var paths = {
+      revenue:
+        '<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15v-3"/><path d="M12 15V9"/><path d="M16 15v-6"/>',
+      calendar:
+        '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 3v4"/><path d="M16 3v4"/>',
+      preferred:
+        '<path d="M12 3l2.2 6.6H21l-5.4 3.9 2.1 6.5L12 16.8 6.3 20l2.1-6.5L3 9.6h6.8z"/>',
+      segments:
+        '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><circle cx="12" cy="16" r="3"/>',
+      local:
+        '<path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+      fit:
+        '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5"/><path d="M12 12v9"/><path d="M12 12L4 7.5"/>',
+      team:
+        '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5"/><path d="M14.5 19c.3-2 1.8-3.5 4-3.8"/>',
+    };
+    return (
+      '<span class="hcp-section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+      (paths[kind] || paths.preferred) +
+      "</svg></span>"
+    );
+  }
+
+  function parseHotelLabel(label) {
+    var text = String(label || "").trim();
+    if (!text) return { name: null, location: null };
+    var sepAt = text.indexOf("\u2014"); // —
+    if (sepAt < 0) sepAt = text.indexOf("\u2013"); // –
+    if (sepAt < 0) sepAt = text.indexOf(" - ");
+    if (sepAt < 0) return { name: text, location: null };
+    var loc =
+      text.substr(sepAt, 3) === " - "
+        ? text.slice(sepAt + 3).trim()
+        : text.slice(sepAt + 1).trim();
+    return {
+      name: text.slice(0, sepAt).trim() || null,
+      location: loc || null,
+    };
+  }
+
+  function resolveHotelDisplay() {
+    var d = state.dashboard || {};
+    var hotel = d.hotel || {};
+    var name = hotel.name || null;
+    var city = hotel.city || null;
+    var location =
+      hotel.locationLine ||
+      [city, hotel.state || hotel.region || hotel.country]
+        .filter(Boolean)
+        .join(", ") ||
+      city ||
+      null;
+    var fromOpt = parseHotelLabel(state.hotelLabel);
+    if (fromOpt.name && !name) name = fromOpt.name;
+    if (fromOpt.location) location = fromOpt.location;
+    try {
+      var sel = document.getElementById("gdiHotel");
+      if (sel && String(sel.value || "") === String(state.hotelId || "")) {
+        var opt = sel.options[sel.selectedIndex];
+        var fromSel = parseHotelLabel(opt ? opt.textContent : "");
+        if (fromSel.name && !name) name = fromSel.name;
+        if (fromSel.location) location = fromSel.location;
+      }
+    } catch (e) {}
+    return {
+      name: name || state.hotelId || "Hotel",
+      location: location || city || "",
+    };
+  }
+
+  function summaryStripHtml() {
+    var draft = state.draft || emptyDraft();
+    var revCount = (draft.revenuePriorities || []).length;
+    var activeMonths =
+      (state.dashboard &&
+        state.dashboard.summary &&
+        state.dashboard.summary.activeNeedMonths) ||
+      0;
+    var booking = draft.bookingWindow
+      ? BOOKING_WINDOW_LABELS[draft.bookingWindow] || draft.bookingWindow
+      : "Not set";
+    var segmentLabel =
+      SEGMENT_MODE_LABELS[draft.segmentMode] || "No preference";
+    return (
+      '<div class="hcp-summary-strip" role="status" aria-live="polite">' +
+      '<div class="hcp-summary-item"><span class="hcp-summary-label">Revenue Priorities</span><span class="hcp-summary-value">' +
+      esc(String(revCount)) +
+      " of 5 selected</span></div>" +
+      '<div class="hcp-summary-item"><span class="hcp-summary-label">Active Need Months</span><span class="hcp-summary-value">' +
+      esc(String(activeMonths)) +
+      (activeMonths === 1 ? " month" : " months") +
+      "</span></div>" +
+      '<div class="hcp-summary-item"><span class="hcp-summary-label">Preferred Booking Window</span><span class="hcp-summary-value">' +
+      esc(booking) +
+      "</span></div>" +
+      '<div class="hcp-summary-item"><span class="hcp-summary-label">Target Demand Segments</span><span class="hcp-summary-value">' +
+      esc(segmentLabel) +
+      "</span></div></div>"
+    );
+  }
+
+  function saveStatusLabel() {
+    if (state.saving) return "Saving…";
+    if (state.dirty) return "Unsaved changes";
+    if (state.error && !state.dirty) return "Save failed";
+    if (state.saveMessage) return state.saveMessage;
+    return "All changes saved";
+  }
+
+  function saveStatusClass() {
+    if (state.saving) return "is-saving";
+    if (state.dirty) return "is-dirty";
+    if (state.error && !state.dirty) return "is-error";
+    return "is-saved";
+  }
+
+  function updateSaveChrome() {
+    if (!root) return;
+    var hint = root.querySelector(".hcp-save-hint");
+    if (hint) {
+      hint.textContent = saveStatusLabel();
+      hint.className = "hcp-save-hint " + saveStatusClass();
+    }
+    var badge = root.querySelector(".hcp-hotel-save-badge");
+    if (badge) {
+      badge.textContent = saveStatusLabel();
+      badge.className = "hcp-hotel-save-badge " + saveStatusClass();
+    }
+    var btn = root.querySelector("#hcpSaveProfile");
+    if (btn) {
+      btn.disabled = !!state.saving || !state.dirty;
+      btn.setAttribute("aria-busy", state.saving ? "true" : "false");
+    }
+  }
+
+  function prefSubpanel(title, help, bodyHtml) {
+    return (
+      '<div class="hcp-subpanel">' +
+      '<div class="hcp-subpanel-head"><h3 class="hcp-subpanel-title">' +
+      esc(title) +
+      "</h3>" +
+      (help
+        ? '<p class="hcp-subpanel-help">' + esc(help) + "</p>"
+        : "") +
+      "</div>" +
+      bodyHtml +
+      "</div>"
+    );
   }
 
   function toggleArr(obj, key, value, max) {
@@ -368,6 +541,27 @@
         sessionStorage.setItem("dealality.gdi.hotelId", state.hotelId);
         localStorage.setItem(STORAGE_KEY, state.hotelId);
       } catch (e) {}
+      if (!state.hotelLabel || !parseHotelLabel(state.hotelLabel).location) {
+        try {
+          var hotelsPayload = await api(
+            "/api/group-demand-intelligence/hotels",
+          );
+          var hotelRows = Array.isArray(hotelsPayload)
+            ? hotelsPayload
+            : hotelsPayload.hotels || hotelsPayload.items || [];
+          var hit = hotelRows.find(function (h) {
+            return String(h.hotelId || h.id || "") === String(state.hotelId);
+          });
+          if (hit) {
+            state.hotelLabel =
+              hit.optionLabel ||
+              (hit.hotelName || hit.displayName || hit.name || "") +
+                (hit.locationLine ? " \u2014 " + hit.locationLine : "");
+          }
+        } catch (labelErr) {
+          /* location enrichment is best-effort */
+        }
+      }
     } catch (err) {
       state.error = err.message || String(err);
     } finally {
@@ -411,10 +605,12 @@
         state.dashboard.summary.activeNeedMonths) ||
       0;
     var html =
-      '<p class="form-label" id="hcpActiveMonthCount">Active need months: <strong>' +
+      '<div class="hcp-need-dates-meta">' +
+      '<p class="hcp-active-month-count" id="hcpActiveMonthCount">Active need months: <strong>' +
       esc(String(activeMonths)) +
       "</strong></p>" +
-      '<p class="form-label"><span class="help-text">Historical / replaced months stay visible but are not counted as active.</span></p>' +
+      '<p class="hcp-subpanel-help">Tap a month to add or review a need period. Months without a need period are neutral — not a signal of low demand.</p>' +
+      "</div>" +
       '<div class="hcp-month-tiles" role="group" aria-label="Commercial need calendar">';
     for (var i = 1; i <= 12; i++) {
       var m = byMonth[i] || {};
@@ -466,7 +662,7 @@
             " needs</span>";
         }
       } else {
-        html += '<span class="hcp-month-status muted">No need</span>';
+        html += '<span class="hcp-month-status muted">Not set</span>';
       }
       html += "</button>";
     }
@@ -605,7 +801,7 @@
     html += '<h4 class="form-label" style="margin-top:16px">Change history</h4>';
     if (!hist.length) {
       html +=
-        '<p class="form-label"><span class="help-text">No saved Airtable change events for these periods yet.</span></p>';
+        '<p class="form-label"><span class="help-text">No change history for these periods yet.</span></p>';
     } else {
       html += '<ol class="hcp-timeline">';
       hist.slice(0, 10).forEach(function (c) {
@@ -654,12 +850,15 @@
       return (
         monthTiles() +
         monthDrawer() +
-        '<p class="form-label"><span class="help-text">Tap months to select and open details. Each month saves independently.</span></p>'
+        '<p class="hcp-subpanel-help">Each month saves independently when you use Save selected months.</p>'
       );
     }
     if (step.id === "local-market") {
       return (
-        '<div class="form-group full-width"><label class="form-label">Local demand generator categories<span class="help-text">Suggestions are not hotel-confirmed until you select them.</span></label>' +
+        '<div class="hcp-local-grid">' +
+        '<div class="hcp-subpanel">' +
+        '<div class="hcp-subpanel-head"><h3 class="hcp-subpanel-title">Local Demand Generators</h3>' +
+        '<p class="hcp-subpanel-help">Identify local organizations and facilities that may generate hotel demand.</p></div>' +
         chipGroup(
           "generators",
           [
@@ -678,14 +877,26 @@
           draft.demandGeneratorCategories,
           true,
         ) +
-        '</div><div class="form-group full-width" style="margin-top:22px"><label class="form-label">Known accounts<span class="help-text">Select from suggested organizations already in your intelligence.</span></label>' +
+        "</div>" +
+        '<div class="hcp-subpanel">' +
+        '<div class="hcp-subpanel-head"><h3 class="hcp-subpanel-title">Known Accounts</h3>' +
+        '<p class="hcp-subpanel-help">Select organizations your hotel already knows or works with. Suggestions stay unconfirmed until you select them.</p></div>' +
         renderKnownAccountSuggestions() +
-        "</div>"
+        "</div></div>"
       );
     }
     if (step.id === "revenue") {
+      var revCount = (draft.revenuePriorities || []).length;
+      var atLimit = revCount >= 5;
       return (
-        '<div class="form-group full-width"><label class="form-label">Select up to five<span class="help-text">Structured choices only — no written Top Five required.</span></label>' +
+        '<div class="form-group full-width">' +
+        '<div class="hcp-section-meta"><span class="hcp-counter" id="hcpRevenueCount">' +
+        esc(String(revCount)) +
+        " of 5 selected</span>" +
+        (atLimit
+          ? '<span class="hcp-limit-note">Selection limit reached</span>'
+          : "") +
+        "</div>" +
         chipGroup(
           "revenue",
           [
@@ -709,97 +920,111 @@
     }
     if (step.id === "preferred") {
       return (
-        '<div class="form-grid">' +
-        '<div class="form-group"><label class="form-label">Preferred peak rooms</label>' +
-        chipGroup(
-          "peakRooms",
-          [
-            { id: "UNDER_10", label: "Under 10" },
-            { id: "10_25", label: "10–25" },
-            { id: "26_50", label: "26–50" },
-            { id: "51_100", label: "51–100" },
-            { id: "101_200", label: "101–200" },
-            { id: "200_PLUS", label: "200+" },
-            { id: "FLEXIBLE", label: "Flexible" },
-          ],
-          draft.peakRoomsPreset,
-          false,
+        '<div class="hcp-pref-grid">' +
+        prefSubpanel(
+          "Preferred Peak Rooms",
+          null,
+          chipGroup(
+            "peakRooms",
+            [
+              { id: "UNDER_10", label: "Under 10" },
+              { id: "10_25", label: "10–25" },
+              { id: "26_50", label: "26–50" },
+              { id: "51_100", label: "51–100" },
+              { id: "101_200", label: "101–200" },
+              { id: "200_PLUS", label: "200+" },
+              { id: "FLEXIBLE", label: "Flexible" },
+            ],
+            draft.peakRoomsPreset,
+            false,
+          ),
         ) +
-        "</div>" +
-        '<div class="form-group"><label class="form-label">Preferred booking window</label>' +
-        chipGroup(
-          "bookingWindow",
-          [
-            { id: "UNDER_30_DAYS", label: "Under 30 days" },
-            { id: "1_3_MONTHS", label: "1–3 months" },
-            { id: "3_6_MONTHS", label: "3–6 months" },
-            { id: "6_12_MONTHS", label: "6–12 months" },
-            { id: "12_PLUS_MONTHS", label: "12+ months" },
-            { id: "FLEXIBLE", label: "Flexible" },
-          ],
-          draft.bookingWindow,
-          false,
+        prefSubpanel(
+          "Preferred Booking Window",
+          null,
+          chipGroup(
+            "bookingWindow",
+            [
+              { id: "UNDER_30_DAYS", label: "Under 30 days" },
+              { id: "1_3_MONTHS", label: "1–3 months" },
+              { id: "3_6_MONTHS", label: "3–6 months" },
+              { id: "6_12_MONTHS", label: "6–12 months" },
+              { id: "12_PLUS_MONTHS", label: "12+ months" },
+              { id: "FLEXIBLE", label: "Flexible" },
+            ],
+            draft.bookingWindow,
+            false,
+          ),
         ) +
-        "</div>" +
-        '<div class="form-group"><label class="form-label">Meeting space requirement</label>' +
-        chipGroup(
-          "meetingSpace",
-          [
-            { id: "ROOMS_ONLY", label: "Rooms Only" },
-            { id: "ROOMS_AND_MEETINGS", label: "Rooms + Meetings" },
-            { id: "MEETINGS_CATERING_ONLY", label: "Meetings / Catering Only" },
-            { id: "ANY", label: "Any" },
-          ],
-          draft.meetingSpaceNeed,
-          false,
+        prefSubpanel(
+          "Meeting Space Requirement",
+          null,
+          chipGroup(
+            "meetingSpace",
+            [
+              { id: "ROOMS_ONLY", label: "Rooms Only" },
+              { id: "ROOMS_AND_MEETINGS", label: "Rooms + Meetings" },
+              { id: "MEETINGS_CATERING_ONLY", label: "Meetings / Catering Only" },
+              { id: "ANY", label: "Any" },
+            ],
+            draft.meetingSpaceNeed,
+            false,
+          ),
         ) +
-        "</div>" +
-        '<div class="form-group"><label class="form-label">Preferred duration</label>' +
-        chipGroup(
-          "stayDuration",
-          [
-            { id: "1_NIGHT", label: "1 night" },
-            { id: "2_3_NIGHTS", label: "2–3 nights" },
-            { id: "4_7_NIGHTS", label: "4–7 nights" },
-            { id: "7_PLUS_NIGHTS", label: "7+ nights" },
-            { id: "FLEXIBLE", label: "Flexible" },
-          ],
-          draft.stayDuration,
-          false,
+        prefSubpanel(
+          "Preferred Duration",
+          null,
+          chipGroup(
+            "stayDuration",
+            [
+              { id: "1_NIGHT", label: "1 night" },
+              { id: "2_3_NIGHTS", label: "2–3 nights" },
+              { id: "4_7_NIGHTS", label: "4–7 nights" },
+              { id: "7_PLUS_NIGHTS", label: "7+ nights" },
+              { id: "FLEXIBLE", label: "Flexible" },
+            ],
+            draft.stayDuration,
+            false,
+          ),
         ) +
-        "</div>" +
-        '<div class="form-group full-width"><label class="form-label">Preferred days</label>' +
-        chipGroup(
-          "dayPreference",
-          [
-            { id: "WEEKDAYS", label: "Weekdays" },
-            { id: "WEEKENDS", label: "Weekends" },
-            { id: "BOTH", label: "Both" },
-          ],
-          draft.dayPreference,
-          false,
+        prefSubpanel(
+          "Preferred Days",
+          null,
+          chipGroup(
+            "dayPreference",
+            [
+              { id: "WEEKDAYS", label: "Weekdays" },
+              { id: "WEEKENDS", label: "Weekends" },
+              { id: "BOTH", label: "Both" },
+            ],
+            draft.dayPreference,
+            false,
+          ),
         ) +
-        '</div><div class="form-group full-width"><label class="form-label">Specific days<span class="help-text">Optional Mon–Sun targeting (retained from PR #216).</span></label>' +
-        chipGroup(
-          "specificDays",
-          [
-            { id: "Mon", label: "Mon" },
-            { id: "Tue", label: "Tue" },
-            { id: "Wed", label: "Wed" },
-            { id: "Thu", label: "Thu" },
-            { id: "Fri", label: "Fri" },
-            { id: "Sat", label: "Sat" },
-            { id: "Sun", label: "Sun" },
-          ],
-          draft.specificDays || [],
-          true,
+        prefSubpanel(
+          "Specific Days",
+          "Choose individual days if you have a preference.",
+          chipGroup(
+            "specificDays",
+            [
+              { id: "Mon", label: "Mon" },
+              { id: "Tue", label: "Tue" },
+              { id: "Wed", label: "Wed" },
+              { id: "Thu", label: "Thu" },
+              { id: "Fri", label: "Fri" },
+              { id: "Sat", label: "Sat" },
+              { id: "Sun", label: "Sun" },
+            ],
+            draft.specificDays || [],
+            true,
+          ),
         ) +
-        "</div></div>"
+        "</div>"
       );
     }
     if (step.id === "customers") {
       return (
-        '<div class="form-group full-width"><label class="form-label">Selection mode</label>' +
+        '<div class="form-group full-width"><label class="form-label">Which types of demand would you like to prioritize?</label>' +
         chipGroup(
           "segmentMode",
           [
@@ -812,7 +1037,7 @@
         ) +
         "</div>" +
         (draft.segmentMode === "SELECT_SPECIFIC"
-          ? '<div class="form-group full-width"><label class="form-label">Customer types</label>' +
+          ? '<div class="form-group full-width"><label class="form-label">Demand segments</label>' +
             chipGroup(
               "segments",
               [
@@ -843,7 +1068,7 @@
               draft.prioritySegments,
               true,
             ) +
-            '</div><div class="form-group full-width"><label class="form-label">Lower priority<span class="help-text">Retained from PR #216.</span></label>' +
+            '</div><div class="form-group full-width"><label class="form-label">Lower priority</label>' +
             chipGroup(
               "lowerPrioritySegments",
               [
@@ -865,7 +1090,7 @@
               draft.lowerPrioritySegments || [],
               true,
             ) +
-            '</div><div class="form-group full-width"><label class="form-label">Excluded segments<span class="help-text">Retained from PR #216.</span></label>' +
+            '</div><div class="form-group full-width"><label class="form-label">Excluded segments</label>' +
             chipGroup(
               "excludedSegments",
               [
@@ -889,51 +1114,59 @@
             ) +
             "</div>"
           : "") +
-        '<div class="form-group full-width" style="margin-top:16px"><label class="form-label">Restriction notes<span class="help-text">Optional free text (PR #216).</span></label>' +
-        '<textarea class="form-input" id="hcpRestrictionNotes" rows="2" placeholder="e.g. Prefer midweek groups">' +
+        '<div class="form-group full-width hcp-notes-group"><label class="form-label" for="hcpRestrictionNotes">Additional preferences</label>' +
+        '<textarea class="form-input hcp-textarea" id="hcpRestrictionNotes" rows="3" placeholder="Add any preferences or considerations for the types of business you\'d like to attract.">' +
         esc(draft.restrictionNotes || "") +
         "</textarea></div>"
       );
     }
     if (step.id === "fit") {
       return (
-        '<div class="form-grid"><div class="form-group"><label class="form-label">Business to avoid</label>' +
-        chipGroup(
-          "avoid",
-          [
-            { id: "LARGE_ROOM_BLOCKS", label: "Large room blocks" },
-            { id: "SMALL_GROUPS", label: "Small groups" },
-            { id: "LATE_NIGHT_EVENTS", label: "Late-night events" },
-            { id: "WEEKEND_HEAVY", label: "Weekend-heavy groups" },
-            { id: "LONG_STAY", label: "Long-stay groups" },
-            { id: "MEETING_INTENSIVE", label: "Meeting-space intensive" },
-            { id: "NO_RESTRICTIONS", label: "No restrictions" },
-          ],
-          draft.businessToAvoid,
-          true,
+        '<div class="hcp-fit-grid">' +
+        prefSubpanel(
+          "Business to Avoid",
+          "Select business types that may not be suitable for your hotel.",
+          chipGroup(
+            "avoid",
+            [
+              { id: "LARGE_ROOM_BLOCKS", label: "Large room blocks" },
+              { id: "SMALL_GROUPS", label: "Small groups" },
+              { id: "LATE_NIGHT_EVENTS", label: "Late-night events" },
+              { id: "WEEKEND_HEAVY", label: "Weekend-heavy groups" },
+              { id: "LONG_STAY", label: "Long-stay groups" },
+              { id: "MEETING_INTENSIVE", label: "Meeting-space intensive" },
+              { id: "NO_RESTRICTIONS", label: "No restrictions" },
+            ],
+            draft.businessToAvoid,
+            true,
+          ),
         ) +
-        '</div><div class="form-group"><label class="form-label">Hotel considerations</label>' +
-        chipGroup(
-          "considerations",
-          [
-            { id: "LIMITED_MEETING_SPACE", label: "Limited meeting space" },
-            { id: "LIMITED_COACH_PARKING", label: "Limited coach/bus parking" },
-            { id: "LIMITED_GROUP_INVENTORY", label: "Limited group inventory" },
-            { id: "SEASONAL_RESTRICTIONS", label: "Seasonal restrictions" },
-            { id: "NOISE_RESTRICTIONS", label: "Venue/event noise restrictions" },
-            { id: "ACCESSIBILITY", label: "Accessibility considerations" },
-            { id: "RENOVATION_PERIODS", label: "Renovation periods" },
-            { id: "NO_SPECIAL", label: "No special restrictions" },
-          ],
-          draft.hotelConsiderations,
-          true,
+        prefSubpanel(
+          "Hotel Considerations",
+          "Identify operating factors that should be considered when evaluating opportunities.",
+          chipGroup(
+            "considerations",
+            [
+              { id: "LIMITED_MEETING_SPACE", label: "Limited meeting space" },
+              { id: "LIMITED_COACH_PARKING", label: "Limited coach/bus parking" },
+              { id: "LIMITED_GROUP_INVENTORY", label: "Limited group inventory" },
+              { id: "SEASONAL_RESTRICTIONS", label: "Seasonal restrictions" },
+              { id: "NOISE_RESTRICTIONS", label: "Venue/event noise restrictions" },
+              { id: "ACCESSIBILITY", label: "Accessibility considerations" },
+              { id: "RENOVATION_PERIODS", label: "Renovation periods" },
+              { id: "NO_SPECIAL", label: "No special restrictions" },
+            ],
+            draft.hotelConsiderations,
+            true,
+          ),
         ) +
-        "</div></div>"
+        "</div>"
       );
     }
     if (step.id === "team") {
       return (
-        '<div class="form-group full-width"><label class="form-label">Role selectors<span class="help-text">Optional. Use only if contacts are not already on your Dealality account.</span></label>' +
+        '<div class="form-group full-width">' +
+        '<p class="hcp-subpanel-help">Optional. Use only if contacts are not already on your Dealality account.</p>' +
         chipGroup(
           "teamRoles",
           [
@@ -979,65 +1212,80 @@
       return;
     }
 
-    var d = state.dashboard || {};
-    var hotelName = (d.hotel && d.hotel.name) || state.hotelId;
-    var banner =
-      d.dataMode === "AIRTABLE_AI_DEMAND_POSITIONING"
-        ? '<div class="intake-banner">Saved to Airtable · AI Demand Positioning. Research does not start automatically.</div>'
-        : '<div class="intake-banner warn">Local draft mode</div>';
-    if (state.dirty) {
-      banner +=
-        '<div class="intake-banner warn">Unsaved commercial profile changes</div>';
-    } else if (state.saveMessage) {
-      banner +=
-        '<div class="intake-banner ok">' + esc(state.saveMessage) + "</div>";
-    }
+    var hotelDisp = resolveHotelDisplay();
+    var alertHtml = "";
     if (state.error) {
-      banner +=
-        '<div class="intake-banner warn">' + esc(state.error) + "</div>";
+      alertHtml =
+        '<div class="intake-banner warn" role="alert">' +
+        esc(state.error) +
+        "</div>";
     }
 
-    var sectionsHtml = SECTIONS.map(function (step, idx) {
+    var sectionsHtml = SECTIONS.map(function (step) {
       return (
-        '<section class="form-section hcp-page-section active" id="hcp-section-' +
+        '<section class="form-section hcp-page-section hcp-section-card active" id="hcp-section-' +
         esc(step.id) +
         '" data-section="' +
         esc(step.id) +
         '">' +
-        (idx > 0 ? '<hr class="hcp-section-divider" />' : "") +
+        '<div class="hcp-section-head">' +
+        sectionIconSvg(step.icon) +
+        '<div class="hcp-section-titles">' +
         '<h2 class="form-section-title">' +
         esc(step.title) +
         "</h2>" +
         '<p class="form-section-subtitle">' +
         esc(step.subtitle) +
-        "</p>" +
+        "</p></div></div>" +
+        '<div class="hcp-section-body">' +
         sectionBody(step) +
-        "</section>"
+        "</div></section>"
       );
     }).join("");
 
     var html =
-      '<div class="intake-shell hcp-intake hcp-intake--single-page">' +
+      '<div class="intake-shell hcp-intake hcp-intake--single-page hcp-intake--redesign">' +
       '<div class="intake-container">' +
-      banner +
-      '<header class="intake-header"><div class="intake-title-container"><h1>Commercial Priorities</h1></div>' +
-      "<p>Help us find the right business for your hotel. Select your priorities and the dates where additional demand would be most valuable.</p>" +
-      "<p>" +
-      esc(hotelName) +
-      " · " +
+      alertHtml +
+      '<header class="hcp-page-header">' +
+      '<div class="intake-title-container"><h1>Commercial Priorities</h1></div>' +
+      '<p class="hcp-page-subtitle">Help us identify the business that best matches your hotel\'s goals and available demand periods.</p>' +
+      "</header>" +
+      '<div class="hcp-hotel-card">' +
+      '<div class="hcp-hotel-card-main">' +
+      '<h2 class="hcp-hotel-name">' +
+      esc(hotelDisp.name) +
+      "</h2>" +
+      (hotelDisp.location
+        ? '<p class="hcp-hotel-location">' + esc(hotelDisp.location) + "</p>"
+        : "") +
+      '<p class="hcp-hotel-year">Planning Year: ' +
       esc(String(state.year)) +
-      "</p></header>" +
+      "</p></div>" +
+      '<span class="hcp-hotel-save-badge ' +
+      saveStatusClass() +
+      '">' +
+      esc(saveStatusLabel()) +
+      "</span></div>" +
+      summaryStripHtml() +
       '<div class="form-sections-wrap hcp-single-page-sections">' +
       sectionsHtml +
+      "</div>" +
       '<div class="form-actions hcp-sticky-save">' +
-      '<span class="hcp-save-hint">' +
-      (state.dirty ? "Unsaved changes" : "All changes saved") +
+      '<span class="hcp-save-hint ' +
+      saveStatusClass() +
+      '">' +
+      esc(saveStatusLabel()) +
       "</span>" +
-      '<button type="button" class="btn-primary" id="hcpSaveProfile">Save Changes</button>' +
-      "</div></div></div></div>";
+      '<button type="button" class="btn-primary" id="hcpSaveProfile"' +
+      (state.saving || !state.dirty ? " disabled" : "") +
+      (state.saving ? ' aria-busy="true"' : "") +
+      ">Save Changes</button>" +
+      "</div></div></div>";
 
     root.innerHTML = html;
     bind();
+    updateSaveChrome();
   }
 
   function handleUiClick(e) {
@@ -1331,6 +1579,10 @@
   }
 
   async function saveProfileFn() {
+    if (state.saving || !state.dirty) return;
+    state.saving = true;
+    state.error = null;
+    updateSaveChrome();
     setLoading(true, "Saving commercial priorities…");
     try {
       var body = {
@@ -1356,12 +1608,13 @@
       state.profile = res.profile;
       state.draft = profileToDraft(res.profile);
       state.dirty = false;
-      state.saveMessage =
-        "Commercial priorities saved. Research was not started.";
+      state.saving = false;
+      state.saveMessage = "All changes saved";
       if (res.dashboard) state.dashboard = res.dashboard;
       setLoading(false);
       render();
     } catch (err) {
+      state.saving = false;
       state.error = err.message || String(err);
       setLoading(false);
       render();
@@ -1406,11 +1659,12 @@
       }
     }
 
-    function setHotelId(hotelId) {
+    function setHotelId(hotelId, hotelLabel) {
       var next = String(hotelId || "").trim();
       if (!next || next === state.hotelId) return Promise.resolve();
       // Caller (mount) is responsible for stashing; clear local UI only.
       state.hotelId = next;
+      state.hotelLabel = String(hotelLabel || "").trim() || null;
       state.selectedMonths = {};
       state.monthDraft = null;
       state.drawerMonth = null;
