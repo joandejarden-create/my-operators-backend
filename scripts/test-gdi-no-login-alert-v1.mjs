@@ -59,7 +59,7 @@ assert.match(htmlSrc, /dealality-memberstack-auth\.js\?v=gdi-no-login-alert-v1/)
 // Cache marker may advance with later GDI auth UX fixes; app must still load.
 assert.match(
   htmlSrc,
-  /app\.js\?v=gdi-(?:no-login-alert-v1|contact-reveal-auth-v1|contact-reveal-authz-v2)/,
+  /app\.js\?v=(?:gdi-(?:no-login-alert-v1|contact-reveal-auth-v1|contact-reveal-authz-v2)|hcp-ui-redesign-v\d+[a-z]?)/,
 );
 assert.match(appSrc, /contactRevealFetch|notifyLoginRequired:\s*false/);
 

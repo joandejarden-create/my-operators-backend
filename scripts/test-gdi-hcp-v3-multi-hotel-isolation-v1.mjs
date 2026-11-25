@@ -99,10 +99,11 @@ check("tab2_js_is_original_v3", () => {
     path.join(ROOT, "public/js/group-demand-intelligence/hotel-need-times-priorities-tab.js"),
     "utf8"
   );
-  assert.match(src, /ORIGINAL UI recovered/);
   assert.match(src, /Revenue Priorities/);
   assert.match(src, /Hotel Team/);
   assert.match(src, /hcp-chip/);
+  assert.match(src, /hcp-hotel-card/);
+  assert.match(src, /hcp-summary-strip/);
   assert.match(src, /_draftsByHotelId/);
   assert.match(src, /exportDraft/);
 });

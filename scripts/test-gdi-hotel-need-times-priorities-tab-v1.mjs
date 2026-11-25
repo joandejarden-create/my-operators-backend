@@ -54,13 +54,21 @@ const tabSrc = fs.readFileSync(
   path.join(ROOT, "public/js/group-demand-intelligence/hotel-need-times-priorities-tab.js"),
   "utf8",
 );
-assert.match(tabSrc, /Weekday \/ weekend targeting/);
-assert.match(tabSrc, /Local demand audiences \/ participant sources/);
-assert.match(tabSrc, /Demand segments \(14 GDI strategies\)/);
-assert.match(tabSrc, /hcpDemandGen/);
-assert.match(tabSrc, /hcpExcludeSegment/);
+assert.match(tabSrc, /Commercial Priorities/);
+assert.match(tabSrc, /Revenue Priorities/);
+assert.match(tabSrc, /Need Dates/);
+assert.match(tabSrc, /Preferred Business/);
+assert.match(tabSrc, /Target Demand Segments/);
+assert.match(tabSrc, /Local Market Intelligence/);
+assert.match(tabSrc, /Hotel Fit & Constraints/);
+assert.match(tabSrc, /Hotel Team/);
+assert.match(tabSrc, /hcp-hotel-card/);
+assert.match(tabSrc, /hcp-summary-strip/);
+assert.match(tabSrc, /Additional preferences/);
 assert.match(tabSrc, /peakRoomsPreset/);
-assert.match(tabSrc, /commercialDraftDirty/);
+assert.match(tabSrc, /hcpRestrictionNotes/);
+assert.doesNotMatch(tabSrc, /Saved to Airtable/);
+assert.doesNotMatch(tabSrc, /retained from PR #216/i);
 
 const prefs = buildHotelPreferenceMatchExplanations({
   commercialProfile: {
