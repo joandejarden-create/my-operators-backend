@@ -164,3 +164,21 @@ Follow-on evidence: `reports/gdi-airtable-persistence-prewrite-integrity-gate-v1
 | Canary | Prepared only — `gdi_e2d_770e3b44ad97c1ae` CREATE (awaiting founder GO) |
 
 **Integrity verdict: READY_FOR_CANARY** (not production-certified).
+
+---
+
+## Amendment 2 — Validated-68 write scope (founder policy)
+
+Production write source revised to **certified STAGED 68 only** (`…_quality_v1`). Broader 88 / prior 86 set **not approved**. Prior canary `gdi_e2d_770e3b44ad97c1ae` **rejected** (research continuation).
+
+New evidence: `reports/gdi-airtable-persistence-validated-68-write-manifest-v1/FOUNDER_VALIDATED_68_WRITE_SCOPE_REPORT.md`
+
+| Item | Result |
+|---|---|
+| Write-eligible | 68 FQO |
+| WOULD_CREATE / UPDATE / UNCHANGED | 0 / 68 / 0 |
+| Nonqualified mutations | 0 (preserve in place) |
+| Replacement canary | `gdi_s4912_512deebd0963` (Liz Conrow / existing `recxVyeNwB23XsC5G`) |
+| Idempotent mock rerun | PASS (run3 UNCHANGED × 68) |
+
+**Scope verdict: READY_FOR_VALIDATED_CANARY** — awaiting founder GO; no live writes.

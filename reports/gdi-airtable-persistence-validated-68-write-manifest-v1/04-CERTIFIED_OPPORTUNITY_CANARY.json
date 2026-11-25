@@ -1,0 +1,79 @@
+{
+  "status": "AWAITING_FOUNDER_APPROVAL",
+  "executed": false,
+  "rejectedPriorCanary": "gdi_e2d_770e3b44ad97c1ae",
+  "proposal": {
+    "mode": "SINGLE_EXISTING_VALIDATED_UPDATE",
+    "maxWrites": 1,
+    "opportunityId": "gdi_s4912_512deebd0963",
+    "airtableRecordId": "recxVyeNwB23XsC5G",
+    "namedContact": "Liz Conrow",
+    "outreach": "econ@lle.rochester.edu",
+    "fqoFinalizedQualified": true,
+    "action": "WOULD_UPDATE",
+    "changedFields": [
+      "researchPayloadJson"
+    ],
+    "fieldChanges": [
+      {
+        "field": "researchPayloadJson",
+        "beforePreview": "{\"slimPayloadVersion\":\"gdi-research-inventory-slim-payload-v1\",\"id\":\"gdi_s4912_512deebd0963\",\"opportunityId\":\"gdi_s4912_512deebd0963\",\"hotelId\":\"recLuxvwwxID7U2B8\",\"title\":\"2027 U.S. IFE Conference\",\"",
+        "afterPreview": "{\"slimPayloadVersion\":\"gdi-research-inventory-slim-payload-v1\",\"id\":\"gdi_s4912_512deebd0963\",\"opportunityId\":\"gdi_s4912_512deebd0963\",\"hotelId\":\"recLuxvwwxID7U2B8\",\"title\":\"2027 U.S. IFE Conference\",\"",
+        "beforeLen": 4245,
+        "afterLen": 6159
+      }
+    ],
+    "onlyPayloadAndIds": true,
+    "destinationTable": "GDI Hotel Research Opportunities",
+    "destinationTableId": "tblbkDj0vhQLfrssV",
+    "verify": [
+      "update",
+      "read_back_field_integrity",
+      "unchanged_rerun",
+      "idempotency",
+      "duplicate_protection",
+      "no_gdo_side_effects",
+      "no_staged_current_side_effects",
+      "contacts_and_evidence_preserved"
+    ],
+    "requiredAuth": [
+      "authorizeResearchPersistence=true",
+      "exactWriteSetAuthorization=FOUNDER_CANARY_gdi_s4912_512deebd0963",
+      "writeSetPolicy=VALIDATED_FQO_ONLY",
+      "allowedOpportunityIds=[canary id only]",
+      "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1",
+      "apply=true",
+      "readBack=true",
+      "writeBudget=1"
+    ]
+  },
+  "preWriteSnapshot": {
+    "airtableRecordId": "recxVyeNwB23XsC5G",
+    "opportunityId": "gdi_s4912_512deebd0963",
+    "fieldsBefore": {
+      "opportunityId": "gdi_s4912_512deebd0963",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "organizationName": null,
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "demandThesis": null,
+      "priority": "WATCHLIST",
+      "title": "2027 U.S. IFE Conference",
+      "segment": "Associations, Conferences & Events",
+      "sourceSummary": "https://nursing.missouri.edu/directory/people/elizabeth-conrow/ | https://linkedin.com/in/liz-conrow-312942321 | https://www.urmc.rochester.edu/childrens-hospital/palliative-care/resources | https://www.lle.rochester.edu/education/summer-high-school-research-program/ | https://ifestar2026.mailchimpsites.com/sponsors",
+      "dgGeneratorId": null,
+      "researchPayloadJson": "{\"slimPayloadVersion\":\"gdi-research-inventory-slim-payload-v1\",\"id\":\"gdi_s4912_512deebd0963\",\"opportunityId\":\"gdi_s4912_512deebd0963\",\"hotelId\":\"recLuxvwwxID7U2B8\",\"title\":\"2027 U.S. IFE Conference\",\"displayTitle\":\"2027 U.S. IFE Conference\",\"segment\":\"Associations, Conferences & Events\",\"researchSegment\":\"associations_conferences_events\",\"demandMechanism\":\"OVERFLOW_HOUSING\",\"opportunityType\":\"OVERFLOW_HOUSING\",\"hotelOpportunityThesis\":\"Competitor-host activity near the Bethesda corridor — do not treat as available Bethesda Marriott demand until independent overflow / guestroom need is verified.\",\"whyThisHotel\":\"Competitor-host activity near the Bethesda corridor — do not treat as available Bethesda Marriott demand until independent overflow / guestroom need is verified.\",\"whatIsHappening\":\"2027 U.S. IFE Conference is tracked as an exhibitor / vendor programme contact for 2027 U.S. IFE Conference; confirm edition status, destination, and lodging accessibility before treating hotel demand as confirmed.\",\"priority\":\"WATCHLIST\",\"evidence\":[{\"url\":\"https://nursing.missouri.edu/directory/people/elizabeth-conrow/\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://linkedin.com/in/liz-conrow-312942321\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://www.urmc.rochester.edu/childrens-hospital/palliative-care/resources\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://www.lle.rochester.edu/education/summer-high-school-research-program/\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://ifestar2026.mailchimpsites.com/sponsors\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://events.bizzabo.com/IFESTAR/page/4456402/teambuilding\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://ifestar2026.mailchimpsites.com/abstracts\",\"statement\":\"public_contact_discovery_candidate\"},{\"url\":\"https://usife.org/wp-content/uploads/2026/11/2027-Sponsor-Prospectus-1.pdf\",\"statement\":\"public_contact_dis",
+      "schemaVersion": "gdi-hotel-research-opportunity-v1",
+      "compositeKey": "recLuxvwwxID7U2B8::gdi_s4912_512deebd0963"
+    },
+    "lastMaterialChangeAtBefore": null
+  },
+  "rollbackSteps": [
+    "1. Confirm canary airtableRecordId from pre-write snapshot.",
+    "2. Restore each changed typed field from fieldsBefore in 04-CERTIFIED_OPPORTUNITY_CANARY.json preWriteSnapshot.",
+    "3. Restore researchPayloadJson exactly from snapshot (full value in live backup if truncated in report).",
+    "4. Re-read record; confirm fingerprint matches pre-write snapshot.",
+    "5. Confirm STAGED pointer and CURRENT pointer unchanged.",
+    "6. Confirm no GDO rows created/updated."
+  ]
+}
