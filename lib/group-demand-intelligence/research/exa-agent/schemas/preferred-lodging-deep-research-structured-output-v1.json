@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gdi-exa-preferred-lodging-partnership-deep-research-structured-output-v1",
+  "title": "PreferredLodgingDeepResearchV1",
+  "description": "Preferred Lodging venue deep research. Use null/UNKNOWN for unsupported. Do not invent partnerships, rates, or room nights.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractId",
+    "venueIdentity",
+    "findings",
+    "remainingUncertainties",
+    "supportingSources"
+  ],
+  "properties": {
+    "contractId": {
+      "type": "string",
+      "const": "gdi-exa-preferred-lodging-partnership-deep-research-v1"
+    },
+    "venueIdentity": { "type": "string" },
+    "commercialOpportunityTrack": { "type": ["string", "null"] },
+    "findings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "venueActivity": { "type": ["string", "null"] },
+        "capacitySeasonality": { "type": ["string", "null"] },
+        "onsiteLodgingStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "NO_ONSITE_LODGING",
+            "LIMITED_ONSITE_LODGING",
+            "ONSITE_LODGING_AVAILABLE",
+            "UNKNOWN",
+            null
+          ]
+        },
+        "preferredHotelLanguage": { "type": ["string", "null"] },
+        "referralPartnershipPathway": { "type": ["string", "null"] },
+        "hotelSpecificFit": { "type": ["string", "null"] },
+        "recommendedSalesAction": { "type": ["string", "null"] }
+      }
+    },
+    "venueContactCandidates": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": ["string", "null"] },
+          "role": { "type": ["string", "null"] },
+          "organization": { "type": ["string", "null"] },
+          "whyRelevant": { "type": ["string", "null"] },
+          "sourceUrl": { "type": ["string", "null"] },
+          "linkedinUrl": { "type": ["string", "null"] },
+          "relevanceClass": { "type": ["string", "null"] },
+          "buyerVersusIntermediary": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "remainingUncertainties": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "suggestedOrsFollowUps": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+    "supportingSources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "url"],
+        "properties": {
+          "claim": { "type": "string" },
+          "url": { "type": "string" },
+          "factVsInference": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "cibMappingHints": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "whatIsHappening": { "type": ["string", "null"] },
+        "whyThisHotel": { "type": ["string", "null"] },
+        "recommendedNextStep": { "type": ["string", "null"] }
+      }
+    },
+    "researchDisposition": { "type": ["string", "null"] }
+  }
+}
