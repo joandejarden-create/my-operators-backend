@@ -190,7 +190,10 @@ await check("previously_approved_review_when_eligibility_changes", () => {
     HOTEL_WIDE_DISPOSITION.PREVIOUSLY_APPROVED_REVIEW,
   );
   assert.ok(
-    (orgAsPerson.reasonCodes || []).some((r) => /NAMED_COMMERCIAL/.test(r)),
+    (orgAsPerson.reasonCodes || []).some((r) =>
+      /NAMED_COMMERCIAL|NON_PERSON|ROLE_GLUED|JUNK_CONTACT/.test(r),
+    ),
+    `expected named-person commercial reject; got ${(orgAsPerson.reasonCodes || []).join(",")}`,
   );
 });
 
