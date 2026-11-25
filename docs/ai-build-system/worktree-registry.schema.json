@@ -29,6 +29,35 @@
     }
   },
   "$defs": {
+    "lifecycleStatus": {
+      "type": "string",
+      "enum": [
+        "PERMANENT",
+        "ACTIVE",
+        "RETIREMENT_CANDIDATE",
+        "PRESERVATION_REQUIRED",
+        "BLOCKED",
+        "RETIRED",
+        "active",
+        "active_dirty_wip",
+        "post_merge_retain",
+        "retirement_candidate",
+        "retired"
+      ],
+      "description": "Canonical uppercase statuses preferred for temporaryWorkspaces.lifecycleStatus; legacy lowercase status values retained for permanent homes."
+    },
+    "retirementRecord": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "retiredAt": { "type": "string" },
+        "batchId": { "type": "string" },
+        "pr": {},
+        "commit": { "type": "string" },
+        "preservationEvidence": {},
+        "result": { "type": "string" }
+      }
+    },
     "workspace": {
       "type": "object",
       "required": ["id", "stream", "path", "lifecycle"],
@@ -37,18 +66,30 @@
         "id": { "type": "string", "minLength": 1 },
         "stream": {
           "type": "string",
-          "enum": ["integration", "he", "adp", "gdi"]
+          "enum": ["integration", "he", "adp", "gdi", "be"]
         },
-        "role": { "type": "string" },
+        "role": { "type": "string", "description": "Purpose / role of the worktree" },
+        "purpose": { "type": "string" },
         "path": { "type": "string", "minLength": 3 },
         "expectedBranchPattern": { "type": "string" },
+        "branch": { "type": "string" },
         "defaultBranch": { "type": "string" },
         "lifecycle": { "type": "string", "enum": ["permanent", "temporary"] },
+        "lifecycleStatus": { "$ref": "#/$defs/lifecycleStatus" },
         "owner": { "type": "string" },
         "allowsProductFeatureBranches": { "type": "boolean" },
+        "associatedPr": {},
+        "associatedTask": { "type": "string" },
+        "pr": {},
+        "task": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastAssessedAt": { "type": "string" },
+        "lastAssessedPr": {},
+        "lastAssessedBranch": { "type": "string" },
         "status": { "type": "string" },
         "statusNotes": { "type": "string" },
-        "safeRemovalEligibility": { "type": "string" }
+        "safeRemovalEligibility": { "type": "string" },
+        "retirement": { "$ref": "#/$defs/retirementRecord" }
       }
     }
   }

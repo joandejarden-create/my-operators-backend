@@ -119,6 +119,12 @@ if (json) {
     }
   }
   console.log(`  RESULT ${result.status || (result.ok ? "READY" : "BLOCKED")}`);
+  if (result.lifecycleAssess) {
+    const la = result.lifecycleAssess;
+    console.log(
+      `  lifecycleAssess matched=${la.matchedCount ?? "?"} candidates=${la.retirementCandidates ?? "?"} deleted=${la.deleted === false ? "no" : la.deleted}`,
+    );
+  }
 }
 
 process.exit(result.ok ? 0 : 1);
