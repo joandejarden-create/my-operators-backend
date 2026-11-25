@@ -1,6 +1,8 @@
 # FOUNDER — GDI Commercial Priorities UI Redesign V1
 
 **Scope:** UI/UX only · same data · same APIs · same contracts  
+**PR:** [#611](https://github.com/joandejarden-create/my-operators-backend/pull/611) · **OPEN** · `AWAITING_INTEGRATION_CONTROLLER`  
+**HEAD:** `ffd0be1ad`  
 **Hotel verified:** Wyndham San Diego Bayside `recnPB3Q02NO8Ma1o`  
 **Preview URL:** `http://localhost:8080/group-demand-intelligence.html?hotelId=recnPB3Q02NO8Ma1o&preview=staged&isolation=portal_v1_test`
 
