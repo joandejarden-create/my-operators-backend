@@ -1,7 +1,10 @@
 # GDI Research Airtable Source-of-Truth field ownership V1
 
+> Parent standard: [Three-Layer Intelligence Contract V1](./GDI_THREE_LAYER_INTELLIGENCE_CONTRACT_V1.md)
+
 **Contract modules**
 
+- `lib/group-demand-intelligence/workflow/gdi-three-layer-intelligence-contract-v1.js`
 - `lib/group-demand-intelligence/workflow/gdi-research-sot-field-ownership-v1.js`
 - `lib/group-demand-intelligence/workflow/gdi-research-sot-lossless-merge-v1.js`
 
