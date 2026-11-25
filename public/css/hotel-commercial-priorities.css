@@ -133,9 +133,29 @@
 
 /* ——— Section cards ——— */
 
-.hcp-intake--single-page .form-sections-wrap {
-  max-width: 960px;
+/*
+ * Shared outer width: section cards must match hotel identity + summary strip.
+ * Override intake-shell's legacy .form-sections-wrap max-width (920px) — do not
+ * re-introduce a narrower column for the My Deals redesign.
+ */
+.hcp-intake--single-page .form-sections-wrap,
+.hcp-intake--redesign .form-sections-wrap {
+  max-width: none;
+  width: 100%;
   padding-bottom: 108px;
+}
+
+.hcp-intake--redesign .intake-container {
+  max-width: 100%;
+  width: 100%;
+}
+
+.hcp-intake--redesign .hcp-hotel-card,
+.hcp-intake--redesign .hcp-summary-strip,
+.hcp-intake--redesign .form-section.hcp-section-card,
+.hcp-intake--redesign .hcp-sticky-save {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hcp-intake--redesign .form-section.hcp-section-card {

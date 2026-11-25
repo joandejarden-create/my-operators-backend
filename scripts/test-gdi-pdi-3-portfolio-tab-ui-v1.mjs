@@ -19,10 +19,14 @@ const uiSrc = fs.readFileSync(
 );
 assert.ok(/id:\s*"portfolio"/.test(uiSrc), "portfolio tab id missing");
 assert.ok(
-  /GDI_CUSTOMER_TABS\s*=\s*\[\s*GDI_MAIN_TAB\s*,\s*GDI_PORTFOLIO_TAB\s*,\s*GDI_PRIORITIES_TAB\s*\]/.test(
+  /GDI_CUSTOMER_TABS\s*=\s*\[\s*GDI_MAIN_TAB\s*,\s*GDI_PRIORITIES_TAB\s*,\s*GDI_PORTFOLIO_TAB\s*\]/.test(
     uiSrc,
   ),
-  "portfolio must sit immediately left of Commercial Priorities",
+  "Commercial Priorities must sit immediately after Opportunities (middle before How to Read); Portfolio retained after",
+);
+assert.ok(
+  /gdi-section-nav__actions--after-priorities/.test(uiSrc),
+  "How to Read must render immediately after Commercial Priorities",
 );
 
 const html = fs.readFileSync(
@@ -213,7 +217,7 @@ const summary = {
   publicationWrites: 0,
   ok: true,
   checks: {
-    tabOrder: "opportunities → portfolio → priorities",
+    tabOrder: "opportunities → priorities → how-to-read → portfolio",
     singleDrawer: true,
     unavailableExplicit: true,
     demoLocalHostOnly: true,
@@ -229,7 +233,7 @@ fs.writeFileSync(
   `# GDI PDI-3 — Portfolio Demand Intelligence tab (hardened)
 
 ## Placement
-\`Group & Demand Opportunities\` · **Portfolio Demand Intelligence** · \`Commercial Priorities\`
+\`Group & Demand Opportunities\` · **Commercial Priorities** · How to Read This Report · \`Portfolio Demand Intelligence\`
 
 ## Hardening
 - \`?pdiDemo=1\` **only** on localhost / 127.0.0.1 / \`[::1]\` / 0.0.0.0 — ignored on production hosts

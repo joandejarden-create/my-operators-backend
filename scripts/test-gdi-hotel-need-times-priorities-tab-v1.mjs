@@ -182,6 +182,24 @@ assert.match(uiLib, /GDI_PRIORITIES_TAB/);
 assert.match(uiLib, /id: "priorities"/);
 assert.match(uiLib, /label: "Commercial Priorities"/);
 assert.match(uiLib, /id: "opportunities"/);
+assert.match(
+  uiLib,
+  /GDI_CUSTOMER_TABS\s*=\s*\[\s*GDI_MAIN_TAB\s*,\s*GDI_PRIORITIES_TAB\s*,\s*GDI_PORTFOLIO_TAB\s*\]/,
+);
+assert.match(uiLib, /gdi-section-nav__actions--after-priorities/);
+
+const hcpCss = fs.readFileSync(
+  path.join(ROOT, "public/css/hotel-commercial-priorities.css"),
+  "utf8",
+);
+assert.match(
+  hcpCss,
+  /\.hcp-intake--redesign\s+\.form-sections-wrap[\s\S]*?max-width:\s*none/,
+);
+assert.doesNotMatch(
+  hcpCss,
+  /\.hcp-intake--single-page\s+\.form-sections-wrap\s*\{\s*max-width:\s*960px/,
+);
 
 const html = fs.readFileSync(
   path.join(ROOT, "public/group-demand-intelligence.html"),
