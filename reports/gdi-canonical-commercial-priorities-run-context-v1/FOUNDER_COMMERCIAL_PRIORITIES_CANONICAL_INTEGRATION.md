@@ -110,7 +110,17 @@ Scenarios: no prefs; group rooms + need months; catering/social; restrictions; s
 
 ## 8. Required PRs / merge status
 
-See PR created from this branch. GDI chat does **not** merge — Integration Controller owns merge + post-merge sync.
+| Item | Value |
+|---|---|
+| PR | [#610](https://github.com/joandejarden-create/my-operators-backend/pull/610) |
+| Status | **OPEN** — `AWAITING_INTEGRATION_CONTROLLER` |
+| Branch | `feat/gdi-canonical-commercial-priorities-run-context-v1` |
+| HEAD | `d2c3f30a79b9a59b6783635e50eb11ca52de6828` |
+| Base | `origin/main` `@ 10274b9de` |
+| Local tests | CP 11/11 + FQO PASS; `dealality:ci-precheck` PASS |
+| Merge | IC only — then `dealality:post-merge-sync --stream gdi --pr 610` |
+
+GDI chat does **not** merge.
 
 ---
 
