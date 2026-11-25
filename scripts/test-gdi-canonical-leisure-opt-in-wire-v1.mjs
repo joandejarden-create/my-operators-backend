@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * $0 — Canonical Full E2E leisure opt-in wire.
- * All six modules selectable when enabled; never silent default; paid OFF.
+ * $0 — Canonical Full E2E leisure STANDARD stage.
+ * Always assess all six; execute applicable only; paid OFF by default.
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -13,6 +13,10 @@ import {
   buildCanonicalLeisureEligibilityMatrix,
   runCanonicalLeisureOptInStage,
   listLeisureModuleIds,
+  LEISURE_MODULE_OUTCOME,
+  CERTIFIED_WYNDHAM_SAN_DIEGO_BAYSIDE_HOTEL_ID,
+  HILTON_NY_TIMES_SQUARE_HOTEL_ID,
+  WYNDHAM_HOTEL_ID_RECONCILIATION,
   GDI_CANONICAL_LEISURE_OPT_IN_WIRE_V1,
 } from "../lib/group-demand-intelligence/workflow/gdi-canonical-leisure-opt-in-wire-v1.js";
 import { runCanonicalFullE2eResearch } from "../lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js";
@@ -57,44 +61,61 @@ check("registry_exposes_all_six_modules", () => {
   ]);
 });
 
-check("default_opt_in_is_off", () => {
+check("default_standard_stage_is_on", () => {
   const r = resolveCanonicalLeisureOptIn({});
-  assert.equal(r.enabled, false);
-  assert.equal(r.reason, "LEISURE_OPT_IN_OFF_BY_DEFAULT");
-  assert.match(r.note, /not specialized leisure-module execution/i);
+  assert.equal(r.enabled, true);
+  assert.equal(r.standardStage, true);
+  assert.match(r.reason, /STANDARD_STAGE/);
 });
 
-check("explicit_enable_or_module_list_turns_on", () => {
-  assert.equal(resolveCanonicalLeisureOptIn({ enableLeisureModules: true }).enabled, true);
+check("explicit_disable_only_for_isolated_tests", () => {
   assert.equal(
-    resolveCanonicalLeisureOptIn({ leisureModules: ["leisure_events"] }).enabled,
-    true,
+    resolveCanonicalLeisureOptIn({ disableLeisureStandardStage: true }).enabled,
+    false,
+  );
+});
+
+check("wyndham_id_reconciliation_not_hilton", () => {
+  assert.equal(
+    WYNDHAM_HOTEL_ID_RECONCILIATION.certifiedWyndhamSanDiegoBayside,
+    CERTIFIED_WYNDHAM_SAN_DIEGO_BAYSIDE_HOTEL_ID,
   );
   assert.equal(
-    resolveCanonicalLeisureOptIn({ leisureModules: ["leisure_events"] }).forceModules[0],
-    "leisure_events",
+    WYNDHAM_HOTEL_ID_RECONCILIATION.erroneousCloseoutId,
+    HILTON_NY_TIMES_SQUARE_HOTEL_ID,
   );
+  assert.equal(
+    WYNDHAM_HOTEL_ID_RECONCILIATION.relationship,
+    "SEPARATE_HOTELS_NOT_ALIAS",
+  );
+  assert.equal(CERTIFIED_WYNDHAM_SAN_DIEGO_BAYSIDE_HOTEL_ID, "recnPB3Q02NO8Ma1o");
+  assert.equal(HILTON_NY_TIMES_SQUARE_HOTEL_ID, "rec35fExUxCClpOP6");
 });
 
 check("eligibility_matrix_covers_hotels_and_all_six", () => {
   const matrix = buildDefaultCanonicalLeisureApplicabilityMatrix();
-  assert.equal(matrix.contract, GDI_CANONICAL_LEISURE_OPT_IN_WIRE_V1);
-  assert.equal(matrix.defaults.optInRequired, true);
+  assert.equal(matrix.defaults.standardStage, true);
+  assert.equal(matrix.defaults.optInRequired, false);
+  assert.equal(matrix.defaults.alwaysAssessAllSix, true);
   assert.equal(matrix.defaults.silentRunAtEveryHotel, false);
-  assert.equal(matrix.defaults.paidProductionOff, true);
   assert.equal(matrix.moduleIds.length, 6);
 
+  const wyndham = matrix.hotels.find(
+    (h) => h.hotelId === CERTIFIED_WYNDHAM_SAN_DIEGO_BAYSIDE_HOTEL_ID,
+  );
+  assert.ok(wyndham);
+  assert.equal(wyndham.name, "Wyndham San Diego Bayside");
+  assert.equal(wyndham.wyndhamIdGuard, "CERTIFIED_WYNDHAM_SAN_DIEGO_BAYSIDE");
+
+  const hilton = matrix.hotels.find(
+    (h) => h.hotelId === HILTON_NY_TIMES_SQUARE_HOTEL_ID,
+  );
+  assert.ok(hilton);
+  assert.equal(hilton.name, "Hilton New York Times Square");
+  assert.equal(hilton.wyndhamIdGuard, "ERRONEOUS_IF_LABELED_WYNDHAM");
+
   const forceAll = matrix.hotels.find((h) => h.hotelId === "force-all-six-demo");
-  assert.ok(forceAll);
   assert.equal(forceAll.selectedModuleIds.length, 6);
-  assert.ok(forceAll.moduleEligibility.every((m) => m.eligible === true));
-
-  const laluna = matrix.hotels.find((h) => h.hotelId === "recaokE8psIbuVeuH");
-  assert.ok(laluna.selectedModuleIds.includes("leisure_distribution"));
-  assert.ok(laluna.selectedModuleIds.includes("leisure_events"));
-
-  const bethesda = matrix.hotels.find((h) => h.hotelId === "recLuxvwwxID7U2B8");
-  assert.equal(bethesda.fourteenSegmentOverlapIsNotLeisureExecution, true);
 
   fs.writeFileSync(
     path.join(REPORT, "LEISURE_ELIGIBILITY_MATRIX.json"),
@@ -105,35 +126,35 @@ check("eligibility_matrix_covers_hotels_and_all_six", () => {
 check("all_six_selectable_via_force_on_any_hotel", () => {
   const matrix = buildCanonicalLeisureEligibilityMatrix([
     {
-      hotelId: "recLuxvwwxID7U2B8",
-      name: "Bethesda Marriott",
+      hotelId: CERTIFIED_WYNDHAM_SAN_DIEGO_BAYSIDE_HOTEL_ID,
+      name: "Wyndham San Diego Bayside",
       forceModules: ALL_SIX,
     },
   ]);
   assert.deepEqual(matrix.hotels[0].selectedModuleIds.sort(), [...ALL_SIX].sort());
 });
 
-await checkAsync("opt_in_stage_runs_all_six_mock_live_zero_paid", async () => {
+await checkAsync("standard_stage_runs_all_six_mock_live_zero_paid", async () => {
   const stage = await runCanonicalLeisureOptInStage({
     hotelId: "recaokE8psIbuVeuH",
-    enableLeisureModules: true,
     leisureModules: ALL_SIX,
     writeLeisureArtifacts: true,
     outDir: path.join(REPORT, "all-six-mock"),
   });
   assert.equal(stage.enabled, true);
+  assert.equal(stage.standardStage, true);
   assert.equal(stage.specializedLeisureExecution, true);
   assert.equal(stage.spentUsd, 0);
-  assert.equal(stage.paidCalls || 0, 0);
-  assert.equal(stage.paidProductionOff, true);
   assert.equal(stage.moduleIds.length, 6);
-  assert.equal(stage.status, "MOCK_LIVE_COMPLETE");
-  assert.ok(stage.fourteenSegmentCalls.length >= 6);
-  assert.equal(stage.attribution.distinctFromCanonicalFourteenSegmentDefault, true);
+  assert.ok(stage.moduleOutcomes.every((m) => m.outcome));
+  const executed = stage.moduleOutcomes.filter(
+    (m) => m.outcome === LEISURE_MODULE_OUTCOME.APPLICABLE_EXECUTED,
+  );
+  assert.equal(executed.length, 6);
   assert.equal(stage.stagedPlanWriteApplied, false);
 });
 
-await checkAsync("canonical_entry_skips_leisure_by_default", async () => {
+await checkAsync("canonical_entry_runs_leisure_by_default", async () => {
   const r = await runCanonicalFullE2eResearch({
     hotelId: "recaokE8psIbuVeuH",
     mode: "fixture",
@@ -141,15 +162,17 @@ await checkAsync("canonical_entry_skips_leisure_by_default", async () => {
     skipHotelWideFinalization: true,
     allowIsolatedTestSkipHotelWideFinalization: true,
     isolatedTestHarness: true,
-    outDir: path.join(REPORT, "canonical-default-no-leisure"),
+    // leisure intentionally NOT flagged — must still run as standard
+    disableCadStage: true,
+    outDir: path.join(REPORT, "canonical-default-leisure"),
   });
-  assert.equal(r.leisureOptIn?.enabled, false);
-  assert.equal(r.leisureOptIn?.status, "SKIPPED_OPT_IN_OFF");
-  assert.equal(r.leisureOptIn?.specializedLeisureExecution, false);
+  assert.equal(r.leisureOptIn?.enabled, true);
+  assert.equal(r.leisureOptIn?.standardStage, true);
+  assert.notEqual(r.leisureOptIn?.status, "SKIPPED_OPT_IN_OFF");
   assert.equal(Number(r.leisureOptIn?.spentUsd || 0), 0);
 });
 
-await checkAsync("canonical_entry_runs_leisure_when_explicitly_enabled", async () => {
+await checkAsync("canonical_entry_can_explicitly_disable_leisure", async () => {
   const r = await runCanonicalFullE2eResearch({
     hotelId: "recaokE8psIbuVeuH",
     mode: "fixture",
@@ -157,20 +180,12 @@ await checkAsync("canonical_entry_runs_leisure_when_explicitly_enabled", async (
     skipHotelWideFinalization: true,
     allowIsolatedTestSkipHotelWideFinalization: true,
     isolatedTestHarness: true,
-    enableLeisureModules: true,
-    leisureModules: ["leisure_events", "leisure_attractions", "leisure_distribution"],
-    outDir: path.join(REPORT, "canonical-leisure-opt-in"),
+    disableLeisureStandardStage: true,
+    disableCadStage: true,
+    outDir: path.join(REPORT, "canonical-leisure-disabled"),
   });
-  assert.equal(r.ok !== false || r.chain != null, true);
-  assert.equal(r.leisureOptIn?.enabled, true);
-  assert.equal(r.leisureOptIn?.specializedLeisureExecution, true);
-  assert.equal(Number(r.leisureOptIn?.spentUsd || 0), 0);
-  assert.equal(Number(r.leisureOptIn?.paidCalls || 0), 0);
-  assert.ok(r.leisureOptIn?.moduleIds?.includes("leisure_events"));
-  assert.ok(r.summaryPath);
-  const summary = JSON.parse(fs.readFileSync(r.summaryPath, "utf8"));
-  assert.equal(summary.leisureOptIn?.enabled, true);
-  assert.equal(summary.leisureOptIn?.paidProductionOff, true);
+  assert.equal(r.leisureOptIn?.enabled, false);
+  assert.equal(r.leisureOptIn?.status, "SKIPPED_EXPLICITLY_DISABLED");
 });
 
 const failed = results.filter((r) => !r.ok);

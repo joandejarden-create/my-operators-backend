@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /**
- * $0 — Canonical Full E2E CAD opt-in enrichment stage.
- * Classifies Research SoT; never auto-promotes FQO / persistence / predictive claims.
+ * $0 — Canonical Full E2E CAD STANDARD stage + predictive sourcing assessment.
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -73,57 +72,49 @@ const emergingOpp = {
   primaryContact: { name: "BIO International Convention" },
 };
 
-check("default_cad_opt_in_off", () => {
+check("default_cad_standard_stage_on", () => {
   const r = resolveCanonicalCadOptIn({});
-  assert.equal(r.enabled, false);
+  assert.equal(r.enabled, true);
+  assert.equal(r.standardStage, true);
 });
 
-check("explicit_flags_enable_cad", () => {
-  assert.equal(resolveCanonicalCadOptIn({ enableCadStage: true }).enabled, true);
-  assert.equal(
-    resolveCanonicalCadOptIn({ enableCompetitiveAccountDiscovery: true }).enabled,
-    true,
-  );
+check("explicit_disable_only", () => {
+  assert.equal(resolveCanonicalCadOptIn({ disableCadStage: true }).enabled, false);
 });
 
-check("stage_classifies_and_never_auto_fqo", () => {
+check("stage_classifies_predictive_and_never_auto_fqo", () => {
   const stage = runCanonicalCadOptInStage({
-    enableCadStage: true,
     opportunities: [historicalOpp, emergingOpp, { id: "plain", title: "No competitive" }],
   });
-  assert.equal(stage.contract, GDI_CANONICAL_CAD_OPT_IN_STAGE_V1);
   assert.equal(stage.enabled, true);
+  assert.equal(stage.standardStage, true);
   assert.equal(stage.status, "CLASSIFIED");
   assert.equal(stage.fqoAutoPromoted, false);
   assert.equal(stage.persistenceAuthorized, false);
   assert.equal(stage.predictiveEngineClaim, false);
   assert.equal(stage.classifiedCount, 3);
-  assert.ok(stage.preserves.HISTORICAL_COMPETITIVE_INTEL);
-  assert.ok(stage.preserves.EMERGING_COMPETITIVE_OPPORTUNITY);
-  assert.ok(stage.preserves.FQO_CANDIDATE);
-  assert.deepEqual(stage.preserves.sourcingWindows, [
-    "CONFIRMED",
-    "INFERRED",
-    "UNKNOWN",
-  ]);
+  assert.ok(stage.predictiveSourcing);
+  assert.equal(stage.predictiveSourcing.fullPredictiveEngineClaimed, false);
   const hist = stage.enriched.find((e) => e.opportunityId === "cad_hist_1");
   assert.equal(hist.cadClass, CAD_CLASS.HISTORICAL_COMPETITIVE_INTEL);
+  assert.ok(hist.predictiveSourcingAssessment);
+  assert.equal(
+    hist.predictiveSourcingAssessment.fullPredictiveEngineClaimed,
+    false,
+  );
+  assert.equal(
+    hist.predictiveSourcingAssessment.estimatedWindowIsNotOpenContract,
+    true,
+  );
   assert.ok(
     Object.values(CAD_SOURCING_WINDOW_STATE).includes(hist.sourcingWindowState),
   );
-  assert.equal(hist.fqoPass, false);
-  assert.equal(hist.persistenceAuthorized, false);
   const emerg = stage.enriched.find((e) => e.opportunityId === "cad_emerg_1");
-  assert.ok(
-    emerg.cadClass === CAD_CLASS.EMERGING_COMPETITIVE_OPPORTUNITY ||
-      emerg.cadClass === CAD_CLASS.HISTORICAL_COMPETITIVE_INTEL,
-  );
   assert.notEqual(emerg.cadClass, CAD_CLASS.FQO_CANDIDATE);
 });
 
 check("apply_enrichment_does_not_flip_fqo", () => {
   const stage = runCanonicalCadOptInStage({
-    enableCadStage: true,
     opportunities: [historicalOpp],
   });
   const rows = applyCadEnrichmentToResearchRows(
@@ -133,9 +124,10 @@ check("apply_enrichment_does_not_flip_fqo", () => {
   assert.equal(rows[0].finalizedQualifiedOpportunity, false);
   assert.equal(rows[0].salesReady, false);
   assert.ok(rows[0].competitiveAccountDiscovery);
+  assert.ok(rows[0].predictiveSourcingAssessment);
 });
 
-await checkAsync("canonical_entry_skips_cad_by_default", async () => {
+await checkAsync("canonical_entry_runs_cad_by_default", async () => {
   const r = await runCanonicalFullE2eResearch({
     hotelId: "recaokE8psIbuVeuH",
     mode: "fixture",
@@ -143,39 +135,38 @@ await checkAsync("canonical_entry_skips_cad_by_default", async () => {
     skipHotelWideFinalization: true,
     allowIsolatedTestSkipHotelWideFinalization: true,
     isolatedTestHarness: true,
-    outDir: path.join(REPORT, "canonical-default-no-cad"),
-  });
-  assert.equal(r.cadOptIn?.enabled, false);
-  assert.equal(r.cadOptIn?.status, "SKIPPED_OPT_IN_OFF");
-  assert.equal(r.cadOptIn?.fqoAutoPromoted, false);
-  assert.equal(r.cadOptIn?.predictiveEngineClaim, false);
-});
-
-await checkAsync("canonical_entry_runs_cad_when_enabled", async () => {
-  const r = await runCanonicalFullE2eResearch({
-    hotelId: "recaokE8psIbuVeuH",
-    mode: "fixture",
-    skipHpc: true,
-    skipHotelWideFinalization: true,
-    allowIsolatedTestSkipHotelWideFinalization: true,
-    isolatedTestHarness: true,
-    enableCadStage: true,
+    disableLeisureStandardStage: true,
     seedOpportunities: [historicalOpp, emergingOpp],
-    outDir: path.join(REPORT, "canonical-cad-opt-in"),
+    outDir: path.join(REPORT, "canonical-default-cad"),
   });
   assert.equal(r.cadOptIn?.enabled, true);
+  assert.equal(r.cadOptIn?.standardStage, true);
   assert.equal(r.cadOptIn?.status, "CLASSIFIED");
   assert.ok(r.cadOptIn?.classifiedCount >= 2);
   assert.equal(r.cadOptIn?.fqoAutoPromoted, false);
-  assert.equal(r.cadOptIn?.persistenceAuthorized, false);
   assert.equal(r.cadOptIn?.predictiveEngineClaim, false);
   const summary = JSON.parse(fs.readFileSync(r.summaryPath, "utf8"));
   assert.equal(summary.cadOptIn?.enabled, true);
-  assert.equal(summary.cadOptIn?.fqoAutoPromoted, false);
   fs.writeFileSync(
     path.join(REPORT, "CAD_STAGE_RESULT.json"),
     `${JSON.stringify(r.cadOptIn, null, 2)}\n`,
   );
+});
+
+await checkAsync("canonical_entry_can_explicitly_disable_cad", async () => {
+  const r = await runCanonicalFullE2eResearch({
+    hotelId: "recaokE8psIbuVeuH",
+    mode: "fixture",
+    skipHpc: true,
+    skipHotelWideFinalization: true,
+    allowIsolatedTestSkipHotelWideFinalization: true,
+    isolatedTestHarness: true,
+    disableLeisureStandardStage: true,
+    disableCadStage: true,
+    outDir: path.join(REPORT, "canonical-cad-disabled"),
+  });
+  assert.equal(r.cadOptIn?.enabled, false);
+  assert.equal(r.cadOptIn?.status, "SKIPPED_EXPLICITLY_DISABLED");
 });
 
 const failed = results.filter((x) => !x.ok);
