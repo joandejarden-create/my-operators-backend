@@ -1,0 +1,146 @@
+{
+  "phase": "3A_COMPETITIVE_ACCOUNT_DISCOVERY",
+  "mode": "AUDIT_ONLY",
+  "at": "2026-11-25T18:50:00.000Z",
+  "closedBaselines": {
+    "bethesda": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "researchOpportunities": 68,
+      "doNotMutate": true
+    },
+    "wyndham": {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "researchOpportunities": 11,
+      "staged": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92",
+      "doNotMutate": true
+    },
+    "prs": ["#599", "#601"]
+  },
+  "capabilityMap": [
+    {
+      "area": "Competitor hotel relationships",
+      "status": "PARTIAL_EXISTS",
+      "reuse": [
+        "lib/group-demand-intelligence/commercial-consistency/gdi-research-competitor-commitment-mapping-v1.js",
+        "lib/group-demand-intelligence/demand-engine-v1/competitive-demand.js",
+        "opp.likelyCompetitor / competitiveContext.incumbentHotel"
+      ],
+      "gap": "Not a first-class discovery stage in canonical Full E2E; Wyndham CLEAN 11 has 0 competitor fields populated; Bethesda has labels but many pathway=Not Competitive"
+    },
+    {
+      "area": "Historical event venues / host hotels",
+      "status": "PARTIAL_EXISTS",
+      "reuse": [
+        "meetingHistory (Research SoT field ownership)",
+        "gdi-research-sot-lossless-merge-v1.js mergeMeetingLists",
+        "extractCompetitorHotelFromResearchEvidence"
+      ],
+      "gap": "No governed competitor→account harvest loop that systematically walks competitor host/housing pages into shared SoT"
+    },
+    {
+      "area": "Corporate/association meeting history",
+      "status": "EXISTS_IN_SOT",
+      "reuse": ["meetingHistory", "Three-Layer Research SoT", "lossless merge"],
+      "gap": "Sparse population; not required for FQO; competitive discovery should enrich not invent"
+    },
+    {
+      "area": "Recurring group business",
+      "status": "EXISTS",
+      "reuse": [
+        "futureDemandPathway",
+        "FQO FUTURE_SOURCING_PATHWAY",
+        "competitive-future-cycle-presentation-v1.js"
+      ],
+      "gap": "Paid waves over-stamped futureDemandPathway (fixed in FQO); recurrence estimates must stay evidence-labeled"
+    },
+    {
+      "area": "Room-block evidence",
+      "status": "PARTIAL_EXISTS",
+      "reuse": [
+        "BOOKING_LANGUAGE_RE in competitor-commitment-mapping",
+        "CMI / housing evidence fields",
+        "officialRoomBlock patterns in demand-engine competitive-demand.js"
+      ],
+      "gap": "FACT vs INFERENCE vs UNKNOWN discipline exists but is inconsistently applied at discovery time"
+    },
+    {
+      "area": "Demand generators / programs",
+      "status": "EXISTS",
+      "reuse": [
+        "Three-Layer Layer 1 Demand Generators / Programs / Signals",
+        "Hotel Demand Generator Fit",
+        "dgGeneratorId on research inventory"
+      ],
+      "gap": "Competitive Account Discovery must attach to DG identity — not create parallel orgs"
+    },
+    {
+      "area": "Future sourcing pathways",
+      "status": "EXISTS_AND_ENFORCED",
+      "reuse": [
+        "gdi-finalized-qualified-opportunity-contract-v1.js",
+        "OVERFLOW_OR_FUTURE_CYCLE / FUTURE_CYCLE pathways",
+        "competitive-future-cycle-presentation-v1.js"
+      ],
+      "gap": "Need explicit sourcingWindowConfidence: CONFIRMED | INFERRED | UNKNOWN — never fabricate dates"
+    },
+    {
+      "area": "Named buyers / intermediaries",
+      "status": "EXISTS_AND_STRENGTHENED",
+      "reuse": [
+        "WHO/ALT/HOW",
+        "FQO NAMED_COMMERCIAL_PERSON + PERSON_SPECIFIC_CHANNEL",
+        "Wyndham defect fixes (place/event titles, tickets@, conventionhelp@)"
+      ],
+      "gap": "Housing bureaus (onPeak/FHT/Maritz) often present as org labels — need intermediary-role classification without weakening person gate"
+    },
+    {
+      "area": "Public outreach verification",
+      "status": "EXISTS",
+      "reuse": [
+        "gdi-verified-commercial-route-v1.js",
+        "gdi-public-contact-verification-v1.js",
+        "FUNCTIONAL_ORG_MAILBOX_RE"
+      ],
+      "gap": "Surfe remains explicit-click only — CAD must not auto-escalate"
+    },
+    {
+      "area": "Hotel-specific competitive displacement",
+      "status": "PARTIAL_EXISTS",
+      "reuse": [
+        "FQO COMPETITIVE_INCUMBENT_PATHWAY gate",
+        "evaluateTargetHotelCompeteFit",
+        "buildCompetitiveHotelFitHypothesis (FACT/INFERENCE/UNKNOWN)"
+      ],
+      "gap": "Displacement thesis often boilerplate; need structured attainability: WINNABLE | OVERFLOW_ONLY | MONITOR | UNATTAINABLE"
+    },
+    {
+      "area": "Cross-hotel intelligence reuse",
+      "status": "EXISTS",
+      "reuse": [
+        "reuse-prior-intelligence-v1.js",
+        "gdi-opportunity-contact-lineage-reuse-v1.js",
+        "canonical Full E2E shared-intelligence-reuse",
+        "Three-Layer multi-hotel FQO independence"
+      ],
+      "gap": "Competitor host evidence discovered for Hotel A must enrich shared org research without auto-qualifying Hotel B"
+    },
+    {
+      "area": "Historical research + provenance",
+      "status": "EXISTS",
+      "reuse": [
+        "researchPayloadJson SoT",
+        "lossless merge",
+        "VALIDATED_FQO_ONLY persistence",
+        "HOLD_RESEARCH / historical dispositions"
+      ],
+      "gap": "Preserve HISTORICAL_COMPETITIVE_INTEL class even when not FQO"
+    }
+  ],
+  "pilotSignals": {
+    "bethesdaActionableCompetitiveInQuality68": 4,
+    "bethesdaWithAnyCompetitorLabel": 32,
+    "wyndhamClean11WithCompetitor": 0,
+    "wyndhamPaidWaveCompetitiveButHeld": 4,
+    "note": "Wyndham competitive signal lives mostly in HOLD research (Comic-Con/AUA/BIO/Padres) — valuable intel, not FQO"
+  }
+}

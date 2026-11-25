@@ -1,0 +1,86 @@
+{
+  "governance": "Read-only samples from certified/local packages. No Airtable or pointer mutations.",
+  "bethesda": {
+    "sourcePackage": "gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1",
+    "classificationNote": "These are existing FQO rows with competitor context — CAD should deepen, not duplicate.",
+    "examples": [
+      {
+        "class": "FQO_QUALIFIED_COMPETITIVE_OPPORTUNITY",
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2028",
+        "organization": "NADO / DDAA",
+        "incumbent": "Bethesda North Marriott Hotel & Conference Center",
+        "pathway": "Verified",
+        "who": "Jamie McCormick",
+        "how": "jmccormick@nado.org",
+        "recommendedAction": "Ask whether 2028 WashCon hotel selection is open / overflow list possible",
+        "cadOpportunity": "Deepen meetingHistory + commitment scope (PRIMARY_HOST vs PARTIAL) without new row"
+      },
+      {
+        "class": "FQO_QUALIFIED_COMPETITIVE_OPPORTUNITY",
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+        "organization": "NADO / DDAA",
+        "incumbent": "Bethesda North Marriott Hotel & Conference Center",
+        "pathway": "Verified overflow ask",
+        "who": "Jamie McCormick",
+        "how": "jmccormick@nado.org",
+        "cadOpportunity": "Model as same demand program, distinct cycle — cross-dedupe by org+program"
+      },
+      {
+        "class": "EMERGING_COMPETITIVE_OPPORTUNITY",
+        "opportunityId": "gdi_opp_nih_sbpo_vos_pattern",
+        "organization": "NIH Small Business Program Office",
+        "incumbent": "Rockville Hotel, a Ramada by Wyndham",
+        "pathway": "FUTURE_CYCLE",
+        "who": "Annette Owens-Scarboro",
+        "how": "scarbora@od.nih.gov",
+        "cadOpportunity": "Recurring on-site pattern — qualify overflow vs primary; do not invent RFP"
+      },
+      {
+        "class": "HISTORICAL_COMPETITIVE_INTELLIGENCE",
+        "note": "32/68 Bethesda rows carry likelyCompetitor; many pathway=Not Competitive — retain as research intel, not sales pursuit"
+      }
+    ]
+  },
+  "wyndham": {
+    "certifiedStaged": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92",
+    "certifiedCompetitorFields": 0,
+    "heldCompetitiveResearch": {
+      "sourcePackage": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_bd1e0ff3",
+      "examples": [
+        {
+          "class": "EMERGING_COMPETITIVE_OPPORTUNITY",
+          "opportunityId": "gdi_wyndham_sd_pub_2b04cd23",
+          "title": "Comic-Con International 2027 overflow",
+          "incumbentHint": "Marriott Marquis San Diego Marina",
+          "holdReason": "NAMED_COMMERCIAL_PERSON_REQUIRED",
+          "cadOpportunity": "Enrich shared Comic-Con demand program with verified housing bureau WHO/HOW; do not force FQO"
+        },
+        {
+          "class": "EMERGING_COMPETITIVE_OPPORTUNITY",
+          "opportunityId": "gdi_wyndham_sd_pub_d7e70073",
+          "title": "BIO 2028 lodging/overflow",
+          "incumbentHint": "Marriott Marquis San Diego Marina",
+          "holdReason": "NAMED_COMMERCIAL_PERSON_REQUIRED + wrong-domain email risk",
+          "cadOpportunity": "Replace wrong contact with Maritz/BIO housing route if verified; keep as research"
+        },
+        {
+          "class": "EMERGING_COMPETITIVE_OPPORTUNITY",
+          "opportunityId": "gdi_wyndham_sd_pub_e00cb6eb",
+          "title": "AUA 2027 lodging/overflow",
+          "incumbentHint": "Hilton San Diego Bayfront",
+          "holdReason": "Intermediary label not named person",
+          "cadOpportunity": "Classify FHT/onPeak as intermediary; find named housing contact"
+        },
+        {
+          "class": "HISTORICAL_OR_RECURRING_PATTERN",
+          "opportunityId": "gdi_wyndham_sd_pub_7d9917ab",
+          "title": "Padres Petco weekend group lodging",
+          "incumbentHint": "Marriott Marquis San Diego Marina",
+          "holdReason": "tickets@ not group sales",
+          "cadOpportunity": "groups@padres.com appeared in Exa signals — verify before any FQO promotion"
+        }
+      ]
+    },
+    "clean11Note": "Prior 9 + 2 LMC are commercially actionable but largely non-competitive-labeled; CAD pilot should enrich existing accounts first"
+  }
+}
