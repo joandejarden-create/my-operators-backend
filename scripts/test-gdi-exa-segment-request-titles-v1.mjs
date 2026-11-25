@@ -54,8 +54,8 @@ check("each_of_14_canonical_segments_correct_heading", () => {
       segmentId: id,
       stage: "deep_research",
     });
-    assert.equal(disc, `# ${display} — EXA AGENT DISCOVERY CONTRACT V1`);
-    assert.equal(deep, `# ${display} — EXA AGENT DEEP RESEARCH CONTRACT V1`);
+    assert.equal(disc, `# ${display} | DISCOVERY`);
+    assert.equal(deep, `# ${display} | DEEP RESEARCH`);
   }
 });
 
@@ -64,7 +64,7 @@ check("stage_a_produces_discovery_in_title", () => {
     segmentId: "corporate_meetings_incentives",
     stage: "DISCOVERY",
   });
-  assert.match(h, /DISCOVERY CONTRACT V1$/);
+  assert.match(h, /\| DISCOVERY$/);
   assert.doesNotMatch(h, /DEEP RESEARCH/);
 });
 
@@ -73,8 +73,8 @@ check("stage_b_produces_deep_research_in_title", () => {
     segmentId: "relocation_extended_stay",
     stage: "DEEP_RESEARCH",
   });
-  assert.match(h, /DEEP RESEARCH CONTRACT V1$/);
-  assert.doesNotMatch(h, /DISCOVERY/);
+  assert.match(h, /\| DEEP RESEARCH$/);
+  assert.doesNotMatch(h, /\| DISCOVERY$/);
 });
 
 check("education_scientific_cannot_receive_association_heading", () => {
@@ -84,10 +84,7 @@ check("education_scientific_cannot_receive_association_heading", () => {
     segmentId: "education_scientific",
   });
   const heading = extractExaQueryHeading(q);
-  assert.equal(
-    heading,
-    "# EDUCATION / SCIENTIFIC — EXA AGENT DEEP RESEARCH CONTRACT V1",
-  );
+  assert.equal(heading, "# EDUCATION / SCIENTIFIC | DEEP RESEARCH");
   assert.doesNotMatch(q, /^# ASSOCIATION \/ CONFERENCE \/ EVENTS/m);
 });
 
@@ -98,10 +95,7 @@ check("projects_infrastructure_cannot_receive_association_heading", () => {
     segmentId: "projects_infrastructure",
   });
   const heading = extractExaQueryHeading(q);
-  assert.equal(
-    heading,
-    "# PROJECTS / INFRASTRUCTURE — EXA AGENT DISCOVERY CONTRACT V1",
-  );
+  assert.equal(heading, "# PROJECTS / INFRASTRUCTURE | DISCOVERY");
   assert.doesNotMatch(heading, /ASSOCIATION/);
 });
 
@@ -167,11 +161,11 @@ check("contract_ids_and_output_schemas_remain_compatible", () => {
   assert.match(scalingDeep, new RegExp(EXA_AGENT_DEEP_RESEARCH_CONTRACT_V1));
   assert.equal(
     extractExaQueryHeading(scalingDisc),
-    "# CORPORATE ACCOUNTS / SCALING COMPANIES — EXA AGENT DISCOVERY CONTRACT V1",
+    "# CORPORATE ACCOUNTS / SCALING COMPANIES | DISCOVERY",
   );
   assert.equal(
     extractExaQueryHeading(scalingDeep),
-    "# PROJECTS / INFRASTRUCTURE — EXA AGENT DEEP RESEARCH CONTRACT V1",
+    "# PROJECTS / INFRASTRUCTURE | DEEP RESEARCH",
   );
 });
 
@@ -285,10 +279,7 @@ check("historical_alias_normalization", () => {
     segmentId: "association_events",
     stage: "deep_research",
   });
-  assert.equal(
-    h,
-    "# ASSOCIATION / CONFERENCE / EVENTS — EXA AGENT DEEP RESEARCH CONTRACT V1",
-  );
+  assert.equal(h, "# ASSOCIATION / CONFERENCE / EVENTS | DEEP RESEARCH");
 });
 
 check("first_line_of_submitted_prompt_is_segment_heading", () => {
@@ -298,12 +289,21 @@ check("first_line_of_submitted_prompt_is_segment_heading", () => {
     segmentId: "education_scientific",
   });
   const first = extractExaQueryHeading(pack.body.query);
-  assert.equal(
-    first,
-    "# EDUCATION / SCIENTIFIC — EXA AGENT DEEP RESEARCH CONTRACT V1",
-  );
+  assert.equal(first, "# EDUCATION / SCIENTIFIC | DEEP RESEARCH");
   assert.equal(extractExaQueryHeading(pack.meta.requestHeading), first);
   assert.equal(pack.meta.segmentId, "education_scientific");
+});
+
+check("opportunity_name_appended_to_heading", () => {
+  const h = buildExaSegmentRequestHeading({
+    segmentId: "preferred_lodging_partnerships",
+    stage: "deep_research",
+    opportunityName: "The Lane",
+  });
+  assert.equal(
+    h,
+    "# PREFERRED LODGING / PARTNERSHIPS | DEEP RESEARCH | The Lane",
+  );
 });
 
 const failed = results.filter((r) => !r.ok);
