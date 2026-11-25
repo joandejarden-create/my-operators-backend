@@ -1,0 +1,16 @@
+{
+  "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+  "envCurrentlyUnlocked": false,
+  "defaultProductionWriteSetPolicy": "VALIDATED_FQO_ONLY",
+  "requiresExactWriteSetAuthorization": true,
+  "productionUnlockedWithTokenButEnvOff": true,
+  "blockersWhenEnvOff": [
+    {
+      "code": "ENV_PRODUCTION_GATE_OFF",
+      "env": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES"
+    }
+  ],
+  "applyFalseRemainsLocked": true,
+  "allowedOpportunityIdsSupported": true,
+  "note": "Production unlock requires authorizeResearchPersistence + exactWriteSetAuthorization + env gate + apply; VALIDATED_FQO_ONLY is default when productionUnlocked or requireValidatedFqoWriteSet."
+}

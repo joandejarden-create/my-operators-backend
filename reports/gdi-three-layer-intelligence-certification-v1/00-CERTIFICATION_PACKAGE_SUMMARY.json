@@ -1,0 +1,176 @@
+{
+  "contract": "gdi-three-layer-intelligence-contract-v1",
+  "ownership": "gdi-research-sot-field-ownership-v1",
+  "merge": "gdi-research-sot-lossless-merge-v1",
+  "pr": 599,
+  "prUrl": "https://github.com/joandejarden-create/my-operators-backend/pull/599",
+  "mutationExecuted": false,
+  "mergeAuthorized": false,
+  "canaryExecuted": false,
+  "founderPrinciples": {
+    "discoverBroadlyQualifyRigorously": "Discover broadly. Research thoroughly. Qualify rigorously. Persist validated opportunities. Preserve rejected research as supporting intelligence, not as active hotel opportunities.",
+    "cumulativeIntelligence": "Research intelligence is a cumulative asset. New research must enrich existing verified intelligence, never silently degrade, erase or replace it with a thinner representation.",
+    "multiHotelIndependentFqo": "An opportunity can qualify for multiple hotels, but qualification must be independently established for every hotel.",
+    "presentationDerivedNotAuthoritative": "Customer-facing cards, drawers and summaries are derived views, not authoritative research records.",
+    "publicationIndependence": "Research persistence, founder STAGED activation and customer CURRENT publication are separate, independently authorized operations."
+  },
+  "architectureMapping": {
+    "layer1Surfaces": [
+      "GDI Hotel Research Opportunities (tblbkDj0vhQLfrssV) — researchPayloadJson SoT",
+      "Demand Generators",
+      "Demand Programs",
+      "Demand Generator Signals",
+      "Hotel Demand Generator Fit",
+      "Group Demand Opportunities (GDO) — distinct write-routing; not overwritten by research bridge"
+    ],
+    "layer2Surfaces": [
+      "researchPayloadJson.hotelSpecificQualification",
+      "FQO six-rule contract (gdi-finalized-qualified-opportunity-contract-v1)",
+      "VALIDATED_FQO_ONLY persistence write policy",
+      "commercialEligibilityStatus (org/GDO routing — NOT hotel FQO failure)"
+    ],
+    "layer3Surfaces": [
+      "STAGED publication packages (founder review)",
+      "CURRENT publication packages (customer)",
+      "Slim / drawer / card presentation builders",
+      "Sales-action pills and display titles"
+    ],
+    "forbidden": [
+      "Competing research database",
+      "Three independent opportunity engines",
+      "Wholesale slim-over-fat researchPayloadJson replacement",
+      "Cross-hotel FQO transfer",
+      "Presentation overwrite of authoritative research"
+    ]
+  },
+  "fieldOwnershipTable": [
+    {
+      "fieldGroup": "Historical research and evidence",
+      "primaryAuthority": "LAYER_1_RESEARCH_SOT",
+      "permittedModification": "Verified enrichment; corrections with provenance"
+    },
+    {
+      "fieldGroup": "Organization identities and relationships",
+      "primaryAuthority": "LAYER_1_RESEARCH_SOT",
+      "permittedModification": "Canonical identity reconciliation"
+    },
+    {
+      "fieldGroup": "Contacts and verification audits",
+      "primaryAuthority": "LAYER_1_RESEARCH_SOT",
+      "permittedModification": "Verified additions/corrections; preserve history"
+    },
+    {
+      "fieldGroup": "Demand and revenue classifications",
+      "primaryAuthority": "LAYER_1_RESEARCH_SOT",
+      "permittedModification": "Evidence-grounded supported reclassification only"
+    },
+    {
+      "fieldGroup": "Hotel fit and FQO",
+      "primaryAuthority": "LAYER_2_HOTEL_SPECIFIC_QUALIFICATION",
+      "permittedModification": "Certified qualification updates"
+    },
+    {
+      "fieldGroup": "Sales priority and recommended actions",
+      "primaryAuthority": "LAYER_2_HOTEL_SPECIFIC_QUALIFICATION",
+      "permittedModification": "Commercial reevaluation under FQO"
+    },
+    {
+      "fieldGroup": "Titles, cards and drawer summaries",
+      "primaryAuthority": "LAYER_3_COMMERCIAL_PRESENTATION",
+      "permittedModification": "Regenerate display values without rewriting research SoT"
+    },
+    {
+      "fieldGroup": "STAGED package",
+      "primaryAuthority": "FOUNDER_REVIEW_WORKFLOW",
+      "permittedModification": "Explicit activation only"
+    },
+    {
+      "fieldGroup": "CURRENT package",
+      "primaryAuthority": "CUSTOMER_PUBLICATION_WORKFLOW",
+      "permittedModification": "Explicit publication approval only"
+    }
+  ],
+  "regressionTests": [
+    {
+      "script": "test-gdi-three-layer-intelligence-contract-v1.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutTail": "served\",\n    \"competitor_relationships_preserved\",\n    \"contact_audit_preserved\",\n    \"combined_revenue_not_silently_guestrooms_only\",\n    \"verified_description_not_exhibitor_template\",\n    \"evidence_confidence_not_silently_upgraded\",\n    \"presentation_guard_flags_thinning\",\n    \"strict_fqo_independent\",\n    \"nonqualified_cannot_enter_validated_write_set\",\n    \"multi_hotel_fqo_does_not_transfer\",\n    \"global_org_only_is_not_hotel_fqo_failure\",\n    \"presentation_generation_cannot_mutate_authoritative_research\",\n    \"idempotent_merge_second_pass\",\n    \"material_change_not_timestamp_alone\",\n    \"weekly_change_metadata_categories\",\n    \"persistence_boundary_guard_fail_closed_on_bad_policy\",\n    \"persistence_boundary_guard_ok_under_validated_fqo\",\n    \"nice_fixture_zero_unexplained_loss\"\n  ]\n}\n",
+      "stderrTail": ""
+    },
+    {
+      "script": "test-gdi-research-sot-lossless-merge-v1.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutTail": "{\n  \"ok\": true,\n  \"ownership\": \"gdi-research-sot-field-ownership-v1\",\n  \"merge\": \"gdi-research-sot-lossless-merge-v1\",\n  \"mergedChars\": 2153,\n  \"classification\": \"VERIFIED_ENRICHMENT\"\n}\n",
+      "stderrTail": ""
+    },
+    {
+      "script": "test-gdi-research-inventory-lossless-merge-v1.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutTail": "{\n  \"ok\": true,\n  \"preservedContacts\": [\n    \"Andrea Snader\",\n    \"Justin Fessler\",\n    \"Andrea Snader / Justin Fessler\"\n  ],\n  \"sourceSummary\": \"https://example.org/a | https://example.org/b\",\n  \"fqo\": \"PASS\"\n}\n",
+      "stderrTail": ""
+    },
+    {
+      "script": "test-gdi-validated-fqo-write-set-policy-v1.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutTail": "{\n  \"ok\": true,\n  \"kept\": [\n    \"opp_pass\"\n  ],\n  \"deferred\": [\n    {\n      \"id\": \"gdi_e2d_770e3b44ad97c1ae\",\n      \"reason\": \"FQO_GATE_FAILED\"\n    },\n    {\n      \"id\": \"opp_outside\",\n      \"reason\": \"OUTSIDE_CERTIFIED_VALIDATED_SET\"\n    }\n  ]\n}\n",
+      "stderrTail": ""
+    },
+    {
+      "script": "test-gdi-full-e2e-research-persistence-bridge-v1.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "stdoutTail": "PASS test:gdi-full-e2e-research-persistence-bridge-v1\n",
+      "stderrTail": ""
+    }
+  ],
+  "allTestsPass": true,
+  "nicePreservation": {
+    "verdict": "NICE_LOSSLESS_MERGE_VERIFIED_DRY",
+    "liveChars": 42314,
+    "rejectedSlimChars": 7235,
+    "losslessMergedChars": 45556,
+    "zeroUnexplainedLoss": true
+  },
+  "bethesda68Manifest": {
+    "bucketCounts": {
+      "VERIFIED_ENRICHMENT": 48,
+      "CERTIFICATION_METADATA_ONLY": 20,
+      "UNCHANGED": 0,
+      "CONFLICT_REQUIRES_REVIEW": 0,
+      "BLOCKED_INFORMATION_LOSS": 0,
+      "MISSING_LIVE_RECORD": 0,
+      "NOT_IN_FQO_WRITE_SET": 0
+    },
+    "necessaryUpdateCount": 68,
+    "historicallyCompatibleFqoCount": 68,
+    "mutationAuthorized": false
+  },
+  "canaryProposal": {
+    "status": "PROPOSED_NOT_EXECUTED",
+    "opportunityId": "gdi_opp_nice_2027",
+    "airtableRecordId": "rec8QDHQEpGbi8kvW",
+    "compositeKey": "recLuxvwwxID7U2B8::gdi_opp_nice_2027",
+    "mergeVersion": "gdi-research-sot-lossless-merge-v1",
+    "ownershipContract": "gdi-research-sot-field-ownership-v1",
+    "classification": "VERIFIED_ENRICHMENT",
+    "livePayloadChars": 42314,
+    "proposedLosslessChars": 44833,
+    "rejectedPriorSlimChars": 7235,
+    "materialChanged": true,
+    "writeBudget": 1,
+    "mutationExecuted": false,
+    "snapshotSource": "PRIOR_PREWRITE_SNAPSHOT_NO_LIVE_IO",
+    "founderVerdictRequired": "READY_FOR_FOUNDER_GO or BLOCKED"
+  },
+  "remainingBlockers": [
+    "AWAITING_FOUNDER_REVIEW_BEFORE_MERGE",
+    "AWAITING_SEPARATE_FOUNDER_AUTH_FOR_LIVE_CANARY",
+    "CI_MUST_PASS_ON_PR_HEAD"
+  ],
+  "verdict": "READY_FOR_FOUNDER_GO",
+  "note": "Technical remediation complete. STOP — Integration Controller merge and live canary require separate founder authorization."
+}
