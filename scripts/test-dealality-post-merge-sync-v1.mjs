@@ -339,6 +339,16 @@ const plan = planPostMergeWorkspaceSync({
       aheadMain: 0,
       overlapPaths: [],
     },
+    be: {
+      exists: true,
+      branch: "ws/brand-explorer",
+      head: "eee",
+      dirtyPaths: [],
+      dirtyCount: 0,
+      behindMain: 1,
+      aheadMain: 0,
+      overlapPaths: [],
+    },
     integration: {
       exists: true,
       branch: "main",
@@ -358,8 +368,9 @@ const byStream = Object.fromEntries(plan.productPlans.map((p) => [p.stream, p]))
 assert.equal(byStream.he.action, SYNC_ACTIONS.RETURN_HOME_THEN_FF);
 assert.equal(byStream.adp.action, SYNC_ACTIONS.FETCH_ONLY_ACTIVE_TASK);
 assert.equal(byStream.gdi.action, SYNC_ACTIONS.FAST_FORWARD_HOME);
+assert.equal(byStream.be.action, SYNC_ACTIONS.FAST_FORWARD_HOME);
 assert.equal(plan.integrationPlan.action, SYNC_ACTIONS.SKIP_INTEGRATION_DIRTY);
-assert.equal(plan.summary.actionableCount, 2);
+assert.equal(plan.summary.actionableCount, 3);
 console.log("PASS plan: HE return-home; ADP fetch-only; GDI FF; dirty primary skipped");
 
 for (const stream of ["he", "adp", "gdi"]) {

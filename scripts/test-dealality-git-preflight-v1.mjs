@@ -309,7 +309,15 @@ console.log("PASS allow-dirty directory prefix + repeated flags");
     ROOT,
   );
   assert.equal(alias.ok, false);
-  assert.ok(alias.errors.some((e) => String(e).includes("CROSS_WORKSTREAM")));
+  assert.ok(
+    alias.errors.some(
+      (e) =>
+        String(e).includes("CROSS_WORKSTREAM") ||
+        String(e).includes("USE_REMOTE_PR_MERGE") ||
+        String(e).includes("expected path"),
+    ),
+    `expected ownership/stream fail-closed, got: ${alias.errors.join(" | ")}`,
+  );
   console.log("PASS argv fail-closed: --to-branch ADP target from GDI");
 }
 

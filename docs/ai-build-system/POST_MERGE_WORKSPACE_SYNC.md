@@ -113,3 +113,7 @@ npm run dealality:git-preflight -- --op status-check --stream <he|adp|gdi|be>
 ```
 
 Gate: `npm run test:dealality-post-merge-workspace-sync-v1`
+
+## Temporary worktree lifecycle (post-merge assess)
+
+On `--apply`, post-merge sync also runs a **read-only** temporary-worktree lifecycle assess for entries matching `--pr` / `--merged-branch`. Eligible temps are reported as `RETIREMENT_CANDIDATE`; **nothing is deleted**. Founder-approved retirement uses `npm run dealality:worktree-lifecycle` — see `WORKTREE_LIFECYCLE_POLICY.md`.

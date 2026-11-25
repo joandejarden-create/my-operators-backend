@@ -97,3 +97,21 @@ npm run dealality:worktree-audit
 npm run dealality:worktree-registry-status
 npm run dealality:post-merge-sync -- --mode status
 ```
+
+## Worktree lifecycle (permanent)
+
+Temporary worktrees must be registered in `temporaryWorkspaces` with product/stream, purpose (`role`), owner, branch, associated PR/task, `createdAt`, and `lifecycleStatus`.
+
+Statuses: `PERMANENT` | `ACTIVE` | `RETIREMENT_CANDIDATE` | `PRESERVATION_REQUIRED` | `BLOCKED` | `RETIRED`.
+
+```bash
+npm run dealality:worktree-lifecycle -- inventory
+npm run dealality:worktree-lifecycle -- propose
+npm run dealality:worktree-lifecycle -- assess-after-merge --pr <n> --merged-branch <name>
+```
+
+- Post-merge sync **assesses** matching temps and may surface `RETIREMENT_CANDIDATE` — it **never** deletes.
+- Retirement requires one exact founder approval phrase per batch; `git worktree remove` without `--force`; junction unlink only (never delete shared targets); stop on exceptions; record partial completions; update registry with result/PR/commit/date/preservation evidence.
+- Permanent homes are never retirement candidates. Branches are managed separately from worktree removal.
+
+Contract: `docs/ai-build-system/WORKTREE_LIFECYCLE_POLICY.md`.

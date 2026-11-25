@@ -22,9 +22,10 @@
 
 Static registry: `docs/ai-build-system/worktree-registry.json`  
 Live audit (does not edit registry): `npm run dealality:worktree-audit`  
-Registry drift: `npm run dealality:worktree-registry-status`
+Registry drift: `npm run dealality:worktree-registry-status`  
+Worktree lifecycle (inventory / propose / founder-approved retire): `npm run dealality:worktree-lifecycle` — see `WORKTREE_LIFECYCLE_POLICY.md`
 
-Only the Integration Controller commits registry changes.
+Only the Integration Controller commits registry changes. Temporary worktrees must be registered with purpose, owner, branch, PR/task, createdAt, and `lifecycleStatus`. Never auto-delete; retirement requires one founder approval phrase per batch.
 
 ## Standard task workflow
 
