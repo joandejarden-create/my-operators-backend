@@ -2641,7 +2641,7 @@
     label: "Commercial Priorities",
   };
 
-  /** Customer order: Opportunities → Commercial Priorities → How to Read → Portfolio */
+  /** Primary tabs: Opportunities → Commercial Priorities → Portfolio. How to Read stays a right-rail info link. */
   var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB, GDI_PORTFOLIO_TAB];
 
   /**
@@ -2881,78 +2881,57 @@
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
     };
     if (!tabs.length) return "";
-
-    function tabItemHtml(t) {
-      var isActive = activeTab === t.id;
-      var label = formatTabLabel(t.label || t.id);
-      var icon = icons[t.id] || icons.opportunities;
-      var plainLabel = String(t.label || t.id).replace(/\n/g, " ");
-      var commonAttrs =
-        ' class="section-nav-item' +
-        (isActive ? " active" : "") +
-        '" role="tab" aria-selected="' +
-        isActive +
-        '" data-tab="' +
-        esc(t.id) +
-        '"' +
-        (t.href ? ' data-href="' + esc(t.href) + '"' : "");
-      var inner =
-        '<div class="section-nav-icon" title="' +
-        esc(plainLabel) +
-        '">' +
-        icon +
-        "</div>" +
-        '<span class="section-nav-label">' +
-        label +
-        "</span>";
-      // External destinations use an <a> so hotelId is preserved and styling matches peers.
-      if (t.href) {
-        return (
-          '<a href="' +
-          esc(t.href) +
-          '"' +
-          commonAttrs +
-          ">" +
-          inner +
-          "</a>"
-        );
-      }
-      return (
-        '<button type="button"' + commonAttrs + ">" + inner + "</button>"
-      );
-    }
-
-    // Founder order: Opportunities → Commercial Priorities → How to Read → (other tabs).
-    var prioritiesIdx = -1;
-    for (var i = 0; i < tabs.length; i += 1) {
-      if (tabs[i] && tabs[i].id === "priorities") {
-        prioritiesIdx = i;
-        break;
-      }
-    }
-    var howtoBlock =
-      '<div class="adp-section-nav__actions gdi-section-nav__actions' +
-      (prioritiesIdx >= 0
-        ? " gdi-section-nav__actions--after-priorities"
-        : "") +
-      '">' +
-      howToReadReportButtonHtml() +
-      "</div>";
-
-    var leading =
-      prioritiesIdx >= 0
-        ? tabs.slice(0, prioritiesIdx + 1).map(tabItemHtml).join("")
-        : tabs.map(tabItemHtml).join("");
-    var trailing =
-      prioritiesIdx >= 0
-        ? tabs.slice(prioritiesIdx + 1).map(tabItemHtml).join("")
-        : "";
-
     return (
       '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav gdi-section-nav-with-tour adp-section-nav-with-tour" aria-label="Group & Demand views" role="tablist" data-gdi-guided-tour-tab-row="1">' +
-      leading +
-      howtoBlock +
-      trailing +
+      tabs
+        .map(function (t) {
+          var isActive = activeTab === t.id;
+          var label = formatTabLabel(t.label || t.id);
+          var icon = icons[t.id] || icons.opportunities;
+          var plainLabel = String(t.label || t.id).replace(/\n/g, " ");
+          var commonAttrs =
+            ' class="section-nav-item' +
+            (isActive ? " active" : "") +
+            '" role="tab" aria-selected="' +
+            isActive +
+            '" data-tab="' +
+            esc(t.id) +
+            '"' +
+            (t.href ? ' data-href="' + esc(t.href) + '"' : "");
+          var inner =
+            '<div class="section-nav-icon" title="' +
+            esc(plainLabel) +
+            '">' +
+            icon +
+            "</div>" +
+            '<span class="section-nav-label">' +
+            label +
+            "</span>";
+          // External destinations use an <a> so hotelId is preserved and styling matches peers.
+          if (t.href) {
+            return (
+              '<a href="' +
+              esc(t.href) +
+              '"' +
+              commonAttrs +
+              ">" +
+              inner +
+              "</a>"
+            );
+          }
+          return (
+            '<button type="button"' +
+            commonAttrs +
+            ">" +
+            inner +
+            "</button>"
+          );
+        })
+        .join("") +
+      // How to Read is an informational action (right-rail), not a primary tab.
+      '<div class="adp-section-nav__actions gdi-section-nav__actions">' +
+      howToReadReportButtonHtml() +
+      "</div>" +
       "</nav>"
     );
   }

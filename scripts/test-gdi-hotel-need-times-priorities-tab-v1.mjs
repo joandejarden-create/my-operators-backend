@@ -186,7 +186,8 @@ assert.match(
   uiLib,
   /GDI_CUSTOMER_TABS\s*=\s*\[\s*GDI_MAIN_TAB\s*,\s*GDI_PRIORITIES_TAB\s*,\s*GDI_PORTFOLIO_TAB\s*\]/,
 );
-assert.match(uiLib, /gdi-section-nav__actions--after-priorities/);
+assert.match(uiLib, /adp-section-nav__actions gdi-section-nav__actions/);
+assert.doesNotMatch(uiLib, /gdi-section-nav__actions--after-priorities/);
 
 const hcpCss = fs.readFileSync(
   path.join(ROOT, "public/css/hotel-commercial-priorities.css"),

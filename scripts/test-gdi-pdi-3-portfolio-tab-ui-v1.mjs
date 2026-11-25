@@ -22,11 +22,13 @@ assert.ok(
   /GDI_CUSTOMER_TABS\s*=\s*\[\s*GDI_MAIN_TAB\s*,\s*GDI_PRIORITIES_TAB\s*,\s*GDI_PORTFOLIO_TAB\s*\]/.test(
     uiSrc,
   ),
-  "Commercial Priorities must sit immediately after Opportunities (middle before How to Read); Portfolio retained after",
+  "primary tabs: Opportunities → Commercial Priorities → Portfolio",
 );
 assert.ok(
-  /gdi-section-nav__actions--after-priorities/.test(uiSrc),
-  "How to Read must render immediately after Commercial Priorities",
+  /adp-section-nav__actions gdi-section-nav__actions/.test(uiSrc) &&
+    /howToReadReportButtonHtml\(\)/.test(uiSrc) &&
+    !/gdi-section-nav__actions--after-priorities/.test(uiSrc),
+  "How to Read must remain a right-rail informational action, not a primary tab",
 );
 
 const html = fs.readFileSync(
@@ -217,7 +219,7 @@ const summary = {
   publicationWrites: 0,
   ok: true,
   checks: {
-    tabOrder: "opportunities → priorities → how-to-read → portfolio",
+    tabOrder: "opportunities → priorities → portfolio (how-to-read = right-rail info link)",
     singleDrawer: true,
     unavailableExplicit: true,
     demoLocalHostOnly: true,
@@ -233,7 +235,7 @@ fs.writeFileSync(
   `# GDI PDI-3 — Portfolio Demand Intelligence tab (hardened)
 
 ## Placement
-\`Group & Demand Opportunities\` · **Commercial Priorities** · How to Read This Report · \`Portfolio Demand Intelligence\`
+\`Group & Demand Opportunities\` · **Commercial Priorities** · \`Portfolio Demand Intelligence\` · How to Read This Report (right-rail info link)
 
 ## Hardening
 - \`?pdiDemo=1\` **only** on localhost / 127.0.0.1 / \`[::1]\` / 0.0.0.0 — ignored on production hosts
