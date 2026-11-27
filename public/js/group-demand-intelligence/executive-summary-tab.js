@@ -183,7 +183,7 @@
     return (
       '<section class="gdi-exec-section" data-section="priorities">' +
       "<header><h2>Priority Commercial Opportunities</h2>" +
-      "<p>Top commercial moves using existing qualification signals — not discovery date alone.</p></header>" +
+      "<p>Opportunity of the Week plus up to five priority opportunities using existing qualification signals — not discovery date alone.</p></header>" +
       '<div class="gdi-exec-priority-list">' +
       items
         .map(function (item, i) {
@@ -192,12 +192,21 @@
             encodeURIComponent(hotelId || "") +
             "&tab=opportunities&" +
             (item.deepLinkQuery || "");
+          var ootw =
+            item.opportunityOfTheWeek === true || i === 0
+              ? '<span class="gdi-exec-ootw-badge">Opportunity of the Week</span> '
+              : "";
           return (
-            '<article class="gdi-exec-priority-card">' +
+            '<article class="gdi-exec-priority-card' +
+            (item.opportunityOfTheWeek || i === 0
+              ? " gdi-exec-priority-card--ootw"
+              : "") +
+            '">' +
             '<div class="gdi-exec-priority-rank">' +
             (i + 1) +
             "</div>" +
             "<div><h3>" +
+            ootw +
             esc(item.name) +
             "</h3>" +
             '<div class="gdi-exec-priority-meta">' +

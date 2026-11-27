@@ -120,6 +120,15 @@ function pass(name) {
     "a",
   );
   assert.ok(payload.sections.priorityCommercialOpportunities.items[0].deepLinkQuery);
+  assert.equal(
+    payload.sections.priorityCommercialOpportunities.items[0].opportunityOfTheWeek,
+    true,
+  );
+  assert.equal(
+    payload.sections.priorityCommercialOpportunities.opportunityOfTheWeek
+      .opportunityId,
+    "a",
+  );
 
   const receipt = payload.sections.researchReceipt;
   const byKey = Object.fromEntries(receipt.metrics.map((m) => [m.key, m]));
@@ -164,6 +173,35 @@ function pass(name) {
     ).includes("STAGED"),
   );
   pass("staged_not_customer_fallback");
+}
+
+{
+  const preview = buildGdiExecutiveSummaryV1({
+    hotelId: "recPREVIEW",
+    customerAuthorizedInventory: false,
+    founderPreview: true,
+    dataState: EXEC_SUMMARY_DATA_STATE.FOUNDER_PREVIEW,
+    opportunities: [
+      {
+        id: "fp1",
+        title: "Founder Preview Opp",
+        score: 10,
+        contactActionabilityTier: CONTACT_ACTIONABILITY_TIER.SALES_READY,
+        weeklyDeltaState: WEEKLY_DELTA_STATE.NEW,
+      },
+    ],
+  });
+  assert.equal(preview.customerFacing, false);
+  assert.equal(preview.founderPreview, true);
+  assert.equal(
+    preview.sections.executiveCommercialSnapshot.totalQualifiedOpportunities,
+    1,
+  );
+  assert.equal(preview.sections.priorityCommercialOpportunities.count, 1);
+  assert.ok(
+    preview.sections.executiveCommercialSnapshot.founderPreviewBanner,
+  );
+  pass("founder_preview_aggregates_not_customer");
 }
 
 {
