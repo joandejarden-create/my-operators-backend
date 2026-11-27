@@ -43,6 +43,7 @@ Dealality helps hotel owners, brands, operators, advisors, and capital partners 
 15. **Approved customer output is a versioned production contract.** A later change may not silently regress an earlier approved customer surface. Report snapshot version, renderer version, and data contract version must move together.
 16. **No fix is complete until it is in the customer-surface regression baseline.** New work may extend the product; it may not silently replace a verified customer output contract.
 17. **Dealality Research Receipt is a permanent brand and design principle.** Make research accountability, customer-attributable intelligence, shared vs product-specific attribution, reuse, commercial relevance, Dealality branding, and no fabricated metrics visible to customers. **Implementation is product-specific** — GDI is the first reference implementation; do not build ADP / Hotel Explorer / Deal Opportunities receipts or a cross-product reporting engine until those products have dedicated cycles. Principles: [DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md](./DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md).
+18. **Additive development and non-regression are permanent.** New functionality must be additive and must not silently regress previously accepted UI layouts, opportunity inventory, data accessibility, or customer-facing functionality. Preserve accepted design language; reconcile inventories by record ID; compare before/after baselines; resolve unintended regressions before certification. Integration Controller must block acceptance on unintentional regression; intentional material change requires explicit founder approval. An enhancement is complete only when the new capability works **and** previously accepted functionality continues to work. Principles: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md).
 
 ## AI Behavior Principles
 
@@ -71,5 +72,6 @@ Every major feature should ask:
 - Build process: [AI_BUILD_PROTOCOL.md](./AI_BUILD_PROTOCOL.md)
 - Naming and copy: [NAMING_AND_COPY_GUIDE.md](./NAMING_AND_COPY_GUIDE.md)
 - Research Receipt principles: [DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md](./DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md)
+- Additive development & non-regression: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md)
 - Data governance: [../data-intelligence/INTELLIGENCE_GOVERNANCE.md](../data-intelligence/INTELLIGENCE_GOVERNANCE.md)
 - Project memory: [../../AGENTS.md](../../AGENTS.md)

@@ -42,6 +42,7 @@ Also read when applicable:
 - Do not invent Airtable fields.
 - Do not claim FULL E2E COMPLETE for durable intelligence without proven Airtable (or approved durable) persistence and retrieval — see [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md).
 - Do not overwrite validated data.
+- Do not silently regress previously accepted UI layouts, opportunity inventory, data accessibility, or customer-facing functionality — see [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md). New work must be additive; compare before/after baselines (record IDs, not counts alone); resolve unintended regressions before certification; include a non-regression assessment for Integration Controller.
 - Do not change unrelated files.
 - Do not bypass role/access assumptions.
 - Do not hardcode demo logic unless explicitly requested.

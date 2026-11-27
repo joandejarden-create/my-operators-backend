@@ -31,6 +31,8 @@ If task is low-risk, proceed after summarizing. If task is high-risk, ask for co
 
 **Durable intelligence persistence (binding):** Before implementing or closing any feature that creates reusable business intelligence, define canonical Airtable ownership, reuse existing schema first, plan idempotent writes, provenance/history, and retrieval across restarts. Do not classify the work `FULL_E2E_VALIDATED` from UI/API/PDF/local JSON alone. Contract: [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md).
 
+**Additive development & non-regression (binding):** New work must be additive. Do not silently regress previously accepted UI, inventory, data access, or customer-facing surfaces. Establish before/after baselines (record IDs, not counts alone), classify intentional vs unintended diffs, resolve unintended regressions before certification, and include a non-regression assessment for Integration Controller. Complete only when new **and** previously accepted functionality both work. Contract: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md).
+
 ## Implementation Rules
 
 - Prefer small, reversible changes.

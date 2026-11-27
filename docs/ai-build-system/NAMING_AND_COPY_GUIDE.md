@@ -22,6 +22,10 @@ Product language standards for UI, snapshots, explorers, and AI-assisted content
 - Opportunity Intelligence
 - **Dealality Research Receipt** (product-facing name for research accountability surfaces; GDI first; do not invent alternate customer labels like “Research Log” or “Activity Meter”)
 
+## Additive development & non-regression (copy/UI)
+
+When adding surfaces, preserve previously accepted labels, navigation copy, and interaction wording unless founder-authorized redesign is explicit. Do not rename established customer-facing chrome to fit a new feature. Principles: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md).
+
 ### AI Visibility / AI Recommendation Intelligence
 
 - Brand workspace product surface: **Brand AI Visibility**

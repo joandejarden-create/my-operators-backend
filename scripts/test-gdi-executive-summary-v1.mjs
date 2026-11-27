@@ -453,4 +453,39 @@ function pass(name) {
   pass("executive_summary_inventory_id_preservation");
 }
 
+{
+  // Permanent additive / non-regression principle must remain documented.
+  const fs = await import("fs");
+  const path = await import("path");
+  const { fileURLToPath } = await import("url");
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const principles = fs.readFileSync(
+    path.join(
+      root,
+      "docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md",
+    ),
+    "utf8",
+  );
+  const constitution = fs.readFileSync(
+    path.join(root, "docs/ai-build-system/DEALALITY_PRODUCT_CONSTITUTION.md"),
+    "utf8",
+  );
+  const prCompletion = fs.readFileSync(
+    path.join(
+      root,
+      "docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md",
+    ),
+    "utf8",
+  );
+  assert.ok(principles.includes("DEALALITY_ADDITIVE_NON_REGRESSION_V1"));
+  assert.ok(principles.includes("must not silently regress"));
+  assert.ok(constitution.includes("Additive development and non-regression"));
+  assert.ok(prCompletion.includes("non-regression assessment"));
+  assert.ok(
+    prCompletion.includes("must block acceptance") ||
+      prCompletion.includes("must **block acceptance**"),
+  );
+  pass("additive_non_regression_principle_documented");
+}
+
 console.log(`\n${passed} PASS — gdi-executive-summary-v1 ($0)`);

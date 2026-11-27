@@ -106,6 +106,27 @@ npm run test:gdi-executive-summary-v1
 .\scripts\gdi\Invoke-GdiExecutiveSummary.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode validate -Preview staged
 ```
 
+## Non-regression assessment (PR #618 — binding)
+
+Per permanent principle `DEALALITY_ADDITIVE_NON_REGRESSION_V1`:
+
+| Surface | Baseline | After | Classification |
+|---|---|---|---|
+| GDI tab layout | Compact left-aligned 3 tabs | Compact left-aligned **4** tabs (ES added) | **Intentional additive** after restoring pre-ES constrained CSS (unintended full-width flex distribution remedié) |
+| Opportunities default | Opportunities landing | Opportunities landing preserved | **Preserved** |
+| Bethesda CURRENT inventory | 67 IDs | 67 IDs; ES KPI = 67 | **Preserved** |
+| Wyndham STAGED inventory | CLEAN11 (11 IDs) | CLEAN11 (11 IDs) | **Preserved** — locked 26 not applied; founder review surface is additive/non-publishing |
+| YOTEL CURRENT | 42 | 42 | **Preserved** |
+| Customer visibility rules | CURRENT-only for customers | unchanged | **Preserved** |
+| Publication controls | no silent STAGED/CURRENT | unchanged | **Preserved** |
+
+Unintended regressions found and resolved in this PR cycle:
+
+1. Full-width tab distribution (`flex: 1 1 0`) → restored compact left alignment.
+2. Misread of Wyndham 11 as ES inventory loss → proven CLEAN11 STAGED gate; additive founder review for locked 26 without publish.
+
+Automated coverage added: compact nav CSS, Opportunities default, Wyndham 26↔CLEAN11 ID reconciliation, ES ID preservation, preview auth negatives (`npm run test:gdi-executive-summary-v1`).
+
 ## Governance
 
 NO_PAID_RESEARCH · NO_PAID_ENRICHMENT · NO_AIRTABLE_WRITES · NO_STAGED_ACTIVATE · NO_CURRENT_PUBLISH · NO_PRODUCTION_DEPLOYMENT · locked 26 immutable · no Phase 2 · no independent merge
