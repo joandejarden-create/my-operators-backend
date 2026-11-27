@@ -93,6 +93,20 @@ const receipt = withIntel.sections.researchReceipt.metrics;
 const evidence = receipt.find((m) => m.key === "evidenceSourcesReviewed");
 assert.ok(evidence.value > 0, "evidence sources should hydrate from package");
 
+const scorecard = withIntel.sections.researchIntelligence.contactCoverageScorecard;
+assert.ok(scorecard, "Admin RI must include contact coverage scorecard");
+assert.equal(scorecard.customerFacing, false);
+assert.equal(scorecard.opportunityLevel.totalQualifiedOpportunities, 26);
+assert.equal(scorecard.opportunityLevel.withVerifiedNamedContacts, 26);
+assert.ok(scorecard.uniquePersonLevel.uniquePeople >= 26);
+assert.ok(scorecard.uniquePersonLevel.withVerifiedPersonalLinkedIn >= 14);
+assert.ok(scorecard.uniquePersonLevel.withUsableProfessionalOutreachRoute >= 26);
+assert.ok(
+  withIntel.sections.researchIntelligence.metrics.some(
+    (m) => m.key === "contactCoverageUsableRoute",
+  ),
+);
+
 const pri = withIntel.sections.priorityCommercialOpportunities.items[0];
 assert.ok(pri.name);
 assert.notEqual(pri.segment, "Segment TBD");
