@@ -2999,14 +2999,28 @@
     { value: "salesAction", label: "Sales Action" },
     { value: "whoToContact", label: "Who to Contact" },
     { value: "contactDetails", label: "Contact Details" },
-    { value: "contactReadiness", label: "Contact Readiness" },
     { value: "estimatedRoomNights", label: "Estimated Room Nights" },
     { value: "weeklyChange", label: "Weekly Change" },
     { value: "marketScope", label: "Market Scope" },
     { value: "needPeriodAlignment", label: "Need Period Alignment" },
-    { value: "opportunityStatus", label: "Opportunity Status" },
     { value: "lastVerified", label: "Last Verified" },
   ];
+
+  /** Retired List sort keys — prefs fall back to Priority. */
+  var RETIRED_SORT_KEYS = [
+    "contactReadiness",
+    "opportunityStatus",
+    "salesOpportunityType",
+  ];
+
+  function sanitizeListSortKey(sortKey) {
+    var key = String(sortKey || "").trim();
+    if (!key || RETIRED_SORT_KEYS.indexOf(key) >= 0) return "priority";
+    var known = SORT_OPTIONS.some(function (o) {
+      return o.value === key;
+    });
+    return known ? key : "priority";
+  }
 
   /** Sales Opportunities quick-filter chip keys (DTO: salesOpportunityQuickFilterKeys). */
   var SALES_OPPORTUNITY_FILTER = {
@@ -10949,6 +10963,8 @@
     PRIORITY_DISPLAY: PRIORITY_DISPLAY,
     ACTION_STATUS_DISPLAY: ACTION_STATUS_DISPLAY,
     SORT_OPTIONS: SORT_OPTIONS,
+    RETIRED_SORT_KEYS: RETIRED_SORT_KEYS,
+    sanitizeListSortKey: sanitizeListSortKey,
     esc: esc,
     isSafeHttpUrl: isSafeHttpUrl,
     formatDrawerFieldValueHtml: formatDrawerFieldValueHtml,
