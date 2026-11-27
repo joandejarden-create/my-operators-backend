@@ -23,6 +23,8 @@
     HE_CONTACT_ORG_MAPPING_VALIDATED
     HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED
     HE_CONTACT_PRESENTATION_VALIDATED
+    HE_LOADING_COMPONENT_CONSISTENT
+    HE_HEADER_ACTIONS_HYDRATED
     HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE
     HE_OWNERSHIP_VERIFICATION_STATE_PARITY
     HE_UNIFIED_THEME_CONSISTENCY
@@ -122,6 +124,21 @@ if ($ConsistencyModes -contains $Mode) {
   & node @acceptArgs
   if ($LASTEXITCODE -ne 0) {
     throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
+  }
+}
+
+# Header Website/Phone hydration audit (current hotel, or full HE50 batch when -BatchFile set).
+if ($ConsistencyModes -contains $Mode) {
+  $headerArgs = @(".\scripts\hotel-explorer\audit-he-header-actions-hydration-v1.mjs")
+  if ($BatchFile) {
+    Write-Host "[HE Factory] header actions hydration → HE50 eight-hotel batch"
+  } elseif ($HotelId) {
+    $headerArgs += "--hotelId=$HotelId"
+    Write-Host "[HE Factory] header actions hydration → hotelId=$HotelId"
+  }
+  & node @headerArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE header actions hydration FAILED (mode=$Mode)"
   }
 }
 

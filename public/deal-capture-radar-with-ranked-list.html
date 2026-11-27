@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=45">
     <link rel="stylesheet" href="/css/hotel-ownership-intelligence.css?v=25">
     <link rel="stylesheet" href="/css/hotel-intelligence-workspace.css?v=31">
-    <link rel="stylesheet" href="/css/hotel-explorer.css?v=61">
+    <link rel="stylesheet" href="/css/hotel-explorer.css?v=63">
     <link rel="stylesheet" href="/css/dealality-wave-loader.css?v=3">
     <link rel="stylesheet" href="/css/admin-ai-demand-table.css?v=1">
-    <link rel="stylesheet" href="/css/hotel-contact-intelligence.css?v=11">
+    <link rel="stylesheet" href="/css/hotel-contact-intelligence.css?v=13">
     <link rel="stylesheet" href="/css/brand-alignment-snapshot.css">
     <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4">
     <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=24">
@@ -851,7 +851,8 @@
             font-size: 12px;
         }
 
-        .loading {
+        /* Map empty-state only — do not target DealalityWaveLoader (.loading.dealality-wave-loader). */
+        .loading:not(.dealality-wave-loader) {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -859,7 +860,7 @@
             color: #888;
         }
 
-        .loading .wave-container {
+        .loading:not(.dealality-wave-loader) .wave-container {
             width: 40px;
             height: 40px;
             position: relative;
@@ -2706,7 +2707,7 @@
     <script src="/js/hilton-amenity-icons.js?v=12"></script>
     <script src="/js/hotel-detail-panel.js?v=73"></script>
     <script src="/js/hotel-ownership-intelligence.js?v=24"></script>
-    <script src="/js/hotel-contact-intelligence.js?v=11"></script>
+    <script src="/js/hotel-contact-intelligence.js?v=13"></script>
     <script src="/js/hotel-intelligence-workspace.js?v=73"></script>
     <script src="/js/dealality-sortable-table.js?v=2"></script>
     <script src="/js/hotel-explorer-rooms-meeting-space.js?v=4"></script>
@@ -2716,7 +2717,7 @@
     <script src="/js/hotel-intelligence-research-center.js?v=11"></script>
     <script src="/js/hotel-intelligence-golden-demo-route.js?v=9"></script>
     <!-- hotel-explorer.js last among HE modules so __DEALALITY_HOTEL_EXPLORER_PRIMARY wins. -->
-    <script src="/js/hotel-explorer.js?v=69"></script>
+    <script src="/js/hotel-explorer.js?v=70"></script>
     <script src="/js/radar-filter-drawer.js?v=12"></script>
     <script src="/js/radar-layer-drawer.js?v=24"></script>
     <script src="radar-page.js?v=3"></script>
