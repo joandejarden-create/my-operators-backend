@@ -1,0 +1,136 @@
+{
+  "version": "gdi-full-e2e-v3-orchestrator-v1",
+  "stagesVersion": "gdi-canonical-full-e2e-v3-stages-v1",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "mode": "DryRun",
+  "paid": false,
+  "outDir": "C:\\Dev\\dealality\\ws-gdi\\reports\\gdi-canonical-full-e2e-v3\\recnPB3Q02NO8Ma1o",
+  "checkpointPath": "C:\\Dev\\dealality\\ws-gdi\\reports\\gdi-canonical-full-e2e-v3\\recnPB3Q02NO8Ma1o\\checkpoints\\recnPB3Q02NO8Ma1o-e2e-v3-checkpoint.json",
+  "completeness": {
+    "version": "gdi-canonical-full-e2e-v3-stages-v1",
+    "hotelId": "recnPB3Q02NO8Ma1o",
+    "rows": [
+      {
+        "stageId": "DEMAND_DISCOVERY",
+        "outcome": "PASS"
+      },
+      {
+        "stageId": "OPPORTUNITY_DEEP_RESEARCH",
+        "outcome": "PASS"
+      },
+      {
+        "stageId": "WHO_HOW_RESOLUTION",
+        "outcome": "PASS"
+      },
+      {
+        "stageId": "PROFESSIONAL_CONTACT_RESEARCH",
+        "outcome": "PARTIAL"
+      },
+      {
+        "stageId": "COMMERCIAL_QUALIFICATION",
+        "outcome": "PASS"
+      }
+    ],
+    "passCount": 4,
+    "totalStages": 5,
+    "complete": false,
+    "partial": true,
+    "failed": false
+  },
+  "existingMappings": {
+    "DEMAND_DISCOVERY": {
+      "existing": [
+        "fourteen-segment discovery matrix",
+        "leisure module applicability + LDI runners",
+        "CAD competitive account discovery",
+        "preferred_lodging_partnerships segment",
+        "screening dispositions / lossless register",
+        "commercial priorities soft guidance"
+      ],
+      "newInV3": [
+        "Dedicated Invoke-GdiDiscovery.ps1 stage runner",
+        "Stage checkpoint + completeness report",
+        "Unified Full E2E V3 orchestrator sequencing"
+      ],
+      "powershell": "scripts/gdi/Invoke-GdiDiscovery.ps1",
+      "nodeRunner": "scripts/gdi/run-gdi-discovery-stage-v1.mjs"
+    },
+    "OPPORTUNITY_DEEP_RESEARCH": {
+      "existing": [
+        "COMMERCIAL_FULL_E2E operating mode (PR #612)",
+        "Exa Agent deep job store + paid budget ledger",
+        "completion queue / fair select",
+        "segment-aware Agent prompt families"
+      ],
+      "newInV3": [
+        "Invoke-GdiDeepResearch.ps1",
+        "Explicit route of missing buyer → Stage 3 (no FQO termination)",
+        "Stage checkpoint reuse of settled Agent jobs"
+      ],
+      "powershell": "scripts/gdi/Invoke-GdiDeepResearch.ps1",
+      "nodeRunner": "scripts/gdi/run-gdi-deep-research-stage-v1.mjs"
+    },
+    "WHO_HOW_RESOLUTION": {
+      "existing": [
+        "ensureBuyerWhoResearchExecuted",
+        "gdi-who-how-contact-intelligence-restore-v1",
+        "named contact coverage / scaling two-contact",
+        "RELEVANT_COMMERCIAL_ENTRY_POINT classification"
+      ],
+      "newInV3": [
+        "Dedicated WHO/HOW Agent contract (dossier-input, not rediscovery)",
+        "Mandatory two alternative entry-point fallback",
+        "WHO_HOW_STATUS taxonomy (buyer vs influencer vs entry points)",
+        "Invoke-GdiWhoHow.ps1 + ContinuationOnly"
+      ],
+      "powershell": "scripts/gdi/Invoke-GdiWhoHow.ps1",
+      "nodeRunner": "scripts/gdi/run-gdi-who-how-stage-v1.mjs"
+    },
+    "PROFESSIONAL_CONTACT_RESEARCH": {
+      "existing": [
+        "runPublicContactDiscoveryWorkflow / HOW restore",
+        "assessPublicContactVerification",
+        "Findymail/Surfe optional OFF by default"
+      ],
+      "newInV3": [
+        "Stage-4-only after identity/role verification",
+        "Channel provenance schema (person vs org)",
+        "No invented emails; Surfe never auto-persisted",
+        "Invoke-GdiContactResearch.ps1"
+      ],
+      "powershell": "scripts/gdi/Invoke-GdiContactResearch.ps1",
+      "nodeRunner": "scripts/gdi/run-gdi-contact-research-stage-v1.mjs"
+    },
+    "COMMERCIAL_QUALIFICATION": {
+      "existing": [
+        "gdi-finalized-qualified-opportunity-contract-v1 (six-rule FQO)",
+        "GDI drawer Who to Contact / two-contact slots",
+        "contact actionability tiers"
+      ],
+      "newInV3": [
+        "Audited entry-point reachability rule for FQO",
+        "Drawer PRIMARY DECISION-MAKER + ALTERNATIVE CONTACT 1/2",
+        "Invoke-GdiQualification.ps1"
+      ],
+      "powershell": "scripts/gdi/Invoke-GdiQualification.ps1",
+      "nodeRunner": "scripts/gdi/run-gdi-qualification-stage-v1.mjs"
+    }
+  },
+  "stageOrder": [
+    "DEMAND_DISCOVERY",
+    "OPPORTUNITY_DEEP_RESEARCH",
+    "WHO_HOW_RESOLUTION",
+    "PROFESSIONAL_CONTACT_RESEARCH",
+    "COMMERCIAL_QUALIFICATION"
+  ],
+  "whoHowStatuses": {
+    "VERIFIED_DIRECT_BUYER": "VERIFIED_DIRECT_BUYER",
+    "VERIFIED_BUYER_INFLUENCER": "VERIFIED_BUYER_INFLUENCER",
+    "VERIFIED_ENTRY_POINTS_2": "VERIFIED_ENTRY_POINTS_2",
+    "VERIFIED_ENTRY_POINT_1": "VERIFIED_ENTRY_POINT_1",
+    "ORGANIZATIONAL_ROUTE_ONLY": "ORGANIZATIONAL_ROUTE_ONLY",
+    "CONTACT_RESEARCH_REQUIRED": "CONTACT_RESEARCH_REQUIRED",
+    "NO_CREDIBLE_CONTACT_IDENTIFIED": "NO_CREDIBLE_CONTACT_IDENTIFIED"
+  },
+  "at": "2026-11-27T12:02:00.180Z"
+}

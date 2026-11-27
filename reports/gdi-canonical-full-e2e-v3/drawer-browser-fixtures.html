@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GDI Full E2E V3 — Who to Contact drawer fixtures</title>
+  <style>
+    :root {
+      --ink: #1c2430;
+      --muted: #5b6573;
+      --line: #d7dde6;
+      --bg: #f6f8fb;
+      --card: #fff;
+      --accent: #0b6e4f;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eef3f8, var(--bg));
+    }
+    main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 1.4rem; margin: 0 0 8px; }
+    .sub { color: var(--muted); margin-bottom: 24px; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 18px 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(28, 36, 48, 0.05);
+    }
+    section h2 { font-size: 1.05rem; margin: 0 0 12px; }
+    .gdi-whohow-drawer h3 { margin: 0 0 8px; font-size: 1rem; }
+    .gdi-whohow-slot {
+      border-top: 1px solid var(--line);
+      padding: 12px 0;
+    }
+    .gdi-whohow-slot h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .gdi-contact-actionability__badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e7f6ef;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .gdi-muted, .gdi-contact-quality-quiet { color: var(--muted); font-size: 0.9rem; }
+    .gdi-btn {
+      display: inline-block;
+      margin: 4px 6px 0 0;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.85rem;
+    }
+    .gdi-btn--secondary { background: #f3f6fa; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GDI Full E2E V3 — Who to Contact</h1>
+    <p class="sub">Local fixture verification (buyer / two entry points / unresolved). No paid research. No Surfe persistence.</p>
+
+    <section data-fixture="direct-buyer">
+      <h2>Case A — Verified direct buyer</h2>
+      <div class="gdi-whohow-drawer" data-gdi-whohow-v3="1">
+        <h3>Who to Contact</h3>
+        <p class="gdi-muted gdi-whohow-status"><strong>Buyer research status:</strong> VERIFIED_DIRECT_BUYER · Last verified 2026-11-27</p>
+        <div class="gdi-whohow-slot" data-whohow-kind="PRIMARY_DECISION_MAKER">
+          <h4>PRIMARY DECISION-MAKER</h4>
+          <p><strong>Dede Kassel</strong> — Corporate Travel Manager, Meetings &amp; Events</p>
+          <p><strong>Organization:</strong> Flatiron Construction</p>
+          <p><strong>Buyer relationship:</strong> Verified hotel / lodging decision-maker</p>
+          <p><strong>Verification:</strong> IDENTITY_AND_AUTHORITY_VERIFIED</p>
+          <p><strong>Suggested sales approach:</strong> Propose crew block + weekly rates for Pure Water peak</p>
+          <p><a href="https://linkedin.com/in/dede-kassel-b333a122" target="_blank" rel="noopener noreferrer">Source</a></p>
+          <p class="gdi-whohow-actions"><strong>Contact actions:</strong>
+            <a class="gdi-btn gdi-btn--secondary" href="https://linkedin.com/in/dede-kassel-b333a122" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section data-fixture="two-entry-points">
+      <h2>Case B — Two verified entry points</h2>
+      <div class="gdi-whohow-drawer" data-gdi-whohow-v3="1">
+        <h3>Who to Contact</h3>
+        <p class="gdi-muted gdi-whohow-status"><strong>Buyer research status:</strong> VERIFIED_ENTRY_POINTS_2 · Last verified 2026-11-27</p>
+        <div class="gdi-whohow-slot gdi-whohow-slot--unverified">
+          <h4>PRIMARY DECISION-MAKER</h4>
+          <p><strong>Hotel Decision-Maker Not Yet Verified</strong></p>
+        </div>
+        <div class="gdi-whohow-slot" data-whohow-kind="ALTERNATIVE_CONTACT_1">
+          <h4>ALTERNATIVE CONTACT 1 <span class="gdi-contact-actionability__badge">VERIFIED ENTRY POINT</span></h4>
+          <p><strong>Alex Rivera</strong> — Director of Meetings</p>
+          <p><strong>Organization:</strong> AACR</p>
+          <p><strong>Relationship to opportunity:</strong> Leads annual meeting logistics</p>
+          <p><strong>Why we're showing this contact:</strong> Meetings director can route hotel housing inquiries</p>
+          <p class="gdi-contact-quality-quiet">Identity verified — hotel-buying authority is NOT verified.</p>
+          <p><strong>Suggested sales approach:</strong> Ask for housing bureau or official hotel partner path</p>
+        </div>
+        <div class="gdi-whohow-slot" data-whohow-kind="ALTERNATIVE_CONTACT_2">
+          <h4>ALTERNATIVE CONTACT 2 <span class="gdi-contact-actionability__badge">VERIFIED ENTRY POINT</span></h4>
+          <p><strong>Jordan Lee</strong> — Housing Coordinator</p>
+          <p><strong>Organization:</strong> AACR Annual Meeting</p>
+          <p><strong>Why we're showing this contact:</strong> Housing coordinator is the operational lodging contact</p>
+          <p class="gdi-contact-quality-quiet">Identity verified — hotel-buying authority is NOT verified.</p>
+        </div>
+      </div>
+    </section>
+
+    <section data-fixture="unresolved">
+      <h2>Case D — Unresolved contact</h2>
+      <div class="gdi-whohow-drawer" data-gdi-whohow-v3="1">
+        <h3>Who to Contact</h3>
+        <p class="gdi-muted gdi-whohow-status"><strong>Buyer research status:</strong> NO_CREDIBLE_CONTACT_IDENTIFIED</p>
+        <div class="gdi-whohow-slot gdi-whohow-slot--unverified">
+          <h4>PRIMARY DECISION-MAKER</h4>
+          <p><strong>Hotel Decision-Maker Not Yet Verified</strong></p>
+        </div>
+        <div class="gdi-whohow-slot gdi-whohow-slot--unverified">
+          <h4>ALTERNATIVE CONTACT 1</h4>
+          <p><strong>Not verified</strong></p>
+          <p class="gdi-muted">NOT_FOUND</p>
+        </div>
+        <div class="gdi-whohow-slot gdi-whohow-slot--unverified">
+          <h4>ALTERNATIVE CONTACT 2</h4>
+          <p><strong>Not verified</strong></p>
+          <p class="gdi-muted">NOT_FOUND</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
