@@ -391,7 +391,7 @@
     var segmentLabel =
       SEGMENT_MODE_LABELS[draft.segmentMode] || "No preference";
     return (
-      '<div class="hcp-summary-strip" role="status" aria-live="polite">' +
+      '<div class="hcp-summary-strip" role="status" aria-live="polite" data-gdi-tour-target="hcp-summary">' +
       '<div class="hcp-summary-item"><span class="hcp-summary-label">Revenue Priorities</span><span class="hcp-summary-value">' +
       esc(String(revCount)) +
       " of 5 selected</span></div>" +
@@ -1224,6 +1224,8 @@
     var sectionsHtml = SECTIONS.map(function (step) {
       return (
         '<section class="form-section hcp-page-section hcp-section-card active" id="hcp-section-' +
+        esc(step.id) +
+        '" data-gdi-tour-target="hcp-section-' +
         esc(step.id) +
         '" data-section="' +
         esc(step.id) +

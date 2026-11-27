@@ -1746,7 +1746,7 @@
           "</div>"
         : "") +
       "</div>" +
-      '<footer class="gdi-property-bar__history" aria-label="Need Dates and research activity">' +
+      '<footer class="gdi-property-bar__history" aria-label="Need Dates and research activity" data-gdi-tour-target="need-dates-context">' +
       needDateHistoryHtml +
       researchCompactHtml +
       "</footer>" +
@@ -3893,7 +3893,7 @@
     ];
     return (
       '<div class="gdi-browse-preset gdi-browse-preset--priority">' +
-      '<div class="chain-scale-legend gdi-browse-legend gdi-browse-legend--priority gdi-preset-panel" role="group" aria-label="Priority filters">' +
+      '<div class="chain-scale-legend gdi-browse-legend gdi-browse-legend--priority gdi-preset-panel" role="group" aria-label="Priority filters" data-gdi-tour-target="priority-filters">' +
       '<span class="gdi-preset-panel__title">Priority</span>' +
       '<div class="gdi-preset-panel__chips">' +
       presets
@@ -4070,7 +4070,7 @@
       }).join("") +
       "</select></div>" +
       columnsHtml +
-      '<div class="gdi-view-toggle" role="group" aria-label="Layout">' +
+      '<div class="gdi-view-toggle" role="group" aria-label="Layout" data-gdi-tour-target="view-toggle">' +
       '<button type="button" class="gdi-view-toggle__btn' +
       (viewMode === "list" ? " is-active" : "") +
       '" data-gdi-view="list" aria-pressed="' +
@@ -6697,7 +6697,7 @@
     }
 
     return (
-      '<div class="gdi-sales-opportunity-filters">' +
+      '<div class="gdi-sales-opportunity-filters" data-gdi-tour-target="sales-opportunity-filters">' +
       '<div class="chain-scale-legend gdi-browse-legend gdi-browse-legend--sales gdi-preset-panel" role="group" aria-label="Sales Opportunities quick filters" title="Find commercially attractive demand — Hotel Sourcing Open is not inferred from a missing venue announcement.">' +
       '<span class="gdi-preset-panel__title">Sales Opportunities</span>' +
       '<div class="gdi-preset-panel__chips">' +
@@ -9108,7 +9108,7 @@
       '<section class="gdi-section" data-section-id="facts_and_uncertainties"><h3>Established facts and uncertainties</h3>' +
       factsHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--contact" data-section-id="who_to_contact"><h3>Who to contact</h3>' +
+      '<section class="gdi-section gdi-section--contact" data-section-id="who_to_contact" data-gdi-tour-target="drawer-contact"><h3>Who to contact</h3>' +
       (whoS.contactPathLabel &&
       !/not yet established|research incomplete|^NO_CONTACT$/i.test(
         String(whoS.contactPathLabel)
@@ -10350,7 +10350,7 @@
       '<section class="gdi-section" data-section-id="facts_and_uncertainties"><h3>Established facts and uncertainties</h3>' +
       factsHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--contact" data-section-id="who_to_contact"><h3>Who to contact</h3>' +
+      '<section class="gdi-section gdi-section--contact" data-section-id="who_to_contact" data-gdi-tour-target="drawer-contact"><h3>Who to contact</h3>' +
       (whoS.contactPathLabel &&
       !/not yet established|research incomplete|^NO_CONTACT$/i.test(
         String(whoS.contactPathLabel)
