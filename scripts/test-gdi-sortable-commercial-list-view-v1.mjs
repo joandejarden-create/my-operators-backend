@@ -19,7 +19,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-e2e-staged-lifecycle-v1";
+const CACHE = "gdi-list-contact-actions-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -168,7 +168,10 @@ check("list_view_renders_commercial_table_not_tile_grid", () => {
   assert.match(html, /data-sort="priority"/);
   assert.match(html, /data-sort="eventStartDate"/);
   assert.match(html, /Who to Contact/);
-  assert.match(html, /Contact Readiness/);
+  assert.match(html, /Contact Details/);
+  assert.doesNotMatch(html, />Contact Readiness</);
+  assert.match(html, /gdi-list-more-btn/);
+  assert.match(html, /gdi-list-view-btn/);
   // Columns SVG lives in the shared results toolbar (single row), not table wrap.
   assert.doesNotMatch(html, /gdiListColumnSettingsBtn/);
   assert.doesNotMatch(html, /gdi-list-table-toolbar/);
@@ -261,7 +264,7 @@ check("who_to_contact_does_not_invent_names", () => {
     [{ id: "x", title: "No Contact Opp", priority: "WATCHLIST" }],
     { sortKey: "title", sortDir: 1 },
   );
-  assert.match(html, /Contact not yet identified/);
+  assert.match(html, /Contact Not Yet Identified/i);
   assert.doesNotMatch(html, /Jane Doe|John Smith|example@/i);
 });
 

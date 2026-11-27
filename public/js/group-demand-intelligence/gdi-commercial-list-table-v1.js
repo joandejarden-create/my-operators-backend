@@ -10,7 +10,13 @@
   var STORAGE_COLUMNS = "gdi.listOptionalColumns.v1";
 
   var ICON_VIEW =
-    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var ICON_MORE =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>';
+  var ICON_EMAIL =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  var ICON_PHONE =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>';
 
   var SORT_INDICATOR =
     '<span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
@@ -22,11 +28,12 @@
     { id: "demandWindow", label: "Demand Window", sortKey: "eventStartDate", required: true },
     { id: "salesAction", label: "Sales Action", sortKey: "salesAction", required: true },
     { id: "whoToContact", label: "Who to Contact", sortKey: "whoToContact", required: true },
-    { id: "contactReadiness", label: "Contact Readiness", sortKey: "contactReadiness", required: true },
+    { id: "contactDetails", label: "Contact Details", sortKey: "contactDetails", required: true },
     { id: "actions", label: "Actions", sortKey: null, required: true, noSort: true },
   ];
 
   var OPTIONAL_COLUMNS = [
+    { id: "contactReadiness", label: "Contact Readiness", sortKey: "contactReadiness" },
     { id: "estimatedRoomNights", label: "Estimated Room Nights", sortKey: "estimatedRoomNights" },
     { id: "weeklyChange", label: "Weekly Change", sortKey: "weeklyChange" },
     { id: "marketScope", label: "Market Scope", sortKey: "marketScope" },
@@ -41,6 +48,13 @@
     REACHABLE: 1,
     CONTACT_RESEARCH_REQUIRED: 2,
     CONTACT_IDENTIFICATION_REQUIRED: 3,
+  };
+
+  var CONTACT_READINESS_LABELS = {
+    SALES_READY: "Sales-Ready Contact",
+    REACHABLE: "Reachable Contact",
+    CONTACT_RESEARCH_REQUIRED: "Contact Research Needed",
+    CONTACT_IDENTIFICATION_REQUIRED: "Contact Not Identified",
   };
 
   function esc(s) {
@@ -92,7 +106,7 @@
   }
 
   function opportunityName(o) {
-    return text(o.displayTitle || o.title || o.name) || "Untitled opportunity";
+    return text(o.displayTitle || o.title || o.name) || "Untitled Opportunity";
   }
 
   function organizationContext(o) {
@@ -105,22 +119,45 @@
     );
   }
 
-  function demandTypeLabel(o, UI) {
-    if (UI && typeof UI.segmentDisplayLabel === "function") {
+  function toPresentationProperCase(raw, UI) {
+    var s = text(raw);
+    if (!s) return s;
+    if (UI && typeof UI.toProperCaseContactRoleLabel === "function") {
       try {
-        var lab = UI.segmentDisplayLabel(o);
-        if (lab) return text(lab);
+        return UI.toProperCaseContactRoleLabel(s) || s;
       } catch (e) {
         /* fall through */
       }
     }
-    return (
-      text(o.segmentLabel) ||
-      text(o.segment) ||
-      text(o.demandSegment) ||
-      text(o.opportunityTypeLabel) ||
-      "—"
-    );
+    return s
+      .split(/(\s+)/)
+      .map(function (tok) {
+        if (!/[A-Za-z]/.test(tok)) return tok;
+        if (/^[A-Z]{2,8}$/.test(tok)) return tok;
+        return tok.charAt(0).toUpperCase() + tok.slice(1).toLowerCase();
+      })
+      .join("");
+  }
+
+  function demandTypeLabel(o, UI) {
+    var lab = "";
+    if (UI && typeof UI.segmentDisplayLabel === "function") {
+      try {
+        lab = text(UI.segmentDisplayLabel(o));
+      } catch (e) {
+        lab = "";
+      }
+    }
+    if (!lab) {
+      lab =
+        text(o.segmentLabel) ||
+        text(o.opportunityTypeLabel) ||
+        text(o.segment) ||
+        text(o.demandSegment) ||
+        "—";
+    }
+    if (lab === "—") return lab;
+    return toPresentationProperCase(lab, UI);
   }
 
   function demandWindowDisplay(o, UI) {
@@ -141,9 +178,11 @@
     if (start && end) return start + " → " + end;
     if (start) return start;
     var timing = text(o.eventTiming || o.demandTiming || o.demandWindowLabel);
-    if (/ongoing|continuous|recurring/i.test(timing)) return timing;
+    if (/ongoing|continuous|recurring/i.test(timing)) {
+      return toPresentationProperCase(timing, UI);
+    }
     if (timing) return timing;
-    return "Timing unknown";
+    return "Dates TBD";
   }
 
   function demandWindowSortValue(o) {
@@ -151,35 +190,156 @@
   }
 
   function salesActionMeta(o, UI) {
-    var key = "";
-    var label = "";
-    if (UI && typeof UI.tileSalesActionPill === "function") {
-      // Prefer DTO fields used by tileSalesActionPill internals
-      var canon = o.canonicalCustomerPresentation || null;
-      key =
-        (canon && canon.commercialAction && canon.commercialAction.key) ||
+    var badge = o.tileBadgePlan || {};
+    var canon = o.canonicalCustomerPresentation || null;
+    var key = text(
+      (canon && canon.commercialAction && canon.commercialAction.key) ||
         o.salesActionKey ||
-        (o.tileBadgePlan && o.tileBadgePlan.salesActionKey) ||
-        "";
-      label =
-        (canon && canon.commercialAction && canon.commercialAction.pillLabel) ||
+        badge.salesActionKey ||
+        "",
+    );
+    var label = text(
+      (canon && canon.commercialAction && canon.commercialAction.pillLabel) ||
         o.salesActionPillLabel ||
-        (o.tileBadgePlan && o.tileBadgePlan.salesActionPillLabel) ||
-        "";
+        badge.salesActionPillLabel ||
+        "",
+    );
+    if (!label && key) {
+      label = key
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, function (c) {
+          return c.toUpperCase();
+        });
     }
-    key = text(key);
-    label = text(label);
     if (!label) {
-      label =
+      var fallback =
         text(o.recommendedSalesAction) ||
         text(o.recommendedAction) ||
-        text(o.recommendedNextStep) ||
-        "—";
+        "";
+      // Never use long outreach prose as the Sales Action cell.
+      if (fallback && fallback.length <= 40 && !/@/.test(fallback)) {
+        label = fallback;
+      }
     }
+    if (!label) label = "—";
+    else label = toPresentationProperCase(label, UI);
     return { key: key, label: label };
   }
 
-  function whoContactMeta(o, UI) {
+  /**
+   * Presentation-only: accept verified professional titles; reject department
+   * labels, rationale blurbs, and evidence prose.
+   */
+  function resolveProfessionalTitle(raw, UI) {
+    var s = text(raw);
+    if (!s) return { title: "Title Not Verified", verified: false };
+
+    s = s.replace(/^#+\s*/, "").replace(/\s+/g, " ").trim();
+    var original = s;
+
+    // Reject research rationale / unverified prose before clause cutting.
+    if (
+      /not stated|exact job title not|title not|role to confirm|start here to identify|ask to be directed|verified via|unconfirmed this pass|research rationale|sales approach|alternative entry|contact relevance/i.test(
+        original,
+      )
+    ) {
+      return { title: "Title Not Verified", verified: false };
+    }
+    if (
+      /^published\b/i.test(original) &&
+      /\bcontact\b/i.test(original) &&
+      !/\b(director|manager|vp|president|officer|lead|specialist|coordinator|executive)\b/i.test(
+        original,
+      )
+    ) {
+      return { title: "Title Not Verified", verified: false };
+    }
+    // Strip markdown / LinkedIn headline noise prefixes
+    if (/^judy\s+susser/i.test(s) || (s.indexOf(" - ") > 0 && s.length > 90)) {
+      return { title: "Title Not Verified", verified: false };
+    }
+
+    // Prefer the first clause when evidence trails are appended.
+    var cutters = [
+      /\s+[—–-]\s+(?:authority|workplace|start here|ask to|hotel|lodging)/i,
+      /\s*;\s*(?:subsequently|workplace|authority)/i,
+      /,\s*per\s+/i,
+      /\s+according to\b/i,
+      /\s+professional profile\b/i,
+      /\s+on\s+[^,]{2,60}'s\s+official\b/i,
+      /\s+official (?:page|directory)\b/i,
+      /\s+in the professional-contact record\b/i,
+    ];
+    for (var i = 0; i < cutters.length; i++) {
+      var m = s.split(cutters[i]);
+      if (m[0] && m[0].length >= 3 && m[0].length < s.length) {
+        s = text(m[0]);
+        break;
+      }
+    }
+
+    // Drop trailing "; subsequently …" leftovers
+    if (s.indexOf(";") > 0) {
+      var first = text(s.split(";")[0]);
+      if (first.length >= 3) s = first;
+    }
+
+    var lower = s.toLowerCase();
+    var rejectExact = {
+      events: 1,
+      event: 1,
+      gala: 1,
+      membership: 1,
+      sales: 1,
+      marketing: 1,
+      operations: 1,
+      admin: 1,
+      administration: 1,
+      "membership events": 1,
+      "gala / membership events": 1,
+      "gala/membership events": 1,
+      "referral contact": 1,
+      "entry point": 1,
+      "entry-point contact": 1,
+      "alternative contact": 1,
+      "commercial entry point": 1,
+      "relevant commercial entry point": 1,
+    };
+    if (rejectExact[lower]) {
+      return { title: "Title Not Verified", verified: false };
+    }
+    if (
+      /\b(referral contact|entry[- ]point|alternative entry|commercial entry point)\b/i.test(
+        s,
+      )
+    ) {
+      return { title: "Title Not Verified", verified: false };
+    }
+    if (s.length > 90) {
+      return { title: "Title Not Verified", verified: false };
+    }
+    // Require at least one title-like token (Director, Manager, VP, Lead, etc.)
+    // OR a multi-word proper role that is not a single department noun.
+    var titleLike =
+      /\b(director|manager|vp|svp|evp|president|chief|officer|lead|head|specialist|coordinator|executive|consultant|engineer|analyst|supervisor|partner|principal|owner|founder|planner|agent)\b/i.test(
+        s,
+      );
+    var multiWord = s.split(/\s+/).length >= 2;
+    if (!titleLike && !multiWord) {
+      return { title: "Title Not Verified", verified: false };
+    }
+    if (!titleLike && multiWord && /\/|events|gala|membership/i.test(s) && s.length < 40) {
+      return { title: "Title Not Verified", verified: false };
+    }
+
+    return {
+      title: toPresentationProperCase(s, UI),
+      verified: true,
+    };
+  }
+
+  function resolveListContact(o, UI) {
     var contact = null;
     if (UI && typeof UI.selectCompactTileContact === "function") {
       try {
@@ -188,55 +348,148 @@
         contact = null;
       }
     }
-    if (!contact) {
+    if (!contact || !text(contact.name || contact.fullName)) {
       contact =
         (o.primaryContact && o.primaryContact.name && o.primaryContact) ||
         null;
     }
+    return contact;
+  }
+
+  function whoContactMeta(o, UI) {
+    var contact = resolveListContact(o, UI);
     var name = text(
       (contact && (contact.name || contact.fullName)) ||
         o.primaryContactName ||
+        o.tileContactName ||
+        o.contactName ||
         "",
     );
-    var role = text(
-      (contact && (contact.role || contact.title || contact.jobTitle)) ||
-        o.primaryContactRole ||
-        "",
-    );
-    var buyerCode =
-      (o.buyerVsEntry ||
+    var rawTitle =
+      (contact && (contact.title || contact.role || contact.jobTitle)) ||
+      o.primaryContactRole ||
+      o.tileContactRoleLabel ||
+      o.contactRole ||
+      "";
+    var titleInfo = resolveProfessionalTitle(rawTitle, UI);
+    var buyerCode = text(
+      o.buyerVsEntry ||
+        (contact && contact.buyerVsEntry) ||
         (o.primaryContact && o.primaryContact.buyerVsEntry) ||
-        "") + "";
-    if (buyerCode === "RELEVANT_COMMERCIAL_ENTRY_POINT" && role) {
-      // Do not imply decision-maker when entry point only
-      role = role;
-    }
+        "",
+    );
     if (!name) {
       return {
-        name: "Contact not yet identified",
+        name: "Contact Not Yet Identified",
         role: "",
+        title: "",
         sort: "",
         missing: true,
+        buyerCode: buyerCode,
+        entryPoint: buyerCode === "RELEVANT_COMMERCIAL_ENTRY_POINT",
       };
     }
-    return { name: name, role: role, sort: name.toLowerCase(), missing: false };
+    return {
+      name: name,
+      role: titleInfo.title,
+      title: titleInfo.title,
+      titleVerified: titleInfo.verified,
+      sort: name.toLowerCase(),
+      missing: false,
+      buyerCode: buyerCode,
+      entryPoint: buyerCode === "RELEVANT_COMMERCIAL_ENTRY_POINT",
+      contact: contact,
+    };
   }
 
-  function contactReadinessMeta(o) {
+  function isSwitchboardOrDepartmentPhone(contact, o) {
+    var pc = (o && o.primaryContact) || {};
+    var type = text(
+      (contact &&
+        (contact.phoneTypeLabel ||
+          contact.phoneType ||
+          contact.phoneClassification)) ||
+        pc.phoneTypeLabel ||
+        pc.phoneType ||
+        pc.phoneClassification ||
+        o.companyPhoneLabel ||
+        "",
+    ).toLowerCase();
+    var status = text(
+      (contact && contact.phoneVerificationStatus) ||
+        pc.phoneVerificationStatus ||
+        "",
+    ).toUpperCase();
+    if (
+      /switchboard|department|main.?line|general.?office|reception|front.?desk|none/.test(
+        type,
+      )
+    ) {
+      return true;
+    }
+    if (status === "NO_PHONE") return true;
+    if (
+      type === "none" ||
+      type === "general_switchboard" ||
+      type === "department_phone" ||
+      type === "company_phone" ||
+      type === "main"
+    ) {
+      return true;
+    }
+    // Explicit companyPhone without person phone → treat as non-direct.
+    if (!text(contact && contact.phone) && text(o.companyPhone)) return true;
+    return false;
+  }
+
+  function contactDetailsMeta(o, UI) {
+    var who = whoContactMeta(o, UI);
+    var contact = who.contact || resolveListContact(o, UI) || {};
+    var email = text(
+      contact.email ||
+        o.contactEmail ||
+        (who.missing ? "" : o.primaryContact && o.primaryContact.email) ||
+        "",
+    );
+    var phoneRaw = text(
+      contact.phone ||
+        contact.directPhone ||
+        o.contactPhone ||
+        (who.missing ? "" : o.primaryContact && o.primaryContact.phone) ||
+        "",
+    );
+    var phoneOk =
+      phoneRaw && !isSwitchboardOrDepartmentPhone(contact, o) ? phoneRaw : "";
+    var emailDisplay = email || "Email Not Available";
+    var phoneDisplay = phoneOk || "Phone Not Available";
+    var telHref = "";
+    if (phoneOk) {
+      var keepPlus = phoneOk.trim().charAt(0) === "+";
+      var digits = phoneOk.replace(/[^\d]/g, "");
+      telHref = "tel:" + (keepPlus ? "+" : "") + digits;
+    }
+    return {
+      email: email,
+      phone: phoneOk,
+      emailDisplay: emailDisplay,
+      phoneDisplay: phoneDisplay,
+      emailHref: email ? "mailto:" + email : "",
+      telHref: telHref,
+      sort: (email || phoneOk || "").toLowerCase(),
+      whoName: who.name,
+    };
+  }
+
+  function contactReadinessMeta(o, UI) {
     var tier = text(
       o.contactActionabilityTier || o.contactActionabilityFilterKey || "",
     );
     var label =
+      CONTACT_READINESS_LABELS[tier] ||
       text(o.contactActionabilityLabel) ||
-      (tier === "SALES_READY"
-        ? "Sales-ready"
-        : tier === "REACHABLE"
-          ? "Reachable"
-          : tier === "CONTACT_RESEARCH_REQUIRED"
-            ? "Research needed"
-            : tier === "CONTACT_IDENTIFICATION_REQUIRED"
-              ? "Not identified"
-              : tier || "—");
+      tier ||
+      "—";
+    if (label !== "—") label = toPresentationProperCase(label, UI);
     return {
       tier: tier,
       label: label,
@@ -290,11 +543,17 @@
           (UI && typeof UI.weeklyDeltaStateOf === "function"
             ? UI.weeklyDeltaStateOf(o)
             : "");
-        return { display: w || "—", sort: w || "" };
+        return {
+          display: w ? toPresentationProperCase(w, UI) : "—",
+          sort: w || "",
+        };
       }
       case "marketScope": {
         var m = text(o.marketScope || o.marketScopeLabel || o.population);
-        return { display: m || "—", sort: m.toLowerCase() };
+        return {
+          display: m ? toPresentationProperCase(m, UI) : "—",
+          sort: m.toLowerCase(),
+        };
       }
       case "salesOpportunityType": {
         var s = text(
@@ -303,7 +562,10 @@
             o.opportunityTypeLabel ||
             "",
         );
-        return { display: s || "—", sort: s.toLowerCase() };
+        return {
+          display: s ? toPresentationProperCase(s, UI) : "—",
+          sort: s.toLowerCase(),
+        };
       }
       case "needPeriodAlignment": {
         var aligned =
@@ -313,13 +575,19 @@
         var nd =
           text(o.needDateRelevanceClass) ||
           (aligned ? "Aligned" : text(o.needDateIndicator?.label) || "—");
-        return { display: nd, sort: aligned ? 0 : 1 };
+        return {
+          display: nd === "—" ? nd : toPresentationProperCase(nd, UI),
+          sort: aligned ? 0 : 1,
+        };
       }
       case "opportunityStatus": {
         var st = text(
           o.opportunityStatusLabel || o.statusLabel || o.status || "",
         );
-        return { display: st || "—", sort: st.toLowerCase() };
+        return {
+          display: st ? toPresentationProperCase(st, UI) : "—",
+          sort: st.toLowerCase(),
+        };
       }
       case "lastVerified": {
         var lv = text(
@@ -369,7 +637,99 @@
     );
   }
 
+  function whoCellHtml(o, UI) {
+    var who = whoContactMeta(o, UI);
+    return (
+      '<div class="gdi-list-who' +
+      (who.missing ? " is-missing" : "") +
+      (who.entryPoint ? " is-entry-point" : "") +
+      '"><div class="gdi-list-who-name">' +
+      esc(who.name) +
+      "</div>" +
+      (who.role
+        ? '<div class="gdi-list-who-role">' + esc(who.role) + "</div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function contactDetailsCellHtml(o, UI) {
+    var d = contactDetailsMeta(o, UI);
+    var emailLine = d.email
+      ? '<a class="gdi-list-contact-link" href="' +
+        esc(d.emailHref) +
+        '">' +
+        esc(d.email) +
+        "</a>"
+      : '<span class="gdi-list-contact-missing">' + esc(d.emailDisplay) + "</span>";
+    var phoneLine = d.phone
+      ? '<a class="gdi-list-contact-link" href="' +
+        esc(d.telHref) +
+        '">' +
+        esc(d.phone) +
+        "</a>"
+      : '<span class="gdi-list-contact-missing">' + esc(d.phoneDisplay) + "</span>";
+    return (
+      '<div class="gdi-list-contact-details">' +
+      '<div class="gdi-list-contact-line">' +
+      '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+      ICON_EMAIL +
+      "</span>" +
+      emailLine +
+      "</div>" +
+      '<div class="gdi-list-contact-line">' +
+      '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+      ICON_PHONE +
+      "</span>" +
+      phoneLine +
+      "</div></div>"
+    );
+  }
+
+  function listActionItems(o) {
+    var items = [
+      {
+        act: "view",
+        label: "View Details",
+        title: "Open opportunity drawer",
+      },
+    ];
+    if (o && o.pursuitId) {
+      items.push({
+        act: "pursuit-view",
+        label: "View Pursuit",
+        title: "Open existing pursuit",
+        pursuitId: o.pursuitId,
+      });
+    } else if (o && o.canStartPursuit === true) {
+      items.push({
+        act: "pursuit-start",
+        label: "Start Pursuit",
+        title: "Start pursuit for this opportunity",
+      });
+    }
+    return items;
+  }
+
   function actionsCellHtml(o) {
+    var items = listActionItems(o);
+    var menuHtml = items
+      .map(function (a) {
+        return (
+          '<button type="button" role="menuitem" class="gdi-list-more-menu__item" data-gdi-list-act="' +
+          esc(a.act) +
+          '" data-id="' +
+          esc(o.id) +
+          '"' +
+          (a.pursuitId ? ' data-pursuit-id="' + esc(a.pursuitId) + '"' : "") +
+          ' title="' +
+          esc(a.title || a.label) +
+          '">' +
+          esc(a.label) +
+          "</button>"
+        );
+      })
+      .join("");
     return (
       '<div class="gdi-list-actions action-icons">' +
       '<button type="button" class="action-icon gdi-list-view-btn" data-open="' +
@@ -380,15 +740,23 @@
       esc(opportunityName(o)) +
       '">' +
       ICON_VIEW +
-      "</button></div>"
+      "</button>" +
+      '<button type="button" class="action-icon action-icon--more gdi-list-more-btn" data-gdi-list-more="' +
+      esc(o.id) +
+      '" title="More actions" aria-label="More actions for ' +
+      esc(opportunityName(o)) +
+      '" aria-haspopup="menu" aria-expanded="false">' +
+      ICON_MORE +
+      "</button>" +
+      '<template class="gdi-list-more-template">' +
+      menuHtml +
+      "</template></div>"
     );
   }
 
   function headerCellHtml(col, sortKey, sortDir) {
     if (col.noSort || !col.sortKey) {
-      return (
-        '<th class="no-sort" scope="col">' + esc(col.label) + "</th>"
-      );
+      return '<th class="no-sort" scope="col">' + esc(col.label) + "</th>";
     }
     var active = sortKey === col.sortKey;
     var cls =
@@ -426,38 +794,28 @@
             return "<td>" + esc(demandTypeLabel(o, UI)) + "</td>";
           case "demandWindow":
             return (
-              "<td><div class=\"gdi-list-date\">" +
+              '<td><div class="gdi-list-date">' +
               esc(demandWindowDisplay(o, UI)) +
               "</div></td>"
             );
           case "salesAction": {
             var sa = salesActionMeta(o, UI);
             return (
-              "<td><span class=\"gdi-list-sales-action\" data-sales-action=\"" +
+              '<td><span class="gdi-list-sales-action gdi-list-plain-text" data-sales-action="' +
               esc(sa.key) +
               '">' +
               esc(sa.label) +
               "</span></td>"
             );
           }
-          case "whoToContact": {
-            var who = whoContactMeta(o, UI);
-            return (
-              "<td><div class=\"gdi-list-who" +
-              (who.missing ? " is-missing" : "") +
-              '"><div class="gdi-list-who-name">' +
-              esc(who.name) +
-              "</div>" +
-              (who.role
-                ? '<div class="gdi-list-who-role">' + esc(who.role) + "</div>"
-                : "") +
-              "</div></td>"
-            );
-          }
+          case "whoToContact":
+            return "<td>" + whoCellHtml(o, UI) + "</td>";
+          case "contactDetails":
+            return "<td>" + contactDetailsCellHtml(o, UI) + "</td>";
           case "contactReadiness": {
-            var cr = contactReadinessMeta(o);
+            var cr = contactReadinessMeta(o, UI);
             return (
-              '<td><span class="gdi-list-readiness" data-actionability-tier="' +
+              '<td><span class="gdi-list-readiness gdi-list-plain-text" data-actionability-tier="' +
               esc(cr.tier) +
               '">' +
               esc(cr.label) +
@@ -486,7 +844,7 @@
       COLUMNS_ICON_SVG +
       "</button>" +
       '<div class="gdi-list-col-settings__panel" id="gdiListColumnSettingsPanel" hidden role="menu">' +
-      '<p class="gdi-list-col-settings__hint">Optional columns (existing data only)</p>' +
+      '<p class="gdi-list-col-settings__hint">Optional Columns (Existing Data Only)</p>' +
       OPTIONAL_COLUMNS.map(function (c) {
         var on = optionalMap[c.id] === true;
         return (
@@ -527,10 +885,8 @@
         .join("") ||
       '<tr><td colspan="' +
         cols.length +
-        '"><div class="gdi-list-empty">No opportunities match these filters.</div></td></tr>';
+        '"><div class="gdi-list-empty">No Opportunities Match These Filters.</div></td></tr>';
 
-    // Columns control lives in the shared results toolbar (single row).
-    // Do not render a separate list-table toolbar row.
     return (
       '<div class="gdi-list-table-wrap" data-gdi-view-mode="list" data-gdi-contract="' +
       CONTRACT +
@@ -538,9 +894,11 @@
       '<div class="gdi-list-table-scroll">' +
       '<table class="gdi-commercial-table deals-table" id="gdiCommercialOppTable">' +
       "<thead><tr>" +
-      cols.map(function (c) {
-        return headerCellHtml(c, sortKey, sortDir);
-      }).join("") +
+      cols
+        .map(function (c) {
+          return headerCellHtml(c, sortKey, sortDir);
+        })
+        .join("") +
       "</tr></thead>" +
       "<tbody>" +
       body +
@@ -548,9 +906,6 @@
     );
   }
 
-  /**
-   * Extend UI.sortOpportunities for list-column keys without replacing tile sorts.
-   */
   function idTie(a, b) {
     return String((a && a.id) || "").localeCompare(String((b && b.id) || ""));
   }
@@ -576,14 +931,18 @@
       var bw = whoContactMeta(b, UI);
       if (aw.missing !== bw.missing) cmp = (aw.missing ? 1 : -1) * dir;
       else cmp = aw.sort.localeCompare(bw.sort) * dir;
+    } else if (key === "contactDetails") {
+      cmp =
+        contactDetailsMeta(a, UI).sort.localeCompare(
+          contactDetailsMeta(b, UI).sort,
+        ) * dir;
     } else if (key === "contactReadiness") {
-      var ar = contactReadinessMeta(a).rank;
-      var br = contactReadinessMeta(b).rank;
+      var ar = contactReadinessMeta(a, UI).rank;
+      var br = contactReadinessMeta(b, UI).rank;
       cmp = ar !== br ? (ar - br) * dir : 0;
     } else if (key === "estimatedRoomNights") {
       var an = optionalCellValue(a, "estimatedRoomNights").sort;
       var bn = optionalCellValue(b, "estimatedRoomNights").sort;
-      // Missing numeric values always sort last (direction-independent).
       if (an == null && bn == null) cmp = 0;
       else if (an == null) cmp = 1;
       else if (bn == null) cmp = -1;
@@ -606,7 +965,6 @@
     } else if (key === "eventStartDate") {
       var av = demandWindowSortValue(a);
       var bv = demandWindowSortValue(b);
-      // Unknown / ongoing-without-date always after dated windows.
       if (!av && !bv) cmp = 0;
       else if (!av) cmp = 1;
       else if (!bv) cmp = -1;
@@ -616,6 +974,81 @@
     }
     if (cmp === 0) return idTie(a, b);
     return cmp;
+  }
+
+  var _moreMenuEl = null;
+  var _moreMenuTrigger = null;
+
+  function closeListMoreMenu() {
+    if (_moreMenuEl && _moreMenuEl.parentNode) {
+      _moreMenuEl.parentNode.removeChild(_moreMenuEl);
+    }
+    if (_moreMenuTrigger) {
+      _moreMenuTrigger.setAttribute("aria-expanded", "false");
+    }
+    _moreMenuEl = null;
+    _moreMenuTrigger = null;
+  }
+
+  function openListMoreMenu(trigger, handlers) {
+    handlers = handlers || {};
+    closeListMoreMenu();
+    var tpl = trigger.parentNode && trigger.parentNode.querySelector(
+      ".gdi-list-more-template",
+    );
+    if (!tpl) return;
+    var menu = document.createElement("div");
+    menu.className = "gdi-list-more-menu";
+    menu.setAttribute("role", "menu");
+    menu.innerHTML = tpl.innerHTML;
+    document.body.appendChild(menu);
+    _moreMenuEl = menu;
+    _moreMenuTrigger = trigger;
+    trigger.setAttribute("aria-expanded", "true");
+
+    var rect = trigger.getBoundingClientRect();
+    var mw = menu.offsetWidth || 200;
+    var mh = menu.offsetHeight || 120;
+    var left = Math.min(
+      window.innerWidth - mw - 8,
+      Math.max(8, rect.right - mw),
+    );
+    var top = rect.bottom + 6;
+    if (top + mh > window.innerHeight - 8) {
+      top = Math.max(8, rect.top - mh - 6);
+    }
+    menu.style.left = left + "px";
+    menu.style.top = top + "px";
+
+    menu.addEventListener("click", function (e) {
+      var item = e.target.closest("[data-gdi-list-act]");
+      if (!item) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var act = item.getAttribute("data-gdi-list-act");
+      var id = item.getAttribute("data-id");
+      var pursuitId = item.getAttribute("data-pursuit-id");
+      closeListMoreMenu();
+      if (act === "view" && typeof handlers.openDetail === "function") {
+        handlers.openDetail(id);
+      } else if (
+        act === "pursuit-start" &&
+        typeof handlers.startPursuit === "function"
+      ) {
+        handlers.startPursuit(id);
+      } else if (
+        act === "pursuit-view" &&
+        typeof handlers.viewPursuit === "function"
+      ) {
+        handlers.viewPursuit(pursuitId, id);
+      } else if (act === "view" && typeof handlers.openDetail !== "function") {
+        // Fallback: reuse data-open path
+        var fake = document.querySelector(
+          '[data-gdi-list-open="' + id + '"]',
+        );
+        if (fake) fake.click();
+      }
+    });
   }
 
   function wireListTableInteractions(opts) {
@@ -657,7 +1090,52 @@
       },
     );
 
-    // Row/name/view open uses existing [data-open] handlers in app.js / share-app.js.
+    root.querySelectorAll(".gdi-list-more-btn").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (_moreMenuTrigger === btn && _moreMenuEl) {
+          closeListMoreMenu();
+          return;
+        }
+        openListMoreMenu(btn, {
+          openDetail: openDetail,
+          startPursuit: function (id) {
+            var startBtn = root.querySelector(
+              '[data-pursuit-start="' + id + '"]',
+            );
+            if (startBtn) startBtn.click();
+            else if (typeof opts.startPursuit === "function") {
+              opts.startPursuit(id);
+            }
+          },
+          viewPursuit: function (pursuitId, oppId) {
+            if (typeof openDetail === "function" && oppId) openDetail(oppId);
+            else if (typeof opts.viewPursuit === "function") {
+              opts.viewPursuit(pursuitId, oppId);
+            }
+          },
+        });
+      });
+    });
+
+    if (!wireListTableInteractions._docCloseBound) {
+      wireListTableInteractions._docCloseBound = true;
+      document.addEventListener("click", function (e) {
+        if (
+          _moreMenuEl &&
+          !e.target.closest(".gdi-list-more-menu") &&
+          !e.target.closest(".gdi-list-more-btn")
+        ) {
+          closeListMoreMenu();
+        }
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeListMoreMenu();
+      });
+      window.addEventListener("resize", closeListMoreMenu);
+      window.addEventListener("scroll", closeListMoreMenu, true);
+    }
 
     var toggle = document.getElementById("gdiListColumnSettingsBtn");
     var panel = document.getElementById("gdiListColumnSettingsPanel");
@@ -714,5 +1192,9 @@
     wireListTableInteractions: wireListTableInteractions,
     listTilesIdParity: listTilesIdParity,
     CONTACT_READINESS_RANK: CONTACT_READINESS_RANK,
+    resolveProfessionalTitle: resolveProfessionalTitle,
+    whoContactMeta: whoContactMeta,
+    contactDetailsMeta: contactDetailsMeta,
+    salesActionMeta: salesActionMeta,
   };
 })(typeof window !== "undefined" ? window : globalThis);
