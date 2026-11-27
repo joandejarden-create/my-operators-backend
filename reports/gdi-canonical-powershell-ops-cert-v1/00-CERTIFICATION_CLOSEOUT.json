@@ -1,0 +1,745 @@
+{
+  "contract": "gdi-canonical-powershell-ops-cert-v1",
+  "at": "2026-11-27T23:49:32.662Z",
+  "certificationStatus": "PARTIAL",
+  "founderStatusLine": "PARTIAL — INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW",
+  "notClaimed": "GDI_CANONICAL_POWERSHELL_SUITE_OPERATIONALLY_CERTIFIED",
+  "reasonNotOperationallyCertified": "DryRun/fixture path certified for canonical runners; unified Live Full E2E + hotel-agnostic Findymail Live + clean reconstruction remain open.",
+  "template": {
+    "version": "gdi-canonical-hotel-template-v1",
+    "productWide": true,
+    "hotelSpecificUiForbidden": true,
+    "tabs": [
+      {
+        "id": "executive-summary",
+        "label": "Executive Summary",
+        "requiredSections": [
+          "Commercial Snapshot",
+          "Executive Commercial Assessment",
+          "Demand Composition",
+          "Commercial Demand Outlook",
+          "Dealality Research Receipt",
+          "Research Productivity",
+          "Priority Commercial Opportunities",
+          "Commercial Outcomes"
+        ]
+      },
+      {
+        "id": "opportunities",
+        "label": "Group & Demand Opportunities",
+        "requiredSurfaces": [
+          "List View",
+          "Tiles View",
+          "Columns configuration",
+          "Contact Details presentation",
+          "Actions SVGs",
+          "Opportunity drawers",
+          "Filters",
+          "Compact Market Scope"
+        ]
+      },
+      {
+        "id": "commercial-priorities",
+        "label": "Commercial Priorities",
+        "requiredSurfaces": [
+          "Commercial Priorities"
+        ]
+      }
+    ],
+    "freeze": {
+      "htmlShell": "public/group-demand-intelligence.html",
+      "css": "public/css/group-demand-intelligence.css",
+      "ui": "public/js/group-demand-intelligence/dealality-gdi-ui.js",
+      "executiveSummary": "public/js/group-demand-intelligence/executive-summary-tab.js",
+      "listTable": "public/js/group-demand-intelligence/gdi-commercial-list-table-v1.js",
+      "requiredCssSelectors": [
+        ".gdi-es-receipt",
+        ".gdi-es-methodology",
+        ".gdi-es-funnel",
+        ".gdi-market-scope",
+        ".gdi-list-actions",
+        ".gdi-page"
+      ],
+      "requiredJsSubstrings": [
+        "Dealality Research Receipt",
+        "How Research Hours Are Estimated",
+        "How to Read This Report",
+        "resolveTileContactPreviewBlock",
+        "Opportunity of the Week"
+      ],
+      "excludedFromThisContract": [
+        "Portfolio Demand Intelligence redesign"
+      ],
+      "sharedContracts": [
+        "gdi-executive-summary-v2",
+        "gdi-research-productivity-v1",
+        "gdi-customer-publication-package-v1",
+        "gdi-commercial-list-table-v1"
+      ]
+    },
+    "contextualGuides": true,
+    "waveLoading": true,
+    "note": "Preserve accepted integrated UI exactly. Correct data/research/persistence only."
+  },
+  "uiFreeze": "NO_VISUAL_CHANGES",
+  "expenditure": {
+    "findymail": 0,
+    "exaUsd": 0,
+    "surfe": 0
+  },
+  "inventory": {
+    "powershellRunners": [
+      {
+        "path": "scripts/gdi/Invoke-GdiCompetitiveFilterLayoutValidate.ps1",
+        "synopsis": "Read-only validation for GDI competitive Market Scope counts + filter layout assets.",
+        "hasHotelId": false,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": true
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiContactResearch.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 4 — Professional contact research & verification.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiContentHydrationValidate.ps1",
+        "synopsis": "Validate GDI Content Hydration & Presentation gate (permanent STAGED certification).",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiDeepResearch.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 2 — Opportunity deep research (COMMERCIAL_FULL_E2E).",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiDiscovery.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 1 — Demand Discovery.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiExecutiveSummary.ps1",
+        "synopsis": "Canonical PowerShell runner for GDI Executive Summary (read-only).",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiExecutiveSummaryV2Validate.ps1",
+        "synopsis": "Validate GDI Executive Summary V2 (design + metric integrity).",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiFullE2E.ps1",
+        "synopsis": "Canonical GDI Full E2E V3 orchestrator — five permanent research stages plus",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiPromoteCurrent.ps1",
+        "synopsis": "Explicit founder-approved promotion of a reviewed STAGED package to CURRENT.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiQualification.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 5 — Strict FQO + entry-point reachability.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiValidateFullE2E.ps1",
+        "synopsis": "Validate GDI Full E2E V3 + permanent STAGED completion standard.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiWhoHow.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 3 — Dedicated WHO/HOW Agent resolution.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiWyndham26CommercialCertification.ps1",
+        "synopsis": "Validate Wyndham 26/26 commercial certification + optional :8080 probe.",
+        "hasHotelId": false,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": true
+      },
+      {
+        "path": "scripts/gdi/_GdiV3Common.ps1",
+        "synopsis": null,
+        "hasHotelId": false,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureAttractions.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — attractions module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureDestination.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — destination module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureDistribution.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — distribution module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureEvents.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — events module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureModule.ps1",
+        "synopsis": "Shared PowerShell entry for one GDI Leisure Demand Intelligence module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureSports.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — sports module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureUniversities.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — universities module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false
+      }
+    ],
+    "sharedHelper": "scripts/gdi/_GdiV3Common.ps1",
+    "nodeStageCli": "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+    "hotelAgnosticCheckpointADefaults": true,
+    "relatedNpm": [
+      "gdi:canonical-full-e2e",
+      "gdi:weekly-refresh",
+      "gdi:weekly-discovery-run",
+      "gdi:leisure-demand-intelligence-v1",
+      "gdi:airtable-presentation-persistence-v1",
+      "gdi:canonical-hotel-template-full-e2e-cert-v1"
+    ]
+  },
+  "runnerMatrix": {
+    "at": "2026-11-27T23:49:19.388Z",
+    "hotelAgnosticCheckpointADefaults": true,
+    "runners": [
+      {
+        "path": "scripts/gdi/Invoke-GdiCompetitiveFilterLayoutValidate.ps1",
+        "synopsis": "Read-only validation for GDI competitive Market Scope counts + filter layout assets.",
+        "hasHotelId": false,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": true,
+        "role": "supporting",
+        "status": "IMPLEMENTED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiContactResearch.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 4 — Professional contact research & verification.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiContentHydrationValidate.ps1",
+        "synopsis": "Validate GDI Content Hydration & Presentation gate (permanent STAGED certification).",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiDeepResearch.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 2 — Opportunity deep research (COMMERCIAL_FULL_E2E).",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiDiscovery.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 1 — Demand Discovery.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiExecutiveSummary.ps1",
+        "synopsis": "Canonical PowerShell runner for GDI Executive Summary (read-only).",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiExecutiveSummaryV2Validate.ps1",
+        "synopsis": "Validate GDI Executive Summary V2 (design + metric integrity).",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "supporting",
+        "status": "IMPLEMENTED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiFullE2E.ps1",
+        "synopsis": "Canonical GDI Full E2E V3 orchestrator — five permanent research stages plus",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiPromoteCurrent.ps1",
+        "synopsis": "Explicit founder-approved promotion of a reviewed STAGED package to CURRENT.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiQualification.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 5 — Strict FQO + entry-point reachability.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiValidateFullE2E.ps1",
+        "synopsis": "Validate GDI Full E2E V3 + permanent STAGED completion standard.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiWhoHow.ps1",
+        "synopsis": "GDI Full E2E V3 Stage 3 — Dedicated WHO/HOW Agent resolution.",
+        "hasHotelId": true,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": false,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi/Invoke-GdiWyndham26CommercialCertification.ps1",
+        "synopsis": "Validate Wyndham 26/26 commercial certification + optional :8080 probe.",
+        "hasHotelId": false,
+        "hasDryRun": false,
+        "hasResume": false,
+        "hasFindymail": false,
+        "wyndhamHardcode": true,
+        "role": "hotel_specific_cert",
+        "status": "PARTIAL",
+        "note": "Wyndham-specific certification helper — not the product-wide operator path"
+      },
+      {
+        "path": "scripts/gdi/_GdiV3Common.ps1",
+        "synopsis": null,
+        "hasHotelId": false,
+        "hasDryRun": true,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "canonical",
+        "status": "DRYRUN_VALIDATED"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureAttractions.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — attractions module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureDestination.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — destination module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureDistribution.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — distribution module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureEvents.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — events module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureModule.ps1",
+        "synopsis": "Shared PowerShell entry for one GDI Leisure Demand Intelligence module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureSports.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — sports module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      },
+      {
+        "path": "scripts/gdi-leisure/Invoke-GdiLeisureUniversities.ps1",
+        "synopsis": "GDI Leisure Demand Intelligence — universities module.",
+        "hasHotelId": true,
+        "hasDryRun": false,
+        "hasResume": true,
+        "hasFindymail": true,
+        "wyndhamHardcode": false,
+        "role": "leisure_module",
+        "status": "FIXTURE_VALIDATED",
+        "note": "LDI wrappers; also opt-in via Discovery / canonical Full E2E"
+      }
+    ],
+    "summary": {
+      "IMPLEMENTED": 2,
+      "FIXTURE_VALIDATED": 7,
+      "DRYRUN_VALIDATED": 11,
+      "LIVE_EXECUTION_VALIDATED": 0,
+      "OPERATIONALLY_CERTIFIED": 0,
+      "PARTIAL": 1,
+      "BLOCKED": 0,
+      "OBSOLETE": 0
+    }
+  },
+  "orchestration": {
+    "orchestrator": "scripts/gdi/Invoke-GdiFullE2E.ps1 → run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+    "stages": [
+      "DEMAND_DISCOVERY (fourteen-segment + CAD/PLP/LDI opt-in)",
+      "OPPORTUNITY_DEEP_RESEARCH",
+      "WHO_HOW_RESOLUTION",
+      "PROFESSIONAL_CONTACT_RESEARCH (+ Findymail flag)",
+      "COMMERCIAL_QUALIFICATION",
+      "STAGED progression (Live activate; DryRun package validate)"
+    ],
+    "incorporatedViaIndependentRunnersNotUnifiedLive": "CAD/PLP/LDI have module/test/opt-in evidence; Discovery DryRun reuses artifacts. Unified Live Full E2E via generic CLI is REFUSED (exit 3).",
+    "findymail": "Permanent Stage 4 component; Live requires AuthorizeFindymail + paid auth; Surfe never auto",
+    "airtable": "Persistence adapters + cert scripts exist; routine authorized E2E auto-persist path still PARTIAL for hotel-agnostic Live",
+    "gaps": [
+      "UNIFIED_V3_LIVE_ORCHESTRATOR_GAP",
+      "CLEAN_AIRTABLE_ONLY_RECONSTRUCTION_PARTIAL",
+      "FINDYMAIL_LIVE_HOTEL_AGNOSTIC_PATH_PARTIAL",
+      "CHECKPOINT_A_REQUIRES_PER_HOTEL_MANIFEST_AND_AUTH"
+    ]
+  },
+  "tests": {
+    "A": {
+      "id": "A_WYNDHAM_EXISTING_INTELLIGENCE_REPLAY",
+      "paidResearch": false,
+      "stagedVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61",
+      "opportunityCount": 26,
+      "contactScorecard": {
+        "opportunityCount": 26,
+        "uniqueCommercialContacts": 40,
+        "personLedgerRows": 54,
+        "fullProfessionalIdentityCoverage": 39,
+        "abbreviatedOrIncompleteIdentity": 1,
+        "verifiedTitleCoverage": 40,
+        "emailVerifiedCoverage": 29,
+        "telephoneVerifiedCoverage": 7,
+        "linkedinVerifiedCoverage": 28,
+        "contactsWithAllThreeChannels": 0,
+        "contactsWithEmailOrTelephone": 30,
+        "contactsWithUsableOutreach": 34,
+        "emailNotYetResearched": 4,
+        "telephoneNotYetResearched": 14,
+        "linkedinNotYetResearched": 12,
+        "findymailEligibleRemaining": 0,
+        "opportunitiesRequiringAlternativeResearch": 0,
+        "alternativeResearchPresent": 14,
+        "opportunitiesWithVerifiedDirectBuyer": 0,
+        "opportunitiesMissingAuthorityAnnotation": 26,
+        "opportunitiesWithAlternativeContacts": 14
+      },
+      "fullE2eDryRunNode": {
+        "ok": true,
+        "status": 0,
+        "tail": "SS\"\n      },\n      {\n        \"stageId\": \"WHO_HOW_RESOLUTION\",\n        \"outcome\": \"PASS\"\n      },\n      {\n        \"stageId\": \"PROFESSIONAL_CONTACT_RESEARCH\",\n        \"outcome\": \"PARTIAL\"\n      },\n      {\n        \"stageId\": \"COMMERCIAL_QUALIFICATION\",\n        \"outcome\": \"PASS\"\n      }\n    ],\n    \"passCount\": 4,\n    \"totalStages\": 5,\n    \"complete\": false,\n    \"partial\": true,\n    \"failed\": false\n  },\n  \"outDir\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-v3\\\\recnPB3Q02NO8Ma1o\"\n}\n"
+      },
+      "fullE2eDryRunPowerShell": {
+        "ok": true,
+        "status": 0,
+        "shell": "powershell",
+        "error": null,
+        "tail": "SS\"\n      },\n      {\n        \"stageId\": \"WHO_HOW_RESOLUTION\",\n        \"outcome\": \"PASS\"\n      },\n      {\n        \"stageId\": \"PROFESSIONAL_CONTACT_RESEARCH\",\n        \"outcome\": \"PARTIAL\"\n      },\n      {\n        \"stageId\": \"COMMERCIAL_QUALIFICATION\",\n        \"outcome\": \"PASS\"\n      }\n    ],\n    \"passCount\": 4,\n    \"totalStages\": 5,\n    \"complete\": false,\n    \"partial\": true,\n    \"failed\": false\n  },\n  \"outDir\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-v3\\\\recnPB3Q02NO8Ma1o\"\n}\n"
+      },
+      "stagedProbe": {
+        "ok": true,
+        "stdout": "{\n  \"ok\": true,\n  \"hotelId\": \"recnPB3Q02NO8Ma1o\",\n  \"stagedVersion\": \"gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61\",\n  \"stagedCount\": 26,\n  \"currentVersion\": null\n}\n"
+      },
+      "status": "DRYRUN_VALIDATED"
+    },
+    "B": {
+      "id": "B_SECOND_HOTEL_PORTABILITY",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "stagedVersion": "gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1",
+      "discoveryDryRun": {
+        "ok": true,
+        "status": 0
+      },
+      "fullE2eDryRun": {
+        "ok": true,
+        "status": 0
+      },
+      "discoveryPowerShell": {
+        "ok": true,
+        "status": 0,
+        "shell": "powershell",
+        "error": null
+      },
+      "stagedProbe": {
+        "ok": true,
+        "stdout": "{\n  \"ok\": true,\n  \"hotelId\": \"recLuxvwwxID7U2B8\",\n  \"stagedVersion\": \"gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1\",\n  \"stagedCount\": 68,\n  \"currentVersion\": \"gdi_pub_recLuxvwwxID7U2B8_20261113_local_master_v2\"\n}\n"
+      },
+      "wyndhamAssumptionsDetected": false,
+      "frozenInventoryUnmodified": true,
+      "status": "DRYRUN_VALIDATED"
+    },
+    "C": {
+      "id": "C_INTERRUPTED_EXECUTION_AND_RESUME",
+      "first": {
+        "ok": true,
+        "status": 0
+      },
+      "second": {
+        "ok": true,
+        "status": 0
+      },
+      "duplicateExpenditure": false,
+      "note": "DryRun resume accepted twice without paid providers; Live settled-job reuse remains LIVE_EXECUTION_VALIDATED evidence from prior Wyndham paid runs, not re-proven here.",
+      "status": "DRYRUN_VALIDATED"
+    },
+    "D": {
+      "id": "D_CONTACT_ONLY_CONTINUATION",
+      "contactDryRunNode": {
+        "ok": true,
+        "status": 0
+      },
+      "contactDryRunPowerShell": {
+        "ok": true,
+        "status": 0,
+        "shell": "powershell",
+        "error": null
+      },
+      "liveGenericCliRefused": true,
+      "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (generic V3 CLI still refuses Live — use authorized Findymail Stage 4 path / gold-standard when hotel-agnostic Live closes)",
+      "surfeAuto": false,
+      "status": "DRYRUN_VALIDATED"
+    },
+    "E": {
+      "id": "E_CLEAN_DURABLE_RECONSTRUCTION",
+      "priorStatus": {
+        "classification": "PARTIAL_RECONSTRUCTION_NOT_EXECUTED",
+        "reason": "Clean Airtable-only reconstruction requires full GDO commercial field coverage + contact provenance; cert run verified Airtable contact row presence (missing=0) but did not regenerate a replacement STAGED package.",
+        "airtableContactRowsPresent": 26,
+        "airtableMissing": 0,
+        "didNotOverwriteExistingPackage": true
+      },
+      "executedThisCycle": false,
+      "status": "PARTIAL",
+      "outstanding": "Clean Airtable-only reconstruction still requires full GDO commercial field coverage; not executed as package overwrite."
+    },
+    "F": {
+      "id": "F_WEEKLY_REFRESH",
+      "helpOk": true,
+      "dryProbe": {
+        "ok": false,
+        "status": 1,
+        "tail": "lity/ws-gdi/scripts/gdi-weekly-refresh.mjs:191:24)\n    at file:///C:/Dev/dealality/ws-gdi/scripts/gdi-weekly-refresh.mjs:425:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {\n  code: 'SERPAPI_KEY_required'\n}\n"
+      },
+      "status": "IMPLEMENTED"
+    },
+    "G": {
+      "id": "G_AUTHORIZATION_AND_FAILURE_HANDLING",
+      "powerShellHost": "powershell",
+      "liveWithoutAuthorizePaidResearchFails": true,
+      "liveGenericCliRefusesPaid": true,
+      "checkpointARequiresHotelSpecificAuth": true,
+      "checkpointAPowerShell": {
+        "ok": false,
+        "status": 1,
+        "error": null,
+        "tail": "point A requires -AuthorizationId (founder-authorized ...\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Checkpoint A re...t is permitted.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Checkpoint A requires -AuthorizationId (founder-authorized per hotel/run). No hotel-spec \r\n   ific default is permitted.\r\n \r\n"
+      },
+      "helperFailClosed": true,
+      "silentCompleteForbidden": true,
+      "status": "DRYRUN_VALIDATED"
+    }
+  },
+  "commands": {
+    "fullE2eDryRun": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode DryRun",
+    "discoveryOnly": "pwsh -File scripts/gdi/Invoke-GdiDiscovery.ps1 -HotelId <rec...> -Mode DryRun",
+    "deepOnly": "pwsh -File scripts/gdi/Invoke-GdiDeepResearch.ps1 -HotelId <rec...> -Mode DryRun",
+    "whoHowOnly": "pwsh -File scripts/gdi/Invoke-GdiWhoHow.ps1 -HotelId <rec...> -Mode DryRun",
+    "whoHowCheckpointAPreflight": "pwsh -File scripts/gdi/Invoke-GdiWhoHow.ps1 -HotelId <rec...> -Mode DryRun -AuthorizationId <FOUNDER_GO_…> -HardCeilingUsd 5 -Manifest reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json -ContinuationOnly -Resume -PreflightOnly",
+    "contactOnly": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode DryRun",
+    "contactFindymailLive": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -AuthorizeFindymail",
+    "qualificationOnly": "pwsh -File scripts/gdi/Invoke-GdiQualification.ps1 -HotelId <rec...> -Mode DryRun",
+    "resume": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode DryRun -Resume",
+    "validate": "pwsh -File scripts/gdi/Invoke-GdiValidateFullE2E.ps1 -HotelId <rec...> -RequirePort8080",
+    "contentHydration": "pwsh -File scripts/gdi/Invoke-GdiContentHydrationValidate.ps1 -HotelId <rec...> -RequirePort8080",
+    "executiveSummary": "pwsh -File scripts/gdi/Invoke-GdiExecutiveSummary.ps1 -HotelId <rec...> -Mode validate",
+    "weeklyRefresh": "npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run",
+    "promoteCurrentDry": "pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -PublicationVersion <ver> -Mode DryRun",
+    "thisCert": "node scripts/gdi-canonical-powershell-ops-cert-v1.mjs"
+  },
+  "outstanding": [
+    "UNIFIED_V3_LIVE_ORCHESTRATOR_GAP — generic stage CLI refuses Live paid (exit 3)",
+    "FINDYMAIL_LIVE_HOTEL_AGNOSTIC_PATH_PARTIAL — Live Findymail still partially tied to Wyndham gold-standard hydrate helpers",
+    "CLEAN_AIRTABLE_ONLY_RECONSTRUCTION_PARTIAL",
+    "WEEKLY_REFRESH_LIVE_NOT_RE_EXECUTED_THIS_CYCLE",
+    "NO_FRESH_LIVE_HOTEL_RUN_THIS_CYCLE — propose scope+budget before Live certification"
+  ],
+  "proposedLiveCertBudget": {
+    "required": true,
+    "purpose": "One hotel-agnostic Live Full E2E path proof after Live orchestrator gap close (or staged Live WHO/HOW + Contact Findymail on a non-Wyndham hotel)",
+    "suggestedCeilingUsd": 25,
+    "findymailCreditsHardCap": 15,
+    "surfe": "FORBIDDEN_AUTO",
+    "airtableWrites": "FOUNDER_AUTHORIZED_ONLY"
+  }
+}

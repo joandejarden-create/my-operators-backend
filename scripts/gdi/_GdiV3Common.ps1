@@ -92,12 +92,15 @@ function Invoke-GdiWhoHowCheckpointA {
     throw "Missing Checkpoint A CLI: $cli"
   }
 
+  # Hotel-agnostic: never default AuthorizationId / Manifest to a Wyndham-specific path.
   if (-not $AuthorizationId) {
-    $AuthorizationId = 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127'
+    throw 'Checkpoint A requires -AuthorizationId (founder-authorized per hotel/run). No hotel-specific default is permitted.'
   }
-  if ($HardCeilingUsd -le 0) { $HardCeilingUsd = 5 }
+  if ($HardCeilingUsd -le 0) {
+    throw 'Checkpoint A requires -HardCeilingUsd > 0.'
+  }
   if (-not $Manifest) {
-    $Manifest = 'reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json'
+    throw 'Checkpoint A requires -Manifest (hotel-specific tranche). No Wyndham-hardcoded default is permitted.'
   }
 
   $nodeArgs = @(
