@@ -1857,18 +1857,21 @@
         value: MARKET_SCOPE.ALL,
         shortLabel: "All",
         fullLabel: "All Opportunities",
+        btnClass: "gdi-market-scope__btn--all",
         count: counts.ALL != null ? counts.ALL : counts.all,
       },
       {
         value: MARKET_SCOPE.HOTEL,
         shortLabel: "Hotel",
         fullLabel: "Hotel Opportunities",
+        btnClass: "gdi-market-scope__btn--hotel",
         count: counts.HOTEL != null ? counts.HOTEL : counts.hotel,
       },
       {
         value: MARKET_SCOPE.COMPETITIVE,
         shortLabel: "Competitive",
         fullLabel: "Competitive Market Intelligence",
+        btnClass: "gdi-market-scope__btn--competitive",
         count:
           counts.COMPETITIVE != null
             ? counts.COMPETITIVE
@@ -1884,21 +1887,24 @@
           var selected = active === o.value;
           var countText =
             o.count == null || o.count === "" ? "" : " (" + o.count + ")";
+          // Visible labels: All / Hotel / Competitive + counts (never truncate Competitive).
           var label = o.shortLabel + countText;
           return (
-            '<button type="button" class="gdi-market-scope__btn' +
+            '<button type="button" class="gdi-market-scope__btn ' +
+            esc(o.btnClass || "") +
             (selected ? " is-active" : "") +
             '" role="radio" aria-checked="' +
             (selected ? "true" : "false") +
             '" data-gdi-market-scope="' +
             esc(o.value) +
             '" title="' +
-            esc(o.fullLabel) +
+            esc(o.fullLabel + (countText || "")) +
             '" aria-label="' +
             esc(o.fullLabel + (countText || "")) +
             '">' +
+            '<span class="gdi-market-scope__btn-text">' +
             esc(label) +
-            "</button>"
+            "</span></button>"
           );
         })
         .join("") +
@@ -2066,7 +2072,13 @@
       if (looksLikeOrganizedConferenceOrShow(o)) {
         return "ASSOCIATION_CONFERENCE_GROUP";
       }
-      if (hasCredibleScalingExpansionTrigger(o)) {
+      // Honor publication-baked SCALING_COMPANY (and evidence-backed scaling
+      // claims). Do not drop to Association/Other merely because the live
+      // expansion-trigger heuristic is sparse after content hydration.
+      if (
+        baked === "SCALING_COMPANY" ||
+        hasCredibleScalingExpansionTrigger(o)
+      ) {
         return "SCALING_COMPANY";
       }
     }
@@ -2630,6 +2642,12 @@
     label: "Group & Demand\nOpportunities",
   };
 
+  /** Phase 1 — first in chrome; Opportunities remains default landing in app.js */
+  var GDI_EXEC_SUMMARY_TAB = {
+    id: "executive-summary",
+    label: "Executive\nSummary",
+  };
+
   /** PDI-3 — retained after Commercial Priorities (founder middle-tab order) */
   var GDI_PORTFOLIO_TAB = {
     id: "portfolio",
@@ -2641,8 +2659,13 @@
     label: "Commercial Priorities",
   };
 
-  /** Primary tabs: Opportunities → Commercial Priorities → Portfolio. How to Read stays a right-rail info link. */
-  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB, GDI_PORTFOLIO_TAB];
+  /** Primary tabs: Executive Summary → Opportunities → Commercial Priorities → Portfolio. */
+  var GDI_CUSTOMER_TABS = [
+    GDI_EXEC_SUMMARY_TAB,
+    GDI_MAIN_TAB,
+    GDI_PRIORITIES_TAB,
+    GDI_PORTFOLIO_TAB,
+  ];
 
   /**
    * Customer/share property-bar status only.
@@ -2871,6 +2894,8 @@
   function contentTabsHtml(activeTab, tabs) {
     tabs = tabs || [GDI_MAIN_TAB];
     var icons = {
+      "executive-summary":
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4z"/><path d="M4 11h10v2H4z"/><path d="M4 17h16v2H4z"/><circle cx="18" cy="12" r="2.5"/></svg>',
       opportunities:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
       audit:
@@ -2965,11 +2990,22 @@
   }
   var SORT_OPTIONS = [
     { value: "priority", label: "Priority" },
-    { value: "salesRelevance", label: "Sales relevance" },
+    { value: "salesRelevance", label: "Sales Relevance" },
     { value: "hotelFitScore", label: "Hotel Fit" },
     { value: "evidenceConfidence", label: "Evidence" },
-    { value: "eventStartDate", label: "Nearest future date" },
-    { value: "title", label: "Name (A-Z)" },
+    { value: "eventStartDate", label: "Demand Window" },
+    { value: "title", label: "Name (A–Z)" },
+    { value: "demandType", label: "Demand Type" },
+    { value: "salesAction", label: "Sales Action" },
+    { value: "whoToContact", label: "Who to Contact" },
+    { value: "contactDetails", label: "Contact Details" },
+    { value: "contactReadiness", label: "Contact Readiness" },
+    { value: "estimatedRoomNights", label: "Estimated Room Nights" },
+    { value: "weeklyChange", label: "Weekly Change" },
+    { value: "marketScope", label: "Market Scope" },
+    { value: "needPeriodAlignment", label: "Need Period Alignment" },
+    { value: "opportunityStatus", label: "Opportunity Status" },
+    { value: "lastVerified", label: "Last Verified" },
   ];
 
   /** Sales Opportunities quick-filter chip keys (DTO: salesOpportunityQuickFilterKeys). */
@@ -3958,8 +3994,39 @@
     var viewMode = opts.viewMode === "tiles" ? "tiles" : "list";
     var noun = opts.noun || "Opportunities";
     var exportHref = opts.exportHref || "";
+    // Order: Export CSV → Sort Direction → Sort By → Columns SVG → List/Tiles
+    var columnsHtml = "";
+    if (
+      viewMode === "list" &&
+      typeof global !== "undefined" &&
+      global.DealalityGdiCommercialListTable &&
+      typeof global.DealalityGdiCommercialListTable.columnSettingsHtml ===
+        "function"
+    ) {
+      columnsHtml = global.DealalityGdiCommercialListTable.columnSettingsHtml(
+        opts.optionalColumns || null,
+        {
+          inventoryRows: opts.inventoryRows || null,
+          UI: root.DealalityGdiUi || global.DealalityGdiUi,
+        }
+      );
+    } else if (
+      viewMode === "list" &&
+      typeof window !== "undefined" &&
+      window.DealalityGdiCommercialListTable &&
+      typeof window.DealalityGdiCommercialListTable.columnSettingsHtml ===
+        "function"
+    ) {
+      columnsHtml = window.DealalityGdiCommercialListTable.columnSettingsHtml(
+        opts.optionalColumns || null,
+        {
+          inventoryRows: opts.inventoryRows || null,
+          UI: root.DealalityGdiUi || window.DealalityGdiUi,
+        }
+      );
+    }
     return (
-      '<div class="results-toolbar gdi-browse-toolbar">' +
+      '<div class="results-toolbar gdi-browse-toolbar" data-gdi-toolbar-row="1">' +
       '<div class="results-count" aria-live="polite">Showing <strong>' +
       esc(shown) +
       "</strong> of <strong>" +
@@ -3988,6 +4055,7 @@
         );
       }).join("") +
       "</select></div>" +
+      columnsHtml +
       '<div class="gdi-view-toggle" role="group" aria-label="Layout">' +
       '<button type="button" class="gdi-view-toggle__btn' +
       (viewMode === "list" ? " is-active" : "") +
@@ -4000,6 +4068,46 @@
       (viewMode === "tiles") +
       '">Tiles</button>' +
       "</div></div></div>"
+    );
+  }
+
+  function founderInventoryModeSelectorHtml(opts) {
+    opts = opts || {};
+    if (!opts.show) return "";
+    var mode = String(opts.mode || "staged").toLowerCase();
+    var counts = opts.counts || {};
+    var items = [
+      { id: "staged", label: "Staged", count: counts.staged },
+      { id: "proposed", label: "Proposed", count: counts.proposed },
+      { id: "hold", label: "HOLD", count: counts.hold },
+      { id: "continuation", label: "Continuations", count: counts.continuation },
+      { id: "published", label: "Published", count: counts.published },
+    ];
+    return (
+      '<div class="gdi-founder-inventory-modes" role="group" aria-label="Founder inventory mode">' +
+      '<span class="gdi-founder-inventory-modes__label">Founder inventory</span>' +
+      items
+        .map(function (it) {
+          var countLabel =
+            it.count != null && it.count !== ""
+              ? " (" + String(it.count) + ")"
+              : "";
+          return (
+            '<button type="button" class="gdi-founder-inventory-modes__btn' +
+            (mode === it.id ? " is-active" : "") +
+            '" data-gdi-founder-inventory="' +
+            esc(it.id) +
+            '" aria-pressed="' +
+            (mode === it.id) +
+            '">' +
+            esc(it.label) +
+            esc(countLabel) +
+            "</button>"
+          );
+        })
+        .join("") +
+      '<span class="gdi-founder-inventory-modes__hint">Review only — not CURRENT publication</span>' +
+      "</div>"
     );
   }
 
@@ -4158,6 +4266,13 @@
     var dir = sortDir == null ? 1 : sortDir;
     rows = (rows || []).slice();
     rows.sort(function (a, b) {
+      var Table =
+        (typeof window !== "undefined" && window.DealalityGdiCommercialListTable) ||
+        null;
+      if (Table && typeof Table.compareForSortKey === "function") {
+        var listCmp = Table.compareForSortKey(a, b, key, dir, root.DealalityGdiUi);
+        if (listCmp != null) return listCmp;
+      }
       var av = a[key];
       var bv = b[key];
       if (key === "salesRelevance") {
@@ -4940,9 +5055,24 @@
       opts = opts || {};
       var r = shortContactRoleLabel(raw);
       if (!r || FORBIDDEN[r]) return "Role Not Yet Verified";
+      // Department / programme labels are not professional titles (List parity).
+      if (
+        /^(events|event|gala|membership|membership events|gala\s*\/\s*membership events)$/i.test(
+          r,
+        )
+      ) {
+        return "Role Not Yet Verified";
+      }
       // Frozen professional_title / package subtitle: do not remap to opportunity roles.
       if (opts.preserveFrozen) {
         if (/decision[-\s]?maker|potential buyer|contact under review|role unverified|^relevant contact$/i.test(r)) {
+          return "Role Not Yet Verified";
+        }
+        if (
+          /^(events|event|gala|membership|membership events|gala\s*\/\s*membership events)$/i.test(
+            r,
+          )
+        ) {
           return "Role Not Yet Verified";
         }
         return toProperCaseContactRoleLabel(r);
@@ -6330,8 +6460,23 @@
    * List/Tiles grid of opportunity cards (same tile content; layout differs).
    * Classification: REUSABLE_PRODUCT_UI
    */
-  function opportunityCardsGridHtml(rows, viewMode, activeFilters) {
+  function opportunityCardsGridHtml(rows, viewMode, activeFilters, opts) {
     var mode = viewMode === "tiles" ? "tiles" : "list";
+    if (mode === "list") {
+      var Table =
+        (typeof window !== "undefined" && window.DealalityGdiCommercialListTable) ||
+        null;
+      if (Table && typeof Table.tableHtml === "function") {
+        opts = opts || {};
+        return Table.tableHtml(rows || [], {
+          UI: root.DealalityGdiUi,
+          sortKey: opts.sortKey,
+          sortDir: opts.sortDir,
+          optionalColumns: opts.optionalColumns,
+          inventoryRows: opts.inventoryRows || null,
+        });
+      }
+    }
     var cards = (rows || [])
       .map(function (o) {
         return opportunityTileHtml(
@@ -6591,6 +6736,8 @@
         viewMode: opts.viewMode,
         noun: opts.noun,
         exportHref: opts.exportHref || "",
+        inventoryRows: opts.inventoryRows || null,
+        optionalColumns: opts.optionalColumns || null,
       }) +
       "</div>"
     );
@@ -10837,6 +10984,7 @@
     competitiveStatusPillHtml: competitiveStatusPillHtml,
     competitiveVerificationStatusDrawerHtml: competitiveVerificationStatusDrawerHtml,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
+    OPPORTUNITY_TYPE_FILTER_LABELS: OPPORTUNITY_TYPE_FILTER_LABELS,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
     countByMarketScope: countByMarketScope,
     matchesMarketScopeFilter: matchesMarketScopeFilter,
@@ -10850,6 +10998,7 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    GDI_EXEC_SUMMARY_TAB: GDI_EXEC_SUMMARY_TAB,
     GDI_PORTFOLIO_TAB: GDI_PORTFOLIO_TAB,
     GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
     GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,
@@ -10878,6 +11027,7 @@
     workflowPresetHtml: workflowPresetHtml,
     normalizeCustomerWorkflowFilter: normalizeCustomerWorkflowFilter,
     resultsToolbarHtml: resultsToolbarHtml,
+    founderInventoryModeSelectorHtml: founderInventoryModeSelectorHtml,
     filterOpportunities: filterOpportunities,
     sortOpportunities: sortOpportunities,
     opportunityToBriefItem: opportunityToBriefItem,
@@ -10909,6 +11059,7 @@
     selectCompactTileContact: selectCompactTileContact,
     resolveTileContactPreviewBlock: resolveTileContactPreviewBlock,
     compactTileContactHtml: compactTileContactHtml,
+    normalizePriorityFilterKey: normalizePriorityFilterKey,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
     inventoryViewToggleHtml: inventoryViewToggleHtml,

@@ -1,0 +1,48 @@
+---
+description: Permanent end-to-end integrated delivery — merge, sync, :8080 founder review
+alwaysApply: true
+---
+
+# Dealality integrated delivery (permanent)
+
+**Contract:** `DEALALITY_INTEGRATED_DELIVERY_V1`  
+**Doc:** `docs/ai-build-system/DEALALITY_INTEGRATED_DELIVERY_V1.md`
+
+## Default assignment scope
+
+Every implementation assignment automatically includes: architecture audit → non-regression baseline → implement → tests → PR → Integration Controller coordination → CI → IC-authorized merge → post-merge sync → canonical `:8080` refresh → cumulative browser validation → founder handoff.
+
+Do **not** routinely require separate founder prompts for integration, merge coordination, sync, or server restoration.
+
+## Completion status
+
+Do **not** routinely stop at `PR OPEN`, `AWAITING_INTEGRATION_CONTROLLER`, `IMPLEMENTATION COMPLETE`, or feature-branch-only validation.
+
+**Normal successful status:**
+
+```text
+INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW
+```
+
+Return only after merge to `main`, home sync, correct `:8080` workspace identity, requested + previously accepted functionality verified, inventory accessible, and browser evidence captured.
+
+Otherwise `PARTIAL` or `BLOCKED` with the exact outstanding action.
+
+## Integration Controller
+
+- IC retains exclusive merge authority.
+- Product streams **initiate** the established handoff: `npm run dealality:remote-pr-merge -- --pr <n>` when required CI is green.
+- Do not bypass CI or merge protections.
+- If a separate authorized action cannot be initiated, return `BLOCKED` — do not claim founder-review ready.
+
+## Port 8080
+
+Canonical cumulative founder review environment only. Feature streams use assigned ports. Enforce `DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1`. Apply `DEALALITY_ADDITIVE_NON_REGRESSION_V1`.
+
+## Distinctions
+
+Code merge / local `:8080` availability ≠ CURRENT publication ≠ production deploy. Those remain separately authorized.
+
+## GDI
+
+Also enforce FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT. Research artifacts alone ≠ operational completion.

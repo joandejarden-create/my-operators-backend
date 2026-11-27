@@ -353,6 +353,8 @@
       viewMode: state.viewMode,
       noun: opts.noun || "Opportunities",
       exportHref: opts.exportHref || "",
+      // Full hotel inventory — never the temporary filtered browse set.
+      inventoryRows: state.opportunities || [],
     };
   }
 
@@ -362,7 +364,12 @@
       return UI.opportunityCardsGridHtml(
         list,
         state.viewMode || "tiles",
-        state.filters || {}
+        state.filters || {},
+        {
+          sortKey: state.sortKey,
+          sortDir: state.sortDir,
+          inventoryRows: state.opportunities || [],
+        }
       );
     }
     return "";

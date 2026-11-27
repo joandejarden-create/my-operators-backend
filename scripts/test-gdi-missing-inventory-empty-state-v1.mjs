@@ -115,7 +115,7 @@ check("cache_bust_updated", () => {
   assert.match(html, /app\.js\?v=gdi-restore-canonical-staged-workflow-v1/);
   assert.match(
     html,
-    /dealality-gdi-ui\.js\?v=gdi-customer-ui-regression-v1-1/,
+    /dealality-gdi-ui\.js\?v=gdi-sortable-list-v1/,
   );
 });
 

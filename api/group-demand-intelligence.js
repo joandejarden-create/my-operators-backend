@@ -872,15 +872,75 @@ export async function getGdiOpportunities(req, res) {
       String(req.query.publicationPackage || "") === "0";
     const wantPublicationPackage = !forceLive;
     if (wantPublicationPackage && hotelId) {
+      const previewParam = String(req.query.preview || "")
+        .trim()
+        .toLowerCase();
+      // Founder-only proposed / HOLD / continuation review — Wyndham locked
+      // write-set. Read-only; never activates STAGED or publishes CURRENT.
+      if (
+        previewParam === "proposed" ||
+        previewParam === "hold" ||
+        previewParam === "continuation"
+      ) {
+        const {
+          resolveWyndhamFounderInventoryPreview,
+          WYNDHAM_HOTEL_ID,
+        } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-wyndham-proposed-26-founder-preview-v1.js"
+        );
+        if (hotelId !== WYNDHAM_HOTEL_ID) {
+          return res.status(404).json({
+            ok: false,
+            error: "founder_preview_inventory_unavailable",
+            message:
+              "Founder proposed/HOLD/continuation inventory preview is registered for Wyndham San Diego Bayside only.",
+            hotelId,
+            preview: previewParam,
+          });
+        }
+        const bucket =
+          previewParam === "hold"
+            ? "hold"
+            : previewParam === "continuation"
+              ? "continuation"
+              : "proposed";
+        const resolved = resolveWyndhamFounderInventoryPreview({ bucket });
+        if (!resolved.ok) {
+          return res.status(404).json(resolved);
+        }
+        let opportunities = resolved.opportunities || [];
+        try {
+          const { attachPackageCustomerPresentation } = await import(
+            "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+          );
+          opportunities = attachPackageCustomerPresentation(
+            opportunities,
+            resolved.meta || {},
+          );
+        } catch (attachErr) {
+          console.error(
+            "[gdi] proposed founder preview attach failed",
+            attachErr?.message || attachErr,
+          );
+        }
+        res.setHeader("X-GDI-Surface", "FOUNDER_PROPOSED_WRITE_SET_PREVIEW");
+        res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+        return res.json({
+          ok: true,
+          hotelId,
+          count: opportunities.length,
+          opportunities,
+          publication: resolved.meta || null,
+          listScope: resolved.meta?.listScope || "FOUNDER_PROPOSED_WRITE_SET",
+          experimentalLabel: "EXPERIMENTAL / PILOT — FOUNDER REVIEW ONLY",
+        });
+      }
       const {
         resolvePreviewOpportunitiesFromPublicationPackage,
         mergeShareFeedbackOntoPackageOpportunities,
       } = await import(
         "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
       );
-      const previewParam = String(req.query.preview || "")
-        .trim()
-        .toLowerCase();
       const requireStagedPreview = previewParam === "staged";
       const requireCurrentPreview =
         previewParam === "current" || previewParam === "published";
@@ -1761,14 +1821,64 @@ export async function getGdiOpportunityDetail(req, res) {
       String(req.query.publicationPackage || "") === "0";
     const wantPublicationPackage = !forceLiveDetail;
     if (wantPublicationPackage && hotelId && opportunityId) {
+      const previewParamDetail = String(req.query.preview || "")
+        .trim()
+        .toLowerCase();
+      if (
+        previewParamDetail === "proposed" ||
+        previewParamDetail === "hold" ||
+        previewParamDetail === "continuation"
+      ) {
+        const {
+          findWyndhamFounderPreviewOpportunity,
+          WYNDHAM_HOTEL_ID,
+        } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-wyndham-proposed-26-founder-preview-v1.js"
+        );
+        if (hotelId !== WYNDHAM_HOTEL_ID) {
+          return res.status(404).json({
+            ok: false,
+            error: "founder_preview_inventory_unavailable",
+            hotelId,
+            opportunityId,
+          });
+        }
+        const found = findWyndhamFounderPreviewOpportunity(opportunityId, {});
+        if (!found.ok) {
+          return res.status(404).json(found);
+        }
+        let opportunity = found.opportunity;
+        try {
+          const { attachPackageCustomerPresentation } = await import(
+            "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+          );
+          const attached = attachPackageCustomerPresentation(
+            [opportunity],
+            found.meta || {},
+          );
+          opportunity = attached[0] || opportunity;
+        } catch (attachErr) {
+          console.error(
+            "[gdi] proposed founder detail attach failed",
+            attachErr?.message || attachErr,
+          );
+        }
+        res.setHeader("X-GDI-Surface", "FOUNDER_PROPOSED_WRITE_SET_PREVIEW");
+        return res.json({
+          ok: true,
+          hotelId,
+          opportunity,
+          publication: found.meta || null,
+          experimentalLabel: "EXPERIMENTAL / PILOT — FOUNDER REVIEW ONLY",
+        });
+      }
       const {
         resolveOpportunityFromApprovedPackage,
         mergeShareFeedbackOntoPackageOpportunities,
       } = await import(
         "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
       );
-      const requireStagedPreviewDetail =
-        String(req.query.preview || "").trim().toLowerCase() === "staged";
+      const requireStagedPreviewDetail = previewParamDetail === "staged";
       // Same resolver contract as list: preferStaged when ?preview=staged.
       // Boolean preview:true alone does NOT select STAGED (String(true) !== "staged").
       const pkgResolved = resolveOpportunityFromApprovedPackage({

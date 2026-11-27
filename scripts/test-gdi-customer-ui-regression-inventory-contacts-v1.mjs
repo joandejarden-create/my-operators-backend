@@ -22,8 +22,8 @@ import {
 import { inspectFounderPreviewPublicationAvailability } from "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE_BUST_UI = "gdi-customer-ui-regression-v1-1";
-const CACHE_BUST_APP = "gdi-restore-canonical-staged-workflow-v1";
+const CACHE_BUST_UI = "gdi-sortable-list-v1";
+const CACHE_BUST_APP = "gdi-sortable-list-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -60,7 +60,7 @@ check("empty_state_no_internal_staged_version_jargon", () => {
   assert.match(appJs, /customerFacingMissingInventoryMessage/);
   assert.match(
     appJs,
-    /No opportunities are available for this property yet/,
+    /No customer-ready opportunities are available for this property yet/,
   );
   assert.match(appJs, /data-gdi-recovery="view-research"/);
 });
