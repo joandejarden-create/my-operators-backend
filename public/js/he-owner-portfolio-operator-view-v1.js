@@ -269,18 +269,35 @@ function resolvePrimaryOperator(hotel, ownerDisplayName) {
 
 /**
  * Readable ownership relationship label (never raw codes like OPERATOR).
+ * Customer language: proposed economic ties are "Economic Sponsor", not verified owner.
  */
 function formatOwnershipRelationshipLabel(hotel) {
-  const raw = String(hotel?.relationship_type || hotel?.relationship || "").toUpperCase();
+  const raw = String(hotel?.relationship_type || hotel?.relationship || "")
+    .toUpperCase()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (hotel?.legal_owner && hotel?.economic_owner) {
-    return "Economic control via PropCo";
+    return "Legal Owner Via Property Company";
   }
-  if (raw === "OWNED_BY" || raw === "LEGAL_OWNER") return "Legal / economic ownership";
-  if (raw === "CONTROLLED_BY" || raw === "ECONOMIC_OWNER") return "Economic / controlling ownership";
-  if (raw === "SPONSORED_BY") return "Economic sponsor interest";
-  if (/OWNED|CONTROL/i.test(raw)) return "Owned / controlled";
-  if (raw) return raw.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  return "Owned / controlled";
+  if (raw === "OWNED BY" || raw === "LEGAL OWNER" || raw === "LEGAL PROPERTY OWNER") {
+    return "Legal Owner";
+  }
+  if (
+    raw === "CONTROLLED BY" ||
+    raw === "ECONOMIC OWNER" ||
+    raw === "SPONSORED BY" ||
+    raw === "ECONOMIC SPONSOR" ||
+    /ECONOMIC\s+(OWNER|SPONSOR)/i.test(raw) ||
+    /SPONSOR/i.test(raw)
+  ) {
+    return "Economic Sponsor";
+  }
+  if (/OWNED|CONTROL/i.test(raw)) return "Owned / Controlled";
+  if (raw) {
+    return raw.replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return "Owned / Controlled";
 }
 
 function formatOperatorRelationshipLabel(resolved, hotel) {

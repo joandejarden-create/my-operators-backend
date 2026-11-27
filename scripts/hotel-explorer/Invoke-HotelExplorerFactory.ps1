@@ -23,6 +23,18 @@
     HE_CONTACT_ORG_MAPPING_VALIDATED
     HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED
     HE_CONTACT_PRESENTATION_VALIDATED
+    HE_SUBMARKET_METHODOLOGY_VALIDATED
+    HE_NO_INTERNAL_TERMINOLOGY_LEAKAGE
+    HE_CUSTOMER_COPY_VALIDATED
+    HE_PROPERTY_FACTS_FORMAT_VALIDATED
+    HE_CONTACT_TABLE_LAYOUT_VALIDATED
+    HE_CONTACT_DETAILS_DRAWER_VALIDATED
+    HE_CONTACT_CX_REGRESSION
+    HE_OWNERSHIP_GRAPH_REGRESSION
+    HE_PORTFOLIO_LAYOUT_REGRESSION
+    HE_SUBMARKET_PRESENTATION_REGRESSION
+    HE_FOUNDER_UI_CONTRACT
+    HE_CANONICAL_BROWSER_PARITY (NOT_TESTED when -SkipBrowser)
     HE_LOADING_COMPONENT_CONSISTENT
     HE_HEADER_ACTIONS_HYDRATED
     HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE
@@ -124,6 +136,44 @@ if ($ConsistencyModes -contains $Mode) {
   & node @acceptArgs
   if ($LASTEXITCODE -ne 0) {
     throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+  Write-Host "[HE Factory] Organization & Portfolio UI cleanup gates"
+  & npm run test:he-org-portfolio-ui-cleanup-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Organization & Portfolio UI cleanup gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+  Write-Host "[HE Factory] Executive Ownership Summary narrative gates"
+  & npm run test:he-executive-ownership-narrative-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Executive Ownership Summary narrative gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+  $presArgs = @(".\scripts\hotel-explorer\audit-he-customer-presentation-v1.mjs")
+  if (-not $SkipBrowser) { $presArgs += "--browser" }
+  Write-Host "[HE Factory] customer presentation audit → $($presArgs -join ' ')"
+  & node @presArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE customer presentation audit FAILED for $HotelId (mode=$Mode)"
+  }
+
+  $founderArgs = @(".\scripts\hotel-explorer\audit-he-founder-ui-contract-v1.mjs")
+  if ($SkipBrowser) { $founderArgs += "--skip-browser" } else { $founderArgs += "--browser" }
+  Write-Host "[HE Factory] founder UI contract → $($founderArgs -join ' ')"
+  & node @founderArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE founder UI contract FAILED for $HotelId (mode=$Mode)"
+  }
+
+  if (-not $SkipBrowser) {
+    Write-Host "[HE Factory] Organization & Portfolio layout browser certification"
+    & npm run he:org-portfolio-layout-audit
+    if ($LASTEXITCODE -ne 0) {
+      throw "HE Organization & Portfolio layout browser certification FAILED for $HotelId (mode=$Mode)"
+    }
+  } else {
+    Write-Host "[HE Factory] Organization & Portfolio layout browser certification → NOT_TESTED (SkipBrowser)"
   }
 }
 

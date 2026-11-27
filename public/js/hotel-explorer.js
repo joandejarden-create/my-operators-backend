@@ -807,6 +807,14 @@
           window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
         }
         if (
+          state.tab === "organization" &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.mountOrgKeyPeopleFromContactIntelligence ===
+            "function"
+        ) {
+          window.HotelIntelligenceWorkspace.mountOrgKeyPeopleFromContactIntelligence();
+        }
+        if (
           (state.tab === "sentiment" || state.tab === "brand") &&
           window.HotelIntelligenceWorkspace
         ) {

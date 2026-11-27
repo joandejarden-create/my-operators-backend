@@ -1,0 +1,202 @@
+{
+  "version": "he-founder-ui-contract-four-tabs-v1",
+  "generatedAt": "2026-11-27T22:18:59.205Z",
+  "contractPath": "configs/hotel-explorer/he-founder-ui-contract-four-tabs-v1.json",
+  "browserEnabled": false,
+  "ok": true,
+  "gates": {
+    "HE_CONTACT_CX_REGRESSION": "PASS",
+    "HE_OWNERSHIP_GRAPH_REGRESSION": "PASS",
+    "HE_PORTFOLIO_LAYOUT_REGRESSION": "PASS",
+    "HE_SUBMARKET_PRESENTATION_REGRESSION": "PASS",
+    "HE_FOUNDER_UI_CONTRACT": "PASS",
+    "HE_CANONICAL_BROWSER_PARITY": "NOT_TESTED",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  },
+  "requirementResults": {
+    "HE_CONTACT_CX_REGRESSION": {
+      "status": "PASS",
+      "tab": "Contact Intelligence",
+      "component": "public/js/hotel-contact-intelligence.js + public/css/hotel-contact-intelligence.css + public/css/he-customer-presentation-v1.css",
+      "scope": [
+        "contactJs",
+        "contactCss",
+        "presentationCss"
+      ],
+      "missing": [],
+      "leaked": [],
+      "sourcePr": {
+        "contactIntelligence": {
+          "pr": 645,
+          "branch": "feat/he-contact-column-gdi-parity-v1"
+        },
+        "ownershipGraph": {
+          "pr": 637,
+          "branch": "feat/he-ownership-graph-label-cleanup-v1"
+        },
+        "organizationPortfolio": {
+          "pr": 650,
+          "branch": "feat/he-org-portfolio-ui-cleanup-v1"
+        },
+        "executiveOwnershipNarrative": {
+          "pr": 648,
+          "branch": "feat/he-executive-ownership-summary-cleanup-v1"
+        },
+        "customerPresentation": {
+          "pr": 635,
+          "branch": "feat/he-customer-presentation-cleanup-v1"
+        },
+        "submarketSnapshot": {
+          "source": "stash@{3} / feat/he-submarket-snapshot-ui-cleanup-v1"
+        }
+      }
+    },
+    "HE_OWNERSHIP_GRAPH_REGRESSION": {
+      "status": "PASS",
+      "tab": "Ownership Intelligence",
+      "component": "public/js/he-ownership-control-network-v1.js + public/css/hotel-explorer.css (OCN block)",
+      "scope": [
+        "ocnJs",
+        "explorerCss"
+      ],
+      "missing": [],
+      "leaked": [],
+      "sourcePr": {
+        "contactIntelligence": {
+          "pr": 645,
+          "branch": "feat/he-contact-column-gdi-parity-v1"
+        },
+        "ownershipGraph": {
+          "pr": 637,
+          "branch": "feat/he-ownership-graph-label-cleanup-v1"
+        },
+        "organizationPortfolio": {
+          "pr": 650,
+          "branch": "feat/he-org-portfolio-ui-cleanup-v1"
+        },
+        "executiveOwnershipNarrative": {
+          "pr": 648,
+          "branch": "feat/he-executive-ownership-summary-cleanup-v1"
+        },
+        "customerPresentation": {
+          "pr": 635,
+          "branch": "feat/he-customer-presentation-cleanup-v1"
+        },
+        "submarketSnapshot": {
+          "source": "stash@{3} / feat/he-submarket-snapshot-ui-cleanup-v1"
+        }
+      }
+    },
+    "HE_PORTFOLIO_LAYOUT_REGRESSION": {
+      "status": "PASS",
+      "tab": "Organization & Portfolio",
+      "component": "public/js/hotel-intelligence-workspace.js + public/css/hotel-intelligence-workspace.css + public/css/hotel-explorer.css",
+      "scope": [
+        "workspaceJs",
+        "workspaceCss",
+        "explorerCss"
+      ],
+      "missing": [],
+      "leaked": [],
+      "sourcePr": {
+        "contactIntelligence": {
+          "pr": 645,
+          "branch": "feat/he-contact-column-gdi-parity-v1"
+        },
+        "ownershipGraph": {
+          "pr": 637,
+          "branch": "feat/he-ownership-graph-label-cleanup-v1"
+        },
+        "organizationPortfolio": {
+          "pr": 650,
+          "branch": "feat/he-org-portfolio-ui-cleanup-v1"
+        },
+        "executiveOwnershipNarrative": {
+          "pr": 648,
+          "branch": "feat/he-executive-ownership-summary-cleanup-v1"
+        },
+        "customerPresentation": {
+          "pr": 635,
+          "branch": "feat/he-customer-presentation-cleanup-v1"
+        },
+        "submarketSnapshot": {
+          "source": "stash@{3} / feat/he-submarket-snapshot-ui-cleanup-v1"
+        }
+      }
+    },
+    "HE_SUBMARKET_PRESENTATION_REGRESSION": {
+      "status": "PASS",
+      "tab": "Submarket Snapshot",
+      "component": "public/js/hotel-detail-panel.js + public/js/he-about-this-analysis-v1.js + public/css/hotel-detail-panel.css + public/css/he-customer-presentation-v1.css",
+      "scope": [
+        "detailJs",
+        "detailCss",
+        "aboutJs",
+        "presentationCss"
+      ],
+      "missing": [],
+      "leaked": [],
+      "sourcePr": {
+        "contactIntelligence": {
+          "pr": 645,
+          "branch": "feat/he-contact-column-gdi-parity-v1"
+        },
+        "ownershipGraph": {
+          "pr": 637,
+          "branch": "feat/he-ownership-graph-label-cleanup-v1"
+        },
+        "organizationPortfolio": {
+          "pr": 650,
+          "branch": "feat/he-org-portfolio-ui-cleanup-v1"
+        },
+        "executiveOwnershipNarrative": {
+          "pr": 648,
+          "branch": "feat/he-executive-ownership-summary-cleanup-v1"
+        },
+        "customerPresentation": {
+          "pr": 635,
+          "branch": "feat/he-customer-presentation-cleanup-v1"
+        },
+        "submarketSnapshot": {
+          "source": "stash@{3} / feat/he-submarket-snapshot-ui-cleanup-v1"
+        }
+      }
+    }
+  },
+  "supporting": {
+    "contactDirectory": {
+      "script": "test:he-contact-intelligence-v3-directory",
+      "ok": true,
+      "status": 0
+    },
+    "orgPortfolio": {
+      "script": "test:he-org-portfolio-ui-cleanup-v1",
+      "ok": true,
+      "status": 0
+    },
+    "customerPresentation": {
+      "script": "audit:he-customer-presentation-v1",
+      "ok": true,
+      "status": 0
+    },
+    "executiveNarrative": {
+      "script": "test:he-executive-ownership-narrative-v1",
+      "ok": true,
+      "status": 0
+    }
+  },
+  "factoryWired": true,
+  "browserParity": {
+    "status": "NOT_TESTED",
+    "ok": false,
+    "reason": "browser skipped"
+  },
+  "rootCauseSummary": {
+    "primary": "Founder-approved recoveries remained OPEN/unmerged on GitHub while localhost:8080 (ws-gdi) served origin/main asset hashes, so the UI silently showed the older main implementations.",
+    "notPrimary": [
+      "Browser cache alone",
+      "CSS specificity alone without missing approved commits",
+      "Feature-flag selection for these four tabs"
+    ]
+  }
+}
