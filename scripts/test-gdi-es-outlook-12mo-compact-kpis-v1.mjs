@@ -117,10 +117,29 @@ check("ui_markup_and_css_compact_outlook_only", () => {
   assert.match(css, /\.gdi-es-outlook__top/);
   assert.match(css, /\.gdi-es-outlook__buckets--compact/);
   assert.match(css, /grid-template-columns:\s*repeat\(4,/);
-  assert.match(html, /gdi-es-outlook-12mo-kpis-20261127/);
+  assert.match(html, /gdi-es-outlook-micro-20261127/);
   // Do not regress unrelated ES sections in this scoped change.
   assert.match(js, /Demand Composition/);
   assert.match(js, /Dealality Research Receipt/);
+});
+
+check("ui_kpi_baseline_zero_dim_and_two_line_month_labels", () => {
+  const js = fs.readFileSync(
+    path.join(ROOT, "public/js/group-demand-intelligence/executive-summary-tab.js"),
+    "utf8",
+  );
+  const css = fs.readFileSync(
+    path.join(ROOT, "public/css/group-demand-intelligence.css"),
+    "utf8",
+  );
+  assert.match(js, /function outlookMonthParts/);
+  assert.match(js, /gdi-es-columns__month/);
+  assert.match(js, /gdi-es-columns__year/);
+  assert.match(js, /is-zero/);
+  assert.match(css, /\.gdi-es-outlook__buckets--compact \.gdi-es-kpi__value[\s\S]*?margin-top:\s*auto/);
+  assert.match(css, /\.gdi-es-columns--outlook \.gdi-es-columns__item\.is-zero/);
+  assert.match(css, /\.gdi-es-columns--outlook \.gdi-es-columns__month/);
+  assert.match(css, /\.gdi-es-columns--outlook \.gdi-es-columns__year/);
 });
 
 if (failed) {
