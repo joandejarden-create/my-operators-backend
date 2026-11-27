@@ -34,21 +34,25 @@
     { id: "actions", label: "Actions", sortKey: null, required: true, noSort: true },
   ];
 
-  // Sales Opportunity Type removed from optional Columns (Demand Type covers it).
-  // Underlying salesOpportunityQuickFilterKeys / Sales Opportunities chips unchanged.
+  // Permanently removed from List View (data retained for filters / ES / Admin):
+  // - Contact Readiness
+  // - Opportunity Status
+  // Sales Opportunity Type removed earlier (Demand Type covers it).
+  var RETIRED_OPTIONAL_COLUMN_IDS = [
+    "contactReadiness",
+    "opportunityStatus",
+    "salesOpportunityType",
+  ];
+
   var OPTIONAL_COLUMNS = [
-    { id: "contactReadiness", label: "Contact Readiness", sortKey: "contactReadiness" },
     { id: "estimatedRoomNights", label: "Estimated Room Nights", sortKey: "estimatedRoomNights" },
     { id: "weeklyChange", label: "Weekly Change", sortKey: "weeklyChange" },
     { id: "marketScope", label: "Market Scope", sortKey: "marketScope" },
     { id: "needPeriodAlignment", label: "Need Period Alignment", sortKey: "needPeriodAlignment" },
-    { id: "opportunityStatus", label: "Opportunity Status", sortKey: "opportunityStatus" },
     { id: "lastVerified", label: "Last Verified", sortKey: "lastVerified" },
   ];
 
   var OPTIONAL_COLUMN_SOURCES = {
-    contactReadiness:
-      "contactActionabilityTier / contactActionabilityLabel",
     estimatedRoomNights:
       "estimatedRoomNights | peakRooms | roomNights | estimatedPeakRooms",
     weeklyChange: "weeklyDeltaState / isNewThisWeek (weeklyDeltaStateOf)",
@@ -56,8 +60,6 @@
       "inventoryPopulations | hotelMarketScopeEligible | competitiveMarketScopeEligible | marketScope (Market Scope filter taxonomy)",
     needPeriodAlignment:
       "needDateIndicator.displayLabel | tileNeedDatePreview.displayLabel | needDateMatchV1.timingOverlapLabel",
-    opportunityStatus:
-      "hotelSourcingStatusLabel | commercialStagePillLabel | statusLabel",
     lastVerified: "lastVerifiedAt | lastVerified | evidenceAsOf",
   };
 
@@ -87,12 +89,34 @@
     return String(v == null ? "" : v).trim();
   }
 
+  function sanitizeOptionalColumnPrefs(map) {
+    var next = {};
+    var dirty = false;
+    if (!map || typeof map !== "object") return { map: next, dirty: true };
+    Object.keys(map).forEach(function (k) {
+      if (RETIRED_OPTIONAL_COLUMN_IDS.indexOf(k) >= 0) {
+        dirty = true;
+        return;
+      }
+      if (OPTIONAL_COLUMNS.some(function (c) { return c.id === k; })) {
+        next[k] = map[k] === true;
+      } else {
+        dirty = true;
+      }
+    });
+    return { map: next, dirty: dirty };
+  }
+
   function loadOptionalColumns() {
     try {
       var raw = sessionStorage.getItem(STORAGE_COLUMNS);
       if (!raw) return {};
       var parsed = JSON.parse(raw);
-      return parsed && typeof parsed === "object" ? parsed : {};
+      var sanitized = sanitizeOptionalColumnPrefs(
+        parsed && typeof parsed === "object" ? parsed : {},
+      );
+      if (sanitized.dirty) saveOptionalColumns(sanitized.map);
+      return sanitized.map;
     } catch (e) {
       return {};
     }
@@ -100,7 +124,11 @@
 
   function saveOptionalColumns(map) {
     try {
-      sessionStorage.setItem(STORAGE_COLUMNS, JSON.stringify(map || {}));
+      var sanitized = sanitizeOptionalColumnPrefs(map || {});
+      sessionStorage.setItem(
+        STORAGE_COLUMNS,
+        JSON.stringify(sanitized.map || {}),
+      );
     } catch (e) {
       /* ignore */
     }
@@ -1023,8 +1051,15 @@
   }
 
   function headerCellHtml(col, sortKey, sortDir) {
+    var colAttr = ' data-col="' + esc(col.id) + '"';
     if (col.noSort || !col.sortKey) {
-      return '<th class="no-sort" scope="col">' + esc(col.label) + "</th>";
+      return (
+        '<th class="no-sort" scope="col"' +
+        colAttr +
+        ">" +
+        esc(col.label) +
+        "</th>"
+      );
     }
     var active = sortKey === col.sortKey;
     var cls =
@@ -1033,7 +1068,9 @@
     return (
       '<th class="' +
       cls +
-      '" data-sort="' +
+      '"' +
+      colAttr +
+      ' data-sort="' +
       esc(col.sortKey) +
       '" scope="col" tabindex="0" role="columnheader" aria-sort="' +
       (active ? (sortDir === -1 ? "descending" : "ascending") : "none") +
@@ -1044,57 +1081,53 @@
     );
   }
 
+  function tdWrap(colId, inner) {
+    return '<td data-col="' + esc(colId) + '">' + inner + "</td>";
+  }
+
   function rowCellsHtml(o, cols, UI) {
     return cols
       .map(function (col) {
         switch (col.id) {
           case "opportunity":
-            return "<td>" + identityCellHtml(o) + "</td>";
+            return tdWrap(col.id, identityCellHtml(o));
           case "priority": {
             var p = priorityMeta(o, UI);
             var pill =
               UI && typeof UI.priorityPill === "function"
                 ? UI.priorityPill(p.key)
                 : '<span class="gdi-pill">' + esc(p.label) + "</span>";
-            return "<td>" + pill + "</td>";
+            return tdWrap(col.id, pill);
           }
           case "demandType":
-            return "<td>" + esc(demandTypeLabel(o, UI)) + "</td>";
+            return tdWrap(col.id, esc(demandTypeLabel(o, UI)));
           case "demandWindow":
-            return (
-              '<td><div class="gdi-list-date">' +
-              esc(demandWindowDisplay(o, UI)) +
-              "</div></td>"
+            return tdWrap(
+              col.id,
+              '<div class="gdi-list-date">' +
+                esc(demandWindowDisplay(o, UI)) +
+                "</div>",
             );
           case "salesAction": {
             var sa = salesActionMeta(o, UI);
-            return (
-              '<td><span class="gdi-list-sales-action gdi-list-plain-text" data-sales-action="' +
-              esc(sa.key) +
-              '">' +
-              esc(sa.label) +
-              "</span></td>"
+            return tdWrap(
+              col.id,
+              '<span class="gdi-list-sales-action gdi-list-plain-text" data-sales-action="' +
+                esc(sa.key) +
+                '">' +
+                esc(sa.label) +
+                "</span>",
             );
           }
           case "whoToContact":
-            return "<td>" + whoCellHtml(o, UI) + "</td>";
+            return tdWrap(col.id, whoCellHtml(o, UI));
           case "contactDetails":
-            return "<td>" + contactDetailsCellHtml(o, UI) + "</td>";
-          case "contactReadiness": {
-            var cr = contactReadinessMeta(o, UI);
-            return (
-              '<td><span class="gdi-list-readiness gdi-list-plain-text" data-actionability-tier="' +
-              esc(cr.tier) +
-              '">' +
-              esc(cr.label) +
-              "</span></td>"
-            );
-          }
+            return tdWrap(col.id, contactDetailsCellHtml(o, UI));
           case "actions":
-            return "<td>" + actionsCellHtml(o) + "</td>";
+            return tdWrap(col.id, actionsCellHtml(o));
           default: {
             var opt = optionalCellValue(o, col.id, UI);
-            return "<td>" + esc(opt.display) + "</td>";
+            return tdWrap(col.id, esc(opt.display));
           }
         }
       })
@@ -1470,6 +1503,8 @@
     DEFAULT_COLUMNS: DEFAULT_COLUMNS,
     OPTIONAL_COLUMNS: OPTIONAL_COLUMNS,
     OPTIONAL_COLUMN_SOURCES: OPTIONAL_COLUMN_SOURCES,
+    RETIRED_OPTIONAL_COLUMN_IDS: RETIRED_OPTIONAL_COLUMN_IDS,
+    sanitizeOptionalColumnPrefs: sanitizeOptionalColumnPrefs,
     tableHtml: tableHtml,
     columnSettingsHtml: columnSettingsHtml,
     visibleColumns: visibleColumns,

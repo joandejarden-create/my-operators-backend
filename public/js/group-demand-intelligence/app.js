@@ -88,7 +88,12 @@
       var v = sessionStorage.getItem(STORAGE_PREFIX + "viewMode");
       if (v === "list" || v === "tiles") state.viewMode = v;
       var s = sessionStorage.getItem(STORAGE_PREFIX + "sortKey");
-      if (s) state.sortKey = s;
+      if (s) {
+        state.sortKey =
+          typeof UI.sanitizeListSortKey === "function"
+            ? UI.sanitizeListSortKey(s)
+            : s;
+      }
       var d = sessionStorage.getItem(STORAGE_PREFIX + "sortDir");
       if (d === "1" || d === "-1") state.sortDir = Number(d);
     } catch (e) {

@@ -10,7 +10,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-contact-enrichment-actions-v1";
+const CACHE = "gdi-list-cols-simplify-20261127";
 
 let failed = 0;
 function check(name, fn) {
@@ -86,7 +86,8 @@ check("cache_bust_and_columns_contract", () => {
       "actions",
     ].join(","),
   );
-  assert.ok(Table.OPTIONAL_COLUMNS.some((c) => c.id === "contactReadiness"));
+  assert.ok(!Table.OPTIONAL_COLUMNS.some((c) => c.id === "contactReadiness"));
+  assert.ok(!Table.OPTIONAL_COLUMNS.some((c) => c.id === "opportunityStatus"));
   assert.ok(Table.DEFAULT_COLUMNS.every((c) => !/^[A-Z]{3,}$/.test(c.label) || c.label === "Actions"));
 });
 
@@ -289,8 +290,17 @@ check("linkedin_profile_label_when_url_present", () => {
   assert.match(html, /Phone Not Available/);
 });
 
-check("optional_contact_readiness_still_available", () => {
+check("retired_optional_columns_stripped_from_prefs_and_menu", () => {
   const { DealalityGdiCommercialListTable: Table } = loadModules();
+  Table.saveOptionalColumns({
+    contactReadiness: true,
+    opportunityStatus: true,
+    marketScope: true,
+  });
+  const prefs = Table.loadOptionalColumns();
+  assert.equal(prefs.contactReadiness, undefined);
+  assert.equal(prefs.opportunityStatus, undefined);
+  assert.equal(prefs.marketScope, true);
   const html = Table.tableHtml(
     [
       {
@@ -298,19 +308,19 @@ check("optional_contact_readiness_still_available", () => {
         title: "Beta",
         priority: "WATCHLIST",
         contactActionabilityTier: "CONTACT_RESEARCH_REQUIRED",
-        contactActionabilityLabel: "Contact research needed",
         primaryContact: { name: "Sam", title: "Procurement Lead" },
+        hotelMarketScopeEligible: true,
       },
     ],
     {
       sortKey: "title",
       sortDir: 1,
-      optionalColumns: { contactReadiness: true },
+      optionalColumns: { contactReadiness: true, opportunityStatus: true, marketScope: true },
     },
   );
-  assert.match(html, /Contact Readiness/);
-  assert.match(html, /Contact Research Needed/);
-  assert.match(html, /gdi-list-plain-text/);
+  assert.doesNotMatch(html, />Contact Readiness</);
+  assert.doesNotMatch(html, />Opportunity Status</);
+  assert.match(html, /Market Scope|Hotel/);
 });
 
 check("css_proper_case_headers_and_menu", () => {

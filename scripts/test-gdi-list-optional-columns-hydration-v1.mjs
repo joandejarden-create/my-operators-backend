@@ -10,7 +10,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-competitive-filter-layout-v1";
+const CACHE = "gdi-list-cols-simplify-20261127";
 
 let failed = 0;
 function check(name, fn) {
@@ -100,7 +100,8 @@ check("cache_and_no_sales_opportunity_type_column", () => {
   );
   const { DealalityGdiCommercialListTable: Table } = loadModules();
   assert.ok(!Table.OPTIONAL_COLUMNS.some((c) => c.id === "salesOpportunityType"));
-  assert.ok(Table.OPTIONAL_COLUMNS.some((c) => c.id === "contactReadiness"));
+  assert.ok(!Table.OPTIONAL_COLUMNS.some((c) => c.id === "contactReadiness"));
+  assert.ok(!Table.OPTIONAL_COLUMNS.some((c) => c.id === "opportunityStatus"));
   assert.ok(Table.OPTIONAL_COLUMNS.some((c) => c.id === "marketScope"));
 });
 
@@ -118,17 +119,20 @@ check("market_scope_hydration_from_eligibility", () => {
   );
 });
 
-check("need_period_and_opportunity_status_hydration", () => {
+check("need_period_hydration_without_retired_status_column", () => {
   const { DealalityGdiCommercialListTable: Table, DealalityGdiUi: UI } =
     loadModules();
   const need = Table.optionalCellValue(mixedScope[2], "needPeriodAlignment", UI);
   assert.equal(need.display, "No Current Match");
   assert.equal(need.populated, true);
-  const status = Table.optionalCellValue(hotelOnly[0], "opportunityStatus", UI);
-  assert.match(status.display, /Hotel Sourcing Unconfirmed/i);
   assert.equal(
     Table.optionalCellValue(hotelOnly[0], "estimatedRoomNights", UI).populated,
     false,
+  );
+  // Underlying status label still exists on DTO; column is retired from List View.
+  assert.match(
+    String(hotelOnly[0].hotelSourcingStatusLabel || ""),
+    /Hotel Sourcing Unconfirmed/i,
   );
 });
 
@@ -137,8 +141,8 @@ check("menu_hides_empty_and_redundant_market_scope_when_uniform", () => {
     loadModules();
   const hotelAssess = Table.assessAllOptionalColumns(hotelOnly, UI);
   const byId = Object.fromEntries(hotelAssess.map((a) => [a.id, a]));
-  assert.equal(byId.contactReadiness.offer, true);
-  assert.equal(byId.opportunityStatus.offer, true);
+  assert.equal(byId.contactReadiness, undefined);
+  assert.equal(byId.opportunityStatus, undefined);
   // Hotel-only inventory still offers Market Scope so column matches filter taxonomy.
   assert.equal(byId.marketScope.offer, true);
   assert.equal(byId.marketScope.decision, "RETAIN_HYDRATED_HOTEL_ONLY");
@@ -155,6 +159,8 @@ check("menu_hides_empty_and_redundant_market_scope_when_uniform", () => {
   assert.ok(ids.includes("marketScope"));
   assert.ok(ids.includes("needPeriodAlignment"));
   assert.ok(!ids.includes("salesOpportunityType"));
+  assert.ok(!ids.includes("contactReadiness"));
+  assert.ok(!ids.includes("opportunityStatus"));
 });
 
 check("column_menu_html_data_driven_and_prefs_preserved", () => {
@@ -162,14 +168,20 @@ check("column_menu_html_data_driven_and_prefs_preserved", () => {
     loadModules();
   Table.saveOptionalColumns({
     contactReadiness: true,
+    opportunityStatus: true,
     marketScope: true,
     estimatedRoomNights: true,
   });
-  const htmlHotel = Table.columnSettingsHtml(Table.loadOptionalColumns(), {
+  const prefs = Table.loadOptionalColumns();
+  assert.equal(prefs.contactReadiness, undefined);
+  assert.equal(prefs.opportunityStatus, undefined);
+  assert.equal(prefs.marketScope, true);
+  const htmlHotel = Table.columnSettingsHtml(prefs, {
     inventoryRows: hotelOnly,
     UI,
   });
-  assert.match(htmlHotel, /Contact Readiness/);
+  assert.doesNotMatch(htmlHotel, /Contact Readiness/);
+  assert.doesNotMatch(htmlHotel, /Opportunity Status/);
   assert.doesNotMatch(htmlHotel, /Sales Opportunity Type/);
   assert.match(htmlHotel, /Market Scope/);
   assert.doesNotMatch(htmlHotel, /Estimated Room Nights/);
@@ -194,7 +206,7 @@ check("table_uses_inventory_not_filtered_rows_for_availability", () => {
     inventoryRows: mixedScope,
   });
   assert.match(html, /Market Scope/);
-  assert.match(html, /Contact Readiness/);
+  assert.doesNotMatch(html, />Contact Readiness</);
   assert.match(html, />Hotel</);
 });
 

@@ -4912,9 +4912,43 @@ a.gdi-contact-reveal-signin {
 .gdi-page .gdi-commercial-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1080px;
+  min-width: 1100px;
   text-align: left;
-  table-layout: auto;
+  table-layout: fixed;
+}
+/* Redistribute width after retiring Contact Readiness + Opportunity Status */
+.gdi-page .gdi-commercial-table th[data-col="opportunity"],
+.gdi-page .gdi-commercial-table td[data-col="opportunity"] {
+  width: 22%;
+}
+.gdi-page .gdi-commercial-table th[data-col="priority"],
+.gdi-page .gdi-commercial-table td[data-col="priority"] {
+  width: 7%;
+}
+.gdi-page .gdi-commercial-table th[data-col="demandType"],
+.gdi-page .gdi-commercial-table td[data-col="demandType"] {
+  width: 14%;
+}
+.gdi-page .gdi-commercial-table th[data-col="demandWindow"],
+.gdi-page .gdi-commercial-table td[data-col="demandWindow"] {
+  width: 10%;
+}
+.gdi-page .gdi-commercial-table th[data-col="salesAction"],
+.gdi-page .gdi-commercial-table td[data-col="salesAction"] {
+  width: 10%;
+}
+.gdi-page .gdi-commercial-table th[data-col="whoToContact"],
+.gdi-page .gdi-commercial-table td[data-col="whoToContact"] {
+  width: 14%;
+}
+.gdi-page .gdi-commercial-table th[data-col="contactDetails"],
+.gdi-page .gdi-commercial-table td[data-col="contactDetails"] {
+  width: 16%;
+}
+.gdi-page .gdi-commercial-table th[data-col="actions"],
+.gdi-page .gdi-commercial-table td[data-col="actions"] {
+  width: 7%;
+  white-space: nowrap;
 }
 .gdi-page .gdi-commercial-table thead {
   background: var(--neutral--700, #212c4d);
@@ -4980,8 +5014,17 @@ a.gdi-contact-reveal-signin {
   display: flex;
   gap: 11px;
   align-items: flex-start;
-  min-width: 220px;
-  max-width: 360px;
+  min-width: 0;
+  max-width: none;
+}
+.gdi-page .gdi-commercial-table td[data-col="demandType"],
+.gdi-page .gdi-commercial-table td[data-col="whoToContact"],
+.gdi-page .gdi-commercial-table td[data-col="contactDetails"] {
+  white-space: normal;
+  word-break: break-word;
+}
+.gdi-page .gdi-commercial-table td[data-col="demandType"] {
+  line-height: 1.35;
 }
 .gdi-list-mono {
   width: 36px;

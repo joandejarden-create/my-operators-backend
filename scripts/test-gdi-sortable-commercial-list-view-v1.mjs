@@ -19,7 +19,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-competitive-filter-layout-v1";
+const CACHE = "gdi-list-cols-simplify-20261127";
 
 let failed = 0;
 function check(name, fn) {
@@ -256,6 +256,7 @@ check("optional_columns_toggle_without_fabricated_revenue", () => {
     estimatedRoomNights: true,
     lastVerified: true,
     contactReadiness: true,
+    opportunityStatus: true,
   });
   const html = Table.tableHtml(inventory, {
     sortKey: "priority",
@@ -265,7 +266,8 @@ check("optional_columns_toggle_without_fabricated_revenue", () => {
   });
   assert.match(html, /Estimated Room Nights/);
   assert.match(html, /Last Verified/);
-  assert.match(html, /Contact Readiness/);
+  assert.doesNotMatch(html, />Contact Readiness</);
+  assert.doesNotMatch(html, />Opportunity Status</);
   assert.doesNotMatch(html, /Sales Opportunity Type/);
   assert.match(html, />420</);
   assert.doesNotMatch(html, /ADR|synthetic|estimated revenue|\$\d/i);
