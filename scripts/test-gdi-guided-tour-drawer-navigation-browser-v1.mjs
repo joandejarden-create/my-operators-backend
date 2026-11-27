@@ -43,16 +43,18 @@ const HOTELS = [
 ];
 
 const EXPECTED_TITLES = [
-  /Start with the Opportunities overview/i,
-  /Select your hotel and filters/i,
-  /Understand Market Scope/i,
-  /Read the opportunity cards/i,
-  /Understand opportunity readiness/i,
-  /Open Opportunity Details/i,
-  /Evidence and recommended action/i,
-  /Hotel Validation \/ Action \/ Outcome/i,
-  /Export and continue working the list/i,
-  /How to use GDI/i,
+  /Group & Demand Opportunities/i,
+  /Property and Top Filters/i,
+  /Market Scope/i,
+  /Priority Filters/i,
+  /Sales Opportunities Filters/i,
+  /List and Tiles Views/i,
+  /Read Each Opportunity/i,
+  /Opportunity Drawer/i,
+  /Who to Contact/i,
+  /Evidence and Next Step/i,
+  /Export CSV/i,
+  /How to Use Group & Demand Opportunities/i,
 ];
 
 async function authRoute(page) {
@@ -261,12 +263,14 @@ async function runFullTour(page, hotel, { mobile = false } = {}) {
     return { scripts, links };
   });
   assert.ok(
-    assets.scripts.some((s) => /gdi-guided-report-tour\.js\?v=gdi-howto-read-v1-1g/.test(s)),
-    "page must load gdi-guided-report-tour.js?v=gdi-howto-read-v1-1g"
+    assets.scripts.some((s) => /gdi-guided-report-tour\.js\?v=gdi-howto-read-v1-2-contextual/.test(s)),
+    "page must load gdi-guided-report-tour.js?v=gdi-howto-read-v1-2-contextual"
   );
   assert.ok(
-    assets.scripts.some((s) => /dealality-guided-tour-engine\.js\?v=gdi-howto-read-v1-1g/.test(s)),
-    "page must load dealality-guided-tour-engine.js?v=gdi-howto-read-v1-1g"
+    assets.scripts.some((s) =>
+      /dealality-guided-tour-engine\.js\?v=gdi-howto-read-v1-2-contextual/.test(s)
+    ),
+    "page must load dealality-guided-tour-engine.js?v=gdi-howto-read-v1-2-contextual"
   );
 
   const cardCount = await page.locator("article.brand-card").count();
@@ -277,14 +281,17 @@ async function runFullTour(page, hotel, { mobile = false } = {}) {
   let prevProgress = "";
 
   // Advance with real mouse clicks until finish (or shortened empty inventory).
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 18; i++) {
     const before = await waitForSettled(page);
     stepsLog.push({ ...before, phase: "before-next", i });
-    if (/How to use GDI/i.test(before.title) || /Finish/i.test(before.progress)) {
+    if (
+      /How to Use Group & Demand Opportunities/i.test(before.title) ||
+      /Finish/i.test(before.progress)
+    ) {
       break;
     }
     // On drawer steps: Next must hit the coachmark, not the dialog.
-    if (/Open Opportunity Details|Evidence and recommended|Hotel Validation/i.test(before.title)) {
+    if (/Opportunity Drawer|Who to Contact|Evidence and Next Step/i.test(before.title)) {
       assert.equal(before.drawerOpen, true, `drawer open at ${before.title}`);
       assert.equal(
         before.drawerModal,
@@ -314,13 +321,13 @@ async function runFullTour(page, hotel, { mobile = false } = {}) {
       `Next must advance progress (was ${before.progress} / ${before.title})`
     );
     prevProgress = after.progress;
-    if (/How to use GDI/i.test(after.title)) break;
+    if (/How to Use Group & Demand Opportunities/i.test(after.title)) break;
     if (shortTour && i > 6) break;
   }
 
   // Back through drawer region on inventory hotels.
   if (!shortTour) {
-    // Restart and walk to step 8, then Back twice.
+    // Restart and walk to Who to Contact, then Back twice.
     await page.evaluate(() => {
       try {
         if (window.GdiGuidedReportTour) GdiGuidedReportTour.exit();
@@ -330,20 +337,20 @@ async function runFullTour(page, hotel, { mobile = false } = {}) {
     });
     await page.waitForTimeout(300);
     await startTour(page);
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 8; i++) {
       await clickNav(page, "next", mobile);
       await waitForSettled(page);
     }
     let s = await waitForSettled(page);
-    assert.match(s.title, /Hotel Validation/i);
+    assert.match(s.title, /Who to Contact/i);
     assert.equal(s.drawerOpen, true);
     assert.equal(s.drawerModal, false);
     await clickNav(page, "back", mobile);
     s = await waitForSettled(page);
-    assert.match(s.title, /Evidence and recommended/i);
+    assert.match(s.title, /Opportunity Drawer/i);
     await clickNav(page, "back", mobile);
     s = await waitForSettled(page);
-    assert.match(s.title, /Open Opportunity Details/i);
+    assert.match(s.title, /Read Each Opportunity/i);
 
     // Rapid Next clicks should not freeze (queued pending delta).
     await clickNav(page, "next", mobile);
@@ -352,18 +359,20 @@ async function runFullTour(page, hotel, { mobile = false } = {}) {
     await clickNav(page, "next", mobile);
     s = await waitForSettled(page, { timeout: 15000 });
     assert.ok(
-      /Export|How to use|Evidence|Hotel Validation|Open Opportunity/i.test(s.title),
+      /Export|How to Use|Evidence|Who to Contact|Opportunity Drawer|Read Each/i.test(
+        s.title
+      ),
       `rapid clicks should still settle on a valid step, got ${s.title}`
     );
 
     // Finish remaining steps with Next.
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
       s = await waitForSettled(page);
-      if (/How to use GDI/i.test(s.title)) break;
+      if (/How to Use Group & Demand Opportunities/i.test(s.title)) break;
       await clickNav(page, "next", mobile);
     }
     s = await waitForSettled(page);
-    assert.match(s.title, /How to use GDI/i);
+    assert.match(s.title, /How to Use Group & Demand Opportunities/i);
     await clickNav(page, "next", mobile); // Finish
     await page.waitForTimeout(500);
     s = await tourState(page);

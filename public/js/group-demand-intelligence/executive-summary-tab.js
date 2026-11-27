@@ -493,7 +493,7 @@
       return true;
     });
     return (
-      '<section class="gdi-es-section gdi-es-receipt">' +
+      '<section class="gdi-es-section gdi-es-receipt" data-gdi-tour-target="es-receipt">' +
       '<header class="gdi-es-section__head">' +
       "<h2>Dealality Research Receipt</h2>" +
       "<p>" +
@@ -733,7 +733,7 @@
         ov.customerResearchReceipt.researchProductivity) ||
       {};
     return (
-      '<section class="gdi-es-section">' +
+      '<section class="gdi-es-section" data-gdi-tour-target="es-snapshot">' +
       '<header class="gdi-es-section__head"><h2>Commercial Snapshot</h2>' +
       "<p>Key commercial metrics for this hotel’s qualified demand.</p></header>" +
       '<div class="gdi-es-kpi-ribbon">' +
@@ -743,21 +743,21 @@
         })
         .join("") +
       "</div></section>" +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Executive Commercial Assessment</h2></header>' +
+      '<section class="gdi-es-section" data-gdi-tour-target="es-assessment"><header class="gdi-es-section__head"><h2>Executive Commercial Assessment</h2></header>' +
       renderAssessment(ov.executiveAssessment) +
       "</section>" +
       '<div class="gdi-es-split">' +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Demand Composition</h2><p>Qualified opportunities by demand segment.</p></header>' +
+      '<section class="gdi-es-section" data-gdi-tour-target="es-composition"><header class="gdi-es-section__head"><h2>Demand Composition</h2><p>Qualified opportunities by demand segment.</p></header>' +
       renderBarChart(ov.demandComposition) +
       "</section>" +
-      '<section class="gdi-es-section gdi-es-outlook-section">' +
+      '<section class="gdi-es-section gdi-es-outlook-section" data-gdi-tour-target="es-outlook">' +
       renderOutlook(ov.commercialDemandOutlook) +
       "</section></div>" +
       renderConsolidatedReceipt(ov.customerResearchReceipt, productivity) +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2></header>' +
+      '<section class="gdi-es-section" data-gdi-tour-target="es-priority-opps"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2></header>' +
       renderPrioritySharedTiles(priorities, hotelId) +
       "</section>" +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Outcomes</h2>' +
+      '<section class="gdi-es-section" data-gdi-tour-target="es-outcomes"><header class="gdi-es-section__head"><h2>Commercial Outcomes</h2>' +
       "<p>Verified hotel-reported results — separate from research-time estimates.</p></header>" +
       renderOutcomes(ov.commercialOutcomes) +
       "</section>"
