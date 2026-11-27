@@ -217,6 +217,64 @@ delete process.env.GDI_EXA_AGENT_LIVE;
   pass("adapter_version");
 }
 
+// 9 — Wave-1 structured-output defect permanent remediation (contract + prompt)
+{
+  assert.equal(
+    WHO_HOW_PROMPT_CONTRACT_ID,
+    "gdi-who-how-resolution-agent-contract-v1.1",
+  );
+  const adapterSrc = fs.readFileSync(
+    path.join(
+      root,
+      "lib/group-demand-intelligence/research/exa-agent/gdi-exa-who-how-live-adapter-v1.js",
+    ),
+    "utf8",
+  );
+  assert.ok(
+    /CRITICAL STRUCTURE RULE/i.test(adapterSrc),
+    "adapter prompt must require structured persons when evidence names people",
+  );
+  assert.ok(
+    /whyWeAreShowingThisContact/i.test(adapterSrc),
+    "person schema must include whyWeAreShowingThisContact",
+  );
+  assert.ok(
+    /hotelBuyingAuthorityVerified/i.test(adapterSrc),
+    "person schema must separate buying authority",
+  );
+  // Evidence-only LinkedIn without structured entry points is NOT a recovery
+  const evidenceOnly = {
+    opportunityId: "fx_evidence_only",
+    whoHowStatus: WHO_HOW_STATUS.NO_CREDIBLE_CONTACT_IDENTIFIED,
+    directBuyer: null,
+    entryPoints: [
+      { status: "NOT_FOUND", fullName: null },
+      { status: "NOT_FOUND", fullName: null },
+    ],
+    evidence: [
+      {
+        claim: "Mallory Joyner venue procurement",
+        sourceUrl: "https://linkedin.com/in/mallory-joyner-06273966",
+      },
+    ],
+  };
+  const { normalizeWhoHowAgentOutput } = await import(
+    "../lib/group-demand-intelligence/workflow/gdi-who-how-agent-contract-v1.js"
+  );
+  const normalized = normalizeWhoHowAgentOutput(evidenceOnly, {
+    opportunityId: "fx_evidence_only",
+  });
+  assert.equal(
+    normalized.whoHowStatus,
+    WHO_HOW_STATUS.NO_CREDIBLE_CONTACT_IDENTIFIED,
+  );
+  assert.ok(
+    !(normalized.entryPoints || []).some((e) => e.fullName),
+    "must not invent structured people from evidence prose alone",
+  );
+  pass("wave1_structure_defect_remediation_lock");
+}
+
 if (prevLive != null) process.env.GDI_EXA_AGENT_LIVE = prevLive;
 else delete process.env.GDI_EXA_AGENT_LIVE;
 

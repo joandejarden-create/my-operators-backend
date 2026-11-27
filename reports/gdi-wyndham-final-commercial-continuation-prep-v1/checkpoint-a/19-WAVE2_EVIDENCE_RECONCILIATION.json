@@ -1,0 +1,70 @@
+{
+  "recon": {
+    "version": "gdi-checkpoint-a-wave2-evidence-reconciliation-v1",
+    "uniqueOpportunities": 25,
+    "primaryStatusCounts": {
+      "VERIFIED_ENTRY_POINTS_2": 15,
+      "VERIFIED_DIRECT_BUYER": 8,
+      "VERIFIED_BUYER_INFLUENCER": 2
+    },
+    "primaryStatusSum": 25,
+    "opportunitiesWithDirectBuyerPersonField": 9,
+    "opportunitiesWithInfluencerPersonField": 17,
+    "opportunitiesWithOneEntryPointField": 2,
+    "opportunitiesWithTwoEntryPointFields": 16,
+    "distinctPeopleSlots": 60,
+    "spendReconciliation": {
+      "checkpointACeilingUsd": 5,
+      "wave1IncrementalUsd": 2.5,
+      "wave2IncrementalUsd": 2.5,
+      "cumulativeUsd": 5,
+      "wave2RunnerSpentUsdField": 5,
+      "clarification": "Wave-2 runner spentUsd is cumulative for the authorization ledger (Wave1+Wave2). Incremental Wave-2 spend ≈ USD 2.50; Checkpoint A total USD 5.00."
+    },
+    "discrepancyNotes": [
+      "Primary WHO/HOW statuses sum to 25 (8 DIRECT_BUYER + 2 INFLUENCER + 15 ENTRY_POINTS_2).",
+      "Direct-buyer person-field count can exceed primary DIRECT_BUYER when an opportunity also stores a directBuyer object alongside a different primary status (e.g. influencer-primary with buyer field) — report both layers; do not equate them.",
+      "Two-entry-point field count can exceed VERIFIED_ENTRY_POINTS_2 when buyer/influencer-primary opportunities also carry two entry-point objects."
+    ],
+    "authorityFixes": [
+      {
+        "opportunityId": "disc_e3c24ac052e5",
+        "role": "ENTRY_POINT_1",
+        "name": "Mallory Joyner",
+        "fix": "DOWNGRADED_RATIONALE_DENIES_AUTHORITY"
+      },
+      {
+        "opportunityId": "disc_07661aae63c4",
+        "role": "DIRECT_BUYER",
+        "name": "Jennifer Summers",
+        "fix": "DOWNGRADED_RATIONALE_DENIES_AUTHORITY"
+      },
+      {
+        "opportunityId": "disc_eb896ec92b54",
+        "role": "DIRECT_BUYER",
+        "name": "Jenny Pagel-Guile",
+        "fix": "DOWNGRADED_RATIONALE_DENIES_AUTHORITY"
+      }
+    ]
+  },
+  "authorityFixes": [
+    {
+      "opportunityId": "disc_e3c24ac052e5",
+      "role": "ENTRY_POINT_1",
+      "name": "Mallory Joyner",
+      "fix": "DOWNGRADED_RATIONALE_DENIES_AUTHORITY"
+    },
+    {
+      "opportunityId": "disc_07661aae63c4",
+      "role": "DIRECT_BUYER",
+      "name": "Jennifer Summers",
+      "fix": "DOWNGRADED_RATIONALE_DENIES_AUTHORITY"
+    },
+    {
+      "opportunityId": "disc_eb896ec92b54",
+      "role": "DIRECT_BUYER",
+      "name": "Jenny Pagel-Guile",
+      "fix": "DOWNGRADED_RATIONALE_DENIES_AUTHORITY"
+    }
+  ]
+}

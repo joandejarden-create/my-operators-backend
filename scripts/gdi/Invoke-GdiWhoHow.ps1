@@ -6,6 +6,9 @@
   Uses completed Stage 2 dossiers as input. Finds verified direct buyers or up
   to two alternative entry points. Does not rediscover demand.
 
+  Checkpoint A (authorized Live) invokes the canonical product-wide Exa WHO/HOW
+  live adapter through this script — no ad-hoc Node bypass required.
+
 .EXAMPLE
   .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
 
@@ -13,7 +16,22 @@
   .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -ContinuationOnly -Mode DryRun
 
 .EXAMPLE
-  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -OpportunityId fx_v3_b_two_ep -Mode DryRun
+  # $0 Checkpoint A path preflight (never spends)
+  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun `
+    -AuthorizationId 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127' `
+    -HardCeilingUsd 5 `
+    -Manifest 'reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json' `
+    -ContinuationOnly -Resume -PreflightOnly
+
+.EXAMPLE
+  # Checkpoint A Live — ONLY after founder GO (max USD 5 inside USD 18 aggregate)
+  $env:GDI_EXA_AGENT_LIVE = '1'
+  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode Live `
+    -AuthorizePaidResearch `
+    -AuthorizationId 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127' `
+    -HardCeilingUsd 5 `
+    -Manifest 'reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json' `
+    -ContinuationOnly -Resume
 #>
 [CmdletBinding()]
 param(
@@ -30,12 +48,35 @@ param(
   [switch]$ContinuationOnly,
   [switch]$Resume,
   [switch]$AuthorizePaidResearch,
+  [string]$AuthorizationId = '',
+  [double]$HardCeilingUsd = 0,
+  [string]$Manifest = '',
+  [switch]$PreflightOnly,
   [string]$RepoPath = ''
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot '_GdiV3Common.ps1')
+
+$useCheckpointA = $PreflightOnly -or $AuthorizationId -or $Manifest -or ($HardCeilingUsd -gt 0) -or ($Mode -eq 'Live' -and $AuthorizePaidResearch)
+
+if ($useCheckpointA) {
+  Invoke-GdiWhoHowCheckpointA `
+    -HotelId $HotelId `
+    -Mode $Mode `
+    -OpportunityId $OpportunityId `
+    -OutDir $OutDir `
+    -AuthorizationId $AuthorizationId `
+    -HardCeilingUsd $HardCeilingUsd `
+    -Manifest $Manifest `
+    -ContinuationOnly:$ContinuationOnly `
+    -Resume:$Resume `
+    -AuthorizePaidResearch:$AuthorizePaidResearch `
+    -PreflightOnly:$PreflightOnly `
+    -RepoPath $RepoPath
+  return
+}
 
 Invoke-GdiV3NodeStage -Stage 'WHO_HOW_RESOLUTION' -HotelId $HotelId -Mode $Mode `
   -OpportunityId $OpportunityId -OutDir $OutDir -Fixtures $Fixtures `

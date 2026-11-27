@@ -136,6 +136,11 @@ regexes = [
   # WHO/HOW person schema field for a public LinkedIn profile URL — not an OAuth client secret (PR #613).
   '''verifiedLinkedIn:\s*(?:liUrl|verifiedLinkedIn|null)''',
   '''verifiedLinkedIn:\s*liUrl\s*\|\|\s*null''',
+  # Durable Exa Agent job-store keys / run ids in research reports — not API secrets (PR #615).
+  '''"jobKey"\s*:\s*"exa_deep_''',
+  '''"providerRunId"\s*:\s*"agent_run_''',
+  '''exa_deep_disc_[a-z0-9_]+_[a-f0-9]{8,}''',
+  '''agent_run_[a-f0-9]{16,}''',
   # Profile-match status field name (linkedInStatus / linkedInMatchStatus) — not a LinkedIn OAuth client id (PR #484).
   '''(?i)linkedIn(?:Match)?Status''',
   '''(?i)liProfileMatchStatus''',
