@@ -7489,7 +7489,173 @@
     );
   }
 
+  /**
+   * Full E2E V3 Who to Contact —
+   * Primary Lodging Decision-Maker + Alternative Entry Point 1/2.
+   * whyWeAreShowingThisContact is required and visible in-drawer.
+   */
+  function whoHowDrawerPresentationHtml(o) {
+    var d = o && o.whoHowDrawer;
+    if (!d || !d.primaryDecisionMaker) return "";
+    var statusLine =
+      '<p class="gdi-muted gdi-whohow-status"><strong>Buyer research status:</strong> ' +
+      esc(d.whoHowStatus || "UNKNOWN") +
+      (d.lastVerifiedAt
+        ? " · Last verified " + esc(String(d.lastVerifiedAt).slice(0, 10))
+        : "") +
+      "</p>";
+
+    function channelActionsHtml(channels) {
+      var list = Array.isArray(channels) ? channels : [];
+      if (!list.length) return "";
+      var parts = [];
+      for (var i = 0; i < list.length; i++) {
+        var ch = list[i] || {};
+        var t = String(ch.channelType || ch.type || "").toUpperCase();
+        var v = ch.value || ch.url || "";
+        if (!v) continue;
+        if (t.indexOf("EMAIL") >= 0) {
+          parts.push(
+            '<a class="gdi-btn gdi-btn--secondary" href="mailto:' +
+              esc(v) +
+              '">Email</a>'
+          );
+        } else if (t.indexOf("PHONE") >= 0) {
+          parts.push(
+            '<a class="gdi-btn gdi-btn--secondary" href="tel:' +
+              esc(String(v).replace(/[^\d+]/g, "")) +
+              '">Phone</a>'
+          );
+        } else if (t.indexOf("LINKEDIN") >= 0 && isSafeHttpUrl(v)) {
+          parts.push(
+            '<a class="gdi-btn gdi-btn--secondary" href="' +
+              esc(v) +
+              '" target="_blank" rel="noopener noreferrer">LinkedIn</a>'
+          );
+        }
+      }
+      if (!parts.length) return "";
+      return (
+        '<p class="gdi-whohow-actions"><strong>Contact actions:</strong> ' +
+        parts.join(" ") +
+        "</p>"
+      );
+    }
+
+    function personBlockHtml(block, fallbackHeading) {
+      if (!block) return "";
+      var heading =
+        block.heading ||
+        fallbackHeading ||
+        "Contact";
+      if (!block.verified) {
+        return (
+          '<div class="gdi-whohow-slot gdi-whohow-slot--unverified">' +
+          "<h4>" +
+          esc(heading) +
+          "</h4>" +
+          "<p><strong>" +
+          esc(block.headline || "Not verified") +
+          "</strong></p>" +
+          (block.note
+            ? '<p class="gdi-muted">' + esc(block.note) + "</p>"
+            : "") +
+          "</div>"
+        );
+      }
+      var whyText =
+        block.whyWeAreShowingThisContact ||
+        block.whyShowing ||
+        "";
+      return (
+        '<div class="gdi-whohow-slot" data-whohow-kind="' +
+        esc(block.kind || "") +
+        '">' +
+        "<h4>" +
+        esc(heading) +
+        (block.badge
+          ? ' <span class="gdi-contact-actionability__badge">' +
+            esc(block.badge) +
+            "</span>"
+          : "") +
+        "</h4>" +
+        "<p><strong>" +
+        esc(block.fullName || "") +
+        "</strong>" +
+        (block.title ? " — " + esc(block.title) : "") +
+        "</p>" +
+        (block.organization
+          ? "<p><strong>Organization:</strong> " + esc(block.organization) + "</p>"
+          : "") +
+        (block.buyerRelationship
+          ? "<p><strong>Buyer relationship:</strong> " +
+            esc(block.buyerRelationship) +
+            "</p>"
+          : "") +
+        (block.relationshipToOpportunity
+          ? "<p><strong>Relationship to opportunity:</strong> " +
+            esc(block.relationshipToOpportunity) +
+            "</p>"
+          : "") +
+        (whyText
+          ? "<p><strong>Why We're Showing This Contact:</strong> " +
+            esc(whyText) +
+            "</p>"
+          : "") +
+        (block.authorityDisclaimer
+          ? '<p class="gdi-contact-quality-quiet">' +
+            esc(block.authorityDisclaimer) +
+            "</p>"
+          : "") +
+        (block.verificationStatus
+          ? "<p><strong>Verification:</strong> " +
+            esc(block.verificationStatus) +
+            "</p>"
+          : "") +
+        (block.recommendedSalesApproach
+          ? "<p><strong>Suggested Sales Approach:</strong> " +
+            esc(block.recommendedSalesApproach) +
+            "</p>"
+          : "") +
+        (block.sourceUrl && isSafeHttpUrl(block.sourceUrl)
+          ? '<p><a href="' +
+            esc(block.sourceUrl) +
+            '" target="_blank" rel="noopener noreferrer">Source / evidence</a></p>'
+          : "") +
+        channelActionsHtml(block.channels) +
+        "</div>"
+      );
+    }
+
+    var html =
+      '<div class="gdi-whohow-drawer" data-gdi-whohow-v3="1">' +
+      "<h3>Who to Contact</h3>" +
+      statusLine +
+      personBlockHtml(
+        d.primaryDecisionMaker,
+        "Primary Lodging Decision-Maker"
+      );
+
+    if (d.showAlternativesWhenBuyerMissing || !d.primaryDecisionMaker.verified) {
+      html += personBlockHtml(
+        d.alternativeContact1,
+        "Alternative Entry Point 1"
+      );
+      html += personBlockHtml(
+        d.alternativeContact2,
+        "Alternative Entry Point 2"
+      );
+    }
+
+    html += "</div>";
+    return html;
+  }
+
   function whoShouldSalesContactHtml(o, whoFn) {
+    // Full E2E V3 drawer structure wins when whoHowDrawer is present.
+    var v3WhoHow = whoHowDrawerPresentationHtml(o);
+    if (v3WhoHow) return contactActionabilityBadgeHtml(o) + v3WhoHow;
+
     // Unified Who to Contact: Scaling gold-standard two-contact slots win for
     // every segment (Events + Scaling). Segment-only whoFn is fallback only.
     var actionabilityPrefix = contactActionabilityBadgeHtml(o);
