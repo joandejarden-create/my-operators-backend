@@ -42,14 +42,16 @@ run("bethesda_ranking_katherine_first_mullen_reece_alts", () => {
   assert.ok(k.linkedinUrl.includes("linkedin.com/in/katherine-button"));
 });
 
-run("shared_renderer_is_compact_directory", () => {
+run("shared_renderer_is_purpose_directory_cx_v2", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "Find Email & Phone");
-  mustInclude(hci, "Alternative Decision-Makers");
-  mustInclude(hci, "Organization Contact Channels");
-  mustInclude(hci, "Research gaps");
-  mustInclude(hci, "hci-person--featured");
-  mustInclude(hci, "Company Profile");
+  mustInclude(hci, "Find Contact Details");
+  mustInclude(hci, "Hotel Leadership");
+  mustInclude(hci, "Ownership & Asset Management");
+  mustInclude(hci, "Company contact routes");
+  mustInclude(hci, "data-hci-purpose-filter");
+  mustInclude(hci, "hci-person");
+  assert.ok(!hci.includes("Recommended First Contact"));
+  assert.ok(!hci.includes("Alternative Decision-Makers"));
   assert.ok(!hci.includes("Ownership contact summary"));
   assert.ok(!hci.includes("hci-quality__item"));
 });
@@ -90,7 +92,7 @@ run("quality_registry_he_ql_027", () => {
   );
   const lesson = reg.lessons.find((l) => l.id === "HE-QL-027");
   assert.ok(lesson);
-  mustInclude(lesson.approvedStandard, "Find Email & Phone");
+  mustInclude(lesson.approvedStandard, "Find Email");
   assert.ok(reg.additionalGates.includes("test:he-contact-intelligence-directory-ux-v1"));
 });
 
@@ -140,30 +142,23 @@ run("quality_registry_he_ql_027", () => {
     profileUrls: p.linkedinUrl
       ? [{ type: "LinkedIn", url: p.linkedinUrl, verified: true }]
       : [],
-    enrichAction: { label: "Find Email & Phone", enabled: true },
+    enrichAction: { label: "Find Contact Details", enabled: true },
   }));
-  const primary = people.find((p) => p.personId === "proposed:katherine_button");
-  const alts = people.filter((p) => p.personId !== primary.personId);
   const vmModel = {
-    version: "contact-intelligence-viewmodel-v2",
+    version: "contact-intelligence-viewmodel-v3",
     hotelId: bethResearch.hotelId,
     hotelName: bethResearch.hotelName,
-    researchWorkflow: bethResearch.workflow,
+    researchWorkflow: false,
     ownershipSummary: {
       hotel: { name: bethResearch.hotelName },
       propco: { name: "Marbeth", shortName: "Marbeth" },
-      sponsor: { name: "Mullen Real Estate Capital" },
+      sponsor: { name: "Mullen Real Estate Capital", economicOwnershipCertified: false },
       operator: { name: "Marriott International" },
       brand: { name: "Marriott" },
     },
-    recommendation: {
-      label: bethResearch.recommendation.label,
-      rationale: bethResearch.recommendation.rationale,
-      person: primary,
-      alternatives: alts,
-    },
-    recommendedContacts: alts,
-    otherContacts: [],
+    recommendation: null,
+    recommendedContacts: [],
+    otherContacts: people,
     people,
     contactableOwnerOrg: {
       name: "Mullen Real Estate Capital",
@@ -190,6 +185,9 @@ run("quality_registry_he_ql_027", () => {
     setAttribute(name, value) {
       hostAttrs[name] = String(value);
     },
+    querySelector() {
+      return null;
+    },
     querySelectorAll() {
       return [];
     },
@@ -209,36 +207,42 @@ run("quality_registry_he_ql_027", () => {
   };
   await HCI.mount(host, bethResearch.hotelId);
   const html = host.innerHTML;
-  run("vm_render_bethesda_compact_without_enums", () => {
+  run("vm_render_bethesda_purpose_directory_without_enums", () => {
     mustInclude(html, "Katherine Button");
     mustInclude(html, "Jeff Mullen");
     mustInclude(html, "Patrick Reece");
+    mustInclude(html, "Bethesda Marriott");
     assert.ok(
-      html.includes("Find Email &amp; Phone") || html.includes("Find Email & Phone"),
-      "Find Email & Phone action present"
+      html.includes("Find Contact Details") || html.includes("Find Contact Details".replace(/ /g, " ")),
+      "Find Contact Details action present"
     );
     mustInclude(html, "linkedin.com/in/katherine-button");
-    mustInclude(html, "Organization Contact Channels");
+    mustInclude(html, "Company contact routes");
     mustInclude(html, "info@mullencap.com");
+    assert.ok(
+      /Ownership &amp; Asset Management|Ownership & Asset Management/.test(html),
+      "Ownership & Asset Management section present"
+    );
     assert.ok(!/\bVERIFIED_PUBLIC\b|\bPROVIDER_RETURNED_UNREVIEWED\b/.test(html));
+    assert.ok(!html.includes("Recommended First Contact"));
+    assert.ok(!html.includes("Inferred · not property-confirmed"));
     assert.ok((html.match(/data-hci-enrich/g) || []).length >= 3);
     assert.ok(html.includes("hci-section--org-channels"));
     const articles = html.match(/<article class="hci-person[\s\S]*?<\/article>/g) || [];
-    assert.ok(articles.length >= 3, "primary + alternatives rendered as articles");
+    assert.ok(articles.length >= 3, "purpose-grouped people rendered as uniform articles");
     articles.forEach((block) => {
       const surface = block.split("hci-person__details")[0];
       if (/mailto:info@mullencap\.com/.test(surface)) {
         assert.ok(
-          /Organizational Contact Route/.test(surface),
-          "org email on person card must be labeled Organizational Contact Route, never as personal direct"
+          /Company email|Company contact|company email/i.test(surface),
+          "org email on person card must be labeled as company route"
         );
         assert.ok(
           !/Direct Business Email[\s\S]{0,80}info@mullencap\.com/.test(surface),
-          "info@ must not be labeled Direct Business Email"
+          "info@ must not be labeled as personal business email"
         );
       }
     });
-    mustInclude(html, "Organizational Contact Route");
   });
 }
 

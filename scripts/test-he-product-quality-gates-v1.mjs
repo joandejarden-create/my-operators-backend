@@ -354,18 +354,27 @@ run("hex_tabs_even_flex_and_rooms_present", () => {
 
 run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "Find Email & Phone");
+  mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "Loading Contacts…");
   mustInclude(hci, "HeLoadingUx");
   mustInclude(hci, "hci-note--unresolved");
-  mustInclude(hci, "Verified identity ≠ verified personal contact channels");
   mustInclude(hci, "data-hci-enrich");
   mustInclude(hci, "/reveal");
   mustInclude(hci, "enrichment-capability");
-  mustInclude(hci, "Recommended First Contact");
-  mustInclude(hci, "Alternative Decision-Makers");
-  mustInclude(hci, "Organization Contact Channels");
-  mustInclude(hci, "Research gaps");
+  mustInclude(hci, "Hotel Leadership");
+  mustInclude(hci, "Sales & Commercial Leadership");
+  mustInclude(hci, "Ownership & Asset Management");
+  mustInclude(hci, "Management Company & Regional Leadership");
+  mustInclude(hci, "Brand & Development");
+  mustInclude(hci, "data-hci-purpose-filter");
+  mustInclude(hci, "Company contact routes");
+  mustInclude(hci, "Open items");
+  mustInclude(hci, "Email");
+  mustInclude(hci, "Call");
+  mustInclude(hci, "Find Contact Details");
+  assert.ok(!hci.includes("Recommended First Contact"), "no global recommended-first hierarchy");
+  assert.ok(!hci.includes("Alternative Decision-Makers"));
+  assert.ok(!hci.includes("Suggested Contact"), "no renamed global first-contact hierarchy");
   assert.ok(!/hci-dev-json|Dev diagnostic|JSON\.stringify\(vm/.test(hci), "no user-visible VM dump");
   assert.ok(!/production_writes|write_on_get|apply_authorized|surfe_live_calls/.test(hci));
   assert.ok(
@@ -552,22 +561,22 @@ run("owner_decision_maker_ranking_and_surfe_fallback", () => {
   assert.ok(research.people.every((p) => p.linkedinUrl && p.linkedinUrl.includes("linkedin.com")));
   assert.ok(research.people.every((p) => !(p.emailContacts || []).length));
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "Recommended First Contact");
-  mustInclude(hci, "Find Email & Phone");
+  mustInclude(hci, "Hotel Leadership");
+  mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "data-linkedin-url");
-  mustInclude(hci, "Organization Contact Channels");
+  mustInclude(hci, "Company contact routes");
+  assert.ok(!hci.includes("Recommended First Contact"));
   assert.ok(!/hci-dev-json|production_writes|JSON\.stringify\(vm/.test(hci));
   const mountIdx = hci.indexOf("function mount(");
   assert.ok(!/enrichPeople|provider\.enrich/.test(hci.slice(mountIdx, mountIdx + 1200)));
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "HE-BETH-OWNER-DECISION-MAKER-RESEARCH");
-  mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildDecisionOrientedContactSections");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildPurposeGroupedContactSections");
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "resolveEnrichAction");
   mustInclude(
     read("lib/hotel-intelligence/contact-intelligence/he-public-contact-channel-hierarchy-v1.js"),
-    "Find Email & Phone"
+    "Find Contact Details"
   );
 });
-
 run("measurement_prefs_conversion_and_sort_keys", () => {
   assert.equal(SQFT_TO_SQM, 0.09290304);
   assert.equal(MI_TO_KM, 1.609344);
@@ -1103,15 +1112,21 @@ run("he_public_contact_hierarchy_and_surfe_session_only", () => {
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
   mustInclude(hci, "Direct Business Email");
-  mustInclude(hci, "Organizational Contact Route");
+  mustInclude(hci, "Direct Business Phone");
+  mustInclude(hci, "Company contact routes");
+  mustInclude(hci, "Company email");
   mustInclude(hci, "Find Phone");
+  mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "_sessionSurfeByPerson");
   mustInclude(hci, "session-only");
+  assert.ok(!hci.includes("Recommended First Contact"));
   mustInclude(api, "persist_forbidden");
   mustInclude(api, "NOT_WRITTEN");
   mustInclude(lib, "looksLikeInventedEmail");
   mustInclude(lib, "resolveEnrichAction");
   mustInclude(lib, "surfeDerived: false");
+  mustInclude(lib, "Organizational Contact Route");
+  mustInclude(lib, "Direct Business Email");
   mustInclude(std, "HE-QL-032");
   mustInclude(std, "Surfe session-only");
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-032"));

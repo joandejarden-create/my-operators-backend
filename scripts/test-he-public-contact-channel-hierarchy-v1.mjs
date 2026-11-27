@@ -159,9 +159,11 @@ assert.equal(looksLikeInventedEmail("info@mullencap.com", "Jeff Mullen"), false)
   const hci = read("public/js/hotel-contact-intelligence.js");
   mustInclude(hci, "Direct Business Email");
   mustInclude(hci, "Direct Business Phone");
-  mustInclude(hci, "Organizational Contact Route");
-  mustInclude(hci, "Find Phone");
-  mustInclude(hci, "Find Email");
+  mustInclude(hci, "Company website");
+  mustInclude(hci, "Company contact routes");
+  mustInclude(hci, "Find Contact Details");
+  assert.ok(/Find [Pp]hone|Find [Ee]mail|Find Contact Details/.test(hci));
+  assert.ok(!hci.includes("Recommended First Contact"));
   mustInclude(hci, "session-only");
   mustInclude(hci, "_sessionSurfeByPerson");
   mustInclude(hci, 'persist: false');
@@ -194,8 +196,8 @@ assert.equal(looksLikeInventedEmail("info@mullencap.com", "Jeff Mullen"), false)
   assert.ok(upserts.count >= 3);
 }
 
-// Cross-product label parity with GDI founder directive
+// Shared hierarchy labels — Find Contact Details is the customer CTA (CX V2)
 assert.equal(CONTACT_DISPLAY_LABELS.directEmail, "Direct Business Email");
-assert.equal(CONTACT_DISPLAY_LABELS.findBoth, "Find Email & Phone");
+assert.equal(CONTACT_DISPLAY_LABELS.findBoth, "Find Contact Details");
 
 console.log("PASS test:he-public-contact-channel-hierarchy-v1");
