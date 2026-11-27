@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 import {
   GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1,
   GDI_CANONICAL_PUBLICATION_LIFECYCLE,
+  GDI_OPERATIONAL_STATUS,
   sanitizeOpportunityForStagedPackage,
   stageQualifiedInventoryFromE2e,
 } from "../lib/group-demand-intelligence/publication-package/gdi-canonical-e2e-to-staged-lifecycle-v1.js";
@@ -53,6 +54,17 @@ check("lifecycle_contract_sequence", () => {
   assert.equal(
     GDI_CANONICAL_PUBLICATION_LIFECYCLE.stagedNeverAutoPublishesCurrent,
     true,
+  );
+  assert.equal(
+    GDI_CANONICAL_PUBLICATION_LIFECYCLE.e2eCompleteRequiresStagedVisibleOn8080,
+    true,
+  );
+  assert.equal(GDI_OPERATIONAL_STATUS.STAGED, "STAGED");
+  assert.equal(GDI_OPERATIONAL_STATUS.CURRENT, "CURRENT");
+  assert.equal(GDI_OPERATIONAL_STATUS.HOLD, "HOLD");
+  assert.equal(
+    GDI_OPERATIONAL_STATUS.RESEARCH_IN_PROGRESS,
+    "RESEARCH_IN_PROGRESS",
   );
 });
 
@@ -168,6 +180,63 @@ check("ui_no_proposed_founder_gate_default_staged", () => {
   assert.match(app, /Obsolete proposed\/hold\/continuation/);
   const html = read("public/app.html");
   assert.doesNotMatch(html, /data-gdi-shell-inventory="proposed"/);
+});
+
+check("failed_or_empty_stage_preserves_prior_staged_pointer", () => {
+  const store = createGdiPublicationPackageStore({});
+  const before = store.readPointer(WY, "STAGED");
+  assert.ok(before?.publicationVersion);
+  const empty = stageQualifiedInventoryFromE2e({
+    hotelId: WY,
+    opportunities: [],
+    activate: true,
+    dryRun: false,
+  });
+  assert.equal(empty.ok, false);
+  assert.equal(empty.error, "NO_QUALIFIED_OPPORTUNITIES_TO_STAGE");
+  const after = store.readPointer(WY, "STAGED");
+  assert.equal(after?.publicationVersion, before.publicationVersion);
+  assert.equal(store.readPointer(WY, "CURRENT")?.publicationVersion || null, null);
+});
+
+check("customer_share_does_not_default_to_staged", () => {
+  const share = read("public/js/group-demand-intelligence/share-app.js");
+  assert.doesNotMatch(share, /isLocalFounderHost\(\)\s*\)?\s*return\s*"staged"/);
+  assert.doesNotMatch(share, /preview=staged/);
+});
+
+check("current_promotion_requires_explicit_auth_runner", () => {
+  assert.ok(fs.existsSync(path.join(ROOT, "scripts/gdi/Invoke-GdiPromoteCurrent.ps1")));
+  assert.ok(fs.existsSync(path.join(ROOT, "scripts/gdi/run-gdi-promote-current-v1.mjs")));
+  const runner = read("scripts/gdi/run-gdi-promote-current-v1.mjs");
+  assert.match(runner, /FOUNDER_GO AUTHORIZE_GDI_CURRENT_PROMOTION/);
+  assert.match(runner, /publishCustomerVisible/);
+  const validate = read("scripts/gdi/Invoke-GdiValidateFullE2E.ps1");
+  assert.match(validate, /test-gdi-canonical-e2e-to-staged-lifecycle-v1/);
+  assert.match(validate, /8080|STAGED/);
+});
+
+check("completion_doctrine_docs_and_agents", () => {
+  assert.ok(
+    fs.existsSync(
+      path.join(
+        ROOT,
+        "docs/ai-build-system/GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md",
+      ),
+    ),
+  );
+  const agents = read("AGENTS.md");
+  assert.match(agents, /GDI Full E2E completion = STAGED on :8080/);
+  assert.ok(
+    fs.existsSync(
+      path.join(ROOT, ".cursor/rules/gdi-e2e-staged-completion-standard.mdc"),
+    ),
+  );
+  const recon = read(
+    "reports/gdi-canonical-e2e-to-staged-lifecycle-v1/04-WYNDHAM_RECONCILIATION.json",
+  );
+  assert.match(recon, /"completeEligibleQualifiedInventory": 26/);
+  assert.match(recon, /Bethesda Marriott STAGED count=68/);
 });
 
 if (failed) {

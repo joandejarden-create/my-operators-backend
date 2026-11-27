@@ -1,41 +1,60 @@
 {
   "contract": "GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1",
   "status": "GDI_CANONICAL_E2E_TO_STAGED_VALIDATED — AWAITING_FOUNDER_REVIEW",
-  "at": "2026-11-27T17:15:00.000Z",
+  "at": "2026-11-27T17:20:00.000Z",
   "lifecycle": ["FULL_E2E", "STAGED", "FOUNDER_APPROVAL", "CURRENT"],
+  "operationalStatuses": {
+    "RESEARCH_IN_PROGRESS": "E2E research is incomplete.",
+    "HOLD": "Additional commercial evidence or qualification is required.",
+    "STAGED": "E2E completed, commercially qualified, durably persisted and visible on port 8080.",
+    "CURRENT": "Founder approved and available to authorized customers."
+  },
   "wyndham": {
     "hotelId": "recnPB3Q02NO8Ma1o",
+    "discoveryUniverse": 161,
+    "historical68": "Bethesda STAGED=68 — not Wyndham (do not fabricate)",
+    "clean11Preserved": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92",
     "stagedVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_6f4aef5e",
     "stagedCount": 26,
+    "matchesLockedAcceptedProposed": true,
     "current": null,
-    "clean11HistoricalPreserved": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92",
-    "auth": "FOUNDER_GO AUTHORIZE_WYNDHAM_STAGED_LOCKED_26_LOCAL_REVIEW",
     "noPaidResearch": true,
-    "noAirtableWrites": true,
     "noCurrentPublish": true
   },
-  "acceptance": {
-    "port8080Cwd": "C:\\Dev\\dealality\\ws-gdi",
-    "listTilesParity": "26/26",
-    "executiveSummaryTotalQualified": 26,
-    "fourTabs": true,
-    "columnsSvgOnToolbarRow": true,
-    "proposedFounderGateRemoved": true,
-    "bethesdaCurrentPreserved": true,
-    "yotelCurrentPreserved": true,
-    "productionCustomerIsolation": "CURRENT-only for customers; Wyndham CURRENT null"
+  "productWideReadiness": {
+    "hotels": 25,
+    "current": 3,
+    "stagedAwaitingApproval": 6,
+    "noPublication": 16,
+    "remediationManifest": "reports/gdi-product-wide-hotel-readiness-audit-v1/01-REMEDIATION_MANIFEST.json",
+    "pilot": {
+      "Bethesda": "CURRENT + STAGED 68",
+      "Wyndham": "STAGED 26 awaiting founder approval",
+      "YOTEL": "CURRENT 42",
+      "Renaissance NYTS": "NO_PUBLICATION — remediation required (separate auth)",
+      "Sheraton Guadalajara": "STAGED 38 awaiting founder approval"
+    }
   },
-  "gates": [
-    "test:gdi-canonical-e2e-to-staged-lifecycle-v1",
-    "test:gdi-cumulative-integrated-staging-non-regression-v1",
-    "test:gdi-sortable-commercial-list-view-v1",
-    "validate-gdi-cumulative-integrated-staging-v1.ps1"
-  ],
-  "docs": [
-    "docs/ai-build-system/DEALALITY_PRODUCT_CONSTITUTION.md §20",
-    "docs/ai-build-system/BUILD_DECISIONS.md",
-    "docs/ai-build-system/GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md",
-    "docs/ai-build-system/GDI_THREE_LAYER_INTELLIGENCE_CONTRACT_V1.md",
-    "scripts/gdi/Invoke-GdiFullE2E.ps1"
+  "openPrsForIc": [618, 620, 624, 626],
+  "commands": {
+    "dryRunE2e": ".\\scripts\\gdi\\Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode DryRun",
+    "validate": ".\\scripts\\gdi\\Invoke-GdiValidateFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o -RequirePort8080",
+    "promoteCurrentDryRun": ".\\scripts\\gdi\\Invoke-GdiPromoteCurrent.ps1 -HotelId recnPB3Q02NO8Ma1o -PublicationVersion gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_6f4aef5e -Mode DryRun",
+    "hotelAudit": "node scripts/gdi-product-wide-hotel-readiness-audit-v1.mjs"
+  },
+  "governance": {
+    "noPaidResearch": true,
+    "noFindymail": true,
+    "noAutoSurfe": true,
+    "noSchemaChanges": true,
+    "noCurrentPublish": true,
+    "noProductionDeploy": true,
+    "noIndependentMerges": true
+  },
+  "remainingBlockers": [
+    "CURRENT publication requires separate founder approval of exact STAGED version",
+    "Airtable GDO production apply remains separately authorized",
+    "16 hotels with NO_PUBLICATION — remediation manifest only; no auto-mutate",
+    "IC must merge open GDI PRs (#618/#620/#624/#626) — GDI chat does not merge"
   ]
 }

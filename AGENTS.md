@@ -23,6 +23,7 @@
 9. **Universal PR completion + workspace ownership** — merge ≠ done. Owning permanent home must return to `ws/*` (or Integration `main`), sync `origin/main`, correct Cursor branch, retire feature branches when safe, and report `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY` or a `BLOCKED — …` status. Cross-stream checkouts fail closed. See `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md`.
 10. **Airtable persistence gate** — durable intelligence cannot be FULL E2E COMPLETE from UI/API/PDF/local JSON alone. Require Airtable SoT mapping, idempotent persistence, retrieval proof, provenance/history, and an explicit classification (`PROTOTYPE` → `CUSTOMER_PUBLISHED`). See `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md`.
 11. **Additive development & non-regression** — new work must be additive; do not silently regress accepted UI, inventory, data access, or customer surfaces. Compare before/after by record IDs; IC blocks unintentional regression; intentional material change needs founder approval. Complete only when new **and** prior accepted functionality both work. See `docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md`.
+12. **GDI Full E2E completion = STAGED on :8080** — permanent lifecycle is **FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT**. Operational statuses: RESEARCH IN PROGRESS / HOLD / STAGED / CURRENT. Proposed Qualified and similar labels are internal only (not founder gates). An authorized E2E run auto-stages the complete qualified inventory; CURRENT requires explicit founder approval of the exact package version. Reports/tests/write-sets alone ≠ complete. Docs: `GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md`, `GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md`. Gates: `test:gdi-canonical-e2e-to-staged-lifecycle-v1`, `Invoke-GdiValidateFullE2E.ps1`.
 
 ## Dealality AI Build Operating System
 
@@ -43,6 +44,8 @@ For meaningful product, platform, data, or AI-output work, read the relevant doc
 - `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md` — universal home-sync completion gate
 - `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md` — durable intelligence SoT / E2E classification gate
 - `docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md` — additive development / non-regression gate
+- `docs/ai-build-system/GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md` — GDI E2E → STAGED → CURRENT completion standard
+- `docs/ai-build-system/GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md` — auto-STAGED lifecycle contract
 
 **Also read when the task touches** brand/operator profiles, market intelligence, PDFs, source extraction, platform content, AI-generated content, validation status, confidence, or source-backed intelligence:
 
