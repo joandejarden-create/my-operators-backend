@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "version": "he-cross-tab-parity-v1",
+  "shared": {
+    "version": "he-shared-hotel-view-model-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "name": "Bethesda Marriott",
+    "rooms": 407,
+    "roomsKnown": true,
+    "brand": "Marriott Hotels",
+    "market": "Bethesda / Montgomery County",
+    "submarket": "Pooks Hill / Rockville Pike",
+    "operator": "Marriott International",
+    "propertyCompany": "Marbeth Acquisition",
+    "economicOwner": "Mullen Real Estate Capital",
+    "economicOwnerClassification": "Proposed",
+    "chainScale": "Upper Upscale",
+    "status": "Open",
+    "city": "Bethesda",
+    "country": "United States",
+    "location": "Bethesda, United States",
+    "sources": {
+      "rooms": "hpc",
+      "brand": "hpc",
+      "market": "hpc",
+      "operator": "hpc",
+      "propertyCompany": "hi_legal_owner",
+      "economicOwner": "hi_economic_owner"
+    },
+    "transformations": {
+      "rooms": "HPC Rooms/Keys or verified physical-product totalGuestrooms; never invent; never treat unknown as 0.",
+      "brand": "HPC Current Brand / Affiliation; HI Brand relationship is corroboration only.",
+      "market": "HPC Market (Dealality geography) — never legacy Hotel Census.",
+      "operator": "HPC Operator/Management Company or HI Operator relationship.",
+      "propertyCompany": "HI Legal Owner / PropCo only — not economic sponsor.",
+      "economicOwner": "HI Economic Owner with founder classification preserved (Proposed vs Validated)."
+    }
+  },
+  "consumers": [
+    {
+      "tab": "hotel_overview",
+      "rooms": 407,
+      "brand": "Marriott Hotels",
+      "market": "Bethesda / Montgomery County",
+      "operator": "Marriott International",
+      "propertyCompany": "Marbeth Acquisition",
+      "economicOwnerClassification": "Proposed",
+      "location": "Bethesda, United States",
+      "chainScale": "Upper Upscale",
+      "status": "Open"
+    },
+    {
+      "tab": "organization_portfolio",
+      "rooms": 407,
+      "brand": "Marriott Hotels",
+      "market": "Bethesda / Montgomery County",
+      "operator": "Marriott International",
+      "propertyCompany": "Marbeth Acquisition",
+      "economicOwnerClassification": "Proposed",
+      "location": "Bethesda / Montgomery County",
+      "chainScale": null,
+      "status": "Open",
+      "focusPresent": true,
+      "roomsKnown": true
+    },
+    {
+      "tab": "submarket_snapshot",
+      "rooms": 407,
+      "brand": "Marriott Hotels",
+      "market": "Bethesda / Montgomery County",
+      "operator": "Marriott International",
+      "propertyCompany": null,
+      "economicOwnerClassification": null,
+      "location": "Bethesda, United States",
+      "chainScale": "Upper Upscale",
+      "status": "Open"
+    }
+  ],
+  "conflicts": [],
+  "gates": {
+    "HE_SUBMARKET_COHORT_VALIDATED": "YES",
+    "HE_SUBMARKET_COVERAGE_DISCLOSED": "YES",
+    "HE_ORG_PORTFOLIO_HYDRATION_VALIDATED": "YES",
+    "HE_SHARED_HOTEL_ATTRIBUTES_CONSISTENT": "YES",
+    "HE_CROSS_TAB_PARITY_VALIDATED": "YES"
+  }
+}

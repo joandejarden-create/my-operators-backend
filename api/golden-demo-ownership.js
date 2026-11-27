@@ -384,6 +384,84 @@ export async function getGoldenDemoHotelOwnership(req, res) {
       );
     }
 
+    // Shared hotel view model — hydrate Org Portfolio focus row from HPC/HI.
+    // Missing rooms/brand/market on a focus row with HPC values = mapping defect, not research gap.
+    try {
+      const { formatHotelPropertyCensusAsBrandPresenceHotel, HOTEL_PROPERTY_CENSUS_TABLE } =
+        await import("../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js");
+      const {
+        buildSharedHotelViewModel,
+        hydratePortfolioHotelsFromSharedView,
+      } = await import("../lib/hotel-intelligence/he-shared-hotel-view-model-v1.js");
+
+      let hpcHotel = null;
+      const key = process.env.AIRTABLE_API_KEY || process.env.AIRTABLE_PAT;
+      const baseId = process.env.AIRTABLE_BASE_ID_ALT || process.env.AIRTABLE_BASE_ID;
+      if (key && baseId) {
+        const Airtable = (await import("airtable")).default;
+        const atBase = new Airtable({ apiKey: key }).base(baseId);
+        try {
+          const rec = await atBase(HOTEL_PROPERTY_CENSUS_TABLE).find(recordId);
+          hpcHotel = formatHotelPropertyCensusAsBrandPresenceHotel(rec);
+        } catch {
+          hpcHotel = null;
+        }
+      }
+
+      const control = payload?.report?.ownership_and_control || {};
+      if (control.economic_owner && typeof control.economic_owner === "object") {
+        const nm = String(
+          control.economic_owner.name || control.economic_owner.tradingName || ""
+        ).toLowerCase();
+        // Founder directive: Mullen economic sponsorship stays Proposed until certified.
+        if (nm.includes("mullen") && !control.economic_owner.founder_classification) {
+          control.economic_owner.founder_classification = "Proposed";
+          control.economic_owner.classification = "Proposed";
+        }
+      }
+
+      const shared = buildSharedHotelViewModel({
+        hpcHotel,
+        ownership: payload,
+        hotelId: recordId,
+      });
+      payload.sharedHotelView = shared;
+      if (shared.rooms != null || shared.brand || shared.market || shared.operator) {
+        payload.hotel = {
+          ...(payload.hotel || {}),
+          id: recordId,
+          airtable_record_id: recordId,
+          name: shared.name || payload.hotel?.name,
+          rooms: shared.rooms ?? payload.hotel?.rooms,
+          brand: shared.brand || payload.hotel?.brand,
+          market: shared.market || payload.hotel?.market,
+          submarket: shared.submarket || payload.hotel?.submarket,
+          managementCompany: shared.operator || payload.hotel?.managementCompany,
+          chainScale: shared.chainScale || payload.hotel?.chainScale,
+          status: shared.status || payload.hotel?.status,
+        };
+      }
+      if (payload.organization?.owned_controlled_hotels) {
+        payload.organization.owned_controlled_hotels = hydratePortfolioHotelsFromSharedView(
+          payload.organization.owned_controlled_hotels,
+          shared,
+          { focusHotelId: recordId }
+        );
+      }
+      if (payload.report?.organization_and_portfolio?.hotels) {
+        payload.report.organization_and_portfolio.hotels = hydratePortfolioHotelsFromSharedView(
+          payload.report.organization_and_portfolio.hotels,
+          shared,
+          { focusHotelId: recordId }
+        );
+      }
+    } catch (sharedErr) {
+      console.warn(
+        "[golden-demo-ownership] shared hotel view hydrate skipped",
+        sharedErr?.message || sharedErr
+      );
+    }
+
     return res.json({ success: true, ...payload });
   } catch (err) {
     console.error("[golden-demo-ownership] hotel", err);

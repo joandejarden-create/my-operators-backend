@@ -2788,8 +2788,44 @@
     };
     var incompletePctNote =
       coverage.partial || (metrics.roomsUnknownHotelCount && metrics.roomsUnknownHotelCount > 0)
-        ? '<p class="hdp-snapshot-meta">Percentages reflect the matched HPC cohort only — not a complete market inventory. Unknown room counts are excluded from room totals (not treated as zero inventory).</p>'
+        ? '<p class="hdp-snapshot-meta">Percentages reflect the matched HPC cohort only — not a complete market inventory. Unknown room counts are excluded from room totals (not treated as zero inventory). Market-share figures are never fabricated.</p>'
         : "";
+
+    var cohorts = opts.cohorts || {};
+    var geoCohort = cohorts.geographicSubmarketInventory || null;
+    var geoMetrics = (geoCohort && geoCohort.metrics) || null;
+    var cohortDisclosure =
+      '<div class="hdp-snapshot-meta hdp-submarket-cohorts" data-he-submarket-coverage="disclosed">' +
+      "<p><strong>Coverage cohorts (HPC only — legacy Hotel Census prohibited)</strong></p>" +
+      "<ul>" +
+      "<li>Verified matched HPC inventory: " +
+      esc(
+        String(
+          (cohorts.matchedHpcInventory &&
+            cohorts.matchedHpcInventory.hotels &&
+            cohorts.matchedHpcInventory.hotels.length) ||
+            (submarketHotels && submarketHotels.length) ||
+            0
+        )
+      ) +
+      " hotel(s)</li>" +
+      "<li>Verified geographic market inventory: " +
+      esc(
+        String(
+          (geoCohort && geoCohort.hotels && geoCohort.hotels.length) ||
+            (coverage.cohorts && coverage.cohorts.geographicSubmarketInventory) ||
+            0
+        )
+      ) +
+      " hotel(s)" +
+      (geoCohort && geoCohort.description ? " — " + esc(geoCohort.description) : "") +
+      "</li>" +
+      "<li>Property-relevant competitive set: starts from geographic HPC inventory; expand via Area Hotels research when authorized</li>" +
+      "</ul>" +
+      (coverage.researchNeeded
+        ? "<p>Research needed to expand matched submarket coverage — one matched hotel is not the entire competitive market.</p>"
+        : "") +
+      "</div>";
 
     var summaryTable = renderFootprintTable(
       "Open vs. Pipeline (Submarket)",
@@ -2807,6 +2843,27 @@
         shareDenoms
       )
     );
+
+    var geoSummaryTable = "";
+    if (geoMetrics && geoMetrics.totalHotels > (metrics.totalHotels || 0)) {
+      var geoRooms = resolveSubmarketTotalRooms(geoMetrics, (geoCohort && geoCohort.hotels) || []);
+      geoSummaryTable = renderFootprintTable(
+        "Open vs. Pipeline (Geographic market inventory)",
+        "Market",
+        "",
+        fpMetricRowHtml(
+          "Total (verified geographic HPC cohort)",
+          geoMetrics.openHotels,
+          geoMetrics.openRooms,
+          geoMetrics.pipelineHotels,
+          geoMetrics.pipelineRooms,
+          geoMetrics.totalHotels,
+          geoRooms,
+          true,
+          { hotels: fpMetricNum(geoMetrics.totalHotels), rooms: geoRooms }
+        )
+      );
+    }
 
     var hotelTable = "";
     if (submarketHotels && submarketHotels.length) {
@@ -2850,8 +2907,10 @@
         '<p class="hdp-snapshot-scope">' + esc(scopeLabel || "Submarket scope unavailable") + "</p>" +
         strRegionalNote +
         incompletePctNote +
+        cohortDisclosure +
         metaLine +
         pipelineMetaLine +
+        geoSummaryTable +
         summaryTable +
         renderFootprintTableFromBuckets("Status mix", "Status", breakdowns.byStatus || [], false, shareDenoms) +
         renderFootprintTableFromBuckets(
@@ -3382,6 +3441,7 @@
           source: source,
           coverage: coverageMeta,
           grouping: poolMeta.grouping || (hpc && hpc.grouping) || null,
+          cohorts: (hpc && hpc.cohorts) || poolMeta.cohorts || null,
         }
       ) + coverageNote,
       status

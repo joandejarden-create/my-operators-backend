@@ -3127,7 +3127,46 @@
     );
   }
 
-  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta, scope) {
+  function buildSharedHotelAttrs(hotel, ownership) {
+    var inv =
+      (hotel && hotel.guestRoomsMeetingSpace) ||
+      (ownership && ownership.guestRoomsMeetingSpace) ||
+      null;
+    var roomsFromInv =
+      inv &&
+      inv.guestRooms &&
+      inv.guestRooms.totalGuestrooms &&
+      (inv.guestRooms.totalGuestrooms.value != null
+        ? inv.guestRooms.totalGuestrooms.value
+        : inv.guestRooms.totalGuestrooms);
+    var rooms = Number(roomsFromInv || (hotel && hotel.rooms) || (ownership && ownership.hotel && ownership.hotel.rooms));
+    var control =
+      (ownership &&
+        ownership.report &&
+        ownership.report.ownership_and_control) ||
+      {};
+    var partyName = function (p) {
+      if (!p) return null;
+      if (typeof p === "string") return p;
+      return p.tradingName || p.legalName || p.name || p.display_name || null;
+    };
+    return {
+      hotelId: recordId(hotel),
+      name: (hotel && hotel.name) || null,
+      rooms: Number.isFinite(rooms) && rooms > 0 ? rooms : null,
+      brand: (hotel && (hotel.brand || hotel.currentBrand)) || partyName(control.brand) || null,
+      market: (hotel && hotel.market) || null,
+      operator:
+        (hotel && (hotel.managementCompany || hotel.operator)) ||
+        partyName(control.operator) ||
+        null,
+      status: (hotel && (hotel.status || hotel.radarStatus)) || null,
+      chainScale: (hotel && hotel.chainScale) || null,
+      sources: { rooms: roomsFromInv != null ? "physical_product_or_hpc" : "hotel_dto" },
+    };
+  }
+
+  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta, scope, sharedHotelView) {
     var api = window.HeOwnerPortfolioOperatorView;
     if (api && typeof api.buildOwnerPortfolioOperatorView === "function") {
       return api.buildOwnerPortfolioOperatorView(ownedRows, {
@@ -3135,6 +3174,8 @@
         // Coverage title is derived from selected scope (verified vs verified+proposed).
         completeness: (coverageMeta && coverageMeta.completeness) || "PARTIAL",
         scope: scope,
+        sharedHotelView: sharedHotelView || null,
+        focusHotelId: sharedHotelView && sharedHotelView.hotelId ? sharedHotelView.hotelId : null,
       });
     }
     return {
@@ -3426,7 +3467,14 @@
       orgPayload.portfolio_kpis ||
       null;
     var scope = resolveOwnerPortfolioScope(orgPayload, ownership);
-    var view = buildPortfolioOperatorView(ownedSeed, g.display_name, coverageMeta, scope);
+    var sharedHotelView = buildSharedHotelAttrs(hotel, ownership);
+    var view = buildPortfolioOperatorView(
+      ownedSeed,
+      g.display_name,
+      coverageMeta,
+      scope,
+      sharedHotelView
+    );
     var ownedRows = view.ownedHotels || [];
     var partition = view.partition || {};
 
