@@ -26,8 +26,14 @@
     HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE
     HE_OWNERSHIP_VERIFICATION_STATE_PARITY
     HE_UNIFIED_THEME_CONSISTENCY
+    HE_CANONICAL_AIRTABLE_READBACK
+    HE_AUTHENTICATED_LIVE_RENDERING (NOT_TESTED when -SkipBrowser)
+    FULL_HE_E2E_VALIDATED (remains NO until eight-hotel browser program passes)
 
   Browser policy: -SkipBrowser forces browser checks to NOT_TESTED (never PASS).
+
+  Release acceptance (Contact V3 + Live API probes):
+    node scripts/hotel-explorer/run-he50-release-acceptance-gates-v1.mjs [--skip-browser|--browser]
 
 .EXAMPLE
   .\scripts\hotel-explorer\Invoke-HotelExplorerFactory.ps1 -Mode Validate -HotelId recLuxvwwxID7U2B8 -SkipBrowser
@@ -105,6 +111,17 @@ if (($Mode -ne "CrossTabValidate") -and (Test-Path $NodeRunner)) {
 } elseif ($Mode -eq "Research" -or $Mode -eq "Apply") {
   if (-not (Test-Path $NodeRunner)) {
     Write-Warning "Full factory runner not present — cross-tab gates completed; Research/Apply require factory runner."
+  }
+}
+
+# Permanent Contact V3 + physical/ownership/theme Live probes (Bethesda default).
+if ($ConsistencyModes -contains $Mode) {
+  $acceptArgs = @(".\scripts\hotel-explorer\run-he50-release-acceptance-gates-v1.mjs")
+  if ($SkipBrowser) { $acceptArgs += "--skip-browser" } else { $acceptArgs += "--browser" }
+  Write-Host "[HE Factory] release acceptance gates → $($acceptArgs -join ' ')"
+  & node @acceptArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
   }
 }
 
