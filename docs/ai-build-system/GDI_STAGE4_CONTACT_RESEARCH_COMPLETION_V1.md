@@ -22,6 +22,7 @@ Findymail is **not** an optional future enhancement. It is a permanent component
 2. Complete WHO/HOW buyer + alternative entry-point identification.
 3. Research professional email, telephone, and LinkedIn (all applicable channels).
 4. Use Findymail for unresolved **professional email** gaps within credit/budget controls.
+   - **Abbreviated / incomplete surnames** (`Lily Y.`, `Suzanne K.`) are **not** fully verified professional identities and must **not** be submitted for Findymail enrichment (`IDENTITY_INCOMPLETE`). Resolve full identity from verified evidence first, or retain honest PARTIAL identity + alternative entry point.
 5. Verify identity + returned email; never invent pattern emails.
 6. Persist permitted verified Findymail emails to existing Airtable opportunity contact fields.
 7. Hydrate STAGED / List / Drawer from durable stores.
@@ -49,7 +50,7 @@ Every future qualified opportunity must have:
 1. Completed applicable WHO/HOW research  
 2. Completed applicable professional contact-channel research (Stage 4)  
 3. Findymail attempted for eligible unresolved professional emails (or documented ineligibility)  
-4. Correct identity + buying-authority classification  
+4. Correct identity + buying-authority classification (abbreviated surnames cannot pass as `identityVerified=true`)  
 5. All available verified contact data persisted through approved mechanisms  
 6. Correct STAGED contact hydration (`linkedinUrl` mapped when LinkedIn is in `sourceUrl`)  
 7. Cross-surface display parity (List View + Drawer + ES metrics) via shared DTO  
