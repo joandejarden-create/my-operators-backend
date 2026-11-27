@@ -4070,3 +4070,213 @@ a.gdi-contact-reveal-signin {
 .gdi-pdi-cell[data-fit="MEETING_CATERING_OPPORTUNITY"] .gdi-pdi-fit { color: #fbbf24; }
 .gdi-pdi-cell[data-fit="OTHER_PARTNERSHIP"] .gdi-pdi-fit { color: #c084fc; }
 .gdi-pdi-cell[data-fit="UNSUITABLE"] .gdi-pdi-fit { color: #f87171; }
+
+
+/* ---- GDI sortable commercial list table (Deal Opportunities parity) ---- */
+.gdi-list-table-wrap { width: 100%; margin: 0 0 1.5rem; }
+.gdi-list-table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.65rem;
+  position: relative;
+}
+.gdi-list-col-settings { position: relative; }
+.gdi-list-col-settings__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  min-width: 240px;
+  background: var(--gdi-panel-2, #1a2440);
+  border: 1px solid var(--gdi-border, #37446b);
+  border-radius: 8px;
+  padding: 0.75rem 0.85rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.gdi-list-col-settings__hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  color: var(--gdi-muted, #9aa6c2);
+}
+.gdi-list-col-settings__row {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--gdi-text, #e8eefc);
+  margin: 0.28rem 0;
+}
+.gdi-list-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(55, 68, 107, 0.65);
+  border-radius: 8px;
+}
+.gdi-page .gdi-commercial-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1080px;
+  text-align: left;
+  table-layout: auto;
+}
+.gdi-page .gdi-commercial-table thead {
+  background: var(--neutral--700, #212c4d);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.gdi-page .gdi-commercial-table th {
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 10px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(55, 68, 107, 0.9);
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 1.2;
+  user-select: none;
+}
+.gdi-page .gdi-commercial-table th[data-sort] { cursor: pointer; }
+.gdi-page .gdi-commercial-table th[data-sort]:hover { background: #37446b; }
+.gdi-page .gdi-commercial-table th:first-child,
+.gdi-page .gdi-commercial-table td:first-child { padding-left: 18px; }
+.gdi-page .gdi-commercial-table th:last-child,
+.gdi-page .gdi-commercial-table td:last-child { padding-right: 14px; }
+.gdi-page .gdi-commercial-table .sort-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 6px;
+  vertical-align: middle;
+  opacity: 0.5;
+  line-height: 1;
+}
+.gdi-page .gdi-commercial-table th[data-sort]:hover .sort-indicator,
+.gdi-page .gdi-commercial-table th.sort-asc .sort-indicator,
+.gdi-page .gdi-commercial-table th.sort-desc .sort-indicator { opacity: 1; }
+.gdi-page .gdi-commercial-table .sort-indicator-arrow {
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  margin: 1px 0;
+}
+.gdi-page .gdi-commercial-table .sort-indicator-arrow-up { border-bottom: 5px solid #9aa6c2; }
+.gdi-page .gdi-commercial-table .sort-indicator-arrow-down { border-top: 5px solid #9aa6c2; }
+.gdi-page .gdi-commercial-table th.sort-asc .sort-indicator-arrow-up { border-bottom-color: #6c72ff; }
+.gdi-page .gdi-commercial-table th.sort-desc .sort-indicator-arrow-down { border-top-color: #6c72ff; }
+.gdi-page .gdi-commercial-table td {
+  border-bottom: 1px solid rgba(55, 68, 107, 0.55);
+  padding: 12px 10px;
+  font-size: 13px;
+  color: var(--gdi-muted, #9aa6c2);
+  vertical-align: middle;
+}
+.gdi-page .gdi-commercial-table tbody tr { cursor: pointer; }
+.gdi-page .gdi-commercial-table tbody tr:hover td { background: rgba(108, 114, 255, 0.08); }
+.gdi-page .gdi-commercial-table tbody tr:focus-visible {
+  outline: 2px solid #6c72ff;
+  outline-offset: -2px;
+}
+.gdi-list-identity {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  min-width: 220px;
+  max-width: 360px;
+}
+.gdi-list-mono {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(108, 114, 255, 0.18);
+  color: #dbe3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex: 0 0 auto;
+}
+.gdi-list-identity-copy { min-width: 0; flex: 1; }
+.gdi-list-opp-name {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  font: inherit;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+}
+.gdi-list-opp-name:hover { color: #aab2ff; text-decoration: underline; }
+.gdi-list-opp-secondary {
+  margin-top: 3px;
+  font-size: 12px;
+  color: #9aa6c2;
+  line-height: 1.35;
+}
+.gdi-list-date { white-space: nowrap; }
+.gdi-list-who-name { color: #e8eefc; font-weight: 600; }
+.gdi-list-who-role { font-size: 12px; margin-top: 2px; }
+.gdi-list-who.is-missing .gdi-list-who-name { color: #9aa6c2; font-weight: 500; }
+.gdi-list-readiness,
+.gdi-list-sales-action {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  background: rgba(108, 114, 255, 0.12);
+  color: #c5d0e6;
+}
+.gdi-list-actions.action-icons { display: inline-flex; gap: 4px; }
+.gdi-page .gdi-list-actions .action-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(55, 68, 107, 0.8);
+  background: transparent;
+  color: #c5d0e6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.gdi-page .gdi-list-actions .action-icon:hover {
+  background: rgba(108, 114, 255, 0.14);
+  color: #fff;
+}
+.gdi-list-empty {
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--gdi-muted, #9aa6c2);
+}
+@media (max-width: 900px) {
+  .gdi-page .gdi-commercial-table { min-width: 960px; }
+}
+
+.gdi-list-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gdi-list-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.gdi-list-mono--fallback { display: none; }
+.gdi-list-logo.is-fallback + .gdi-list-mono--fallback { display: flex; }
+.gdi-list-logo.is-fallback { display: none; }

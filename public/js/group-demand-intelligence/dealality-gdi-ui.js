@@ -2968,8 +2968,19 @@
     { value: "salesRelevance", label: "Sales relevance" },
     { value: "hotelFitScore", label: "Hotel Fit" },
     { value: "evidenceConfidence", label: "Evidence" },
-    { value: "eventStartDate", label: "Nearest future date" },
+    { value: "eventStartDate", label: "Demand window" },
     { value: "title", label: "Name (A-Z)" },
+    { value: "demandType", label: "Demand type" },
+    { value: "salesAction", label: "Sales action" },
+    { value: "whoToContact", label: "Who to contact" },
+    { value: "contactReadiness", label: "Contact readiness" },
+    { value: "estimatedRoomNights", label: "Estimated room nights" },
+    { value: "weeklyChange", label: "Weekly change" },
+    { value: "marketScope", label: "Market scope" },
+    { value: "salesOpportunityType", label: "Sales opportunity type" },
+    { value: "needPeriodAlignment", label: "Need period alignment" },
+    { value: "opportunityStatus", label: "Opportunity status" },
+    { value: "lastVerified", label: "Last verified" },
   ];
 
   /** Sales Opportunities quick-filter chip keys (DTO: salesOpportunityQuickFilterKeys). */
@@ -4158,6 +4169,13 @@
     var dir = sortDir == null ? 1 : sortDir;
     rows = (rows || []).slice();
     rows.sort(function (a, b) {
+      var Table =
+        (typeof window !== "undefined" && window.DealalityGdiCommercialListTable) ||
+        null;
+      if (Table && typeof Table.compareForSortKey === "function") {
+        var listCmp = Table.compareForSortKey(a, b, key, dir, root.DealalityGdiUi);
+        if (listCmp != null) return listCmp;
+      }
       var av = a[key];
       var bv = b[key];
       if (key === "salesRelevance") {
@@ -6327,11 +6345,27 @@
   }
 
   /**
-   * List/Tiles grid of opportunity cards (same tile content; layout differs).
+   * List/Tiles results.
+   * Tiles View: unchanged card grid.
+   * List View: additive sortable commercial table (Deal Opportunities parity).
    * Classification: REUSABLE_PRODUCT_UI
    */
-  function opportunityCardsGridHtml(rows, viewMode, activeFilters) {
+  function opportunityCardsGridHtml(rows, viewMode, activeFilters, opts) {
     var mode = viewMode === "tiles" ? "tiles" : "list";
+    if (mode === "list") {
+      var Table =
+        (typeof window !== "undefined" && window.DealalityGdiCommercialListTable) ||
+        null;
+      if (Table && typeof Table.tableHtml === "function") {
+        opts = opts || {};
+        return Table.tableHtml(rows || [], {
+          UI: root.DealalityGdiUi,
+          sortKey: opts.sortKey,
+          sortDir: opts.sortDir,
+          optionalColumns: opts.optionalColumns,
+        });
+      }
+    }
     var cards = (rows || [])
       .map(function (o) {
         return opportunityTileHtml(
@@ -10907,6 +10941,7 @@
     tileSalesActionPill: tileSalesActionPill,
     tileEventDatePill: tileEventDatePill,
     selectCompactTileContact: selectCompactTileContact,
+    normalizePriorityFilterKey: normalizePriorityFilterKey,
     resolveTileContactPreviewBlock: resolveTileContactPreviewBlock,
     compactTileContactHtml: compactTileContactHtml,
     opportunityCardsGridHtml: opportunityCardsGridHtml,

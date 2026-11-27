@@ -362,7 +362,11 @@
       return UI.opportunityCardsGridHtml(
         list,
         state.viewMode || "tiles",
-        state.filters || {}
+        state.filters || {},
+        {
+          sortKey: state.sortKey,
+          sortDir: state.sortDir,
+        }
       );
     }
     return "";

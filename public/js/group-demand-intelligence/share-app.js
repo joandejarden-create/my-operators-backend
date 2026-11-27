@@ -53,6 +53,8 @@
       if (v === "list" || v === "tiles") state.viewMode = v;
       var s = sessionStorage.getItem(STORAGE_PREFIX + "sortKey");
       if (s) state.sortKey = s;
+      var d = sessionStorage.getItem(STORAGE_PREFIX + "sortDir");
+      if (d === "1" || d === "-1") state.sortDir = Number(d);
     } catch (e) {
       /* ignore */
     }
@@ -62,6 +64,7 @@
     try {
       sessionStorage.setItem(STORAGE_PREFIX + "viewMode", state.viewMode);
       sessionStorage.setItem(STORAGE_PREFIX + "sortKey", state.sortKey);
+      sessionStorage.setItem(STORAGE_PREFIX + "sortDir", String(state.sortDir));
     } catch (e) {
       /* ignore */
     }
@@ -75,6 +78,7 @@
     try {
       sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
       sessionStorage.removeItem(STORAGE_PREFIX + "sortKey");
+      sessionStorage.removeItem(STORAGE_PREFIX + "sortDir");
     } catch (e) {
       /* ignore */
     }
@@ -805,6 +809,20 @@
       '<div class="gdi-disclaimer">Share brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
+    if (
+      state.viewMode === "list" &&
+      window.DealalityGdiCommercialListTable &&
+      typeof window.DealalityGdiCommercialListTable.wireListTableInteractions ===
+        "function"
+    ) {
+      window.DealalityGdiCommercialListTable.wireListTableInteractions({
+        root: root,
+        state: state,
+        render: render,
+        persistBrowse: persistBrowse,
+        openDetail: openDetail,
+      });
+    }
     if (UI.bindNeedDateLegendInteractions) {
       UI.bindNeedDateLegendInteractions(root);
     }
