@@ -1165,7 +1165,7 @@
             .join("")
         : '<p class="gdi-list-col-settings__empty">No Optional Columns Have Populated Data For This Hotel.</p>';
     return (
-      '<div class="gdi-list-col-settings">' +
+      '<div class="gdi-list-col-settings" data-gdi-tour-target="columns-control">' +
       '<button type="button" class="gdi-list-col-settings__toggle sort-icon" id="gdiListColumnSettingsBtn" title="Customize Columns" aria-label="Customize Columns" aria-expanded="false" aria-controls="gdiListColumnSettingsPanel" aria-haspopup="true">' +
       COLUMNS_ICON_SVG +
       "</button>" +
@@ -1208,7 +1208,7 @@
         '"><div class="gdi-list-empty">No Opportunities Match These Filters.</div></td></tr>';
 
     return (
-      '<div class="gdi-list-table-wrap" data-gdi-view-mode="list" data-gdi-contract="' +
+      '<div class="gdi-list-table-wrap" data-gdi-view-mode="list" data-gdi-tour-target="opportunity-list" data-gdi-contract="' +
       CONTRACT +
       '">' +
       '<div class="gdi-list-table-scroll">' +

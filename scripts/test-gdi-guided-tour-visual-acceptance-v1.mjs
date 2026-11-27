@@ -34,16 +34,16 @@ const base = (
 ).replace(/\/$/, "");
 
 const EXPECTED_TITLES = [
-  /Start with the Opportunities overview/i,
-  /Select your hotel and filters/i,
-  /Understand Market Scope/i,
-  /Read the opportunity cards/i,
-  /Understand opportunity readiness/i,
-  /Open Opportunity Details/i,
-  /Evidence and recommended action/i,
-  /Hotel Validation/i,
-  /Export and continue/i,
-  /How to use GDI/i,
+  /Group & Demand Opportunities/i,
+  /Property and Top Filters/i,
+  /Market Scope/i,
+  /Priority Filters/i,
+  /Sales Opportunities Filters/i,
+  /List and Tiles Views/i,
+  /Read Each Opportunity/i,
+  /Opportunity Drawer/i,
+  /Who to Contact/i,
+  /Evidence and Next Step/i,
 ];
 
 const browser = await chromium.launch({ headless: true });
