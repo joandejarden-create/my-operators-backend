@@ -32,11 +32,14 @@ It is a long-term, product-wide brand and design principle. Implementation proce
 5. **Commercial relevance and outcome measurement**  
    Receipts should connect research effort to commercial relevance and, when available, customer-reported or verified outcomes — without collapsing estimated demand into booked or realized revenue.
 
-6. **Consistent Dealality branding**  
+6. **Research productivity as estimated time saved**  
+   Receipts may quantify estimated manual research effort avoided using versioned, activity-specific benchmarks and verified research volumes. Customer copy must distinguish **estimated productivity value** from **verified commercial outcomes** and must never present provisional benchmarks as measured industry facts, redeployable time as payroll savings, or estimated labor value as booked revenue.
+
+7. **Consistent Dealality branding**  
    Naming, tone, and presentation follow Dealality product language and report design standards.
 
-7. **No fabricated metrics or financial assumptions**  
-   Never fabricate research statistics, contact counts, demand estimates, or financial recovery figures. Hardcoded ADR scenarios and synthetic economics are prohibited as customer facts.
+8. **No fabricated metrics or financial assumptions**  
+   Never fabricate research statistics, contact counts, demand estimates, or financial recovery figures. Hardcoded ADR scenarios, synthetic hotel salary assumptions, and unverified labor rates are prohibited as customer facts.
 
 ---
 
@@ -48,7 +51,8 @@ It is a long-term, product-wide brand and design principle. Implementation proce
 | Do not implement now | ADP, Hotel Explorer, Deal Opportunities Research Receipts |
 | Do not build | Centralized cross-product reporting engine, shared reporting dashboard, or premature abstraction layer |
 | Architecture | Use the **existing product’s** contracts, stores, visibility gates, and UI patterns |
-| Future products | When ADP, Hotel Explorer, or Deal Opportunities enter a dedicated development cycle, **revisit these principles** and implement a **product-specific** Research Receipt appropriate to that product’s functionality |
+| Future products | When ADP, Hotel Explorer, or Deal Opportunities enter a dedicated development cycle, **revisit these principles** and implement a **product-specific** Research Receipt (including Research Productivity) appropriate to that product’s functionality |
+| Research Productivity | GDI-only today via `gdi-research-effort-benchmark-contract-v1` + `gdi-research-productivity-v1`. Document the concept for ADP / Hotel Explorer / Deal Opportunities — **do not** build a cross-product reporting engine |
 | Reference | GDI is the **first reference implementation**, not a shared runtime dependency for other products |
 
 ---
@@ -58,10 +62,13 @@ It is a long-term, product-wide brand and design principle. Implementation proce
 | Artifact | Path |
 |---|---|
 | Contract | `lib/group-demand-intelligence/executive-summary/gdi-research-receipt-contract-v1.js` |
-| Aggregation | `lib/group-demand-intelligence/executive-summary/gdi-executive-summary-v1.js` |
+| Effort benchmarks | `lib/group-demand-intelligence/executive-summary/gdi-research-effort-benchmark-contract-v1.js` |
+| Productivity engine | `lib/group-demand-intelligence/executive-summary/gdi-research-productivity-v1.js` |
+| Aggregation | `lib/group-demand-intelligence/executive-summary/gdi-executive-summary-v1.js` + `gdi-executive-summary-v2.js` |
 | API | `GET /api/group-demand-intelligence/hotels/:hotelId/executive-summary` |
 | Closeout | `reports/gdi-executive-summary-v1/PHASE_1_FOUNDATION_CLOSEOUT.md` |
-| Auth | `FOUNDER_GO_GDI_EXECUTIVE_SUMMARY_PHASE_1_20261127` |
+| Productivity map | `reports/gdi-executive-summary-v2/02-RESEARCH_PRODUCTIVITY_METRIC_MAP.md` |
+| Auth | `FOUNDER_GO_GDI_EXECUTIVE_SUMMARY_PHASE_1_20261127` / V2 |
 
 Documenting these principles does **not** expand Phase 1 scope, budget, or deliverables.
 

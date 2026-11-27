@@ -291,6 +291,104 @@
     );
   }
 
+  function fmtProductivityValue(m) {
+    if (!m || m.value == null) return "—";
+    if (m.currency === "USD") {
+      return "$" + fmtNum(m.value);
+    }
+    return fmtNum(m.value);
+  }
+
+  function renderResearchProductivity(section) {
+    section = section || {};
+    var metrics = section.metrics || [];
+    return (
+      '<section class="gdi-es-section gdi-es-productivity">' +
+      '<header class="gdi-es-section__head">' +
+      "<h2>" +
+      esc(section.headline || "Your Time. Better Invested.") +
+      "</h2>" +
+      "<p>" +
+      esc(
+        section.lede ||
+          "Less time searching for business. More time building relationships, pursuing opportunities and converting demand into bookings.",
+      ) +
+      "</p></header>" +
+      '<div class="gdi-es-kpi-ribbon gdi-es-productivity__kpis">' +
+      metrics
+        .map(function (m) {
+          var note =
+            m.value == null
+              ? availabilityNote(m) || m.note || "Unavailable"
+              : m.estimateClass === "PROVISIONAL_ESTIMATE"
+                ? "Provisional estimate"
+                : "";
+          return (
+            '<div class="gdi-es-kpi' +
+            (m.value == null ? " is-unavailable" : "") +
+            '"><div class="gdi-es-kpi__value">' +
+            esc(fmtProductivityValue(m)) +
+            '</div><div class="gdi-es-kpi__label">' +
+            esc(m.label || m.key) +
+            "</div>" +
+            (note
+              ? '<div class="gdi-es-kpi__note">' + esc(note) + "</div>"
+              : "") +
+            "</div>"
+          );
+        })
+        .join("") +
+      "</div>" +
+      '<details class="gdi-es-methodology">' +
+      "<summary>How This Estimate Is Calculated</summary>" +
+      "<p>" +
+      esc(
+        section.methodologySummary ||
+          "Verified research activity volumes × provisional manual effort benchmarks, minus residual hotel review time.",
+      ) +
+      "</p>" +
+      "<p>" +
+      esc(
+        section.disclaimer ||
+          "Estimated research productivity — not payroll savings and not booked revenue.",
+      ) +
+      "</p></details></section>"
+    );
+  }
+
+  function renderSalesTimeSaved(section) {
+    if (!section || !section.breakdown || !section.breakdown.length) {
+      return "";
+    }
+    return (
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>' +
+      esc(section.headline || "Where Research Time Was Saved") +
+      "</h2><p>Measured research volumes with provisional benchmark assumptions.</p></header>" +
+      '<div class="gdi-es-receipt-grid">' +
+      section.breakdown
+        .map(function (b) {
+          return (
+            '<div class="gdi-es-receipt-card"><div class="gdi-es-kpi__value">' +
+            esc(b.estimatedHoursBase == null ? "—" : fmtNum(b.estimatedHoursBase)) +
+            '</div><div class="gdi-es-kpi__label">' +
+            esc(b.label) +
+            "</div>" +
+            '<div class="gdi-es-kpi__note">Est. hours · volume ' +
+            esc(b.volume == null ? "—" : b.volume) +
+            "</div></div>"
+          );
+        })
+        .join("") +
+      "</div>" +
+      '<p class="gdi-es-muted">' +
+      esc(
+        section.disclaimer ||
+          "Provisional estimates. Ordinary commercial pursuit is excluded.",
+      ) +
+      "</p></section>"
+    );
+  }
+
   function renderPriorities(section, hotelId) {
     var items = (section && section.items) || [];
     if (!items.length) {
@@ -410,15 +508,41 @@
       '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Dealality Research Receipt</h2><p>Commercially meaningful research metrics for this hotel.</p></header>' +
       renderReceipt(ov.customerResearchReceipt) +
       "</section>" +
+      renderResearchProductivity(
+        ov.researchProductivity ||
+          (ov.customerResearchReceipt &&
+            ov.customerResearchReceipt.researchProductivity),
+      ) +
       '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2></header>' +
       renderPriorities(ov.priorityCommercialOpportunities, hotelId) +
       "</section>" +
       '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Outcomes &amp; Investment Recovery</h2></header>' +
       renderOutcomes(ov.commercialOutcomes) +
+      '<div class="gdi-es-invest-split">' +
+      '<div class="gdi-es-invest-card"><h3>A. Estimated Research Productivity Value</h3><p>' +
+      esc(
+        (ov.investmentRecovery &&
+          ov.investmentRecovery.categories &&
+          ov.investmentRecovery.categories.estimatedResearchProductivityValue &&
+          ov.investmentRecovery.categories.estimatedResearchProductivityValue
+            .note) ||
+          "Redeployable research time estimate — not actual payroll savings.",
+      ) +
+      "</p></div>" +
+      '<div class="gdi-es-invest-card"><h3>B. Verified Incremental Commercial Value</h3><p>' +
+      esc(
+        (ov.investmentRecovery &&
+          ov.investmentRecovery.categories &&
+          ov.investmentRecovery.categories.verifiedIncrementalCommercialValue &&
+          ov.investmentRecovery.categories.verifiedIncrementalCommercialValue
+            .note) ||
+          "Hotel-reported or otherwise verified commercial outcomes only.",
+      ) +
+      "</p></div></div>" +
       '<p class="gdi-es-muted">' +
       esc(
         (ov.investmentRecovery && ov.investmentRecovery.customerCopy) ||
-          "Verified investment recovery appears when hotel-reported results are available.",
+          "Category A and Category B are never combined into a single realized ROI claim.",
       ) +
       "</p></section>"
     );
@@ -487,7 +611,8 @@
       "</li>" +
       "<li>Need-period opportunities: " +
       esc(focus.needPeriodOpportunities == null ? "—" : focus.needPeriodOpportunities) +
-      "</li></ul></div></div></section>"
+      "</li></ul></div></div></section>" +
+      renderSalesTimeSaved(sp.researchTimeSaved)
     );
   }
 
@@ -516,6 +641,16 @@
       "</div>" +
       "<h3 class=\"gdi-es-subhead\">Demand Segment Coverage</h3>" +
       renderBarChart(ri.demandComposition) +
+      (ri.researchProductivity
+        ? '<p class="gdi-es-muted">Benchmark status: ' +
+          esc(
+            (ri.researchProductivity.internalMetrics &&
+              ri.researchProductivity.internalMetrics.benchmarkValidationStatus) ||
+              ri.researchProductivity.estimateClass ||
+              "PROVISIONAL",
+          ) +
+          ". AI elapsed time is not counted as human labor.</p>"
+        : "") +
       "</section>"
     );
   }

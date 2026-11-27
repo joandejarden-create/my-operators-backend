@@ -21,6 +21,8 @@ $resolvedRepo = Get-GdiRepoRoot -RepoPath $RepoPath
 Set-Location $resolvedRepo
 
 Write-Host '== GDI Executive Summary V2 validation =='
+& node (Join-Path $resolvedRepo 'scripts\test-gdi-research-productivity-v1.mjs')
+if ($LASTEXITCODE -ne 0) { throw 'test-gdi-research-productivity-v1 failed' }
 & node (Join-Path $resolvedRepo 'scripts\test-gdi-executive-summary-v2.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'test-gdi-executive-summary-v2 failed' }
 & node (Join-Path $resolvedRepo 'scripts\test-gdi-executive-summary-v1.mjs')
@@ -40,7 +42,10 @@ if (-not $listen) {
     if ($json.version -ne 'gdi-executive-summary-v2') { throw "Expected V2 version, got $($json.version)" }
     $unspecified = @($json.sections.executiveCommercialSnapshot.priorityDemandSegments | Where-Object { $_.name -match 'Unspecified' })
     if ($unspecified.Count -gt 0) { throw 'Demand segments still Unspecified' }
-    Write-Host "[8080] ES V2 ok hotel=$HotelId segs=$($json.sections.demandComposition.rows.Count) perspectives=$($json.perspectives.available -join ',')"
+    $hoursSaved = $json.sections.executiveOverview.researchProductivity.metrics | Where-Object { $_.key -eq 'estimatedResearchHoursSaved' } | Select-Object -First 1
+    if (-not $hoursSaved -or $null -eq $hoursSaved.value) { throw 'Research Productivity hours saved missing' }
+    if ($json.sections.researchProductivity.disclaimer -notmatch 'payroll') { throw 'Productivity disclaimer missing' }
+    Write-Host "[8080] ES V2 ok hotel=$HotelId segs=$($json.sections.demandComposition.rows.Count) hoursSaved=$($hoursSaved.value) perspectives=$($json.perspectives.available -join ',')"
   } catch {
     if ($RequirePort8080) { throw }
     Write-Host "[warn] live ES probe failed: $_"
