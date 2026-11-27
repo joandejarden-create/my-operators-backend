@@ -98,11 +98,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.23");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.29");
   assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 32);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.23"
+    "hotel-explorer-quality-standard-v1.25"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -317,11 +317,13 @@ run("forbids_internal_graph_ids_in_relationship_markup", () => {
 
 run("rooms_tab_after_overview_and_sortable_inventory", () => {
   const hex = read("public/js/hotel-explorer.js");
-  const tabsMatch = hex.match(/var TABS = \[([\s\S]*?)\];/);
+  const tabsMatch = hex.match(/var ALL_TABS = \[([\s\S]*?)\];/) || hex.match(/var TABS = \[([\s\S]*?)\];/);
   assert.ok(tabsMatch, "TABS array present");
   const ids = [...tabsMatch[1].matchAll(/id:\s*"([^"]+)"/g)].map((m) => m[1]);
   assert.equal(ids[0], "hotel");
   assert.equal(ids[1], "rooms");
+  assert.ok(ids.includes("sentiment"), "sentiment remains registered for reactivation");
+  assert.equal(ids.length, 12);
   const rms = read("public/js/hotel-explorer-rooms-meeting-space.js");
   mustInclude(rms, "DealalitySortableTable");
   mustInclude(rms, "not additive");
@@ -340,22 +342,39 @@ run("hex_tabs_even_flex_and_rooms_present", () => {
   mustInclude(css, "grid-auto-columns: minmax(76px, 1fr)");
   mustInclude(css, "min-width: 32px");
   mustInclude(css, "border: 2px solid var(--neutral--600)");
+  const assets = read("lib/hotel-intelligence/he-canonical-explorer-assets-v1.js");
+  mustInclude(assets, "HE_ACTIVE_TAB_IDS");
+  mustInclude(assets, "HE_PRESERVED_DISABLED_TAB_IDS");
+  mustInclude(assets, "he-guest-sentiment-feature-flag-v1.js");
+  const he = read("public/js/hotel-explorer.js");
+  mustInclude(he, "ALL_TABS");
+  mustInclude(he, "isGuestSentimentEnabled");
+  assert.ok(he.includes('id: "sentiment"'), "sentiment tab remains registered for reactivation");
 });
 
 run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "Find Email & Phone");
+  mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "Loading Contacts…");
   mustInclude(hci, "HeLoadingUx");
   mustInclude(hci, "hci-note--unresolved");
-  mustInclude(hci, "Verified identity ≠ verified personal contact channels");
   mustInclude(hci, "data-hci-enrich");
   mustInclude(hci, "/reveal");
   mustInclude(hci, "enrichment-capability");
-  mustInclude(hci, "Recommended First Contact");
-  mustInclude(hci, "Alternative Decision-Makers");
-  mustInclude(hci, "Organization Contact Channels");
-  mustInclude(hci, "Research gaps");
+  mustInclude(hci, "Hotel Leadership");
+  mustInclude(hci, "Sales & Commercial Leadership");
+  mustInclude(hci, "Ownership & Asset Management");
+  mustInclude(hci, "Management Company & Regional Leadership");
+  mustInclude(hci, "Brand & Development");
+  mustInclude(hci, "data-hci-purpose-filter");
+  mustInclude(hci, "Company contact routes");
+  mustInclude(hci, "Open items");
+  mustInclude(hci, "Email");
+  mustInclude(hci, "Call");
+  mustInclude(hci, "Find Contact Details");
+  assert.ok(!hci.includes("Recommended First Contact"), "no global recommended-first hierarchy");
+  assert.ok(!hci.includes("Alternative Decision-Makers"));
+  assert.ok(!hci.includes("Suggested Contact"), "no renamed global first-contact hierarchy");
   assert.ok(!/hci-dev-json|Dev diagnostic|JSON\.stringify\(vm/.test(hci), "no user-visible VM dump");
   assert.ok(!/production_writes|write_on_get|apply_authorized|surfe_live_calls/.test(hci));
   assert.ok(
@@ -542,22 +561,22 @@ run("owner_decision_maker_ranking_and_surfe_fallback", () => {
   assert.ok(research.people.every((p) => p.linkedinUrl && p.linkedinUrl.includes("linkedin.com")));
   assert.ok(research.people.every((p) => !(p.emailContacts || []).length));
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "Recommended First Contact");
-  mustInclude(hci, "Find Email & Phone");
+  mustInclude(hci, "Hotel Leadership");
+  mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "data-linkedin-url");
-  mustInclude(hci, "Organization Contact Channels");
+  mustInclude(hci, "Company contact routes");
+  assert.ok(!hci.includes("Recommended First Contact"));
   assert.ok(!/hci-dev-json|production_writes|JSON\.stringify\(vm/.test(hci));
   const mountIdx = hci.indexOf("function mount(");
   assert.ok(!/enrichPeople|provider\.enrich/.test(hci.slice(mountIdx, mountIdx + 1200)));
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "HE-BETH-OWNER-DECISION-MAKER-RESEARCH");
-  mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildDecisionOrientedContactSections");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildPurposeGroupedContactSections");
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "resolveEnrichAction");
   mustInclude(
     read("lib/hotel-intelligence/contact-intelligence/he-public-contact-channel-hierarchy-v1.js"),
-    "Find Email & Phone"
+    "Find Contact Details"
   );
 });
-
 run("measurement_prefs_conversion_and_sort_keys", () => {
   assert.equal(SQFT_TO_SQM, 0.09290304);
   assert.equal(MI_TO_KM, 1.609344);
@@ -999,13 +1018,20 @@ run("he_guest_sentiment_tab_restructure_gates", () => {
 
   mustInclude(hex, 'id: "sentiment"');
   mustInclude(hex, "Guest<br>Sentiment");
+  mustInclude(hex, "ALL_TABS");
+  mustInclude(hex, "isGuestSentimentEnabled");
   mustInclude(hex, "TAB_ALIASES");
   mustInclude(hex, "normalizeHexTab");
   mustInclude(hex, 'brand: "sentiment"');
   mustInclude(ws, 'id: "sentiment"');
   mustInclude(ws, "Guest Sentiment");
   mustInclude(ws, "renderGuestSentimentTab");
+  mustInclude(ws, "isGuestSentimentEnabled");
   mustInclude(ws, "data-hiw-guest-sentiment-tab");
+  mustInclude(
+    read("lib/hotel-intelligence/guest-sentiment/he-guest-sentiment-feature-flag-v1.js"),
+    "DISABLED_BY_FOUNDER"
+  );
   mustNotMatch(ws, /hiw-section__h">Franchise &amp; Brand Status/);
   mustNotMatch(ws, /hiw-section__h">Current Operator/);
   mustNotMatch(ws, /hiw-report__title">Brand \/ Operator/);
@@ -1086,15 +1112,21 @@ run("he_public_contact_hierarchy_and_surfe_session_only", () => {
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
   mustInclude(hci, "Direct Business Email");
-  mustInclude(hci, "Organizational Contact Route");
+  mustInclude(hci, "Direct Business Phone");
+  mustInclude(hci, "Company contact routes");
+  mustInclude(hci, "Company email");
   mustInclude(hci, "Find Phone");
+  mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "_sessionSurfeByPerson");
   mustInclude(hci, "session-only");
+  assert.ok(!hci.includes("Recommended First Contact"));
   mustInclude(api, "persist_forbidden");
   mustInclude(api, "NOT_WRITTEN");
   mustInclude(lib, "looksLikeInventedEmail");
   mustInclude(lib, "resolveEnrichAction");
   mustInclude(lib, "surfeDerived: false");
+  mustInclude(lib, "Organizational Contact Route");
+  mustInclude(lib, "Direct Business Email");
   mustInclude(std, "HE-QL-032");
   mustInclude(std, "Surfe session-only");
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-032"));

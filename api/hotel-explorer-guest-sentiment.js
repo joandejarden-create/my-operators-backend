@@ -1,11 +1,17 @@
 /**
  * GET /api/hotel-explorer/hotels/:hotelId/guest-sentiment
  * Read-only. Never writes Airtable. Never calls paid review APIs.
+ * When HE_GUEST_SENTIMENT_ENABLED=false, returns DISABLED_BY_FOUNDER with no platform data.
  */
 import {
   resolveGuestSentimentForHotel,
 } from "../lib/hotel-intelligence/guest-sentiment/guest-sentiment-staged-store-v1.js";
 import { GUEST_SENTIMENT_MODEL_V1 } from "../lib/hotel-intelligence/guest-sentiment/guest-sentiment-model-v1.js";
+import {
+  buildGuestSentimentDisabledByFounderResponse,
+  getHeGuestSentimentFeatureState,
+  isHeGuestSentimentEnabled,
+} from "../lib/hotel-intelligence/guest-sentiment/he-guest-sentiment-feature-flag-v1.js";
 
 /**
  * Express handler — GET only, no provider calls.
@@ -29,7 +35,16 @@ export async function getHotelExplorerGuestSentiment(req, res) {
 
   res.setHeader("X-Dealality-Write", "forbidden");
   res.setHeader("X-Dealality-Paid-Providers", "forbidden");
+  res.setHeader("X-Dealality-Guest-Sentiment-Scraping", "forbidden");
   res.setHeader("Cache-Control", "private, max-age=60");
+
+  const flag = getHeGuestSentimentFeatureState();
+  res.setHeader("X-Dealality-Guest-Sentiment-Status", flag.status);
+
+  if (!isHeGuestSentimentEnabled()) {
+    // Safe unavailable — do not leak staged / rights-restricted platform payloads.
+    return res.status(200).json(buildGuestSentimentDisabledByFounderResponse(hotelId));
+  }
 
   try {
     const view = resolveGuestSentimentForHotel(

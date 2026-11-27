@@ -1,0 +1,175 @@
+/**
+ * Hotel Explorer — canonical Dealality dark theme tokens (V1).
+ * Scoped to HE hosts only. Does not redefine Brand Explorer / GDI globals.
+ *
+ * Surface hierarchy (continuous canvas, no competing navy families):
+ *   canvas  #080f25  → continuous Explorer content plane
+ *   section #101935  → cards / chapter boxes
+ *   elevated #212c4d → chips / hover surfaces
+ *   table   #0d152c  → inventory / ada-table surface
+ */
+
+.hex-root,
+.hex-root .hotel-detail-panel,
+.hex-root .hex-radar-host,
+.hex-root .hiw-report,
+.hotel-detail-panel.hdp--he-theme {
+  /* Canonical HE surfaces */
+  --he-canvas: #080f25;
+  --he-section: #101935;
+  --he-elevated: #212c4d;
+  --he-table: #0d152c;
+  --he-border: #37446b;
+  --he-border-table: #2a3550;
+  --he-text: #ffffff;
+  --he-text-body: #aeb9e1;
+  --he-text-muted: #7e89ac;
+  --he-accent: #6c72ff;
+  --he-hover: rgba(108, 114, 255, 0.12);
+  --he-ok: #3dd68c;
+  --he-warn: #fdb52a;
+
+  /* Bridge hex / hdp / hiw / oi / hci onto one family */
+  --neutral--800: var(--he-canvas);
+  --neutral--700: var(--he-elevated);
+  --neutral--600: var(--he-border);
+  --neutral--500: var(--he-text-muted);
+  --neutral--400: var(--he-text-body);
+  --neutral--100: var(--he-text);
+  --accent--primary-1: var(--he-accent);
+  --secondary--color-1: var(--he-section);
+
+  --hex-surface-canvas: var(--he-canvas);
+  --hex-surface-section: var(--he-section);
+  --hex-surface-table: var(--he-table);
+  --hex-surface-border: var(--he-border);
+  --hex-surface-border-table: var(--he-border-table);
+  --hex-surface-hover: var(--he-hover);
+  --panel: var(--he-section);
+  --panel-soft: var(--he-section);
+  --runbook-surface: var(--he-table);
+  --runbook-border: var(--he-border-table);
+  --border: var(--he-border);
+
+  --hdp-bg: var(--he-section);
+  --hdp-bg-deep: var(--he-canvas);
+  --hdp-bg-elevated: var(--he-elevated);
+  --hdp-border: var(--he-border);
+  --hdp-text: var(--he-text);
+  --hdp-text-body: var(--he-text-body);
+  --hdp-text-muted: var(--he-text-muted);
+  --hdp-accent: var(--he-accent);
+
+  --hiw-bg: var(--he-canvas);
+  --hiw-panel: var(--he-section);
+  --hiw-elevated: var(--he-elevated);
+  --hiw-border: var(--he-border);
+  --hiw-text: var(--he-text);
+  --hiw-body: var(--he-text-body);
+  --hiw-muted: var(--he-text-muted);
+  --hiw-accent: var(--he-accent);
+
+  --oi-bg: var(--he-section);
+  --oi-bg-deep: var(--he-canvas);
+  --oi-bg-elevated: var(--he-elevated);
+  --oi-border: var(--he-border);
+  --oi-text: var(--he-text);
+  --oi-text-body: var(--he-text-body);
+  --oi-text-muted: var(--he-text-muted);
+  --oi-accent: var(--he-accent);
+
+  --hci-bg: var(--he-elevated);
+  --hci-border: var(--he-border);
+  --hci-text: var(--he-text);
+  --hci-muted: var(--he-text-muted);
+  --hci-accent: var(--he-accent);
+}
+
+/**
+ * Continuous content canvas inside the Explorer shell.
+ * Nested modules must not paint a second full-bleed navy that seams against the host.
+ */
+.hex-root .hex-shell,
+.hex-root .hex-scroll,
+.hex-root .hex-main,
+.hex-root .hex-radar-host,
+.hex-root .hex-radar-host .hdp-tab-panels,
+.hex-root .hex-radar-host .hdp-tab-panels .tab-panel,
+.hex-root .hex-radar-host .hdp-tab-panels--embed,
+.hex-root .hex-radar-host .hdp-tab-panels--embed .tab-panel,
+.hex-root .hex-radar-host .hdp-tab-panels--embed .tab-panel.active,
+.hex-root .hiw-report.hex-rms,
+.hex-root .hiw-report,
+.hex-root .hex-hiw-host {
+  background-color: var(--he-canvas, #080f25);
+  background-image: none;
+}
+
+/* Cards / chapters may elevate; keep one section tone only */
+.hex-root .hiw-snap-sub,
+.hex-root .hex-fact,
+.hex-root .hex-hero,
+.hex-root .hci-card,
+.hex-root .oi-rel-card,
+.hex-root .hex-rms-metric {
+  background-color: var(--he-section, #101935);
+  background-image: none;
+}
+
+/* Tables share one inventory surface */
+.hex-root .hex-rms-table,
+.hex-root .dl-table--inventory,
+.hex-root .ada-table,
+.hex-root .hiw-table,
+.hex-root .hiw-table--portfolio.dl-table thead th,
+.hex-root .hiw-table--portfolio.ada-table thead th {
+  background-color: var(--he-table, #0d152c);
+}
+
+/*
+ * Embedded HIW chrome must stay on the Explorer canvas.
+ * Loaded after module CSS (preview + Radar hosts) so these win without !important.
+ */
+.hex-root .hiw-header,
+.hex-root .hiw-topbar,
+.hex-root .hiw-rail,
+.hex-root .hiw-main,
+.hex-root .hiw-section,
+.hex-root .hiw-graph {
+  background-color: var(--he-canvas, #080f25);
+  background-image: none;
+}
+
+.hex-root .hiw-header {
+  /* Flat canvas — no gradient seam into #0b1228 */
+  border-bottom-color: var(--he-border, #37446b);
+}
+
+.hex-root .hiw-section,
+.hex-root .hiw-own-chapter .hiw-snap-sub,
+.hex-root .oi-report,
+.hex-root .hci-section {
+  border-color: var(--he-border, #37446b);
+}
+
+/* Contact / ownership elevated chips stay on elevated token, not random rgba navy */
+.hex-root .oi-rel-card,
+.hex-root .hci-person-card,
+.hex-root .hci-card {
+  background-color: rgba(16, 25, 53, 0.92);
+  border-color: var(--he-border, #37446b);
+}
+
+.hex-root .oi-rel-card:hover,
+.hex-root .oi-rel-card:focus-visible,
+.hex-root .hci-person-card:hover {
+  background-color: var(--he-elevated, #212c4d);
+}
+
+/* Loading / empty states must not flash a foreign blue */
+.hex-root .hiw-empty,
+.hex-root .hex-dossier-loading,
+.hex-root .hdp-loading {
+  background: transparent;
+  color: var(--he-text-body, #aeb9e1);
+}

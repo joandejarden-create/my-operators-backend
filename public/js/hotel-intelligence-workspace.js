@@ -87,7 +87,7 @@
     );
   }
 
-  var TABS = [
+  var ALL_TABS = [
     { id: "overview", label: "Overview" },
     { id: "ownership", label: "Ownership Intelligence" },
     { id: "organization", label: "Organization & Portfolio" },
@@ -97,6 +97,23 @@
     { id: "sentiment", label: "Guest Sentiment" },
     { id: "sources", label: "Sources & Evidence" },
   ];
+
+  function guestSentimentFlag() {
+    return typeof window !== "undefined" ? window.HeGuestSentimentFeatureFlag : null;
+  }
+
+  function isGuestSentimentEnabled() {
+    var f = guestSentimentFlag();
+    return !!(f && typeof f.isEnabled === "function" && f.isEnabled());
+  }
+
+  var TABS = (function () {
+    var f = guestSentimentFlag();
+    if (f && typeof f.filterActiveTabs === "function") return f.filterActiveTabs(ALL_TABS);
+    return ALL_TABS.filter(function (t) {
+      return t.id !== "sentiment";
+    });
+  })();
 
   var TAB_ALIASES = {
     brand: "sentiment",
@@ -3127,7 +3144,46 @@
     );
   }
 
-  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta, scope) {
+  function buildSharedHotelAttrs(hotel, ownership) {
+    var inv =
+      (hotel && hotel.guestRoomsMeetingSpace) ||
+      (ownership && ownership.guestRoomsMeetingSpace) ||
+      null;
+    var roomsFromInv =
+      inv &&
+      inv.guestRooms &&
+      inv.guestRooms.totalGuestrooms &&
+      (inv.guestRooms.totalGuestrooms.value != null
+        ? inv.guestRooms.totalGuestrooms.value
+        : inv.guestRooms.totalGuestrooms);
+    var rooms = Number(roomsFromInv || (hotel && hotel.rooms) || (ownership && ownership.hotel && ownership.hotel.rooms));
+    var control =
+      (ownership &&
+        ownership.report &&
+        ownership.report.ownership_and_control) ||
+      {};
+    var partyName = function (p) {
+      if (!p) return null;
+      if (typeof p === "string") return p;
+      return p.tradingName || p.legalName || p.name || p.display_name || null;
+    };
+    return {
+      hotelId: recordId(hotel),
+      name: (hotel && hotel.name) || null,
+      rooms: Number.isFinite(rooms) && rooms > 0 ? rooms : null,
+      brand: (hotel && (hotel.brand || hotel.currentBrand)) || partyName(control.brand) || null,
+      market: (hotel && hotel.market) || null,
+      operator:
+        (hotel && (hotel.managementCompany || hotel.operator)) ||
+        partyName(control.operator) ||
+        null,
+      status: (hotel && (hotel.status || hotel.radarStatus)) || null,
+      chainScale: (hotel && hotel.chainScale) || null,
+      sources: { rooms: roomsFromInv != null ? "physical_product_or_hpc" : "hotel_dto" },
+    };
+  }
+
+  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta, scope, sharedHotelView) {
     var api = window.HeOwnerPortfolioOperatorView;
     if (api && typeof api.buildOwnerPortfolioOperatorView === "function") {
       return api.buildOwnerPortfolioOperatorView(ownedRows, {
@@ -3135,6 +3191,8 @@
         // Coverage title is derived from selected scope (verified vs verified+proposed).
         completeness: (coverageMeta && coverageMeta.completeness) || "PARTIAL",
         scope: scope,
+        sharedHotelView: sharedHotelView || null,
+        focusHotelId: sharedHotelView && sharedHotelView.hotelId ? sharedHotelView.hotelId : null,
       });
     }
     return {
@@ -3426,7 +3484,14 @@
       orgPayload.portfolio_kpis ||
       null;
     var scope = resolveOwnerPortfolioScope(orgPayload, ownership);
-    var view = buildPortfolioOperatorView(ownedSeed, g.display_name, coverageMeta, scope);
+    var sharedHotelView = buildSharedHotelAttrs(hotel, ownership);
+    var view = buildPortfolioOperatorView(
+      ownedSeed,
+      g.display_name,
+      coverageMeta,
+      scope,
+      sharedHotelView
+    );
     var ownedRows = view.ownedHotels || [];
     var partition = view.partition || {};
 
@@ -4103,6 +4168,12 @@
    * Ownership Intelligence, and Relationships (HE-QL-038).
    */
   function renderGuestSentimentTab(_hotel, _ownership) {
+    if (!isGuestSentimentEnabled()) {
+      var f = guestSentimentFlag();
+      return f && typeof f.unavailableHtml === "function"
+        ? f.unavailableHtml()
+        : '<article class="hiw-report" data-he-guest-sentiment-disabled="1"><h2 class="hiw-report__title">Guest Sentiment unavailable</h2><p class="hiw-prose">Guest Sentiment is temporarily disabled pending licensing review.</p></article>';
+    }
     return (
       '<article class="hiw-report hiw-report--guest-sentiment" data-hiw-guest-sentiment-tab="1">' +
       '<h2 class="hiw-report__title">Guest Sentiment</h2>' +
@@ -4621,6 +4692,14 @@
   function mountGuestSentiment(opts) {
     opts = opts || {};
     var host = document.querySelector("[data-hiw-guest-sentiment-host]");
+    if (!isGuestSentimentEnabled()) {
+      if (host) {
+        host.hidden = true;
+        host.innerHTML = "";
+      }
+      if (sentimentAsync) sentimentAsync.cancel();
+      return;
+    }
     if (!host || !state.hotel) return;
     var id = recordId(state.hotel);
     if (!id) {
@@ -4808,7 +4887,14 @@
 
   function normalizeHiwTab(tabId) {
     var raw = String(tabId || "").trim();
-    if (TAB_ALIASES[raw]) return TAB_ALIASES[raw];
+    if (TAB_ALIASES[raw]) raw = TAB_ALIASES[raw];
+    var f = guestSentimentFlag();
+    if (f && typeof f.normalizeTabOrFallback === "function") {
+      return f.normalizeTabOrFallback(raw, "ownership");
+    }
+    if (!isGuestSentimentEnabled() && (raw === "sentiment" || raw === "brand")) {
+      return "ownership";
+    }
     return raw || "ownership";
   }
 
@@ -4882,7 +4968,7 @@
     var mainEl = document.getElementById("hiwMain");
     if (mainEl) mainEl.scrollTop = 0;
     if (state.tab === "ownership") mountOwnershipControlNetwork();
-    if (state.tab === "sentiment" || state.tab === "brand") {
+    if ((state.tab === "sentiment" || state.tab === "brand") && isGuestSentimentEnabled()) {
       mountHotelNewsArticles();
       mountGuestSentiment();
     }

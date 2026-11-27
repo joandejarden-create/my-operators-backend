@@ -437,7 +437,7 @@
 }
 
 .hdp-tab-panels .tab-panel {
-  background: var(--hdp-bg-deep);
+  background: var(--hdp-bg-deep, #080f25);
 }
 
 .hdp-tab-panels .tab-panel[data-panel="access-connectivity"],
@@ -446,7 +446,18 @@
 .hdp-tab-panels .tab-panel[data-panel="demand-drivers"],
 .hdp-tab-panels .tab-panel[data-panel="hotel"] {
   padding: 12px 16px 14px;
-  background: var(--hdp-bg-deep);
+  background: var(--hdp-bg-deep, #080f25);
+}
+
+/* When embedded in Hotel Explorer, inherit continuous canvas (no second navy plane) */
+.hex-root .hdp-tab-panels .tab-panel,
+.hex-root .hdp-tab-panels .tab-panel[data-panel="access-connectivity"],
+.hex-root .hdp-tab-panels .tab-panel[data-panel="submarket-snapshot"],
+.hex-root .hdp-tab-panels .tab-panel[data-panel="area-hotels"],
+.hex-root .hdp-tab-panels .tab-panel[data-panel="demand-drivers"],
+.hex-root .hdp-tab-panels .tab-panel[data-panel="hotel"],
+.hex-radar-host .hdp-tab-panels .tab-panel {
+  background: var(--he-canvas, var(--hdp-bg-deep, #080f25));
 }
 
 .hdp-section,

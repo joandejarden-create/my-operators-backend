@@ -381,7 +381,48 @@ function buildOwnerPortfolioOperatorView(ownedHotels = [], opts = {}) {
 
   const partitioned = partitionPortfolioHotels(ownedHotels);
   const scopedSeed = selectHotelsForScope(ownedHotels, scope);
-  const owned = dedupePortfolioHotels(scopedSeed, { currentOnly: true });
+  let owned = dedupePortfolioHotels(scopedSeed, { currentOnly: true });
+
+  // Hydrate focus row from shared HPC/HI view model (mapping defect ≠ research gap).
+  if (opts.sharedHotelView && typeof opts.sharedHotelView === "object") {
+    const focusHotelId = opts.focusHotelId || opts.sharedHotelView.hotelId || null;
+    owned = owned.map((row) => {
+      const rowId = String(row.airtable_record_id || row.id || "").trim();
+      const isFocus =
+        row.focus_hotel === true ||
+        (focusHotelId && rowId && rowId === focusHotelId);
+      if (!isFocus) return row;
+      const shared = opts.sharedHotelView;
+      const next = { ...row };
+      if (shared.rooms != null && (next.rooms == null || next.rooms_known !== true)) {
+        next.rooms = shared.rooms;
+        next.rooms_known = true;
+        next.rooms_display = String(shared.rooms);
+        next.rooms_source = shared.sources?.rooms || "shared_hotel_view_model";
+      }
+      if (shared.brand && !(next.brand_display || next.brand)) {
+        next.brand = shared.brand;
+        next.brand_display = shared.brand;
+      }
+      if (shared.market && !(next.market_display || next.market)) {
+        next.market = shared.market;
+        next.market_display = shared.market;
+      }
+      if (shared.operator && !(next.operator || next.management_company)) {
+        next.operator = shared.operator;
+        next.management_company = shared.operator;
+      }
+      if (shared.name && (!next.hotel_name || next.hotel_name === rowId || next.name === rowId)) {
+        next.hotel_name = shared.name;
+        next.name = shared.name;
+      }
+      if (shared.status && !next.status) next.status = shared.status;
+      next.pending_hpc_match = false;
+      next.hydrated_from_shared_view = true;
+      return next;
+    });
+  }
+
   const ownedTotals = sumRooms(owned);
 
   const groupMap = new Map();

@@ -1,0 +1,180 @@
+{
+  "version": "he50-release-acceptance-gates-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "base": "http://127.0.0.1:8080",
+  "headHint": null,
+  "browserEnabled": true,
+  "ok": true,
+  "gates": {
+    "HE_ACTIVE_TAB_COUNT": "YES",
+    "HE_CONTACT_DIRECTORY_VALIDATED": "YES",
+    "HE_CONTACT_ORG_MAPPING_VALIDATED": "YES",
+    "HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED": "YES",
+    "HE_CONTACT_PRESENTATION_VALIDATED": "YES",
+    "HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE": "YES",
+    "HE_OWNERSHIP_VERIFICATION_STATE_PARITY": "YES",
+    "HE_UNIFIED_THEME_CONSISTENCY": "YES",
+    "HE_CANONICAL_AIRTABLE_READBACK": "YES",
+    "HE_AUTHENTICATED_LIVE_RENDERING": "YES",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  },
+  "contactTests": [
+    {
+      "script": "test:he-contact-intelligence-v3-directory",
+      "ok": true,
+      "status": 0
+    },
+    {
+      "script": "test:he-contact-intelligence-cx-v2",
+      "ok": true,
+      "status": 0
+    },
+    {
+      "script": "test:he-contact-intelligence-directory-ux-v1",
+      "ok": true,
+      "status": 0
+    }
+  ],
+  "physicalFacts": {
+    "rooms407": true,
+    "yearBuilt1979": true,
+    "lastRenovated2015": true,
+    "meetingTotal18719": true,
+    "meetingRooms27": true,
+    "ballroom4592": true,
+    "guestroomMix": true
+  },
+  "persistence": {
+    "rooms": {
+      "source": "Hotel Property Census (Airtable)",
+      "canonicalPersisted": true,
+      "value": 407
+    },
+    "yearBuilt": {
+      "source": "HPC Opening Date → yearBuilt DTO mapping (Airtable read-back via ownership hotel)",
+      "canonicalPersisted": true,
+      "value": 1979,
+      "note": "Live ownership hotel.yearBuilt=1979 from HPC mapping — not a staged overlay"
+    },
+    "lastRenovated": {
+      "source": "HPC Renovation/Conversion Date → lastRenovated DTO mapping",
+      "canonicalPersisted": true,
+      "value": 2015
+    },
+    "meetingSpace": {
+      "source": "HPC physical-product adapter (sourceOfTruth=HOTEL_PROPERTY_CENSUS)",
+      "canonicalPersisted": true,
+      "value": {
+        "meetingTotal": 18719,
+        "meetingRooms": 27,
+        "ballroom": 4592
+      }
+    },
+    "guestroomMix": {
+      "source": "HPC physical-product schema (171/236/8 brand-materials reference on census)",
+      "canonicalPersisted": true,
+      "value": {
+        "kings": 171,
+        "doubles": 236,
+        "suites": 8,
+        "sourceOfTruth": "HOTEL_PROPERTY_CENSUS",
+        "persisted": true
+      }
+    },
+    "ownershipClassification": {
+      "source": "Product overlay / shared VM (founder Proposed) vs HI graph Validated",
+      "canonicalPersisted": false,
+      "stagedOverlay": true,
+      "value": "Proposed",
+      "note": "Proposed sponsorship must remain a product classification; HI Validated ≠ customer Proposed"
+    },
+    "contacts": {
+      "source": "HI Org Contacts + HI Organizations (+ org website channels)",
+      "canonicalPersisted": true,
+      "people": [
+        {
+          "name": "Jeff Mullen",
+          "organization": "Mullen Real Estate Capital",
+          "property_relevance": "OWNER_ORG"
+        },
+        {
+          "name": "Katherine Button",
+          "organization": "Mullen Real Estate Capital",
+          "property_relevance": "OWNER_ORG"
+        },
+        {
+          "name": "Patrick Reece",
+          "organization": "Mullen Real Estate Capital",
+          "property_relevance": "OWNER_ORG"
+        },
+        {
+          "name": "Meinrad Lang III",
+          "organization": "Marriott International",
+          "property_relevance": "PROPERTY_DIRECT"
+        },
+        {
+          "name": "Jenny Pyne",
+          "organization": "Marriott International",
+          "property_relevance": "PROPERTY_DIRECT"
+        }
+      ]
+    }
+  },
+  "liveProbes": {
+    "ownershipStatus": 200,
+    "contactsStatus": 200,
+    "rooms": 407,
+    "yearBuilt": 1979,
+    "lastRenovated": 2015,
+    "meetingTotal": 18719,
+    "meetingRooms": 27,
+    "ballroom": 4592,
+    "guestroomMix": {
+      "kings": 171,
+      "doubles": 236,
+      "suites": 8,
+      "sourceOfTruth": "HOTEL_PROPERTY_CENSUS",
+      "persisted": true
+    },
+    "economicClass": "Proposed",
+    "propCo": "Marbeth Acquisition",
+    "contactCount": 5
+  },
+  "generatedAt": "2026-11-27T18:38:47.786Z",
+  "browserAcceptance": {
+    "url": "http://localhost:8080/app#/opportunity-radar",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "status": "PASS",
+    "activeTabCount": 11,
+    "guestSentimentPresent": false,
+    "checks": {
+      "yearBuilt1979": true,
+      "lastRenovated2015": true,
+      "mix171": true,
+      "mix236": true,
+      "mix8": true,
+      "meeting18719": true,
+      "meeting27": true,
+      "ballroom4592": true,
+      "proposed": true,
+      "marbeth": true,
+      "rooms407": true,
+      "contactV3": true,
+      "contactTable": true,
+      "noRecommended": true,
+      "fiveContacts": true,
+      "meinradMarriott": true,
+      "jennyMarriott": true,
+      "katherineMullen": true,
+      "noGuestSentiment": true
+    },
+    "servedAssets": [
+      "hotel-contact-intelligence.js?v=11",
+      "hotel-explorer.js?v=69"
+    ],
+    "head": "b37e278386e3223b63567584824d30d3827db868",
+    "testedAt": "2026-11-27T18:55:18.121Z"
+  },
+  "bethhesdaReleaseAcceptance": "PASS",
+  "eightHotelE2eCertification": "NO"
+}

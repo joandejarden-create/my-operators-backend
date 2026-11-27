@@ -1,0 +1,105 @@
+{
+  "version": "beth-meeting-space-schema-proposal-v1",
+  "at": "2026-11-27T13:20:00.000Z",
+  "decisionRequired": "FOUNDER_APPROVAL_REQUIRED_BEFORE_SCHEMA_CREATE",
+  "executed": false,
+  "hpcIdExample": "recLuxvwwxID7U2B8",
+  "canonicalDestinationPreferred": {
+    "baseId": "appCCUsuGsE1ifoLk",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "tableName": "Hotel Property Census"
+  },
+  "existingDestinationAudit": [
+    {
+      "table": "Hotel Property Census",
+      "result": "NO_NUMERIC_MEETING_OR_ROOM_MIX_FIELDS",
+      "closestExisting": ["Rooms / Keys", "Meeting Space Flag", "Rooms Notes", "Building / Asset Notes"]
+    },
+    {
+      "table": "HI Hotel Discovery Inventory",
+      "result": "NO_MEETING_OR_ROOM_MIX_FIELDS"
+    },
+    {
+      "table": "HI Organizations / Relationships / Contacts / Contracts",
+      "result": "NOT_APPROPRIATE_FOR_PHYSICAL_PRODUCT_NUMERICS"
+    },
+    {
+      "table": "HI Graph Evidence",
+      "result": "REJECTED_AS_PRIMARY_STORE_PER_FOUNDER_DIRECTIVE"
+    },
+    {
+      "table": "Hotel Census (legacy tblgj2qEwxjTcg6q0)",
+      "result": "PROHIBITED — has Total Meeting Space / Largest Meeting Space but must not be used"
+    }
+  ],
+  "conclusion": "No appropriate existing structured destination supports verified meeting-space totals, meeting-room count, largest-room attributes, or classified guestroom mix. Minimal HPC schema CREATE is required.",
+  "proposedFields": [
+    {
+      "name": "Total Meeting Space (sq ft)",
+      "type": "number",
+      "purpose": "Capacity-chart aggregate only (Bethesda verified 18719). Never store marketing private-space figure here.",
+      "standingAuth": "Already listed in HE50 standing-auth allowlist but missing from live schema"
+    },
+    {
+      "name": "Meeting Rooms Count",
+      "type": "number",
+      "purpose": "Published meeting-room count (Bethesda verified 27)",
+      "standingAuth": "Already listed in HE50 standing-auth allowlist but missing from live schema"
+    },
+    {
+      "name": "Largest Meeting Room Name",
+      "type": "singleLineText",
+      "purpose": "e.g. Grand Ballroom"
+    },
+    {
+      "name": "Largest Meeting Room (sq ft)",
+      "type": "number",
+      "purpose": "e.g. 4592"
+    },
+    {
+      "name": "Guestroom Single Count",
+      "type": "number",
+      "purpose": "Classified single-bed rooms when brand-materials reference is accepted (Bethesda 171)"
+    },
+    {
+      "name": "Guestroom Double Count",
+      "type": "number",
+      "purpose": "Classified double-bed rooms (Bethesda 236); 171+236=407"
+    },
+    {
+      "name": "Guestroom Suites Count",
+      "type": "number",
+      "purpose": "Suite classification WITHIN total keys (Bethesda 8). Never additive to Rooms / Keys."
+    },
+    {
+      "name": "Guestroom Mix Confidence",
+      "type": "singleSelect",
+      "options": ["High", "Medium", "Brand Materials Reference", "Insufficient"],
+      "purpose": "Distinguish verified totals from brand-reference mix"
+    },
+    {
+      "name": "Meeting Space Source URL",
+      "type": "url",
+      "purpose": "Official capacity-chart URL"
+    }
+  ],
+  "interimLiveStrategyUntilSchemaApproved": [
+    "Hydrate Hotel Explorer Guest Rooms & Meeting Space from staged verified packet (presentation + API overlay)",
+    "Keep Rooms / Keys=407 as sole HPC numeric guestroom SoT",
+    "Do not write meeting numerics into HI Graph Evidence as primary store",
+    "Do not write into legacy Hotel Census"
+  ],
+  "bethesdaVerifiedPayloadReadyToPersistAfterSchema": {
+    "Rooms / Keys": 407,
+    "Total Meeting Space (sq ft)": 18719,
+    "Meeting Rooms Count": 27,
+    "Largest Meeting Room Name": "Grand Ballroom",
+    "Largest Meeting Room (sq ft)": 4592,
+    "Guestroom Single Count": 171,
+    "Guestroom Double Count": 236,
+    "Guestroom Suites Count": 8,
+    "Guestroom Mix Confidence": "Brand Materials Reference",
+    "Meeting Space Source URL": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+    "aggregationRule": "TOTAL_IS_CANONICAL; 171+236=407; SUITES_NOT_ADDITIVE"
+  }
+}
