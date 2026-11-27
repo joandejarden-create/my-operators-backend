@@ -587,7 +587,14 @@ export async function getGoldenDemoHotelOwnership(req, res) {
         hotelId: recordId,
       });
       payload.sharedHotelView = shared;
-      if (shared.rooms != null || shared.brand || shared.market || shared.operator) {
+      if (
+        shared.rooms != null ||
+        shared.brand ||
+        shared.market ||
+        shared.operator ||
+        shared.website ||
+        shared.telephone
+      ) {
         payload.hotel = {
           ...(payload.hotel || {}),
           id: recordId,
@@ -603,6 +610,11 @@ export async function getGoldenDemoHotelOwnership(req, res) {
           propertyCompany: shared.propertyCompany || payload.hotel?.propertyCompany,
           economicOwner: shared.economicOwner || payload.hotel?.economicOwner,
           economic_owner_classification: shared.economicOwnerClassification || "Proposed",
+          // Header actions — property Official Property URL / Phone from HPC shared VM.
+          website: shared.website || payload.hotel?.website || null,
+          hotelWebsite: shared.website || payload.hotel?.hotelWebsite || null,
+          telephone: shared.telephone || payload.hotel?.telephone || null,
+          phone: shared.telephone || payload.hotel?.phone || null,
         };
       }
       if (payload.organization?.owned_controlled_hotels) {
