@@ -1,6 +1,11 @@
 /**
- * Hotel Explorer — shared customer presentation formatters (HE presentation cleanup).
+ * Hotel Explorer — shared customer presentation formatters.
  * Formats display values only; does not mutate canonical HPC / Airtable records.
+ *
+ * Permanent capitalization standard:
+ *   - Field headers / labels → ALL CAPS
+ *   - Descriptive values → Proper Case (preserve official brand/company casing,
+ *     abbreviations, acronyms, numbers, URLs, legal entity names)
  */
 (function (global) {
   "use strict";
@@ -22,44 +27,109 @@
     /\bScout\/Radar\b/gi,
   ];
 
+  var VALUE_ACRONYMS = {
+    llc: "LLC",
+    llp: "LLP",
+    lp: "LP",
+    inc: "Inc",
+    ltd: "Ltd",
+    plc: "PLC",
+    usa: "USA",
+    uk: "UK",
+    us: "US",
+    nih: "NIH",
+    ihg: "IHG",
+    fsb: "FSB",
+    ubo: "UBO",
+    adr: "ADR",
+    revpar: "RevPAR",
+    wifi: "WiFi",
+    "wi-fi": "Wi-Fi",
+  };
+
   function present(v) {
     return v != null && String(v).trim() !== "" && String(v).trim() !== "—";
   }
 
-  function titleCaseLabel(label) {
-    var raw = String(label || "").trim();
-    if (!raw) return "";
-    var small = { a: 1, an: 1, and: 1, at: 1, by: 1, for: 1, in: 1, of: 1, on: 1, or: 1, the: 1, to: 1, vs: 1 };
-    var preserve = {
-      wifi: "WiFi",
-      "wi-fi": "Wi-Fi",
-      "sq.": "Sq.",
-      "ft.": "Ft.",
-      fsb: "FSB",
-      nih: "NIH",
-    };
-    return raw
+  /**
+   * Customer-facing field headers / labels — always ALL CAPS.
+   * Does not rewrite measurement unit tokens that belong in values (Sq. Ft. / Sq. M.).
+   */
+  function allCapsFieldLabel(label) {
+    var raw = String(label == null ? "" : label)
       .replace(/_/g, " ")
       .replace(/\s+/g, " ")
-      .split(" ")
+      .trim();
+    if (!raw) return "";
+    return raw.toUpperCase();
+  }
+
+  /** @deprecated Use allCapsFieldLabel — Title Case headers are no longer customer standard. */
+  function titleCaseLabel(label) {
+    return allCapsFieldLabel(label);
+  }
+
+  function properCaseToken(word, index) {
+    var bare = String(word || "");
+    if (!bare) return "";
+    var lower = bare.toLowerCase();
+    if (VALUE_ACRONYMS[lower]) return VALUE_ACRONYMS[lower];
+    // Keep short ALL-CAPS tokens (IHG, LP) and mixed legal particles.
+    if (/^[A-Z0-9]{2,5}$/.test(bare) && bare === bare.toUpperCase()) return bare;
+    if (/^(?:of|and|the|for|to|in|on|at|by|or|a|an|vs)$/i.test(bare) && index > 0) {
+      return lower;
+    }
+    if (/^[A-Z][a-z]+(?:'[A-Za-z]+)?$/.test(bare)) return bare;
+    if (/[a-z][A-Z]/.test(bare)) return bare; // camel / internal caps
+    return bare.charAt(0).toUpperCase() + bare.slice(1).toLowerCase();
+  }
+
+  /**
+   * Proper Case for descriptive values. Preserves URLs, emails, phones, years,
+   * measurement strings, and already-correct brand/legal spellings.
+   */
+  function properCaseValue(name) {
+    var s = String(name == null ? "" : name).trim();
+    if (!s) return "";
+    if (/^https?:\/\//i.test(s) || /^www\./i.test(s)) return s;
+    if (/@/.test(s) && /\./.test(s)) return s;
+    if (/^tel:/i.test(s) || /^[\d+().\-\s]{7,}$/.test(s)) return s;
+    if (/^\d{4}$/.test(s)) return s;
+    if (/\bSq\.\s*Ft\.|\bSq\.\s*M\./i.test(s) || /^[\d,]+\s*(Sq\.|sq)/i.test(s)) return s;
+    if (/\d/.test(s) && /%|\/\s*5$/.test(s)) return s;
+    // Already mixed-case company/brand spelling — keep.
+    if (/[a-z]/.test(s) && /[A-Z]/.test(s) && s !== s.toUpperCase()) {
+      return s;
+    }
+    // Collapse ALL CAPS / all-lower blobs into Proper Case.
+    return s
+      .split(/\s+/)
       .map(function (word, i) {
-        var lower = word.toLowerCase();
-        if (preserve[lower]) return preserve[lower];
-        if (i > 0 && small[lower]) return lower;
-        if (/^[A-Z0-9]{2,}$/.test(word) && word.length <= 4) return word;
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        // Preserve parenthetical qualifiers like (Major Renovation).
+        var m = word.match(/^(\()?(.*?)(\))?$/);
+        if (!m) return properCaseToken(word, i);
+        var inner = properCaseToken(m[2], i);
+        return (m[1] || "") + inner + (m[3] || "");
       })
       .join(" ");
   }
 
   function preserveProperName(name) {
-    var s = String(name == null ? "" : name).trim();
+    return properCaseValue(name);
+  }
+
+  /**
+   * Drop redundant suffixes when the field header already states the relationship.
+   * Presentation only — does not change stored Airtable values.
+   */
+  function stripRedundantRelationshipSuffix(value) {
+    var s = String(value == null ? "" : value).trim();
     if (!s) return "";
-    // Keep brand/company casing when already mixed; only collapse ALL CAPS blobs.
-    if (s === s.toUpperCase() && /[A-Z]/.test(s) && s.length > 3) {
-      return titleCaseLabel(s);
-    }
-    return s;
+    return s
+      .replace(/\s*\(\s*brand\s+parent(?:\s+company)?\s*\)\s*$/i, "")
+      .replace(/\s*\(\s*Managed\s*\)\s*$/i, "")
+      .replace(/\s*\(\s*Franchised\s*\)\s*$/i, "")
+      .trim();
   }
 
   function formatInteger(n) {
@@ -79,6 +149,11 @@
   function formatSqFt(n) {
     var formatted = formatInteger(n);
     return formatted ? formatted + " Sq. Ft." : null;
+  }
+
+  function formatSqM(n) {
+    var formatted = formatInteger(n);
+    return formatted ? formatted + " Sq. M." : null;
   }
 
   /**
@@ -104,24 +179,36 @@
   function customerPersistenceLabel(inventory) {
     inventory = inventory || {};
     if (inventory.persisted === true || inventory.sourceOfTruth === "HOTEL_PROPERTY_CENSUS") {
-      return "Verified property record";
+      return "Verified Property Record";
     }
     if (/PROPOSED/i.test(String(inventory.persistenceStatus || ""))) {
-      return "Under review";
+      return "Under Review";
     }
-    return "Brand reference";
+    return "Brand Reference";
+  }
+
+  function formatFieldRow(label, value) {
+    return {
+      label: allCapsFieldLabel(label),
+      value: value == null || value === "" ? "—" : value,
+    };
   }
 
   var HeCustomerPresentationFormat = {
     present: present,
+    allCapsFieldLabel: allCapsFieldLabel,
     titleCaseLabel: titleCaseLabel,
+    properCaseValue: properCaseValue,
     preserveProperName: preserveProperName,
+    stripRedundantRelationshipSuffix: stripRedundantRelationshipSuffix,
     formatInteger: formatInteger,
     formatYear: formatYear,
     formatSqFt: formatSqFt,
+    formatSqM: formatSqM,
     formatLastRenovated: formatLastRenovated,
     scrubInternalTerminology: scrubInternalTerminology,
     customerPersistenceLabel: customerPersistenceLabel,
+    formatFieldRow: formatFieldRow,
   };
 
   global.HeCustomerPresentationFormat = HeCustomerPresentationFormat;

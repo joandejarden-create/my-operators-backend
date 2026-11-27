@@ -47,24 +47,43 @@ const HE_CUSTOMER_COPY_VALIDATED = gate(
 );
 
 const HE_PROPERTY_FACTS_FORMAT_VALIDATED = gate(
-  /text-transform:\s*none/.test(hdpCss) &&
-    /text-transform:\s*none/.test(hexCss) &&
-    /Brand Parent Company|Parent Company/.test(hdp) &&
+  /allCapsFieldLabel/.test(fmt) &&
+    /properCaseValue/.test(fmt) &&
+    /stripRedundantRelationshipSuffix/.test(fmt) &&
+    /text-transform:\s*uppercase/.test(hdpCss) &&
+    /text-transform:\s*uppercase/.test(presCss) &&
+    /Brand Parent|Parent Company/.test(hdp) &&
     /Guestrooms/.test(hdp) &&
     /Year Built/.test(hdp) &&
     /Last Renovated/.test(hdp) &&
+    /Meeting Rooms/.test(hdp) &&
+    /Largest Meeting Room/.test(hdp) &&
     /Major Renovation/.test(hdp) &&
     /Sq\. Ft\./.test(hdp) &&
+    !/\+\s*["']\s*\(brand parent\)/.test(hdp) &&
     !/label: "Data confidence"/.test(hdp) &&
     /formatLastRenovated|formatSqFt/.test(fmt)
 );
 
+const HE_CAPITALIZATION_STANDARD_VALIDATED = gate(
+  /ALL CAPS/.test(fmt) &&
+    /Proper Case/.test(fmt) &&
+    /allCapsFieldLabel/.test(fmt) &&
+    /properCaseValue/.test(fmt) &&
+    /fieldLabel\(/.test(hdp) &&
+    /fieldLabel\(/.test(rms) &&
+    /allCapsFieldLabel/.test(hci) &&
+    /fieldLabel\(/.test(read("public/js/hotel-explorer.js")) &&
+    /stripRedundantRelationshipSuffix/.test(fmt) &&
+    !/\+\s*["']\s*\(brand parent\)/.test(hdp)
+);
+
 const HE_CONTACT_TABLE_LAYOUT_VALIDATED = gate(
   /data-hci-columns="5"/.test(hci) &&
-    /Function \/ Relationship/.test(hci) &&
     /hci-dir-contact-stack/.test(hci) &&
     /hci-dir-channel-summary/.test(hci) &&
     /hci-directory-table--5col/.test(hci) &&
+    /allCapsFieldLabel|caps\("Function/.test(hci) &&
     !/label: "Email"/.test(hci) &&
     !/label: "Telephone"/.test(hci) &&
     !/label: "LinkedIn"/.test(hci) &&
@@ -126,6 +145,7 @@ if (browserEnabled) {
 const gates = {
   HE_CUSTOMER_COPY_VALIDATED,
   HE_PROPERTY_FACTS_FORMAT_VALIDATED,
+  HE_CAPITALIZATION_STANDARD_VALIDATED,
   HE_CONTACT_TABLE_LAYOUT_VALIDATED,
   HE_CONTACT_DETAILS_DRAWER_VALIDATED,
   HE_SUBMARKET_METHODOLOGY_VALIDATED,
@@ -145,6 +165,7 @@ const gates = {
 const required = [
   "HE_CUSTOMER_COPY_VALIDATED",
   "HE_PROPERTY_FACTS_FORMAT_VALIDATED",
+  "HE_CAPITALIZATION_STANDARD_VALIDATED",
   "HE_CONTACT_TABLE_LAYOUT_VALIDATED",
   "HE_CONTACT_DETAILS_DRAWER_VALIDATED",
   "HE_SUBMARKET_METHODOLOGY_VALIDATED",

@@ -26,6 +26,7 @@
     HE_LOADING_COMPONENT_CONSISTENT
     HE_CUSTOMER_COPY_VALIDATED
     HE_PROPERTY_FACTS_FORMAT_VALIDATED
+    HE_CAPITALIZATION_STANDARD_VALIDATED (ALL CAPS headers / Proper Case values)
     HE_CONTACT_TABLE_LAYOUT_VALIDATED
     HE_CONTACT_DETAILS_DRAWER_VALIDATED
     HE_SUBMARKET_METHODOLOGY_VALIDATED
@@ -138,6 +139,14 @@ if ($ConsistencyModes -contains $Mode) {
   & node @presArgs
   if ($LASTEXITCODE -ne 0) {
     throw "HE customer presentation audit FAILED for $HotelId (mode=$Mode)"
+  }
+
+  if (-not $SkipBrowser) {
+    Write-Host "[HE Factory] capitalization standard browser gate"
+    & node ".\scripts\hotel-explorer\verify-he-capitalization-standard-browser-v1.mjs" "--require-server"
+    if ($LASTEXITCODE -ne 0) {
+      throw "HE capitalization standard browser gate FAILED for $HotelId (mode=$Mode)"
+    }
   }
 }
 

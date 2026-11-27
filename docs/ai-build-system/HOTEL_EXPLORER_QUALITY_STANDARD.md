@@ -116,6 +116,16 @@ Scoped to `.hex-root` (Founder Preview and Radar HE share the same CSS):
 
 Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), translucent navy fills (`rgba(8,15,37,…)`, `rgba(13,21,44,…)`) on HE content surfaces, and per-tab background inventions. Separation uses spacing, borders, and typography — not extra navy fills. Expanded table/operator content inherits the table surface (transparent body).
 
+### 8b. Capitalization standard (presentation only — permanent)
+
+- Shared module: `public/js/he-customer-presentation-format-v1.js` (`HeCustomerPresentationFormat`).
+- **Field headers / labels → ALL CAPS** (Property Facts, hero facts, metric cards, directory column headers, market-coverage cards, and equivalent field labels across all 11 active HE tabs).
+- **Descriptive values → Proper Case**, preserving official brand/company spellings, abbreviations, acronyms, numbers, URLs, and legal entity names.
+- Do **not** append redundant suffixes such as `(brand parent)` or `(Managed)` when the field header already states the relationship.
+- Meeting inventory is **three separate rows**: Meeting Space · Meeting Rooms · Largest Meeting Room (never a concatenated blob).
+- Presentation formatting must not rewrite Airtable / HPC stored values.
+- Gate: `HE_CAPITALIZATION_STANDARD_VALIDATED` via `npm run audit:he-customer-presentation-v1`.
+
 ### 9. Measurement units (presentation only)
 
 - Shared session preference module: `he-measurement-prefs-v1` (do not duplicate conversion logic).

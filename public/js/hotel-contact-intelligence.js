@@ -953,12 +953,21 @@
   function renderContactDirectoryTable(vm, purposeId) {
     var hotelId = vm.hotelId || "";
     var people = directoryPeopleForFilter(vm, purposeId);
+    var caps =
+      global.HeCustomerPresentationFormat &&
+      typeof global.HeCustomerPresentationFormat.allCapsFieldLabel === "function"
+        ? global.HeCustomerPresentationFormat.allCapsFieldLabel
+        : function (s) {
+            return String(s || "")
+              .trim()
+              .toUpperCase();
+          };
     var columns = [
-      { key: "contact", label: "Contact", sortable: true },
-      { key: "organization", label: "Organization", sortable: true },
-      { key: "relationship", label: "Function / Relationship", sortable: true },
-      { key: "channels", label: "Contact", sortable: false },
-      { key: "details", label: "Details", sortable: false },
+      { key: "contact", label: caps("Contact"), sortable: true },
+      { key: "organization", label: caps("Organization"), sortable: true },
+      { key: "relationship", label: caps("Function / Relationship"), sortable: true },
+      { key: "channels", label: caps("Channels"), sortable: false },
+      { key: "details", label: caps("Details"), sortable: false },
     ];
     var rows = people.map(function (p) {
       return renderDirectoryRowCells(p, hotelId, vmCapability, vm);

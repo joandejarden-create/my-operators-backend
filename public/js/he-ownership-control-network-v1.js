@@ -1032,20 +1032,20 @@
           " additional people are available in Contact Intelligence.</p>"
         : "") +
       '<div class="ocn-summary" aria-label="Ownership status">' +
-      '<div><span class="ocn-summary__k">Legal owner</span><span class="ocn-summary__v">' +
+      '<div><span class="ocn-summary__k">LEGAL OWNER</span><span class="ocn-summary__v">' +
       esc(s.legalOwner) +
       " · " +
       esc(friendlyVerification(s.legalOwnerVerification)) +
       "</span></div>" +
-      '<div><span class="ocn-summary__k">Economic sponsor</span><span class="ocn-summary__v">' +
+      '<div><span class="ocn-summary__k">ECONOMIC SPONSOR</span><span class="ocn-summary__v">' +
       esc(s.economicSponsor) +
       " · " +
       esc(friendlyVerification(s.economicSponsorVerification)) +
       "</span></div>" +
-      '<div><span class="ocn-summary__k">Operator</span><span class="ocn-summary__v">' +
+      '<div><span class="ocn-summary__k">OPERATOR</span><span class="ocn-summary__v">' +
       esc(s.operator) +
       "</span></div>" +
-      '<div><span class="ocn-summary__k">Brand</span><span class="ocn-summary__v">' +
+      '<div><span class="ocn-summary__k">BRAND</span><span class="ocn-summary__v">' +
       esc(s.brand) +
       "</span></div>" +
       '<div><span class="ocn-summary__k">UBO</span><span class="ocn-summary__v">' +

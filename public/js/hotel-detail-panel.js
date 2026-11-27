@@ -353,20 +353,39 @@
 
   function displayValue(value, fallback) {
     if (value == null || value === "") return fallback || "—";
-    return String(value);
+    var fmt = window.HeCustomerPresentationFormat;
+    var raw = String(value);
+    if (fmt && typeof fmt.stripRedundantRelationshipSuffix === "function") {
+      raw = fmt.stripRedundantRelationshipSuffix(raw) || raw;
+    }
+    if (fmt && typeof fmt.properCaseValue === "function") {
+      return fmt.properCaseValue(raw) || raw;
+    }
+    return raw;
   }
 
   function formatParentCompanyDisplay(value, hotel) {
     if (value == null || value === "" || value === "Unknown") return "No Parent Company (Blank)";
-    var semantic =
-      hotel &&
-      hotel.fieldProvenance &&
-      hotel.fieldProvenance.parentCompany &&
-      hotel.fieldProvenance.parentCompany.semantic;
-    if (semantic === "brand_parent_company") {
-      return String(value) + " (brand parent)";
+    var fmt = window.HeCustomerPresentationFormat;
+    var raw = String(value);
+    // Header already says Brand Parent / Parent Company — do not append a redundant suffix.
+    if (fmt && typeof fmt.stripRedundantRelationshipSuffix === "function") {
+      raw = fmt.stripRedundantRelationshipSuffix(raw) || raw;
     }
-    return String(value);
+    if (fmt && typeof fmt.properCaseValue === "function") {
+      return fmt.properCaseValue(raw) || raw;
+    }
+    return raw;
+  }
+
+  function fieldLabel(label) {
+    var fmt = window.HeCustomerPresentationFormat;
+    if (fmt && typeof fmt.allCapsFieldLabel === "function") {
+      return fmt.allCapsFieldLabel(label);
+    }
+    return String(label || "")
+      .trim()
+      .toUpperCase();
   }
 
   function formatNumber(value) {
@@ -883,14 +902,42 @@
       }
     }
 
+    var meetingRoomsRaw =
+      hotel.meetingRooms ||
+      (hotel.meetingSpaceProvenance && hotel.meetingSpaceProvenance.meetingRooms) ||
+      null;
+    var meetingRoomsValue =
+      meetingRoomsRaw != null && Number(meetingRoomsRaw) > 0
+        ? fmt && typeof fmt.formatInteger === "function"
+          ? fmt.formatInteger(meetingRoomsRaw)
+          : formatNumber(meetingRoomsRaw)
+        : "—";
+
+    var largest =
+      (hotel.meetingSpaceProvenance && hotel.meetingSpaceProvenance.largestRoom) || null;
+    var largestValue = "—";
+    if (largest && (largest.name || largest.sqFt != null || largest.areaSqFt != null)) {
+      var largestArea = largest.sqFt != null ? largest.sqFt : largest.areaSqFt;
+      var largestAreaFmt =
+        largestArea != null && fmt && typeof fmt.formatSqFt === "function"
+          ? fmt.formatSqFt(largestArea)
+          : largestArea != null
+            ? formatNumber(largestArea) + " Sq. Ft."
+            : null;
+      var largestName = largest.name
+        ? displayValue(largest.name)
+        : null;
+      if (largestName && largestAreaFmt) largestValue = largestName + " · " + largestAreaFmt;
+      else if (largestName) largestValue = largestName;
+      else if (largestAreaFmt) largestValue = largestAreaFmt;
+    }
+
     var parentSemantic =
       hotel.fieldProvenance &&
       hotel.fieldProvenance.parentCompany &&
       hotel.fieldProvenance.parentCompany.semantic;
     var parentLabel =
-      parentSemantic === "brand_parent_company"
-        ? "Brand Parent Company"
-        : "Parent Company";
+      parentSemantic === "brand_parent_company" ? "Brand Parent" : "Parent Company";
     var yearBuilt = resolveYearBuiltDisplay(hotel);
     var lastRenovated = resolveLastRenovatedDisplay(hotel);
     var roomsValue =
@@ -900,29 +947,72 @@
           : formatNumber(hotel.rooms)
         : "—";
     var rows = [
-      { label: "Brand", value: displayValue(hotel.brand) },
-      { label: parentLabel, value: formatParentCompanyDisplay(hotel.parentCompany, hotel) },
-      { label: "Chain Scale", value: displayValue(hotel.chainScale || hotel.propertyType) },
-      { label: "Property Type", value: displayValue(hotel.censusPropertyType) },
-      { label: "Guestrooms", value: roomsValue },
-      { label: "Year Built", value: yearBuilt || "Not yet verified" },
-      { label: "Last Renovated", value: lastRenovated || "Not yet verified" },
-      { label: "Meeting Space", value: meetingValue },
-      { label: "Operation Type", value: displayValue(hotel.operationType) },
-      { label: "Management Company", value: displayValue(hotel.managementCompany) },
-      { label: "Market", value: displayValue(hotel.market) },
-      { label: "Submarket", value: displayValue(resolveEffectiveSubmarket(hotel)) },
-      { label: "Location Type", value: displayValue(hotel.locationType) },
-      { label: "Project Phase", value: displayValue(hotel.projectPhase) },
-      { label: "Projected Open", value: formatDate(hotel.projectedOpenDate) },
-      { label: "Star Rating", value: hotel.starRating != null ? String(hotel.starRating) + " / 5" : "—" }
+      { label: fieldLabel("Brand"), value: displayValue(hotel.brand) },
+      {
+        label: fieldLabel(parentLabel),
+        value: formatParentCompanyDisplay(hotel.parentCompany, hotel),
+      },
+      {
+        label: fieldLabel("Chain Scale"),
+        value: displayValue(hotel.chainScale || hotel.propertyType),
+      },
+      { label: fieldLabel("Property Type"), value: displayValue(hotel.censusPropertyType) },
+      { label: fieldLabel("Guestrooms"), value: roomsValue },
+      {
+        label: fieldLabel("Year Built"),
+        value: yearBuilt || "Not Yet Verified",
+      },
+      {
+        label: fieldLabel("Last Renovated"),
+        value: lastRenovated || "Not Yet Verified",
+      },
+      { label: fieldLabel("Meeting Space"), value: meetingValue },
+      { label: fieldLabel("Meeting Rooms"), value: meetingRoomsValue },
+      { label: fieldLabel("Largest Meeting Room"), value: largestValue },
+      { label: fieldLabel("Operation Type"), value: displayValue(hotel.operationType) },
+      {
+        label: fieldLabel("Management Company"),
+        value: displayValue(hotel.managementCompany),
+      },
+      { label: fieldLabel("Market"), value: displayValue(hotel.market) },
+      {
+        label: fieldLabel("Submarket"),
+        value: displayValue(resolveEffectiveSubmarket(hotel)),
+      },
+      { label: fieldLabel("Location Type"), value: displayValue(hotel.locationType) },
+      { label: fieldLabel("Project Phase"), value: displayValue(hotel.projectPhase) },
+      {
+        label: fieldLabel("Projected Open"),
+        value: formatDate(hotel.projectedOpenDate),
+      },
+      {
+        label: fieldLabel("Star Rating"),
+        value: hotel.starRating != null ? String(hotel.starRating) + " / 5" : "—",
+      },
       // Data confidence / internal verification metrics → About This Analysis / Sources
     ];
 
     return rows.filter(function (row) {
-      if (row.label === "Year Built" || row.label === "Last Renovated") return true;
-      return row.value && row.value !== "—" && row.value !== "Unknown" && row.value !== "Unknown Brand"
-        && row.value !== "Unknown City" && row.value !== "Unknown Country" && row.value !== "Unknown Region";
+      var key = String(row.label || "").toUpperCase();
+      if (key === "YEAR BUILT" || key === "LAST RENOVATED") return true;
+      // Keep meeting metric rows visible once any related inventory exists.
+      if (
+        (key === "MEETING SPACE" ||
+          key === "MEETING ROOMS" ||
+          key === "LARGEST MEETING ROOM") &&
+        (meetingValue !== "—" || meetingRoomsValue !== "—" || largestValue !== "—")
+      ) {
+        return row.value && row.value !== "—";
+      }
+      return (
+        row.value &&
+        row.value !== "—" &&
+        row.value !== "Unknown" &&
+        row.value !== "Unknown Brand" &&
+        row.value !== "Unknown City" &&
+        row.value !== "Unknown Country" &&
+        row.value !== "Unknown Region"
+      );
     });
   }
 
@@ -2844,13 +2934,19 @@
     var geoMetrics = (geoCohort && geoCohort.metrics) || null;
     var marketCoverageCards =
       '<div class="he-market-coverage" data-he-market-coverage="1">' +
-      '<div class="he-market-coverage__card"><div class="he-market-coverage__label">Verified Hotels</div><div class="he-market-coverage__value">' +
+      '<div class="he-market-coverage__card"><div class="he-market-coverage__label">' +
+      esc(fieldLabel("Verified Hotels")) +
+      '</div><div class="he-market-coverage__value">' +
       esc(String(verifiedHotels)) +
       "</div></div>" +
-      '<div class="he-market-coverage__card"><div class="he-market-coverage__label">Verified Guestrooms</div><div class="he-market-coverage__value">' +
+      '<div class="he-market-coverage__card"><div class="he-market-coverage__label">' +
+      esc(fieldLabel("Verified Guestrooms")) +
+      '</div><div class="he-market-coverage__value">' +
       esc(formatNumber(verifiedGuestrooms)) +
       "</div></div>" +
-      '<div class="he-market-coverage__card"><div class="he-market-coverage__label">Market Coverage</div><div class="he-market-coverage__value">' +
+      '<div class="he-market-coverage__card"><div class="he-market-coverage__label">' +
+      esc(fieldLabel("Market Coverage")) +
+      '</div><div class="he-market-coverage__value">' +
       esc(coverageLabel) +
       "</div></div></div>";
     var cohortDisclosure =

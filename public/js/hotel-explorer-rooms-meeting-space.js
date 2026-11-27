@@ -38,6 +38,16 @@
     return s.replace(/_/g, " ");
   }
 
+  function fieldLabel(label) {
+    var fmt = global.HeCustomerPresentationFormat;
+    if (fmt && typeof fmt.allCapsFieldLabel === "function") {
+      return fmt.allCapsFieldLabel(label);
+    }
+    return String(label || "")
+      .trim()
+      .toUpperCase();
+  }
+
   function metricCard(label, value, note) {
     return (
       '<div class="hex-rms-metric">' +
@@ -45,7 +55,7 @@
       esc(value == null || value === "" ? "—" : value) +
       "</div>" +
       '<div class="hex-rms-metric__label">' +
-      esc(label) +
+      esc(fieldLabel(label)) +
       "</div>" +
       (note ? '<div class="hex-rms-metric__note">' + esc(note) + "</div>" : "") +
       "</div>"
@@ -85,7 +95,7 @@
     if (global.HeMeasurementPrefs && typeof global.HeMeasurementPrefs.formatAreaFromSqFt === "function") {
       return global.HeMeasurementPrefs.formatAreaFromSqFt(sqFt, prefs());
     }
-    return fmt(sqFt) + " sq ft";
+    return fmt(sqFt) + " Sq. Ft.";
   }
 
   function areaColumnLabel() {
@@ -285,17 +295,17 @@
       '<section class="hiw-section"><h3 class="hiw-section__h">Guestroom Overview</h3>' +
       '<div class="hex-rms-metrics">' +
       metricCard(
-        "Total guestrooms",
+        "Guestrooms",
         fmt(gr.totalGuestrooms && gr.totalGuestrooms.value),
         statusLabel(gr.totalGuestrooms && gr.totalGuestrooms.verificationStatus, inv)
       ) +
       metricCard(
-        "Single-bed rooms",
+        "Single-Bed Rooms",
         fmt(gr.singleBedRooms && gr.singleBedRooms.value),
         statusLabel(gr.singleBedRooms && gr.singleBedRooms.verificationStatus, inv)
       ) +
       metricCard(
-        "Double-bed rooms",
+        "Double-Bed Rooms",
         fmt(gr.doubleBedRooms && gr.doubleBedRooms.value),
         statusLabel(gr.doubleBedRooms && gr.doubleBedRooms.verificationStatus, inv)
       ) +
@@ -313,19 +323,19 @@
       '<section class="hiw-section"><h3 class="hiw-section__h">Meeting &amp; Event Overview</h3>' +
       '<div class="hex-rms-metrics">' +
       metricCard(
-        "Total meeting space",
+        "Meeting Space",
         sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value != null
           ? formatAreaSqFt(sum.totalMeetingSpaceSqFt.value)
           : "—",
         statusLabel(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.verificationStatus, inv)
       ) +
       metricCard(
-        "Meeting rooms (published)",
+        "Meeting Rooms",
         fmt(sum.meetingRoomCount && sum.meetingRoomCount.value),
         statusLabel(sum.meetingRoomCount && sum.meetingRoomCount.verificationStatus, inv)
       ) +
       metricCard(
-        "Largest room",
+        "Largest Meeting Room",
         largest.name
           ? largest.name +
               (largest.areaSqFt != null ? " · " + formatAreaSqFt(largest.areaSqFt) : "")
@@ -333,7 +343,7 @@
         statusLabel(largest.verificationStatus, inv)
       ) +
       metricCard(
-        "Marketing private-space figure",
+        "Marketing Private-Space Figure",
         sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.value != null
           ? formatAreaSqFt(sum.privateSpaceMarketingSqFt.value)
           : "—",
