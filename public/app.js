@@ -182,6 +182,20 @@
             internalRunbookOnly: false,
             platformAdmin: true
         },
+        '/admin/gdi-sales-performance': {
+            file: '/app/admin/gdi-sales-performance.html',
+            title: 'GDI Sales Performance',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            platformAdmin: true
+        },
+        '/admin/gdi-research-intelligence': {
+            file: '/app/admin/gdi-research-intelligence.html',
+            title: 'GDI Research Intelligence',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            platformAdmin: true
+        },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -376,6 +390,22 @@
                             internalRunbookOnly: false,
                             platformAdmin: true,
                             navId: 'surfe-usage'
+                        },
+                        {
+                            label: 'GDI Sales Performance',
+                            route: '/admin/gdi-sales-performance',
+                            roles: ['admin'],
+                            internalRunbookOnly: false,
+                            platformAdmin: true,
+                            navId: 'gdi-sales-performance'
+                        },
+                        {
+                            label: 'GDI Research Intelligence',
+                            route: '/admin/gdi-research-intelligence',
+                            roles: ['admin'],
+                            internalRunbookOnly: false,
+                            platformAdmin: true,
+                            navId: 'gdi-research-intelligence'
                         },
                         {
                             // Permanent founder review workspace (CURRENT vs PROPOSED).
@@ -982,7 +1012,11 @@
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') {
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
-        if (normalized === '/admin/surfe-usage') {
+        if (
+            normalized === '/admin/surfe-usage' ||
+            normalized === '/admin/gdi-sales-performance' ||
+            normalized === '/admin/gdi-research-intelligence'
+        ) {
             // Parity with SupportAdminGate.isAdminMe / requireAdminAccess (incl. local QA admin).
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
@@ -1000,7 +1034,13 @@
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
         if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
-        if (normalized === '/admin/surfe-usage') return '/home';
+        if (
+            normalized === '/admin/surfe-usage' ||
+            normalized === '/admin/gdi-sales-performance' ||
+            normalized === '/admin/gdi-research-intelligence'
+        ) {
+            return '/home';
+        }
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') return '/home';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }
@@ -1187,16 +1227,30 @@
                 return 'research';
             }
             if (inventory === 'staged') return 'staged';
+            if (inventory === 'proposed') return 'proposed';
+            if (inventory === 'hold') return 'hold';
+            if (inventory === 'continuation' || inventory === 'continuations') return 'continuation';
             if (inventory === 'published' || inventory === 'current') return 'published';
             var preview = String(hashQs.get('preview') || parentQs.get('preview') || '')
                 .trim()
                 .toLowerCase();
             if (preview === 'staged') return 'staged';
+            if (preview === 'proposed') return 'proposed';
+            if (preview === 'hold') return 'hold';
+            if (preview === 'continuation') return 'continuation';
             if (preview === 'current' || preview === 'published') return 'published';
             // Ignore legacy ?inventory=research / ?live=1 without admin flag — do not
             // surface research store in the local GDI presentation.
             var stored = readStoredGdiInventoryMode();
-            if (stored === 'staged' || stored === 'published') return stored;
+            if (
+                stored === 'staged' ||
+                stored === 'published' ||
+                stored === 'proposed' ||
+                stored === 'hold' ||
+                stored === 'continuation'
+            ) {
+                return stored;
+            }
             // Local founder shell: Finalized STAGED review by default (FQO policy).
             return isLocalFounderShellHost() ? 'staged' : 'published';
         } catch (_err) {
@@ -1217,6 +1271,15 @@
         } else if (next === 'staged') {
             params.set('inventory', 'staged');
             params.set('preview', 'staged');
+        } else if (next === 'proposed') {
+            params.set('inventory', 'proposed');
+            params.set('preview', 'proposed');
+        } else if (next === 'hold') {
+            params.set('inventory', 'hold');
+            params.set('preview', 'hold');
+        } else if (next === 'continuation' || next === 'continuations') {
+            params.set('inventory', 'continuation');
+            params.set('preview', 'continuation');
         } else if (next === 'published') {
             params.set('inventory', 'published');
             params.set('preview', 'current');

@@ -80,8 +80,8 @@ check("cache_bust_updated", () => {
     path.join(ROOT, "public/group-demand-intelligence-share.html"),
     "utf8",
   );
-  assert.match(auth, /dealality-gdi-ui\.js\?v=gdi-no-login-alert-v1/);
-  assert.match(share, /dealality-gdi-ui\.js\?v=gdi-no-login-alert-v1/);
+  assert.match(auth, /dealality-gdi-ui\.js\?v=gdi-sortable-list-v1/);
+  assert.match(share, /dealality-gdi-ui\.js\?v=gdi-sortable-list-v1/);
 });
 
 check("radisson_current_immutable_fingerprint", () => {

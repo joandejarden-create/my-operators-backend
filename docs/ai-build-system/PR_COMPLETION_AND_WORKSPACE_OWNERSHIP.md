@@ -19,6 +19,18 @@ A successful GitHub PR merge is **not** a completed development task until posit
 
 Opening a PR, passing CI, or merging into GitHub alone is **not sufficient**.
 
+### Integrated delivery (founder review readiness)
+
+Contract: `DEALALITY_INTEGRATED_DELIVERY_V1` ([DEALALITY_INTEGRATED_DELIVERY_V1.md](./DEALALITY_INTEGRATED_DELIVERY_V1.md)).
+
+For product founder review, the normal successful status is:
+
+```text
+INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW
+```
+
+That requires IC-authorized merge to `main`, post-merge home sync, canonical `:8080` serving the integrated tip, cumulative functionality + inventory verification, and browser evidence. Do **not** routinely treat `PR OPEN` or `AWAITING_INTEGRATION_CONTROLLER` as founder-review ready. Product streams must initiate the established IC remote-merge handoff (`npm run dealality:remote-pr-merge -- --pr <n>`) when CI is green; IC retains exclusive merge authority.
+
 ### Fail-closed COMPLETE
 
 `npm run dealality:pr-completion-report` **must not** return COMPLETE when merge/CI/home/preservation/cursor/retirement evidence is null, omitted, unknown, or `NOT_ASSESSED`.
@@ -74,6 +86,20 @@ A clean Source Control display must never take priority over preserving work.
 Owns: merge authorization/execution, CI verification, remote merges that do not disturb dirty local trees, safe permanent-home sync, post-merge verification, consistent completion reporting.
 
 Product chats must not independently merge to `main` or run disruptive cross-worktree operations.
+
+### Additive development & non-regression review (binding)
+
+Every relevant product PR must include a **non-regression assessment**. Integration Controller **must block acceptance** when previously approved UI layouts, opportunity inventory, data accessibility, presentation, or customer-facing functionality has **unintentionally** regressed.
+
+Required closeout evidence (scale to change surface):
+
+1. Pre-change baseline for affected UI / inventory / workflows  
+2. After-change comparison (prefer record IDs over counts alone)  
+3. Explicit classification of differences as intentional vs unintended  
+4. Unintended regressions resolved before certification  
+5. Automated regression coverage added when a defect class is identified  
+
+Intentional removal, replacement, redesign, or material change to previously accepted functionality requires **explicit founder approval**. Binding completion rule: new functionality works **and** previously accepted functionality continues to work. Principles: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md).
 
 ### Durable intelligence persistence review (binding)
 

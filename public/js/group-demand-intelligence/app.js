@@ -89,6 +89,8 @@
       if (v === "list" || v === "tiles") state.viewMode = v;
       var s = sessionStorage.getItem(STORAGE_PREFIX + "sortKey");
       if (s) state.sortKey = s;
+      var d = sessionStorage.getItem(STORAGE_PREFIX + "sortDir");
+      if (d === "1" || d === "-1") state.sortDir = Number(d);
     } catch (e) {
       /* ignore */
     }
@@ -98,6 +100,7 @@
     try {
       sessionStorage.setItem(STORAGE_PREFIX + "viewMode", state.viewMode);
       sessionStorage.setItem(STORAGE_PREFIX + "sortKey", state.sortKey);
+      sessionStorage.setItem(STORAGE_PREFIX + "sortDir", String(state.sortDir));
     } catch (e) {
       /* ignore */
     }
@@ -120,6 +123,7 @@
     try {
       sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
       sessionStorage.removeItem(STORAGE_PREFIX + "sortKey");
+      sessionStorage.removeItem(STORAGE_PREFIX + "sortDir");
     } catch (e) {
       /* ignore */
     }
@@ -870,10 +874,11 @@
   }
 
   /**
-   * Founder inventory views (FQO policy):
-   * staged = explicit STAGED Finalized Qualified packages only (fail-closed)
+   * Canonical founder inventory (FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT):
+   * staged = complete qualified inventory for local founder review (default on :8080)
    * published = CURRENT customer package only
    * research = authorized admin escape only (?gdiAdminResearch=1) — not a UI tab
+   * Obsolete proposed/hold/continuation URL modes collapse to STAGED (no separate gate).
    */
   function resolveFounderInventoryMode() {
     try {
@@ -898,14 +903,24 @@
       ) {
         return "research";
       }
-      if (inventory === "staged") return "staged";
       if (inventory === "published" || inventory === "current") {
         return "published";
       }
-      if (preview === "staged") return "staged";
       if (preview === "current" || preview === "published") return "published";
-      // Local founder review: STAGED finalized packages only. No Research tab /
-      // no silent research fallback when STAGED is missing.
+      if (
+        inventory === "staged" ||
+        preview === "staged" ||
+        inventory === "proposed" ||
+        preview === "proposed" ||
+        inventory === "hold" ||
+        preview === "hold" ||
+        inventory === "continuation" ||
+        inventory === "continuations" ||
+        preview === "continuation"
+      ) {
+        return "staged";
+      }
+      // Local founder review: STAGED complete qualified inventory. No Proposed gate.
       if (isLocalFounderHost()) return "staged";
       return "published";
     } catch (e) {
@@ -924,6 +939,10 @@
 
   function wantsExplicitStagedPreview() {
     return resolveFounderInventoryMode() === "staged";
+  }
+
+  function wantsFounderWriteSetPreview() {
+    return false;
   }
 
   function isLocalFounderHost() {
@@ -956,7 +975,13 @@
         url.searchParams.set("gdiAdminResearch", "1");
         url.searchParams.set("inventory", "research");
         url.searchParams.set("live", "1");
-      } else if (next === "staged") {
+      } else if (
+        next === "staged" ||
+        next === "proposed" ||
+        next === "hold" ||
+        next === "continuation" ||
+        next === "continuations"
+      ) {
         url.searchParams.set("inventory", "staged");
         url.searchParams.set("preview", "staged");
       } else if (next === "published") {
@@ -1016,8 +1041,8 @@
         // Canonical customer surface — same immutable package as external share.
         q.push("publicationPackage=1");
         q.push("surface=customer");
-        // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
         if (wantsExplicitStagedPreview()) {
+          // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
           q.push("preview=staged");
         } else {
           // Published Inventory: CURRENT only — never STAGED or research substitute.
@@ -1219,7 +1244,11 @@
       }
       return '<div class="gdi-empty">No customer-ready opportunities are available for this property yet.</div>';
     }
-    return UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
+    return UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters, {
+      sortKey: state.sortKey,
+      sortDir: state.sortDir,
+      inventoryRows: state.opportunities || [],
+    });
   }
 
   function buildExportHref() {
@@ -1631,9 +1660,11 @@
           path += "?live=1";
         } else if (wantsPublicationPackagePreview()) {
           path += "?publicationPackage=1&surface=customer";
-          // Must match list opportunitiesApiPath — same STAGED package.
+          // Must match list opportunitiesApiPath inventory mode.
           if (wantsExplicitStagedPreview()) {
             path += "&preview=staged";
+          } else {
+            path += "&preview=current";
           }
         }
         return path;
@@ -2019,7 +2050,9 @@
 
     var showPriorities = state.tab === "priorities";
     var showPortfolio = state.tab === "portfolio";
-    var hideOpportunityChrome = showPriorities || showPortfolio;
+    var showExecSummary = state.tab === "executive-summary";
+    var hideOpportunityChrome =
+      showPriorities || showPortfolio || showExecSummary;
     root.className = "gdi-shell dashboard-container aiv-dashboard";
     var inventoryMode = resolveFounderInventoryMode();
     var presentationMode =
@@ -2113,6 +2146,9 @@
       ">" +
       body +
       "</div>" +
+      '<div class="gdi-tab-panel gdi-exec-root" id="gdiExecutiveSummaryRoot"' +
+      (showExecSummary ? "" : ' hidden aria-hidden="true"') +
+      "></div>" +
       '<div class="gdi-tab-panel gdi-pdi-root" id="gdiPortfolioRoot"' +
       (showPortfolio ? "" : ' hidden aria-hidden="true"') +
       "></div>" +
@@ -2127,6 +2163,31 @@
       preservedPrioritiesRoot.setAttribute("aria-hidden", showPriorities ? "false" : "true");
       prioritiesRoot.parentNode.replaceChild(preservedPrioritiesRoot, prioritiesRoot);
       prioritiesRoot = preservedPrioritiesRoot;
+    }
+
+    if (showExecSummary) {
+      var execRoot = document.getElementById("gdiExecutiveSummaryRoot");
+      if (
+        window.DealalityGdiExecutiveSummaryTab &&
+        typeof window.DealalityGdiExecutiveSummaryTab.mount === "function"
+      ) {
+        window.DealalityGdiExecutiveSummaryTab.mount({
+          root: execRoot,
+          hotelId: state.hotelId,
+          api: api,
+          onOpenOpportunity: function (opportunityId) {
+            state.tab = "opportunities";
+            render();
+            if (!opportunityId) return;
+            openDetail(opportunityId).catch(function (err) {
+              handleLoadFailure(err);
+            });
+          },
+        });
+      } else if (execRoot) {
+        execRoot.innerHTML =
+          '<div class="gdi-exec-banner gdi-exec-banner--warn" role="alert">Executive Summary module failed to load.</div>';
+      }
     }
 
     if (showPortfolio) {
@@ -2278,7 +2339,40 @@
       });
     });
 
+    root.querySelectorAll("[data-gdi-founder-inventory]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = btn.getAttribute("data-gdi-founder-inventory") || "staged";
+        if (resolveFounderInventoryMode() === next) return;
+        applyFounderInventoryMode(next);
+        setLoading(true, "Loading founder inventory\u2026");
+        loadAll()
+          .then(function () {
+            render();
+          })
+          .catch(function (err) {
+            handleLoadFailure(err);
+          })
+          .finally(function () {
+            setLoading(false);
+          });
+      });
+    });
+
     wireBrowseControls();
+    if (
+      state.viewMode === "list" &&
+      window.DealalityGdiCommercialListTable &&
+      typeof window.DealalityGdiCommercialListTable.wireListTableInteractions ===
+        "function"
+    ) {
+      window.DealalityGdiCommercialListTable.wireListTableInteractions({
+        root: root,
+        state: state,
+        render: render,
+        persistBrowse: persistBrowse,
+        openDetail: openDetail,
+      });
+    }
     if (state.inventoryEmpty) {
       var recovery = state.inventoryEmpty.recovery || {};
       wireRecoveryActions({

@@ -1,0 +1,34 @@
+# Dealality additive development & non-regression (permanent)
+
+Applies to **all** Dealality streams: GDI, ADP, Hotel Explorer, Brand Explorer, Deal Opportunities, Operator Explorer, Census/HI, Integration.
+
+## Doctrine
+
+New functionality must be **additive** and must **not silently regress** previously accepted UI layouts, opportunity inventory, data accessibility, or customer-facing functionality.
+
+An enhancement is complete only when the new capability works **and** previously accepted functionality continues to work.
+
+## Required before certification
+
+1. Establish the pre-change baseline for affected surfaces.
+2. Compare UI and workflows after the change.
+3. Compare inventories using **actual record IDs**, not counts alone.
+4. Classify differences as intentional vs unintended.
+5. Resolve unintended regressions before claiming done.
+6. Include a non-regression assessment in the PR closeout.
+7. Add automated regression coverage when a defect class is identified.
+
+## Integration Controller
+
+Must **block acceptance** on unintentional regression of previously approved functionality, data accessibility, or presentation.
+
+Intentional redesign/removal/material change requires **explicit founder approval**.
+
+## Do not
+
+- Redesign existing components unless explicitly requested.
+- Silently hide, overwrite, or downgrade accepted intelligence.
+- Bypass publication/authorization gates to force KPI or inventory parity.
+- Spin up a separate infrastructure project solely for this principle — incorporate into existing workflows.
+
+Contract: `docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md`

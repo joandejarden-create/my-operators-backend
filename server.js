@@ -14,41 +14,71 @@ if (missing.length > 0) {
 }
 
 // DEV: self-identify server file and working dir; guard against wrong folder.
-// Canonical localhost:8080 is reserved for checkout basename `my-operators-backend`.
-// Feature worktrees (my-operators-backend-*) may run on isolated ports only.
+// Port 8080 is reserved for the cumulative integrated founder review environment
+// (registered GDI home, or Integration with DEALALITY_8080_OWNER=integration).
+// DEALALITY_CANONICAL_CHECKOUT / DEALALITY_ALLOW_WORKTREE_SERVER alone cannot bind :8080.
+import {
+  assertCanonicalPort8080Ownership,
+  DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1,
+  STREAM_DEV_PORTS,
+} from "./lib/dealality-dev-os/canonical-port-8080-ownership-v1.js";
+
 const serverPath = new URL(import.meta.url).pathname;
 const cwd = process.cwd();
 const cwdBase = cwd.replace(/[\\/]+$/, "").split(/[\\/]/).pop() || "";
 const listenPort = Number(process.env.PORT || 8080);
-const isCanonicalCheckout = cwdBase === "my-operators-backend" || cwdBase === "my-operators-backend-canonical-main" || process.env.DEALALITY_CANONICAL_CHECKOUT === "1";
-const isDealalityWorktree = /^my-operators-backend($|-)/.test(cwdBase);
+let portOwnership = null;
+try {
+  portOwnership = assertCanonicalPort8080Ownership({
+    cwd,
+    listenPort,
+    env: process.env,
+  });
+} catch (err) {
+  const evaluation = err?.evaluation || null;
+  console.error("ERROR: Dealality server port/workspace ownership denied.");
+  console.error("Contract:", DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1);
+  console.error("Code:", err?.code || evaluation?.code || "PORT_OWNERSHIP_DENIED");
+  console.error("Current directory:", cwd);
+  console.error("Listen port:", listenPort);
+  console.error(String(err?.message || err));
+  if (evaluation?.suggestedDevPort) {
+    console.error(
+      `Start feature work on PORT=${evaluation.suggestedDevPort} (assigned stream port).`,
+    );
+  } else {
+    console.error(`Start feature work on PORT=${STREAM_DEV_PORTS.gdi}.`);
+  }
+  console.error("Stopping.");
+  process.exit(1);
+}
+const isCanonicalCheckout = portOwnership?.authorizedFor8080 === true;
 console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
 console.log("Checkout basename:", cwdBase);
 console.log("Listen port:", listenPort);
-if (process.env.NODE_ENV !== "production") {
-  if (listenPort === 8080 && !isCanonicalCheckout) {
-    console.error(
-      "ERROR: Port 8080 is reserved for the canonical my-operators-backend checkout."
-    );
-    console.error("Current directory:", cwd);
-    console.error(
-      "Start feature worktrees on an isolated PORT (e.g. 8091), or run from C:\\Dev\\dealality\\my-operators-backend."
-    );
-    console.error("Stopping.");
-    process.exit(1);
-  }
-  if (!isDealalityWorktree && process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1") {
-    console.error("ERROR: Server started from unexpected directory:", cwd);
-    console.error("Expected a my-operators-backend* checkout.");
-    console.error("Stopping.");
-    process.exit(1);
-  }
-  if (!isCanonicalCheckout) {
-    console.warn(
-      `[dealality-dev] Non-canonical worktree serving on port ${listenPort} (8080 reserved for main checkout).`
-    );
-  }
+console.log(
+  "Port ownership:",
+  portOwnership?.code || "unknown",
+  portOwnership?.ownerStream || "",
+);
+if (
+  process.env.NODE_ENV !== "production" &&
+  portOwnership?.authorizedFor8080 &&
+  portOwnership?.durablePackageRoot?.ok
+) {
+  // Pin durable STAGED/CURRENT resolution to the registered GDI package store.
+  process.env.GDI_PUBLICATION_PACKAGE_ROOT =
+    portOwnership.durablePackageRoot.root;
+  console.log(
+    "Durable GDI publication root:",
+    portOwnership.durablePackageRoot.source,
+  );
+}
+if (process.env.NODE_ENV !== "production" && !isCanonicalCheckout) {
+  console.warn(
+    `[dealality-dev] Non-canonical worktree serving on port ${listenPort} (8080 reserved for cumulative founder review).`,
+  );
 }
 
 import express from "express";
@@ -373,6 +403,8 @@ import {
   postImportDemandCenters,
   postPreviewDemandCenterImport,
 } from "./api/market-demand.js";
+import { getGdiExecutiveSummary } from "./api/gdi-executive-summary.js";
+import { getGdiProposedWriteSetReview } from "./api/gdi-proposed-write-set-review.js";
 import {
   getGdiFlag,
   getGdiHotels,
@@ -547,6 +579,7 @@ import {
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
+import { gdiExecutiveSummaryAuth } from "./middleware/gdiExecutiveSummaryAuth.js";
 import { gdiPortfolioReadAuth } from "./middleware/gdiPortfolioReadAuth.js";
 import { gdiNeedDatesWriteAuth } from "./middleware/gdiNeedDatesWriteAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
@@ -1249,6 +1282,11 @@ app.get(
   getGdiSummary
 );
 app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/executive-summary",
+  gdiExecutiveSummaryAuth,
+  getGdiExecutiveSummary
+);
+app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/profile",
   gdiPilotReadAuth,
   getGdiProfile
@@ -1878,6 +1916,11 @@ app.get(
   "/api/admin/group-demand-intelligence/reports",
   ...adpMonthlyReviewAdminAuth,
   getAdminGdiReportCatalog
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/proposed-write-set-review",
+  ...adminAuth,
+  getGdiProposedWriteSetReview
 );
 app.get(
   "/api/admin/group-demand-intelligence/hotels/:hotelId/historical-research-recovery",
@@ -4022,6 +4065,31 @@ if (process.env.NODE_ENV !== "production") {
       };
     }
 
+    let publication = null;
+    try {
+      const { createGdiPublicationPackageStore } = await import(
+        "./lib/group-demand-intelligence/publication-package/index.js"
+      );
+      const store = createGdiPublicationPackageStore({});
+      const wyStaged = store.readPointer("recnPB3Q02NO8Ma1o", "STAGED");
+      const wyCurrent = store.readPointer("recnPB3Q02NO8Ma1o", "CURRENT");
+      publication = {
+        packageRootBasenameTrail: String(store.root || "")
+          .replace(/[\\/]+$/, "")
+          .split(/[\\/]/)
+          .slice(-4)
+          .join("/"),
+        wyndhamStagedVersion: wyStaged?.publicationVersion || null,
+        wyndhamCurrentVersion: wyCurrent?.publicationVersion || null,
+        pinEnv: Boolean(process.env.GDI_PUBLICATION_PACKAGE_ROOT),
+      };
+    } catch (err) {
+      publication = {
+        error: "publication_identity_failed",
+        detail: String(err?.message || err).slice(0, 160),
+      };
+    }
+
     res.json({
       ok: true,
       contract: "DEALALITY_DEV_RUNTIME_IDENTITY_V1",
@@ -4029,9 +4097,18 @@ if (process.env.NODE_ENV !== "production") {
       port: Number(process.env.PORT || 8080),
       servingDirectoryBasename: cwdBase,
       isCanonicalCheckout,
+      portOwnership: portOwnership
+        ? {
+            contract: DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1,
+            code: portOwnership.code,
+            ownerStream: portOwnership.ownerStream,
+            authorizedFor8080: portOwnership.authorizedFor8080 === true,
+          }
+        : null,
       branch,
       sha,
       contactIntelligence,
+      publication,
       // Basename only — do not expose full local filesystem paths.
     });
   });

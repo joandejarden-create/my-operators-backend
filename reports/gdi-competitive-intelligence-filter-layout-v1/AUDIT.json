@@ -1,0 +1,220 @@
+{
+  "generatedAt": "2026-11-27T17:32:47.205Z",
+  "contract": "DEALALITY_ADDITIVE_NON_REGRESSION_V1",
+  "paidResearch": false,
+  "pr620": {
+    "state": "OPEN",
+    "checkpointBPaidCadExecuted": false,
+    "evidence": "PR body explicitly: No paid Checkpoint B spend in this PR — paid PLP/CAD/leisure only after IC merge"
+  },
+  "marketScopeSemantics": {
+    "hotelAndCompetitiveOverlapping": true,
+    "allIsUniqueUnion": true,
+    "mutualExclusivity": false,
+    "note": "opportunityInventoryPopulations may include both SALES_OPPORTUNITIES and COMPETITIVE_MARKET_INTELLIGENCE; filter counts are independent; All dedupes by opportunity id"
+  },
+  "wyndhamCompetitiveZeroRootCause": {
+    "exactReason": "STAGED package gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_6f4aef5e publishes inventoryCounts.competitive=0 and zero opportunities with competitiveMarketScopeEligible/cmiVerified/competitiveStatus. UI Market Scope filter correctly reflects that measured STAGED zero.",
+    "notCausedBy": [
+      "Incorrect Market Scope filtering on :8080 for current STAGED DTO",
+      "Silent UI default hiding competitive rows that exist in STAGED"
+    ],
+    "contributingFactors": [
+      "Paid Checkpoint B CAD/PLP research not executed (PR #620 OPEN)",
+      "Prior live competitive log contains CAD FQO_CANDIDATE rows with named competitors that are not members of the locked 26 STAGED inventory",
+      "CAD read-only pilot: Wyndham CLEAN 11 = 0 competitive classes; HOLD research = 1 historical + 3 emerging + 0 FQO_CANDIDATE",
+      "Final commercial completion findings: competitorMentionsSample empty; CAD competitor-commitment refresh not run on HOLD association set",
+      "WHO/HOW DryRun artifact contains at least one COMPETITIVE_DISPLACEMENT (CapCon / Marriott Marquis) that did not enter STAGED competitive population"
+    ],
+    "classification": "RESEARCH_EXECUTED_PARTIALLY_BUT_COMPETITIVE_NOT_IN_LOCKED_STAGED_26"
+  },
+  "priorCompetitiveArtifacts": {
+    "competitiveLogPath": "reports/gdi-wyndham-sd-bayside-full-e2e-25plus-v1/execute-live-35usd/04-COMPETITIVE_LOG.json",
+    "cadFqCandidateWithCompetitor": 15,
+    "namedCompetitors": [
+      "InterContinental San Diego",
+      "Marriott Marquis San Diego Marina"
+    ],
+    "overflowFindings": {
+      "classCounts": {
+        "DIRECT_PURSUIT": 43,
+        "FUTURE_RECURRING_OPPORTUNITY": 78
+      },
+      "competitorMentionsSample": [],
+      "zeroCompetitiveDisplacementLikelyCauses": [
+        "Agent dossiers rarely returned named competitor-host hotels",
+        "Classification relied on sourcing-cycle heuristics more than CAD host mapping",
+        "Historical meeting/hotel investigation incomplete for association HOLDs",
+        "Overflow/exhibitor demand not separately evidenced",
+        "Genuine scarcity possible for corporate/project-heavy queue, but association segment under-probed for displacement"
+      ],
+      "engineGaps": [
+        "Full predictive engine not claimed complete",
+        "CAD competitor-commitment refresh not run on 105 HOLDs",
+        "Cross-hotel reuse of host intelligence limited",
+        "Overflow_OR_ANCILLARY pathway needs dedicated evidence prompts"
+      ]
+    },
+    "cadPilotTallies": {
+      "bethesda_68": {
+        "byClass": {
+          "HISTORICAL_COMPETITIVE_INTEL": 23,
+          "EMERGING_COMPETITIVE_OPPORTUNITY": 0,
+          "FQO_CANDIDATE": 9,
+          "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 36
+        },
+        "byAttainability": {
+          "WINNABLE": 1,
+          "MONITOR": 59,
+          "OVERFLOW_ONLY": 8
+        },
+        "bySourcing": {
+          "INFERRED": 33,
+          "UNKNOWN": 35
+        },
+        "total": 68
+      },
+      "wyndham_clean_11": {
+        "byClass": {
+          "HISTORICAL_COMPETITIVE_INTEL": 0,
+          "EMERGING_COMPETITIVE_OPPORTUNITY": 0,
+          "FQO_CANDIDATE": 0,
+          "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 11
+        },
+        "byAttainability": {
+          "MONITOR": 11
+        },
+        "bySourcing": {
+          "INFERRED": 11
+        },
+        "total": 11
+      },
+      "wyndham_hold_research": {
+        "byClass": {
+          "HISTORICAL_COMPETITIVE_INTEL": 1,
+          "EMERGING_COMPETITIVE_OPPORTUNITY": 3,
+          "FQO_CANDIDATE": 0,
+          "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 5
+        },
+        "byAttainability": {
+          "MONITOR": 5,
+          "OVERFLOW_ONLY": 4
+        },
+        "bySourcing": {
+          "INFERRED": 3,
+          "UNKNOWN": 6
+        },
+        "total": 9
+      },
+      "combined": {
+        "byClass": {
+          "HISTORICAL_COMPETITIVE_INTEL": 24,
+          "EMERGING_COMPETITIVE_OPPORTUNITY": 3,
+          "FQO_CANDIDATE": 9,
+          "UNCLASSIFIED_NO_COMPETITIVE_EVIDENCE": 52
+        },
+        "byAttainability": {
+          "WINNABLE": 1,
+          "MONITOR": 75,
+          "OVERFLOW_ONLY": 12
+        },
+        "bySourcing": {
+          "INFERRED": 47,
+          "UNKNOWN": 41
+        },
+        "total": 88
+      }
+    },
+    "whoHowCompetitiveSignals": [
+      {
+        "competitiveClass": "COMPETITIVE_DISPLACEMENT",
+        "competitorHotel": "Marriott Marquis San Diego Marina",
+        "title": "CapCon recurring conference"
+      }
+    ],
+    "stagedPointer": {
+      "schema": "gdi-publication-package-store-v1",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "kind": "STAGED",
+      "updatedAt": "2026-11-27T17:00:29.934Z",
+      "publicationId": "gdi_pubpkg_recnPB3Q02NO8Ma1o_d7988e931f7eefc0",
+      "publicationVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_6f4aef5e",
+      "contentFingerprintSha256": "c75eb7e5e0733519a64387608681a7a19239697d01cb96ccaaf65e2664b49c0c",
+      "lifecycleState": "PRODUCTION_STAGED"
+    }
+  },
+  "scorecard": [
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotelName": "Wyndham San Diego Bayside",
+      "stagedPointerPresent": true,
+      "apiStatus": "OK",
+      "stagedCount": 26,
+      "filterAll": 26,
+      "filterHotel": 26,
+      "filterCompetitive": 0,
+      "competitiveRowsInDto": 0,
+      "hotelEligibleRows": 26,
+      "competitiveResearchExecuted": "PARTIAL_HISTORICAL — CAD candidates logged in prior live E2E; Checkpoint B paid CAD NOT executed",
+      "competitiveCandidatesDiscovered": 15,
+      "competitiveInStaged": 0,
+      "competitiveDisplayedUi": 0,
+      "mappingDefect": "NOT_A_FILTER_BUG — STAGED package competitive=0; prior CAD candidates not in locked 26",
+      "remainingResearch": "Execute authorized Checkpoint B CAD/PLP on association HOLDs after PR #620 merge; do not fabricate competitive into locked 26"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "stagedPointerPresent": true,
+      "apiStatus": "OK",
+      "stagedCount": 68,
+      "filterAll": 69,
+      "filterHotel": 63,
+      "filterCompetitive": 10,
+      "competitiveRowsInDto": 11,
+      "hotelEligibleRows": 62,
+      "competitiveResearchExecuted": "YES — competitive inventory present in STAGED (filter Competitive > 0)",
+      "competitiveCandidatesDiscovered": 11,
+      "competitiveInStaged": 10,
+      "competitiveDisplayedUi": 10,
+      "mappingDefect": null,
+      "remainingResearch": null
+    },
+    {
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelName": "Sheraton Guadalajara",
+      "stagedPointerPresent": true,
+      "apiStatus": "OK",
+      "stagedCount": 38,
+      "filterAll": 38,
+      "filterHotel": 34,
+      "filterCompetitive": 4,
+      "competitiveRowsInDto": 4,
+      "hotelEligibleRows": 34,
+      "competitiveResearchExecuted": "YES — competitive rows in STAGED DTO",
+      "competitiveCandidatesDiscovered": 4,
+      "competitiveInStaged": 4,
+      "competitiveDisplayedUi": 4,
+      "mappingDefect": null,
+      "remainingResearch": null
+    },
+    {
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelName": "Hilton packages sample",
+      "stagedPointerPresent": false,
+      "apiStatus": "OK",
+      "stagedCount": 6,
+      "filterAll": 6,
+      "filterHotel": 5,
+      "filterCompetitive": 1,
+      "competitiveRowsInDto": 1,
+      "hotelEligibleRows": 6,
+      "competitiveResearchExecuted": "YES — competitive rows in STAGED DTO",
+      "competitiveCandidatesDiscovered": 1,
+      "competitiveInStaged": 1,
+      "competitiveDisplayedUi": 1,
+      "mappingDefect": null,
+      "remainingResearch": null
+    }
+  ]
+}
