@@ -25,11 +25,41 @@
 
   /** Purpose sections — mirrored from contact-purpose-sections-v1 (client cannot import ESM). */
   var PURPOSE_SECTIONS = [
-    { id: "hotel_leadership", label: "Hotel Leadership", description: "Property general management and on-site leadership." },
-    { id: "sales_commercial", label: "Sales & Commercial", description: "Sales, revenue, and commercial performance contacts." },
-    { id: "ownership_asset", label: "Ownership & Asset Management", description: "Owner-side and asset-management contacts." },
-    { id: "management_company", label: "Management Company", description: "Operator / management-company leadership." },
-    { id: "brand_development", label: "Brand & Development", description: "Brand, franchise, and development contacts." },
+    {
+      id: "hotel_leadership",
+      label: "Hotel Leadership",
+      description: "Property general management and on-site leadership.",
+      showWhenEmpty: true,
+      emptyHint:
+        "Property general manager and on-site leadership have not been established for this hotel yet.",
+    },
+    {
+      id: "sales_commercial",
+      label: "Sales & Commercial Leadership",
+      description: "Sales, revenue, and commercial performance contacts.",
+      showWhenEmpty: true,
+      emptyHint:
+        "Director of sales / marketing and revenue leadership have not been established for this hotel yet.",
+    },
+    {
+      id: "ownership_asset",
+      label: "Ownership & Asset Management",
+      description:
+        "Owner-side and asset-management contacts. Appearance here does not confirm hotel-specific decision authority.",
+      showWhenEmpty: false,
+    },
+    {
+      id: "management_company",
+      label: "Management Company & Regional Leadership",
+      description: "Operator / management-company and regional leadership.",
+      showWhenEmpty: false,
+    },
+    {
+      id: "brand_development",
+      label: "Brand & Development",
+      description: "Brand, franchise, and development contacts.",
+      showWhenEmpty: false,
+    },
   ];
   var BUSINESS_PURPOSE_FILTERS = [
     { id: "all", label: "All contacts", sectionIds: PURPOSE_SECTIONS.map(function (s) { return s.id; }) },
@@ -720,31 +750,50 @@
     (filter.sectionIds || []).forEach(function (id) {
       allow[id] = true;
     });
+    var metaById = {};
+    PURPOSE_SECTIONS.forEach(function (m) {
+      metaById[m.id] = m;
+    });
     var html = sections
       .filter(function (s) {
-        return allow[s.id] && s.people && s.people.length;
+        if (!allow[s.id]) return false;
+        var meta = metaById[s.id] || s;
+        var hasPeople = s.people && s.people.length;
+        return hasPeople || meta.showWhenEmpty === true;
       })
       .map(function (s) {
+        var meta = metaById[s.id] || s;
+        var hasPeople = s.people && s.people.length;
+        var body = hasPeople
+          ? '<div class="hci-people">' +
+            s.people
+              .map(function (p) {
+                return renderPerson(p, hotelId, vmCapability, {
+                  vm: vm,
+                  sectionId: s.id,
+                });
+              })
+              .join("") +
+            "</div>"
+          : '<p class="hci-muted hci-section__empty">' +
+            esc(meta.emptyHint || "No verified contacts in this group yet.") +
+            "</p>";
         return (
           '<section class="hci-section hci-section--purpose" data-hci-purpose-section="' +
           esc(s.id) +
-          '">' +
+          '"' +
+          (hasPeople ? "" : ' data-hci-section-empty="1"') +
+          ">" +
           "<h3>" +
-          esc(s.label) +
+          esc(s.label || meta.label) +
           "</h3>" +
-          (present(s.description)
-            ? '<p class="hci-section__desc">' + esc(s.description) + "</p>"
+          (present(s.description || meta.description)
+            ? '<p class="hci-section__desc">' +
+              esc(s.description || meta.description) +
+              "</p>"
             : "") +
-          '<div class="hci-people">' +
-          s.people
-            .map(function (p) {
-              return renderPerson(p, hotelId, vmCapability, {
-                vm: vm,
-                sectionId: s.id,
-              });
-            })
-            .join("") +
-          "</div></section>"
+          body +
+          "</section>"
         );
       })
       .join("");

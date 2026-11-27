@@ -88,9 +88,12 @@ run("renderer_source_customer_language_and_uniform_cards", () => {
   const css = read("public/css/hotel-contact-intelligence.css");
   assert.ok(hci.includes("Find Contact Details"));
   assert.ok(hci.includes("Hotel Leadership"));
-  assert.ok(hci.includes("Sales & Commercial"));
+  assert.ok(hci.includes("Sales & Commercial Leadership"));
   assert.ok(hci.includes("Ownership & Asset Management"));
+  assert.ok(hci.includes("Management Company & Regional Leadership"));
   assert.ok(hci.includes("data-hci-purpose-filter"));
+  assert.ok(hci.includes("showWhenEmpty"));
+  assert.ok(hci.includes("data-hci-section-empty"));
   assert.ok(hci.includes("Direct Business Email"));
   assert.ok(hci.includes("Direct Business Phone"));
   assert.ok(hci.includes("Company website") || hci.includes("companyWebsite"));

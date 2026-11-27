@@ -352,15 +352,19 @@ run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   mustInclude(hci, "/reveal");
   mustInclude(hci, "enrichment-capability");
   mustInclude(hci, "Hotel Leadership");
-  mustInclude(hci, "Sales & Commercial");
+  mustInclude(hci, "Sales & Commercial Leadership");
   mustInclude(hci, "Ownership & Asset Management");
-  mustInclude(hci, "Management Company");
+  mustInclude(hci, "Management Company & Regional Leadership");
   mustInclude(hci, "Brand & Development");
   mustInclude(hci, "data-hci-purpose-filter");
   mustInclude(hci, "Company contact routes");
   mustInclude(hci, "Open items");
+  mustInclude(hci, "Email");
+  mustInclude(hci, "Call");
+  mustInclude(hci, "Find Contact Details");
   assert.ok(!hci.includes("Recommended First Contact"), "no global recommended-first hierarchy");
   assert.ok(!hci.includes("Alternative Decision-Makers"));
+  assert.ok(!hci.includes("Suggested Contact"), "no renamed global first-contact hierarchy");
   assert.ok(!/hci-dev-json|Dev diagnostic|JSON\.stringify\(vm/.test(hci), "no user-visible VM dump");
   assert.ok(!/production_writes|write_on_get|apply_authorized|surfe_live_calls/.test(hci));
   assert.ok(
