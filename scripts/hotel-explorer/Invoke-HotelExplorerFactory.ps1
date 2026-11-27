@@ -9,9 +9,19 @@
     reports/hotel-explorer/HE-CROSS-TAB-CONSISTENCY-<hotelId>.json
     reports/hotel-explorer/HE-CROSS-TAB-CONSISTENCY-<hotelId>.md
 
-  Permanent gates include cross-tab consistency, shared-attribute parity,
-  ownership verification-state parity, and (when the Node factory runner is
-  present) persistence / read-back / physical-product coverage.
+  Permanent gates:
+    HE_SUBMARKET_COHORT_VALIDATED
+    HE_SUBMARKET_COVERAGE_DISCLOSED
+    HE_ORG_PORTFOLIO_HYDRATION_VALIDATED
+    HE_SHARED_HOTEL_ATTRIBUTES_CONSISTENT
+    HE_CROSS_TAB_PARITY_VALIDATED
+    HE_CROSS_TAB_CONSISTENCY_REPORT_GENERATED
+    HE_E2E_CROSS_TAB_CERTIFICATION
+    HE_ACTIVE_TAB_COUNT (11 when HE_GUEST_SENTIMENT_ENABLED=false)
+    HE_CONTACT_COMPONENT_PARITY
+    HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE
+    HE_OWNERSHIP_VERIFICATION_STATE_PARITY
+    HE_UNIFIED_THEME_CONSISTENCY
 
   Browser policy: -SkipBrowser forces browser checks to NOT_TESTED (never PASS).
 
