@@ -1070,6 +1070,201 @@
       });
   }
 
+  function channelKindIsLinkedIn(kind) {
+    return /linkedin/i.test(String(kind || ""));
+  }
+
+  function channelKindIsEmail(kind) {
+    return /email/i.test(String(kind || ""));
+  }
+
+  function channelKindIsPhone(kind) {
+    return /phone|mobile|tel/i.test(String(kind || ""));
+  }
+
+  function channelKindIsWebsite(kind) {
+    return /website|web|url|contact_page/i.test(String(kind || ""));
+  }
+
+  function classifyContactFromPackage(raw) {
+    var role = String(raw.why_relevant || raw.whyRelevant || raw.function_role || raw.title || "");
+    var upper = role.toUpperCase();
+    if (/OWNER_DECISION|OWNERSHIP\s*\/\s*DECISION|PRESIDENT|CEO/.test(upper)) {
+      return {
+        contactClass: "OWNER_DECISION_AUTHORITY",
+        contactClassLabel: "Ownership / Decision Authority",
+      };
+    }
+    if (/RELEVANT_COMMERCIAL|ASSET MANAGEMENT|VP,?\s*ASSET|DIRECTOR,?\s*ASSET/.test(upper)) {
+      return {
+        contactClass: "RELEVANT_COMMERCIAL_ENTRY_POINT",
+        contactClassLabel: "Relevant commercial entry point",
+      };
+    }
+    if (/HOTEL_LEADERSHIP|GENERAL MANAGER|\bGM\b|DIRECTOR OF SALES/.test(upper)) {
+      return {
+        contactClass: "HOTEL_LEADERSHIP",
+        contactClassLabel: "Hotel / commercial leadership",
+      };
+    }
+    return {
+      contactClass: "VERIFIED_ORGANIZATION_CONTACT",
+      contactClassLabel: "Verified organization contact",
+    };
+  }
+
+  function mapPackagePersonToUi(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var channels = Array.isArray(raw.channels) ? raw.channels : [];
+    var linkedin = null;
+    var emails = [];
+    var phones = [];
+    channels.forEach(function (ch) {
+      if (!ch) return;
+      var kind = ch.kind || ch.type || "";
+      var val = ch.value || ch.email || ch.phone || ch.url || "";
+      if (!present(val)) return;
+      if (channelKindIsLinkedIn(kind) || /linkedin\.com\/in\//i.test(String(val))) {
+        linkedin = String(val).trim();
+      } else if (channelKindIsEmail(kind)) {
+        emails.push({ value: val, type: kind, verification_status: ch.verification_status || null });
+      } else if (channelKindIsPhone(kind)) {
+        phones.push({ value: val, type: kind, verification_status: ch.verification_status || null });
+      }
+    });
+    var name = raw.display_name || raw.name || raw.fullName || null;
+    if (!present(name)) return null;
+    var classMeta = classifyContactFromPackage(raw);
+    var propRel = String(raw.property_relevance || "").toUpperCase();
+    var propertyResponsibility =
+      propRel === "HOTEL" ? "CONFIRMED" : propRel === "OWNER_ORG" ? "INFERRED" : "UNKNOWN";
+    var propertyResponsibilityLabel =
+      propertyResponsibility === "CONFIRMED"
+        ? "Confirmed for this hotel"
+        : propertyResponsibility === "INFERRED"
+          ? "Organizational contact · property decision-maker not confirmed"
+          : "Property responsibility unknown";
+    return {
+      personId: raw.person_id || raw.personId || null,
+      name: name,
+      title: raw.title || null,
+      organization: raw.organization_name || raw.organization || null,
+      organizationName: raw.organization_name || raw.organization || null,
+      whyRelevant: raw.why_relevant || raw.whyRelevant || null,
+      relationshipToHotel: raw.why_relevant || raw.whyRelevant || null,
+      contactClass: classMeta.contactClass,
+      contactClassLabel: classMeta.contactClassLabel,
+      commercialRole: classMeta.contactClassLabel,
+      emailContacts: emails,
+      phoneContacts: phones,
+      profileUrls: linkedin
+        ? [{ type: "LINKEDIN", url: linkedin, verified: true }]
+        : [],
+      linkedinUrl: linkedin,
+      organizationWebsite: null,
+      propertyResponsibility: propertyResponsibility,
+      propertyResponsibilityLabel: propertyResponsibilityLabel,
+      confidence:
+        (raw.provenance && (raw.provenance.confidence || raw.provenance.verification_state)) ||
+        raw.confidence ||
+        "MEDIUM",
+      contactability: linkedin || emails.length || phones.length ? "PROFILE_ONLY" : "ORG_FALLBACK",
+      displayState: "PARTIAL",
+      sources: raw.provenance && raw.provenance.source ? [raw.provenance.source] : ["HI_ORG_CONTACTS"],
+      airtableId: raw.provenance && raw.provenance.airtable_id ? raw.provenance.airtable_id : null,
+    };
+  }
+
+  function recommendationRank(p) {
+    var c = String((p && p.contactClass) || "").toUpperCase();
+    if (c === "RELEVANT_COMMERCIAL_ENTRY_POINT") return 0;
+    if (c === "HOTEL_LEADERSHIP") return 1;
+    if (c === "OWNER_DECISION_AUTHORITY") return 2;
+    return 3;
+  }
+
+  function mapContactPackageToViewModel(json, hotelId) {
+    var pkg = (json && json.package) || {};
+    var owner = (json && json.owner_anchor) || {};
+    var people = (pkg.people || [])
+      .map(mapPackagePersonToUi)
+      .filter(Boolean)
+      .sort(function (a, b) {
+        return recommendationRank(a) - recommendationRank(b);
+      });
+    var orgChannels = (pkg.organization_contact_route && pkg.organization_contact_route.channels) || [];
+    var orgWebsite = null;
+    var orgPhones = [];
+    var orgEmails = [];
+    orgChannels.forEach(function (ch) {
+      if (!ch) return;
+      var kind = ch.kind || ch.type || "";
+      var val = ch.value || "";
+      if (!present(val)) return;
+      if (channelKindIsWebsite(kind) || /^https?:/i.test(String(val))) orgWebsite = val;
+      else if (channelKindIsPhone(kind)) orgPhones.push({ type: kind, value: val });
+      else if (channelKindIsEmail(kind)) orgEmails.push({ type: kind, value: val });
+    });
+    var ownerName =
+      owner.owner_display_name ||
+      pkg.owner_display_name ||
+      (pkg.organization_contact_route && pkg.organization_contact_route.owner_display_name) ||
+      null;
+    var hotelName = pkg.hotel_name || hotelId;
+    return {
+      version: "contact-intelligence-viewmodel-v1",
+      hotelId: pkg.hotel_id || hotelId,
+      hotelName: hotelName,
+      ownershipSummary: {
+        hotel: { name: hotelName, role: "HOTEL" },
+        sponsor: ownerName
+          ? {
+              name: ownerName,
+              role: "OWNER_SPONSOR_GROUP",
+              label: "Economic Owner / Contactable Owner Org",
+            }
+          : null,
+        operator: null,
+        brand: null,
+        propco: null,
+      },
+      qualitySummary: {
+        ownerOrgStatus: ownerName ? "VERIFIED" : "UNRESOLVED",
+        primaryDecisionMakers: people.length,
+        verifiedEmails: 0,
+        verifiedOrPublicPhones: 0,
+        fallbackContactPaths: orgWebsite || orgPhones.length || orgEmails.length ? 1 : 0,
+        lastReviewed: null,
+      },
+      contactableOwnerOrg: ownerName
+        ? {
+            organizationId: owner.owner_entity_id || pkg.owner_entity_id || null,
+            name: ownerName,
+            website: orgWebsite,
+            phones: orgPhones,
+            emails: orgEmails,
+            verification: "HI_AIRTABLE_GRAPH",
+            confidence: "MEDIUM",
+            displayState: people.length || orgWebsite ? "AVAILABLE" : "PARTIAL",
+          }
+        : null,
+      people: people,
+      recommendedContacts: people.slice(0, 6),
+      otherContacts: people.slice(6),
+      recommendation: people.length
+        ? {
+            person: people[0],
+            rationale: people[0].whyRelevant || "Named contact from HI Org Contacts.",
+            alternatives: people.slice(1, 4),
+          }
+        : null,
+      organizations: [],
+      researchWorkflow: true,
+      hiGraphOverlay: json && json.hi_graph_overlay ? json.hi_graph_overlay : null,
+      _rawPackage: pkg,
+    };
+  }
+
   function loadViewModel(hotelId) {
     var showcase = SHOWCASE_PATHS[hotelId];
     var tries = [];
@@ -1088,13 +1283,7 @@
         .then(function (json) {
           if (json && json.version && json.ownershipSummary) return json;
           if (json && json.success && json.package) {
-            return {
-              hotelId: hotelId,
-              hotelName: hotelId,
-              _rawPackage: json.package,
-              people: [],
-              organizations: [],
-            };
+            return mapContactPackageToViewModel(json, hotelId);
           }
           throw new Error("unsupported_shape");
         })
@@ -1152,15 +1341,29 @@
     });
   }
 
-  function mount(host, hotelId) {
+  function mount(host, hotelId, opts) {
     if (!host) return Promise.resolve();
+    opts = opts || {};
     // Surfe session results must not survive hotel remount / reload.
     _sessionSurfeByPerson = Object.create(null);
     host.innerHTML = renderLoading();
     return Promise.all([loadViewModel(hotelId), loadEnrichmentCapability()]).then(function (pack) {
       var vm = pack[0];
       vmCapability = pack[1] || null;
-      if (vm && vm.ownershipSummary) {
+      if (vm && present(opts.hotelName) && (!present(vm.hotelName) || /^rec[a-zA-Z0-9]{14}$/.test(String(vm.hotelName)))) {
+        vm.hotelName = opts.hotelName;
+        if (vm.ownershipSummary && vm.ownershipSummary.hotel) {
+          vm.ownershipSummary.hotel.name = opts.hotelName;
+        }
+      }
+      var hasPeople = vm && Array.isArray(vm.people) && vm.people.length > 0;
+      var hasOwner =
+        vm &&
+        vm.ownershipSummary &&
+        (vm.ownershipSummary.sponsor ||
+          vm.ownershipSummary.operator ||
+          vm.contactableOwnerOrg);
+      if (vm && vm.ownershipSummary && (hasPeople || hasOwner)) {
         if (Array.isArray(vm.people)) {
           vm.people = vm.people.map(function (p) {
             return patchPersonEnrichAction(p, vmCapability);
