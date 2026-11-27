@@ -1,9 +1,9 @@
 {
   "version": "test-dealsignal-memberstack-auth-v1",
-  "generatedAt": "2026-11-27T12:23:30.528Z",
+  "generatedAt": "2026-11-27T12:33:13.507Z",
   "summary": {
-    "total": 2,
-    "passed": 2,
+    "total": 3,
+    "passed": 3,
     "failed": 0
   },
   "results": [
@@ -13,7 +13,12 @@
       "detail": ""
     },
     {
-      "name": "verify-token tries sandbox + live Admin secrets by peeked member id",
+      "name": "verify-token env-matches secrets; production live-only",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "DEV_AUTH_BYPASS fail-closed + no credential logging",
       "status": "PASS",
       "detail": ""
     }

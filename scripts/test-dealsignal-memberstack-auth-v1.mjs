@@ -44,7 +44,24 @@ function testVerifyTokenSandboxSecretSelection() {
   assert.match(src, /isSandboxMemberstackId/);
   assert.match(src, /MEMBERSTACK_TEST_SECRET_KEY|MEMBERSTACK_SANDBOX_SECRET_KEY/);
   assert.match(src, /verifyViaRestApiWithSecret/);
-  pass("verify-token tries sandbox + live Admin secrets by peeked member id");
+  assert.match(src, /assertSecretMatchesMemberId/);
+  assert.match(src, /NODE_ENV === "production"/);
+  assert.match(src, /MEMBERSTACK_ENV_MISMATCH/);
+  pass("verify-token env-matches secrets; production live-only");
+}
+
+function testDevAuthBypassFailClosed() {
+  const mw = fs.readFileSync(path.join(ROOT, "middleware", "memberstackAuth.js"), "utf8");
+  assert.match(mw, /function isDevAuthBypassAllowed/);
+  assert.match(mw, /function isLoopbackRemoteAddress/);
+  assert.match(mw, /NODE_ENV === "production"/);
+  assert.match(mw, /DEALALITY_ALLOW_DEV_AUTH_BYPASS/);
+  assert.match(mw, /isDevAuthBypassAllowed\(req\)/);
+  // Must not interpolate raw Bearer JWT into logs
+  assert.doesNotMatch(mw, /console\.\w+\([^)]*\$\{[^}]*token/);
+  assert.doesNotMatch(mw, /console\.\w+\(\s*token\s*[,)]/);
+  assert.match(mw, /msg\.slice\(0,\s*120\)/);
+  pass("DEV_AUTH_BYPASS fail-closed + no credential logging");
 }
 
 async function main() {
@@ -56,7 +73,12 @@ async function main() {
   try {
     testVerifyTokenSandboxSecretSelection();
   } catch (e) {
-    fail("verify-token tries sandbox + live Admin secrets by peeked member id", e);
+    fail("verify-token env-matches secrets; production live-only", e);
+  }
+  try {
+    testDevAuthBypassFailClosed();
+  } catch (e) {
+    fail("DEV_AUTH_BYPASS fail-closed + no credential logging", e);
   }
 
   const failed = results.filter((r) => r.status === "FAIL");
