@@ -56,6 +56,7 @@ const contactTests = [
   "test:he-contact-intelligence-v3-directory",
   "test:he-contact-intelligence-cx-v2",
   "test:he-contact-intelligence-directory-ux-v1",
+  "test:he-loading-ux-toast-v1",
 ].map(runNpm);
 
 const contactOk = contactTests.every((t) => t.ok);
@@ -80,9 +81,51 @@ const contactPresentation =
   /All Contacts/.test(hciSrc) &&
   /Hotel Leadership/.test(hciSrc) &&
   !/Inferred · not property-confirmed/.test(hciSrc);
+const heLoadingShared =
+  /HeLoadingUx/.test(hciSrc) &&
+  /sectionHtml/.test(hciSrc) &&
+  /he-async-loading/.test(hciSrc) &&
+  !/class="hci-loading"/.test(hciSrc);
 const cacheBustOk =
   /hotel-contact-intelligence\.js\?v=\d+/.test(radarHtml) &&
   /hotel-contact-intelligence\.css\?v=\d+/.test(radarHtml);
+
+let loadingBrowser = {
+  status: skipBrowser ? "NOT_TESTED" : "PENDING",
+  ok: false,
+};
+if (!skipBrowser) {
+  const r = spawnSync(
+    "npm",
+    ["run", "verify:he-loading-component-browser-v1", "--", "--require-server"],
+    {
+      cwd: ROOT,
+      encoding: "utf8",
+      shell: true,
+      env: {
+        ...process.env,
+        DEALALITY_LOCAL_ADMIN_BASE: BASE,
+        HE_LOADING_VERIFY_HOTEL_ID: HOTEL_ID,
+      },
+    }
+  );
+  const reportPath = path.join(
+    ROOT,
+    "reports/hotel-explorer/HE-LOADING-COMPONENT-BROWSER-V1.json"
+  );
+  let report = null;
+  try {
+    report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+  } catch {
+    report = null;
+  }
+  loadingBrowser = {
+    status: report?.status || (r.status === 0 ? "PASS" : "FAIL"),
+    ok: r.status === 0 && report?.status === "PASS",
+    exitCode: r.status,
+    report,
+  };
+}
 
 const ownership = await getJson(
   `${BASE}/api/golden-demo/ownership/hotel/${encodeURIComponent(HOTEL_ID)}`
@@ -249,6 +292,16 @@ const gates = {
   HE_CONTACT_ORG_MAPPING_VALIDATED: gate(contactOk && bethContactsOk),
   HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED: gate(contactOk && bethContactsOk),
   HE_CONTACT_PRESENTATION_VALIDATED: gate(contactOk && contactPresentation),
+  HE_LOADING_COMPONENT_CONSISTENT: gate(
+    contactOk &&
+      heLoadingShared &&
+      (skipBrowser || loadingBrowser.ok)
+  ),
+  HE_LOADING_COMPONENT_BROWSER: skipBrowser
+    ? "NOT_TESTED"
+    : loadingBrowser.ok
+      ? "PASS"
+      : "FAIL",
   HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE: gate(
     physicalFacts.rooms407 &&
       physicalFacts.yearBuilt1979 &&
@@ -280,6 +333,7 @@ const ok =
   gates.HE_CONTACT_DIRECTORY_VALIDATED === "YES" &&
   gates.HE_CONTACT_ORG_MAPPING_VALIDATED === "YES" &&
   gates.HE_CONTACT_PRESENTATION_VALIDATED === "YES" &&
+  gates.HE_LOADING_COMPONENT_CONSISTENT === "YES" &&
   gates.HE_HEADER_ACTIONS_HYDRATED === "YES" &&
   gates.FULL_HE_E2E_VALIDATED === "NO";
 
@@ -292,6 +346,7 @@ const report = {
   base: BASE,
   headHint: process.env.GIT_HEAD || null,
   browserEnabled: !skipBrowser,
+  loadingBrowser,
   ok,
   gates,
   contactTests: contactTests.map((t) => ({
