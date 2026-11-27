@@ -115,6 +115,43 @@ check("feature_port_allowed_with_worktree_flag", () => {
   assert.equal(r.code, "AUTHORIZED_DEV_PORT_ALLOW_WORKTREE");
 });
 
+check("ci_repo_checkout_authorized_for_8080", () => {
+  // Simulate Actions: checkout path equals registryRoot but is not ws-gdi / Integration.
+  const ciCheckout = path.join("C:", "actions-runner", "my-operators-backend");
+  const r = evaluateCanonicalPort8080Ownership({
+    cwd: ciCheckout,
+    listenPort: 8080,
+    env: {
+      NODE_ENV: "development",
+      GITHUB_ACTIONS: "true",
+      CI: "true",
+    },
+    registry,
+    registryRoot: ciCheckout,
+  });
+  assert.equal(r.ok, true);
+  assert.equal(r.authorizedFor8080, true);
+  assert.equal(r.code, "AUTHORIZED_CI_REPO_CHECKOUT");
+  assert.equal(r.durablePackageRoot.ok, true);
+});
+
+check("ci_flag_cannot_authorize_foreign_worktree_8080", () => {
+  const foreign = path.join("C:/Dev/dealality", "wt-he-unified-theme-v1");
+  const r = evaluateCanonicalPort8080Ownership({
+    cwd: foreign,
+    listenPort: 8080,
+    env: {
+      NODE_ENV: "development",
+      GITHUB_ACTIONS: "true",
+      CI: "true",
+    },
+    registry,
+    registryRoot: ROOT,
+  });
+  assert.equal(r.ok, false);
+  assert.equal(r.code, "PORT_8080_UNAUTHORIZED_WORKSPACE");
+});
+
 check("launch_env_pins_durable_package_root", () => {
   const launch = buildCanonical8080LaunchEnv(
     { NODE_ENV: "development" },
