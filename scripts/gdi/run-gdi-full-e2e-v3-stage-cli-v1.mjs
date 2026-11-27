@@ -61,10 +61,20 @@ async function main() {
     console.error("--authorize-paid-research requires --mode Live");
     process.exit(2);
   }
-  // This CLI does not spend even when Live flags present — paid adapters not wired here.
+  // WHO/HOW Live must use the canonical Checkpoint A runner (no ad-hoc bypass).
   if (mode === "Live") {
+    if (
+      stage === GDI_E2E_V3_STAGE.WHO_HOW_RESOLUTION ||
+      stage === "WHOHOW" ||
+      stage === "WHO_HOW"
+    ) {
+      console.error(
+        "Live WHO/HOW must use Invoke-GdiWhoHow.ps1 Checkpoint A path (run-gdi-who-how-checkpoint-a-v1.mjs) with --authorization-id and --hard-ceiling-usd — not this generic stage CLI.",
+      );
+      process.exit(3);
+    }
     console.error(
-      "Live paid execution is not enabled in this V3 CLI build — use DryRun / fixtures. Founder paid tranche runs through existing Exa adapters after IC merge.",
+      "Live paid execution for this stage is not enabled in the generic V3 CLI — use the stage-specific authorized runner.",
     );
     process.exit(3);
   }

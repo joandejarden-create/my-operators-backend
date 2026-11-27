@@ -57,3 +57,64 @@ function Invoke-GdiV3NodeStage {
     throw "GDI V3 stage $Stage failed with exit code $LASTEXITCODE"
   }
 }
+
+function Invoke-GdiWhoHowCheckpointA {
+  param(
+    [Parameter(Mandatory = $true)][string]$HotelId,
+    [ValidateSet('DryRun', 'Live')][string]$Mode = 'DryRun',
+    [string]$OpportunityId = '',
+    [string]$OutDir = '',
+    [string]$AuthorizationId = '',
+    [double]$HardCeilingUsd = 0,
+    [string]$Manifest = '',
+    [switch]$ContinuationOnly,
+    [switch]$Resume,
+    [switch]$AuthorizePaidResearch,
+    [switch]$PreflightOnly,
+    [string]$RepoPath = ''
+  )
+
+  $ErrorActionPreference = 'Stop'
+  $resolvedRepo = Get-GdiRepoRoot -RepoPath $RepoPath
+  Set-Location $resolvedRepo
+
+  if ($Mode -eq 'Live' -and -not $AuthorizePaidResearch -and -not $PreflightOnly) {
+    throw 'Live Checkpoint A requires -AuthorizePaidResearch.'
+  }
+  if ($AuthorizePaidResearch -and $Mode -ne 'Live' -and -not $PreflightOnly) {
+    throw '-AuthorizePaidResearch requires -Mode Live.'
+  }
+
+  $cli = Join-Path $resolvedRepo 'scripts\gdi\run-gdi-who-how-checkpoint-a-v1.mjs'
+  if (-not (Test-Path -LiteralPath $cli)) {
+    throw "Missing Checkpoint A CLI: $cli"
+  }
+
+  if (-not $AuthorizationId) {
+    $AuthorizationId = 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127'
+  }
+  if ($HardCeilingUsd -le 0) { $HardCeilingUsd = 5 }
+  if (-not $Manifest) {
+    $Manifest = 'reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json'
+  }
+
+  $nodeArgs = @(
+    $cli,
+    '--hotel-id', $HotelId,
+    '--mode', $Mode,
+    '--authorization-id', $AuthorizationId,
+    '--hard-ceiling-usd', ([string]$HardCeilingUsd),
+    '--manifest', $Manifest
+  )
+  if ($OutDir) { $nodeArgs += @('--out-dir', $OutDir) }
+  if ($OpportunityId) { $nodeArgs += @('--opportunity-id', $OpportunityId) }
+  if ($Resume) { $nodeArgs += '--resume' }
+  if ($ContinuationOnly) { $nodeArgs += '--continuation-only' }
+  if ($AuthorizePaidResearch) { $nodeArgs += '--authorize-paid-research' }
+  if ($PreflightOnly) { $nodeArgs += '--preflight-only' }
+
+  & node @nodeArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "GDI WHO/HOW Checkpoint A failed with exit code $LASTEXITCODE"
+  }
+}
