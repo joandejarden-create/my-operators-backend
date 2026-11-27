@@ -1,0 +1,554 @@
+{
+  "schema": "gdi-canonical-hotel-template-full-e2e-cert-v1/01-E2E_OPERATIONAL_READINESS_MATRIX",
+  "generatedAt": "2026-11-28T00:21:00.000Z",
+  "workspace": "C:\\Dev\\dealality\\ws-gdi",
+  "auditScope": [
+    "Five permanent GDI Full E2E stages",
+    "Demand segment matrix",
+    "Scaling Companies",
+    "CAD",
+    "PLP",
+    "Leisure",
+    "need-period",
+    "Findymail",
+    "Airtable persistence",
+    "content hydration",
+    "auto-STAGED",
+    "PowerShell runners under scripts/gdi/"
+  ],
+  "statusVocabulary": [
+    "IMPLEMENTED",
+    "FIXTURE_TESTED",
+    "DRYRUN_CAPABLE",
+    "LIVE_EXECUTED_EVIDENCE",
+    "OPERATIONAL_CERTIFIED",
+    "GAP"
+  ],
+  "statusRule": "Highest evidence-backed status only. OPERATIONAL_CERTIFIED requires an explicit non-PARTIAL certification/validation closeout for that mechanism. Do not invent missing files.",
+  "canonicalStageContract": {
+    "module": "lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-v3-stages-v1.js",
+    "stages": [
+      "DEMAND_DISCOVERY",
+      "OPPORTUNITY_DEEP_RESEARCH",
+      "WHO_HOW_RESOLUTION",
+      "PROFESSIONAL_CONTACT_RESEARCH",
+      "COMMERCIAL_QUALIFICATION"
+    ],
+    "docs": [
+      "docs/ai-build-system/GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md",
+      "docs/ai-build-system/GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md",
+      "docs/ai-build-system/GDI_STAGE4_CONTACT_RESEARCH_COMPLETION_V1.md"
+    ]
+  },
+  "crossCuttingGaps": [
+    "GDI_E2E_V3_EXISTING_MAPPINGS documents nodeRunner paths scripts/gdi/run-gdi-*-stage-v1.mjs for all five stages — those files do NOT exist. Actual Node entry is scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs via _GdiV3Common.ps1.",
+    "Generic V3 stage CLI refuses Live paid execution (exit 3); Live WHO/HOW must use Checkpoint A runner. Overall gold-standard closeout remains PARTIAL — not GDI_CANONICAL_FULL_E2E_GOLD_STANDARD_CERTIFIED.",
+    "V3 DryRun orchestrator for Wyndham marks PROFESSIONAL_CONTACT_RESEARCH PARTIAL and stagedProgression activated=false (NO_FINALIZED_QUALIFIED_TO_STAGE) while existing STAGED inventory validates."
+  ],
+  "summaryCounts": {
+    "totalMechanisms": 17,
+    "OPERATIONAL_CERTIFIED": 1,
+    "LIVE_EXECUTED_EVIDENCE": 12,
+    "DRYRUN_CAPABLE": 1,
+    "FIXTURE_TESTED": 2,
+    "IMPLEMENTED": 0,
+    "GAP": 1,
+    "certifiedVsGap": {
+      "certified": 1,
+      "gap": 1,
+      "intermediate": 15
+    }
+  },
+  "mechanisms": [
+    {
+      "mechanismId": "stage1_demand_discovery",
+      "stage": "DEMAND_DISCOVERY",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/full-e2e-fourteen-segment-discovery-execution-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-full-e2e-v3-orchestrator-v1.js",
+        "lib/group-demand-intelligence/research/universal-contact-research-contract-v1.js"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiDiscovery.ps1",
+      "nodeRunnerActual": "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+      "nodeRunnerDocumented": "scripts/gdi/run-gdi-discovery-stage-v1.mjs",
+      "testScript": "test:gdi-canonical-full-e2e-v3-v1",
+      "additionalTests": [
+        "test:gdi-fourteen-segment-exa-mission-upgrades-v1",
+        "test:gdi-fourteen-segment-discovery-commercial-benchmark-v1",
+        "test:gdi-primary-demand-segment-classification-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-full-e2e-v3/recnPB3Q02NO8Ma1o/01-discovery.json — DryRun PASS",
+        "reports/gdi-wyndham-sd-bayside-paid-live-cert-25usd-v1/fourteen-segment-discovery-matrix.json — live 14/14 paid discovery",
+        "reports/gdi-wyndham-sd-bayside-paid-live-cert-25usd-v1/FOUNDER_WYNDHAM_PAID_LIVE_CERTIFICATION_CLOSEOUT.md — PASS_WITH_LIMITATIONS",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/00-CERTIFICATION.json architecture.fiveStages[0].status=OPERATIONAL (overall cert PARTIAL)"
+      ],
+      "gaps": [
+        "Documented nodeRunner run-gdi-discovery-stage-v1.mjs MISSING",
+        "Generic V3 CLI Live path refused; live discovery historically via gdi:canonical-full-e2e / fourteen-segment orchestrator, not Invoke-GdiDiscovery Live"
+      ]
+    },
+    {
+      "mechanismId": "stage2_opportunity_deep_research",
+      "stage": "OPPORTUNITY_DEEP_RESEARCH",
+      "primaryModulePath": "lib/group-demand-intelligence/research/gdi-commercial-deep-research-operating-modes-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/research/gdi-commercial-research-completion-queue-v1.js",
+        "lib/group-demand-intelligence/research/exa-agent/gdi-exa-agent-deep-job-store-v1.js",
+        "lib/group-demand-intelligence/research/gdi-authorized-paid-budget-ledger-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-full-e2e-v3-orchestrator-v1.js"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiDeepResearch.ps1",
+      "nodeRunnerActual": "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+      "nodeRunnerDocumented": "scripts/gdi/run-gdi-deep-research-stage-v1.mjs",
+      "testScript": "test:gdi-canonical-full-e2e-v3-v1",
+      "additionalTests": [
+        "test:gdi-full-e2e-powershell-deep-research-certification-v1",
+        "test:gdi-commercial-full-e2e-queue-completion-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-full-e2e-v3/recnPB3Q02NO8Ma1o/02-deep-research.json — DryRun PASS (dossier inventory)",
+        "reports/gdi-wyndham-commercial-full-e2e-queue-20usd-v1/01-RUN_COMPLETE.json — paid commercial queue",
+        "reports/gdi-wyndham-sd-bayside-paid-live-cert-25usd-v1 — Exa Agent deep 8/8 under $25 auth"
+      ],
+      "gaps": [
+        "Documented nodeRunner run-gdi-deep-research-stage-v1.mjs MISSING",
+        "Paid-live cert notes chain hang / buyer-WHO ledger refuse then recovery — not a clean single-pass Live via Invoke-GdiDeepResearch"
+      ]
+    },
+    {
+      "mechanismId": "stage3_who_how_resolution",
+      "stage": "WHO_HOW_RESOLUTION",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-who-how-agent-contract-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/research/exa-agent/gdi-exa-who-how-live-adapter-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-who-how-contact-intelligence-restore-v1.js",
+        "scripts/gdi/run-gdi-who-how-checkpoint-a-v1.mjs"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiWhoHow.ps1",
+      "nodeRunnerActual": "scripts/gdi/run-gdi-who-how-checkpoint-a-v1.mjs (Live/Checkpoint A); DryRun via run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+      "nodeRunnerDocumented": "scripts/gdi/run-gdi-who-how-stage-v1.mjs",
+      "testScript": "test:gdi-canonical-full-e2e-v3-v1",
+      "additionalTests": [
+        "test:gdi-exa-who-how-live-adapter-v1",
+        "test:gdi-who-how-contact-intelligence-restore-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "fixtures/gdi-full-e2e-v3/who-how-scenarios-v1.json + DryRun PASS in 03-who-how.json",
+        "reports/gdi-wyndham-final-commercial-continuation-prep-v1/checkpoint-a/CHECKPOINT_A_LIVE_RESULT.json — paid Live ok=true spentUsd=2.5",
+        "reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json"
+      ],
+      "gaps": [
+        "Documented nodeRunner run-gdi-who-how-stage-v1.mjs MISSING",
+        "Gold-standard outstanding: WHO/HOW unspecified without alt/secondary remains on some opportunities (6 noted in 24-FOUNDER_PARTIAL_CLOSEOUT.md)"
+      ]
+    },
+    {
+      "mechanismId": "stage4_professional_contact_research",
+      "stage": "PROFESSIONAL_CONTACT_RESEARCH",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-contact-research-stage-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-findymail-stage4-enrichment-v1.js",
+        "lib/group-demand-intelligence/presentation/gdi-public-contact-verification-v1.js",
+        "docs/ai-build-system/GDI_STAGE4_CONTACT_RESEARCH_COMPLETION_V1.md"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiContactResearch.ps1",
+      "nodeRunnerActual": "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+      "nodeRunnerDocumented": "scripts/gdi/run-gdi-contact-research-stage-v1.mjs",
+      "testScript": "test:gdi-findymail-stage4-permanent-v1",
+      "additionalTests": [
+        "test:gdi-contact-research-hydration-v1",
+        "test:gdi-contact-identity-preflight-v1",
+        "test:gdi-canonical-full-e2e-v3-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-full-e2e-v3/recnPB3Q02NO8Ma1o/04-contact-research.json — DryRun PARTIAL",
+        "reports/gdi-wyndham-final-commercial-continuation-prep-v1/checkpoint-a/20-STAGE4_ZERO_DOLLAR_CHANNELS.json",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/17-FINDYMAIL_REMAINING_LIVE.json — LIVE Findymail",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/21-FINDYMAIL_REMAINING_HYDRATION.json — hydrated=10 secondary"
+      ],
+      "gaps": [
+        "Documented nodeRunner run-gdi-contact-research-stage-v1.mjs MISSING",
+        "V3 DryRun stage outcome PARTIAL; primary email/phone/LinkedIn gaps remain (gold-standard PARTIAL)",
+        "Surfe explicit-click only — never auto-persisted (by design)"
+      ]
+    },
+    {
+      "mechanismId": "stage5_commercial_qualification",
+      "stage": "COMMERCIAL_QUALIFICATION",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-finalized-qualified-opportunity-contract-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-fqo-entry-point-reachability-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-hotel-wide-finalization-stage-v1.js",
+        "lib/group-demand-intelligence/publication-package/gdi-canonical-e2e-to-staged-lifecycle-v1.js"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiQualification.ps1",
+      "nodeRunnerActual": "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+      "nodeRunnerDocumented": "scripts/gdi/run-gdi-qualification-stage-v1.mjs",
+      "testScript": "test:gdi-finalized-qualified-opportunity-v1",
+      "additionalTests": [
+        "test:gdi-canonical-full-e2e-v3-v1",
+        "test:gdi-canonical-e2e-to-staged-lifecycle-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-full-e2e-v3/recnPB3Q02NO8Ma1o/05-qualification.json — DryRun PASS",
+        "reports/gdi-wyndham-sd-bayside-paid-live-cert-25usd-v1 — strict six-rule FQO executed ($0 gate)",
+        "reports/gdi-wyndham-final-commercial-continuation-prep-v1/checkpoint-a/21-STAGE5_FQO_REASSESSMENT.json",
+        "Wyndham STAGED 26 inventory exists under bundled-publication-packages/recnPB3Q02NO8Ma1o/"
+      ],
+      "gaps": [
+        "Documented nodeRunner run-gdi-qualification-stage-v1.mjs MISSING",
+        "No dedicated npm test script found for gdi-fqo-entry-point-reachability-v1",
+        "DryRun V3 stagedProgression often NO_FINALIZED_QUALIFIED_TO_STAGE (validates existing STAGED only)"
+      ]
+    },
+    {
+      "mechanismId": "demand_segment_matrix",
+      "stage": "DEMAND_DISCOVERY",
+      "primaryModulePath": "lib/group-demand-intelligence/demand-segments/eight-demand-segment-registry-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/research/universal-contact-research-contract-v1.js",
+        "lib/group-demand-intelligence/demand-segments/primary-demand-segment-classification-v1.js",
+        "lib/group-demand-intelligence/research/demand-segment-mechanism-router-v1.js",
+        "lib/group-demand-intelligence/workflow/full-e2e-fourteen-segment-discovery-execution-v1.js"
+      ],
+      "runnerScript": "scripts/gdi-full-e2e-fourteen-segment-orchestrator-v1.mjs (npm: gdi:full-e2e-fourteen-segment)",
+      "testScript": "test:gdi-primary-demand-segment-classification-v1",
+      "additionalTests": [
+        "test:gdi-fourteen-segment-exa-mission-upgrades-v1",
+        "test:gdi-segment-coverage-accounting-v1",
+        "test:gdi-fourteen-segment-deep-auth-flag-propagation-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "listFourteenWorkflowSegmentIds() returns 14 ids including preferred_lodging_partnerships + professional_event_planners",
+        "Registry exports TWELVE customer demand segments; associations + scaling marked PRODUCTION_CERTIFIED in registry status field",
+        "Live matrix: reports/gdi-wyndham-sd-bayside-paid-live-cert-25usd-v1/fourteen-segment-discovery-matrix.json",
+        "reports/gdi-canonical-leisure-opt-in-wire-v1/canonical-leisure-disabled/fourteen-segment-discovery-matrix.json"
+      ],
+      "gaps": [
+        "Most of segments 3–12 use demand-segments/segment-hotel-runner-stub-v1.js (CONTRACT_READY, not PRODUCTION_CERTIFIED)",
+        "Registry references certifyScript/mockFullE2eScript paths such as scripts/gdi-scaling-certify-local-preview-v1.mjs that are MISSING on disk",
+        "Eight vs twelve vs fourteen naming coexistence — product matrix is fourteen workflow segments"
+      ]
+    },
+    {
+      "mechanismId": "scaling_companies",
+      "stage": "DEMAND_DISCOVERY",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/scaling-companies-research-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/research/scaling-companies-hotel-runner-v1.js",
+        "lib/group-demand-intelligence/scaling-two-contact-standard-v1.js",
+        "lib/group-demand-intelligence/scaling-companies-sales-presentation-v1.js",
+        "lib/group-demand-intelligence/research/scaling-contact-intelligence-v1.js"
+      ],
+      "runnerScript": "scripts/Invoke-GdiScalingCompanies.ps1",
+      "testScript": "MISSING (npm)",
+      "testFilePresentButUnregistered": "scripts/test-gdi-scaling-companies-research-v1.mjs",
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "eight-demand-segment-registry-v1 CORPORATE_ACCOUNTS_SCALING.status=PRODUCTION_CERTIFIED",
+        "Paid-live cert deep research used SCALING / ASSOCIATION segment-aware routing",
+        "Hotel runner module exists: research/scaling-companies-hotel-runner-v1.js; scripts/gdi-scaling-companies-hotel-runner-v1.mjs present"
+      ],
+      "gaps": [
+        "package.json has no test:gdi-scaling-companies-research-v1 (or any scaling npm script) despite test file on disk",
+        "Registry certifyScript scripts/gdi-scaling-certify-local-preview-v1.mjs MISSING",
+        "Registry mockFullE2eScript scripts/gdi-scaling-mock-provider-full-e2e-v1.mjs MISSING",
+        "PowerShell runner lives under scripts/ not scripts/gdi/"
+      ]
+    },
+    {
+      "mechanismId": "cad_competitive_account_discovery",
+      "stage": "DEMAND_DISCOVERY",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-canonical-cad-opt-in-stage-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-competitive-account-discovery-classifier-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-competitive-account-discovery-contract-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-canonical-predictive-sourcing-assessment-v1.js"
+      ],
+      "runnerScript": "MISSING (dedicated scripts/gdi CAD runner); wired via gdi:canonical-full-e2e entry",
+      "testScript": "test:gdi-canonical-cad-opt-in-stage-v1",
+      "additionalTests": [
+        "test:gdi-competitive-account-discovery-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "Paid-live cert: CAD enrichment EXECUTED $0 CLASSIFIED; FQO auto-promote off",
+        "lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-certification-matrix-v1.js rows for competitive_account_discovery / predictive_sourcing"
+      ],
+      "gaps": [
+        "Full predictive sourcing engine explicitly GAP in certification matrix (NO_STANDALONE_PREDICTIVE_CAPTURE_ENGINE)",
+        "No dedicated Invoke-GdiCad.ps1 under scripts/gdi/"
+      ]
+    },
+    {
+      "mechanismId": "plp_preferred_lodging_partnerships",
+      "stage": "DEMAND_DISCOVERY",
+      "primaryModulePath": "lib/group-demand-intelligence/preferred-lodging-partnership/index.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/preferred-lodging-partnership/preferred-lodging-partnership-contract-v1.js",
+        "lib/group-demand-intelligence/research/exa-agent/exa-agent-preferred-lodging-contracts-v1.js",
+        "lib/group-demand-intelligence/research/exa-agent/exa-plp-pep-to-opportunity-mapping-v1.js"
+      ],
+      "runnerScript": "MISSING (dedicated scripts/gdi PLP runner); executed inside fourteen-segment / Exa preferred-lodging contracts",
+      "testScript": "test:gdi-plp-pep-lcm-targeting-dedupe-v1",
+      "additionalTests": [
+        "test:gdi-exa-agent-plp-dedicated-prompt-body-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "Paid-live cert: Preferred Lodging contracts EXECUTED live; raw 8 extracted/validated 0",
+        "Fourteen-segment id preferred_lodging_partnerships present in SEGMENT_BUYER_ROLE_TARGETS"
+      ],
+      "gaps": [
+        "No dedicated Invoke-GdiPlp.ps1 under scripts/gdi/",
+        "Live yield can be zero validated candidates (Wyndham sample)",
+        "No test-gdi-preferred*.mjs filename; coverage via PLP/Exa tests only"
+      ]
+    },
+    {
+      "mechanismId": "leisure_demand_intelligence",
+      "stage": "DEMAND_DISCOVERY",
+      "primaryModulePath": "lib/group-demand-intelligence/leisure-demand-intelligence/index.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-canonical-leisure-opt-in-wire-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-canonical-leisure-applicability-v1.js",
+        "lib/group-demand-intelligence/leisure-demand-intelligence/gdi-leisure-module-runner-v1.js"
+      ],
+      "runnerScript": "MISSING (dedicated scripts/gdi leisure runner); npm gdi:leisure-demand-intelligence-v1 → scripts/gdi-leisure-demand-intelligence-v1.mjs",
+      "testScript": "test:gdi-canonical-leisure-opt-in-wire-v1",
+      "additionalTests": [
+        "test:gdi-leisure-demand-intelligence-v1",
+        "test:gdi-leisure-live-e2e-integration-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-leisure-opt-in-wire-v1/TEST_RESULTS.json — 9/9 pass (six modules registered; mock_live zero paid)",
+        "Paid-live cert: six leisure applicability EXECUTED; three mock_live research modules $0 (authorizePaidResearch false)"
+      ],
+      "gaps": [
+        "Paid leisure production path remains dual-gated / not paid-live certified",
+        "No Invoke-GdiLeisure.ps1 under scripts/gdi/"
+      ]
+    },
+    {
+      "mechanismId": "need_period",
+      "stage": "CROSS_CUTTING",
+      "primaryModulePath": "lib/group-demand-intelligence/need-date-demand/need-period-lifecycle-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/need-date-demand/need-period-timing-match-v1.js",
+        "lib/group-demand-intelligence/need-date-demand/need-date-demand-orchestrator-v1.js",
+        "lib/group-demand-intelligence/need-date-demand/gdi-need-date-customer-presentation-v3.js",
+        "lib/group-demand-intelligence/need-date-demand/hotel-saved-commercial-profile-research-bridge-v1.js",
+        "lib/group-demand-intelligence/leisure-demand-intelligence/gdi-leisure-need-period-v1.js"
+      ],
+      "runnerScript": "MISSING (dedicated scripts/gdi need-period runner)",
+      "testScript": "test:gdi-need-date-customer-presentation-v3",
+      "additionalTests": [
+        "test:gdi-universal-need-date-intelligence-v1",
+        "test:gdi-need-date-cross-hotel-canonical-inventory-v1",
+        "test:gdi-universal-opportunity-need-date-svg-v2"
+      ],
+      "status": "FIXTURE_TESTED",
+      "evidenceNotes": [
+        "Need-period/need-date modules implemented under need-date-demand/",
+        "Executive summary surfaces needPeriods with HOTEL_INPUT_REQUIRED when hotel need dates absent",
+        "Wyndham paid-live commercial priorities: Active Need Dates 0"
+      ],
+      "gaps": [
+        "No scripts/test-gdi-need-period*.mjs; coverage is need-date-named",
+        "No dedicated scripts/gdi need-period PowerShell runner",
+        "Hotel-provided need periods often empty → operational alignment not LIVE-executed for Wyndham gold path"
+      ]
+    },
+    {
+      "mechanismId": "findymail_stage4",
+      "stage": "PROFESSIONAL_CONTACT_RESEARCH",
+      "primaryModulePath": "lib/group-demand-intelligence/providers/gdi-findymail-client-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-findymail-stage4-enrichment-v1.js",
+        "lib/group-demand-intelligence/persistence/gdi-findymail-airtable-contact-persist-v1.js"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiContactResearch.ps1 (+ gold-standard cert script gdi:canonical-full-e2e-gold-standard-certification-v1)",
+      "testScript": "test:gdi-findymail-stage4-permanent-v1",
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/17-FINDYMAIL_REMAINING_LIVE.json mode=LIVE",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/21-FINDYMAIL_REMAINING_HYDRATION.json hydrated=10",
+        "reports/gdi-wyndham-findymail-airtable-contact-audit-v1/WYNDHAM_FINDYMAIL_AIRTABLE_CONTACT_AUDIT.json",
+        "00-CERTIFICATION.json findymail.permanentStage4Component=true"
+      ],
+      "gaps": [
+        "Overall gold-standard status PARTIAL — not OPERATIONAL_CERTIFIED product-wide",
+        "Findymail email-only; primary phone gaps require separate public/Exa research",
+        "Generic V3 CLI notes Live Findymail uses gold-standard cert script rather than stage CLI"
+      ]
+    },
+    {
+      "mechanismId": "airtable_persistence",
+      "stage": "CROSS_CUTTING",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-full-e2e-airtable-persistence-adapter-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/workflow/gdi-full-e2e-airtable-persistence-contract-v1.js",
+        "lib/group-demand-intelligence/workflow/gdi-full-e2e-research-persistence-bridge-v1.js",
+        "lib/group-demand-intelligence/persistence/gdi-findymail-airtable-contact-persist-v1.js"
+      ],
+      "runnerScript": "MISSING (dedicated scripts/gdi Airtable runner); npm gdi:full-e2e-airtable-persistence-certification-v1 + gold-standard cert apply flags",
+      "testScript": "test:gdi-full-e2e-airtable-persistence-adapter-v1",
+      "additionalTests": [
+        "test:gdi-full-e2e-research-persistence-bridge-v1",
+        "test:gdi-full-e2e-airtable-persistence-reconciliation-v1",
+        "test:gdi-full-e2e-airtable-persistence-stage-status-v1",
+        "test:gdi-airtable-presentation-persistence-v1"
+      ],
+      "status": "LIVE_EXECUTED_EVIDENCE",
+      "evidenceNotes": [
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/13-AIRTABLE_WRITE_APPLY.json written=17",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/14-AIRTABLE_READBACK.json / 22-AIRTABLE_RECONSTRUCTION_PARITY.json",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/23-AIRTABLE_FULL_INVENTORY_UPSERT.json complete=true 26/26 staged IDs",
+        "24-FOUNDER_PARTIAL_CLOSEOUT.md — Airtable contact persist + full inventory upsert Applied"
+      ],
+      "gaps": [
+        "Paid-live research cert explicitly NO_AIRTABLE_APPLY (PROTOTYPE persistence classification for that GO)",
+        "Isolated Airtable→package reconstruction still called out as incomplete in earlier 20-COMPLETION_SUMMARY.json (later parity report exists — gold standard remains PARTIAL)",
+        "No Invoke-GdiAirtable*.ps1 under scripts/gdi/"
+      ]
+    },
+    {
+      "mechanismId": "content_hydration",
+      "stage": "POST_QUALIFICATION_GATE",
+      "primaryModulePath": "lib/group-demand-intelligence/presentation/gdi-content-hydration-presentation-gate-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/presentation/gdi-evidence-backed-commercial-title-v1.js",
+        "lib/group-demand-intelligence/publication-package/gdi-wyndham-content-hydration-rematerialize-v1.js",
+        "lib/group-demand-intelligence/publication-package/gdi-wyndham-contact-hydration-rematerialize-v1.js"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiContentHydrationValidate.ps1",
+      "testScript": "test:gdi-content-hydration-presentation-gate-v1",
+      "additionalTests": [
+        "test:gdi-contact-research-hydration-v1"
+      ],
+      "status": "FIXTURE_TESTED",
+      "evidenceNotes": [
+        "Permanent gate documented in GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md",
+        "Invoke-GdiValidateFullE2E.ps1 runs test-gdi-content-hydration-presentation-gate-v1.mjs",
+        "npm report:gdi-content-hydration-audit-v1 exists"
+      ],
+      "gaps": [
+        "No reports/gdi-content-hydration* evidence packages found in reports/ during this audit",
+        "Not elevated to LIVE_EXECUTED_EVIDENCE / OPERATIONAL_CERTIFIED without hotel audit report artifacts"
+      ]
+    },
+    {
+      "mechanismId": "auto_staged_lifecycle",
+      "stage": "POST_QUALIFICATION_LIFECYCLE",
+      "primaryModulePath": "lib/group-demand-intelligence/publication-package/gdi-canonical-e2e-to-staged-lifecycle-v1.js",
+      "supportingModules": [
+        "lib/group-demand-intelligence/publication-package/gdi-publication-package-store-v1.js",
+        "lib/group-demand-intelligence/publication-package/index.js",
+        "scripts/gdi/probe-gdi-staged-pointer-v1.mjs",
+        "scripts/gdi/run-gdi-promote-current-v1.mjs"
+      ],
+      "runnerScript": "scripts/gdi/Invoke-GdiFullE2E.ps1 (auto-stage on authorized E2E); scripts/gdi/Invoke-GdiPromoteCurrent.ps1 (CURRENT only)",
+      "testScript": "test:gdi-canonical-e2e-to-staged-lifecycle-v1",
+      "additionalTests": [
+        "test:gdi-staged-founder-preview-v1",
+        "test:gdi-restore-canonical-staged-workflow-v1",
+        "test:gdi-local-staged-preview-certification-gate-v1"
+      ],
+      "status": "OPERATIONAL_CERTIFIED",
+      "evidenceNotes": [
+        "reports/gdi-canonical-e2e-to-staged-lifecycle-v1/00-CLOSEOUT.json status=GDI_CANONICAL_E2E_TO_STAGED_VALIDATED — AWAITING_FOUNDER_REVIEW",
+        "Lifecycle FULL_E2E → STAGED → FOUNDER_APPROVAL → CURRENT; autoStageAfterAuthorizedE2e=true; CURRENT never auto",
+        "Wyndham STAGED tip validated (26 opportunities); CURRENT remains founder-gated",
+        "Invoke-GdiValidateFullE2E.ps1 includes lifecycle + optional :8080 STAGED probe"
+      ],
+      "gaps": [
+        "CURRENT publication separately founder-gated (by design)",
+        "DryRun V3 may not activate new STAGED when NO_FINALIZED_QUALIFIED_TO_STAGE",
+        "Product-wide: multiple hotels still NO_PUBLICATION per closeout remediation manifest"
+      ]
+    },
+    {
+      "mechanismId": "powershell_gdi_runners",
+      "stage": "OPERATIONS",
+      "primaryModulePath": "scripts/gdi/_GdiV3Common.ps1",
+      "runnerScript": "scripts/gdi/ (suite)",
+      "runnersPresent": [
+        "Invoke-GdiDiscovery.ps1",
+        "Invoke-GdiDeepResearch.ps1",
+        "Invoke-GdiWhoHow.ps1",
+        "Invoke-GdiContactResearch.ps1",
+        "Invoke-GdiQualification.ps1",
+        "Invoke-GdiFullE2E.ps1",
+        "Invoke-GdiValidateFullE2E.ps1",
+        "Invoke-GdiContentHydrationValidate.ps1",
+        "Invoke-GdiPromoteCurrent.ps1",
+        "Invoke-GdiExecutiveSummary.ps1",
+        "Invoke-GdiExecutiveSummaryV2Validate.ps1",
+        "Invoke-GdiWyndham26CommercialCertification.ps1",
+        "Invoke-GdiCompetitiveFilterLayoutValidate.ps1"
+      ],
+      "testScript": "test:gdi-canonical-full-e2e-v3-v1 (invoked by Invoke-GdiValidateFullE2E.ps1)",
+      "status": "DRYRUN_CAPABLE",
+      "evidenceNotes": [
+        "All five stage Invoke-Gdi*.ps1 files exist and delegate to run-gdi-full-e2e-v3-stage-cli-v1.mjs",
+        "WHO/HOW Live uses dedicated Checkpoint A helper in _GdiV3Common.ps1",
+        "reports/gdi-canonical-full-e2e-gold-standard-certification-v1/11-POWERSHELL_COMMANDS.md"
+      ],
+      "gaps": [
+        "Documented per-stage nodeRunner *.mjs files MISSING for all five stages",
+        "Shared CLI refuses generic Live paid execution — operators must use stage-specific authorized paths",
+        "No CAD/PLP/Leisure/NeedPeriod/Airtable Invoke scripts under scripts/gdi/"
+      ]
+    },
+    {
+      "mechanismId": "v3_orchestrator_generic_live_path",
+      "stage": "ORCHESTRATION",
+      "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-full-e2e-v3-orchestrator-v1.js",
+      "runnerScript": "scripts/gdi/Invoke-GdiFullE2E.ps1",
+      "testScript": "test:gdi-canonical-full-e2e-v3-v1",
+      "status": "GAP",
+      "evidenceNotes": [
+        "DryRun orchestrator EXISTS and produces reports/gdi-canonical-full-e2e-v3/recnPB3Q02NO8Ma1o/00-ORCHESTRATOR_SUMMARY.json",
+        "run-gdi-full-e2e-v3-stage-cli-v1.mjs explicitly exits 3 for Live paid stages (except directing WHO/HOW to Checkpoint A)"
+      ],
+      "gaps": [
+        "GAP specifically for unified Live paid Full E2E V3 via generic orchestrator/CLI — Live paid work uses canonical entry, Checkpoint A, commercial queue, and gold-standard cert scripts instead",
+        "Completeness incomplete when Stage 4 PARTIAL (passCount 4/5 in Wyndham DryRun summary)"
+      ]
+    }
+  ],
+  "relatedCanonicalEntry": {
+    "mechanismId": "canonical_full_e2e_entry_p1c",
+    "note": "Supporting path (not one of the five V3 stage runners). Live paid certification evidence primarily flows through this entry + fourteen-segment orchestrator.",
+    "primaryModulePath": "lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js",
+    "runnerScript": "scripts/gdi-canonical-full-e2e-entry-v1.mjs (npm: gdi:canonical-full-e2e)",
+    "testScript": "test:gdi-full-e2e-canonical-entry-p1c-v1",
+    "status": "LIVE_EXECUTED_EVIDENCE",
+    "evidenceNotes": [
+      "reports/gdi-wyndham-sd-bayside-paid-live-cert-25usd-v1/FOUNDER_WYNDHAM_PAID_LIVE_CERTIFICATION_CLOSEOUT.md"
+    ]
+  },
+  "fileExistenceSpotChecks": {
+    "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs": true,
+    "scripts/gdi/run-gdi-discovery-stage-v1.mjs": false,
+    "scripts/gdi/run-gdi-deep-research-stage-v1.mjs": false,
+    "scripts/gdi/run-gdi-who-how-stage-v1.mjs": false,
+    "scripts/gdi/run-gdi-contact-research-stage-v1.mjs": false,
+    "scripts/gdi/run-gdi-qualification-stage-v1.mjs": false,
+    "scripts/gdi/run-gdi-who-how-checkpoint-a-v1.mjs": true,
+    "scripts/Invoke-GdiScalingCompanies.ps1": true,
+    "scripts/gdi/Invoke-GdiScalingCompanies.ps1": false,
+    "scripts/gdi-scaling-certify-local-preview-v1.mjs": false,
+    "scripts/test-gdi-scaling-companies-research-v1.mjs": true,
+    "package.json:test:gdi-scaling-companies-research-v1": false
+  }
+}

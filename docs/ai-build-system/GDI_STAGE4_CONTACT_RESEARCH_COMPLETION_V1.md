@@ -1,7 +1,19 @@
 # GDI Stage 4 Professional Contact Research — Permanent Completion
 
 **Applies to:** Every GDI hotel Full E2E cycle  
-**Related:** `gdi-contact-research-stage-v1.js`, `gdi-findymail-stage4-enrichment-v1.js`, `gdi-who-how-agent-contract-v1.js`, `DEALALITY_INTEGRATED_DELIVERY_V1`
+**Related:** `gdi-contact-research-stage-v1.js`, `gdi-contact-research-best-effort-v1.js`, `gdi-findymail-stage4-enrichment-v1.js`, `gdi-who-how-agent-contract-v1.js`, `DEALALITY_INTEGRATED_DELIVERY_V1`  
+**Best-effort contract:** `GDI_CONTACT_RESEARCH_BEST_EFFORT_V1`
+
+## Best-effort contact research (binding)
+
+Every applicable commercial contact (primary, influencers, Alternative Entry Point 1 & 2) must undergo complete per-channel research for professional email, telephone, and individual LinkedIn.
+
+- Finding one channel must **not** terminate research into the other applicable channels.  
+- Named-contact coverage ≠ completed contact research.  
+- LinkedIn ≠ verified email or telephone.  
+- Abbreviated surnames cannot auto-pass identity verification or Findymail.  
+- Record per-channel outcomes via `buildHotelContactBestEffortLedger` / `evaluateContactBestEffortCertificationGate`.  
+- Gate: `npm run test:gdi-contact-research-best-effort-v1`
 
 ## Stage separation (binding)
 
