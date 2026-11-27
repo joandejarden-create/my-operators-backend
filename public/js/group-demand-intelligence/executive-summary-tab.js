@@ -284,65 +284,82 @@
         }),
       ),
     );
-    return (
-      '<div class="gdi-es-outlook">' +
-      '<div class="gdi-es-outlook__buckets">' +
+    var colCount = Math.max(timeline.length, 1);
+    var compactOpts = { compact: true };
+    var bucketsHtml =
+      '<div class="gdi-es-outlook__buckets gdi-es-outlook__buckets--compact">' +
       kpiCard(
         "Established Event Dates",
         buckets.establishedEventDates,
         null,
         "Opportunities with evidenced calendar event dates.",
+        compactOpts,
       ) +
       kpiCard(
         "Estimated Demand Periods",
         buckets.estimatedDemandPeriods,
         null,
         "Estimated windows without a confirmed event start date.",
+        compactOpts,
       ) +
       kpiCard(
         "Ongoing Accounts",
         buckets.ongoingAccountRelationships,
         null,
         "Account relationships without a single event month.",
+        compactOpts,
       ) +
       kpiCard(
         "Timing Not Established",
         buckets.timingNotEstablished,
         null,
         "Qualified opportunities without evidenced timing yet.",
+        compactOpts,
       ) +
+      "</div>";
+    var chartHtml = timeline.length
+      ? '<div class="gdi-es-columns gdi-es-columns--outlook" role="img" aria-label="Upcoming demand by month" style="grid-template-columns:repeat(' +
+        colCount +
+        ',minmax(0,1fr))">' +
+        timeline
+          .map(function (t) {
+            var height = Math.round(((t.count || 0) / max) * 100);
+            return (
+              '<div class="gdi-es-columns__item">' +
+              '<div class="gdi-es-columns__value">' +
+              esc(t.count) +
+              "</div>" +
+              '<div class="gdi-es-columns__track"><div class="gdi-es-columns__fill" style="height:' +
+              height +
+              '%"></div></div>' +
+              '<div class="gdi-es-columns__label">' +
+              esc(t.monthLabel || t.month) +
+              "</div></div>"
+            );
+          })
+          .join("") +
+        "</div>" +
+        (outlook.note
+          ? '<p class="gdi-es-muted gdi-es-outlook__note">' +
+            esc(outlook.note) +
+            "</p>"
+          : "")
+      : '<p class="gdi-es-muted">' +
+        esc(
+          (outlook && outlook.note) ||
+            "No evidenced future event months. Dates are never invented.",
+        ) +
+        "</p>";
+    return (
+      '<div class="gdi-es-outlook">' +
+      '<div class="gdi-es-outlook__top">' +
+      '<header class="gdi-es-section__head gdi-es-outlook__head">' +
+      "<h2>Commercial Demand Outlook</h2>" +
+      "<p>Evidenced future demand windows only.</p>" +
+      "</header>" +
+      bucketsHtml +
       "</div>" +
-      (timeline.length
-        ? '<div class="gdi-es-columns" role="img" aria-label="Upcoming demand by month">' +
-          timeline
-            .map(function (t) {
-              var height = Math.round(((t.count || 0) / max) * 100);
-              return (
-                '<div class="gdi-es-columns__item">' +
-                '<div class="gdi-es-columns__value">' +
-                esc(t.count) +
-                "</div>" +
-                '<div class="gdi-es-columns__track"><div class="gdi-es-columns__fill" style="height:' +
-                height +
-                '%"></div></div>' +
-                '<div class="gdi-es-columns__label">' +
-                esc(t.monthLabel || t.month) +
-                "</div></div>"
-              );
-            })
-            .join("") +
-          "</div>" +
-          (outlook.note
-            ? '<p class="gdi-es-muted gdi-es-outlook__note">' +
-              esc(outlook.note) +
-              "</p>"
-            : "")
-        : '<p class="gdi-es-muted">' +
-          esc(
-            (outlook && outlook.note) ||
-              "No evidenced future event months. Dates are never invented.",
-          ) +
-          "</p>") +
+      chartHtml +
       "</div>"
     );
   }
@@ -697,7 +714,7 @@
       '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Demand Composition</h2><p>Qualified opportunities by demand segment.</p></header>' +
       renderBarChart(ov.demandComposition) +
       "</section>" +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Demand Outlook</h2><p>Evidenced future demand windows only.</p></header>' +
+      '<section class="gdi-es-section gdi-es-outlook-section">' +
       renderOutlook(ov.commercialDemandOutlook) +
       "</section></div>" +
       renderConsolidatedReceipt(ov.customerResearchReceipt, productivity) +

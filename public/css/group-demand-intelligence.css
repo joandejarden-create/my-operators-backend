@@ -4246,11 +4246,65 @@ a.gdi-contact-reveal-signin {
   color: var(--gdi-text);
 }
 .gdi-es-kpi-ribbon,
-.gdi-es-receipt-grid,
-.gdi-es-outlook__buckets {
+.gdi-es-receipt-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 0.75rem;
+}
+/* Commercial Demand Outlook — heading left, compact KPIs right, chart full width */
+.gdi-es-outlook__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem 1.1rem;
+  margin: 0 0 0.85rem;
+}
+.gdi-es-outlook__head {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+.gdi-es-outlook__buckets,
+.gdi-es-outlook__buckets--compact {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+  flex: 0 1 52%;
+  max-width: 34rem;
+  min-width: 16.5rem;
+}
+.gdi-es-outlook__buckets--compact .gdi-es-kpi {
+  padding: 0.4rem 0.5rem;
+  min-width: 0;
+}
+.gdi-es-outlook__buckets--compact .gdi-es-kpi__label {
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+.gdi-es-outlook__buckets--compact .gdi-es-kpi__value {
+  font-size: 1.05rem;
+  margin-top: 0.2rem;
+}
+.gdi-es-outlook__buckets--compact .gdi-es-info {
+  width: 14px;
+  height: 14px;
+}
+.gdi-es-columns--outlook {
+  width: 100%;
+  margin-top: 0.15rem;
+}
+@media (max-width: 960px) {
+  .gdi-es-outlook__top {
+    flex-direction: column;
+  }
+  .gdi-es-outlook__buckets,
+  .gdi-es-outlook__buckets--compact {
+    flex: 1 1 auto;
+    max-width: none;
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .gdi-es-kpi,
 .gdi-es-receipt-card {

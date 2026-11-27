@@ -136,7 +136,7 @@ check("customer_copy_audit_on_shell_assets", () => {
     path.join(ROOT, "public/group-demand-intelligence.html"),
     "utf8",
   );
-  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-receipt-funnel-v1b?/);
+  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-outlook-12mo-kpis-20261127/);
 });
 
 if (failed) {
