@@ -63,13 +63,15 @@ if ($html -notmatch 'gdi-commercial-list-table-v1\.js') { Fail "Served HTML miss
 if ($html -notmatch 'dealality-gdi-ui\.js\?v=') { Fail "Served HTML missing dealality-gdi-ui cache marker" }
 Write-Host "[3] served assets include ES + List table modules"
 
-# 4) Permanent non-regression unit gate
+# 4) Permanent non-regression unit gates
 npm run test:gdi-cumulative-integrated-staging-non-regression-v1
 if ($LASTEXITCODE -ne 0) { Fail "cumulative non-regression test failed" }
+npm run test:gdi-canonical-e2e-to-staged-lifecycle-v1
+if ($LASTEXITCODE -ne 0) { Fail "canonical E2E→STAGED lifecycle test failed" }
 npm run test:gdi-sortable-commercial-list-view-v1
 if ($LASTEXITCODE -ne 0) { Fail "sortable list regression failed" }
 
-# 5) STAGED / CURRENT package counts (Wyndham + Bethesda)
+# 5) STAGED / CURRENT package counts (Wyndham + prior hotels)
 function Get-Json($url) {
   try {
     $r = Invoke-WebRequest $url -UseBasicParsing -TimeoutSec 30
@@ -84,25 +86,16 @@ function Get-Json($url) {
 }
 
 $wyStaged = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=staged&surface=customer"
-if (-not $wyStaged.ok -or [int]$wyStaged.count -ne 11) {
-  Fail "Wyndham STAGED expected 11 (ok=$($wyStaged.ok) count=$($wyStaged.count) err=$($wyStaged.error))"
+if (-not $wyStaged.ok -or [int]$wyStaged.count -ne 26) {
+  Fail "Wyndham STAGED expected complete qualified 26 (ok=$($wyStaged.ok) count=$($wyStaged.count) err=$($wyStaged.error))"
 }
-Write-Host "[5] Wyndham STAGED count=$($wyStaged.count)"
+Write-Host "[5] Wyndham STAGED count=$($wyStaged.count) version=$($wyStaged.publication.publicationVersion)"
 
-$wyProposed = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=proposed&surface=customer"
-if (-not $wyProposed.ok -or [int]$wyProposed.count -ne 26) {
-  Fail "Wyndham Proposed expected 26 (ok=$($wyProposed.ok) count=$($wyProposed.count) err=$($wyProposed.error) scope=$($wyProposed.listScope))"
+$wyCurrent = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=current&surface=customer"
+if ($wyCurrent.ok -eq $true -and [int]$wyCurrent.count -gt 0) {
+  Fail "Wyndham CURRENT must remain unpublished (ok=$($wyCurrent.ok) count=$($wyCurrent.count))"
 }
-if ($wyProposed.listScope -ne "FOUNDER_PROPOSED_WRITE_SET") {
-  Fail "Wyndham Proposed listScope expected FOUNDER_PROPOSED_WRITE_SET got $($wyProposed.listScope)"
-}
-Write-Host "[5a] Wyndham Proposed locked-26 count=$($wyProposed.count) scope=$($wyProposed.listScope)"
-
-$wyHold = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=hold&surface=customer"
-if (-not $wyHold.ok -or [int]$wyHold.count -ne 2) {
-  Fail "Wyndham HOLD expected 2"
-}
-Write-Host "[5a2] Wyndham HOLD count=$($wyHold.count)"
+Write-Host "[5a] Wyndham CURRENT unpublished (ok=$($wyCurrent.ok) err=$($wyCurrent.error))"
 
 $beth = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities?publicationPackage=1&preview=current&surface=customer"
 if (-not $beth.ok -or [int]$beth.count -lt 1) {
@@ -116,15 +109,16 @@ if (-not $yotel.ok -or [int]$yotel.count -lt 1) {
 }
 Write-Host "[5c] YOTEL CURRENT count=$($yotel.count)"
 
-# 6) Served toolbar contract (single-row Columns SVG)
+# 6) Served toolbar contract (single-row Columns SVG) + lifecycle cache
 $html2 = (Invoke-WebRequest "http://127.0.0.1:8080/group-demand-intelligence.html?ts=$(Get-Random)" -UseBasicParsing).Content
-if ($html2 -notmatch 'gdi-founder-inv-toolbar-v1') { Fail "Served HTML missing founder-inv-toolbar cache marker" }
-$uiJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/dealality-gdi-ui.js?v=gdi-founder-inv-toolbar-v1" -UseBasicParsing).Content
+if ($html2 -notmatch 'gdi-e2e-staged-lifecycle-v1') { Fail "Served HTML missing e2e-staged-lifecycle cache marker" }
+$uiJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/dealality-gdi-ui.js?v=gdi-e2e-staged-lifecycle-v1" -UseBasicParsing).Content
 if ($uiJs -notmatch 'data-gdi-toolbar-row') { Fail "Served UI missing single-row toolbar marker" }
-$tableJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/gdi-commercial-list-table-v1.js?v=gdi-founder-inv-toolbar-v1" -UseBasicParsing).Content
+$tableJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/gdi-commercial-list-table-v1.js?v=gdi-e2e-staged-lifecycle-v1" -UseBasicParsing).Content
 if ($tableJs -notmatch 'Customize Columns') { Fail "Served list table missing Customize Columns control" }
 if ($tableJs -match 'gdi-list-table-toolbar') { Fail "Served list table still renders separate Columns toolbar row" }
-Write-Host "[6] Single-row List toolbar + Columns SVG contract OK"
+Write-Host "[6] Single-row List toolbar + Columns SVG + lifecycle cache OK"
 
 Write-Host "`nPASS validate-gdi-cumulative-integrated-staging-v1" -ForegroundColor Green
+Write-Host "Lifecycle: FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT"
 Write-Host "Browser: http://localhost:8080/group-demand-intelligence.html (authorized founder session)"

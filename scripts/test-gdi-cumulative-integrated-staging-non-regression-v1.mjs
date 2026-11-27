@@ -15,9 +15,11 @@ import {
   resolveWyndhamFounderInventoryPreview,
   loadWyndhamLockedIdsForTests,
 } from "../lib/group-demand-intelligence/publication-package/gdi-wyndham-proposed-26-founder-preview-v1.js";
+import { createGdiPublicationPackageStore } from "../lib/group-demand-intelligence/publication-package/index.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-founder-inv-toolbar-v1";
+const CACHE = "gdi-e2e-staged-lifecycle-v1";
+const WY = "recnPB3Q02NO8Ma1o";
 void pathToFileURL;
 
 let failed = 0;
@@ -90,64 +92,45 @@ check("local_staged_default_and_customer_current_isolation_markers", () => {
   assert.match(app, /preview=staged/);
   assert.match(app, /preview=current/);
   assert.match(app, /STAGED_PUBLICATION_PREVIEW_UNAVAILABLE|missingInventory|inventoryEmpty/);
-  // Customer share must not auto-stage
+  assert.doesNotMatch(app, /founderInventoryModeSelectorHtml\(/);
   const share = read("public/js/group-demand-intelligence/share-app.js");
   assert.doesNotMatch(share, /isLocalFounderHost\(\) return "staged"/);
 });
 
-check("wyndham_staged_pointer_and_clean11_ids_present", () => {
-  const staged = JSON.parse(
+check("wyndham_staged_complete_qualified_26_and_clean11_preserved", () => {
+  const store = createGdiPublicationPackageStore({});
+  const staged = store.readPointer(WY, "STAGED");
+  const current = store.readPointer(WY, "CURRENT");
+  assert.ok(staged?.publicationVersion);
+  assert.equal(current?.publicationVersion || null, null);
+  const loaded = store.loadPackage(WY, staged.publicationVersion);
+  assert.equal(loaded.ok, true);
+  assert.equal(loaded.package.opportunityCount, 26);
+  // Historical CLEAN11 package bytes preserved
+  const clean11 = JSON.parse(
     read(
-      "lib/group-demand-intelligence/bundled-publication-packages/recnPB3Q02NO8Ma1o/STAGED.json",
+      `lib/group-demand-intelligence/bundled-publication-packages/${WY}/gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92/package.json`,
     ),
   );
-  assert.equal(staged.kind, "STAGED");
-  assert.equal(
-    staged.publicationVersion,
-    "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261125_3283ee92",
-  );
-  const pkg = JSON.parse(
-    read(
-      `lib/group-demand-intelligence/bundled-publication-packages/recnPB3Q02NO8Ma1o/${staged.publicationVersion}/package.json`,
-    ),
-  );
-  assert.equal(pkg.opportunityCount || pkg.opportunities.length, 11);
-  assert.equal(pkg.opportunities.length, 11);
+  assert.equal(clean11.opportunityCount || clean11.opportunities.length, 11);
 });
 
-check("proposed_write_set_review_surface_present", () => {
-  assert.ok(fs.existsSync(path.join(ROOT, "api/gdi-proposed-write-set-review.js")));
-  assert.ok(
-    fs.existsSync(
-      path.join(
-        ROOT,
-        "lib/group-demand-intelligence/publication-package/gdi-proposed-write-set-founder-review-v1.js",
-      ),
-    ),
-  );
-  assert.ok(
-    fs.existsSync(
-      path.join(
-        ROOT,
-        "lib/group-demand-intelligence/publication-package/gdi-wyndham-proposed-26-founder-preview-v1.js",
-      ),
-    ),
-  );
-  const server = read("server.js");
-  assert.match(server, /proposed-write-set-review/);
-  assert.match(server, /getGdiExecutiveSummary/);
-  const api = read("api/group-demand-intelligence.js");
-  assert.match(api, /previewParam === "proposed"/);
-  assert.match(api, /resolveWyndhamFounderInventoryPreview/);
+check("locked_26_hydrate_id_parity_internal", () => {
+  const proposed = resolveWyndhamFounderInventoryPreview({ bucket: "proposed" });
+  assert.equal(proposed.ok, true);
+  assert.equal(proposed.count, 26);
+  const ids = proposed.opportunities.map((o) => o.id);
+  assert.equal(new Set(ids).size, 26);
+  const locked = loadWyndhamLockedIdsForTests();
+  assert.deepEqual(ids.slice().sort(), locked.proposedQualifiedIds.slice().sort());
+  const store = createGdiPublicationPackageStore({});
+  const staged = store.readPointer(WY, "STAGED");
+  const loaded = store.loadPackage(WY, staged.publicationVersion);
+  const stagedIds = loaded.package.opportunities.map((o) => o.id || o.opportunityId);
+  assert.deepEqual(stagedIds.slice().sort(), locked.proposedQualifiedIds.slice().sort());
 });
 
-check("founder_inventory_modes_and_single_row_list_toolbar", () => {
-  const app = read("public/js/group-demand-intelligence/app.js");
-  assert.match(app, /preview=proposed/);
-  assert.match(app, /founderInventoryModeSelectorHtml|data-gdi-founder-inventory/);
-  const ui = read("public/js/group-demand-intelligence/dealality-gdi-ui.js");
-  assert.match(ui, /founderInventoryModeSelectorHtml/);
-  assert.match(ui, /data-gdi-toolbar-row/);
+check("single_row_list_toolbar_columns_svg", () => {
   const table = read("public/js/group-demand-intelligence/gdi-commercial-list-table-v1.js");
   assert.match(table, /Customize Columns/);
   assert.match(table, /COLUMNS_ICON_SVG|rect x="3" y="4"/);
@@ -194,24 +177,17 @@ check("founder_inventory_modes_and_single_row_list_toolbar", () => {
   assert.doesNotMatch(tilesToolbar, /gdiListColumnSettingsBtn/);
 });
 
-check("wyndham_proposed_26_hydrate_id_parity", () => {
-  const proposed = resolveWyndhamFounderInventoryPreview({ bucket: "proposed" });
-  assert.equal(proposed.ok, true);
-  assert.equal(proposed.count, 26);
-  const ids = proposed.opportunities.map((o) => o.id);
-  assert.equal(new Set(ids).size, 26);
-  const locked = loadWyndhamLockedIdsForTests();
-  assert.deepEqual(ids.slice().sort(), locked.proposedQualifiedIds.slice().sort());
-});
-
-check("additive_non_regression_docs_present", () => {
+check("lifecycle_docs_and_no_proposed_shell_gate", () => {
   assert.ok(
     fs.existsSync(
       path.join(ROOT, "docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md"),
     ),
   );
   const constitution = read("docs/ai-build-system/DEALALITY_PRODUCT_CONSTITUTION.md");
-  assert.match(constitution, /8080|integrated|STAGED|non-regression|additive/i);
+  assert.match(constitution, /FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT/);
+  const shell = read("public/app.html");
+  assert.doesNotMatch(shell, /data-gdi-shell-inventory="proposed"/);
+  assert.match(shell, /data-gdi-shell-inventory="staged"/);
 });
 
 if (failed) {

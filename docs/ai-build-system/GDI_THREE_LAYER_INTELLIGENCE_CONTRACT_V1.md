@@ -15,7 +15,7 @@ Designed for eventual reuse across Dealality intelligence products.
 2. **Research intelligence is a cumulative asset** — enrich, never silently degrade.
 3. **Multi-hotel FQO is independent** — Hotel A approval does not approve Hotel B.
 4. **Presentation is derived** — cards/drawers/summaries are not authoritative research.
-5. **Publication is independent** — research persistence ≠ STAGED ≠ CURRENT.
+5. **Publication follows FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT** — research persistence feeds qualification; authorized E2E auto-progresses qualified inventory to STAGED; CURRENT requires explicit founder approval (never auto from STAGED).
 
 ---
 
@@ -66,7 +66,8 @@ Designed for eventual reuse across Dealality intelligence products.
 | Hotel fit and FQO | Hotel qualification | Certified qualification updates |
 | Sales priority / recommended actions | Hotel qualification | Commercial reevaluation |
 | Titles, cards, drawer summaries | Commercial presentation | Regenerate display without rewriting SoT |
-| STAGED package | Founder review | Explicit activation |
+| STAGED package | Founder review on :8080 | Automatic after authorized E2E qualification (complete qualified inventory) |
+| CURRENT package | Customer-facing | Explicit founder approval only |
 | CURRENT package | Customer publication | Explicit publication approval |
 
 Unknown existing SoT fields are preserved by default.

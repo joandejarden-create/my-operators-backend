@@ -874,11 +874,11 @@
   }
 
   /**
-   * Founder inventory views (FQO policy):
-   * staged = explicit STAGED Finalized Qualified packages only (fail-closed)
-   * proposed / hold / continuation = Wyndham locked write-set founder review
+   * Canonical founder inventory (FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT):
+   * staged = complete qualified inventory for local founder review (default on :8080)
    * published = CURRENT customer package only
    * research = authorized admin escape only (?gdiAdminResearch=1) — not a UI tab
+   * Obsolete proposed/hold/continuation URL modes collapse to STAGED (no separate gate).
    */
   function resolveFounderInventoryMode() {
     try {
@@ -903,23 +903,24 @@
       ) {
         return "research";
       }
-      if (inventory === "proposed" || preview === "proposed") return "proposed";
-      if (inventory === "hold" || preview === "hold") return "hold";
+      if (inventory === "published" || inventory === "current") {
+        return "published";
+      }
+      if (preview === "current" || preview === "published") return "published";
       if (
+        inventory === "staged" ||
+        preview === "staged" ||
+        inventory === "proposed" ||
+        preview === "proposed" ||
+        inventory === "hold" ||
+        preview === "hold" ||
         inventory === "continuation" ||
         inventory === "continuations" ||
         preview === "continuation"
       ) {
-        return "continuation";
+        return "staged";
       }
-      if (inventory === "staged") return "staged";
-      if (inventory === "published" || inventory === "current") {
-        return "published";
-      }
-      if (preview === "staged") return "staged";
-      if (preview === "current" || preview === "published") return "published";
-      // Local founder review: STAGED finalized packages only. No Research tab /
-      // no silent research fallback when STAGED is missing.
+      // Local founder review: STAGED complete qualified inventory. No Proposed gate.
       if (isLocalFounderHost()) return "staged";
       return "published";
     } catch (e) {
@@ -929,13 +930,7 @@
 
   function wantsPublicationPackagePreview() {
     var mode = resolveFounderInventoryMode();
-    return (
-      mode === "published" ||
-      mode === "staged" ||
-      mode === "proposed" ||
-      mode === "hold" ||
-      mode === "continuation"
-    );
+    return mode === "published" || mode === "staged";
   }
 
   function wantsLiveResearchBrowse() {
@@ -947,14 +942,7 @@
   }
 
   function wantsFounderWriteSetPreview() {
-    var mode = resolveFounderInventoryMode();
-    return (
-      mode === "proposed" || mode === "hold" || mode === "continuation"
-    );
-  }
-
-  function isWyndhamFounderReviewHotel() {
-    return String(state.hotelId || "") === "recnPB3Q02NO8Ma1o";
+    return false;
   }
 
   function isLocalFounderHost() {
@@ -987,18 +975,15 @@
         url.searchParams.set("gdiAdminResearch", "1");
         url.searchParams.set("inventory", "research");
         url.searchParams.set("live", "1");
-      } else if (next === "staged") {
+      } else if (
+        next === "staged" ||
+        next === "proposed" ||
+        next === "hold" ||
+        next === "continuation" ||
+        next === "continuations"
+      ) {
         url.searchParams.set("inventory", "staged");
         url.searchParams.set("preview", "staged");
-      } else if (next === "proposed") {
-        url.searchParams.set("inventory", "proposed");
-        url.searchParams.set("preview", "proposed");
-      } else if (next === "hold") {
-        url.searchParams.set("inventory", "hold");
-        url.searchParams.set("preview", "hold");
-      } else if (next === "continuation" || next === "continuations") {
-        url.searchParams.set("inventory", "continuation");
-        url.searchParams.set("preview", "continuation");
       } else if (next === "published") {
         url.searchParams.set("inventory", "published");
         url.searchParams.set("preview", "current");
@@ -1056,14 +1041,7 @@
         // Canonical customer surface — same immutable package as external share.
         q.push("publicationPackage=1");
         q.push("surface=customer");
-        var invMode = resolveFounderInventoryMode();
-        if (invMode === "proposed") {
-          q.push("preview=proposed");
-        } else if (invMode === "hold") {
-          q.push("preview=hold");
-        } else if (invMode === "continuation") {
-          q.push("preview=continuation");
-        } else if (wantsExplicitStagedPreview()) {
+        if (wantsExplicitStagedPreview()) {
           // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
           q.push("preview=staged");
         } else {
@@ -1682,14 +1660,7 @@
         } else if (wantsPublicationPackagePreview()) {
           path += "?publicationPackage=1&surface=customer";
           // Must match list opportunitiesApiPath inventory mode.
-          var detailMode = resolveFounderInventoryMode();
-          if (detailMode === "proposed") {
-            path += "&preview=proposed";
-          } else if (detailMode === "hold") {
-            path += "&preview=hold";
-          } else if (detailMode === "continuation") {
-            path += "&preview=continuation";
-          } else if (wantsExplicitStagedPreview()) {
+          if (wantsExplicitStagedPreview()) {
             path += "&preview=staged";
           } else {
             path += "&preview=current";
@@ -2088,13 +2059,7 @@
         ? "LIVE_RESEARCH"
         : inventoryMode === "staged"
           ? "FOUNDER_STAGED_PREVIEW"
-          : inventoryMode === "proposed"
-            ? "FOUNDER_PROPOSED_WRITE_SET_PREVIEW"
-            : inventoryMode === "hold"
-              ? "FOUNDER_HOLD_REVIEW"
-              : inventoryMode === "continuation"
-                ? "FOUNDER_CONTINUATION_REVIEW"
-                : "FOUNDER_PUBLICATION_PREVIEW";
+          : "FOUNDER_PUBLICATION_PREVIEW";
     var pubMeta = state.publication || {};
     try {
       if (typeof console !== "undefined" && console.debug) {
@@ -2137,20 +2102,7 @@
       UI.contentTabsHtml(state.tab, UI.GDI_CUSTOMER_TABS || [UI.GDI_MAIN_TAB]) +
       (hideOpportunityChrome
         ? ""
-        : (isLocalFounderHost() && isWyndhamFounderReviewHotel()
-            ? UI.founderInventoryModeSelectorHtml({
-                show: true,
-                mode: inventoryMode,
-                counts: {
-                  staged: 11,
-                  proposed: 26,
-                  hold: 2,
-                  continuation: 25,
-                  published: 0,
-                },
-              })
-            : "") +
-          UI.propertyBarHtml({
+        : UI.propertyBarHtml({
             mode: "auth",
             hotel: hotel,
             hotelId: state.hotelId,

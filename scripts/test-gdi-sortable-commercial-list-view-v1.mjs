@@ -19,7 +19,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-founder-inv-toolbar-v1";
+const CACHE = "gdi-e2e-staged-lifecycle-v1";
 
 let failed = 0;
 function check(name, fn) {
