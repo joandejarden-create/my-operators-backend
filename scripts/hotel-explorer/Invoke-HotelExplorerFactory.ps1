@@ -24,6 +24,12 @@
     HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED
     HE_CONTACT_PRESENTATION_VALIDATED
     HE_LOADING_COMPONENT_CONSISTENT
+    HE_CUSTOMER_COPY_VALIDATED
+    HE_PROPERTY_FACTS_FORMAT_VALIDATED
+    HE_CONTACT_TABLE_LAYOUT_VALIDATED
+    HE_CONTACT_DETAILS_DRAWER_VALIDATED
+    HE_SUBMARKET_METHODOLOGY_VALIDATED
+    HE_NO_INTERNAL_TERMINOLOGY_LEAKAGE
     HE_HEADER_ACTIONS_HYDRATED
     HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE
     HE_OWNERSHIP_VERIFICATION_STATE_PARITY
@@ -124,6 +130,14 @@ if ($ConsistencyModes -contains $Mode) {
   & node @acceptArgs
   if ($LASTEXITCODE -ne 0) {
     throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+  $presArgs = @(".\scripts\hotel-explorer\audit-he-customer-presentation-v1.mjs")
+  if (-not $SkipBrowser) { $presArgs += "--browser" }
+  Write-Host "[HE Factory] customer presentation audit → $($presArgs -join ' ')"
+  & node @presArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE customer presentation audit FAILED for $HotelId (mode=$Mode)"
   }
 }
 
