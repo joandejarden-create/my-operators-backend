@@ -1,0 +1,137 @@
+{
+  "version": "beth-contact-sentiment-restore-v1",
+  "at": "2026-11-27T13:50:00.000Z",
+  "hotel": {
+    "name": "Bethesda Marriott",
+    "hpcId": "recLuxvwwxID7U2B8"
+  },
+  "contactIntelligence": {
+    "rootCause": "TECHNICAL_MAPPING_GAP — Live Radar served hotel-contact-intelligence.js stub that mapped successful API packages to people:[], then fell through to HPC property phone/website fallback. Canonical HI Org Contacts already existed.",
+    "researchedPeopleRecovered": 3,
+    "people": [
+      {
+        "name": "Jeff Mullen",
+        "title": "President and CEO",
+        "classification": "OWNER_DECISION_AUTHORITY",
+        "propertyResponsibility": "INFERRED",
+        "status": "PERSISTED_CANONICAL",
+        "airtableIds": ["recCmiDOrJoI6kYrM", "recR1RmtmKyEJtn6B"],
+        "preferredRecord": "recCmiDOrJoI6kYrM",
+        "note": "Duplicate Evidence Collected row retained; Live overlay prefers Validated"
+      },
+      {
+        "name": "Katherine Button",
+        "title": "VP, Asset Management and Investments",
+        "classification": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+        "propertyResponsibility": "INFERRED",
+        "status": "PERSISTED_CANONICAL",
+        "airtableIds": ["recNzfommzJEvCUEP", "recq5Ni0z0xFovW0e"],
+        "preferredRecord": "recNzfommzJEvCUEP",
+        "note": "Recommended commercial first contact; not property-assigned AM"
+      },
+      {
+        "name": "Patrick Reece",
+        "title": "Director, Asset Management",
+        "classification": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+        "propertyResponsibility": "UNKNOWN",
+        "status": "PERSISTED_CANONICAL",
+        "airtableIds": ["rechprAGnkCt7VbmP", "recS1DM14uYO2bUwS"],
+        "preferredRecord": "rechprAGnkCt7VbmP"
+      }
+    ],
+    "canonicalContactsPersistedThisCycle": 0,
+    "canonicalContactsAlreadyPresent": 6,
+    "distinctPeople": 3,
+    "remainingProposedOnly": [
+      "Personal direct email/phone for all three (UNRESOLVED_PUBLIC — Surfe session-only)",
+      "Named Bethesda property-level asset manager assignment",
+      "Hotel GM / DOS property leadership (not in recovered packet)"
+    ],
+    "gates": {
+      "CONTACTS_CANONICAL_PERSISTENCE": "YES",
+      "CONTACTS_LIVE_HYDRATION": "YES"
+    },
+    "screenshot": "reports/hotel-explorer/he-intelligence-factory-v1/screenshots/beth-contact-intelligence-live-AFTER.png"
+  },
+  "guestSentiment": {
+    "rootCauseParts": [
+      "TECHNICAL_MAPPING_GAP — Live API returned visible:false empty shell instead of seven-platform restricted dashboard",
+      "PROPOSED_ONLY / RIGHTS_REVIEW_REQUIRED — Tripadvisor, Booking.com, Expedia public listing aggregates staged but not rights-cleared for Live score display",
+      "NOT_CONNECTED — Google, Hotels.com, Agoda, Trivago",
+      "LICENSE_REQUIRED — no contracted multi-platform reputation feed; HI Hotel Reputation Observations table designed but not created/authorized"
+    ],
+    "sourceRightsAssessment": [
+      {
+        "platform": "TRIPADVISOR",
+        "classification": "PROPOSED_ONLY",
+        "rightsStatus": "RIGHTS_REVIEW_REQUIRED",
+        "liveEligible": false,
+        "proposedValue": "4.1/5 · 366 reviews"
+      },
+      {
+        "platform": "BOOKING",
+        "classification": "PROPOSED_ONLY",
+        "rightsStatus": "RIGHTS_REVIEW_REQUIRED",
+        "liveEligible": false,
+        "proposedValue": "8.0/10 · 234 reviews"
+      },
+      {
+        "platform": "EXPEDIA",
+        "classification": "PROPOSED_ONLY",
+        "rightsStatus": "RIGHTS_REVIEW_REQUIRED",
+        "liveEligible": false,
+        "proposedValue": "8.6/10 · ~1001 reviews"
+      },
+      {
+        "platform": "GOOGLE",
+        "classification": "NOT_CONNECTED",
+        "liveEligible": false
+      },
+      {
+        "platform": "HOTELS_COM",
+        "classification": "NOT_CONNECTED",
+        "liveEligible": false
+      },
+      {
+        "platform": "AGODA",
+        "classification": "NOT_CONNECTED",
+        "liveEligible": false
+      },
+      {
+        "platform": "TRIVAGO",
+        "classification": "NOT_CONNECTED",
+        "liveEligible": false
+      }
+    ],
+    "liveEligibleObservations": 0,
+    "proposedObservations": 3,
+    "persistence": {
+      "attempted": false,
+      "reason": "HI Hotel Reputation Observations not on standing allowlist / table not provisioned; rights still RIGHTS_REVIEW_REQUIRED",
+      "resolutionPath": [
+        "Founder rights decision: authorize PUBLIC_METADATA_ONLY Live display for listing aggregates, OR contract licensed feed",
+        "Integration Controller schema PR to create HI Hotel Reputation Observations + Theme Scores",
+        "Add tables to HE50 standing authorization allowlist",
+        "Controlled apply from fixtures/hotel-explorer/guest-sentiment/beth-marriott-staged-v1.json",
+        "Flip live_ui_authorized only after rights + persistence readback"
+      ]
+    },
+    "gates": {
+      "GUEST_SENTIMENT_UI_PARITY": "YES",
+      "GUEST_SENTIMENT_LIVE_DATA_COVERAGE": "0/7 platforms with Live-eligible scores; 3 Proposed-only; 4 Not connected"
+    },
+    "screenshot": "reports/hotel-explorer/he-intelligence-factory-v1/screenshots/beth-guest-sentiment-live-AFTER.png"
+  },
+  "eightHotelRollout": {
+    "bethesda": "CONTACTS_LIVE + SENTIMENT_UI_RESTRICTED",
+    "otherSeven": "No hotel-specific contacts or sentiment packets; Live sentiment shell shows seven Not connected / restricted empty cards; do not fabricate",
+    "sharedOrgReuse": "MREC Jeff/Katherine/Patrick are org-level contacts reusable for other Mullen portfolio hotels without implying property decision-maker assignment"
+  },
+  "founderDecisionsRemaining": [
+    "Authorize PUBLIC_METADATA_ONLY Live score display vs keep Proposed-only until licensed feed",
+    "Authorize creation of HI Hotel Reputation Observations tables + standing-auth allowlist",
+    "Deduplicate HI Org Contacts duplicate person rows (Validated vs Evidence Collected)",
+    "Whether to research property-level GM/DOS for Bethesda under standing auth"
+  ],
+  "FULL_HE_E2E_VALIDATED": false
+}

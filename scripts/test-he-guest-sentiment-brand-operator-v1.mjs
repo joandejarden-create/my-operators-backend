@@ -56,13 +56,21 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.equal(MIN_SAMPLE_FOR_PERCENT, 30);
 }
 
-// Live mode hides staged packet (no live_ui_authorized)
+// Live mode shows seven-platform shell but withholds unauthorized scores
 {
   const live = resolveGuestSentimentForHotel(
     { id: BETH, name: "Bethesda Marriott" },
     { founderPreview: false }
   );
-  assert.equal(live.visible, false, "live must hide unauthorized staged sentiment");
+  assert.equal(live.visible, true, "live must show seven-platform shell");
+  assert.equal(live.liveRightsRestricted, true, "live must mark rights-restricted shell");
+  assert.equal(live.platforms.length, 0, "live must not copy Proposed scores");
+  assert.equal(live.platformOverview?.length, 7);
+  assert.ok(
+    live.platformOverview.some((p) => p.status === "RIGHTS_RESTRICTED"),
+    "live must flag rights-restricted platforms without scores"
+  );
+  assert.ok(!live.platformOverview.some((p) => p.available === true && p.rating != null));
 }
 
 // Founder proposed preview shows Bethesda staged platforms without averaging
@@ -242,14 +250,17 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(!JSON.stringify(empty).includes('"rating":0'));
 }
 
-// Live unauthorized without founder preview stays hidden
+// Live unauthorized without founder preview shows restricted shell (no scores)
 {
-  const liveHidden = buildGuestSentimentView(
+  const liveRestricted = buildGuestSentimentView(
     { id: BETH },
     { founder_preview_render: true, observations: [] },
     { founderPreview: false }
   );
-  assert.equal(liveHidden.visible, false);
+  assert.equal(liveRestricted.visible, true);
+  assert.equal(liveRestricted.liveRightsRestricted, true);
+  assert.equal(liveRestricted.platforms.length, 0);
+  assert.equal(liveRestricted.platformOverview.length, 7);
 }
 
 {

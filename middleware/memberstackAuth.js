@@ -18,6 +18,37 @@ function readBearerToken(req) {
   return m ? m[1] : null;
 }
 
+/**
+ * DEV_AUTH_BYPASS is server-env only and fail-closed outside explicit local use.
+ * Not triggerable via client headers/query. Requires:
+ * - NODE_ENV !== production
+ * - DEV_AUTH_BYPASS_EMAIL set
+ * - loopback peer address OR DEALALITY_ALLOW_DEV_AUTH_BYPASS=1
+ */
+function isLoopbackRemoteAddress(req) {
+  const ip = String(req.socket?.remoteAddress || req.ip || "");
+  return (
+    ip === "127.0.0.1" ||
+    ip === "::1" ||
+    ip === "::ffff:127.0.0.1" ||
+    ip.endsWith("127.0.0.1")
+  );
+}
+
+function isDevAuthBypassAllowed(req) {
+  if (process.env.NODE_ENV === "production") return false;
+  if (!String(process.env.DEV_AUTH_BYPASS_EMAIL || "").trim()) return false;
+  const explicit =
+    String(process.env.DEALALITY_ALLOW_DEV_AUTH_BYPASS || "")
+      .trim()
+      .toLowerCase() === "1" ||
+    String(process.env.DEALALITY_ALLOW_DEV_AUTH_BYPASS || "")
+      .trim()
+      .toLowerCase() === "true";
+  if (explicit) return true;
+  return isLoopbackRemoteAddress(req);
+}
+
 /** Parity with api/me pickEmailFromPayload — nested JWT email claims. */
 function pickEmailFromPayload(payload) {
   if (!payload || typeof payload !== "object") return null;
@@ -47,9 +78,9 @@ export async function memberstackAuth(req, res, next) {
   // If the browser/session sends a real Memberstack JWT, always prefer it —
   // otherwise DEV_AUTH_BYPASS_EMAIL silently impersonates a different identity
   // and Airtable Users lookup fails for the signed-in Memberstack account.
-  // Never deploy this env var to production.
+  // Never deploy this env var to production. Client headers/query cannot enable it.
   const devBypassEmail = process.env.DEV_AUTH_BYPASS_EMAIL;
-  if (!token && devBypassEmail && process.env.NODE_ENV !== "production") {
+  if (!token && isDevAuthBypassAllowed(req) && devBypassEmail) {
     req.memberstack = { id: "dev_bypass", email: devBypassEmail };
     req.memberstackMemberId = "dev_bypass";
     req.memberstackEmail = devBypassEmail;
