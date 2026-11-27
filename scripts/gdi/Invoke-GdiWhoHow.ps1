@@ -16,21 +16,21 @@
   .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -ContinuationOnly -Mode DryRun
 
 .EXAMPLE
-  # $0 Checkpoint A path preflight (never spends)
-  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun `
-    -AuthorizationId 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127' `
+  # $0 Checkpoint A path preflight (never spends) — AuthorizationId + Manifest REQUIRED (hotel-specific)
+  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId <rec...> -Mode DryRun `
+    -AuthorizationId '<FOUNDER_GO_…>' `
     -HardCeilingUsd 5 `
-    -Manifest 'reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json' `
+    -Manifest 'reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json' `
     -ContinuationOnly -Resume -PreflightOnly
 
 .EXAMPLE
-  # Checkpoint A Live — ONLY after founder GO (max USD 5 inside USD 18 aggregate)
+  # Checkpoint A Live — ONLY after founder GO with hotel-specific auth + ceiling + manifest
   $env:GDI_EXA_AGENT_LIVE = '1'
-  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode Live `
+  .\scripts\gdi\Invoke-GdiWhoHow.ps1 -HotelId <rec...> -Mode Live `
     -AuthorizePaidResearch `
-    -AuthorizationId 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127' `
+    -AuthorizationId '<FOUNDER_GO_…>' `
     -HardCeilingUsd 5 `
-    -Manifest 'reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json' `
+    -Manifest 'reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json' `
     -ContinuationOnly -Resume
 #>
 [CmdletBinding()]
