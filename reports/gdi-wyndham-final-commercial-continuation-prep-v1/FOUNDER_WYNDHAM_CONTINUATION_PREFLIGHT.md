@@ -2,13 +2,13 @@
 
 **At:** 2026-11-27  
 **Hotel:** `recnPB3Q02NO8Ma1o`  
-**Baseline:** Accepted $0 commercial-quality review — **26 proposed** qualified  
-**PR capability:** [#613](https://github.com/joandejarden-create/my-operators-backend/pull/613) Full E2E V3 WHO/HOW  
+**Baseline:** Locked **26** proposed qualified (not applied)  
+**PR capability:** [#613](https://github.com/joandejarden-create/my-operators-backend/pull/613) Full E2E V3 + live WHO/HOW adapter  
 **STOP:** No paid research · No Airtable · No STAGED · No CURRENT · No Findymail/Surfe
 
 ---
 
-## Accepted write-set baseline (do not apply yet)
+## Accepted write-set baseline (LOCKED — do not apply)
 
 | Bucket | Count | Notes |
 |---|---:|---|
@@ -21,6 +21,7 @@
 
 Dedup preserved: Bora ×2 distinct; Saronic consolidated; Turner+Flatiron cross-linked.
 
+Lock artifact: `10-LOCKED_26_COMMERCIAL_BASELINE.json`  
 Source: `reports/gdi-wyndham-final-commercial-completion-v1/`
 
 ---
@@ -29,16 +30,19 @@ Source: `reports/gdi-wyndham-final-commercial-completion-v1/`
 
 | Prerequisite | Status |
 |---|---|
-| WHO/HOW Agent contract integrated | READY in PR #613 (+ this push: mandatory `whyWeAreShowingThisContact`) |
-| Alternative-entry-point schema validated | READY — fields + generic-why rejection |
-| Mandatory contact rationale enforced | READY — entry points fail without opportunity-specific why |
+| WHO/HOW Agent contract integrated | READY in PR #613 |
+| Live Exa WHO/HOW adapter (product-wide) | READY — `gdi-exa-who-how-live-adapter-v1.js` |
+| Alternative-entry-point schema validated | READY |
+| Mandatory contact rationale enforced | READY |
 | Contact research stage connected | READY — Stage 4 DryRun |
-| PowerShell runners tested | READY — see § PowerShell evidence |
-| Exa job-store dedupe preserved | READY — existing store; Stage 3 must reuse settled jobs |
-| Budget ledger operational | READY — existing paid ledger; new auth separate |
+| PowerShell runners tested | READY — five stages + Full + Validate |
+| Exa job-store dedupe / resume | READY — $0 validated |
+| Budget ledger / hard ceiling | READY — $0 validated |
 | Integration Controller merge complete | **BLOCKED** — PR #613 OPEN |
+| GDI post-merge home sync | **BLOCKED** until merge |
+| Explicit founder paid GO | **BLOCKED** |
 
-**Do not run paid WHO/HOW until #613 is merged and `ws-gdi` is home-synced.**
+**Merging #613 alone does not enable paid spend.** V3 CLI Live remains fail-closed; paid Checkpoint A uses the live adapter only after founder GO.
 
 ---
 
@@ -53,19 +57,29 @@ FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127
 | Hard ceiling | **USD 18.00** |
 | Expected spend | ~USD 12.50 |
 | Prior unused $7.90 | **NOT carried** |
+| Checkpoint A WHO/HOW | **USD 5.00 max** (inside $18 — no separate $5 auth) |
 | Findymail | OFF |
 | Surfe | OFF (explicit-click only) |
 | Airtable / STAGED / CURRENT | OFF |
 
-### Priority order
+Exact manifest: `11-PAID_EXECUTION_MANIFEST_18USD.json`  
+Readiness: `12-READINESS_CONFIRMATION.md`
 
-1. PLP recovery (rewritten referral queries; evidence-gated)  
-2. Live leisure ×6 applicable modules (destination/events/sports first)  
-3. Deduped Agent deep for leisure discoveries  
-4. Competitive/overflow CAD on 15 association/event HOLDs  
-5. WHO/HOW Agent on 25 priority continuations (+ 2 entry-point fallback)  
-6. Public-source contact discovery  
-7. Strict FQO reassessment  
+### Updated priority order (after founder GO)
+
+**Checkpoint A first**
+
+1. WHO/HOW Agent on top 25 existing continuations (max $5)  
+2. Checkpoint report → founder acceptance before releasing remainder  
+
+**Checkpoint B (remaining aggregate budget)**
+
+1. PLP recovery (rewritten evidence-gated referral queries)  
+2. Competitive/overflow CAD on 15 association/event HOLDs  
+3. Six applicable live leisure modules  
+4. Deduped deep research on genuinely new leisure discoveries  
+5. Public-source professional contact discovery  
+6. Strict FQO reassessment vs locked 26  
 
 ### Hard stop rules
 
@@ -74,12 +88,11 @@ FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127
 - No re-bill settled Exa job IDs  
 - No Findymail/Surfe/Airtable/STAGED/CURRENT  
 - Bethesda + CLEAN11 freezes ON  
+- Recovery &lt;10/25 after Checkpoint A → stop for founder direction  
 
 ---
 
-## PowerShell operational evidence (re-verified this pass)
-
-Commands executed under DryRun (exit 0):
+## PowerShell operational evidence
 
 ```powershell
 .\scripts\gdi\Invoke-GdiDiscovery.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
@@ -88,24 +101,23 @@ Commands executed under DryRun (exit 0):
 .\scripts\gdi\Invoke-GdiContactResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
 .\scripts\gdi\Invoke-GdiQualification.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
 .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
+.\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun -Resume
 .\scripts\gdi\Invoke-GdiValidateFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o
 ```
 
-Unified validation: `Invoke-GdiValidateFullE2E.ps1`  
-npm: `npm run test:gdi-canonical-full-e2e-v3-v1`
-
-Live Mode remains fail-closed in V3 CLI until authorized Exa adapter tranche after merge.
+npm: `npm run test:gdi-canonical-full-e2e-v3-v1` · `npm run test:gdi-exa-who-how-live-adapter-v1`
 
 ---
 
 ## Post-research report (Part G) — deferred
 
-Items 1–15 of the founder post-research report will be produced **after** paid GO + execution. This preflight intentionally stops before spend.
+Items for before/after commercial scorecard + Part G are produced **after** paid GO + Checkpoint A/B execution. This preflight stops before spend.
 
 ---
 
 ## Status
 
-**`$0` IMPLEMENTATION + PREFLIGHT COMPLETE**  
+**`$0` BASELINE LOCKED + LIVE ADAPTER READY + $18 MANIFEST PREPARED**  
 **AWAITING_INTEGRATION_CONTROLLER** (PR #613)  
-**THEN** founder paid GO `FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127`
+**THEN** founder paid GO `FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127`  
+**THEN** Checkpoint A only
