@@ -146,7 +146,7 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 
 - Reuse **only** `DealalityWaveLoader` + `HeLoadingUx` (`he-loading-ux-v1.js`) + `he-async-section-v1.js`. Do **not** invent new spinners, skeleton systems, or full-width black loading banners.
 - **Modes (shared adapter):**
-  - **Toast** (`toastHtml`) — short subsection fetches / tab transitions: small, horizontally centered in the section, Dealality toast chrome (wave orb + border/shadow). Message e.g. `Loading Contacts…`. Auto-dismisses when READY/EMPTY/ERROR.
+  - **Toast** (`toastHtml`) — short subsection fetches / tab transitions: small, horizontally centered in the section, canonical Dealality black translucent toast (`rgba(0,0,0,~0.9)`, 12px radius) with animated wave orb — not elevated blue-gray (`#212c4d`) chrome, not a static icon, and not an oversized 200px Radar `.loading` card. Message e.g. `Loading Contacts…`. Auto-dismisses when READY/EMPTY/ERROR.
   - **Wave** (`waveHtml` / compact inline) — sustained section loads, still centered — never `width: 100%` black strips.
   - **Inline** (`inlineHtml`) — action-local (Surfe Find Email & Phone, OCN Explore Key People / Related Hotels, Retry).
 - Forbidden: full-width black notification bars; page-blocking overlays for subsection loads; multiple overlapping toasts; stuck loaders; generic browser busy indicators where Dealality UI exists.

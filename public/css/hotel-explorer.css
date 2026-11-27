@@ -3272,7 +3272,10 @@ button.hex-action {
 }
 /*
  * Radar pages ship a global `.loading { height: 200px }` for map empty states.
- * Wave loaders also use class `loading` — neutralize that conflict inside HE.
+ * Wave loaders also use class `loading` — neutralize that conflict inside HE
+ * without restyling the shared Dealality black toast / wave chrome.
+ * Appearance (background, radius, wave orb, typography) comes from
+ * dealality-wave-loader.css only — do not reintroduce elevated blue-gray overrides.
  */
 .hex-root .dealality-wave-loader.loading,
 .hex-root .loading.dealality-wave-loader,
@@ -3287,35 +3290,6 @@ button.hex-action {
   height: auto !important;
   min-height: 0 !important;
   max-height: none;
-}
-/* Compact toast chrome — HE dark tokens, not oversized pure-black card */
-.hex-root .dealality-wave-loader--toast,
-.hex-root .dealality-wave-loader--compact {
-  background: var(--hdp-bg-elevated, #212c4d);
-  border: 1px solid var(--hdp-border, #37446b);
-  border-radius: 8px;
-  box-shadow: none;
-  backdrop-filter: none;
-  padding: 8px 12px;
-  min-width: 0;
-  max-width: min(100%, 220px);
-}
-.hex-root .dealality-wave-loader--sm .wave-container,
-.hex-root .loading.dealality-wave-loader--sm .wave-container {
-  width: 20px;
-  height: 20px;
-}
-.hex-root .dealality-wave-loader--sm .loading-text-main,
-.hex-root .dealality-wave-loader--toast .loading-text-main {
-  font-size: 12px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: var(--hdp-text, #ffffff);
-}
-.hex-root .dealality-wave-loader--toast .loading-content,
-.hex-root .dealality-wave-loader--compact .loading-content {
-  gap: 8px;
-  margin-bottom: 0;
 }
 .hex-root .he-loading-wave-host {
   display: flex;

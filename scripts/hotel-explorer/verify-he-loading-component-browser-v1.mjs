@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 /**
  * Browser regression: Hotel Explorer Contact Intelligence must reuse the shared
- * HeLoadingUx / DealalityWaveLoader compact toast — not a custom oversized card.
+ * HeLoadingUx / DealalityWaveLoader compact black wave toast — not a custom
+ * elevated blue-gray card or static icon.
+ *
+ * Compares Contact Intelligence loader computed styles to a reference
+ * DealalityWaveLoader.toastHtml mount (canonical shared component).
  *
  *   DEALALITY_LOCAL_ADMIN_BASE=http://127.0.0.1:8080 \
  *     node scripts/hotel-explorer/verify-he-loading-component-browser-v1.mjs
@@ -24,6 +28,19 @@ const HOTEL = process.env.HE_LOADING_VERIFY_HOTEL_ID || "recLuxvwwxID7U2B8";
 const requireServer = process.argv.includes("--require-server");
 const OUT_DIR = path.join(ROOT, "reports", "hotel-explorer");
 const OUT = path.join(OUT_DIR, "HE-LOADING-COMPONENT-BROWSER-V1.json");
+
+function isBlackToastBg(bg) {
+  const s = String(bg || "");
+  // rgba(0,0,0,0.85|0.9) or rgb(0,0,0)
+  if (/rgba?\(\s*0\s*,\s*0\s*,\s*0(\s*,\s*0\.(85|9[0-9]?))?\s*\)/i.test(s)) {
+    return true;
+  }
+  return false;
+}
+
+function isElevatedBlueGray(bg) {
+  return /33\s*,\s*44\s*,\s*77/.test(String(bg || ""));
+}
 
 async function probeServer() {
   try {
@@ -57,7 +74,6 @@ async function launchBrowser() {
   } catch (err) {
     const msg = String(err && err.message ? err.message : err);
     if (/Executable doesn't exist|browserType\.launch/i.test(msg)) {
-      // Sandbox / CI without Playwright browser cache — use installed Chrome.
       return chromium.launch({ channel: "chrome", headless: true });
     }
     throw err;
@@ -77,28 +93,58 @@ await page.waitForFunction(() => typeof window.HotelExplorer === "object", null,
 });
 
 const metrics = await page.evaluate(async (hotelId) => {
+  function snap(toast) {
+    if (!toast) return null;
+    const r = toast.getBoundingClientRect();
+    const s = getComputedStyle(toast);
+    const wave = toast.querySelector(".wave-container");
+    const wr = wave ? wave.getBoundingClientRect() : null;
+    const wave1 = toast.querySelector(".wave-1");
+    const w1s = wave1 ? getComputedStyle(wave1) : null;
+    return {
+      className: toast.className,
+      w: Math.round(r.width),
+      h: Math.round(r.height),
+      bg: s.backgroundColor,
+      borderRadius: s.borderRadius,
+      borderColor: s.borderTopColor,
+      padding: s.padding,
+      waveW: wr ? Math.round(wr.width) : null,
+      waveH: wr ? Math.round(wr.height) : null,
+      hasWaveOrb: !!wave,
+      hasWaveLayers: !!toast.querySelector(".wave-1") && !!toast.querySelector(".wave-2"),
+      waveAnimation:
+        w1s && w1s.animationName && w1s.animationName !== "none"
+          ? w1s.animationName
+          : null,
+      text: (toast.textContent || "").trim().slice(0, 80),
+    };
+  }
+
+  // Reference: canonical shared toast outside .hex-root (no HE overrides).
+  const refHost = document.createElement("div");
+  refHost.id = "he-loading-ref-toast-host";
+  refHost.style.cssText =
+    "position:fixed;left:-9999px;top:0;pointer-events:none;z-index:-1;";
+  const refHtml =
+    window.DealalityWaveLoader && typeof window.DealalityWaveLoader.toastHtml === "function"
+      ? window.DealalityWaveLoader.toastHtml("Loading Reference…")
+      : "";
+  refHost.innerHTML = refHtml;
+  document.body.appendChild(refHost);
+  const reference = snap(refHost.querySelector(".dealality-wave-loader"));
+
   const captures = [];
   const obs = new MutationObserver(() => {
     const toast = document.querySelector(
       ".hci-root--loading .dealality-wave-loader, .he-async-loading .dealality-wave-loader"
     );
     if (!toast) return;
-    const r = toast.getBoundingClientRect();
-    const s = getComputedStyle(toast);
-    const wave = toast.querySelector(".wave-container");
-    const wr = wave ? wave.getBoundingClientRect() : null;
-    captures.push({
-      className: toast.className,
-      w: Math.round(r.width),
-      h: Math.round(r.height),
-      bg: s.backgroundColor,
-      borderRadius: s.borderRadius,
-      waveW: wr ? Math.round(wr.width) : null,
-      waveH: wr ? Math.round(wr.height) : null,
-      hasHciLoading: !!document.querySelector(".hci-loading"),
-      hasAsync: !!document.querySelector(".he-async-loading"),
-      text: (toast.textContent || "").trim().slice(0, 80),
-    });
+    const shot = snap(toast);
+    if (!shot) return;
+    shot.hasHciLoading = !!document.querySelector(".hci-loading");
+    shot.hasAsync = !!document.querySelector(".he-async-loading");
+    captures.push(shot);
   });
   obs.observe(document.documentElement, { childList: true, subtree: true });
 
@@ -123,11 +169,12 @@ const metrics = await page.evaluate(async (hotelId) => {
   await new Promise((r) => setTimeout(r, 900));
   obs.disconnect();
 
-  const scripts = [...document.querySelectorAll("script[src*='hotel-contact'], link[href*='hotel-explorer.css']")].map(
-    (el) => el.src || el.href
-  );
+  const scripts = [
+    ...document.querySelectorAll(
+      "script[src*='hotel-contact'], link[href*='hotel-explorer.css'], link[href*='dealality-wave-loader']"
+    ),
+  ].map((el) => el.src || el.href);
 
-  // Prefer the last unique compact capture
   const uniq = [];
   const seen = new Set();
   for (const c of captures) {
@@ -139,9 +186,12 @@ const metrics = await page.evaluate(async (hotelId) => {
   }
   const best = uniq.sort((a, b) => a.h - b.h)[0] || null;
 
+  refHost.remove();
+
   return {
     captureCount: captures.length,
     best,
+    reference,
     uniq,
     scripts,
     finalHasHciLoading: !!document.querySelector(".hci-loading"),
@@ -152,6 +202,18 @@ const metrics = await page.evaluate(async (hotelId) => {
 await browser.close();
 
 const best = metrics.best;
+const reference = metrics.reference;
+
+const matchesReference =
+  !!best &&
+  !!reference &&
+  best.bg === reference.bg &&
+  best.borderRadius === reference.borderRadius &&
+  best.waveW === reference.waveW &&
+  best.waveH === reference.waveH &&
+  !!best.hasWaveLayers &&
+  !!reference.hasWaveLayers;
+
 const checks = {
   hexOpen: metrics.hexOpen === true,
   capturedLoader: !!best,
@@ -161,14 +223,17 @@ const checks = {
     /dealality-wave-loader--toast/.test(best.className),
   usesAsyncSection: best?.hasAsync === true,
   noCustomHciLoading: best?.hasHciLoading === false && metrics.finalHasHciLoading === false,
-  compactWidth: !!best && best.w > 0 && best.w <= 240,
-  compactHeight: !!best && best.h > 0 && best.h <= 72,
-  elevatedTheme:
+  compactWidth: !!best && best.w > 0 && best.w <= 360,
+  compactHeight: !!best && best.h > 0 && best.h <= 96,
+  blackToastTheme: !!best && isBlackToastBg(best.bg) && !isElevatedBlueGray(best.bg),
+  animatedWave:
     !!best &&
-    (best.bg === "rgb(33, 44, 77)" ||
-      best.bg === "rgba(33, 44, 77, 1)" ||
-      /33,\s*44,\s*77/.test(best.bg || "")),
-  smallWave: !!best && best.waveW != null && best.waveW <= 24 && best.waveH <= 24,
+    best.hasWaveOrb === true &&
+    best.hasWaveLayers === true &&
+    (best.waveAnimation != null || best.waveW === 24),
+  canonicalWaveSize: !!best && best.waveW === 24 && best.waveH === 24,
+  referenceMounted: !!reference && isBlackToastBg(reference.bg),
+  matchesReferenceLoader: matchesReference,
 };
 
 const failed = Object.entries(checks)

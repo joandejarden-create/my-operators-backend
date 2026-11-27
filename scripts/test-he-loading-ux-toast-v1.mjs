@@ -92,12 +92,25 @@ run("he_tabs_share_same_loading_component", () => {
   mustInclude(hci, "he-async-loading");
   mustInclude(ws, "he-async-loading");
   const hexCss = read("public/css/hotel-explorer.css");
+  const waveCss = read("public/css/dealality-wave-loader.css");
   mustInclude(hexCss, ".hex-root .he-async-loading");
   mustInclude(hexCss, "dealality-wave-loader--toast");
-  // Compact HE toast must use product tokens, not oversized pure-black card chrome alone
+  // Canonical toast chrome is black translucent — HE must not re-skin to elevated blue-gray
   assert.ok(
-    /--hdp-bg-elevated/.test(hexCss),
-    "HE toast chrome should use elevated dark tokens"
+    /rgba\(\s*0,\s*0,\s*0,\s*0\.(85|9)/.test(waveCss),
+    "canonical wave loader uses black translucent container"
+  );
+  assert.ok(
+    !/\.hex-root\s+\.dealality-wave-loader--toast[\s\S]{0,220}--hdp-bg-elevated/.test(
+      hexCss
+    ),
+    "HE must not override toast background to elevated blue-gray tokens"
+  );
+  assert.ok(
+    !/\.hex-root\s+\.dealality-wave-loader--sm\s+\.wave-container[\s\S]{0,80}20px/.test(
+      hexCss
+    ),
+    "HE must not shrink wave orb below canonical --sm (24px)"
   );
   assert.ok(
     /max-width:\s*min\(100%,\s*220px\)/.test(hexCss),
