@@ -2630,6 +2630,12 @@
     label: "Group & Demand\nOpportunities",
   };
 
+  /** Phase 1 — first in chrome; Opportunities remains default landing in app.js */
+  var GDI_EXEC_SUMMARY_TAB = {
+    id: "executive-summary",
+    label: "Executive\nSummary",
+  };
+
   /** PDI-3 — retained after Commercial Priorities (founder middle-tab order) */
   var GDI_PORTFOLIO_TAB = {
     id: "portfolio",
@@ -2641,8 +2647,13 @@
     label: "Commercial Priorities",
   };
 
-  /** Primary tabs: Opportunities → Commercial Priorities → Portfolio. How to Read stays a right-rail info link. */
-  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB, GDI_PORTFOLIO_TAB];
+  /** Primary tabs: Executive Summary → Opportunities → Commercial Priorities → Portfolio. */
+  var GDI_CUSTOMER_TABS = [
+    GDI_EXEC_SUMMARY_TAB,
+    GDI_MAIN_TAB,
+    GDI_PRIORITIES_TAB,
+    GDI_PORTFOLIO_TAB,
+  ];
 
   /**
    * Customer/share property-bar status only.
@@ -10850,6 +10861,7 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    GDI_EXEC_SUMMARY_TAB: GDI_EXEC_SUMMARY_TAB,
     GDI_PORTFOLIO_TAB: GDI_PORTFOLIO_TAB,
     GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
     GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,

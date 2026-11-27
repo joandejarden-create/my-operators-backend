@@ -372,6 +372,7 @@ import {
   postImportDemandCenters,
   postPreviewDemandCenterImport,
 } from "./api/market-demand.js";
+import { getGdiExecutiveSummary } from "./api/gdi-executive-summary.js";
 import {
   getGdiFlag,
   getGdiHotels,
@@ -1234,6 +1235,11 @@ app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/summary",
   gdiPilotReadAuth,
   getGdiSummary
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/executive-summary",
+  gdiPilotReadAuth,
+  getGdiExecutiveSummary
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/profile",
