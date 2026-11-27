@@ -250,3 +250,23 @@ export async function getAdminSurfeUsageAirtablePlan(req, res) {
     note: "No Airtable writes. Table creation requires founder/IC schema approval.",
   });
 }
+
+/**
+ * GET /api/admin/surfe-usage/fullenrich-benchmark-eligibility
+ * Admin-only readiness view. Never triggers paid enrichment or returns provider PII.
+ */
+export async function getAdminFullEnrichBenchmarkEligibility(req, res) {
+  const { buildFullEnrichBenchmarkEligibilityReport } = await import(
+    "../lib/group-demand-intelligence/gdi-fullenrich-benchmark-eligibility-v1.js"
+  );
+  const report = buildFullEnrichBenchmarkEligibilityReport({
+    env: process.env,
+  });
+  return res.status(200).json({
+    ok: true,
+    adminOnly: true,
+    customerFacing: false,
+    paidLookupsTriggered: false,
+    ...report,
+  });
+}
