@@ -353,6 +353,8 @@
       viewMode: state.viewMode,
       noun: opts.noun || "Opportunities",
       exportHref: opts.exportHref || "",
+      // Full hotel inventory — never the temporary filtered browse set.
+      inventoryRows: state.opportunities || [],
     };
   }
 
@@ -366,6 +368,7 @@
         {
           sortKey: state.sortKey,
           sortDir: state.sortDir,
+          inventoryRows: state.opportunities || [],
         }
       );
     }

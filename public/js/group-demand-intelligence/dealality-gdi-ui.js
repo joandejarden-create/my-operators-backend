@@ -2991,7 +2991,6 @@
     { value: "estimatedRoomNights", label: "Estimated Room Nights" },
     { value: "weeklyChange", label: "Weekly Change" },
     { value: "marketScope", label: "Market Scope" },
-    { value: "salesOpportunityType", label: "Sales Opportunity Type" },
     { value: "needPeriodAlignment", label: "Need Period Alignment" },
     { value: "opportunityStatus", label: "Opportunity Status" },
     { value: "lastVerified", label: "Last Verified" },
@@ -3993,7 +3992,11 @@
         "function"
     ) {
       columnsHtml = global.DealalityGdiCommercialListTable.columnSettingsHtml(
-        opts.optionalColumns || null
+        opts.optionalColumns || null,
+        {
+          inventoryRows: opts.inventoryRows || null,
+          UI: root.DealalityGdiUi || global.DealalityGdiUi,
+        }
       );
     } else if (
       viewMode === "list" &&
@@ -4003,7 +4006,11 @@
         "function"
     ) {
       columnsHtml = window.DealalityGdiCommercialListTable.columnSettingsHtml(
-        opts.optionalColumns || null
+        opts.optionalColumns || null,
+        {
+          inventoryRows: opts.inventoryRows || null,
+          UI: root.DealalityGdiUi || window.DealalityGdiUi,
+        }
       );
     }
     return (
@@ -6439,6 +6446,7 @@
           sortKey: opts.sortKey,
           sortDir: opts.sortDir,
           optionalColumns: opts.optionalColumns,
+          inventoryRows: opts.inventoryRows || null,
         });
       }
     }
@@ -6701,6 +6709,8 @@
         viewMode: opts.viewMode,
         noun: opts.noun,
         exportHref: opts.exportHref || "",
+        inventoryRows: opts.inventoryRows || null,
+        optionalColumns: opts.optionalColumns || null,
       }) +
       "</div>"
     );

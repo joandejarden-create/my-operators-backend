@@ -1247,6 +1247,7 @@
     return UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters, {
       sortKey: state.sortKey,
       sortDir: state.sortDir,
+      inventoryRows: state.opportunities || [],
     });
   }
 

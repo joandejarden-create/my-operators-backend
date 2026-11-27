@@ -32,16 +32,32 @@
     { id: "actions", label: "Actions", sortKey: null, required: true, noSort: true },
   ];
 
+  // Sales Opportunity Type removed from optional Columns (Demand Type covers it).
+  // Underlying salesOpportunityQuickFilterKeys / Sales Opportunities chips unchanged.
   var OPTIONAL_COLUMNS = [
     { id: "contactReadiness", label: "Contact Readiness", sortKey: "contactReadiness" },
     { id: "estimatedRoomNights", label: "Estimated Room Nights", sortKey: "estimatedRoomNights" },
     { id: "weeklyChange", label: "Weekly Change", sortKey: "weeklyChange" },
     { id: "marketScope", label: "Market Scope", sortKey: "marketScope" },
-    { id: "salesOpportunityType", label: "Sales Opportunity Type", sortKey: "salesOpportunityType" },
     { id: "needPeriodAlignment", label: "Need Period Alignment", sortKey: "needPeriodAlignment" },
     { id: "opportunityStatus", label: "Opportunity Status", sortKey: "opportunityStatus" },
     { id: "lastVerified", label: "Last Verified", sortKey: "lastVerified" },
   ];
+
+  var OPTIONAL_COLUMN_SOURCES = {
+    contactReadiness:
+      "contactActionabilityTier / contactActionabilityLabel",
+    estimatedRoomNights:
+      "estimatedRoomNights | peakRooms | roomNights | estimatedPeakRooms",
+    weeklyChange: "weeklyDeltaState / isNewThisWeek (weeklyDeltaStateOf)",
+    marketScope:
+      "inventoryPopulations | hotelMarketScopeEligible | competitiveMarketScopeEligible | marketScope (Market Scope filter taxonomy)",
+    needPeriodAlignment:
+      "needDateIndicator.displayLabel | tileNeedDatePreview.displayLabel | needDateMatchV1.timingOverlapLabel",
+    opportunityStatus:
+      "hotelSourcingStatusLabel | commercialStagePillLabel | statusLabel",
+    lastVerified: "lastVerifiedAt | lastVerified | evidenceAsOf",
+  };
 
   var CONTACT_READINESS_RANK = {
     SALES_READY: 0,
@@ -88,11 +104,19 @@
     }
   }
 
-  function visibleColumns(optionalMap) {
+  function visibleColumns(optionalMap, availableIds) {
     optionalMap = optionalMap || loadOptionalColumns();
     var cols = DEFAULT_COLUMNS.slice();
+    var allow =
+      availableIds && availableIds.length
+        ? availableIds
+        : OPTIONAL_COLUMNS.map(function (c) {
+            return c.id;
+          });
     OPTIONAL_COLUMNS.forEach(function (c) {
-      if (optionalMap[c.id] === true) cols.splice(cols.length - 1, 0, c);
+      if (optionalMap[c.id] === true && allow.indexOf(c.id) >= 0) {
+        cols.splice(cols.length - 1, 0, c);
+      }
     });
     return cols;
   }
@@ -521,6 +545,111 @@
     return { key: key || "WATCHLIST", label: label };
   }
 
+  function inventoryPopulationsOf(o, UI) {
+    if (UI && typeof UI.opportunityInventoryPopulations === "function") {
+      try {
+        return UI.opportunityInventoryPopulations(o) || [];
+      } catch (e) {
+        /* fall through */
+      }
+    }
+    o = o || {};
+    if (Array.isArray(o.inventoryPopulations) && o.inventoryPopulations.length) {
+      return o.inventoryPopulations.slice();
+    }
+    var pops = [];
+    if (o.hotelMarketScopeEligible === true) pops.push("SALES_OPPORTUNITIES");
+    if (
+      o.competitiveMarketScopeEligible === true ||
+      o.cmiVerified === true ||
+      /^(VERIFIED|NEEDS_VERIFICATION|HISTORICAL)$/i.test(
+        text(o.competitiveStatus),
+      )
+    ) {
+      pops.push("COMPETITIVE_MARKET_INTELLIGENCE");
+    }
+    if (!pops.length && /competitive/i.test(text(o.marketScope))) {
+      pops.push("COMPETITIVE_MARKET_INTELLIGENCE");
+    }
+    if (!pops.length) pops.push("SALES_OPPORTUNITIES");
+    return pops;
+  }
+
+  function resolveMarketScopeDisplay(o, UI) {
+    var pops = inventoryPopulationsOf(o, UI);
+    var hotel =
+      pops.indexOf("SALES_OPPORTUNITIES") >= 0 ||
+      text(o.inventoryPopulationPrimary) === "SALES_OPPORTUNITIES" ||
+      o.hotelMarketScopeEligible === true;
+    var competitive =
+      pops.indexOf("COMPETITIVE_MARKET_INTELLIGENCE") >= 0 ||
+      text(o.inventoryPopulationPrimary) ===
+        "COMPETITIVE_MARKET_INTELLIGENCE" ||
+      o.competitiveMarketScopeEligible === true ||
+      /^COMPETITIVE$/i.test(text(o.marketScope));
+    if (hotel && competitive) return "Hotel · Competitive";
+    if (competitive) return "Competitive";
+    if (hotel) return "Hotel";
+    var raw = text(o.marketScope || o.marketScopeLabel || o.population);
+    if (!raw) return "";
+    if (/^COMPETITIVE$/i.test(raw)) return "Competitive";
+    if (/^HOTEL|SALES/i.test(raw)) return "Hotel";
+    return toPresentationProperCase(raw.replace(/_/g, " "), UI);
+  }
+
+  function resolveWeeklyChangeDisplay(o, UI) {
+    var state = "";
+    if (UI && typeof UI.weeklyDeltaStateOf === "function") {
+      try {
+        state = text(UI.weeklyDeltaStateOf(o));
+      } catch (e) {
+        state = "";
+      }
+    }
+    if (!state) {
+      state =
+        text(o.weeklyDeltaLabel) ||
+        text(o.weeklyDeltaState) ||
+        (o.isNewThisWeek === true ? "NEW" : "");
+    }
+    if (!state) return "";
+    var map = {
+      NEW: "New This Week",
+      UPDATED: "Updated",
+      REACTIVATED: "Reactivated",
+      UNCHANGED: "Unchanged",
+    };
+    var key = state.toUpperCase().replace(/\s+/g, "_");
+    if (map[key]) return map[key];
+    return toPresentationProperCase(state.replace(/_/g, " "), UI);
+  }
+
+  function resolveNeedPeriodDisplay(o, UI) {
+    var ind = o && o.needDateIndicator;
+    var tile = o && o.tileNeedDatePreview;
+    var match = o && o.needDateMatchV1;
+    var label =
+      text(ind && (ind.displayLabel || ind.accessibleLabel || ind.label)) ||
+      text(tile && (tile.displayLabel || tile.accessibleLabel)) ||
+      text(match && (match.timingOverlapLabel || match.classificationLine)) ||
+      text(o && o.needDateRelevanceClass);
+    if (!label) return "";
+    return toPresentationProperCase(label, UI);
+  }
+
+  function resolveOpportunityStatusDisplay(o, UI) {
+    var st = text(
+      o.hotelSourcingStatusLabel ||
+        o.opportunityStatusLabel ||
+        o.commercialStagePillLabel ||
+        o.statusLabel ||
+        o.status ||
+        "",
+    );
+    if (!st) return "";
+    return toPresentationProperCase(st, UI);
+  }
+
   function optionalCellValue(o, colId, UI) {
     switch (colId) {
       case "estimatedRoomNights": {
@@ -529,75 +658,142 @@
           o.peakRooms ??
           o.roomNights ??
           o.estimatedPeakRooms;
-        if (n == null || n === "") return { display: "—", sort: null };
+        if (n == null || n === "") return { display: "—", sort: null, populated: false };
         var num = Number(n);
         return {
           display: Number.isFinite(num) ? String(num) : text(n),
           sort: Number.isFinite(num) ? num : null,
+          populated: true,
         };
       }
       case "weeklyChange": {
-        var w =
-          text(o.weeklyDeltaLabel) ||
-          text(o.weeklyDeltaState) ||
-          (UI && typeof UI.weeklyDeltaStateOf === "function"
-            ? UI.weeklyDeltaStateOf(o)
-            : "");
+        var w = resolveWeeklyChangeDisplay(o, UI);
         return {
-          display: w ? toPresentationProperCase(w, UI) : "—",
+          display: w || "—",
           sort: w || "",
+          populated: !!w,
         };
       }
       case "marketScope": {
-        var m = text(o.marketScope || o.marketScopeLabel || o.population);
+        var m = resolveMarketScopeDisplay(o, UI);
         return {
-          display: m ? toPresentationProperCase(m, UI) : "—",
+          display: m || "—",
           sort: m.toLowerCase(),
-        };
-      }
-      case "salesOpportunityType": {
-        var s = text(
-          o.salesOpportunityTypeLabel ||
-            o.salesOpportunityType ||
-            o.opportunityTypeLabel ||
-            "",
-        );
-        return {
-          display: s ? toPresentationProperCase(s, UI) : "—",
-          sort: s.toLowerCase(),
+          populated: !!m,
+          isCompetitive: /competitive/i.test(m),
         };
       }
       case "needPeriodAlignment": {
+        var nd = resolveNeedPeriodDisplay(o, UI);
         var aligned =
           o.needDateMatch === true ||
           o.needPeriodAligned === true ||
-          (o.needDateMatchV1 && o.needDateMatchV1.aligned === true);
-        var nd =
-          text(o.needDateRelevanceClass) ||
-          (aligned ? "Aligned" : text(o.needDateIndicator?.label) || "—");
+          (o.needDateMatchV1 && o.needDateMatchV1.confirmedNeedDateMatch === true) ||
+          (o.needDateIndicator &&
+            o.needDateIndicator.verifiedHotelNeedDateMatch === true);
         return {
-          display: nd === "—" ? nd : toPresentationProperCase(nd, UI),
-          sort: aligned ? 0 : 1,
+          display: nd || "—",
+          sort: aligned ? 0 : nd ? 1 : 2,
+          populated: !!nd,
         };
       }
       case "opportunityStatus": {
-        var st = text(
-          o.opportunityStatusLabel || o.statusLabel || o.status || "",
-        );
+        var st = resolveOpportunityStatusDisplay(o, UI);
         return {
-          display: st ? toPresentationProperCase(st, UI) : "—",
+          display: st || "—",
           sort: st.toLowerCase(),
+          populated: !!st,
         };
       }
       case "lastVerified": {
         var lv = text(
           o.lastVerifiedAt || o.lastVerified || o.evidenceAsOf || "",
         );
-        return { display: lv || "—", sort: lv };
+        if (lv && lv.length > 10) lv = lv.slice(0, 10);
+        return { display: lv || "—", sort: lv, populated: !!lv };
+      }
+      case "contactReadiness": {
+        var cr = contactReadinessMeta(o, UI);
+        return {
+          display: cr.label || "—",
+          sort: cr.rank,
+          populated: !!(cr.tier || (cr.label && cr.label !== "—")),
+        };
       }
       default:
-        return { display: "—", sort: "" };
+        return { display: "—", sort: "", populated: false };
     }
+  }
+
+  function assessOptionalColumnCoverage(colId, inventoryRows, UI) {
+    var rows = inventoryRows || [];
+    var total = rows.length;
+    var populated = 0;
+    var competitive = 0;
+    var distinct = Object.create(null);
+    rows.forEach(function (o) {
+      var cell = optionalCellValue(o, colId, UI);
+      if (cell.populated) {
+        populated += 1;
+        distinct[String(cell.display || "").toLowerCase()] = 1;
+        if (cell.isCompetitive) competitive += 1;
+      }
+    });
+    var distinctCount = Object.keys(distinct).length;
+    var coveragePct = total ? Math.round((populated / total) * 1000) / 10 : 0;
+    var offer = populated > 0;
+    var decision = "RETAIN";
+    if (colId === "salesOpportunityType") {
+      offer = false;
+      decision = "CONSOLIDATED";
+    } else if (!offer) {
+      decision = "HIDDEN_NO_DATA";
+    } else if (colId === "marketScope") {
+      // Filter already exposes All/Hotel/Competitive. Offer the column only when
+      // Competitive rows exist or scopes vary within the hotel inventory.
+      if (!(competitive > 0 || distinctCount > 1)) {
+        offer = false;
+        decision = "HIDDEN_FILTER_SUFFICES";
+      } else {
+        decision = "RETAIN_HYDRATED";
+      }
+    } else if (coveragePct < 100) {
+      decision = "RETAIN_HYDRATED";
+    } else {
+      decision = "RETAIN_HYDRATED";
+    }
+    return {
+      id: colId,
+      label: (OPTIONAL_COLUMNS.find(function (c) {
+        return c.id === colId;
+      }) || { label: colId }).label,
+      canonicalSource: OPTIONAL_COLUMN_SOURCES[colId] || "",
+      populated: populated,
+      total: total,
+      coveragePct: coveragePct,
+      distinctCount: distinctCount,
+      competitiveCount: competitive,
+      offer: offer,
+      decision: decision,
+    };
+  }
+
+  function assessAllOptionalColumns(inventoryRows, UI) {
+    return OPTIONAL_COLUMNS.map(function (c) {
+      return assessOptionalColumnCoverage(c.id, inventoryRows, UI);
+    });
+  }
+
+  function availableOptionalColumns(inventoryRows, UI) {
+    return OPTIONAL_COLUMNS.filter(function (c) {
+      return assessOptionalColumnCoverage(c.id, inventoryRows, UI).offer;
+    });
+  }
+
+  function availableOptionalColumnIds(inventoryRows, UI) {
+    return availableOptionalColumns(inventoryRows, UI).map(function (c) {
+      return c.id;
+    });
   }
 
   function verifiedLogoUrl(o) {
@@ -836,28 +1032,41 @@
   var COLUMNS_ICON_SVG =
     '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="16" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>';
 
-  function columnSettingsHtml(optionalMap) {
+  function columnSettingsHtml(optionalMap, opts) {
+    opts = opts || {};
     optionalMap = optionalMap || loadOptionalColumns();
+    var UI = opts.UI || global.DealalityGdiUi;
+    var inventoryRows = opts.inventoryRows;
+    var available =
+      inventoryRows && inventoryRows.length
+        ? availableOptionalColumns(inventoryRows, UI)
+        : OPTIONAL_COLUMNS.slice();
+    var body =
+      available.length > 0
+        ? available
+            .map(function (c) {
+              var on = optionalMap[c.id] === true;
+              return (
+                '<label class="gdi-list-col-settings__row">' +
+                '<input type="checkbox" data-gdi-list-column="' +
+                esc(c.id) +
+                '"' +
+                (on ? " checked" : "") +
+                " /> " +
+                esc(c.label) +
+                "</label>"
+              );
+            })
+            .join("")
+        : '<p class="gdi-list-col-settings__empty">No Optional Columns Have Populated Data For This Hotel.</p>';
     return (
       '<div class="gdi-list-col-settings">' +
       '<button type="button" class="gdi-list-col-settings__toggle sort-icon" id="gdiListColumnSettingsBtn" title="Customize Columns" aria-label="Customize Columns" aria-expanded="false" aria-controls="gdiListColumnSettingsPanel" aria-haspopup="true">' +
       COLUMNS_ICON_SVG +
       "</button>" +
       '<div class="gdi-list-col-settings__panel" id="gdiListColumnSettingsPanel" hidden role="menu">' +
-      '<p class="gdi-list-col-settings__hint">Optional Columns (Existing Data Only)</p>' +
-      OPTIONAL_COLUMNS.map(function (c) {
-        var on = optionalMap[c.id] === true;
-        return (
-          '<label class="gdi-list-col-settings__row">' +
-          '<input type="checkbox" data-gdi-list-column="' +
-          esc(c.id) +
-          '"' +
-          (on ? " checked" : "") +
-          " /> " +
-          esc(c.label) +
-          "</label>"
-        );
-      }).join("") +
+      '<p class="gdi-list-col-settings__hint">Optional Columns (Populated For This Hotel)</p>' +
+      body +
       "</div></div>"
     );
   }
@@ -868,7 +1077,13 @@
     var sortKey = opts.sortKey || "priority";
     var sortDir = opts.sortDir == null ? 1 : opts.sortDir;
     var optionalMap = opts.optionalColumns || loadOptionalColumns();
-    var cols = visibleColumns(optionalMap);
+    var inventoryRows =
+      opts.inventoryRows ||
+      opts.hotelInventoryRows ||
+      rows ||
+      [];
+    var availableIds = availableOptionalColumnIds(inventoryRows, UI);
+    var cols = visibleColumns(optionalMap, availableIds);
     var body =
       (rows || [])
         .map(function (o) {
@@ -950,7 +1165,6 @@
     } else if (
       key === "weeklyChange" ||
       key === "marketScope" ||
-      key === "salesOpportunityType" ||
       key === "opportunityStatus" ||
       key === "lastVerified"
     ) {
@@ -1183,6 +1397,7 @@
     CONTRACT: CONTRACT,
     DEFAULT_COLUMNS: DEFAULT_COLUMNS,
     OPTIONAL_COLUMNS: OPTIONAL_COLUMNS,
+    OPTIONAL_COLUMN_SOURCES: OPTIONAL_COLUMN_SOURCES,
     tableHtml: tableHtml,
     columnSettingsHtml: columnSettingsHtml,
     visibleColumns: visibleColumns,
@@ -1196,5 +1411,11 @@
     whoContactMeta: whoContactMeta,
     contactDetailsMeta: contactDetailsMeta,
     salesActionMeta: salesActionMeta,
+    optionalCellValue: optionalCellValue,
+    assessOptionalColumnCoverage: assessOptionalColumnCoverage,
+    assessAllOptionalColumns: assessAllOptionalColumns,
+    availableOptionalColumns: availableOptionalColumns,
+    availableOptionalColumnIds: availableOptionalColumnIds,
+    resolveMarketScopeDisplay: resolveMarketScopeDisplay,
   };
 })(typeof window !== "undefined" ? window : globalThis);

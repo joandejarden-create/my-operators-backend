@@ -19,7 +19,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-list-contact-actions-v1";
+const CACHE = "gdi-list-columns-hydration-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -244,14 +244,29 @@ check("column_sort_semantic_priority_and_chrono_window", () => {
 
 check("optional_columns_toggle_without_fabricated_revenue", () => {
   const { DealalityGdiCommercialListTable: Table } = loadModules();
-  Table.saveOptionalColumns({ estimatedRoomNights: true, lastVerified: true });
-  const html = Table.tableHtml(sampleRows, {
+  const inventory = sampleRows.map((row, i) =>
+    Object.assign({}, row, {
+      estimatedRoomNights: row.estimatedRoomNights,
+      lastVerifiedAt: i === 0 ? "2026-10-15" : "",
+      hotelMarketScopeEligible: true,
+      competitiveMarketScopeEligible: i === 2,
+    }),
+  );
+  Table.saveOptionalColumns({
+    estimatedRoomNights: true,
+    lastVerified: true,
+    contactReadiness: true,
+  });
+  const html = Table.tableHtml(inventory, {
     sortKey: "priority",
     sortDir: 1,
     optionalColumns: Table.loadOptionalColumns(),
+    inventoryRows: inventory,
   });
   assert.match(html, /Estimated Room Nights/);
   assert.match(html, /Last Verified/);
+  assert.match(html, /Contact Readiness/);
+  assert.doesNotMatch(html, /Sales Opportunity Type/);
   assert.match(html, />420</);
   assert.doesNotMatch(html, /ADR|synthetic|estimated revenue|\$\d/i);
   // Missing lastVerified shows em dash, not invented date
