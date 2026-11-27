@@ -12,13 +12,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  runLeisureModules,
   runLeisureOrchestratorDisabledCheck,
   buildLeisureFourteenSegmentCoverageMatrix,
   listLeisureModuleIds,
   designLeisureAdpLinkage,
   proposeLeisureAirtableSchemaGaps,
 } from "../lib/group-demand-intelligence/leisure-demand-intelligence/index.js";
+import { runLeisureAuthorizedOrFixture } from "../lib/group-demand-intelligence/leisure-demand-intelligence/gdi-leisure-authorized-live-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -39,6 +39,10 @@ function parseArgs(argv) {
     authorizePaidResearch: false,
     allowLivePilot: false,
     authorizePublication: false,
+    authorizationId: "",
+    hardCeilingUsd: 0,
+    preflightOnly: false,
+    resume: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -65,6 +69,10 @@ function parseArgs(argv) {
     else if (a === "--authorize-paid-research") out.authorizePaidResearch = true;
     else if (a === "--allow-live-pilot") out.allowLivePilot = true;
     else if (a === "--authorize-publication") out.authorizePublication = true;
+    else if (a === "--authorization-id") out.authorizationId = next();
+    else if (a === "--hard-ceiling-usd") out.hardCeilingUsd = Number(next());
+    else if (a === "--preflight-only") out.preflightOnly = true;
+    else if (a === "--resume") out.resume = true;
   }
   return out;
 }
@@ -107,7 +115,7 @@ async function main() {
     needPeriodContext = JSON.parse(args.needPeriodJson);
   }
 
-  const result = await runLeisureModules({
+  const result = await runLeisureAuthorizedOrFixture({
     hotelId: args.hotelId,
     hotelProfile,
     modules: args.modules,
@@ -120,6 +128,10 @@ async function main() {
     authorizePaidResearch: args.authorizePaidResearch,
     allowLivePilot: args.allowLivePilot,
     authorizePublication: args.authorizePublication,
+    authorizationId: args.authorizationId,
+    hardCeilingUsd: args.hardCeilingUsd,
+    preflightOnly: args.preflightOnly,
+    resume: args.resume,
   });
 
   console.log(JSON.stringify(result, null, 2));

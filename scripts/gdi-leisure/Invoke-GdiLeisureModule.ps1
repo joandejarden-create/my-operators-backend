@@ -8,18 +8,37 @@
 
   Defaults: fixture / $0 / no publication / no Findymail / no Surfe.
 
+  Authorized Live (product-wide) requires:
+    -ResearchMode live
+    -AuthorizePaidResearch -AllowLivePilot
+    -AuthorizationId FOUNDER_GO_…
+    -HardCeilingUsd > 0
+    -BudgetUSD > 0 (≤ remaining ceiling)
+    $env:GDI_LDI_LIVE = '1'
+
 .PARAMETER Module
   leisure_events | leisure_sports | leisure_attractions | leisure_universities |
   leisure_destination | leisure_distribution  (or short ids: events, sports, …)
 
-.PARAMETER HotelId
-  Canonical HPC hotel record ID (rec…).
-
-.PARAMETER ResearchMode
-  fixture | replay | preview  (paid modes require AllowLivePilot + AuthorizePaidResearch)
-
 .EXAMPLE
   .\scripts\gdi-leisure\Invoke-GdiLeisureEvents.ps1 -HotelId recaokE8psIbuVeuH -ResearchMode fixture
+
+.EXAMPLE
+  # $0 authorized-live preflight (never spends)
+  .\scripts\gdi-leisure\Invoke-GdiLeisureModule.ps1 -Module leisure_events `
+    -HotelId recnPB3Q02NO8Ma1o -ResearchMode live -PreflightOnly `
+    -AuthorizePaidResearch -AllowLivePilot `
+    -AuthorizationId 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127' `
+    -HardCeilingUsd 18 -BudgetUSD 2
+
+.EXAMPLE
+  # Authorized Live — ONLY after founder GO + IC merge of LDI path
+  $env:GDI_LDI_LIVE = '1'
+  .\scripts\gdi-leisure\Invoke-GdiLeisureModule.ps1 -Module leisure_events `
+    -HotelId recnPB3Q02NO8Ma1o -ResearchMode live `
+    -AuthorizePaidResearch -AllowLivePilot `
+    -AuthorizationId 'FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127' `
+    -HardCeilingUsd 18 -BudgetUSD 2 -Resume
 #>
 [CmdletBinding()]
 param(
@@ -32,7 +51,7 @@ param(
 
   [string]$HotelProfileJson = '',
 
-  [ValidateSet('fixture', 'replay', 'preview')]
+  [ValidateSet('fixture', 'replay', 'preview', 'live')]
   [string]$ResearchMode = 'fixture',
 
   [ValidateRange(0, 5000)]
@@ -53,6 +72,10 @@ param(
   [switch]$AuthorizePublication,
   [switch]$AllowLivePilot,
 
+  [string]$AuthorizationId = '',
+  [double]$HardCeilingUsd = 0,
+  [switch]$PreflightOnly,
+
   [string]$RepoPath = ''
 )
 
@@ -72,8 +95,32 @@ if ($AuthorizePaidResearch -and -not $AllowLivePilot) {
 if ($AuthorizePublication) {
   Write-FailClosed 'LDI V1 refuses customer publication.'
 }
-if ($AuthorizePaidResearch) {
-  Write-FailClosed 'LDI V1 certification path refuses paid research. Design pilot separately; do not spend here.'
+
+$wantsLive = ($ResearchMode -eq 'live') -or $PreflightOnly
+if ($wantsLive) {
+  if (-not $AuthorizePaidResearch) {
+    Write-FailClosed 'ResearchMode live requires -AuthorizePaidResearch.'
+  }
+  if (-not $AllowLivePilot) {
+    Write-FailClosed 'ResearchMode live requires -AllowLivePilot.'
+  }
+  if (-not $AuthorizationId) {
+    Write-FailClosed 'ResearchMode live requires -AuthorizationId (FOUNDER_GO_…).'
+  }
+  if ($HardCeilingUsd -le 0) {
+    Write-FailClosed 'ResearchMode live requires -HardCeilingUsd > 0.'
+  }
+  if (-not $PreflightOnly -and $BudgetUSD -le 0) {
+    Write-FailClosed 'Live spend requires -BudgetUSD > 0 (use -PreflightOnly for $0 readiness).'
+  }
+  if (-not $PreflightOnly) {
+    $envLive = [string]$env:GDI_LDI_LIVE
+    if ($envLive -ne '1' -and $envLive.ToLower() -ne 'true') {
+      Write-FailClosed 'Live spend requires $env:GDI_LDI_LIVE = ''1'' (product-wide gate).'
+    }
+  }
+} elseif ($AuthorizePaidResearch -and $ResearchMode -ne 'live') {
+  Write-FailClosed 'AuthorizePaidResearch is only valid with -ResearchMode live (or -PreflightOnly). Fixture/replay remain $0.'
 }
 
 if (-not $RepoPath) {
@@ -101,8 +148,13 @@ if ($ExistingInventoryPath) { $nodeArgs += @('--existing-inventory', $ExistingIn
 if ($NeedPeriodContextJson) { $nodeArgs += @('--need-period-json', $NeedPeriodContextJson) }
 if ($OutDir) { $nodeArgs += @('--out', $OutDir) }
 if ($Resume) { $nodeArgs += '--resume' }
+if ($AuthorizePaidResearch) { $nodeArgs += '--authorize-paid-research' }
+if ($AllowLivePilot) { $nodeArgs += '--allow-live-pilot' }
+if ($AuthorizationId) { $nodeArgs += @('--authorization-id', $AuthorizationId) }
+if ($HardCeilingUsd -gt 0) { $nodeArgs += @('--hard-ceiling-usd', ([string]$HardCeilingUsd)) }
+if ($PreflightOnly) { $nodeArgs += '--preflight-only' }
 
-Write-Host "GDI Leisure module=$Module hotel=$HotelId mode=$mode budget=$BudgetUSD" -ForegroundColor Cyan
+Write-Host "GDI Leisure module=$Module hotel=$HotelId mode=$mode budget=$BudgetUSD preflight=$PreflightOnly" -ForegroundColor Cyan
 
 Push-Location $resolvedRepo
 try {
