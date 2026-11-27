@@ -2149,6 +2149,80 @@
     );
   }
 
+  function resolveOwnershipNarrativeParties(hotel, ownership, ctrl, opName, brand) {
+    var legal = (ctrl && (ctrl.legal_property_owner_propco || ctrl.property_company)) || {};
+    var economic = (ctrl && (ctrl.economic_owner_or_group || ctrl.economic_owner)) || {};
+    return {
+      hotelName: (hotel && hotel.name) || (ownership && ownership.hotel && ownership.hotel.name) || "This hotel",
+      legalOwner: legal,
+      economicOwner: economic,
+      brand: brand && brand !== "—" ? brand : null,
+      operator: opName && opName !== "—" ? opName : (ctrl && ctrl.operator && ctrl.operator.name) || null,
+    };
+  }
+
+  function buildCustomerExecutiveOwnershipHtml(hotel, ownership, ctrl, opName, brand) {
+    var api = window.HeExecutiveOwnershipNarrative;
+    var parties = resolveOwnershipNarrativeParties(hotel, ownership, ctrl, opName, brand);
+    var built =
+      api && typeof api.buildExecutiveOwnershipNarrative === "function"
+        ? api.buildExecutiveOwnershipNarrative(parties)
+        : { text: "", classification: {} };
+    var text = built && built.text ? String(built.text).trim() : "";
+    // Never surface internal HI/Airtable research posture in the executive summary.
+    if (
+      !text ||
+      (api &&
+        typeof api.containsInternalOwnershipTerminology === "function" &&
+        api.containsInternalOwnershipTerminology(text))
+    ) {
+      text =
+        (parties.hotelName || "This hotel") +
+        " ownership intelligence is still being assembled. Legal ownership and economic sponsorship are shown only when independently supported.";
+    }
+    var method =
+      api && typeof api.ownershipMethodologyNote === "function"
+        ? api.ownershipMethodologyNote()
+        : null;
+    var methodHtml = "";
+    if (method) {
+      methodHtml =
+        '<details class="hiw-ownership-methodology" data-he-ownership-methodology="1">' +
+        "<summary>" +
+        esc(method.summary || "About This Ownership Summary") +
+        "</summary>" +
+        '<div class="hiw-ownership-methodology__body">' +
+        (Array.isArray(method.coverage)
+          ? "<ul>" +
+            method.coverage
+              .map(function (line) {
+                return "<li>" + esc(line) + "</li>";
+              })
+              .join("") +
+            "</ul>"
+          : "") +
+        (Array.isArray(method.limitations)
+          ? "<ul>" +
+            method.limitations
+              .map(function (line) {
+                return "<li>" + esc(line) + "</li>";
+              })
+              .join("") +
+            "</ul>"
+          : "") +
+        '<p class="hiw-muted">Evidence details live in Sources &amp; Evidence.</p>' +
+        "</div></details>";
+    }
+    return (
+      '<div class="hiw-prose" data-he-exec-ownership="customer">' +
+      "<p>" +
+      esc(text) +
+      "</p>" +
+      methodHtml +
+      "</div>"
+    );
+  }
+
   function renderOwnershipReport(hotel, ownership) {
     if (!ownership) {
       return (
@@ -2216,23 +2290,13 @@
         title +
         "</h2>" +
         '<section class="hiw-section"><h3 class="hiw-section__h">Executive Ownership Summary</h3>' +
-        '<div class="hiw-prose"><p>Ownership Intelligence is not yet available for this hotel in the controlled demo cohort. Economic ownership is not verified. No fabricated owner is shown.</p></div>' +
+        buildCustomerExecutiveOwnershipHtml(hotel, ownership, ctrl, opName, brand) +
         "</section></article>"
       );
     }
 
     if (!inCohort && airtableGraphPartial) {
       var graphCtrl = getControl(ownership) || ctrl || {};
-      var graphExec =
-        (ownership.report &&
-          ownership.report.executive_summary &&
-          ownership.report.executive_summary.text) ||
-        "Airtable HI graph relationships are available for this hotel. Economic ownership remains unresolved unless a Validated Economic Owner relationship exists. Operator and brand are shown as separate operating relationships — not as ownership. No fabricated owner is shown.";
-      var proposedMode =
-        ownership.preview_mode === "PHASE3_PROPOSED" ||
-        (ownership.report &&
-          ownership.report.research_status &&
-          ownership.report.research_status.preview_mode === "PHASE3_PROPOSED");
       var graphPeople =
         (ownership.report &&
           ownership.report.decision_authority &&
@@ -2244,17 +2308,8 @@
         title +
         "</h2>" +
         '<section class="hiw-section" data-ocn-section="executive"><h3 class="hiw-section__h">Executive Ownership Summary</h3>' +
-        '<div class="hiw-prose"><p>' +
-        esc(graphExec) +
-        "</p>" +
-        (proposedMode
-          ? '<p class="hiw-chip hiw-chip--proposed">Phase 3 Proposed Preview — staged ownership overlay. Not Airtable-persisted. Not customer-approved.</p>'
-          : "") +
-        '<p class="hiw-muted">' +
-        (proposedMode
-          ? "Proposed entities are staged research overlays on live Airtable operator/brand edges. Medium-confidence sponsors are not shown as validated legal owners."
-          : "Source: HI Organizations + HI Hotel–Org Relationships (live Airtable).") +
-        "</p></div></section>" +
+        buildCustomerExecutiveOwnershipHtml(hotel, ownership, graphCtrl, opName, brand) +
+        "</section>" +
         renderOwnershipNetworkSection() +
         renderCompactDecisionMakers(graphPeople) +
         '<div data-ocn-section="relationships">' +
@@ -2394,9 +2449,8 @@
       esc(pageLede) +
       "</p>" +
       '<section class="hiw-section" id="hiw-exec" data-ocn-section="executive"><h3 class="hiw-section__h">Executive Ownership Summary</h3>' +
-      '<div class="hiw-prose">' +
-      exec +
-      "</div></section>" +
+      buildCustomerExecutiveOwnershipHtml(hotel, ownership, ctrl, opName, brand) +
+      "</section>" +
       ownershipMetaStrip(hotel, ownership, ctrl, opName) +
       '<section class="hiw-section"><h3 class="hiw-section__h">Key Strategic Insights</h3>' +
       '<div class="hiw-insights">' +

@@ -10,6 +10,7 @@ import {
   listGoldenDemoCohortIndex,
   GSF_SLUG,
 } from "../lib/hotel-intelligence/ownership/golden-demo/gsf-cohort.js";
+import { buildExecutiveOwnershipNarrative } from "../lib/hotel-intelligence/ownership/he-executive-ownership-narrative-v1.js";
 
 function sendError(res, status, error, details = {}) {
   return res.status(status).json({ success: false, error, ...details });
@@ -101,8 +102,7 @@ export async function getGoldenDemoHotelOwnership(req, res) {
         provenance: {
           class: "LIVE_HI_GRAPH_AIRTABLE",
           verified: true,
-          note:
-            "HI Organizations + HI Hotel–Org Relationships + HI Graph Evidence on appCCUsuGsE1ifoLk",
+          note: "Live ownership graph for this hotel (organizations, relationships, evidence).",
         },
       };
 
@@ -195,26 +195,52 @@ export async function getGoldenDemoHotelOwnership(req, res) {
           payload.ownership_group = payload.organization;
         }
         const operatorName = nameOf(proj.operator);
-        const execText = economicResolved
-          ? economicIsSponsorAttribution
-            ? `HI graph lists ${economicName} as an economic sponsor attribution (not certified ultimate beneficial ownership). Legal owner / PropCo and operator/brand edges are shown separately where present.`
-            : `Validated HI graph economic owner: ${economicName}. Operator/brand edges also present where validated.`
-          : `HI Airtable graph has ${airtableGraph.relationshipCount} validated relationship(s)` +
-            (operatorName ? ` including operator ${operatorName}` : "") +
-            `. Economic owner is not verified. No fabricated ownership is shown.`;
+        // Prefer customer brand label over brand-parent organization trading name.
+        const brandName =
+          payload.hotel?.brand_display ||
+          payload.hotel?.brand ||
+          payload.hotel?.affiliation ||
+          nameOf(proj.brand) ||
+          null;
+        const economicPartyForNarrative = economicResolved
+          ? {
+              name: economicName,
+              known: true,
+              status: economicUiStatus,
+              verification_bucket: economicVerificationBucket,
+              note: economicIsSponsorAttribution
+                ? "Sponsor attribution — not certified verified economic ownership"
+                : economicNotes || undefined,
+            }
+          : { name: null, known: false };
+        const execNarrative = buildExecutiveOwnershipNarrative({
+          hotelName: payload.hotel?.name || null,
+          legalOwner: propcoParty,
+          economicOwner: economicPartyForNarrative,
+          brand: brandName,
+          operator: operatorName,
+        });
+        const execText = execNarrative.text;
+        // Stash parties so a later census name hydrate can rebuild the customer narrative.
+        payload._execNarrativeParties = {
+          legalOwner: propcoParty,
+          economicOwner: economicPartyForNarrative,
+          brand: brandName,
+          operator: operatorName,
+        };
         payload.report = {
           ...report,
           executive_summary: {
             text: execText,
             verification_bucket: economicVerificationBucket,
-            source: "HI_AIRTABLE_GRAPH",
+            source: "CUSTOMER_OWNERSHIP_NARRATIVE_V1",
             what_remains_uncertain: economicResolved && !economicIsSponsorAttribution
               ? []
               : [
                   economicIsSponsorAttribution
-                    ? "Certified economic ownership / UBO (sponsor attribution only)"
+                    ? "Ultimate ownership interest for the proposed economic sponsor"
                     : "Economic owner / controlling sponsor",
-                  propcoName ? null : "Property company (PropCo) / legal titleholder",
+                  propcoName ? null : "Legal property company",
                   "Named decision-makers and outreach channels",
                 ].filter(Boolean),
           },
@@ -222,23 +248,23 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             ? []
             : [
                 economicIsSponsorAttribution
-                  ? "Certified economic ownership / UBO (sponsor attribution only)"
+                  ? "Ultimate ownership interest for the proposed economic sponsor"
                   : "Economic owner / controlling sponsor",
-                propcoName ? null : "Property company (PropCo) / legal titleholder",
+                propcoName ? null : "Legal property company",
                 "Named decision-makers and outreach channels",
               ].filter(Boolean),
           why_this_matters: {
             text: operatorName
-              ? `${operatorName} appears on verified HI operator/brand relationships for this hotel. Operator/brand presence does not certify economic ownership. Use Ownership and Relationships tabs for verified edges only.`
-              : "HI graph relationships for this hotel are partial. Do not infer ownership from brand or operator alone.",
-            source: "HI_AIRTABLE_GRAPH",
+              ? `${operatorName} is shown as the operating/management relationship for this hotel. Brand and management presence do not certify economic ownership.`
+              : "Ownership relationships for this hotel are still being assembled. Brand or operator presence alone does not certify ownership.",
+            source: "CUSTOMER_OWNERSHIP_NARRATIVE_V1",
           },
           portfolio_preview: {
             hotels: portfolioHotels,
             kpis: portfolioKpis,
             source: "HI_AIRTABLE_GRAPH",
             coverage_note:
-              "Portfolio limited to hotels with HI Hotel–Org Relationships in the current graph — not a complete Marriott system portfolio.",
+              "Portfolio preview shows hotels currently linked to this ownership organization — not a complete brand-system portfolio.",
           },
           organizations: (airtableGraph.organizations || []).map((org) => ({
             airtable_id: org.airtableId,
@@ -330,9 +356,9 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             evidence_count: airtableGraph.evidenceCount || 0,
             message: economicResolved
               ? economicIsSponsorAttribution
-                ? "HI graph includes economic sponsor attribution (not certified UBO)."
-                : "HI graph includes validated economic owner."
-              : "HI graph partial — operator/brand may be present; economic owner unresolved.",
+                ? "A potential economic sponsor is identified; ultimate ownership interest is not independently confirmed."
+                : "Economic ownership is supported by verified ownership relationships."
+              : "Operator and brand may be present; economic ownership remains unresolved.",
           },
           // Sources tab SoT: HI Graph Evidence projected into existing citation shape.
           evidence: {
@@ -340,13 +366,13 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             claim:
               (report.evidence && report.evidence.claim) ||
               (economicResolved
-                ? `Validated HI graph ownership edges for ${payload.hotel?.name || recordId}`
-                : `HI graph evidence and relationship edges for ${payload.hotel?.name || recordId}`),
+                ? `Ownership relationships and supporting documents for ${payload.hotel?.name || recordId}`
+                : `Relationship and evidence records for ${payload.hotel?.name || recordId}`),
             sources: graphSources.length
               ? graphSources
               : (report.evidence && report.evidence.sources) || [],
             what_it_proves:
-              "Source documents persisted in HI Graph Evidence and linked to this hotel.",
+              "Source documents linked to this hotel support the ownership and operating relationships shown.",
             what_it_does_not_prove:
               "Does not invent ultimate beneficial ownership; historical sources remain historical.",
             source: "HI_GRAPH_EVIDENCE",
@@ -422,6 +448,27 @@ export async function getGoldenDemoHotelOwnership(req, res) {
               row.name = hotelName;
               row.hotel = hotelName;
             }
+          }
+          // Rebuild customer executive narrative once the canonical hotel name is known.
+          if (
+            payload.report?.executive_summary?.source === "CUSTOMER_OWNERSHIP_NARRATIVE_V1" &&
+            payload._execNarrativeParties
+          ) {
+            const brandForNarrative =
+              payload.hotel?.brand_display ||
+              payload.hotel?.brand ||
+              payload.hotel?.affiliation ||
+              payload._execNarrativeParties.brand ||
+              null;
+            const rebuilt = buildExecutiveOwnershipNarrative({
+              hotelName,
+              ...payload._execNarrativeParties,
+              brand: brandForNarrative,
+            });
+            payload.report.executive_summary = {
+              ...payload.report.executive_summary,
+              text: rebuilt.text,
+            };
           }
         }
         const phone =
@@ -637,6 +684,34 @@ export async function getGoldenDemoHotelOwnership(req, res) {
         sharedErr?.message || sharedErr,
       );
     }
+
+    // Final customer narrative rebuild after shared hotel view hydrates brand/name.
+    if (
+      payload._execNarrativeParties &&
+      payload.report?.executive_summary?.source === "CUSTOMER_OWNERSHIP_NARRATIVE_V1"
+    ) {
+      const finalBrand =
+        payload.hotel?.brand_display ||
+        payload.hotel?.brand ||
+        payload.hotel?.affiliation ||
+        payload._execNarrativeParties.brand ||
+        null;
+      const finalOperator =
+        payload.hotel?.managementCompany ||
+        payload._execNarrativeParties.operator ||
+        null;
+      const rebuilt = buildExecutiveOwnershipNarrative({
+        hotelName: payload.hotel?.name || null,
+        ...payload._execNarrativeParties,
+        brand: finalBrand,
+        operator: finalOperator,
+      });
+      payload.report.executive_summary = {
+        ...payload.report.executive_summary,
+        text: rebuilt.text,
+      };
+    }
+    if (payload._execNarrativeParties) delete payload._execNarrativeParties;
 
     return res.json({ success: true, ...payload });
   } catch (err) {

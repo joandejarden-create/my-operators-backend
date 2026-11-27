@@ -125,6 +125,12 @@ if ($ConsistencyModes -contains $Mode) {
   if ($LASTEXITCODE -ne 0) {
     throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
   }
+
+  Write-Host "[HE Factory] executive ownership narrative gates"
+  & npm run test:he-executive-ownership-narrative-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE executive ownership narrative gates FAILED for $HotelId (mode=$Mode)"
+  }
 }
 
 # Header Website/Phone hydration audit (current hotel, or full HE50 batch when -BatchFile set).
