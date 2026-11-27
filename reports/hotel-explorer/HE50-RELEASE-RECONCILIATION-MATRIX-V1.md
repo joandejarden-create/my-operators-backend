@@ -2,9 +2,10 @@
 
 **Audit time:** 2026-11-27  
 **origin/main:** `6bb2f0c8a5fad97c90275974ec87cd013fc8965c` (merge #627)  
-**Verify checkout:** `C:\Dev\dealality\_verify_pr627_main` @ `6bb2f0c8a`  
-**Live :8080:** serves asset hashes matching main/#627 contact + explorer JS/CSS (NOT Contact CX V2; unified theme CSS 404).  
-**FULL_HE_E2E_VALIDATED:** `NO`
+**Reconciliation branch:** `feat/he50-release-reconciliation-v1` → PR **#628**  
+**Verify / serve checkout:** `C:\Dev\dealality\_verify_pr627_main` @ `b449dfc0f` (post-integrate)  
+**Live :8080 (restarted from verify checkout):** Contact CX V2 + sentiment flag + theme tokens + Year Built 1979 / Reno 2015 + Org focus 407 / Proposed / Marbeth.  
+**FULL_HE_E2E_VALIDATED:** `NO` (browser Radar certification outstanding)
 
 ## Serving process
 
