@@ -41,6 +41,7 @@ const hotelId = arg("--hotel") || arg("--hotels")?.split(",")[0];
 const mode = arg("--mode") || CANONICAL_EXECUTION_MODE.FIXTURE;
 const outDir = arg("--out") || null;
 const maxCandidates = arg("--max-candidates");
+const operatingMode = arg("--operating-mode");
 const obsRoot = arg("--observability-root") || null;
 const budgetCeilingUsd = Number(arg("--budget-ceiling-usd") || 0) || 0;
 const exaEffort = arg("--exa-effort") || "medium";
@@ -55,8 +56,13 @@ const opts = {
   authorizeExaAgentLive: has("--authorize-exa-agent-live"),
   authorizePublish: has("--authorize-publish"),
   budgetCeilingUsd,
-  maxCandidates: maxCandidates != null ? Number(maxCandidates) : 8,
-  allowPartial: has("--allow-partial"),
+  // Omit maxCandidates unless explicit — operating mode resolves CERTIFICATION_SAMPLE default 8
+  // vs COMMERCIAL_FULL_E2E uncapped (budget-gated) queue.
+  maxCandidates: maxCandidates != null ? Number(maxCandidates) : undefined,
+  operatingMode: operatingMode || undefined,
+  certificationSample: has("--certification-sample"),
+  commercialFullE2e: has("--commercial-full-e2e"),
+  allowPartial: has("--allow-partial") || has("--commercial-full-e2e"),
   authorizationId: arg("--authorization-id") || null,
   exaEffort,
   researchTrack,
