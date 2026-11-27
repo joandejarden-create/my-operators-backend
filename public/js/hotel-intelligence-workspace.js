@@ -1878,6 +1878,55 @@
     });
   }
 
+  function mountOrgKeyPeopleFromContactIntelligence() {
+    var host = document.querySelector("[data-hex-key-people-host]");
+    if (!host) return;
+    var hotelId = recordId(state.hotel);
+    if (!hotelId) {
+      host.innerHTML = renderPeopleGrouped([], {
+        contactsLink:
+          '<a class="hiw-linkish" href="#contacts" data-hiw-tab="contacts">Open Contact Intelligence</a>',
+      });
+      return;
+    }
+    var seed = collectOrgKeyPeople(state.ownership, state.org);
+    var contactsLink =
+      '<a class="hiw-linkish" href="#contacts" data-hiw-tab="contacts">View all in Contact Intelligence</a>';
+    if (seed.length) {
+      host.innerHTML = renderPeopleGrouped(seed.slice(0, 5), { contactsLink: contactsLink });
+    } else {
+      host.innerHTML = heWaveCompact(
+        "Loading contacts…",
+        "Reconciling with Contact Intelligence"
+      );
+    }
+    var url =
+      "/api/contact-intelligence/hotels/" +
+      encodeURIComponent(hotelId) +
+      "?audience=internal";
+    fetch(url, { credentials: "same-origin" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("http_" + r.status);
+        return r.json();
+      })
+      .then(function (json) {
+        if (!document.querySelector("[data-hex-key-people-host]")) return;
+        var pkgPeople =
+          (json && json.package && json.package.people) ||
+          (json && json.people) ||
+          [];
+        var fromCi = mapContactIntelligencePeople(pkgPeople);
+        var merged = normalizeOrgKeyPeopleRows(seed.concat(fromCi)).slice(0, 5);
+        host.innerHTML = renderPeopleGrouped(merged, { contactsLink: contactsLink });
+      })
+      .catch(function () {
+        if (!document.querySelector("[data-hex-key-people-host]")) return;
+        if (!seed.length) {
+          host.innerHTML = renderPeopleGrouped([], { contactsLink: contactsLink });
+        }
+      });
+  }
+
   function formatNewsDate(iso) {
     if (!iso) return "";
     var d = new Date(iso);
@@ -2617,8 +2666,10 @@
             ". " +
             (operator.name
               ? "Day-to-day operations are associated with " +
-                operator.name +
-                (brand ? " under the " + brand + " brand. " : ". ")
+                (sanitizeOperatingPartyName(operator.name) || operator.name) +
+                (brand
+                  ? " under the " + (sanitizeOperatingPartyName(brand) || brand) + " brand. "
+                  : ". ")
               : "") +
             "Scale, brand distribution, and management structure frame outreach; they do not by themselves establish ownership economics.",
         },
@@ -2639,7 +2690,7 @@
                   : ". ")
               : "Economic sponsor is not yet verified. ") +
             (uboUnresolved
-              ? "Ultimate beneficial ownership remains unresolved — seniority alone is not treated as UBO proof."
+              ? "Ultimate beneficial ownership has not been independently confirmed."
               : ""),
         },
         {
@@ -2647,11 +2698,13 @@
           title: "Commercial Strengths",
           body:
             (brand
-              ? "Established " + brand + " affiliation supports distribution and commercial recognition. "
+              ? "Established " +
+                (sanitizeOperatingPartyName(brand) || brand) +
+                " affiliation supports distribution and commercial recognition. "
               : "") +
             (operator.name
               ? "Management relationship with " +
-                operator.name +
+                (sanitizeOperatingPartyName(operator.name) || operator.name) +
                 " separates operating execution from ownership decision rights. "
               : "") +
             (rooms
@@ -2671,9 +2724,9 @@
           title: "Priority Follow-Ups",
           body:
             (uboUnresolved
-              ? "Resolve ultimate beneficial ownership if it becomes material to counterparty mapping. "
+              ? "Confirm ultimate beneficial ownership if it becomes material to counterparty mapping. "
               : "") +
-            "Confirm any property-assigned asset manager without inferring from portfolio titles alone. Verify personal professional channels for priority owner-side people via Contact Intelligence (Surfe on explicit click only).",
+            "Confirm any property-assigned asset manager without inferring from portfolio titles alone. Review professional channels for priority owner-side people in Contact Intelligence.",
         },
       ],
     };
@@ -2695,11 +2748,9 @@
       if (preferred.indexOf(s.id) >= 0) return;
       ordered.push(s);
     });
-    // Presentation: Asset & Market · Commercial Strengths · Strategic Considerations · Priority Follow-Ups
-    // Keep Ownership & Portfolio as fifth when present (founder required content).
     var html =
       '<div class="hiw-strategic" data-hiw-strategic-context="1">' +
-      '<p class="hiw-muted hiw-strategic__lede">Executive assessment synthesized from verified and appropriately qualified proposed intelligence. Evidence lives in Sources &amp; Evidence.</p>';
+      '<p class="hiw-muted hiw-strategic__lede">Portfolio and ownership context for commercial outreach — verified facts first, with proposed relationships clearly marked.</p>';
     ordered.forEach(function (s) {
       var title = s.title || "";
       if (s.id === "strategic") title = "Strategic Considerations";
@@ -2713,7 +2764,14 @@
         esc(s.body || "") +
         "</p></div>";
     });
-    html += "</div>";
+    html +=
+      '<details class="hiw-strategic__method hiw-ownership-methodology" data-he-strategic-methodology="1">' +
+      "<summary>About This Strategic Context</summary>" +
+      '<div class="hiw-ownership-methodology__body">' +
+      "<ul><li>Insights combine asset positioning, ownership structure, management organization, and portfolio relationships.</li>" +
+      "<li>Proposed economic sponsors are not confirmed ultimate beneficial owners.</li>" +
+      "<li>Supporting evidence and source notes live in Sources &amp; Evidence.</li></ul>" +
+      "</div></details></div>";
     return html;
   }
 
@@ -2743,10 +2801,57 @@
     );
   }
 
-  function renderPeopleGrouped(people) {
+  function mapContactIntelligencePeople(pkgPeople) {
+    return (pkgPeople || [])
+      .map(function (p) {
+        if (!p || typeof p !== "object") return null;
+        return {
+          name: p.display_name || p.name || "",
+          title: p.title || p.role || "",
+          organization: p.organization_name || p.organization || "",
+          whyRelevant:
+            p.property_relevance === "PROPERTY_DIRECT"
+              ? "Property-level operating contact"
+              : p.property_relevance === "OWNER_ORG"
+                ? "Owner-organization professional contact"
+                : "Professional contact from Contact Intelligence",
+          commercialRole:
+            p.property_relevance === "PROPERTY_DIRECT"
+              ? "Property operations"
+              : "Owner organization",
+          propertyResponsibilityLabel:
+            p.property_relevance === "PROPERTY_DIRECT"
+              ? "Property-linked role"
+              : "Owner-organization role",
+          verificationStatus:
+            p.identity_verified === true ||
+            /VERIFIED|HIGH/i.test(String(p.verification_status || p.identityVerification || ""))
+              ? "Verified"
+              : "Directory",
+          linkedinUrl: p.linkedin_url || p.linkedinUrl || null,
+          professional_profile_url: p.linkedin_url || p.linkedinUrl || null,
+          professional_profile_verified: Boolean(p.linkedin_url || p.linkedinUrl),
+          decision_authority_category:
+            p.role_group || p.contactClass || p.property_relevance || "contacts",
+          category: p.property_relevance || "contacts",
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function renderPeopleGrouped(people, opts) {
+    opts = opts || {};
     var rows = normalizeOrgKeyPeopleRows(people);
     if (!rows.length) {
-      return '<div class="hiw-gap-box"><h4>Decision authority not yet verified</h4><p>No named individuals verified for this hotel.</p></div>';
+      return (
+        '<div class="hiw-gap-box" data-hex-key-people-empty="1">' +
+        "<h4>Ownership decision-makers not yet verified</h4>" +
+        "<p>No property-specific ownership decision-maker is verified for this hotel yet. Professional contacts may still be available in Contact Intelligence.</p>" +
+        (opts.contactsLink
+          ? '<p class="hiw-section-footnote">' + opts.contactsLink + "</p>"
+          : "") +
+        "</div>"
+      );
     }
     var claimed = {};
     var html = "";
@@ -2804,7 +2909,20 @@
         )
       );
     });
-    return html || '<p class="hiw-empty">No people verified.</p>';
+    if (!html) {
+      return (
+        '<p class="hiw-empty">No people verified.</p>' +
+        (opts.contactsLink
+          ? '<p class="hiw-section-footnote">' + opts.contactsLink + "</p>"
+          : "")
+      );
+    }
+    return (
+      html +
+      (opts.contactsLink
+        ? '<p class="hiw-section-footnote">' + opts.contactsLink + "</p>"
+        : "")
+    );
   }
 
   function finding(title, bodyHtml, status) {
@@ -3097,6 +3215,18 @@
     );
   }
 
+  function sanitizeOperatingPartyName(value) {
+    var s = String(value || "").trim();
+    if (!s || s === "—") return "";
+    return s
+      .replace(
+        /\s*\((?:managed|management|operator|brand|franchisor|franchisee)\)\s*$/i,
+        ""
+      )
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function ownedPortfolioRow(h, focusId) {
     var market = h.market_display || h.market || h.city || "—";
     var rooms =
@@ -3106,12 +3236,13 @@
           ? formatCount(h.rooms)
           : "—";
     var brand = h.brand_display || h.brand || "—";
-    var operator = h.operator || "—";
+    var operatorRaw = h.operator || h.management_company || "";
+    var operator = sanitizeOperatingPartyName(operatorRaw) || "—";
     var rel =
       h.ownership_relationship_label ||
       (window.HeOwnerPortfolioOperatorView &&
         window.HeOwnerPortfolioOperatorView.formatOwnershipRelationshipLabel(h)) ||
-      "Owned / controlled";
+      "Owned / Controlled";
     var status =
       h.ownership_evidence_label ||
       (window.HeOwnerPortfolioOperatorView &&
@@ -3126,20 +3257,27 @@
       "<td>" +
       esc(market) +
       "</td>" +
-      '<td class="dl-td--num">' +
+      '<td class="dl-td--num hiw-td--num">' +
       esc(rooms) +
       "</td>" +
       "<td>" +
       esc(brand) +
       "</td>" +
       "<td>" +
-      esc(operator === "—" ? "Not verified" : operator) +
+      esc(operator === "—" ? "Not Verified" : operator) +
       "</td>" +
       "<td>" +
       esc(rel) +
+      (status
+        ? ' <span class="hiw-rel-status" aria-label="Status">— ' + esc(status) + "</span>"
+        : "") +
       "</td>" +
       "<td>" +
+      '<span class="hiw-status' +
+      (/verified/i.test(status) ? " hiw-status--verified" : " hiw-status--probable") +
+      '">' +
       esc(status) +
+      "</span>" +
       "</td></tr>"
     );
   }
@@ -3259,6 +3397,7 @@
       groups
         .map(function (g, idx) {
           var open = idx === 0;
+          var opLabel = sanitizeOperatingPartyName(g.operatorName) || g.operatorName || "Operator";
           return (
             '<div class="hex-op-group' +
             (open ? " is-open" : "") +
@@ -3270,7 +3409,7 @@
             (open ? "▾" : "▸") +
             "</span>" +
             '<span class="hex-op-group__name">' +
-            esc(g.operatorName) +
+            esc(opLabel) +
             "</span>" +
             '<span class="hex-op-group__meta">' +
             esc(String(g.hotelCount)) +
@@ -3284,22 +3423,67 @@
             '<div class="hex-op-group__body"' +
             (open ? "" : " hidden") +
             ">" +
-            '<ul class="hex-op-group__hotels">' +
-            (g.hotels || [])
-              .map(function (h) {
-                return (
-                  "<li>" +
-                  hotelExplorerDeepLinkButton(h, focusId) +
-                  ' <span class="hex-op-group__rooms">' +
-                  (h.rooms_known && h.rooms != null ? esc(formatCount(h.rooms)) + " rooms" : "rooms unresolved") +
-                  "</span></li>"
-                );
-              })
-              .join("") +
-            "</ul></div></div>"
+            wrapTable(
+              "<thead><tr>" +
+                th("Hotel") +
+                th("Market") +
+                th("Rooms") +
+                th("Brand") +
+                th("Management Relationship") +
+                th("Status") +
+                "</tr></thead><tbody>" +
+                (g.hotels || [])
+                  .map(function (h) {
+                    var market = h.market_display || h.market || h.city || "—";
+                    var rooms =
+                      h.rooms_known && h.rooms != null
+                        ? formatCount(h.rooms)
+                        : "—";
+                    var brand = h.brand_display || h.brand || "—";
+                    var status =
+                      h.ownership_evidence_label ||
+                      (window.HeOwnerPortfolioOperatorView &&
+                        window.HeOwnerPortfolioOperatorView.classifyPortfolioHotel &&
+                        window.HeOwnerPortfolioOperatorView.classifyPortfolioHotel(h)
+                          .label) ||
+                      "Proposed";
+                    return (
+                      "<tr>" +
+                      "<td>" +
+                      hotelExplorerDeepLinkButton(h, focusId) +
+                      "</td>" +
+                      "<td>" +
+                      esc(market) +
+                      "</td>" +
+                      '<td class="dl-td--num hiw-td--num">' +
+                      esc(rooms) +
+                      "</td>" +
+                      "<td>" +
+                      esc(brand) +
+                      "</td>" +
+                      "<td>" +
+                      esc("Managed by " + opLabel) +
+                      "</td>" +
+                      "<td>" +
+                      '<span class="hiw-status' +
+                      (/verified/i.test(status)
+                        ? " hiw-status--verified"
+                        : " hiw-status--probable") +
+                      '">' +
+                      esc(status) +
+                      "</span>" +
+                      "</td></tr>"
+                    );
+                  })
+                  .join("") +
+                "</tbody>",
+              "hiw-table--portfolio-manage dl-table ada-table"
+            ) +
+            "</div></div>"
           );
         })
         .join("") +
+      '<p class="hiw-section-footnote">Operator groups cover the same selected owned/controlled hotels. Brand affiliation and management contracts are operating facts, not ownership proof.</p>' +
       "</div>"
     );
   }
@@ -3574,7 +3758,7 @@
         ? '<p class="hiw-muted">Totals reconcile for this scope: selected hotels = operator-group hotels; known rooms match.</p>'
         : '<p class="hiw-muted">Reconciliation check pending or incomplete for this portfolio payload.</p>') +
       "</section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Owned / Controlled Hotels</h3>' +
+      '<section class="hiw-section" data-hex-org-section="owned-hotels"><h3 class="hiw-section__h">Owned / Controlled Hotels</h3>' +
       '<p class="hiw-muted">Selected hotels: ' +
       esc(formatCount(view.totals.hotels)) +
       " · Hotels with known rooms: " +
@@ -3585,15 +3769,14 @@
       esc(formatCount(view.totals.roomsUnknownHotelCount || 0)) +
       "</p>" +
       (ownedRows.length
-        ? '<div class="dl-table-wrap">' +
-          wrapTable(
+        ? wrapTable(
             "<thead><tr>" +
               th("Hotel") +
               th("Market") +
               th("Rooms") +
               th("Brand") +
               th("Operator") +
-              th("Ownership relationship") +
+              th("Ownership Relationship") +
               th("Status") +
               "</tr></thead><tbody>" +
               ownedRows
@@ -3603,23 +3786,30 @@
                 .join("") +
               "</tbody>",
             "hiw-table--portfolio dl-table ada-table"
-          ) +
-          "</div>"
+          )
         : '<div class="hiw-gap-box"><h4>No hotels in this scope</h4><p>' +
           (scope === "verified_only"
             ? "No verified current owned/controlled hotels yet. Switch to Verified + proposed to review staged candidates. A portfolio website listing alone does not certify ownership."
-            : "No owned/controlled hotels in the selected scope. Research the organization once, link matched HPC hotels, and reuse the graph.") +
+            : "No owned/controlled hotels in the selected scope.") +
           "</p></div>") +
       "</section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Who Manages These Hotels?</h3>' +
-      '<p class="hiw-muted">Same hotel set as Owned / Controlled for the selected scope, grouped by current management company. Owner-operated properties are labeled separately from third-party managers.</p>' +
+      '<section class="hiw-section" data-hex-org-section="who-manages"><h3 class="hiw-section__h">Who Manages These Hotels?</h3>' +
       renderOperatorGroupsHtml(view, focusId) +
       "</section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Key People</h3>' +
-      '<p class="hiw-muted">Organization-level summary from the shared contact intelligence model. Names open Contact Intelligence; LinkedIn opens verified profiles. Surfe enrichment stays on Contact Intelligence.</p>' +
-      renderPeopleGrouped(orgPeople.slice(0, 12)) +
-      "</section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Strategic Context</h3>' +
+      '<section class="hiw-section" data-hex-org-section="key-people"><h3 class="hiw-section__h">Key People</h3>' +
+      '<p class="hiw-muted">Compact view of eligible professional contacts. Open Contact Intelligence for the full directory.</p>' +
+      '<div data-hex-key-people-host="1">' +
+      (orgPeople.length
+        ? renderPeopleGrouped(orgPeople.slice(0, 5), {
+            contactsLink:
+              '<a class="hiw-linkish" href="#contacts" data-hiw-tab="contacts">View all in Contact Intelligence</a>',
+          })
+        : heWaveCompact(
+            "Loading contacts…",
+            "Reconciling with Contact Intelligence"
+          )) +
+      "</div></section>" +
+      '<section class="hiw-section" data-hex-org-section="strategic"><h3 class="hiw-section__h">Strategic Context</h3>' +
       renderStrategicContext(hotel, ownership, orgPayload) +
       "</section>" +
       "</article>"
@@ -5363,6 +5553,7 @@
       return "";
     },
     mountOwnershipControlNetwork: mountOwnershipControlNetwork,
+    mountOrgKeyPeopleFromContactIntelligence: mountOrgKeyPeopleFromContactIntelligence,
     mountHotelNewsArticles: mountHotelNewsArticles,
     mountGuestSentiment: mountGuestSentiment,
     mountMarketAlertsEvidenceForSources: mountMarketAlertsEvidenceForSources,
