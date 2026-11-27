@@ -4,13 +4,14 @@
  */
 
 .hiw-root {
+  /* Align with Hotel Explorer Dealality neutrals — no var(--hiw-elevated) / var(--hiw-bg) family */
   --hiw-bg: #080f25;
   --hiw-panel: #101935;
-  --hiw-elevated: #1a2448;
+  --hiw-elevated: #212c4d;
   --hiw-border: #37446b;
   --hiw-text: #ffffff;
-  --hiw-body: #c5cef0;
-  --hiw-muted: #9aa6d0;
+  --hiw-body: #aeb9e1;
+  --hiw-muted: #7e89ac;
   --hiw-accent: #6c72ff;
   --hiw-ok: #3dd68c;
   --hiw-warn: #fdb52a;
@@ -68,7 +69,7 @@
   flex: 0 0 auto;
   padding: 16px 22px 12px;
   border-bottom: 1px solid var(--hiw-border);
-  background: linear-gradient(180deg, #101935 0%, #0b1228 100%);
+  background: var(--hiw-panel);
 }
 .hiw-header__row {
   display: flex;
@@ -150,7 +151,7 @@
   overflow-x: auto;
   padding: 0 14px;
   border-bottom: 1px solid var(--hiw-border);
-  background: #0b1228;
+  background: var(--hiw-bg);
   scrollbar-width: thin;
 }
 .hiw-tab {
@@ -346,7 +347,7 @@
   margin: 0 0 16px;
   padding: 14px 16px;
   border-left: 3px solid var(--hiw-accent);
-  background: rgba(26, 36, 72, 0.55);
+  background: var(--hiw-elevated);
   border-radius: 0 10px 10px 0;
   max-width: var(--hiw-measure);
 }
