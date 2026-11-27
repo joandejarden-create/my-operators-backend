@@ -116,6 +116,17 @@ Every implementation closeout must include:
 - Relevant inventory reconciliation  
 - Any remaining limitations  
 
+## Inter-prompt non-regression (binding)
+
+Before any implementation assignment mutates code:
+
+```powershell
+cd C:\Dev\dealality\ws-gdi   # or the registered stream home
+npm run dealality:assignment-preflight -- --stream gdi
+```
+
+Contract: `DEALALITY_INTER_PROMPT_NON_REGRESSION_V1`. On failure: STOP; reclaim/restore canonical `:8080` (`npm run dealality:gdi-local-8080`, `npm run dealality:canonical-8080-guard -- --once`); revalidate. Ownership uses **cwd + serverScriptDir** (foreign `server.js` under an Integration cwd is denied). Cumulative capability baseline: `lib/dealality-dev-os/gdi-cumulative-functionality-manifest-v1.json`.
+
 ## Related contracts
 
 - [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md)  
@@ -124,3 +135,6 @@ Every implementation closeout must include:
 - [GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md](./GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md)  
 - Canonical `:8080` ownership: `lib/dealality-dev-os/canonical-port-8080-ownership-v1.js`  
 - Validator: `npm run dealality:validate-gdi-cumulative-8080`  
+- Assignment preflight: `npm run dealality:assignment-preflight`  
+- Live guard: `npm run dealality:canonical-8080-guard`  
+ 

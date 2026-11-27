@@ -163,10 +163,52 @@ check("ci_flag_cannot_authorize_foreign_worktree_8080", () => {
   assert.equal(r.code, "PORT_8080_UNAUTHORIZED_WORKSPACE");
 });
 
+check("integration_cwd_foreign_server_script_denied", () => {
+  const foreignScriptDir = path.join("C:/Dev/dealality", "_verify_pr627_main");
+  const r = evaluateCanonicalPort8080Ownership({
+    cwd: integration.path,
+    serverScriptDir: foreignScriptDir,
+    requireServerScriptDir: true,
+    listenPort: 8080,
+    env: {
+      NODE_ENV: "development",
+      DEALALITY_8080_OWNER: "integration",
+    },
+    registry,
+  });
+  assert.equal(r.ok, false);
+  assert.equal(r.authorizedFor8080, false);
+  assert.equal(r.code, "PORT_8080_SERVER_SCRIPT_MISMATCH");
+});
+
+check("gdi_home_requires_matching_server_script_dir", () => {
+  const ok = evaluateCanonicalPort8080Ownership({
+    cwd: gdi.path,
+    serverScriptDir: gdi.path,
+    requireServerScriptDir: true,
+    listenPort: 8080,
+    env: { NODE_ENV: "development" },
+    registry,
+  });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.code, "AUTHORIZED_GDI_HOME");
+
+  const denied = evaluateCanonicalPort8080Ownership({
+    cwd: gdi.path,
+    serverScriptDir: path.join("C:/Dev/dealality", "wt-he-unified-theme-v1"),
+    requireServerScriptDir: true,
+    listenPort: 8080,
+    env: { NODE_ENV: "development" },
+    registry,
+  });
+  assert.equal(denied.ok, false);
+  assert.equal(denied.code, "PORT_8080_SERVER_SCRIPT_MISMATCH");
+});
+
 check("launch_env_pins_durable_package_root", () => {
   const launch = buildCanonical8080LaunchEnv(
-    { NODE_ENV: "development" },
-    { cwd: gdi.path, registry },
+    { NODE_ENV: "development", DEALALITY_8080_OWNER: "integration" },
+    { cwd: gdi.path, serverScriptDir: gdi.path, registry },
   );
   assert.equal(launch.ok, true);
   assert.ok(launch.env.GDI_PUBLICATION_PACKAGE_ROOT);
@@ -178,6 +220,7 @@ check("launch_env_pins_durable_package_root", () => {
     launch.env.DEALALITY_CANONICAL_8080_OWNERSHIP,
     DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1,
   );
+  assert.equal(launch.env.DEALALITY_8080_OWNER, undefined);
 });
 
 check("durable_root_has_wyndham_staged_pointer", () => {

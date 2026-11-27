@@ -100,7 +100,7 @@ function portFree(port) {
   });
 }
 
-function fetchJson(url, timeoutMs = 4000) {
+function fetchText(url, timeoutMs = 4000) {
   return new Promise((resolve, reject) => {
     const req = http.get(url, { timeout: timeoutMs }, (res) => {
       let body = "";
@@ -109,11 +109,7 @@ function fetchJson(url, timeoutMs = 4000) {
         body += c;
       });
       res.on("end", () => {
-        try {
-          resolve({ status: res.statusCode, json: JSON.parse(body) });
-        } catch (err) {
-          reject(err);
-        }
+        resolve({ status: res.statusCode, body });
       });
     });
     req.on("error", reject);
@@ -121,6 +117,16 @@ function fetchJson(url, timeoutMs = 4000) {
       req.destroy();
       reject(new Error("timeout"));
     });
+  });
+}
+
+function fetchJson(url, timeoutMs = 4000) {
+  return fetchText(url, timeoutMs).then(({ status, body }) => {
+    try {
+      return { status, json: JSON.parse(body) };
+    } catch (err) {
+      throw err;
+    }
   });
 }
 
@@ -140,17 +146,41 @@ async function waitForCanonicalReady(expectedPid, timeoutMs = 45000) {
       );
       if (status === 200 && json?.ok) {
         const basename = String(json.servingDirectoryBasename || "");
+        const scriptBase = String(json.servingScriptDirectoryBasename || "");
+        const cwdMatches =
+          json.cwdMatchesServerScript === undefined
+            ? true
+            : json.cwdMatchesServerScript === true;
         const authorized = json.portOwnership?.authorizedFor8080 === true;
         const owner = json.portOwnership?.ownerStream;
         const staged = json.publication?.wyndhamStagedVersion;
         if (basename !== "ws-gdi") {
           lastErr = `identity basename=${basename} (expected ws-gdi)`;
+        } else if (scriptBase && scriptBase !== "ws-gdi") {
+          lastErr = `identity server script basename=${scriptBase} (expected ws-gdi) — foreign server.js mismatch`;
+        } else if (!cwdMatches) {
+          lastErr = "identity cwd does not match server.js directory";
         } else if (!authorized || (owner !== "gdi" && owner !== "integration")) {
           lastErr = `identity ownership not authorized (owner=${owner})`;
         } else if (!staged) {
           lastErr = "identity missing Wyndham STAGED version";
         } else {
-          return { ok: true, identity: json };
+          try {
+            const html = await fetchText(
+              `http://127.0.0.1:${PORT}/group-demand-intelligence.html`,
+            );
+            if (
+              html.status !== 200 ||
+              !/executive-summary-tab\.js\?v=/.test(html.body)
+            ) {
+              lastErr =
+                "served HTML missing executive-summary-tab.js — foreign/regressed public tree";
+            } else {
+              return { ok: true, identity: json };
+            }
+          } catch (err) {
+            lastErr = `html probe failed: ${err?.message || err}`;
+          }
         }
       } else {
         lastErr = `identity status=${status}`;
@@ -238,7 +268,10 @@ if (!(await portFree(PORT))) {
 
 const outFd = fs.openSync(OUT_LOG, "a");
 const errFd = fs.openSync(ERR_LOG, "a");
-const child = spawn(process.execPath, ["server.js"], {
+// Absolute server.js path so OS listener audits can distinguish ws-gdi from
+// foreign trees that also spawn a relative "server.js".
+const serverJsAbs = path.join(ROOT, "server.js");
+const child = spawn(process.execPath, [serverJsAbs], {
   cwd: ROOT,
   detached: true,
   stdio: ["ignore", outFd, errFd],

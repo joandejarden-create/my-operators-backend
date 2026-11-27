@@ -20,6 +20,9 @@ import { createGdiPublicationPackageStore } from "../lib/group-demand-intelligen
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 /** Accepted cumulative cache busts (latest supersedes prior lifecycle markers). */
 const ACCEPTED_UI_BUSTS = [
+  "gdi-es-outlook-12mo-kpis-20261127",
+  "gdi-list-cols-simplify-20261127",
+  "gdi-es-receipt-funnel-v1b",
   "gdi-competitive-scope-v1",
   "gdi-es-admin-shared-tiles-v1",
   "gdi-wyndham-26-cert",
@@ -59,7 +62,10 @@ check("auth_shell_has_four_tabs_and_exec_summary_script", () => {
   assert.match(html, /gdi-commercial-list-table-v1\.js\?v=/);
   assertAcceptedBust(html, "dealality-gdi-ui\\.js");
   assertAcceptedBust(html, "app\\.js");
-  assert.match(html, /gdi-competitive-scope-v1|gdi-es-admin-shared-tiles-v1|gdi-wyndham-26-cert/);
+  assert.match(
+    html,
+    /gdi-es-outlook-12mo-kpis-|gdi-list-cols-simplify-|gdi-es-receipt-funnel-|gdi-competitive-scope-v1|gdi-es-admin-shared-tiles-v1|gdi-wyndham-26-cert/,
+  );
 });
 
 check("ui_registers_exec_summary_and_left_cluster_tabs", () => {

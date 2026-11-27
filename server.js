@@ -22,15 +22,24 @@ import {
   DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1,
   STREAM_DEV_PORTS,
 } from "./lib/dealality-dev-os/canonical-port-8080-ownership-v1.js";
+import { dirname as dirnameForOwnership } from "node:path";
+import { fileURLToPath as fileURLToPathForOwnership } from "node:url";
 
 const serverPath = new URL(import.meta.url).pathname;
+const serverScriptDir = dirnameForOwnership(fileURLToPathForOwnership(import.meta.url));
 const cwd = process.cwd();
 const cwdBase = cwd.replace(/[\\/]+$/, "").split(/[\\/]/).pop() || "";
+const serverScriptBasename = serverScriptDir
+  .replace(/[\\/]+$/, "")
+  .split(/[\\/]/)
+  .pop() || "";
 const listenPort = Number(process.env.PORT || 8080);
 let portOwnership = null;
 try {
   portOwnership = assertCanonicalPort8080Ownership({
     cwd,
+    serverScriptDir,
+    requireServerScriptDir: true,
     listenPort,
     env: process.env,
   });
@@ -40,6 +49,7 @@ try {
   console.error("Contract:", DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1);
   console.error("Code:", err?.code || evaluation?.code || "PORT_OWNERSHIP_DENIED");
   console.error("Current directory:", cwd);
+  console.error("Server script directory:", serverScriptDir);
   console.error("Listen port:", listenPort);
   console.error(String(err?.message || err));
   if (evaluation?.suggestedDevPort) {
@@ -4096,6 +4106,11 @@ if (process.env.NODE_ENV !== "production") {
       environment: process.env.NODE_ENV || "development",
       port: Number(process.env.PORT || 8080),
       servingDirectoryBasename: cwdBase,
+      // Basename of the directory that owns server.js (must match authorized workspace).
+      servingScriptDirectoryBasename: serverScriptBasename,
+      cwdMatchesServerScript:
+        String(cwd).replace(/\\/g, "/").toLowerCase() ===
+        String(serverScriptDir).replace(/\\/g, "/").toLowerCase(),
       isCanonicalCheckout,
       portOwnership: portOwnership
         ? {
@@ -4103,6 +4118,7 @@ if (process.env.NODE_ENV !== "production") {
             code: portOwnership.code,
             ownerStream: portOwnership.ownerStream,
             authorizedFor8080: portOwnership.authorizedFor8080 === true,
+            serverScriptDirMatched: Boolean(portOwnership.serverScriptDir),
           }
         : null,
       branch,
