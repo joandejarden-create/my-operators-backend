@@ -136,7 +136,9 @@ check("customer_copy_audit_on_shell_assets", () => {
     path.join(ROOT, "public/group-demand-intelligence.html"),
     "utf8",
   );
-  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-remove-staged-pill-20261127/);
+  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-wave-loading-20261127/);
+  assert.match(html, /dealality-wave-loader\.js\?v=3/);
+  assert.match(html, /dealality-wave-loader\.css\?v=3/);
 });
 
 if (failed) {

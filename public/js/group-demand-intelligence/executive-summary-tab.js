@@ -1093,10 +1093,41 @@
       });
     }
 
+    function executiveSummaryLoadingHtml() {
+      var label = "Loading Executive Summary\u2026";
+      var wave = global.DealalityWaveLoader;
+      if (wave && typeof wave.toastHtml === "function") {
+        return (
+          '<div class="gdi-es-loading-wave" data-gdi-es-wave-loading="1">' +
+          wave.toastHtml(label) +
+          "</div>"
+        );
+      }
+      if (wave && typeof wave.compactHtml === "function") {
+        return (
+          '<div class="gdi-es-loading-wave" data-gdi-es-wave-loading="1">' +
+          wave.compactHtml(label) +
+          "</div>"
+        );
+      }
+      if (wave && typeof wave.html === "function") {
+        return (
+          '<div class="gdi-es-loading-wave" data-gdi-es-wave-loading="1">' +
+          wave.html(label, { compact: true, fixed: false, progress: false }) +
+          "</div>"
+        );
+      }
+      // Script should be present on GDI shell; keep a11y status without inventing a new spinner.
+      return (
+        '<div class="gdi-es-loading-wave" data-gdi-es-wave-loading="1" role="status" aria-live="polite" aria-busy="true">' +
+        esc(label) +
+        "</div>"
+      );
+    }
+
     async function load() {
       if (!active) return;
-      root.innerHTML =
-        '<div class="gdi-es-loading" role="status">Loading executive summary…</div>';
+      root.innerHTML = executiveSummaryLoadingHtml();
       if (!hotelId) {
         root.innerHTML =
           '<div class="gdi-es-banner gdi-es-banner--muted">Select a hotel to view the Executive Summary.</div>';
