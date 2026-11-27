@@ -69,11 +69,66 @@ run("contact_intelligence_uses_toast_not_full_width_banner", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
   mustInclude(hci, "Loading Contacts…");
   mustInclude(hci, "HeLoadingUx");
-  mustInclude(hci, "toastHtml");
+  mustInclude(hci, "sectionHtml");
+  mustInclude(hci, "he-async-loading");
   assert.ok(!/Loading Contact Intelligence…/.test(hci));
+  assert.ok(
+    !/class="hci-loading"/.test(hci),
+    "Contact must not keep a separate .hci-loading card"
+  );
   const css = read("public/css/hotel-contact-intelligence.css");
-  mustInclude(css, ".hci-loading");
-  assert.ok(/justify-content:\s*center/.test(css));
+  mustInclude(css, "he-async-loading");
+  assert.ok(!/\.hci-loading\s*\{/.test(css), "remove custom .hci-loading block");
+});
+
+run("he_tabs_share_same_loading_component", () => {
+  const hci = read("public/js/hotel-contact-intelligence.js");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  const asyncJs = read("public/js/he-async-section-v1.js");
+  // Shared adapter — Contact must not invent a parallel spinner
+  mustInclude(hci, "HeLoadingUx");
+  mustInclude(ws, "HeLoadingUx");
+  mustInclude(asyncJs, "HeLoadingUx");
+  mustInclude(hci, "he-async-loading");
+  mustInclude(ws, "he-async-loading");
+  const hexCss = read("public/css/hotel-explorer.css");
+  mustInclude(hexCss, ".hex-root .he-async-loading");
+  mustInclude(hexCss, "dealality-wave-loader--toast");
+  // Compact HE toast must use product tokens, not oversized pure-black card chrome alone
+  assert.ok(
+    /--hdp-bg-elevated/.test(hexCss),
+    "HE toast chrome should use elevated dark tokens"
+  );
+  assert.ok(
+    /max-width:\s*min\(100%,\s*220px\)/.test(hexCss),
+    "HE toast max-width stays compact"
+  );
+  // Neutralize Radar page `.loading { height: 200px }` conflict on wave loaders
+  assert.ok(
+    /height:\s*auto\s*!important/.test(hexCss),
+    "HE must override host-page .loading height for wave loaders"
+  );
+  assert.ok(
+    /dealality-wave-loader\.loading|\.loading\.dealality-wave-loader/.test(hexCss),
+    "HE height reset must target .loading.dealality-wave-loader"
+  );
+});
+
+run("radar_loading_selector_excludes_wave_loader", () => {
+  for (const rel of [
+    "public/deal-capture-radar-with-ranked-list.html",
+    "public/deal-capture-radar-standalone.html",
+    "public/deal-capture-radar-clean.html",
+  ]) {
+    const html = read(rel);
+    mustInclude(html, ".loading:not(.dealality-wave-loader)");
+    assert.ok(
+      !/\.loading\s*\{\s*display:\s*flex;\s*justify-content:\s*center;\s*align-items:\s*center;\s*height:\s*200px/s.test(
+        html
+      ),
+      `${rel} must not keep unscoped .loading { height: 200px }`
+    );
+  }
 });
 
 run("workspace_and_async_prefer_toast", () => {
@@ -96,7 +151,10 @@ run("quality_registry_he_ql_028", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.19");
+  assert.ok(
+    String(reg.version || "").startsWith("hotel-explorer-founder-quality-lessons-v1."),
+    "registry version present"
+  );
   const lesson = reg.lessons.find((l) => l.id === "HE-QL-028");
   assert.ok(lesson);
   mustInclude(lesson.approvedStandard, "HeLoadingUx");

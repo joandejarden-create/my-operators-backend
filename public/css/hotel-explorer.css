@@ -3247,29 +3247,81 @@ button.hex-action {
 
 /* Independent async section loading (canonical Dealality toast / wave) */
 .hex-root .he-async-loading {
-  min-height: 72px;
+  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   background: transparent;
+  padding: 8px 4px;
 }
 .hex-root .he-async-loading .dealality-loading-toast-host,
 .hex-root .he-loading-toast-host,
 .hex-root .he-loading-wave-host {
   width: 100%;
+  padding: 4px;
+  min-height: 0;
+  height: auto;
+  background: transparent;
 }
 .hex-root .he-async-loading .dealality-wave-loader,
 .hex-root .he-loading-wave-host .dealality-wave-loader {
   width: auto;
-  max-width: min(100%, 320px);
+  max-width: min(100%, 220px);
   margin-left: auto;
   margin-right: auto;
+}
+/*
+ * Radar pages ship a global `.loading { height: 200px }` for map empty states.
+ * Wave loaders also use class `loading` — neutralize that conflict inside HE.
+ */
+.hex-root .dealality-wave-loader.loading,
+.hex-root .loading.dealality-wave-loader,
+.hex-root .dealality-wave-loader--toast,
+.hex-root .dealality-wave-loader--compact,
+.hex-root .dealality-wave-loader--inline {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  z-index: auto;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none;
+}
+/* Compact toast chrome — HE dark tokens, not oversized pure-black card */
+.hex-root .dealality-wave-loader--toast,
+.hex-root .dealality-wave-loader--compact {
+  background: var(--hdp-bg-elevated, #212c4d);
+  border: 1px solid var(--hdp-border, #37446b);
+  border-radius: 8px;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 8px 12px;
+  min-width: 0;
+  max-width: min(100%, 220px);
+}
+.hex-root .dealality-wave-loader--sm .wave-container,
+.hex-root .loading.dealality-wave-loader--sm .wave-container {
+  width: 20px;
+  height: 20px;
+}
+.hex-root .dealality-wave-loader--sm .loading-text-main,
+.hex-root .dealality-wave-loader--toast .loading-text-main {
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: var(--hdp-text, #ffffff);
+}
+.hex-root .dealality-wave-loader--toast .loading-content,
+.hex-root .dealality-wave-loader--compact .loading-content {
+  gap: 8px;
+  margin-bottom: 0;
 }
 .hex-root .he-loading-wave-host {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 12px;
+  padding: 8px 4px;
   background: transparent;
 }
 .hex-root .he-async-error {
