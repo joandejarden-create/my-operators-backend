@@ -41,6 +41,7 @@ Options:
   --continuation-only
   --fixtures <path-to-who-how-scenarios.json>
   --authorize-paid-research   (Live only; still refused unless Mode=Live)
+  --authorize-findymail       (Stage 4 permanent component; Live Findymail uses gold-standard cert script)
   --resume
 `);
 }
@@ -161,8 +162,17 @@ async function main() {
     const who = runWhoHowStageDry(hotelId, { whoHowFixtures });
     report = await runContactResearchStageDry(
       (who.results || []).map((r) => r.opportunity),
-      {},
+      {
+        allowFindymail: flag("--authorize-findymail"),
+        findymailDryRun: flag("--authorize-findymail"),
+        findymailPermanentComponent: true,
+      },
     );
+    if (flag("--authorize-findymail")) {
+      report.findymailPermanentComponent = true;
+      report.findymailNote =
+        "DryRun plans Findymail eligibility; Live enrichment: node scripts/gdi-canonical-full-e2e-gold-standard-certification-v1.mjs --findymail-live";
+    }
   } else if (
     stage === GDI_E2E_V3_STAGE.COMMERCIAL_QUALIFICATION ||
     stage === "QUALIFICATION"

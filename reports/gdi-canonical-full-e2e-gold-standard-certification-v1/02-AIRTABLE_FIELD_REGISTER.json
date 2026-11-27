@@ -1,0 +1,27 @@
+{
+  "base": {
+    "name": "AI Demand Positioning",
+    "baseId": "appa2cE7FTRmIbB32",
+    "contract": "lib/group-demand-intelligence/workflow/gdi-full-e2e-airtable-persistence-contract-v1.js"
+  },
+  "opportunityTable": {
+    "name": "Group Demand Opportunities",
+    "tableId": "tblRuReslJMwsfRQj",
+    "contactFields": [
+      "primaryContactId",
+      "primaryContactName",
+      "primaryContactRole",
+      "primaryContactEmail",
+      "primaryContactPhone",
+      "contactQuality",
+      "opportunityPayloadJson.primaryContact.*"
+    ],
+    "note": "Contacts embedded on opportunities — no separate Contacts table required for gold-standard registry."
+  },
+  "researchHistoryTables": [
+    "GDI Research Runs",
+    "GDI Research Targets",
+    "GDI Hotel Research Opportunities"
+  ],
+  "detailedMatrixCsv": "reports/gdi-airtable-complete-data-model-audit-v1/GDI_FIELD_TO_AIRTABLE_MATRIX.csv"
+}

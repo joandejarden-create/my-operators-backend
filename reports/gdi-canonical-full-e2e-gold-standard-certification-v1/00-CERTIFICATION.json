@@ -1,0 +1,1981 @@
+{
+  "schema": "gdi-canonical-full-e2e-gold-standard-certification-v1",
+  "generatedAt": "2026-11-27T22:28:05.569Z",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "hotelName": "Wyndham San Diego Bayside",
+  "stagedVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_67004994",
+  "certificationStatus": "PARTIAL",
+  "architecture": {
+    "fiveStages": [
+      {
+        "stage": 1,
+        "name": "Demand Discovery",
+        "runner": "scripts/gdi/Invoke-GdiDiscovery.ps1",
+        "status": "OPERATIONAL"
+      },
+      {
+        "stage": 2,
+        "name": "Opportunity Deep Research",
+        "runner": "scripts/gdi/Invoke-GdiDeepResearch.ps1",
+        "status": "OPERATIONAL"
+      },
+      {
+        "stage": 3,
+        "name": "WHO/HOW Resolution",
+        "runner": "scripts/gdi/Invoke-GdiWhoHow.ps1",
+        "status": "OPERATIONAL"
+      },
+      {
+        "stage": 4,
+        "name": "Professional Contact Research",
+        "runner": "scripts/gdi/Invoke-GdiContactResearch.ps1",
+        "findymail": "PERMANENT_COMPONENT",
+        "status": "OPERATIONAL_WITH_FINDYMAIL_GATE"
+      },
+      {
+        "stage": 5,
+        "name": "Commercial Qualification",
+        "runner": "scripts/gdi/Invoke-GdiQualification.ps1",
+        "status": "OPERATIONAL"
+      }
+    ],
+    "orchestrator": "scripts/gdi/Invoke-GdiFullE2E.ps1",
+    "validator": "scripts/gdi/Invoke-GdiValidateFullE2E.ps1",
+    "lifecycle": "FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT",
+    "surfe": "EXPLICIT_CLICK_ONLY_NO_PERSIST",
+    "findymail": {
+      "permanentStage4Component": true,
+      "client": "lib/group-demand-intelligence/providers/gdi-findymail-client-v1.js",
+      "enrichment": "lib/group-demand-intelligence/workflow/gdi-findymail-stage4-enrichment-v1.js",
+      "airtablePersist": "lib/group-demand-intelligence/persistence/gdi-findymail-airtable-contact-persist-v1.js",
+      "authToken": "FOUNDER_GO_GDI_FINDYMAIL_STAGE4_PERMANENT_E2E_20261127",
+      "keyPresence": {
+        "present": true,
+        "env_var": "FINDYMAIL_API_KEY",
+        "len": 48
+      }
+    }
+  },
+  "airtableRegister": {
+    "base": {
+      "name": "AI Demand Positioning",
+      "baseId": "appa2cE7FTRmIbB32",
+      "contract": "lib/group-demand-intelligence/workflow/gdi-full-e2e-airtable-persistence-contract-v1.js"
+    },
+    "opportunityTable": {
+      "name": "Group Demand Opportunities",
+      "tableId": "tblRuReslJMwsfRQj",
+      "contactFields": [
+        "primaryContactId",
+        "primaryContactName",
+        "primaryContactRole",
+        "primaryContactEmail",
+        "primaryContactPhone",
+        "contactQuality",
+        "opportunityPayloadJson.primaryContact.*"
+      ],
+      "note": "Contacts embedded on opportunities — no separate Contacts table required for gold-standard registry."
+    },
+    "researchHistoryTables": [
+      "GDI Research Runs",
+      "GDI Research Targets",
+      "GDI Hotel Research Opportunities"
+    ],
+    "detailedMatrixCsv": "reports/gdi-airtable-complete-data-model-audit-v1/GDI_FIELD_TO_AIRTABLE_MATRIX.csv"
+  },
+  "reconstruction": {
+    "dependsOnTemporaryWorktree": false,
+    "dependsOnUncommittedResearch": false,
+    "dependsOnUntrackedJson": false,
+    "durablePackagePath": "lib/group-demand-intelligence/bundled-publication-packages/recnPB3Q02NO8Ma1o/gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_67004994/package.json",
+    "packageVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_67004994",
+    "opportunityCount": 26,
+    "loadableFromBundledPublication": true,
+    "pointer": "lib/group-demand-intelligence/bundled-publication-packages/recnPB3Q02NO8Ma1o/CURRENT_STAGED.json"
+  },
+  "contactScorecard": {
+    "before": {
+      "opportunityCount": 26,
+      "primary": {
+        "named": 26,
+        "email": 19,
+        "phone": 7,
+        "linkedin": 14,
+        "allThreeChannels": 0,
+        "anyOutreach": 26,
+        "stage4Annotated": 26,
+        "findymailUsed": 8,
+        "withSecondaryContact": 14,
+        "withAltEntryPoints": 0
+      },
+      "uniquePeople": {
+        "count": 40,
+        "withTitle": 40,
+        "withEmail": 19,
+        "withPhone": 7,
+        "withLinkedIn": 28,
+        "allThree": 0,
+        "anyOutreach": 40
+      },
+      "people": [
+        {
+          "name": "Kathryn Newstead",
+          "title": "Director of Events",
+          "organization": "",
+          "email": "knewstead@downtownsandiego.org",
+          "phone": "619-933-0032",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_lmc_2f01609319f56f89"
+          ]
+        },
+        {
+          "name": "Brooke Wheeler",
+          "title": "Membership Events Lead",
+          "organization": "",
+          "email": "bwheeler@labahns.com",
+          "phone": "619-639-3223",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_lmc_b8ba887bff4dfc2e"
+          ]
+        },
+        {
+          "name": "Kristine Coan",
+          "title": "Meeting Logistics Contact",
+          "organization": "",
+          "email": "kcoan@ascrs.org",
+          "phone": "(703) 591-2220",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddc_75804200"
+          ]
+        },
+        {
+          "name": "Rebekah Bell",
+          "title": "Corporate Marketing Specialist",
+          "organization": "",
+          "email": "rebekahb@sol-ark.com",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5dde_1a0faf00"
+          ]
+        },
+        {
+          "name": "Brittany Jolly",
+          "title": "Conference Team Lead",
+          "organization": "",
+          "email": "brittanyjolly@esri.nl",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5dde_f892ef70"
+          ]
+        },
+        {
+          "name": "Madeline Foresman",
+          "title": "Director - Events & Programs",
+          "organization": "",
+          "email": "asnehq@navalengineers.org",
+          "phone": "+7038366729",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddg_f7b6d183"
+          ]
+        },
+        {
+          "name": "Ann Marie Levra",
+          "title": "Senior Director Education & Meetings Strategy",
+          "organization": "",
+          "email": "alevra@aans.org",
+          "phone": "847.378.0548",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddh_7edb8e7c"
+          ]
+        },
+        {
+          "name": "Kim Wang",
+          "title": "Manager, Meeting Operations",
+          "organization": "",
+          "email": "k_wang@acs.org",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddh_b4fad256"
+          ]
+        },
+        {
+          "name": "Olivia Day",
+          "title": "Head of Operations on Phacilitate's official page",
+          "organization": "",
+          "email": "olivia.day@clarionevents.com",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddj_c848701a"
+          ]
+        },
+        {
+          "name": "Shelby Wiggs",
+          "title": "Senior Housing Account Manager",
+          "organization": "",
+          "email": "shelby.wiggs@spargoinc.com",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddj_cf54ecae"
+          ]
+        },
+        {
+          "name": "Stephanie Pursglove",
+          "title": "Office Manager",
+          "organization": "ESET North America",
+          "email": null,
+          "phone": "619-876-5400",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_sc_a7618f7bcd1270a7"
+          ]
+        },
+        {
+          "name": "David Aguirre",
+          "title": "Project Manager",
+          "organization": "Turner Construction Company",
+          "email": "daguirre@tcco.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/david-aguirre-27020411",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_75ee8629955e"
+          ]
+        },
+        {
+          "name": "Martine Sanders",
+          "title": "Vice President & General Manager, Turner Construction Company, San Diego",
+          "organization": "Turner Construction Company",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/martine-sanders-2a269727",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_75ee8629955e"
+          ]
+        },
+        {
+          "name": "Judy Susser",
+          "title": "CMP, CMM — Site Selection",
+          "organization": "ACG San Diego",
+          "email": "acgsandiego@acg.org",
+          "phone": "512.970.0417",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_wyndham_live_associatio_a790d46ad631"
+          ]
+        },
+        {
+          "name": "Lily Yuan",
+          "title": "Senior Director, Supply Chain Management",
+          "organization": "Bora Biologics",
+          "email": "lily.yuan@borabiologics.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/lilyyuan26",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_0fa36c29506f"
+          ]
+        },
+        {
+          "name": "Kam Sidhu",
+          "title": "Head of Supply Chain Management/Operations",
+          "organization": "Bora Biologics",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/kam-sidhu-ab173811b",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_0fa36c29506f"
+          ]
+        },
+        {
+          "name": "Shane Hunt",
+          "title": "Facility Manager; subsequently Facilities Engineering Manager",
+          "organization": "Cirsium Biosciences",
+          "email": "shunt@cirsiumbio.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/shanehunt",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_aa66ce064dbd"
+          ]
+        },
+        {
+          "name": "Allison Satterfield",
+          "title": "Director of Business Operations & Strategic Initiatives",
+          "organization": "Cirsium Biosciences",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/allison-satterfield-500676a0",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_aa66ce064dbd"
+          ]
+        },
+        {
+          "name": "Kentaro Kaetsu",
+          "title": "Project Manager, OHLA USA",
+          "organization": "OHLA USA",
+          "email": "kentaro.kaetsu@ohla-usa.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/kentaro-kaetsu-a7a7b7122",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_c5596f4fa5e2"
+          ]
+        },
+        {
+          "name": "Jimmy Draper",
+          "title": "Executive Vice President, West Region, OHLA USA",
+          "organization": "OHLA USA",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jimmy-draper-b60bb729",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_c5596f4fa5e2"
+          ]
+        },
+        {
+          "name": "MacKenzie Wasson",
+          "title": "Vice President Operations",
+          "organization": "Seasats",
+          "email": "mackenzie@seasats.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/mackenzie-wasson-3b090715a",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_0185c1ea7cbb"
+          ]
+        },
+        {
+          "name": "Jordyn Lanthier",
+          "title": "Procurement Manager",
+          "organization": "Seasats",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jordyn-lanthier-a3a80617a",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_0185c1ea7cbb"
+          ]
+        },
+        {
+          "name": "Joe Bagg",
+          "title": "Senior Manager of Information Systems and Logistics",
+          "organization": "EDAN Diagnostics, Inc.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/joebagg",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_5b183538390f"
+          ]
+        },
+        {
+          "name": "Jasper Villanueva",
+          "title": "Senior Manufacturing Lead",
+          "organization": "EDAN Diagnostics, Inc.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jasper-villanueva-226501113",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_5b183538390f"
+          ]
+        },
+        {
+          "name": "John R. Mosack",
+          "title": "General Manager and Vice President of Operations",
+          "organization": "Bora Biologics",
+          "email": "john.mosack@borabiologics.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/johnmosack",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_61593e390477"
+          ]
+        },
+        {
+          "name": "Margaret Guntner",
+          "title": "Director, Business Development",
+          "organization": "Bora Biologics",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/margaret-guntner-a5006787",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_61593e390477"
+          ]
+        },
+        {
+          "name": "Suzanne K.",
+          "title": "Global Travel & Expense Manager / Travel Manager",
+          "organization": "Saronic Technologies",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/suzanne-k-549a9822",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_ecba7545037a"
+          ]
+        },
+        {
+          "name": "Sebastian Biagioni",
+          "title": "Facilities Expansion Manager; formerly San Diego Site Manager",
+          "organization": "Saronic Technologies",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/sebastian-biagioni",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_ecba7545037a"
+          ]
+        },
+        {
+          "name": "Ryan Dirvin",
+          "title": "Project Manager, Hensel Phelps",
+          "organization": "Hensel Phelps Construction Co.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/ryan-dirvin-524502a2",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_1b7b55bca2b2"
+          ]
+        },
+        {
+          "name": "Jarrod Smith",
+          "title": "Project Manager, Hensel Phelps",
+          "organization": "Hensel Phelps Construction Co.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jarrod-smith-1685b219",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_1b7b55bca2b2"
+          ]
+        },
+        {
+          "name": "Eric Meisgeier",
+          "title": "Project Sponsor / Project Manager, Stacy Witbeck",
+          "organization": "Stacy Witbeck, Inc.",
+          "email": "emeisgeier@stacywitbeck.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/eric-meisgeier-a0971b43",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_f9f06522dd52"
+          ]
+        },
+        {
+          "name": "Jackson Mitz",
+          "title": "Deputy Project Manager, Modern Railway Systems",
+          "organization": "Modern Railway Systems",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jackson-mitz-8856616b",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_f9f06522dd52"
+          ]
+        },
+        {
+          "name": "Christopher Kallam",
+          "title": "Senior Operations Director, West",
+          "organization": "Athletic Brewing Company",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/christopher-kallam-97440711a",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_2e67ee5dc429"
+          ]
+        },
+        {
+          "name": "Rachel Maus",
+          "title": "San Diego Brewery Manager",
+          "organization": "Athletic Brewing Company",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/rachelamaus",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_2e67ee5dc429"
+          ]
+        },
+        {
+          "name": "Jorda Portero Alcaraz",
+          "title": "Senior Global Travel Manager, Grifols",
+          "organization": "Grifols",
+          "email": "jorda.portero@grifols.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jorda-portero-alcaraz-89651759",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_67a7c2b44502"
+          ]
+        },
+        {
+          "name": "Alejandra (Alex) Gutierrez, PhD",
+          "title": "Senior Director of Operations, Grifols",
+          "organization": "Grifols",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/alejandra-alex-gutierrez-phd-0a38308",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_67a7c2b44502"
+          ]
+        },
+        {
+          "name": "Sandra Sifuentes-Rovello",
+          "title": "Senior Vice President Operations",
+          "organization": "Firestorm",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/sandra-sifuentes-rovello-a8514b1",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_7a658d5504ba"
+          ]
+        },
+        {
+          "name": "Eric Hounchell",
+          "title": "VP/GM, xCell",
+          "organization": "Firestorm",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/eric-hounchell-2512197",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_7a658d5504ba"
+          ]
+        },
+        {
+          "name": "Dede Kassel",
+          "title": "Corporate Travel Manager, Meetings & Events; Office Manager",
+          "organization": "Flatiron Construction / FlatironDragados",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/dede-kassel-b333a122",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_84bb84a372dd"
+          ]
+        },
+        {
+          "name": "Steve Fry",
+          "title": "Vice President, Preconstruction; former Civil Project Director, San Diego Airport Roadways and Terminal 1",
+          "organization": "FlatironDragados",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/steve-fry-6ba23856",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_84bb84a372dd"
+          ]
+        }
+      ]
+    },
+    "after": {
+      "opportunityCount": 26,
+      "primary": {
+        "named": 26,
+        "email": 19,
+        "phone": 7,
+        "linkedin": 14,
+        "allThreeChannels": 0,
+        "anyOutreach": 26,
+        "stage4Annotated": 26,
+        "findymailUsed": 8,
+        "withSecondaryContact": 14,
+        "withAltEntryPoints": 0
+      },
+      "uniquePeople": {
+        "count": 40,
+        "withTitle": 40,
+        "withEmail": 19,
+        "withPhone": 7,
+        "withLinkedIn": 28,
+        "allThree": 0,
+        "anyOutreach": 40
+      },
+      "people": [
+        {
+          "name": "Kathryn Newstead",
+          "title": "Director of Events",
+          "organization": "",
+          "email": "knewstead@downtownsandiego.org",
+          "phone": "619-933-0032",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_lmc_2f01609319f56f89"
+          ]
+        },
+        {
+          "name": "Brooke Wheeler",
+          "title": "Membership Events Lead",
+          "organization": "",
+          "email": "bwheeler@labahns.com",
+          "phone": "619-639-3223",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_lmc_b8ba887bff4dfc2e"
+          ]
+        },
+        {
+          "name": "Kristine Coan",
+          "title": "Meeting Logistics Contact",
+          "organization": "",
+          "email": "kcoan@ascrs.org",
+          "phone": "(703) 591-2220",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddc_75804200"
+          ]
+        },
+        {
+          "name": "Rebekah Bell",
+          "title": "Corporate Marketing Specialist",
+          "organization": "",
+          "email": "rebekahb@sol-ark.com",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5dde_1a0faf00"
+          ]
+        },
+        {
+          "name": "Brittany Jolly",
+          "title": "Conference Team Lead",
+          "organization": "",
+          "email": "brittanyjolly@esri.nl",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5dde_f892ef70"
+          ]
+        },
+        {
+          "name": "Madeline Foresman",
+          "title": "Director - Events & Programs",
+          "organization": "",
+          "email": "asnehq@navalengineers.org",
+          "phone": "+7038366729",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddg_f7b6d183"
+          ]
+        },
+        {
+          "name": "Ann Marie Levra",
+          "title": "Senior Director Education & Meetings Strategy",
+          "organization": "",
+          "email": "alevra@aans.org",
+          "phone": "847.378.0548",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddh_7edb8e7c"
+          ]
+        },
+        {
+          "name": "Kim Wang",
+          "title": "Manager, Meeting Operations",
+          "organization": "",
+          "email": "k_wang@acs.org",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddh_b4fad256"
+          ]
+        },
+        {
+          "name": "Olivia Day",
+          "title": "Head of Operations on Phacilitate's official page",
+          "organization": "",
+          "email": "olivia.day@clarionevents.com",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddj_c848701a"
+          ]
+        },
+        {
+          "name": "Shelby Wiggs",
+          "title": "Senior Housing Account Manager",
+          "organization": "",
+          "email": "shelby.wiggs@spargoinc.com",
+          "phone": null,
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_opp_prospect_mv8p5ddj_cf54ecae"
+          ]
+        },
+        {
+          "name": "Stephanie Pursglove",
+          "title": "Office Manager",
+          "organization": "ESET North America",
+          "email": null,
+          "phone": "619-876-5400",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_sc_a7618f7bcd1270a7"
+          ]
+        },
+        {
+          "name": "David Aguirre",
+          "title": "Project Manager",
+          "organization": "Turner Construction Company",
+          "email": "daguirre@tcco.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/david-aguirre-27020411",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_75ee8629955e"
+          ]
+        },
+        {
+          "name": "Martine Sanders",
+          "title": "Vice President & General Manager, Turner Construction Company, San Diego",
+          "organization": "Turner Construction Company",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/martine-sanders-2a269727",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_75ee8629955e"
+          ]
+        },
+        {
+          "name": "Judy Susser",
+          "title": "CMP, CMM — Site Selection",
+          "organization": "ACG San Diego",
+          "email": "acgsandiego@acg.org",
+          "phone": "512.970.0417",
+          "linkedin": null,
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "gdi_wyndham_live_associatio_a790d46ad631"
+          ]
+        },
+        {
+          "name": "Lily Yuan",
+          "title": "Senior Director, Supply Chain Management",
+          "organization": "Bora Biologics",
+          "email": "lily.yuan@borabiologics.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/lilyyuan26",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_0fa36c29506f"
+          ]
+        },
+        {
+          "name": "Kam Sidhu",
+          "title": "Head of Supply Chain Management/Operations",
+          "organization": "Bora Biologics",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/kam-sidhu-ab173811b",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_0fa36c29506f"
+          ]
+        },
+        {
+          "name": "Shane Hunt",
+          "title": "Facility Manager; subsequently Facilities Engineering Manager",
+          "organization": "Cirsium Biosciences",
+          "email": "shunt@cirsiumbio.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/shanehunt",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_aa66ce064dbd"
+          ]
+        },
+        {
+          "name": "Allison Satterfield",
+          "title": "Director of Business Operations & Strategic Initiatives",
+          "organization": "Cirsium Biosciences",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/allison-satterfield-500676a0",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_aa66ce064dbd"
+          ]
+        },
+        {
+          "name": "Kentaro Kaetsu",
+          "title": "Project Manager, OHLA USA",
+          "organization": "OHLA USA",
+          "email": "kentaro.kaetsu@ohla-usa.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/kentaro-kaetsu-a7a7b7122",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_c5596f4fa5e2"
+          ]
+        },
+        {
+          "name": "Jimmy Draper",
+          "title": "Executive Vice President, West Region, OHLA USA",
+          "organization": "OHLA USA",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jimmy-draper-b60bb729",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_c5596f4fa5e2"
+          ]
+        },
+        {
+          "name": "MacKenzie Wasson",
+          "title": "Vice President Operations",
+          "organization": "Seasats",
+          "email": "mackenzie@seasats.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/mackenzie-wasson-3b090715a",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_0185c1ea7cbb"
+          ]
+        },
+        {
+          "name": "Jordyn Lanthier",
+          "title": "Procurement Manager",
+          "organization": "Seasats",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jordyn-lanthier-a3a80617a",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_0185c1ea7cbb"
+          ]
+        },
+        {
+          "name": "Joe Bagg",
+          "title": "Senior Manager of Information Systems and Logistics",
+          "organization": "EDAN Diagnostics, Inc.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/joebagg",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_5b183538390f"
+          ]
+        },
+        {
+          "name": "Jasper Villanueva",
+          "title": "Senior Manufacturing Lead",
+          "organization": "EDAN Diagnostics, Inc.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jasper-villanueva-226501113",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_5b183538390f"
+          ]
+        },
+        {
+          "name": "John R. Mosack",
+          "title": "General Manager and Vice President of Operations",
+          "organization": "Bora Biologics",
+          "email": "john.mosack@borabiologics.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/johnmosack",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_61593e390477"
+          ]
+        },
+        {
+          "name": "Margaret Guntner",
+          "title": "Director, Business Development",
+          "organization": "Bora Biologics",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/margaret-guntner-a5006787",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_61593e390477"
+          ]
+        },
+        {
+          "name": "Suzanne K.",
+          "title": "Global Travel & Expense Manager / Travel Manager",
+          "organization": "Saronic Technologies",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/suzanne-k-549a9822",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_ecba7545037a"
+          ]
+        },
+        {
+          "name": "Sebastian Biagioni",
+          "title": "Facilities Expansion Manager; formerly San Diego Site Manager",
+          "organization": "Saronic Technologies",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/sebastian-biagioni",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_ecba7545037a"
+          ]
+        },
+        {
+          "name": "Ryan Dirvin",
+          "title": "Project Manager, Hensel Phelps",
+          "organization": "Hensel Phelps Construction Co.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/ryan-dirvin-524502a2",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_1b7b55bca2b2"
+          ]
+        },
+        {
+          "name": "Jarrod Smith",
+          "title": "Project Manager, Hensel Phelps",
+          "organization": "Hensel Phelps Construction Co.",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jarrod-smith-1685b219",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_1b7b55bca2b2"
+          ]
+        },
+        {
+          "name": "Eric Meisgeier",
+          "title": "Project Sponsor / Project Manager, Stacy Witbeck",
+          "organization": "Stacy Witbeck, Inc.",
+          "email": "emeisgeier@stacywitbeck.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/eric-meisgeier-a0971b43",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_f9f06522dd52"
+          ]
+        },
+        {
+          "name": "Jackson Mitz",
+          "title": "Deputy Project Manager, Modern Railway Systems",
+          "organization": "Modern Railway Systems",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jackson-mitz-8856616b",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_f9f06522dd52"
+          ]
+        },
+        {
+          "name": "Christopher Kallam",
+          "title": "Senior Operations Director, West",
+          "organization": "Athletic Brewing Company",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/christopher-kallam-97440711a",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_2e67ee5dc429"
+          ]
+        },
+        {
+          "name": "Rachel Maus",
+          "title": "San Diego Brewery Manager",
+          "organization": "Athletic Brewing Company",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/rachelamaus",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_2e67ee5dc429"
+          ]
+        },
+        {
+          "name": "Jorda Portero Alcaraz",
+          "title": "Senior Global Travel Manager, Grifols",
+          "organization": "Grifols",
+          "email": "jorda.portero@grifols.com",
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/jorda-portero-alcaraz-89651759",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_67a7c2b44502"
+          ]
+        },
+        {
+          "name": "Alejandra (Alex) Gutierrez, PhD",
+          "title": "Senior Director of Operations, Grifols",
+          "organization": "Grifols",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/alejandra-alex-gutierrez-phd-0a38308",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_67a7c2b44502"
+          ]
+        },
+        {
+          "name": "Sandra Sifuentes-Rovello",
+          "title": "Senior Vice President Operations",
+          "organization": "Firestorm",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/sandra-sifuentes-rovello-a8514b1",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_7a658d5504ba"
+          ]
+        },
+        {
+          "name": "Eric Hounchell",
+          "title": "VP/GM, xCell",
+          "organization": "Firestorm",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/eric-hounchell-2512197",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_7a658d5504ba"
+          ]
+        },
+        {
+          "name": "Dede Kassel",
+          "title": "Corporate Travel Manager, Meetings & Events; Office Manager",
+          "organization": "Flatiron Construction / FlatironDragados",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/dede-kassel-b333a122",
+          "roles": [
+            "PRIMARY"
+          ],
+          "opportunityIds": [
+            "disc_84bb84a372dd"
+          ]
+        },
+        {
+          "name": "Steve Fry",
+          "title": "Vice President, Preconstruction; former Civil Project Director, San Diego Airport Roadways and Terminal 1",
+          "organization": "FlatironDragados",
+          "email": null,
+          "phone": null,
+          "linkedin": "https://linkedin.com/in/steve-fry-6ba23856",
+          "roles": [
+            "SECONDARY"
+          ],
+          "opportunityIds": [
+            "disc_84bb84a372dd"
+          ]
+        }
+      ]
+    }
+  },
+  "findymailManifest": {
+    "version": "gdi-findymail-stage4-enrichment-v1",
+    "authorizationId": "FOUNDER_GO_GDI_FINDYMAIL_STAGE4_PERMANENT_E2E_20261127",
+    "uniquePeople": 40,
+    "eligibleCount": 13,
+    "selectedCount": 13,
+    "estimatedFinderCreditsMax": 13,
+    "creditHardCap": 30,
+    "keyPresence": {
+      "present": true,
+      "env_var": "FINDYMAIL_API_KEY",
+      "len": 48
+    },
+    "selected": [
+      {
+        "personKey": "martine sanders|turner construction company",
+        "name": "Martine Sanders",
+        "organization": "Turner Construction Company",
+        "domain": "turnerconstruction.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_75ee8629955e"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "kam sidhu|bora biologics",
+        "name": "Kam Sidhu",
+        "organization": "Bora Biologics",
+        "domain": "borabiologics.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_0fa36c29506f"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "allison satterfield|cirsium biosciences",
+        "name": "Allison Satterfield",
+        "organization": "Cirsium Biosciences",
+        "domain": "cirsiumbio.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_aa66ce064dbd"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "jimmy draper|ohla usa",
+        "name": "Jimmy Draper",
+        "organization": "OHLA USA",
+        "domain": "ohla-usa.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_c5596f4fa5e2"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "jordyn lanthier|seasats",
+        "name": "Jordyn Lanthier",
+        "organization": "Seasats",
+        "domain": "seasats.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_0185c1ea7cbb"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "jasper villanueva|edan diagnostics, inc.",
+        "name": "Jasper Villanueva",
+        "organization": "EDAN Diagnostics, Inc.",
+        "domain": "edan.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_5b183538390f"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "margaret guntner|bora biologics",
+        "name": "Margaret Guntner",
+        "organization": "Bora Biologics",
+        "domain": "borabiologics.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_61593e390477"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "sebastian biagioni|saronic technologies",
+        "name": "Sebastian Biagioni",
+        "organization": "Saronic Technologies",
+        "domain": "saronic.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_ecba7545037a"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "jarrod smith|hensel phelps construction co.",
+        "name": "Jarrod Smith",
+        "organization": "Hensel Phelps Construction Co.",
+        "domain": "henselphelps.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_1b7b55bca2b2"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "jackson mitz|modern railway systems",
+        "name": "Jackson Mitz",
+        "organization": "Modern Railway Systems",
+        "domain": "stacywitbeck.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_f9f06522dd52"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "rachel maus|athletic brewing company",
+        "name": "Rachel Maus",
+        "organization": "Athletic Brewing Company",
+        "domain": "sdbj.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_2e67ee5dc429"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "eric hounchell|firestorm",
+        "name": "Eric Hounchell",
+        "organization": "Firestorm",
+        "domain": "launchfirestorm.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_7a658d5504ba"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      },
+      {
+        "personKey": "steve fry|flatirondragados",
+        "name": "Steve Fry",
+        "organization": "FlatironDragados",
+        "domain": "fdcorp.com",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_84bb84a372dd"
+        ],
+        "eligible": true,
+        "reason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "estimatedFinderCredits": 1
+      }
+    ],
+    "deferred": [],
+    "ineligible": [
+      {
+        "personKey": "kathryn newstead|downtown san diego partnership",
+        "name": "Kathryn Newstead",
+        "organization": "Downtown San Diego Partnership",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_lmc_2f01609319f56f89"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "brooke wheeler|boma san diego",
+        "name": "Brooke Wheeler",
+        "organization": "BOMA San Diego",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_lmc_b8ba887bff4dfc2e"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "kristine coan|american society of cataract and refractive surgery (ascrs)",
+        "name": "Kristine Coan",
+        "organization": "American Society of Cataract and Refractive Surgery (ASCRS)",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5ddc_75804200"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "rebekah bell|sol-ark",
+        "name": "Rebekah Bell",
+        "organization": "Sol-Ark",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5dde_1a0faf00"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "brittany jolly|esri",
+        "name": "Brittany Jolly",
+        "organization": "Esri",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5dde_f892ef70"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "madeline foresman|american society of naval engineers",
+        "name": "Madeline Foresman",
+        "organization": "American Society of Naval Engineers",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5ddg_f7b6d183"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "ann marie levra|american association of neurological surgeons",
+        "name": "Ann Marie Levra",
+        "organization": "American Association of Neurological Surgeons",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5ddh_7edb8e7c"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "kim wang|american chemical society",
+        "name": "Kim Wang",
+        "organization": "American Chemical Society",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5ddh_b4fad256"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "olivia day|phacilitate — part of clarion events limited",
+        "name": "Olivia Day",
+        "organization": "Phacilitate — Part of Clarion Events Limited",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5ddj_c848701a"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "shelby wiggs|spargo, inc.",
+        "name": "Shelby Wiggs",
+        "organization": "SPARGO, Inc.",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_opp_prospect_mv8p5ddj_cf54ecae"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "stephanie pursglove|eset north america",
+        "name": "Stephanie Pursglove",
+        "organization": "ESET North America",
+        "domain": "eset.com",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_sc_a7618f7bcd1270a7"
+        ],
+        "eligible": false,
+        "reason": "ALREADY_IN_LEDGER",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "david aguirre|turner construction company",
+        "name": "David Aguirre",
+        "organization": "Turner Construction Company",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_75ee8629955e"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "judy susser|acg san diego",
+        "name": "Judy Susser",
+        "organization": "ACG San Diego",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "gdi_wyndham_live_associatio_a790d46ad631"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "lily yuan|bora biologics",
+        "name": "Lily Yuan",
+        "organization": "Bora Biologics",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_0fa36c29506f"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "shane hunt|cirsium biosciences",
+        "name": "Shane Hunt",
+        "organization": "Cirsium Biosciences",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_aa66ce064dbd"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "kentaro kaetsu|ohla usa",
+        "name": "Kentaro Kaetsu",
+        "organization": "OHLA USA",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_c5596f4fa5e2"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "mackenzie wasson|seasats",
+        "name": "MacKenzie Wasson",
+        "organization": "Seasats",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_0185c1ea7cbb"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "joe bagg|edan diagnostics, inc.",
+        "name": "Joe Bagg",
+        "organization": "EDAN Diagnostics, Inc.",
+        "domain": "edan.com",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_5b183538390f"
+        ],
+        "eligible": false,
+        "reason": "ALREADY_IN_LEDGER",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "john r. mosack|bora biologics",
+        "name": "John R. Mosack",
+        "organization": "Bora Biologics",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_61593e390477"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "suzanne k.|saronic technologies",
+        "name": "Suzanne K.",
+        "organization": "Saronic Technologies",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_ecba7545037a"
+        ],
+        "eligible": false,
+        "reason": "IDENTITY_INCOMPLETE",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "ryan dirvin|hensel phelps construction co.",
+        "name": "Ryan Dirvin",
+        "organization": "Hensel Phelps Construction Co.",
+        "domain": "henselphelps.com",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_1b7b55bca2b2"
+        ],
+        "eligible": false,
+        "reason": "ALREADY_IN_LEDGER",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "eric meisgeier|stacy witbeck, inc.",
+        "name": "Eric Meisgeier",
+        "organization": "Stacy Witbeck, Inc.",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_f9f06522dd52"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "christopher kallam|athletic brewing company",
+        "name": "Christopher Kallam",
+        "organization": "Athletic Brewing Company",
+        "domain": "sdbj.com",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_2e67ee5dc429"
+        ],
+        "eligible": false,
+        "reason": "ALREADY_IN_LEDGER",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "jorda portero alcaraz|grifols",
+        "name": "Jorda Portero Alcaraz",
+        "organization": "Grifols",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_67a7c2b44502"
+        ],
+        "eligible": false,
+        "reason": "EMAIL_ALREADY_PRESENT",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "alejandra (alex) gutierrez, phd|grifols",
+        "name": "Alejandra (Alex) Gutierrez, PhD",
+        "organization": "Grifols",
+        "roles": [
+          "SECONDARY"
+        ],
+        "opportunityIds": [
+          "disc_67a7c2b44502"
+        ],
+        "eligible": false,
+        "reason": "IDENTITY_INCOMPLETE",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "sandra sifuentes-rovello|firestorm",
+        "name": "Sandra Sifuentes-Rovello",
+        "organization": "Firestorm",
+        "domain": "launchfirestorm.com",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_7a658d5504ba"
+        ],
+        "eligible": false,
+        "reason": "ALREADY_IN_LEDGER",
+        "estimatedFinderCredits": 0
+      },
+      {
+        "personKey": "dede kassel|flatiron construction / flatirondragados",
+        "name": "Dede Kassel",
+        "organization": "Flatiron Construction / FlatironDragados",
+        "domain": "fdcorp.com",
+        "roles": [
+          "PRIMARY"
+        ],
+        "opportunityIds": [
+          "disc_84bb84a372dd"
+        ],
+        "eligible": false,
+        "reason": "ALREADY_IN_LEDGER",
+        "estimatedFinderCredits": 0
+      }
+    ]
+  },
+  "findymailExecution": {
+    "mode": "DRY_RUN",
+    "selected": [
+      {
+        "personKey": "martine sanders|turner construction company",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "turnerconstruction.com"
+      },
+      {
+        "personKey": "kam sidhu|bora biologics",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "borabiologics.com"
+      },
+      {
+        "personKey": "allison satterfield|cirsium biosciences",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "cirsiumbio.com"
+      },
+      {
+        "personKey": "jimmy draper|ohla usa",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "ohla-usa.com"
+      },
+      {
+        "personKey": "jordyn lanthier|seasats",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "seasats.com"
+      },
+      {
+        "personKey": "jasper villanueva|edan diagnostics, inc.",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "edan.com"
+      },
+      {
+        "personKey": "margaret guntner|bora biologics",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "borabiologics.com"
+      },
+      {
+        "personKey": "sebastian biagioni|saronic technologies",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "saronic.com"
+      },
+      {
+        "personKey": "jarrod smith|hensel phelps construction co.",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "henselphelps.com"
+      },
+      {
+        "personKey": "jackson mitz|modern railway systems",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "stacywitbeck.com"
+      },
+      {
+        "personKey": "rachel maus|athletic brewing company",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "sdbj.com"
+      },
+      {
+        "personKey": "eric hounchell|firestorm",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "launchfirestorm.com"
+      },
+      {
+        "personKey": "steve fry|flatirondragados",
+        "outcome": "RESEARCH_COMPLETED_NOT_FOUND",
+        "email": null,
+        "domain": "fdcorp.com"
+      }
+    ],
+    "found": 0,
+    "notFound": 13,
+    "skipped": 0,
+    "errors": [],
+    "creditsDebitedEstimate": 0
+  },
+  "listDrawerParity": {
+    "checked": 26,
+    "pass": 26,
+    "fail": 0
+  },
+  "opportunityMatrixCount": 26,
+  "powershellCommands": {
+    "discovery": "pwsh -File scripts/gdi/Invoke-GdiDiscovery.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun",
+    "deep": "pwsh -File scripts/gdi/Invoke-GdiDeepResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun",
+    "whoHow": "pwsh -File scripts/gdi/Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun",
+    "contact": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun",
+    "contactFindymailLive": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode Live -AuthorizePaidResearch -AuthorizeFindymail",
+    "qualification": "pwsh -File scripts/gdi/Invoke-GdiQualification.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun",
+    "fullE2e": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun",
+    "validate": "pwsh -File scripts/gdi/Invoke-GdiValidateFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o",
+    "goldCert": "node scripts/gdi-canonical-full-e2e-gold-standard-certification-v1.mjs",
+    "findymailLive": "node scripts/gdi-canonical-full-e2e-gold-standard-certification-v1.mjs --findymail-live --credit-hard-cap 30"
+  },
+  "outstanding": [
+    "Primary email gaps remain: 7/26",
+    "Primary phone gaps remain: 19/26 (Findymail is email-only; use public/Exa phone research)",
+    "Primary LinkedIn gaps remain: 12/26",
+    "Alternative entry-point hydration incomplete on package: 0/26 (WHO/HOW may store alts outside STAGED tip fields)",
+    "Findymail live enrichment not executed this cycle — dry-run manifest ready (13 eligible / 13 capped). Re-run with --findymail-live --credit-hard-cap 30."
+  ]
+}
