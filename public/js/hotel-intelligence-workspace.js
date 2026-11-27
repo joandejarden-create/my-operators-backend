@@ -87,7 +87,7 @@
     );
   }
 
-  var TABS = [
+  var ALL_TABS = [
     { id: "overview", label: "Overview" },
     { id: "ownership", label: "Ownership Intelligence" },
     { id: "organization", label: "Organization & Portfolio" },
@@ -97,6 +97,23 @@
     { id: "sentiment", label: "Guest Sentiment" },
     { id: "sources", label: "Sources & Evidence" },
   ];
+
+  function guestSentimentFlag() {
+    return typeof window !== "undefined" ? window.HeGuestSentimentFeatureFlag : null;
+  }
+
+  function isGuestSentimentEnabled() {
+    var f = guestSentimentFlag();
+    return !!(f && typeof f.isEnabled === "function" && f.isEnabled());
+  }
+
+  var TABS = (function () {
+    var f = guestSentimentFlag();
+    if (f && typeof f.filterActiveTabs === "function") return f.filterActiveTabs(ALL_TABS);
+    return ALL_TABS.filter(function (t) {
+      return t.id !== "sentiment";
+    });
+  })();
 
   var TAB_ALIASES = {
     brand: "sentiment",
@@ -4103,6 +4120,12 @@
    * Ownership Intelligence, and Relationships (HE-QL-038).
    */
   function renderGuestSentimentTab(_hotel, _ownership) {
+    if (!isGuestSentimentEnabled()) {
+      var f = guestSentimentFlag();
+      return f && typeof f.unavailableHtml === "function"
+        ? f.unavailableHtml()
+        : '<article class="hiw-report" data-he-guest-sentiment-disabled="1"><h2 class="hiw-report__title">Guest Sentiment unavailable</h2><p class="hiw-prose">Guest Sentiment is temporarily disabled pending licensing review.</p></article>';
+    }
     return (
       '<article class="hiw-report hiw-report--guest-sentiment" data-hiw-guest-sentiment-tab="1">' +
       '<h2 class="hiw-report__title">Guest Sentiment</h2>' +
@@ -4621,6 +4644,14 @@
   function mountGuestSentiment(opts) {
     opts = opts || {};
     var host = document.querySelector("[data-hiw-guest-sentiment-host]");
+    if (!isGuestSentimentEnabled()) {
+      if (host) {
+        host.hidden = true;
+        host.innerHTML = "";
+      }
+      if (sentimentAsync) sentimentAsync.cancel();
+      return;
+    }
     if (!host || !state.hotel) return;
     var id = recordId(state.hotel);
     if (!id) {
@@ -4808,7 +4839,14 @@
 
   function normalizeHiwTab(tabId) {
     var raw = String(tabId || "").trim();
-    if (TAB_ALIASES[raw]) return TAB_ALIASES[raw];
+    if (TAB_ALIASES[raw]) raw = TAB_ALIASES[raw];
+    var f = guestSentimentFlag();
+    if (f && typeof f.normalizeTabOrFallback === "function") {
+      return f.normalizeTabOrFallback(raw, "ownership");
+    }
+    if (!isGuestSentimentEnabled() && (raw === "sentiment" || raw === "brand")) {
+      return "ownership";
+    }
     return raw || "ownership";
   }
 
@@ -4882,7 +4920,7 @@
     var mainEl = document.getElementById("hiwMain");
     if (mainEl) mainEl.scrollTop = 0;
     if (state.tab === "ownership") mountOwnershipControlNetwork();
-    if (state.tab === "sentiment" || state.tab === "brand") {
+    if ((state.tab === "sentiment" || state.tab === "brand") && isGuestSentimentEnabled()) {
       mountHotelNewsArticles();
       mountGuestSentiment();
     }

@@ -98,11 +98,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.23");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.29");
   assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 32);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.23"
+    "hotel-explorer-quality-standard-v1.25"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -317,11 +317,13 @@ run("forbids_internal_graph_ids_in_relationship_markup", () => {
 
 run("rooms_tab_after_overview_and_sortable_inventory", () => {
   const hex = read("public/js/hotel-explorer.js");
-  const tabsMatch = hex.match(/var TABS = \[([\s\S]*?)\];/);
+  const tabsMatch = hex.match(/var ALL_TABS = \[([\s\S]*?)\];/) || hex.match(/var TABS = \[([\s\S]*?)\];/);
   assert.ok(tabsMatch, "TABS array present");
   const ids = [...tabsMatch[1].matchAll(/id:\s*"([^"]+)"/g)].map((m) => m[1]);
   assert.equal(ids[0], "hotel");
   assert.equal(ids[1], "rooms");
+  assert.ok(ids.includes("sentiment"), "sentiment remains registered for reactivation");
+  assert.equal(ids.length, 12);
   const rms = read("public/js/hotel-explorer-rooms-meeting-space.js");
   mustInclude(rms, "DealalitySortableTable");
   mustInclude(rms, "not additive");
@@ -340,6 +342,14 @@ run("hex_tabs_even_flex_and_rooms_present", () => {
   mustInclude(css, "grid-auto-columns: minmax(76px, 1fr)");
   mustInclude(css, "min-width: 32px");
   mustInclude(css, "border: 2px solid var(--neutral--600)");
+  const assets = read("lib/hotel-intelligence/he-canonical-explorer-assets-v1.js");
+  mustInclude(assets, "HE_ACTIVE_TAB_IDS");
+  mustInclude(assets, "HE_PRESERVED_DISABLED_TAB_IDS");
+  mustInclude(assets, "he-guest-sentiment-feature-flag-v1.js");
+  const he = read("public/js/hotel-explorer.js");
+  mustInclude(he, "ALL_TABS");
+  mustInclude(he, "isGuestSentimentEnabled");
+  assert.ok(he.includes('id: "sentiment"'), "sentiment tab remains registered for reactivation");
 });
 
 run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
@@ -999,13 +1009,20 @@ run("he_guest_sentiment_tab_restructure_gates", () => {
 
   mustInclude(hex, 'id: "sentiment"');
   mustInclude(hex, "Guest<br>Sentiment");
+  mustInclude(hex, "ALL_TABS");
+  mustInclude(hex, "isGuestSentimentEnabled");
   mustInclude(hex, "TAB_ALIASES");
   mustInclude(hex, "normalizeHexTab");
   mustInclude(hex, 'brand: "sentiment"');
   mustInclude(ws, 'id: "sentiment"');
   mustInclude(ws, "Guest Sentiment");
   mustInclude(ws, "renderGuestSentimentTab");
+  mustInclude(ws, "isGuestSentimentEnabled");
   mustInclude(ws, "data-hiw-guest-sentiment-tab");
+  mustInclude(
+    read("lib/hotel-intelligence/guest-sentiment/he-guest-sentiment-feature-flag-v1.js"),
+    "DISABLED_BY_FOUNDER"
+  );
   mustNotMatch(ws, /hiw-section__h">Franchise &amp; Brand Status/);
   mustNotMatch(ws, /hiw-section__h">Current Operator/);
   mustNotMatch(ws, /hiw-report__title">Brand \/ Operator/);

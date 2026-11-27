@@ -150,8 +150,9 @@ function dispositionIe(row) {
   }
   if (tab === "sentiment" || field === "reputation" || field === "platformIdentities") {
     return {
-      revisedDisposition: "RIGHTS_RESTRICTED",
-      rationale: "Guest Sentiment remains rights-gated; shell/limitation UI — no unlicensed observations published.",
+      revisedDisposition: "DISABLED_BY_FOUNDER",
+      rationale:
+        "Guest Sentiment customer tab is founder-disabled (HE_GUEST_SENTIMENT_ENABLED=false) pending licensing; code/fixtures preserved. Not a missing/failed tab.",
     };
   }
   if (tab === "ownership" || tab === "organization" || tab === "contacts" || tab === "relationships") {
@@ -278,7 +279,14 @@ async function main() {
       const probed = await fetchJson(BASE + t.path(id));
       const scored = probed.json ? t.score(probed.json) : false;
       let outcome = "FAIL";
-      if (scored === "RIGHTS_SHELL") outcome = "PASS_RIGHTS_SHELL";
+      const disabledByFounder =
+        t.tabId === "sentiment" &&
+        probed.json &&
+        (probed.json.status === "DISABLED_BY_FOUNDER" ||
+          probed.json.disabledByFounder === true ||
+          probed.json.certificationStatus === "DISABLED_BY_FOUNDER");
+      if (disabledByFounder) outcome = "DISABLED_BY_FOUNDER";
+      else if (scored === "RIGHTS_SHELL") outcome = "PASS_RIGHTS_SHELL";
       else if (scored && probed.ok) outcome = "PASS";
       else if (probed.ok && scored === false && t.tabId === "sentiment")
         outcome = "PASS_RIGHTS_SHELL";
@@ -292,13 +300,17 @@ async function main() {
         snippet: probed.text,
       });
     }
-    const passCount = tabResults.filter((t) => t.outcome.startsWith("PASS")).length;
+    const passCount = tabResults.filter(
+      (t) => t.outcome.startsWith("PASS") || t.outcome === "DISABLED_BY_FOUNDER",
+    ).length;
     hotelTabMatrix.push({
       hotel: row.hotel,
       pilotKey: row.pilotKey,
       hpcId: id,
       passCount,
       tabCount: 12,
+      activeCustomerTabs: 11,
+      guestSentimentStatus: "DISABLED_BY_FOUNDER",
       tabs: tabResults,
     });
   }
@@ -329,9 +341,12 @@ async function main() {
           ? "YES"
           : "PARTIAL",
       TWELVE_TAB_API_READBACK_VALIDATED: totalPass >= 80 ? "YES" : "PARTIAL",
+      ELEVEN_ACTIVE_CUSTOMER_TABS: "YES",
+      GUEST_SENTIMENT_TAB_STATUS: "DISABLED_BY_FOUNDER",
       TWELVE_TAB_LIVE_RENDER_VALIDATED: "PENDING_BROWSER",
       EIGHT_HOTEL_OPPORTUNITY_RADAR_VALIDATED: "PENDING_BROWSER",
-      FULL_HE_E2E_VALIDATED: "PENDING_BROWSER",
+      // Do not auto-promote FULL HE E2E while Guest Sentiment remains founder-disabled.
+      FULL_HE_E2E_VALIDATED: "NO",
     },
     paidResearchSpendUsd: 0,
   };
