@@ -6,17 +6,21 @@ How AI (Cursor, ChatGPT, and similar tools) should participate in the Dealality 
 
 1. Understand the objective.
 2. Read relevant docs.
-3. Inspect existing implementation.
+3. Inspect existing implementation (architecture audit + pre-change non-regression baseline).
 4. Summarize current state before editing.
 5. Identify assumptions and risks.
 6. Create an implementation plan.
 7. Implement in small phases.
 8. Avoid unrelated changes.
 9. Add or update tests where practical.
-10. Run available checks.
-11. Provide changed files summary.
-12. Capture durable learnings.
-13. Update relevant documentation.
+10. Run available checks and functional validation.
+11. Open/update PR; run local CI prechecks.
+12. Coordinate Integration Controller merge (`dealality:remote-pr-merge` when CI green) — do not stop at PR OPEN.
+13. Post-merge sync owning product home; refresh canonical `:8080`; capture integrated browser evidence.
+14. Provide closeout: PR, merge SHA, serving commit, `:8080` identity, screenshots, regression/inventory assessment.
+15. Capture durable learnings; update relevant documentation.
+
+**Normal successful status:** `INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW` (not PR OPEN / feature-branch-only). Contract: [DEALALITY_INTEGRATED_DELIVERY_V1.md](./DEALALITY_INTEGRATED_DELIVERY_V1.md).
 
 ## Required Context Before Major Builds
 
@@ -43,6 +47,7 @@ Also read when applicable:
 - Do not claim FULL E2E COMPLETE for durable intelligence without proven Airtable (or approved durable) persistence and retrieval — see [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md).
 - Do not overwrite validated data.
 - Do not silently regress previously accepted UI layouts, opportunity inventory, data accessibility, or customer-facing functionality — see [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md). New work must be additive; compare before/after baselines (record IDs, not counts alone); resolve unintended regressions before certification; include a non-regression assessment for Integration Controller.
+- Do not declare founder-review readiness from a feature branch, open PR, or temporary port alone — complete integrated delivery through IC merge + synchronized `:8080` (see [DEALALITY_INTEGRATED_DELIVERY_V1.md](./DEALALITY_INTEGRATED_DELIVERY_V1.md)).
 - Do not change unrelated files.
 - Do not bypass role/access assumptions.
 - Do not hardcode demo logic unless explicitly requested.

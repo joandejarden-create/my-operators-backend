@@ -19,6 +19,18 @@ A successful GitHub PR merge is **not** a completed development task until posit
 
 Opening a PR, passing CI, or merging into GitHub alone is **not sufficient**.
 
+### Integrated delivery (founder review readiness)
+
+Contract: `DEALALITY_INTEGRATED_DELIVERY_V1` ([DEALALITY_INTEGRATED_DELIVERY_V1.md](./DEALALITY_INTEGRATED_DELIVERY_V1.md)).
+
+For product founder review, the normal successful status is:
+
+```text
+INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW
+```
+
+That requires IC-authorized merge to `main`, post-merge home sync, canonical `:8080` serving the integrated tip, cumulative functionality + inventory verification, and browser evidence. Do **not** routinely treat `PR OPEN` or `AWAITING_INTEGRATION_CONTROLLER` as founder-review ready. Product streams must initiate the established IC remote-merge handoff (`npm run dealality:remote-pr-merge -- --pr <n>`) when CI is green; IC retains exclusive merge authority.
+
 ### Fail-closed COMPLETE
 
 `npm run dealality:pr-completion-report` **must not** return COMPLETE when merge/CI/home/preservation/cursor/retirement evidence is null, omitted, unknown, or `NOT_ASSESSED`.

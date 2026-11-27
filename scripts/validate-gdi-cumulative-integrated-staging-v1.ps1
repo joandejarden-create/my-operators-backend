@@ -21,7 +21,7 @@ function Fail($msg) {
 }
 
 Write-Host "== GDI cumulative integrated staging validator ==" -ForegroundColor Cyan
-Write-Host "Contract: DEALALITY_ADDITIVE_NON_REGRESSION_V1 + CANONICAL_PORT_8080_OWNERSHIP_V1"
+Write-Host "Contract: DEALALITY_INTEGRATED_DELIVERY_V1 + DEALALITY_ADDITIVE_NON_REGRESSION_V1 + CANONICAL_PORT_8080_OWNERSHIP_V1"
 
 # 1) Port 8080 listener + cwd
 $listen = Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -172,7 +172,11 @@ Write-Host "[8] List toolbar / Columns markers OK"
 
 Write-Host ""
 Write-Host "PASS validate-gdi-cumulative-integrated-staging-v1" -ForegroundColor Green
-Write-Host "Integrated readiness: READY_FOR_FOUNDER_REVIEW"
+Write-Host "Integrated readiness: INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW"
 Write-Host "Lifecycle: FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT"
+Write-Host "Contract: DEALALITY_INTEGRATED_DELIVERY_V1"
 Write-Host "Browser: http://localhost:8080/group-demand-intelligence.html (authorized founder session)"
 Write-Host "HEAD: $headShort ($branch)"
+if ($head -ne $main) {
+  Write-Host "NOTE: serving HEAD differs from origin/main — founder-review status requires post-merge sync for full INTEGRATED_ON_8080" -ForegroundColor Yellow
+}

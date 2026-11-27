@@ -108,14 +108,14 @@ Report helper: `npm run dealality:pr-completion-report -- --stream <he|adp|gdi|i
 Registered path: `C:\Dev\dealality\ws-gdi`. Home: `ws/gdi`.
 
 - Opening a PR is **not** cycle completion.
-- Do **not** merge into `main` from the GDI chat — Integration Controller owns merge + CI verification.
-- If the PR is still open, report `AWAITING_INTEGRATION_CONTROLLER` and **STOP**.
-- After confirmed merge, restore `ws/gdi`, fast-forward to current `origin/main`, verify HEAD equals `origin/main`, retire the temporary feature branch when safe, then report `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE` or `… — PRESERVED_DIRTY`.
+- Do **not** locally merge into `main` via checkout/merge — Integration Controller retains exclusive merge authority.
+- **Integrated delivery (permanent):** after CI is green, the GDI stream **initiates** the IC remote-merge handoff (`npm run dealality:remote-pr-merge -- --pr <n>`), then post-merge sync, canonical `:8080` refresh, and cumulative browser validation. Normal founder-review status: **`INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW`**. Do not routinely stop at `AWAITING_INTEGRATION_CONTROLLER` when the remote-merge path is available. If a separate authorized action cannot be initiated, report `BLOCKED` with the exact outstanding action. Contract: `docs/ai-build-system/DEALALITY_INTEGRATED_DELIVERY_V1.md`.
+- After confirmed merge, restore `ws/gdi`, fast-forward to current `origin/main`, verify HEAD equals `origin/main`, retire the temporary feature branch when safe, then report workspace closeout `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE` or `… — PRESERVED_DIRTY` **and** founder-review status when `:8080` is validated.
 - Do **not** start the next GDI hotel / phase / major task while the prior required PR is unmerged or while the registered GDI workspace is not on synchronized `ws/gdi`.
 - Cursor may show historical or multi-root branch chips; trust `git branch --show-current` + `git rev-parse HEAD` in `ws-gdi` over the UI list.
 - **Chat isolation:** operate only in `ws-gdi`. Never `move_agent_to_root` / `SetActiveBranch` to ADP or Hotel Explorer paths or their feature branches from this chat. Cancel Cursor cross-workstream switch dialogs; never stash/commit/discard to satisfy them. Prefer a fresh GDI chat opened on `C:\Dev\dealality\ws-gdi` when historical ADP associations keep resurfacing.
 
-**A task is not technically complete until its PR is merged into `main` and the affected product workspace is safely synchronized to its home/`origin/main` tip (primary sync when safe), unless an explicit blocker is reported.**
+**A task is not technically complete until its PR is merged into `main`, the affected product workspace is safely synchronized to its home/`origin/main` tip, and (for founder-facing work) canonical `:8080` reflects the integrated tip — unless an explicit blocker is reported.**
 
 ### ADP permanent home reset (binding)
 
