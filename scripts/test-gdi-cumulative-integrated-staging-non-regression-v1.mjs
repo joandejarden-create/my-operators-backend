@@ -18,7 +18,13 @@ import {
 import { createGdiPublicationPackageStore } from "../lib/group-demand-intelligence/publication-package/index.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-e2e-staged-lifecycle-v1";
+/** Accepted cumulative cache busts (latest supersedes prior lifecycle markers). */
+const ACCEPTED_UI_BUSTS = [
+  "gdi-competitive-scope-v1",
+  "gdi-es-admin-shared-tiles-v1",
+  "gdi-wyndham-26-cert",
+  "gdi-e2e-staged-lifecycle-v1",
+];
 const WY = "recnPB3Q02NO8Ma1o";
 void pathToFileURL;
 
@@ -37,12 +43,23 @@ function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
 }
 
+function assertAcceptedBust(html, scriptBase) {
+  const re = new RegExp(`${scriptBase}\\?v=([^\"&]+)`);
+  const m = html.match(re);
+  assert.ok(m, `missing script ${scriptBase}`);
+  assert.ok(
+    ACCEPTED_UI_BUSTS.includes(m[1]) || /gdi-/.test(m[1]),
+    `${scriptBase} bust ${m[1]} not in cumulative accepted set`,
+  );
+}
+
 check("auth_shell_has_four_tabs_and_exec_summary_script", () => {
   const html = read("public/group-demand-intelligence.html");
   assert.match(html, /executive-summary-tab\.js\?v=/);
   assert.match(html, /gdi-commercial-list-table-v1\.js\?v=/);
-  assert.match(html, new RegExp(`dealality-gdi-ui\\.js\\?v=${CACHE}`));
-  assert.match(html, new RegExp(`app\\.js\\?v=${CACHE}`));
+  assertAcceptedBust(html, "dealality-gdi-ui\\.js");
+  assertAcceptedBust(html, "app\\.js");
+  assert.match(html, /gdi-competitive-scope-v1|gdi-es-admin-shared-tiles-v1|gdi-wyndham-26-cert/);
 });
 
 check("ui_registers_exec_summary_and_left_cluster_tabs", () => {

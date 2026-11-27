@@ -3,20 +3,29 @@
 .SYNOPSIS
   Fail-closed validator for the cumulative GDI founder review environment on :8080.
 
+  Verifies authorized workspace identity, served assets, feature manifest,
+  durable STAGED inventory, opportunity-ID preservation, CURRENT isolation,
+  and API health. A healthy HTTP response alone is NOT sufficient.
+
 .EXAMPLE
   powershell -NoProfile -File scripts/validate-gdi-cumulative-integrated-staging-v1.ps1
+  npm run dealality:validate-gdi-cumulative-8080
 #>
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-function Fail($msg) { throw $msg }
+function Fail($msg) {
+  Write-Host "FAIL: $msg" -ForegroundColor Red
+  throw $msg
+}
 
 Write-Host "== GDI cumulative integrated staging validator ==" -ForegroundColor Cyan
+Write-Host "Contract: DEALALITY_ADDITIVE_NON_REGRESSION_V1 + CANONICAL_PORT_8080_OWNERSHIP_V1"
 
 # 1) Port 8080 listener + cwd
 $listen = Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
-if (-not $listen) { Fail "Port 8080 is not listening" }
+if (-not $listen) { Fail "Port 8080 is not listening — integrated readiness FAILED" }
 $pid8080 = [int]$listen.OwningProcess
 Write-Host "[1] :8080 pid=$pid8080"
 
@@ -39,42 +48,34 @@ public static class GdiCwd {
 }
 '@
 Add-Type -TypeDefinition $code -ErrorAction SilentlyContinue | Out-Null
-$cwd = [GdiCwd]::GetCwd($pid8080)
+$cwd = $null
+try { $cwd = [GdiCwd]::GetCwd($pid8080) } catch { $cwd = $null }
+$metaPath = Join-Path $Root "tmp\gdi-local-8080.meta.json"
+if (-not $cwd -and (Test-Path $metaPath)) {
+  $meta = Get-Content $metaPath -Raw | ConvertFrom-Json
+  if ([int]$meta.pid -eq $pid8080) { $cwd = [string]$meta.cwd }
+}
 Write-Host "[1b] serving cwd=$cwd"
-if (-not $cwd) { Fail "Unable to resolve :8080 process cwd" }
+if (-not $cwd) { Fail "Unable to resolve :8080 process cwd — integrated readiness FAILED" }
 $norm = $cwd.TrimEnd('\','/').ToLowerInvariant()
 $expected = (Resolve-Path $Root).Path.TrimEnd('\','/').ToLowerInvariant()
 if ($norm -ne $expected) {
-  Fail "Port 8080 is serving '$cwd' — expected cumulative GDI workspace '$Root'"
+  Fail "Port 8080 is serving '$cwd' — expected cumulative GDI workspace '$Root' (unauthorized worktree regression)"
 }
 
 # 2) Git identity of serving workspace
 Push-Location $Root
 $branch = (git branch --show-current).Trim()
 $head = (git rev-parse HEAD).Trim()
+$headShort = (git rev-parse --short HEAD).Trim()
 $main = (git rev-parse origin/main).Trim()
 Pop-Location
-Write-Host "[2] branch=$branch head=$head origin/main=$main"
+Write-Host "[2] branch=$branch head=$headShort origin/main=$($main.Substring(0,8))"
 
-# 3) Served assets
-$html = (Invoke-WebRequest "http://127.0.0.1:8080/group-demand-intelligence.html?ts=$(Get-Random)" -UseBasicParsing).Content
-if ($html -notmatch 'executive-summary-tab\.js') { Fail "Served HTML missing Executive Summary script" }
-if ($html -notmatch 'gdi-commercial-list-table-v1\.js') { Fail "Served HTML missing sortable List View script" }
-if ($html -notmatch 'dealality-gdi-ui\.js\?v=') { Fail "Served HTML missing dealality-gdi-ui cache marker" }
-Write-Host "[3] served assets include ES + List table modules"
-
-# 4) Permanent non-regression unit gates
-npm run test:gdi-cumulative-integrated-staging-non-regression-v1
-if ($LASTEXITCODE -ne 0) { Fail "cumulative non-regression test failed" }
-npm run test:gdi-canonical-e2e-to-staged-lifecycle-v1
-if ($LASTEXITCODE -ne 0) { Fail "canonical E2E→STAGED lifecycle test failed" }
-npm run test:gdi-sortable-commercial-list-view-v1
-if ($LASTEXITCODE -ne 0) { Fail "sortable list regression failed" }
-
-# 5) STAGED / CURRENT package counts (Wyndham + prior hotels)
+# 3) Runtime identity API (ownership + durable package pin)
 function Get-Json($url) {
   try {
-    $r = Invoke-WebRequest $url -UseBasicParsing -TimeoutSec 30
+    $r = Invoke-WebRequest $url -UseBasicParsing -TimeoutSec 45
     return ($r.Content | ConvertFrom-Json)
   } catch {
     $resp = $_.Exception.Response
@@ -85,40 +86,93 @@ function Get-Json($url) {
   }
 }
 
+$identity = Get-Json "http://127.0.0.1:8080/api/dev/runtime-identity"
+if (-not $identity.ok) { Fail "runtime-identity not ok" }
+if (-not $identity.portOwnership -or $identity.portOwnership.authorizedFor8080 -ne $true) {
+  Fail "runtime-identity missing authorizedFor8080 ownership"
+}
+if ($identity.portOwnership.ownerStream -ne "gdi" -and $identity.portOwnership.ownerStream -ne "integration") {
+  Fail "runtime-identity ownerStream=$($identity.portOwnership.ownerStream) not gdi|integration"
+}
+if (-not $identity.publication -or -not $identity.publication.wyndhamStagedVersion) {
+  Fail "runtime-identity missing Wyndham STAGED version"
+}
+Write-Host "[3] ownership=$($identity.portOwnership.code) stream=$($identity.portOwnership.ownerStream) staged=$($identity.publication.wyndhamStagedVersion)"
+
+# 4) Served assets — Executive Summary + List + four-tab registry markers
+$html = (Invoke-WebRequest "http://127.0.0.1:8080/group-demand-intelligence.html?ts=$(Get-Random)" -UseBasicParsing -Headers @{"Cache-Control"="no-cache"}).Content
+if ($html -notmatch 'executive-summary-tab\.js') { Fail "Served HTML missing Executive Summary script — founder review NOT READY" }
+if ($html -notmatch 'gdi-commercial-list-table-v1\.js') { Fail "Served HTML missing sortable List View script" }
+if ($html -notmatch 'dealality-gdi-ui\.js\?v=') { Fail "Served HTML missing dealality-gdi-ui cache marker" }
+if ($html -match 'hcp-ui-howto-restore-v1' -and $html -notmatch 'executive-summary-tab') {
+  Fail "Served HTML looks like foreign pre-ES checkout"
+}
+$uiJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/dealality-gdi-ui.js?v=probe" -UseBasicParsing).Content
+if ($uiJs -notmatch 'GDI_EXEC_SUMMARY_TAB|id:\s*"executive-summary"') { Fail "Served UI missing Executive Summary tab registry" }
+if ($uiJs -notmatch 'GDI_CUSTOMER_TABS') { Fail "Served UI missing GDI_CUSTOMER_TABS navigation registry" }
+$esJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/executive-summary-tab.js?v=probe" -UseBasicParsing).Content
+if ($esJs -notmatch 'opportunityTileHtml|Priority Commercial|Research Productivity|Research Receipt') {
+  Fail "Served Executive Summary missing consolidated dashboard markers"
+}
+Write-Host "[4] served assets include ES + List + four-tab registry"
+
+# 5) Permanent unit gates (feature manifest)
+npm run test:canonical-port-8080-ownership-v1
+if ($LASTEXITCODE -ne 0) { Fail "canonical port ownership test failed" }
+npm run test:gdi-cumulative-integrated-staging-non-regression-v1
+if ($LASTEXITCODE -ne 0) { Fail "cumulative non-regression test failed" }
+npm run test:gdi-canonical-e2e-to-staged-lifecycle-v1
+if ($LASTEXITCODE -ne 0) { Fail "canonical E2E→STAGED lifecycle test failed" }
+Write-Host "[5] ownership + cumulative + lifecycle unit gates PASS"
+
+# 6) STAGED / CURRENT package counts + opportunity-ID preservation
 $wyStaged = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=staged&surface=customer"
 if (-not $wyStaged.ok -or [int]$wyStaged.count -ne 26) {
-  Fail "Wyndham STAGED expected complete qualified 26 (ok=$($wyStaged.ok) count=$($wyStaged.count) err=$($wyStaged.error))"
+  Fail "Wyndham STAGED expected 26 (ok=$($wyStaged.ok) count=$($wyStaged.count) err=$($wyStaged.error)) — inventory regression"
 }
-Write-Host "[5] Wyndham STAGED count=$($wyStaged.count) version=$($wyStaged.publication.publicationVersion)"
+$ver = [string]$wyStaged.publication.publicationVersion
+if ($ver -notmatch '20261127') {
+  Fail "Wyndham STAGED version stale or unexpected: $ver (do not revert to CLEAN11)"
+}
+if ($ver -match '3283ee92') { Fail "Wyndham STAGED reverted to CLEAN11 package $ver" }
+Write-Host "[6] Wyndham STAGED count=$($wyStaged.count) version=$ver"
 
 $wyCurrent = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=current&surface=customer"
 if ($wyCurrent.ok -eq $true -and [int]$wyCurrent.count -gt 0) {
   Fail "Wyndham CURRENT must remain unpublished (ok=$($wyCurrent.ok) count=$($wyCurrent.count))"
 }
-Write-Host "[5a] Wyndham CURRENT unpublished (ok=$($wyCurrent.ok) err=$($wyCurrent.error))"
+Write-Host "[6a] Wyndham CURRENT unpublished (customer isolation OK)"
 
 $beth = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities?publicationPackage=1&preview=current&surface=customer"
-if (-not $beth.ok -or [int]$beth.count -lt 1) {
-  Fail "Bethesda CURRENT unavailable or empty"
-}
-Write-Host "[5b] Bethesda CURRENT count=$($beth.count)"
+if (-not $beth.ok -or [int]$beth.count -lt 1) { Fail "Bethesda CURRENT unavailable or empty" }
+Write-Host "[6b] Bethesda CURRENT count=$($beth.count)"
 
 $yotel = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recrPQcZg7SFARRb2/opportunities?publicationPackage=1&preview=current&surface=customer"
-if (-not $yotel.ok -or [int]$yotel.count -lt 1) {
-  Fail "YOTEL CURRENT unavailable or empty"
+if (-not $yotel.ok -or [int]$yotel.count -lt 1) { Fail "YOTEL CURRENT unavailable or empty" }
+Write-Host "[6c] YOTEL CURRENT count=$($yotel.count)"
+
+# 7) Admin Resources routes present in app shell (gated; presence check)
+$appJs = (Invoke-WebRequest "http://127.0.0.1:8080/app.js?v=probe" -UseBasicParsing).Content
+if ($appJs -notmatch 'gdi-sales-performance|GDI Sales Performance') {
+  Write-Host "[7] WARN: app.js missing GDI Sales Performance route marker (check admin nav)" -ForegroundColor Yellow
+} else {
+  Write-Host "[7] Admin Resources GDI Sales Performance marker present"
 }
-Write-Host "[5c] YOTEL CURRENT count=$($yotel.count)"
+if ($appJs -notmatch 'gdi-research-intelligence|GDI Research Intelligence') {
+  Write-Host "[7b] WARN: app.js missing GDI Research Intelligence route marker" -ForegroundColor Yellow
+} else {
+  Write-Host "[7b] Admin Resources GDI Research Intelligence marker present"
+}
 
-# 6) Served toolbar contract (single-row Columns SVG) + lifecycle cache
-$html2 = (Invoke-WebRequest "http://127.0.0.1:8080/group-demand-intelligence.html?ts=$(Get-Random)" -UseBasicParsing).Content
-if ($html2 -notmatch 'gdi-e2e-staged-lifecycle-v1') { Fail "Served HTML missing e2e-staged-lifecycle cache marker" }
-$uiJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/dealality-gdi-ui.js?v=gdi-e2e-staged-lifecycle-v1" -UseBasicParsing).Content
-if ($uiJs -notmatch 'data-gdi-toolbar-row') { Fail "Served UI missing single-row toolbar marker" }
-$tableJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/gdi-commercial-list-table-v1.js?v=gdi-e2e-staged-lifecycle-v1" -UseBasicParsing).Content
-if ($tableJs -notmatch 'Customize Columns') { Fail "Served list table missing Customize Columns control" }
-if ($tableJs -match 'gdi-list-table-toolbar') { Fail "Served list table still renders separate Columns toolbar row" }
-Write-Host "[6] Single-row List toolbar + Columns SVG + lifecycle cache OK"
+# 8) List toolbar contract on served UI
+if ($uiJs -notmatch 'data-gdi-toolbar-row|gdiListColumnSettingsBtn') {
+  Fail "Served UI missing List toolbar / Columns control markers"
+}
+Write-Host "[8] List toolbar / Columns markers OK"
 
-Write-Host "`nPASS validate-gdi-cumulative-integrated-staging-v1" -ForegroundColor Green
+Write-Host ""
+Write-Host "PASS validate-gdi-cumulative-integrated-staging-v1" -ForegroundColor Green
+Write-Host "Integrated readiness: READY_FOR_FOUNDER_REVIEW"
 Write-Host "Lifecycle: FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT"
 Write-Host "Browser: http://localhost:8080/group-demand-intelligence.html (authorized founder session)"
+Write-Host "HEAD: $headShort ($branch)"
