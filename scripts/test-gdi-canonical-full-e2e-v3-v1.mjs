@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import {
   executeWhoHowResolutionFixture,
   normalizeWhoHowAgentOutput,
+  evaluateWhyWeAreShowingThisContact,
   WHO_HOW_STATUS,
   buildWhoHowDrawerPresentation,
 } from "../lib/group-demand-intelligence/workflow/gdi-who-how-agent-contract-v1.js";
@@ -90,12 +91,30 @@ function pass(name) {
   assert.equal(r.opportunity.buyerVsEntry, "RELEVANT_COMMERCIAL_ENTRY_POINT");
   assert.equal(r.opportunity.primaryContact.hotelBuyingAuthorityVerified, false);
   assert.ok(r.opportunity.secondaryNamedContact?.name);
+  assert.ok(
+    r.opportunity.primaryContact.whyWeAreShowingThisContact ||
+      r.whoHow.entryPoints[0].whyWeAreShowingThisContact,
+  );
   const drawer = r.opportunity.whoHowDrawer;
   assert.equal(drawer.primaryDecisionMaker.verified, false);
   assert.match(drawer.primaryDecisionMaker.headline, /Not Yet Verified/i);
   assert.equal(drawer.alternativeContact1.badge, "VERIFIED ENTRY POINT");
+  assert.equal(drawer.alternativeContact1.heading, "Alternative Entry Point 1");
+  assert.ok(drawer.alternativeContact1.whyWeAreShowingThisContact);
   assert.equal(drawer.alternativeContact2.verified, true);
   pass("B_two_entry_points");
+}
+
+// Generic why rejected
+{
+  const bad = evaluateWhyWeAreShowingThisContact("senior executive");
+  assert.equal(bad.ok, false);
+  const good = evaluateWhyWeAreShowingThisContact(
+    "Meetings director can route hotel housing inquiries for AACR 2026 — ask for the housing bureau contact.",
+    { requireRich: true },
+  );
+  assert.equal(good.ok, true);
+  pass("why_showing_generic_rejected");
 }
 
 // C
@@ -307,8 +326,10 @@ function pass(name) {
       primaryContact: {
         ...r.opportunity.primaryContact,
         linkedinUrl: "https://linkedin.com/in/alex-rivera-meetings",
+        whyWeAreShowingThisContact:
+          "Meetings director can route hotel housing inquiries for AACR 2026 — ask for the housing bureau or official hotel partner path.",
         whyThisContact:
-          "Meetings director can route hotel housing inquiries for AACR 2026",
+          "Meetings director can route hotel housing inquiries for AACR 2026 — ask for the housing bureau or official hotel partner path.",
         recommendedContactAction:
           "Ask for housing bureau or official hotel partner path",
       },

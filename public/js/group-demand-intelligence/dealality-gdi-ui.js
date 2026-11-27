@@ -7490,9 +7490,9 @@
   }
 
   /**
-   * Full E2E V3 Who to Contact — PRIMARY DECISION-MAKER + ALTERNATIVE CONTACT 1/2.
-   * Uses opportunity.whoHowDrawer from gdi-who-how-agent-contract-v1.
-   * Distinguishes identity verification from hotel-buying authority.
+   * Full E2E V3 Who to Contact —
+   * Primary Lodging Decision-Maker + Alternative Entry Point 1/2.
+   * whyWeAreShowingThisContact is required and visible in-drawer.
    */
   function whoHowDrawerPresentationHtml(o) {
     var d = o && o.whoHowDrawer;
@@ -7542,8 +7542,12 @@
       );
     }
 
-    function personBlockHtml(block, heading) {
+    function personBlockHtml(block, fallbackHeading) {
       if (!block) return "";
+      var heading =
+        block.heading ||
+        fallbackHeading ||
+        "Contact";
       if (!block.verified) {
         return (
           '<div class="gdi-whohow-slot gdi-whohow-slot--unverified">' +
@@ -7559,6 +7563,10 @@
           "</div>"
         );
       }
+      var whyText =
+        block.whyWeAreShowingThisContact ||
+        block.whyShowing ||
+        "";
       return (
         '<div class="gdi-whohow-slot" data-whohow-kind="' +
         esc(block.kind || "") +
@@ -7589,9 +7597,9 @@
             esc(block.relationshipToOpportunity) +
             "</p>"
           : "") +
-        (block.whyShowing
-          ? "<p><strong>Why we're showing this contact:</strong> " +
-            esc(block.whyShowing) +
+        (whyText
+          ? "<p><strong>Why We're Showing This Contact:</strong> " +
+            esc(whyText) +
             "</p>"
           : "") +
         (block.authorityDisclaimer
@@ -7605,14 +7613,14 @@
             "</p>"
           : "") +
         (block.recommendedSalesApproach
-          ? "<p><strong>Suggested sales approach:</strong> " +
+          ? "<p><strong>Suggested Sales Approach:</strong> " +
             esc(block.recommendedSalesApproach) +
             "</p>"
           : "") +
         (block.sourceUrl && isSafeHttpUrl(block.sourceUrl)
           ? '<p><a href="' +
             esc(block.sourceUrl) +
-            '" target="_blank" rel="noopener noreferrer">Source</a></p>'
+            '" target="_blank" rel="noopener noreferrer">Source / evidence</a></p>'
           : "") +
         channelActionsHtml(block.channels) +
         "</div>"
@@ -7625,17 +7633,17 @@
       statusLine +
       personBlockHtml(
         d.primaryDecisionMaker,
-        "PRIMARY DECISION-MAKER"
+        "Primary Lodging Decision-Maker"
       );
 
     if (d.showAlternativesWhenBuyerMissing || !d.primaryDecisionMaker.verified) {
       html += personBlockHtml(
         d.alternativeContact1,
-        "ALTERNATIVE CONTACT 1"
+        "Alternative Entry Point 1"
       );
       html += personBlockHtml(
         d.alternativeContact2,
-        "ALTERNATIVE CONTACT 2"
+        "Alternative Entry Point 2"
       );
     }
 
