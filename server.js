@@ -373,6 +373,7 @@ import {
   postPreviewDemandCenterImport,
 } from "./api/market-demand.js";
 import { getGdiExecutiveSummary } from "./api/gdi-executive-summary.js";
+import { getGdiProposedWriteSetReview } from "./api/gdi-proposed-write-set-review.js";
 import {
   getGdiFlag,
   getGdiHotels,
@@ -1872,6 +1873,11 @@ app.get(
   "/api/admin/group-demand-intelligence/reports",
   ...adpMonthlyReviewAdminAuth,
   getAdminGdiReportCatalog
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/proposed-write-set-review",
+  ...adminAuth,
+  getGdiProposedWriteSetReview
 );
 app.get(
   "/api/admin/group-demand-intelligence/hotels/:hotelId/historical-research-recovery",

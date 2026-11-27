@@ -341,7 +341,8 @@ function pass(name) {
   // Route wiring: STAGED preview must use dedicated auth (not pilot-unauth alone).
   const fs = await import("fs");
   const path = await import("path");
-  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..");
+  const { fileURLToPath } = await import("url");
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
   const serverSrc = fs.readFileSync(path.join(root, "server.js"), "utf8");
   const mwSrc = fs.readFileSync(
     path.join(root, "middleware/gdiExecutiveSummaryAuth.js"),
@@ -355,7 +356,101 @@ function pass(name) {
   assert.ok(mwSrc.includes("requireDealalityUser"));
   assert.ok(mwSrc.includes("gdiPilotReadAuth"));
   assert.ok(mwSrc.includes('preview === "staged"'));
+  assert.ok(serverSrc.includes("proposed-write-set-review"));
   pass("preview_route_uses_founder_auth_middleware");
+}
+
+{
+  const fs = await import("fs");
+  const path = await import("path");
+  const { fileURLToPath } = await import("url");
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const css = fs.readFileSync(
+    path.join(root, "public/css/group-demand-intelligence.css"),
+    "latin1",
+  );
+  const navStart = css.indexOf("Compact left-aligned GDI tabs");
+  const navEnd = css.indexOf(".gdi-page .gdi-section-nav__actions", navStart);
+  assert.ok(navStart > 0 && navEnd > navStart);
+  const nav = css.slice(navStart, navEnd);
+  assert.equal(nav.includes("flex: 1 1 0"), false);
+  assert.ok(nav.includes("min-width: 112px"));
+  assert.ok(nav.includes("max-width: 168px"));
+  assert.ok(nav.includes('data-tab="executive-summary"'));
+  assert.ok(nav.includes("justify-content: flex-start"));
+  pass("compact_left_aligned_four_tab_nav_css");
+}
+
+{
+  const fs = await import("fs");
+  const path = await import("path");
+  const { fileURLToPath } = await import("url");
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const ui = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/dealality-gdi-ui.js"),
+    "utf8",
+  );
+  const app = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/app.js"),
+    "utf8",
+  );
+  assert.ok(ui.includes("GDI_EXEC_SUMMARY_TAB") || ui.includes("executive-summary"));
+  assert.ok(/GDI_CUSTOMER_TABS[\s\S]{0,400}executive-summary/.test(ui) || /executive-summary[\s\S]{0,200}opportunities/.test(ui));
+  assert.ok(
+    /tab\s*[:=]\s*["']opportunities["']/.test(app) ||
+      /default.*opportunities/i.test(app) ||
+      app.includes('state.tab = "opportunities"'),
+  );
+  pass("opportunities_remains_default_landing_tab");
+}
+
+{
+  const {
+    assertWyndhamLocked26Shape,
+    buildWyndhamProposedWriteSetFounderReview,
+  } = await import(
+    "../lib/group-demand-intelligence/publication-package/gdi-proposed-write-set-founder-review-v1.js"
+  );
+  const review = buildWyndhamProposedWriteSetFounderReview({});
+  assert.equal(review.ok, true);
+  const shape = assertWyndhamLocked26Shape(review);
+  assert.equal(shape.ok, true);
+  assert.equal(review.counts.stagedPackageCount, 11);
+  assert.equal(review.counts.proposedMissingFromStaged, 15);
+  assert.ok(
+    String(review.rootCause).includes("CLEAN11") ||
+      String(review.rootCause).includes("STAGED_POINTER"),
+  );
+  const stagedIds = new Set(review.staged.opportunityIds);
+  for (const row of review.proposedQualified) {
+    if (row.bucket === "CLEAN11_PRESERVE") {
+      assert.equal(stagedIds.has(row.opportunityId), true);
+    }
+  }
+  pass("wyndham_locked_26_vs_staged_clean11_reconciliation");
+}
+
+{
+  // ES aggregation must not invent IDs beyond the provided inventory.
+  const opps = [
+    { id: "keep-a", score: 9 },
+    { id: "keep-b", score: 8 },
+  ];
+  const summary = buildGdiExecutiveSummaryV1({
+    hotelId: "recTEST",
+    opportunities: opps,
+    customerAuthorizedInventory: true,
+    dataState: EXEC_SUMMARY_DATA_STATE.CURRENT_AVAILABLE,
+  });
+  assert.equal(
+    summary.sections.executiveCommercialSnapshot.totalQualifiedOpportunities,
+    2,
+  );
+  const deep = summary.sections.priorityCommercialOpportunities.items.map(
+    (i) => i.opportunityId,
+  );
+  assert.ok(deep.every((id) => id === "keep-a" || id === "keep-b"));
+  pass("executive_summary_inventory_id_preservation");
 }
 
 console.log(`\n${passed} PASS — gdi-executive-summary-v1 ($0)`);

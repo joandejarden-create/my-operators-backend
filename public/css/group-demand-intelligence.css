@@ -183,27 +183,33 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 /*
- * Four primary GDI tabs — evenly spaced in the existing design language.
- * Executive Summary must remain visible (never clipped) for authorized hotels.
+ * Compact left-aligned GDI tabs (pre-Executive Summary baseline).
+ * Only additive change: Executive Summary uses the same constrained width
+ * as sibling tabs - never flex-grow across the viewport.
  */
 .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: none;
+  flex: 0 1 auto;
+  min-width: 112px;
+  max-width: 168px;
   padding: 8px 6px;
 }
 
-.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="executive-summary"],
-.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"],
-.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="priorities"],
-.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="portfolio"] {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: none;
+.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"] {
+  min-width: 128px;
+  max-width: 176px;
+}
+
+.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="executive-summary"] {
+  min-width: 112px;
+  max-width: 168px;
 }
 
 @media (max-width: 720px) {
-  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item {
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item,
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"],
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="executive-summary"] {
+    min-width: 104px;
+    max-width: 148px;
     padding: 8px 4px;
   }
 
@@ -213,13 +219,12 @@ body.gdi-page.embed-mode .gdi-shell {
   }
 }
 
-/* How to Read This Report — ADP tab-row parity */
-.gdi-page .gdi-section-nav.gdi-section-nav-with-tour {
+/* How to Read This Report - ADP tab-row parity */
+.gdi-page .gdi-section-nav.gdi-section-nav-with-guide {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: stretch;
-  justify-content: space-between;
-  overflow-x: auto;
+  justify-content: flex-start;
 }
 
 .gdi-page .gdi-section-nav__actions {
