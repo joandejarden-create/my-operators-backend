@@ -1,0 +1,48 @@
+# GDI Full E2E → STAGED completion standard (permanent)
+
+Applies to **all** GDI hotel research and publication work.
+
+## Lifecycle
+
+`FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT`
+
+## Binding statuses
+
+| Status | Meaning |
+|---|---|
+| RESEARCH IN PROGRESS | E2E incomplete |
+| HOLD | More commercial evidence/qualification required |
+| STAGED | Qualified, durably persisted, visible on `:8080` |
+| CURRENT | Founder-approved customer publication |
+
+Proposed Qualified / Write-Ready / QA Accepted are **internal only** — not founder gates. They auto-progress to STAGED when qualification + approved persistence + validation pass.
+
+## Completion doctrine
+
+Do **not** claim Full E2E COMPLETE because reports exist, unit FQO tests pass, or a proposed write-set was prepared.
+
+COMPLETE requires: authorized research → commercial qualification → durable STAGED package → opportunity IDs reconciled → **visible in the integrated app on port 8080** → CURRENT unchanged unless explicitly approved for that exact `publicationVersion`.
+
+## Must
+
+- Reuse `Invoke-GdiFullE2E.ps1` / V3 orchestrator / publication package store (no parallel engines)
+- Auto-stage complete qualified inventory after authorized E2E
+- Preserve prior qualified IDs; Weekly Change for meaningful deltas
+- Keep HOLD/rejected/speculative/incomplete out of qualified STAGED
+- Never auto-publish CURRENT
+- Preserve freezes, DryRun, and research budgets
+- Validate on cumulative `:8080` (not isolated feature branch alone)
+
+## Must not
+
+- Add Proposed/HOLD founder inventory UIs or required URL params for review
+- Fabricate opportunity counts
+- Paid research / Findymail / auto-Surfe / CURRENT publish / schema changes / production deploy without separate founder authorization
+- Independent merges from GDI chat
+
+## Docs / gates
+
+- `docs/ai-build-system/GDI_FULL_E2E_COMPLETION_AND_PUBLICATION_LIFECYCLE_V1.md`
+- `docs/ai-build-system/GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md`
+- `npm run test:gdi-canonical-e2e-to-staged-lifecycle-v1`
+- `.\scripts\gdi\Invoke-GdiValidateFullE2E.ps1 -HotelId <rec…>`
