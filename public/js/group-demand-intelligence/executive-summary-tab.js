@@ -273,6 +273,41 @@
     );
   }
 
+  function outlookMonthParts(t) {
+    var months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    var key = String((t && t.month) || "");
+    var m = key.match(/^(\d{4})-(\d{2})$/);
+    if (m) {
+      var idx = Number(m[2]) - 1;
+      return {
+        month: months[idx] || m[2],
+        year: m[1],
+      };
+    }
+    var label = String((t && t.monthLabel) || key || "");
+    var parts = label.trim().split(/\s+/);
+    if (parts.length >= 2 && /^\d{4}$/.test(parts[parts.length - 1])) {
+      return {
+        month: parts.slice(0, -1).join(" "),
+        year: parts[parts.length - 1],
+      };
+    }
+    return { month: label || "—", year: "" };
+  }
+
   function renderOutlook(outlook) {
     var timeline = (outlook && outlook.timeline) || [];
     var buckets = (outlook && outlook.buckets) || {};
@@ -323,18 +358,29 @@
         ',minmax(0,1fr))">' +
         timeline
           .map(function (t) {
-            var height = Math.round(((t.count || 0) / max) * 100);
+            var count = t.count || 0;
+            var height = Math.round((count / max) * 100);
+            var isZero = count === 0;
+            var parts = outlookMonthParts(t);
             return (
-              '<div class="gdi-es-columns__item">' +
+              '<div class="gdi-es-columns__item' +
+              (isZero ? " is-zero" : "") +
+              '">' +
               '<div class="gdi-es-columns__value">' +
-              esc(t.count) +
+              esc(count) +
               "</div>" +
               '<div class="gdi-es-columns__track"><div class="gdi-es-columns__fill" style="height:' +
               height +
               '%"></div></div>' +
-              '<div class="gdi-es-columns__label">' +
-              esc(t.monthLabel || t.month) +
-              "</div></div>"
+              '<div class="gdi-es-columns__label" title="' +
+              esc(t.monthLabel || t.month || "") +
+              '">' +
+              '<span class="gdi-es-columns__month">' +
+              esc(parts.month) +
+              "</span>" +
+              '<span class="gdi-es-columns__year">' +
+              esc(parts.year) +
+              "</span></div></div>"
             );
           })
           .join("") +
