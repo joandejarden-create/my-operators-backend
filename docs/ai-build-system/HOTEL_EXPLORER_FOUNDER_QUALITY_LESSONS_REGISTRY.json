@@ -1,6 +1,6 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.29",
-  "updated": "2026-11-20",
+  "version": "hotel-explorer-founder-quality-lessons-v1.30",
+  "updated": "2026-11-27",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
   "npmScript": "test:he-product-quality-gates-v1",
@@ -19,7 +19,10 @@
     "test:he-mullen-pilot-hpc-population-v1",
     "test:he-legacy-hotel-census-independence-v1",
     "test:he-5-0-controlled-apply-v1",
-    "test:dealality-legacy-hotel-census-retirement-gate-v1"
+    "test:dealality-legacy-hotel-census-retirement-gate-v1",
+    "test:he-cross-tab-parity-v1",
+    "test:he-cross-tab-consistency-report-v1",
+    "he:cross-tab-consistency"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -435,6 +438,15 @@
       "sharedComponent": "legacy-hotel-census-access-guard-v1.js (v2 HPC-only); disabled reconcile scripts; dealality-legacy-hpc-reconciliation-v1.js DISABLED; property-census-identity-v1.js HPC-only",
       "regressionTest": "dealality_legacy_hotel_census_retirement_gate",
       "browserEvidence": "reports/hotel-explorer/global-census-retirement/DEALALITY-HPC-ONLY-ZERO-LEGACY-FOUNDER-CORRECTION-V1.md"
+    },
+    {
+      "id": "HE-QL-045",
+      "originalProblem": "Verified hotel facts (rooms, brand, market, operator, ownership classification, submarket cohorts) disappeared, contradicted, or changed classification across the 11 active Hotel Explorer tabs without an automated catch",
+      "rootCause": "No permanent per-hotel cross-tab consistency audit comparing canonical Airtable values to each consuming tab API/render; missing verified values were misread as research gaps; SkipBrowser could be mistaken for PASS",
+      "approvedStandard": "Every Audit/Validate/Full/Refresh emits HE-CROSS-TAB-CONSISTENCY-<hotelId>.{json,md}; verified missing → FAIL (not research gap); Proposed≠Validated drift → FAIL; SkipBrowser → NOT_TESTED; like-for-like submarket cohorts only; HE_E2E_CROSS_TAB_CERTIFICATION fails on unresolved verified/proposed inconsistency",
+      "sharedComponent": "lib/hotel-intelligence/he-factory/he-cross-tab-consistency-report-v1.js; he-cross-tab-factory-gates-v1.js; Invoke-HotelExplorerFactory.ps1",
+      "regressionTest": "test:he-cross-tab-consistency-report-v1",
+      "browserEvidence": "reports/hotel-explorer/HE-CROSS-TAB-CONSISTENCY-recLuxvwwxID7U2B8.md"
     }
   ]
 }
