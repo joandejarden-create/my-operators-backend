@@ -865,9 +865,9 @@
       })
       .join("");
     var detailsHtml =
-      '<tr class="hci-dir-details-row" id="' +
+      '<div class="hci-dir-details-panel" id="' +
       detailsId +
-      '" hidden><td colspan="8">' +
+      '" hidden>' +
       '<div class="hci-dir-details">' +
       qualify +
       "<div><strong>Hotel responsibility</strong> " +
@@ -881,7 +881,7 @@
         ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
         : "") +
       '<p class="hci-muted">Organization websites and switchboards are company routes, not personal inboxes. On-demand lookup results stay in this session and are not saved.</p>' +
-      "</div></td></tr>";
+      "</div></div>";
     return {
       name: p.name || "",
       title: p.title || "",
@@ -942,28 +942,12 @@
       tableHtml =
         '<p class="hci-muted">Contact directory table unavailable (sortable table component not loaded).</p>';
     }
-    // Inject expandable detail rows after each data row (SortableTable does not support nested rows).
-    if (rows.length && tableHtml.indexOf("</tbody>") >= 0) {
-      var injected = "";
-      rows.forEach(function (row) {
-        injected +=
-          "<tr class=\"hci-dir-row\" data-person-id=\"" +
-          esc((row._person && row._person.personId) || "") +
-          "\">" +
-          columns
-            .map(function (col) {
-              return (
-                '<td class="dl-td">' +
-                (row._cells && row._cells[col.key] != null ? row._cells[col.key] : esc(row[col.key] || "—")) +
-                "</td>"
-              );
-            })
-            .join("") +
-          "</tr>" +
-          (row._detailsHtml || "");
-      });
-      tableHtml = tableHtml.replace(/<tbody>[\s\S]*?<\/tbody>/, "<tbody>" + injected + "</tbody>");
-    }
+    // Keep detail panels outside the sortable tbody so column sort cannot scramble rows.
+    var detailsPanels = rows
+      .map(function (row) {
+        return row._detailsHtml || "";
+      })
+      .join("");
     return (
       '<section class="hci-section hci-section--directory" data-hci-directory="v3">' +
       '<div class="hci-directory-meta hci-muted">' +
@@ -972,7 +956,9 @@
       (people.length === 1 ? "" : "s") +
       "</div>" +
       tableHtml +
-      "</section>"
+      '<div class="hci-dir-details-host">' +
+      detailsPanels +
+      "</div></section>"
     );
   }
 
@@ -1352,6 +1338,9 @@
   function bindToggles(root) {
     if (!root) return;
     var vm = root._hciViewModel || null;
+    if (global.DealalitySortableTable && typeof global.DealalitySortableTable.bind === "function") {
+      global.DealalitySortableTable.bind(root);
+    }
     if (root.getAttribute("data-hci-bound") === "1") {
       bindEnrich(root);
       bindPurposeFilter(root, vm);
@@ -1363,7 +1352,15 @@
       if (!btn || !root.contains(btn)) return;
       ev.preventDefault();
       var id = btn.getAttribute("data-hci-toggle");
-      var el = id ? document.getElementById(id) : null;
+      var el = null;
+      if (id) {
+        try {
+          el = root.querySelector("#" + String(id).replace(/([^a-zA-Z0-9_-])/g, "\\$1"));
+        } catch (e) {
+          el = null;
+        }
+        if (!el) el = document.getElementById(id);
+      }
       if (!el && btn.parentElement) {
         el = btn.parentElement.querySelector(".hci-person__details, [id^='hci-gaps-']");
       }
