@@ -250,14 +250,17 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(!JSON.stringify(empty).includes('"rating":0'));
 }
 
-// Live unauthorized without founder preview stays hidden
+// Live unauthorized without founder preview shows restricted shell (no scores)
 {
-  const liveHidden = buildGuestSentimentView(
+  const liveRestricted = buildGuestSentimentView(
     { id: BETH },
     { founder_preview_render: true, observations: [] },
     { founderPreview: false }
   );
-  assert.equal(liveHidden.visible, false);
+  assert.equal(liveRestricted.visible, true);
+  assert.equal(liveRestricted.liveRightsRestricted, true);
+  assert.equal(liveRestricted.platforms.length, 0);
+  assert.equal(liveRestricted.platformOverview.length, 7);
 }
 
 {
