@@ -158,13 +158,16 @@ npm run test:gdi-canonical-full-e2e-v3-v1
 
 | Field | Value |
 |---|---|
-| PR | *(filled after `gh pr create`)* |
+| PR | [#613](https://github.com/joandejarden-create/my-operators-backend/pull/613) **OPEN** |
+| Head SHA | `82191ddc5b7b920210a125ee5fb1cd145f67f896` |
 | Expected merge | Integration Controller remote merge only |
 | Local branch | `feat/gdi-canonical-full-e2e-v3-who-how` |
 | Base | `main` |
-| Post-merge | `dealality:post-merge-sync --stream gdi` |
+| Post-merge | `dealality:post-merge-sync --stream gdi --pr 613` |
 
 GDI chat does **not** merge.
+
+**Status vocabulary:** `AWAITING_INTEGRATION_CONTROLLER`
 
 ---
 
