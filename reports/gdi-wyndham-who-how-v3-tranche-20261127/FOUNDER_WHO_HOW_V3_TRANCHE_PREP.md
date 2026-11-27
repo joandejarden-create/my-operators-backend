@@ -2,15 +2,16 @@
 
 **Prepared:** 2026-11-27T12:15:25.157Z
 **Hotel:** recnPB3Q02NO8Ma1o (Wyndham San Diego Bayside)
-**Proposed auth:** `FOUNDER_GO_WYNDHAM_WHO_HOW_V3_TRANCHE_20261127`
+**Proposed auth:** `FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127`
+**Checkpoint:** A — WHO/HOW (inside USD 18.00 aggregate; **no** separate USD 5 auth)
 **Status:** PROPOSED_AWAITING_FOUNDER_GO
 
 ## Controls
 
-- Stage 3 WHO/HOW only
+- Stage 3 WHO/HOW only (Checkpoint A)
 - Max 25 unique existing opportunities
-- Hard ceiling **USD 5.00** (unit quote ~$0.1)
-- Estimated max spend: **USD 2.5**
+- Checkpoint hard ceiling **USD 5.00** inside aggregate **USD 18.00**
+- Estimated max Checkpoint A spend: **USD 2.5**
 - Preserve existing 161-opportunity inventory
 - No Stage 1 rediscovery / unnecessary Stage 2 / Findymail / Surfe / Airtable / STAGED / CURRENT
 - Bethesda + CLEAN11 freezes enforced
