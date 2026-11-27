@@ -2634,23 +2634,32 @@ button.hex-action {
   color: #94a3b8;
 }
 .hex-root .ocn-legend {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 10px 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 14px;
+  gap: 12px 28px;
   align-items: center;
-  font-size: 11px;
-  color: var(--neutral--400);
+  font-size: 12px;
+  line-height: 1.4;
+  color: #cbd5e1;
+  border: 0.6px solid var(--hex-surface-border);
+  border-radius: 10px;
+  background: rgba(8, 15, 37, 0.35);
 }
 .hex-root .ocn-legend__item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  min-height: 20px;
 }
 .hex-root .ocn-legend__item i {
-  width: 18px;
+  width: 22px;
   height: 0;
   border-top: 2px solid #94a3b8;
   display: inline-block;
+  flex: 0 0 auto;
 }
 .hex-root .ocn-legend__item--verified i {
   border-top-style: solid;
@@ -2671,6 +2680,43 @@ button.hex-action {
 .hex-root .ocn-legend__note {
   opacity: 0.85;
 }
+.hex-root .ocn-about-structure {
+  margin: 10px 0 4px;
+  border: 0.6px solid var(--hex-surface-border);
+  border-radius: 10px;
+  background: rgba(8, 15, 37, 0.28);
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.hex-root .ocn-about-structure > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+.hex-root .ocn-about-structure > summary::-webkit-details-marker {
+  display: none;
+}
+.hex-root .ocn-about-structure > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  color: #94a3b8;
+}
+.hex-root .ocn-about-structure[open] > summary::before {
+  content: "▾";
+}
+.hex-root .ocn-about-structure__body {
+  padding: 0 12px 12px;
+}
+.hex-root .ocn-about-structure__body p {
+  margin: 0 0 8px;
+}
+.hex-root .ocn-about-structure__body p:last-child {
+  margin-bottom: 0;
+}
 .hex-root .ocn-stage {
   position: relative;
   border: 0.6px solid var(--hex-surface-border);
@@ -2681,7 +2727,8 @@ button.hex-action {
 }
 .hex-root .ocn-svg {
   width: 100%;
-  height: 520px;
+  height: min(640px, 72vh);
+  min-height: 520px;
   display: block;
   cursor: grab;
   touch-action: none;
@@ -2715,12 +2762,33 @@ button.hex-action {
   stroke-width: 3;
   stroke: #e2e8f0;
 }
+.hex-root .ocn-edge-label-host {
+  pointer-events: none;
+}
+.hex-root .ocn-edge-label-bg {
+  fill: var(--hex-surface-canvas, #080f25);
+  stroke: transparent;
+}
 .hex-root .ocn-edge-label {
-  fill: #94a3b8;
+  fill: #e2e8f0;
   font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-anchor: middle;
+  dominant-baseline: middle;
   pointer-events: none;
+}
+.hex-root .ocn-edge--verified .ocn-edge-label {
+  fill: #7dd3fc;
+}
+.hex-root .ocn-edge--proposed .ocn-edge-label {
+  fill: #fcd34d;
+}
+.hex-root .ocn-edge--historical .ocn-edge-label {
+  fill: #cbd5e1;
+}
+.hex-root .ocn-edge--unresolved .ocn-edge-label {
+  fill: #94a3b8;
 }
 .hex-root .ocn-node rect {
   fill: var(--hex-surface-section);

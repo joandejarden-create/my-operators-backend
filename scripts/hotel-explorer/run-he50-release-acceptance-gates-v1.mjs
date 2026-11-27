@@ -94,6 +94,10 @@ let loadingBrowser = {
   status: skipBrowser ? "NOT_TESTED" : "PENDING",
   ok: false,
 };
+let ownershipGraphBrowser = {
+  status: skipBrowser ? "NOT_TESTED" : "PENDING",
+  ok: false,
+};
 if (!skipBrowser) {
   const r = spawnSync(
     "npm",
@@ -124,6 +128,37 @@ if (!skipBrowser) {
     ok: r.status === 0 && report?.status === "PASS",
     exitCode: r.status,
     report,
+  };
+
+  const ocnRun = spawnSync(
+    "npm",
+    ["run", "verify:he-ownership-graph-layout-browser-v1", "--", "--require-server"],
+    {
+      cwd: ROOT,
+      encoding: "utf8",
+      shell: true,
+      env: {
+        ...process.env,
+        DEALALITY_LOCAL_ADMIN_BASE: BASE,
+        HE_OCN_VERIFY_HOTEL_ID: HOTEL_ID,
+      },
+    }
+  );
+  const ocnReportPath = path.join(
+    ROOT,
+    "reports/hotel-explorer/HE-OWNERSHIP-GRAPH-LAYOUT-BROWSER-V1.json"
+  );
+  let ocnReport = null;
+  try {
+    ocnReport = JSON.parse(fs.readFileSync(ocnReportPath, "utf8"));
+  } catch {
+    ocnReport = null;
+  }
+  ownershipGraphBrowser = {
+    status: ocnReport?.status || (ocnRun.status === 0 ? "PASS" : "FAIL"),
+    ok: ocnRun.status === 0 && ocnReport?.status === "PASS",
+    exitCode: ocnRun.status,
+    report: ocnReport,
   };
 }
 
@@ -302,6 +337,11 @@ const gates = {
     : loadingBrowser.ok
       ? "PASS"
       : "FAIL",
+  HE_OWNERSHIP_GRAPH_LAYOUT_BROWSER: skipBrowser
+    ? "NOT_TESTED"
+    : ownershipGraphBrowser.ok
+      ? "PASS"
+      : "FAIL",
   HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE: gate(
     physicalFacts.rooms407 &&
       physicalFacts.yearBuilt1979 &&
@@ -335,6 +375,7 @@ const ok =
   gates.HE_CONTACT_PRESENTATION_VALIDATED === "YES" &&
   gates.HE_LOADING_COMPONENT_CONSISTENT === "YES" &&
   gates.HE_HEADER_ACTIONS_HYDRATED === "YES" &&
+  (skipBrowser || ownershipGraphBrowser.ok) &&
   gates.FULL_HE_E2E_VALIDATED === "NO";
 
 const outDir = path.join(ROOT, "reports/hotel-explorer");
@@ -347,6 +388,7 @@ const report = {
   headHint: process.env.GIT_HEAD || null,
   browserEnabled: !skipBrowser,
   loadingBrowser,
+  ownershipGraphBrowser,
   ok,
   gates,
   contactTests: contactTests.map((t) => ({

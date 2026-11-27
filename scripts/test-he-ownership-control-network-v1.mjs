@@ -9,8 +9,11 @@ import { fileURLToPath } from "node:url";
 import {
   OWNERSHIP_CONTROL_NETWORK_V1,
   OCN_EDGE_TYPES,
+  OCN_EDGE_LABELS,
+  OCN_SHORT_EDGE_LABELS,
   OCN_MAX_EXPANSION_HOTELS,
   OCN_MIN_NODE_LABEL_PX,
+  OCN_PRIMARY_CHAIN_GAP_Y,
   buildOwnershipControlNetwork,
   layoutOwnershipControlNetwork,
   wrapNodeLabel,
@@ -111,6 +114,17 @@ for (const e of graph.edges) {
   assert.ok(e.shortLabel, "edges need short labels");
 }
 
+assert.equal(OCN_EDGE_LABELS.ECONOMICALLY_CONTROLLED_BY, "Economic Sponsorship");
+assert.equal(OCN_EDGE_LABELS.LEGALLY_OWNED_BY, "Legal Ownership");
+assert.equal(OCN_EDGE_LABELS.MANAGED_BY, "Hotel Management");
+assert.equal(OCN_EDGE_LABELS.BRANDED_AS, "Brand Affiliation");
+assert.equal(OCN_SHORT_EDGE_LABELS.ECONOMICALLY_CONTROLLED_BY, "Economic Sponsorship");
+assert.equal(OCN_PRIMARY_CHAIN_GAP_Y, 72);
+assert.ok(
+  (graph.legend || []).some((l) => /Verified relationship/i.test(l.label || "")),
+  "legend must use customer-facing verified wording"
+);
+
 const propco = graph.nodes.find((n) => /Marbeth/i.test(n.label));
 const econ = graph.nodes.find((n) => /Mullen/i.test(n.label));
 const operator = graph.nodes.find((n) => n.role === "Hotel operator");
@@ -208,6 +222,21 @@ assert.ok(laid.positions[graph.focusHotelId]);
 assert.ok(Object.keys(laid.positions).length === expanded.nodes.length);
 assert.ok(laid.boxes[graph.focusHotelId]);
 
+// Primary vertical chain must leave room for connector label chips.
+const econLaid = expanded.nodes.find((n) => /Mullen/i.test(n.label));
+const propcoLaid = expanded.nodes.find((n) => /Marbeth/i.test(n.label));
+if (econLaid && propcoLaid) {
+  const pe = laid.positions[econLaid.id];
+  const pp = laid.positions[propcoLaid.id];
+  const be = laid.boxes[econLaid.id];
+  const bp = laid.boxes[propcoLaid.id];
+  const edgeGap = Math.abs(pp.y - pe.y) - (be.h + bp.h) / 2;
+  assert.ok(
+    edgeGap + 0.5 >= OCN_PRIMARY_CHAIN_GAP_Y,
+    `econ→propco gap ${edgeGap} must be >= ${OCN_PRIMARY_CHAIN_GAP_Y}`
+  );
+}
+
 // No overlapping node centers within min separation (approx)
 const nodeList = expanded.nodes;
 for (let i = 0; i < nodeList.length; i++) {
@@ -239,6 +268,14 @@ assert.ok(!ws.includes("Ownership &amp; Control Hierarchy"));
 const browser = read("public/js/he-ownership-control-network-v1.js");
 assert.ok(browser.includes("HeOwnershipControlNetwork"));
 assert.ok(browser.includes("LEGALLY_OWNED_BY"));
+assert.ok(browser.includes("Economic Sponsorship"));
+assert.ok(browser.includes("Legal Ownership"));
+assert.ok(browser.includes("Hotel Management"));
+assert.ok(browser.includes("Brand Affiliation"));
+assert.ok(browser.includes("renderEdgeLabelChip"));
+assert.ok(browser.includes("ocn-edge-label-bg"));
+assert.ok(browser.includes("About This Structure"));
+assert.ok(browser.includes('data-ocn-label-layout="v2"'));
 assert.ok(browser.includes("data-ocn-group"));
 assert.ok(browser.includes("Related Hotels ("));
 assert.ok(browser.includes("Brand Development view"));
@@ -257,6 +294,8 @@ assert.ok(css.includes(".ocn-node"));
 assert.ok(css.includes("ocn-legend__item--proposed"));
 assert.ok(css.includes("ocn-node__label"));
 assert.match(css, /ocn-node__label[\s\S]*font-size:\s*13px/);
+assert.ok(css.includes("ocn-edge-label-bg"));
+assert.ok(css.includes("ocn-about-structure"));
 assert.ok(css.includes("ocn-chip") || css.includes("ocn-groups"));
 
 const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
