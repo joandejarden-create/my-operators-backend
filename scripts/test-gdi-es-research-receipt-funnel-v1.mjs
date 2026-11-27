@@ -103,6 +103,12 @@ assert.ok(days);
 assert.equal(hours.displayUnit, "Hours");
 assert.equal(days.displayUnit, "Days");
 assert.equal(hours.customerEstimateLabel, "Estimated");
+assert.equal(
+  es.sections.executiveOverview.researchProductivity.metrics.find(
+    (m) => m.key === "estimatedResearchHoursSaved",
+  ).displayUnit,
+  "Hours",
+);
 assert.ok(hours.value < 119);
 assert.ok(hours.value > 40);
 assert.equal(days.value, Math.round((hours.value / 8) * 2) / 2);

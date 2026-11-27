@@ -414,7 +414,13 @@
 
   function renderConsolidatedReceipt(receipt, productivity) {
     receipt = receipt || {};
-    productivity = productivity || receipt.researchProductivity || {};
+    // Prefer receipt-wrapped productivity (includes displayUnit + Estimated label).
+    productivity =
+      (receipt.researchProductivity && receipt.researchProductivity.metrics
+        ? receipt.researchProductivity
+        : null) ||
+      productivity ||
+      {};
     var funnel =
       (receipt.researchFunnel && receipt.researchFunnel.stages) ||
       [];
