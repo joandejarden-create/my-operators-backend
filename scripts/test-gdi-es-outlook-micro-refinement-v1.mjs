@@ -66,7 +66,7 @@ check("ui_only_scoped_outlook_micro_changes", () => {
   assert.match(js, /gdi-es-columns__year/);
   assert.match(css, /margin-top:\s*auto/);
   assert.match(css, /\.gdi-es-columns--outlook \.gdi-es-columns__item\.is-zero/);
-  assert.match(html, /gdi-es-outlook-micro-20261127/);
+  assert.match(html, /gdi-es-(?:outlook-micro|wave-loading)-20261127/);
   // Unrelated ES sections untouched by this change.
   assert.match(js, /Demand Composition/);
   assert.match(js, /Dealality Research Receipt/);

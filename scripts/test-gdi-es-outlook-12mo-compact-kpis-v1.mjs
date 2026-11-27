@@ -117,7 +117,7 @@ check("ui_markup_and_css_compact_outlook_only", () => {
   assert.match(css, /\.gdi-es-outlook__top/);
   assert.match(css, /\.gdi-es-outlook__buckets--compact/);
   assert.match(css, /grid-template-columns:\s*repeat\(4,/);
-  assert.match(html, /gdi-es-outlook-micro-20261127/);
+  assert.match(html, /gdi-es-(?:outlook-micro|wave-loading|remove-staged-pill)-20261127/);
   // Do not regress unrelated ES sections in this scoped change.
   assert.match(js, /Demand Composition/);
   assert.match(js, /Dealality Research Receipt/);

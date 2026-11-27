@@ -45,7 +45,7 @@ check("cache_bust_updated_and_publication_logic_untouched", () => {
     path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
     "utf8",
   );
-  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-remove-staged-pill-20261127/);
+  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-(?:remove-staged-pill|wave-loading)-20261127/);
   assert.match(app, /FOUNDER_STAGED_PREVIEW/);
   assert.match(app, /preview=staged|STAGED/);
 });

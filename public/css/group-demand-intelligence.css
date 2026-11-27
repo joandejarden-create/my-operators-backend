@@ -4778,7 +4778,18 @@ a.gdi-contact-reveal-signin {
 .gdi-es-banner--warn { border-color: rgba(253, 181, 42, 0.45); }
 .gdi-es-banner--muted { opacity: 0.9; }
 .gdi-es-muted { color: var(--gdi-muted); font-size: 0.88rem; }
-.gdi-es-loading { color: var(--gdi-muted); padding: 1.5rem; }
+.gdi-es-loading-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 12rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+.gdi-es-loading-wave .dealality-loading-toast-host,
+.gdi-es-loading-wave .dealality-wave-loader {
+  margin: 0 auto;
+}
 @media (max-width: 1200px) {
   .gdi-es-assessment,
   .gdi-es-assessment--primary,
