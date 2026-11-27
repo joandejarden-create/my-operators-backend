@@ -242,6 +242,9 @@
         : amenList.map(function (a) { return { id: null, label: String(a) }; });
     }
     if (hotel.website) overrides.website = hotel.website;
+    if (hotel.hotelWebsite) overrides.hotelWebsite = hotel.hotelWebsite;
+    if (hotel.telephone) overrides.telephone = hotel.telephone;
+    if (hotel.phone) overrides.phone = hotel.phone;
     return overrides;
   }
 
@@ -453,7 +456,18 @@
     var statement =
       (ownership && ownership.hotel && ownership.hotel.positioning_statement) ||
       intelligenceNarrative(hotel, ownership);
-    var website = normalizeWebsiteUrl(hotel.website || hotel.hotelWebsite || "");
+    var sharedVm = (ownership && ownership.sharedHotelView) || {};
+    var corp =
+      (ownership && ownership.report && ownership.report.corporate_contacts) ||
+      (ownership && ownership.corporate_contacts) ||
+      {};
+    var website = normalizeWebsiteUrl(
+      hotel.website ||
+        hotel.hotelWebsite ||
+        sharedVm.website ||
+        (corp.source === "HPC_PROPERTY_FALLBACK" ? corp.website : "") ||
+        ""
+    );
     var lat = hotel.latitude != null ? hotel.latitude : hotel.lat;
     var lng = hotel.longitude != null ? hotel.longitude : hotel.lng;
     var maps =
@@ -462,7 +476,13 @@
       !(Number(lat) === 0 && Number(lng) === 0)
         ? "https://www.google.com/maps?q=" + encodeURIComponent(lat + "," + lng)
         : "";
-    var phoneRaw = hotel.telephone || hotel.phone || "";
+    var phoneRaw =
+      hotel.telephone ||
+      hotel.phone ||
+      sharedVm.telephone ||
+      sharedVm.phone ||
+      corp.property_phone ||
+      "";
     var phoneHref = phoneRaw ? "tel:" + String(phoneRaw).replace(/[^\d+]/g, "") : "";
     var statusRaw = hotel.status || hotel.hotelStatus || hotel.operating_status || "";
     var status = "";
@@ -1523,6 +1543,24 @@
       if (recordId(state.hotel) && recordId(state.hotel) !== recordId(hotel)) return;
       state.ownership = ownership;
       var hi = (ownership && ownership.hotel) || {};
+      var sharedVm = (ownership && ownership.sharedHotelView) || {};
+      var corp =
+        (ownership && ownership.report && ownership.report.corporate_contacts) ||
+        (ownership && ownership.corporate_contacts) ||
+        {};
+      var propertyWebsite =
+        hi.website ||
+        hi.hotelWebsite ||
+        sharedVm.website ||
+        (corp.source === "HPC_PROPERTY_FALLBACK" ? corp.website : null) ||
+        null;
+      var propertyPhone =
+        hi.telephone ||
+        hi.phone ||
+        sharedVm.telephone ||
+        sharedVm.phone ||
+        corp.property_phone ||
+        null;
       var fromOwnership = {
         rooms: hi.rooms != null && Number(hi.rooms) > 0 ? hi.rooms : null,
         city: hi.city || null,
@@ -1530,7 +1568,10 @@
         country: hi.country || null,
         chainScale: hi.chain_scale || hi.chainScale || null,
         chain_scale: hi.chain_scale || hi.chainScale || null,
-        website: hi.website || null,
+        website: propertyWebsite,
+        hotelWebsite: propertyWebsite,
+        telephone: propertyPhone,
+        phone: propertyPhone,
         latitude: hi.latitude != null ? hi.latitude : null,
         longitude: hi.longitude != null ? hi.longitude : null,
         managementCompany: hi.operator || hi.management_company || null,
