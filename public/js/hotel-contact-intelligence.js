@@ -24,6 +24,14 @@
     findBoth: "Find Contact Details",
   };
 
+  /* Match GDI gdi-commercial-list-table-v1 contact-column icons exactly. */
+  var ICON_EMAIL =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  var ICON_PHONE =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>';
+  var ICON_LINKEDIN =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.05c.53-1 1.82-2.05 3.75-2.05 4.01 0 4.75 2.64 4.75 6.07V23h-4v-5.9c0-1.41-.03-3.22-1.96-3.22-1.96 0-2.26 1.53-2.26 3.12V23h-4V8.5z"/></svg>';
+
   /** Purpose sections — mirrored from contact-purpose-sections-v1 (client cannot import ESM). */
   var PURPOSE_SECTIONS = [
     {
@@ -820,24 +828,69 @@
     return out;
   }
 
+  function telHrefForPhone(phone) {
+    var raw = String(phone || "").trim();
+    if (!raw) return "";
+    var keepPlus = raw.charAt(0) === "+";
+    var digits = raw.replace(/[^\d]/g, "");
+    if (!digits) return "";
+    return "tel:" + (keepPlus ? "+" : "") + digits;
+  }
+
+  /**
+   * CONTACT column — match GDI contactDetailsCellHtml exactly:
+   * Email / Phone / LinkedIn stacked rows with icons + available or Not Available.
+   * Never falls back to employer website or organizational switchboard.
+   */
   function renderVerifiedChannelSummary(p) {
     var emails = personEmails(p);
     var phones = personPhones(p);
     var li = linkedInUrl(p);
-    var bits = [];
-    if (emails.length) bits.push(renderCompactChannel(emails[0], "email"));
-    if (phones.length) bits.push(renderCompactChannel(phones[0], "phone"));
-    if (li) {
-      bits.push(
-        '<a class="hci-action-link hex-rms-ext-link" href="' +
-          esc(li) +
-          '" target="_blank" rel="noopener">LinkedIn</a>'
-      );
-    }
-    if (!bits.length) {
-      return '<span class="hci-muted">No verified channels yet</span>';
-    }
-    return '<div class="hci-dir-channel-summary">' + bits.join("") + "</div>";
+    var email = emails.length ? channelValue(emails[0]) : "";
+    var phone = phones.length ? channelValue(phones[0]) : "";
+    var emailLine = email
+      ? '<a class="gdi-list-contact-link" href="mailto:' + esc(email) + '">' + esc(email) + "</a>"
+      : '<span class="gdi-list-contact-missing">Email Not Available</span>';
+    var phoneLine = phone
+      ? '<a class="gdi-list-contact-link" href="' +
+        esc(telHrefForPhone(phone)) +
+        '">' +
+        esc(phone) +
+        "</a>"
+      : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
+    var linkedinLine = li
+      ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
+        esc(li) +
+        '" target="_blank" rel="noopener noreferrer" title="Open LinkedIn profile" aria-label="Open LinkedIn profile for ' +
+        esc(p.name || "contact") +
+        '">' +
+        '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+        ICON_LINKEDIN +
+        "</span>" +
+        '<span class="gdi-list-linkedin-label">LinkedIn Profile</span></a>'
+      : '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+        ICON_LINKEDIN +
+        "</span>" +
+        '<span class="gdi-list-contact-missing">LinkedIn Not Available</span>';
+    return (
+      '<div class="gdi-list-contact-details">' +
+      '<div class="gdi-list-contact-line">' +
+      '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+      ICON_EMAIL +
+      "</span>" +
+      emailLine +
+      "</div>" +
+      '<div class="gdi-list-contact-line">' +
+      '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+      ICON_PHONE +
+      "</span>" +
+      phoneLine +
+      "</div>" +
+      '<div class="gdi-list-contact-line gdi-list-contact-linkedin">' +
+      linkedinLine +
+      "</div>" +
+      "</div>"
+    );
   }
 
   function renderDirectoryRowCells(p, hotelId, capability, vm) {

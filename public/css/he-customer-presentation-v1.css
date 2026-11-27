@@ -81,6 +81,18 @@
   min-width: 160px;
 }
 
+/*
+ * CONTACT name + methods columns — 16px left padding.
+ * Override .hex-root .hiw-table td:first-child / .dl-td--primary padding-left:0.
+ */
+.hex-root .hci-root .hci-directory-table thead th:nth-child(1),
+.hex-root .hci-root .hci-directory-table tbody td:nth-child(1),
+.hex-root .hci-root .hci-directory-table tbody td.dl-td--primary:nth-child(1),
+.hex-root .hci-root .hci-directory-table thead th:nth-child(4),
+.hex-root .hci-root .hci-directory-table tbody td:nth-child(4) {
+  padding-left: 16px;
+}
+
 .hci-root .hci-directory-table th:nth-child(2),
 .hci-root .hci-directory-table td:nth-child(2) {
   width: 20%;
