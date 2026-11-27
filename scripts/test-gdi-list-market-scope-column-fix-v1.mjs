@@ -96,7 +96,10 @@ check("css_reserves_market_scope_and_actions_widths", () => {
   assert.match(css, /min-width:\s*5\.5rem/);
   assert.match(css, /th\[data-col="actions"\][\s\S]*?min-width:\s*4\.75rem/);
   assert.match(css, /min-width:\s*1240px/);
-  assert.match(html, /group-demand-intelligence\.css\?v=gdi-list-market-scope-col-20261127/);
+  assert.match(
+    html,
+    /group-demand-intelligence\.css\?v=gdi-(?:list-market-scope-col|market-scope-compact)-20261127/,
+  );
 });
 
 if (failed) {
