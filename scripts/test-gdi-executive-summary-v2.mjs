@@ -75,7 +75,7 @@ assert.equal(
 );
 assert.match(
   withIntel.sections.executiveCommercialSnapshot.reportingPeriod.label || "",
-  /Research updated \d{4}-\d{2}-\d{2}/,
+  /Research updated [A-Z][a-z]+ \d{1,2}, \d{4}/,
 );
 assert.equal(
   /STAGED|CURRENT/i.test(
