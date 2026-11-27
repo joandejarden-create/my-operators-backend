@@ -20,6 +20,8 @@ import { createGdiPublicationPackageStore } from "../lib/group-demand-intelligen
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 /** Accepted cumulative cache busts (latest supersedes prior lifecycle markers). */
 const ACCEPTED_UI_BUSTS = [
+  "gdi-market-scope-compact-20261127",
+  "gdi-list-market-scope-col-20261127",
   "gdi-es-wave-loading-20261127",
   "gdi-es-remove-staged-pill-20261127",
   "gdi-es-outlook-micro-20261127",
@@ -67,7 +69,7 @@ check("auth_shell_has_four_tabs_and_exec_summary_script", () => {
   assertAcceptedBust(html, "app\\.js");
   assert.match(
     html,
-    /gdi-es-wave-loading-|gdi-es-remove-staged-pill-|gdi-es-outlook-micro-|gdi-es-outlook-12mo-kpis-|gdi-list-cols-simplify-|gdi-es-receipt-funnel-|gdi-competitive-scope-v1|gdi-es-admin-shared-tiles-v1|gdi-wyndham-26-cert/,
+    /gdi-market-scope-compact-|gdi-list-market-scope-col-|gdi-es-wave-loading-|gdi-es-remove-staged-pill-|gdi-es-outlook-micro-|gdi-es-outlook-12mo-kpis-|gdi-list-cols-simplify-|gdi-es-receipt-funnel-|gdi-competitive-scope-v1|gdi-es-admin-shared-tiles-v1|gdi-wyndham-26-cert/,
   );
 });
 

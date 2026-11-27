@@ -352,19 +352,18 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 .gdi-page .gdi-market-scope-filter {
-  /* Fixed width so Opportunity Type / surrounding controls do not shift on scope change.
-     Competitive needs more room than All/Hotel — unequal columns, not equal thirds. */
-  flex: 0 0 420px;
-  width: 420px;
-  min-width: 420px;
-  max-width: 420px;
+  /* Content-sized control — each segment fits its label + count. */
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+  max-width: none;
 }
 
 .gdi-page .gdi-market-scope {
-  display: grid;
-  /* All | Hotel | Competitive — Competitive wider so label + count never truncate. */
-  grid-template-columns: minmax(72px, 0.85fr) minmax(84px, 0.95fr) minmax(132px, 1.35fr);
-  width: 100%;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: 100%;
   align-items: stretch;
   gap: 0;
   box-sizing: border-box;
@@ -388,8 +387,10 @@ body.gdi-page.embed-mode .gdi-shell {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  padding: 0 8px;
+  padding: 0 10px;
   height: 100%;
+  width: auto;
+  flex: 0 0 auto;
   min-width: 0;
   min-height: 0;
   line-height: 1.25;
@@ -408,7 +409,7 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 .gdi-page .gdi-market-scope__btn--competitive {
-  min-width: 132px;
+  /* Same padding as siblings — width follows label text. */
   padding: 0 10px;
 }
 
@@ -440,21 +441,28 @@ body.gdi-page.embed-mode .gdi-shell {
   }
 
   .gdi-page .gdi-weekly-filter,
-  .gdi-page .gdi-opportunity-type-filter,
-  .gdi-page .gdi-market-scope-filter {
+  .gdi-page .gdi-opportunity-type-filter {
     flex: 1 1 calc(50% - 12px);
     width: auto;
     min-width: 160px;
     max-width: none;
   }
 
+  .gdi-page .gdi-market-scope-filter {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
   .gdi-page .gdi-market-scope {
-    width: 100%;
+    width: max-content;
+    max-width: 100%;
   }
 
   .gdi-page .gdi-market-scope__btn {
     text-align: center;
-    padding: 0 8px;
+    padding: 0 10px;
   }
 }
 
@@ -5011,14 +5019,16 @@ a.gdi-contact-reveal-signin {
 .gdi-page .gdi-commercial-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1100px;
+  /* Room for optional Market Scope (and peers) ahead of Actions under fixed layout */
+  min-width: 1240px;
   text-align: left;
   table-layout: fixed;
 }
-/* Redistribute width after retiring Contact Readiness + Opportunity Status */
+/* Redistribute width after retiring Contact Readiness + Opportunity Status.
+   Leave headroom so optional columns (esp. Market Scope) do not collapse into Actions. */
 .gdi-page .gdi-commercial-table th[data-col="opportunity"],
 .gdi-page .gdi-commercial-table td[data-col="opportunity"] {
-  width: 22%;
+  width: 18%;
 }
 .gdi-page .gdi-commercial-table th[data-col="priority"],
 .gdi-page .gdi-commercial-table td[data-col="priority"] {
@@ -5026,27 +5036,42 @@ a.gdi-contact-reveal-signin {
 }
 .gdi-page .gdi-commercial-table th[data-col="demandType"],
 .gdi-page .gdi-commercial-table td[data-col="demandType"] {
-  width: 14%;
+  width: 12%;
 }
 .gdi-page .gdi-commercial-table th[data-col="demandWindow"],
 .gdi-page .gdi-commercial-table td[data-col="demandWindow"] {
-  width: 10%;
+  width: 9%;
 }
 .gdi-page .gdi-commercial-table th[data-col="salesAction"],
 .gdi-page .gdi-commercial-table td[data-col="salesAction"] {
-  width: 10%;
+  width: 9%;
 }
 .gdi-page .gdi-commercial-table th[data-col="whoToContact"],
 .gdi-page .gdi-commercial-table td[data-col="whoToContact"] {
-  width: 14%;
+  width: 12%;
 }
 .gdi-page .gdi-commercial-table th[data-col="contactDetails"],
 .gdi-page .gdi-commercial-table td[data-col="contactDetails"] {
-  width: 16%;
+  width: 13%;
+}
+.gdi-page .gdi-commercial-table th[data-col="marketScope"],
+.gdi-page .gdi-commercial-table td[data-col="marketScope"],
+.gdi-page .gdi-commercial-table th[data-col="estimatedRoomNights"],
+.gdi-page .gdi-commercial-table td[data-col="estimatedRoomNights"],
+.gdi-page .gdi-commercial-table th[data-col="weeklyChange"],
+.gdi-page .gdi-commercial-table td[data-col="weeklyChange"],
+.gdi-page .gdi-commercial-table th[data-col="needPeriodAlignment"],
+.gdi-page .gdi-commercial-table td[data-col="needPeriodAlignment"],
+.gdi-page .gdi-commercial-table th[data-col="lastVerified"],
+.gdi-page .gdi-commercial-table td[data-col="lastVerified"] {
+  width: 8%;
+  min-width: 5.5rem;
+  white-space: nowrap;
 }
 .gdi-page .gdi-commercial-table th[data-col="actions"],
 .gdi-page .gdi-commercial-table td[data-col="actions"] {
   width: 7%;
+  min-width: 4.75rem;
   white-space: nowrap;
 }
 .gdi-page .gdi-commercial-table thead {
