@@ -125,6 +125,20 @@ if ($ConsistencyModes -contains $Mode) {
   if ($LASTEXITCODE -ne 0) {
     throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
   }
+
+  Write-Host "[HE Factory] Organization & Portfolio UI cleanup gates"
+  & npm run test:he-org-portfolio-ui-cleanup-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Organization & Portfolio UI cleanup gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+  if (-not $SkipBrowser) {
+    Write-Host "[HE Factory] Organization & Portfolio layout browser certification"
+    & npm run he:org-portfolio-layout-audit
+    if ($LASTEXITCODE -ne 0) {
+      throw "HE Organization & Portfolio layout browser certification FAILED for $HotelId (mode=$Mode)"
+    }
+  }
 }
 
 # Header Website/Phone hydration audit (current hotel, or full HE50 batch when -BatchFile set).

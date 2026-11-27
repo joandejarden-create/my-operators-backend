@@ -380,9 +380,10 @@
 .hiw-table th,
 .hiw-table td {
   text-align: left;
-  padding: 10px 8px;
+  padding: 14px 16px;
   border-bottom: 1px solid rgba(55, 68, 107, 0.55);
   vertical-align: top;
+  box-sizing: border-box;
 }
 .hiw-table th {
   font-size: 10px;
@@ -390,8 +391,14 @@
   text-transform: uppercase;
   color: var(--hiw-muted);
 }
-.hiw-table td { color: var(--hiw-body); }
+.hiw-table td { color: var(--hiw-body); text-transform: none; }
 .hiw-table td:first-child { color: var(--hiw-text); font-weight: 650; }
+.hiw-table .dl-td--num,
+.hiw-table td.hiw-td--num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 .hiw-status {
   display: inline-block;
   font-size: 10px;
@@ -817,42 +824,100 @@
   line-height: 1.45;
 }
 
+/* Owned / Controlled Hotels — 7 columns (Hotel · Market · Rooms · Brand · Operator · Ownership Relationship · Status) */
 .hiw-table--portfolio {
-  min-width: 920px;
+  min-width: 1180px;
 }
 .hiw-table--portfolio th:nth-child(1),
 .hiw-table--portfolio td:nth-child(1) {
-  width: 26%;
-  min-width: 200px;
+  width: 18%;
+  min-width: 180px;
 }
 .hiw-table--portfolio th:nth-child(2),
 .hiw-table--portfolio td:nth-child(2) {
   width: 14%;
-  min-width: 110px;
+  min-width: 140px;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 .hiw-table--portfolio th:nth-child(3),
 .hiw-table--portfolio td:nth-child(3) {
-  width: 80px;
+  width: 72px;
   min-width: 72px;
+  max-width: 88px;
   white-space: nowrap;
+  text-align: right;
 }
 .hiw-table--portfolio th:nth-child(4),
 .hiw-table--portfolio td:nth-child(4) {
-  width: 16%;
+  width: 12%;
   min-width: 120px;
 }
 .hiw-table--portfolio th:nth-child(5),
 .hiw-table--portfolio td:nth-child(5) {
-  width: 18%;
-  min-width: 160px;
+  width: 14%;
+  min-width: 140px;
   overflow-wrap: break-word;
   word-break: normal;
 }
 .hiw-table--portfolio th:nth-child(6),
 .hiw-table--portfolio td:nth-child(6) {
-  width: 110px;
-  min-width: 100px;
-  max-width: 120px;
+  width: 16%;
+  min-width: 150px;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.hiw-table--portfolio th:nth-child(7),
+.hiw-table--portfolio td:nth-child(7) {
+  width: 96px;
+  min-width: 88px;
+  white-space: nowrap;
+}
+.hiw-table--portfolio .hiw-rel-status {
+  display: inline-block;
+  margin-left: 0.35em;
+  color: var(--hiw-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Who Manages These Hotels — 6 columns (Hotel · Market · Rooms · Brand · Management Relationship · Status) */
+.hiw-table--portfolio-manage {
+  min-width: 980px;
+}
+.hiw-table--portfolio-manage th:nth-child(1),
+.hiw-table--portfolio-manage td:nth-child(1) {
+  width: 22%;
+  min-width: 180px;
+}
+.hiw-table--portfolio-manage th:nth-child(2),
+.hiw-table--portfolio-manage td:nth-child(2) {
+  width: 16%;
+  min-width: 140px;
+  overflow-wrap: break-word;
+}
+.hiw-table--portfolio-manage th:nth-child(3),
+.hiw-table--portfolio-manage td:nth-child(3) {
+  width: 72px;
+  min-width: 72px;
+  text-align: right;
+  white-space: nowrap;
+}
+.hiw-table--portfolio-manage th:nth-child(4),
+.hiw-table--portfolio-manage td:nth-child(4) {
+  width: 14%;
+  min-width: 120px;
+}
+.hiw-table--portfolio-manage th:nth-child(5),
+.hiw-table--portfolio-manage td:nth-child(5) {
+  width: 22%;
+  min-width: 160px;
+  overflow-wrap: break-word;
+}
+.hiw-table--portfolio-manage th:nth-child(6),
+.hiw-table--portfolio-manage td:nth-child(6) {
+  width: 96px;
+  min-width: 88px;
   white-space: nowrap;
 }
 
