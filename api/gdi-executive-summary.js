@@ -19,10 +19,14 @@ import { loadHotelProfile } from "../lib/group-demand-intelligence/repository.js
 import { loadFeedback } from "../lib/group-demand-intelligence/repository.js";
 import { listPursuits } from "../lib/group-demand-intelligence/pursuit/pursuit-store-v1.js";
 import {
-  buildGdiExecutiveSummaryV1,
   EXEC_SUMMARY_DATA_STATE,
   GDI_EXECUTIVE_SUMMARY_V1,
 } from "../lib/group-demand-intelligence/executive-summary/gdi-executive-summary-v1.js";
+import {
+  buildGdiExecutiveSummaryV2,
+  stripResearchIntelligencePerspective,
+  GDI_EXECUTIVE_SUMMARY_V2,
+} from "../lib/group-demand-intelligence/executive-summary/gdi-executive-summary-v2.js";
 import {
   assertExecutiveSummaryFounderPreviewAuth,
   assertExecutiveSummaryHotelScope,
@@ -200,7 +204,22 @@ export async function getGdiExecutiveSummary(req, res) {
       feedback = null;
     }
 
-    const payload = buildGdiExecutiveSummaryV1({
+    const role = String(
+      req.dealalityUser?.role ||
+        req.dealalityUser?.userRole ||
+        req.dealalityUser?.memberRole ||
+        "",
+    ).toLowerCase();
+    const isFounderAdmin =
+      req.dealalityUser?.isFounder === true ||
+      req.dealalityUser?.isAdmin === true ||
+      role === "founder" ||
+      role === "admin" ||
+      role === "dealality_admin" ||
+      // Authorized founder STAGED preview sessions may see Research Intelligence.
+      (inventory.founderPreview === true && wantsFounderPreview);
+
+    const rawPayload = buildGdiExecutiveSummaryV2({
       hotelId,
       hotelName:
         profile?.identity?.hotelName ||
@@ -216,17 +235,27 @@ export async function getGdiExecutiveSummary(req, res) {
       lastResearchAt:
         inventory.publicationMeta?.publishedAt ||
         inventory.publicationMeta?.generatedAt ||
+        inventory.publicationMeta?.createdAt ||
         null,
       founderPreview: inventory.founderPreview === true,
+      includeResearchIntelligence: isFounderAdmin === true,
     });
 
-    res.setHeader("X-GDI-Surface", "EXECUTIVE_SUMMARY_V1");
+    // Defense in depth: never emit Research Intelligence to non-founder/admin.
+    const payload =
+      isFounderAdmin === true
+        ? rawPayload
+        : stripResearchIntelligencePerspective(rawPayload);
+
+    res.setHeader("X-GDI-Surface", "EXECUTIVE_SUMMARY_V2");
     res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
     return res.json({
       ...payload,
       experimentalLabel: "EXPERIMENTAL / PILOT",
       flag: getGroupDemandIntelligenceFlagState(),
-      version: GDI_EXECUTIVE_SUMMARY_V1,
+      version: GDI_EXECUTIVE_SUMMARY_V2,
+      v1CompatVersion: GDI_EXECUTIVE_SUMMARY_V1,
+      researchIntelligenceAuthorized: isFounderAdmin === true,
     });
   } catch (err) {
     console.error("[gdi-executive-summary]", err);

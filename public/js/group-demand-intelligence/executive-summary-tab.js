@@ -1,12 +1,18 @@
 /**
- * GDI Executive Summary tab — Phase 1 foundation.
- * Auth: FOUNDER_GO_GDI_EXECUTIVE_SUMMARY_PHASE_1_20261127
+ * GDI Executive Summary tab — V2 full-width commercial dashboard.
+ * Three audience perspectives (secondary selector): Executive Overview,
+ * Sales Performance, Research Intelligence (founder/admin only).
  * Opportunities remains the default landing tab (wired in app.js).
  */
 (function (global) {
   "use strict";
 
   var API_BASE = "/api/group-demand-intelligence";
+  var PERSPECTIVE = {
+    EXECUTIVE_OVERVIEW: "EXECUTIVE_OVERVIEW",
+    SALES_PERFORMANCE: "SALES_PERFORMANCE",
+    RESEARCH_INTELLIGENCE: "RESEARCH_INTELLIGENCE",
+  };
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -22,13 +28,16 @@
   }
 
   function metricValue(m) {
-    if (!m) return "—";
-    if (m.value == null) return "—";
-    return fmtNum(m.value);
+    if (m == null) return "—";
+    if (typeof m === "object") {
+      if (m.value == null) return "—";
+      return fmtNum(m.value);
+    }
+    return fmtNum(m);
   }
 
   function availabilityNote(m) {
-    if (!m) return "";
+    if (!m || typeof m !== "object") return "";
     if (m.value != null) return "";
     var a = String(m.availability || "");
     if (a === "TELEMETRY_REQUIRED") return "Telemetry pending";
@@ -36,7 +45,7 @@
     if (a === "UNAVAILABLE") return "Unavailable";
     if (a === "PARTIAL_COVERAGE") return "Partial";
     if (a === "NOT_CURRENTLY_SUPPORTED") return "Not yet supported";
-    return m.reason ? String(m.reason) : "Unavailable";
+    return m.reason || m.note ? String(m.reason || m.note) : "Unavailable";
   }
 
   function withTimeout(promise, ms, label) {
@@ -53,7 +62,6 @@
   }
 
   async function apiGet(path, apiFn) {
-    // Prefer the app-shell api() (handles 401→JWT retry) but never hang the tab.
     if (typeof apiFn === "function") {
       try {
         return await withTimeout(apiFn(path), 8000, "executive_summary_api_timeout");
@@ -63,15 +71,13 @@
             ok: false,
             error: "timeout",
             message:
-              "Executive Summary request timed out. Retry, or open from the Dealality app after signing in.",
+              "Executive Summary request timed out. Retry after signing in.",
           };
         }
         return {
           ok: false,
           error: (err && err.code) || "request_failed",
-          message:
-            (err && err.message) ||
-            "Unable to load Executive Summary",
+          message: (err && err.message) || "Unable to load Executive Summary",
           status: err && err.status,
         };
       }
@@ -90,137 +96,208 @@
     return r.json();
   }
 
-  function dataStateBanner(dataState) {
-    if (dataState === "CURRENT_AVAILABLE") return "";
-    if (dataState === "STAGED_ONLY_NOT_CUSTOMER") {
-      return (
-        '<div class="gdi-exec-banner gdi-exec-banner--warn" role="status">' +
-        "<strong>Publication not customer-authorized.</strong> " +
-        "STAGED inventory exists but CURRENT is required for customer-facing metrics. " +
-        "No fabricated statistics are shown." +
-        "</div>"
-      );
+  function stagedChip(payload) {
+    if (payload && payload.dataState === "FOUNDER_PREVIEW") {
+      return '<span class="gdi-es-status-chip gdi-es-status-chip--staged">Staged</span>';
     }
-    if (dataState === "FOUNDER_PREVIEW") {
-      return (
-        '<div class="gdi-exec-banner gdi-exec-banner--info" role="status">' +
-        "<strong>Founder preview.</strong> Not a customer-facing publication view." +
-        "</div>"
-      );
+    if (payload && payload.dataState === "CURRENT_AVAILABLE") {
+      return '<span class="gdi-es-status-chip gdi-es-status-chip--current">Current</span>';
+    }
+    return "";
+  }
+
+  function perspectiveNav(active, available) {
+    var items = [
+      { id: PERSPECTIVE.EXECUTIVE_OVERVIEW, label: "Executive Overview" },
+      { id: PERSPECTIVE.SALES_PERFORMANCE, label: "Sales Performance" },
+    ];
+    if (
+      available &&
+      available.indexOf(PERSPECTIVE.RESEARCH_INTELLIGENCE) >= 0
+    ) {
+      items.push({
+        id: PERSPECTIVE.RESEARCH_INTELLIGENCE,
+        label: "Research Intelligence",
+      });
     }
     return (
-      '<div class="gdi-exec-banner gdi-exec-banner--muted" role="status">' +
-      "<strong>No eligible CURRENT publication</strong> for this hotel. " +
-      "Executive Summary metrics stay unavailable until authorized publication." +
+      '<div class="gdi-es-perspective" role="tablist" aria-label="Executive Summary perspectives">' +
+      items
+        .map(function (it) {
+          var on = it.id === active;
+          return (
+            '<button type="button" class="gdi-es-perspective__btn' +
+            (on ? " is-active" : "") +
+            '" role="tab" aria-selected="' +
+            (on ? "true" : "false") +
+            '" data-perspective="' +
+            esc(it.id) +
+            '">' +
+            esc(it.label) +
+            "</button>"
+          );
+        })
+        .join("") +
       "</div>"
     );
   }
 
-  function renderSnapshot(section) {
-    var s = section || {};
+  function kpiCard(label, value, note) {
     return (
-      '<section class="gdi-exec-section" data-section="snapshot">' +
-      "<header><h2>Executive Commercial Snapshot</h2>" +
-      "<p>Commercial outcomes and actionable intelligence — not an Opportunities list reprint.</p></header>" +
-      (s.unavailableReason
-        ? '<p class="gdi-exec-muted">' + esc(s.unavailableReason) + "</p>"
-        : "") +
-      '<div class="gdi-exec-kpis">' +
-      kpi("Qualified opportunities", s.totalQualifiedOpportunities) +
-      kpi("New this period", s.newOpportunitiesSincePriorPeriod) +
-      kpi("Materially changed", s.materiallyChangedOpportunities) +
-      kpi("Actionable contacts", s.actionableOpportunities) +
-      kpi("Need-period aligned", s.opportunitiesAlignedWithNeedPeriods) +
+      '<div class="gdi-es-kpi">' +
+      '<div class="gdi-es-kpi__value">' +
+      esc(value == null ? "—" : fmtNum(value)) +
       "</div>" +
-      '<div class="gdi-exec-meta">' +
-      "<span>Reporting period: " +
-      esc((s.reportingPeriod && s.reportingPeriod.label) || "Latest published") +
-      "</span>" +
-      "<span>Last research: " +
-      esc(s.lastResearchCompletionDate || "—") +
-      "</span></div>" +
-      (s.priorityDemandSegments && s.priorityDemandSegments.length
-        ? '<ul class="gdi-exec-segments">' +
-          s.priorityDemandSegments
-            .map(function (seg) {
-              return (
-                "<li><strong>" +
-                esc(seg.name) +
-                "</strong> · " +
-                esc(seg.count) +
-                "</li>"
-              );
-            })
-            .join("") +
-          "</ul>"
+      '<div class="gdi-es-kpi__label">' +
+      esc(label) +
+      "</div>" +
+      (note
+        ? '<div class="gdi-es-kpi__note">' + esc(note) + "</div>"
         : "") +
-      "</section>"
+      "</div>"
     );
   }
 
-  function kpi(label, value) {
+  function kpiFromObj(k) {
+    var note = "";
+    if (k && k.value == null) {
+      note = availabilityNote(k) || k.note || "Unavailable";
+    }
+    return kpiCard(k.label || k.key, k ? k.value : null, note);
+  }
+
+  function renderBarChart(composition) {
+    var rows = (composition && composition.rows) || [];
+    if (!rows.length) {
+      return '<p class="gdi-es-muted">Demand composition is unavailable for this inventory.</p>';
+    }
+    var max = Math.max.apply(
+      null,
+      rows.map(function (r) {
+        return r.count || 0;
+      }),
+    );
     return (
-      '<div class="gdi-exec-kpi"><div class="gdi-exec-kpi-value">' +
-      esc(fmtNum(value)) +
-      '</div><div class="gdi-exec-kpi-label">' +
-      esc(label) +
-      "</div></div>"
+      '<div class="gdi-es-bars" role="img" aria-label="Demand composition chart">' +
+      rows
+        .map(function (r) {
+          var pct = max ? Math.round((r.count / max) * 100) : 0;
+          return (
+            '<div class="gdi-es-bar-row">' +
+            '<div class="gdi-es-bar-label">' +
+            esc(r.name) +
+            "</div>" +
+            '<div class="gdi-es-bar-track"><div class="gdi-es-bar-fill" style="width:' +
+            pct +
+            '%"></div></div>' +
+            '<div class="gdi-es-bar-count">' +
+            esc(r.count) +
+            "</div></div>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function renderOutlook(outlook) {
+    var timeline = (outlook && outlook.timeline) || [];
+    var buckets = (outlook && outlook.buckets) || {};
+    return (
+      '<div class="gdi-es-outlook">' +
+      '<div class="gdi-es-outlook__buckets">' +
+      kpiCard("Established Dates", buckets.establishedEventDates) +
+      kpiCard("Estimated Periods", buckets.estimatedDemandPeriods) +
+      kpiCard("Ongoing Accounts", buckets.ongoingAccountRelationships) +
+      kpiCard("Timing Not Established", buckets.timingNotEstablished) +
+      "</div>" +
+      (timeline.length
+        ? '<div class="gdi-es-bars gdi-es-bars--compact">' +
+          timeline
+            .map(function (t) {
+              return (
+                '<div class="gdi-es-bar-row"><div class="gdi-es-bar-label">' +
+                esc(t.month) +
+                '</div><div class="gdi-es-bar-track"><div class="gdi-es-bar-fill" style="width:' +
+                Math.min(100, t.count * 18) +
+                '%"></div></div><div class="gdi-es-bar-count">' +
+                esc(t.count) +
+                "</div></div>"
+              );
+            })
+            .join("") +
+          "</div>"
+        : '<p class="gdi-es-muted">' +
+          esc(
+            (outlook && outlook.note) ||
+              "No established event months — dates are not invented.",
+          ) +
+          "</p>") +
+      "</div>"
+    );
+  }
+
+  function renderAssessment(a) {
+    a = a || {};
+    var rows = [
+      ["Market Opportunity", a.marketOpportunity],
+      ["Strongest Demand Segments", a.strongestCommercialDemandSegments],
+      ["Immediate Commercial Focus", a.immediateCommercialFocus],
+      ["Competitive Capture Potential", a.competitiveCapturePotential],
+      ["Material Changes", a.materialChangesSinceLastResearch],
+      ["Business Impact", a.businessImpact],
+    ];
+    return (
+      '<div class="gdi-es-assessment">' +
+      rows
+        .map(function (r) {
+          return (
+            '<div class="gdi-es-assessment__item"><h3>' +
+            esc(r[0]) +
+            "</h3><p>" +
+            esc(r[1] || "—") +
+            "</p></div>"
+          );
+        })
+        .join("") +
+      "</div>"
     );
   }
 
   function renderReceipt(receipt) {
     var metrics = (receipt && receipt.metrics) || [];
-    var show = metrics.filter(function (m) {
-      return (
-        m.customerFacing !== false &&
-        (m.value != null ||
-          m.availability === "TELEMETRY_REQUIRED" ||
-          m.availability === "PARTIAL_COVERAGE" ||
-          m.availability === "AVAILABLE_DERIVED" ||
-          m.availability === "AVAILABLE_EXISTING")
-      );
-    });
     return (
-      '<section class="gdi-exec-section" data-section="receipt">' +
-      "<header><h2>Dealality Research Receipt</h2>" +
-      "<p>The work Dealality performed — hotel-attributable where evidenced. Synthetic counts are never shown.</p></header>" +
-      '<div class="gdi-exec-receipt-grid">' +
-      show
+      '<div class="gdi-es-receipt-grid">' +
+      metrics
         .map(function (m) {
-          var note = availabilityNote(m);
           return (
-            '<div class="gdi-exec-receipt-card' +
+            '<div class="gdi-es-receipt-card' +
             (m.value == null ? " is-unavailable" : "") +
-            '"><div class="gdi-exec-kpi-value">' +
+            '"><div class="gdi-es-kpi__value">' +
             esc(metricValue(m)) +
-            '</div><div class="gdi-exec-kpi-label">' +
-            esc(m.label) +
+            '</div><div class="gdi-es-kpi__label">' +
+            esc(m.label || m.key) +
             "</div>" +
-            (note
-              ? '<div class="gdi-exec-receipt-note">' + esc(note) + "</div>"
+            (availabilityNote(m)
+              ? '<div class="gdi-es-kpi__note">' +
+                esc(availabilityNote(m)) +
+                "</div>"
               : "") +
             "</div>"
           );
         })
         .join("") +
-      "</div></section>"
+      "</div>"
     );
   }
 
   function renderPriorities(section, hotelId) {
     var items = (section && section.items) || [];
     if (!items.length) {
-      return (
-        '<section class="gdi-exec-section" data-section="priorities">' +
-        "<header><h2>Priority Commercial Opportunities</h2></header>" +
-        '<p class="gdi-exec-muted">No priority opportunities available for this publication state.</p></section>'
-      );
+      return '<p class="gdi-es-muted">No priority opportunities available for this publication state.</p>';
     }
     return (
-      '<section class="gdi-exec-section" data-section="priorities">' +
-      "<header><h2>Priority Commercial Opportunities</h2>" +
-      "<p>Opportunity of the Week plus up to five priority opportunities using existing qualification signals — not discovery date alone.</p></header>" +
-      '<div class="gdi-exec-priority-list">' +
+      '<div class="gdi-es-priority-grid">' +
       items
         .map(function (item, i) {
           var href =
@@ -228,72 +305,60 @@
             encodeURIComponent(hotelId || "") +
             "&tab=opportunities&" +
             (item.deepLinkQuery || "");
-          var ootw =
-            item.opportunityOfTheWeek === true || i === 0
-              ? '<span class="gdi-exec-ootw-badge">Opportunity of the Week</span> '
-              : "";
           return (
-            '<article class="gdi-exec-priority-card' +
-            (item.opportunityOfTheWeek || i === 0
-              ? " gdi-exec-priority-card--ootw"
-              : "") +
+            '<article class="gdi-es-priority' +
+            (item.opportunityOfTheWeek || i === 0 ? " is-ootw" : "") +
             '">' +
-            '<div class="gdi-exec-priority-rank">' +
-            (i + 1) +
-            "</div>" +
-            "<div><h3>" +
-            ootw +
+            (item.opportunityOfTheWeek || i === 0
+              ? '<span class="gdi-es-ootw">Opportunity of the Week</span>'
+              : '<span class="gdi-es-rank">#' + (i + 1) + "</span>") +
+            "<h3>" +
             esc(item.name) +
             "</h3>" +
-            '<div class="gdi-exec-priority-meta">' +
-            esc(item.segment || "Segment TBD") +
+            '<div class="gdi-es-priority__meta">' +
+            esc(item.segment || "—") +
             " · " +
-            esc(item.demandTiming || "Timing TBD") +
+            esc(item.demandTiming || "—") +
             " · " +
-            esc(item.contactActionabilityTier || "") +
+            esc(item.contactActionabilityLabel || "—") +
             "</div>" +
-            (item.hotelRationale
-              ? '<p class="gdi-exec-rationale">' +
-                esc(item.hotelRationale).slice(0, 280) +
+            (item.whyItMatters || item.hotelRationale
+              ? "<p>" +
+                esc(item.whyItMatters || item.hotelRationale).slice(0, 220) +
                 "</p>"
               : "") +
             (item.recommendedNextAction
-              ? "<p><strong>Next:</strong> " +
-                esc(item.recommendedNextAction).slice(0, 160) +
+              ? '<p class="gdi-es-priority__action"><strong>Sales Action:</strong> ' +
+                esc(item.recommendedNextAction) +
                 "</p>"
               : "") +
-            '<a class="gdi-exec-deep-link" href="' +
+            '<a class="gdi-es-deep-link" href="' +
             esc(href) +
             '" data-opportunity-id="' +
             esc(item.opportunityId) +
-            '">Open in Opportunities</a>' +
-            "</div></article>"
+            '">Open Opportunity</a>' +
+            "</article>"
           );
         })
         .join("") +
-      "</div></section>"
+      "</div>"
     );
   }
 
-  function renderEngagement(section) {
+  function renderOutcomes(section) {
     var s = section || {};
     function row(label, m) {
-      var val =
-        m && m.value != null
-          ? fmtNum(m.value)
-          : m && m.zeroMeansNoActivity
-            ? "0"
-            : "—";
+      var val = m && m.value != null ? fmtNum(m.value) : "—";
       var note =
-        m && m.value == null && !m.zeroMeansNoActivity
-          ? " <span class=\"gdi-exec-receipt-note\">(" +
+        m && m.value == null
+          ? " <span class=\"gdi-es-kpi__note\">(" +
             esc(availabilityNote(m) || "Unavailable") +
             ")</span>"
           : "";
       return (
         "<li><span>" +
         esc(label) +
-        '</span><strong>' +
+        "</span><strong>" +
         esc(val) +
         "</strong>" +
         note +
@@ -301,54 +366,193 @@
       );
     }
     return (
-      '<section class="gdi-exec-section" data-section="engagement">' +
-      "<header><h2>Commercial Engagement &amp; Outcomes</h2>" +
-      "<p>Read-only from existing pursuit and feedback records. Zero activity is distinct from unavailable data.</p></header>" +
-      '<ul class="gdi-exec-engagement-list">' +
-      row("Opportunities pursued", s.opportunitiesPursued) +
-      row("Marked useful", s.opportunitiesMarkedUseful) +
-      row("RFP / proposal activity", s.rfpOrProposalActivity) +
-      row("Won", s.opportunitiesWon) +
-      row("Lost", s.opportunitiesLost) +
-      row("Reported room nights", s.reportedRoomNights) +
-      "</ul></section>"
+      '<ul class="gdi-es-outcomes">' +
+      row("Opportunities Pursued", s.opportunitiesPursued) +
+      row("RFP / Proposal", s.rfpOrProposalActivity) +
+      row("Business Won", s.opportunitiesWon) +
+      row("Business Lost", s.opportunitiesLost) +
+      row("Reported Room Nights", s.reportedRoomNights) +
+      "</ul>" +
+      '<p class="gdi-es-muted">Estimated opportunity potential is never mixed with realized business.</p>'
     );
   }
 
-  function renderInvestment(section) {
+  function renderExecutiveOverview(payload, hotelId) {
+    var ov = (payload.sections && payload.sections.executiveOverview) || {};
+    var snap = (payload.sections && payload.sections.executiveCommercialSnapshot) || {};
+    var period = (snap.reportingPeriod && snap.reportingPeriod.label) || "—";
     return (
-      '<section class="gdi-exec-section" data-section="investment">' +
-      "<header><h2>Investment Recovery</h2>" +
-      "<p>Contract established for a future phase. No synthetic ADR or unverified financials in Phase 1.</p></header>" +
-      '<p class="gdi-exec-muted">Financial performance metrics are hidden until verified hotel inputs and Dealality investment terms are authorized.</p>' +
-      '<ul class="gdi-exec-investment-keys">' +
-      ((section && section.metrics) || [])
-        .map(function (m) {
-          return "<li>" + esc(m.key) + " · unavailable</li>";
+      '<section class="gdi-es-section">' +
+      '<header class="gdi-es-section__head"><h2>Commercial Snapshot</h2>' +
+      "<p>Reporting period: " +
+      esc(period) +
+      (snap.lastResearchCompletionDate
+        ? " · As of " + esc(String(snap.lastResearchCompletionDate).slice(0, 10))
+        : "") +
+      "</p></header>" +
+      '<div class="gdi-es-kpi-ribbon">' +
+      (ov.commercialKpiRibbon || [])
+        .map(function (k) {
+          return kpiFromObj(k);
         })
         .join("") +
-      "</ul></section>"
+      "</div></section>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Executive Commercial Assessment</h2></header>' +
+      renderAssessment(ov.executiveAssessment) +
+      "</section>" +
+      '<div class="gdi-es-split">' +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Demand Composition</h2><p>Qualified inventory by canonical demand segment.</p></header>' +
+      renderBarChart(ov.demandComposition) +
+      "</section>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Demand Outlook</h2><p>Evidenced future demand windows only.</p></header>' +
+      renderOutlook(ov.commercialDemandOutlook) +
+      "</section></div>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Dealality Research Receipt</h2><p>Commercially meaningful research metrics for this hotel.</p></header>' +
+      renderReceipt(ov.customerResearchReceipt) +
+      "</section>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2></header>' +
+      renderPriorities(ov.priorityCommercialOpportunities, hotelId) +
+      "</section>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Outcomes &amp; Investment Recovery</h2></header>' +
+      renderOutcomes(ov.commercialOutcomes) +
+      '<p class="gdi-es-muted">' +
+      esc(
+        (ov.investmentRecovery && ov.investmentRecovery.customerCopy) ||
+          "Verified investment recovery appears when hotel-reported results are available.",
+      ) +
+      "</p></section>"
     );
   }
 
-  function renderPayload(payload, hotelId) {
-    var sections = (payload && payload.sections) || {};
+  function renderSalesPerformance(payload) {
+    var sp = (payload.sections && payload.sections.salesPerformance) || {};
+    var funnel = sp.funnel || {};
+    var focus = sp.commercialFocus || {};
     return (
-      '<div class="gdi-exec-page">' +
-      '<header class="gdi-exec-hero">' +
-      "<h1>Executive Summary</h1>" +
-      "<p>We do the hard work so hotels can focus on winning business.</p>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Sales Performance</h2><p>Pursuit priorities for hotel sales leadership.</p></header>' +
+      '<div class="gdi-es-kpi-ribbon">' +
+      (sp.kpis || [])
+        .map(function (k) {
+          return kpiFromObj(k);
+        })
+        .join("") +
+      "</div></section>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Conversion Funnel</h2>' +
+      "<p>" +
+      esc(funnel.note || "") +
+      "</p></header>" +
+      '<div class="gdi-es-funnel">' +
+      (funnel.stages || [])
+        .map(function (st) {
+          return (
+            '<div class="gdi-es-funnel__stage"><div class="gdi-es-kpi__value">' +
+            esc(st.value == null ? "—" : fmtNum(st.value)) +
+            '</div><div class="gdi-es-kpi__label">' +
+            esc(st.label) +
+            "</div></div>"
+          );
+        })
+        .join("") +
+      "</div></section>" +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Focus</h2></header>' +
+      '<div class="gdi-es-focus-grid">' +
+      '<div class="gdi-es-focus-card"><h3>Immediate Pursuit</h3><ul>' +
+      ((focus.immediatePursuit || [])
+        .map(function (r) {
+          return (
+            "<li>" +
+            esc(r.title) +
+            (r.salesAction ? " · " + esc(r.salesAction) : "") +
+            "</li>"
+          );
+        })
+        .join("") || "<li class=\"gdi-es-muted\">None queued</li>") +
+      "</ul></div>" +
+      '<div class="gdi-es-focus-card"><h3>Upcoming Booking Windows</h3><ul>' +
+      ((focus.upcomingBookingWindows || [])
+        .map(function (t) {
+          return (
+            "<li>" + esc(t.month) + " · " + esc(t.count) + " opportunities</li>"
+          );
+        })
+        .join("") ||
+        "<li class=\"gdi-es-muted\">No established event months</li>") +
+      "</ul></div>" +
+      '<div class="gdi-es-focus-card"><h3>Account &amp; Competitive</h3><ul>' +
+      "<li>Corporate account actions: " +
+      esc(focus.corporateAccountDevelopment == null ? "—" : focus.corporateAccountDevelopment) +
+      "</li>" +
+      "<li>Competitive capture: " +
+      esc(focus.competitiveCapture == null ? "—" : focus.competitiveCapture) +
+      "</li>" +
+      "<li>Need-period opportunities: " +
+      esc(focus.needPeriodOpportunities == null ? "—" : focus.needPeriodOpportunities) +
+      "</li></ul></div></div></section>"
+    );
+  }
+
+  function renderResearchIntelligence(payload) {
+    var ri = payload.sections && payload.sections.researchIntelligence;
+    if (!ri) {
+      return (
+        '<section class="gdi-es-section"><div class="gdi-es-banner gdi-es-banner--warn">' +
+        "Research Intelligence is restricted to Dealality founder and admin sessions." +
+        "</div></section>"
+      );
+    }
+    return (
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Research Intelligence</h2>' +
+      "<p>Internal operational metrics for qualified inventory grain. Raw discovery volume is separate.</p></header>" +
+      '<div class="gdi-es-kpi-ribbon">' +
+      (ri.metrics || [])
+        .map(function (m) {
+          return kpiCard(
+            m.label,
+            typeof m.value === "number" ? m.value : m.value,
+            m.availability === "UNAVAILABLE" ? m.note || "Unavailable" : m.note || "",
+          );
+        })
+        .join("") +
+      "</div>" +
+      "<h3 class=\"gdi-es-subhead\">Demand Segment Coverage</h3>" +
+      renderBarChart(ri.demandComposition) +
+      "</section>"
+    );
+  }
+
+  function renderPayload(payload, hotelId, perspective) {
+    var available =
+      (payload.perspectives && payload.perspectives.available) ||
+      [PERSPECTIVE.EXECUTIVE_OVERVIEW, PERSPECTIVE.SALES_PERFORMANCE];
+    var active = perspective || PERSPECTIVE.EXECUTIVE_OVERVIEW;
+    if (available.indexOf(active) < 0) active = PERSPECTIVE.EXECUTIVE_OVERVIEW;
+
+    var body = "";
+    if (active === PERSPECTIVE.SALES_PERFORMANCE) {
+      body = renderSalesPerformance(payload);
+    } else if (active === PERSPECTIVE.RESEARCH_INTELLIGENCE) {
+      body = renderResearchIntelligence(payload);
+    } else {
+      body = renderExecutiveOverview(payload, hotelId);
+    }
+
+    return (
+      '<div class="gdi-es-page" data-ui-version="v2">' +
+      '<header class="gdi-es-hero">' +
+      '<div class="gdi-es-hero__title"><h1>Executive Summary</h1>' +
+      stagedChip(payload) +
+      "</div>" +
       (payload.hotelName
-        ? '<div class="gdi-exec-hotel">' + esc(payload.hotelName) + "</div>"
+        ? '<div class="gdi-es-hotel">' + esc(payload.hotelName) + "</div>"
         : "") +
+      '<p class="gdi-es-hero__lede">Commercial intelligence for leadership — not a technical validation page.</p>' +
       "</header>" +
-      dataStateBanner(payload.dataState) +
-      renderSnapshot(sections.executiveCommercialSnapshot) +
-      renderReceipt(sections.researchReceipt) +
-      renderPriorities(sections.priorityCommercialOpportunities, hotelId) +
-      renderEngagement(sections.commercialEngagementAndOutcomes) +
-      renderInvestment(sections.investmentRecovery) +
-      "</div>"
+      perspectiveNav(active, available) +
+      '<div class="gdi-es-body" data-active-perspective="' +
+      esc(active) +
+      '">' +
+      body +
+      "</div></div>"
     );
   }
 
@@ -358,14 +562,40 @@
     if (!root) throw new Error("executive_summary_root_required");
     var hotelId = String(opts.hotelId || "").trim();
     var active = true;
+    var lastPayload = null;
+    var perspective = PERSPECTIVE.EXECUTIVE_OVERVIEW;
+
+    function bindPerspective() {
+      root.querySelectorAll("[data-perspective]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          perspective = btn.getAttribute("data-perspective");
+          if (lastPayload) {
+            root.innerHTML = renderPayload(lastPayload, hotelId, perspective);
+            bindPerspective();
+            bindDeepLinks();
+          }
+        });
+      });
+    }
+
+    function bindDeepLinks() {
+      root.querySelectorAll("a.gdi-es-deep-link").forEach(function (a) {
+        a.addEventListener("click", function (ev) {
+          if (typeof opts.onOpenOpportunity === "function") {
+            ev.preventDefault();
+            opts.onOpenOpportunity(a.getAttribute("data-opportunity-id"));
+          }
+        });
+      });
+    }
 
     async function load() {
       if (!active) return;
       root.innerHTML =
-        '<div class="gdi-exec-loading" role="status">Loading executive summary…</div>';
+        '<div class="gdi-es-loading" role="status">Loading executive summary…</div>';
       if (!hotelId) {
         root.innerHTML =
-          '<div class="gdi-exec-banner gdi-exec-banner--muted">Select a hotel to view the Executive Summary.</div>';
+          '<div class="gdi-es-banner gdi-es-banner--muted">Select a hotel to view the Executive Summary.</div>';
         return;
       }
       try {
@@ -381,30 +611,30 @@
         if (!active) return;
         if (!data || data.ok === false) {
           root.innerHTML =
-            '<div class="gdi-exec-banner gdi-exec-banner--warn">' +
-            esc((data && (data.message || data.error)) || "Unable to load Executive Summary") +
+            '<div class="gdi-es-banner gdi-es-banner--warn">' +
+            esc(
+              (data && (data.message || data.error)) ||
+                "Unable to load Executive Summary",
+            ) +
             "</div>";
           return;
         }
-        root.innerHTML = renderPayload(data, hotelId);
-        root.querySelectorAll("a.gdi-exec-deep-link").forEach(function (a) {
-          a.addEventListener("click", function (ev) {
-            if (typeof opts.onOpenOpportunity === "function") {
-              ev.preventDefault();
-              opts.onOpenOpportunity(a.getAttribute("data-opportunity-id"));
-            }
-          });
-        });
+        lastPayload = data;
+        root.innerHTML = renderPayload(data, hotelId, perspective);
+        bindPerspective();
+        bindDeepLinks();
       } catch (err) {
         if (!active) return;
         root.innerHTML =
-          '<div class="gdi-exec-banner gdi-exec-banner--warn">Executive Summary failed to load.</div>';
+          '<div class="gdi-es-banner gdi-es-banner--warn">Executive Summary failed to load.</div>';
         if (typeof console !== "undefined") console.error(err);
       }
     }
 
     function setHotelId(next) {
       hotelId = String(next || "").trim();
+      lastPayload = null;
+      perspective = PERSPECTIVE.EXECUTIVE_OVERVIEW;
       return load();
     }
 
@@ -427,6 +657,6 @@
     mount: mount,
     createTabController: createTabController,
     _active: false,
-    _controller: null,
+    PERSPECTIVE: PERSPECTIVE,
   };
 })(typeof window !== "undefined" ? window : globalThis);
