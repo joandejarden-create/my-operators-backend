@@ -1,0 +1,578 @@
+{
+  "version": "he-intelligence-factory-v1.1",
+  "at": "2026-11-27T15:31:30.397Z",
+  "mode": "Audit",
+  "applyAuthorized": false,
+  "identity": {
+    "ok": true,
+    "hpcId": "recLuxvwwxID7U2B8",
+    "pilotKey": "bethesda_marriott",
+    "hotelName": "Bethesda Marriott"
+  },
+  "spend": {
+    "maxSpendUsd": 0,
+    "confirmedPaidUsd": 0,
+    "providers": []
+  },
+  "gates": {
+    "HE_FIELD_REGISTRY_COMPLETE": "YES",
+    "HE_RESEARCH_REUSE_VALIDATED": "YES",
+    "HE_HISTORICAL_FACTS_VERIFIED": "YES",
+    "HE_CANONICAL_PERSISTENCE_VALIDATED": "NO",
+    "HE_AIRTABLE_READBACK_VALIDATED": "YES",
+    "HE_API_HYDRATION_VALIDATED": "YES",
+    "HE_LIVE_RENDER_VALIDATED": "NO",
+    "HE_ELEVEN_TAB_BROWSER_VALIDATED": "NO",
+    "HE_FACTORY_REPEATABILITY_VALIDATED": "PARTIAL"
+  },
+  "founderAcceptanceGates": {
+    "GUEST_SENTIMENT_DISABLED_BY_FOUNDER": "YES",
+    "ELEVEN_TAB_COMPONENT_PARITY": "YES",
+    "CANONICAL_FIELD_MAPPING_COMPLETE": "NO",
+    "VERIFIED_RESEARCH_PERSISTENCE_COMPLETE": "NO",
+    "BETHESDA_FULL_LIVE_VALIDATED": "NO",
+    "EIGHT_HOTEL_AIRTABLE_READBACK_VALIDATED": "NO",
+    "EIGHT_HOTEL_RADAR_BROWSER_VALIDATED": "NO",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  },
+  "stages": [
+    {
+      "stage": "FIELD_REGISTRY",
+      "status": "PASS",
+      "detail": {
+        "ok": true,
+        "version": "he-field-registry-v1",
+        "fieldCount": 20,
+        "errors": []
+      }
+    },
+    {
+      "stage": "RESOLVE_HPC",
+      "status": "PASS",
+      "detail": {
+        "hpcId": "recLuxvwwxID7U2B8",
+        "propertyName": "Bethesda Marriott",
+        "sequence": [
+          "1_RESOLVE_CANONICAL_HPC",
+          "2_REUSE_EXISTING_VERIFIED_RESEARCH",
+          "3_IDENTIFY_ACTUAL_FIELD_GAPS",
+          "4_VALIDATE_SOURCES",
+          "5_DEDUPLICATE_ENTITIES",
+          "6_APPLY_AUTHORIZED_AIRTABLE_MUTATIONS",
+          "7_READ_BACK_PERSISTED_RECORDS",
+          "8_CONFIRM_API_HYDRATION",
+          "9_CONFIRM_LIVE_RENDERING",
+          "10_RECORD_REFRESH_AND_PROVENANCE"
+        ]
+      }
+    },
+    {
+      "stage": "AUDIT",
+      "status": "PASS",
+      "detail": {
+        "yearBuilt": {
+          "yearBuilt": 1979,
+          "sourceField": "Opening Date",
+          "class": "VERIFIED_DERIVED_FROM_OPENING_DATE",
+          "openingDate": "1979-01-01",
+          "sourceUrl": "https://cmbs.news/property/bethesda-marriott-bethesda-md/",
+          "note": "Construction year derived from HPC Opening Date (no Year Built column)."
+        },
+        "renovation": {
+          "display": 2015,
+          "class": "VERIFIED_HPC",
+          "hpcDate": "2015-01-01",
+          "events": [
+            {
+              "eventId": "beth_reno_2015_major",
+              "year": 2015,
+              "scope": "PROPERTY_WIDE_MAJOR_RENOVATION",
+              "role": "primary_last_renovated_display",
+              "claim": "Renovated 2015 (SEC CMBS / Travel Weekly / local press)",
+              "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949724000828/n4133-x6ts.htm",
+              "corroboratingUrls": [
+                "https://patch.com/maryland/bethesda-chevychase/open-door-unexpected-bethesda-marriott-unveils-contemporary-guestroom-design",
+                "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+              ],
+              "verification": "VERIFIED",
+              "displayPriority": 1
+            },
+            {
+              "eventId": "beth_unveil_2017_guestroom",
+              "year": 2017,
+              "scope": "GUESTROOM_PUBLIC_SPACE_UNVEIL_PRESS",
+              "role": "secondary_milestone",
+              "claim": "2017 guestroom / public-space unveil press; Cvent lists Renovated 2017",
+              "url": "https://www.cvent.com/venues/es-ES/bethesda/hotel/bethesda-marriott/venue-759e1222-3f0f-4739-9375-e9cb7962c6a4",
+              "corroboratingUrls": [
+                "https://patch.com/maryland/bethesda-chevychase/open-door-unexpected-bethesda-marriott-unveils-contemporary-guestroom-design"
+              ],
+              "verification": "VERIFIED_AS_MILESTONE_NOT_REPLACEMENT",
+              "displayPriority": 2,
+              "note": "Do not overwrite 2015 major renovation with 2017 solely from Cvent."
+            }
+          ]
+        },
+        "brandPresenceYearBuilt": 1979,
+        "brandPresenceLastRenovated": 2015,
+        "brandPresenceMeetingSpace": 18719,
+        "roomsDtoPresent": true,
+        "auditRowCount": 20
+      }
+    },
+    {
+      "stage": "READBACK_API",
+      "status": "PASS",
+      "detail": {
+        "yearBuilt": {
+          "yearBuilt": 1979,
+          "sourceField": "Opening Date",
+          "class": "VERIFIED_DERIVED_FROM_OPENING_DATE",
+          "openingDate": "1979-01-01",
+          "sourceUrl": "https://cmbs.news/property/bethesda-marriott-bethesda-md/",
+          "note": "Construction year derived from HPC Opening Date (no Year Built column)."
+        },
+        "lastRenovated": 2015,
+        "dto": {
+          "yearBuilt": 1979,
+          "lastRenovated": 2015,
+          "totalMeetingSpace": 18719
+        }
+      }
+    },
+    {
+      "stage": "REPEATABILITY",
+      "status": "PASS",
+      "detail": {
+        "idempotentNullFill": true,
+        "note": "Re-run Apply dry-run must skip populated renovation fields"
+      }
+    }
+  ],
+  "auditRows": [
+    {
+      "fieldId": "hotel.propertyName",
+      "tabId": "hotel",
+      "uiComponent": "overview.propertyName",
+      "label": "Property name",
+      "destinationKind": "HPC",
+      "airtableField": "Property Name",
+      "apiPath": "hotel.name",
+      "dataType": "string",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 365,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "hotel.roomsKeys",
+      "tabId": "hotel",
+      "uiComponent": "overview.rooms",
+      "label": "Rooms",
+      "destinationKind": "HPC",
+      "airtableField": "Rooms / Keys",
+      "apiPath": "hotel.rooms",
+      "dataType": "number",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 180,
+      "disposition": "VERIFIED_AND_PERSISTED_AND_RENDERED",
+      "observed": 407
+    },
+    {
+      "fieldId": "hotel.yearBuilt",
+      "tabId": "hotel",
+      "uiComponent": "overview.yearBuilt",
+      "label": "Year built",
+      "destinationKind": "HPC",
+      "airtableField": "Opening Date",
+      "apiPath": "hotel.yearBuilt",
+      "dataType": "year",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 365,
+      "mappingNote": "HPC has no Year Built column; construction year is Opening Date year with provenance VERIFIED_DERIVED_FROM_OPENING_DATE.",
+      "calculatedContract": "year_from_opening_date",
+      "disposition": "VERIFIED_AND_PERSISTED_AND_RENDERED",
+      "observed": 1979
+    },
+    {
+      "fieldId": "hotel.lastRenovated",
+      "tabId": "hotel",
+      "uiComponent": "overview.lastRenovated",
+      "label": "Last renovated",
+      "destinationKind": "HPC",
+      "airtableField": "Renovation / Conversion Date",
+      "apiPath": "hotel.lastRenovated",
+      "dataType": "year",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 180,
+      "mappingNote": "Primary display year from Renovation / Conversion Date; milestones retained in renovationEvents / evidence.",
+      "disposition": "VERIFIED_AND_PERSISTED_AND_RENDERED",
+      "observed": 2015
+    },
+    {
+      "fieldId": "hotel.totalMeetingSpace",
+      "tabId": "hotel",
+      "uiComponent": "overview.meetingSpace",
+      "label": "Meeting space",
+      "destinationKind": "HPC",
+      "airtableField": "Total Meeting Space (sq ft)",
+      "apiPath": "hotel.totalMeetingSpace",
+      "dataType": "number",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 180,
+      "disposition": "VERIFIED_AND_PERSISTED_AND_RENDERED",
+      "observed": 18719
+    },
+    {
+      "fieldId": "hotel.hotelHeadline",
+      "tabId": "hotel",
+      "uiComponent": "overview.headline",
+      "label": "Hotel headline",
+      "destinationKind": "HPC",
+      "airtableField": "Hotel Headline",
+      "apiPath": "hotel.hotelHeadline",
+      "dataType": "string",
+      "verification": "OPTIONAL",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "hotel.hotelDescription",
+      "tabId": "hotel",
+      "uiComponent": "overview.description",
+      "label": "Property description",
+      "destinationKind": "HPC",
+      "airtableField": "Hotel Description",
+      "apiPath": "hotel.hotelDescription",
+      "dataType": "string",
+      "verification": "OPTIONAL",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "rooms.suiteInventory",
+      "tabId": "rooms",
+      "uiComponent": "rooms.suites",
+      "label": "Suite inventory",
+      "destinationKind": "HPC",
+      "airtableField": "Guestroom Suites Count",
+      "apiPath": "hotel.guestRoomsMeetingSpace.guestRooms.suites.value",
+      "dataType": "number",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 180,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "rooms.meetingRoomsCount",
+      "tabId": "rooms",
+      "uiComponent": "rooms.meetingCount",
+      "label": "Meeting rooms count",
+      "destinationKind": "HPC",
+      "airtableField": "Meeting Rooms Count",
+      "apiPath": "hotel.guestRoomsMeetingSpace.meetingSpaceSummary.meetingRoomCount.value",
+      "dataType": "number",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 180,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "ownership.legalOwner",
+      "tabId": "ownership",
+      "uiComponent": "ownership.legalOwner",
+      "label": "Legal property owner",
+      "destinationKind": "HI_RELS",
+      "airtableField": "Relationship Type=Legal Owner",
+      "apiPath": "ownership.report.ownership_and_control.property_company",
+      "dataType": "org_ref",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "ownership.economicOwner",
+      "tabId": "ownership",
+      "uiComponent": "ownership.economicOwner",
+      "label": "Economic sponsor",
+      "destinationKind": "HI_RELS",
+      "airtableField": "Relationship Type=Economic Owner",
+      "apiPath": "ownership.report.ownership_and_control.economic_owner",
+      "dataType": "org_ref",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "contacts.keyPeople",
+      "tabId": "contacts",
+      "uiComponent": "contacts.directory",
+      "label": "Named decision-makers",
+      "destinationKind": "HI_CONTACTS",
+      "airtableField": "HI Org Contacts",
+      "apiPath": "contacts.people",
+      "dataType": "contact_list",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 60,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "organization.portfolio",
+      "tabId": "organization",
+      "uiComponent": "organization.portfolio",
+      "label": "Owner portfolio",
+      "destinationKind": "HI_RELS",
+      "airtableField": "HI Hotel–Org Relationships portfolio",
+      "apiPath": "ownership.report.portfolio_preview",
+      "dataType": "portfolio",
+      "verification": "OPTIONAL",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "relationships.ocnEdges",
+      "tabId": "relationships",
+      "uiComponent": "relationships.edges",
+      "label": "OCN relationship edges",
+      "destinationKind": "HI_RELS",
+      "airtableField": "HI Hotel–Org Relationships",
+      "apiPath": "ownership.airtable_graph.relationships",
+      "dataType": "relationship_list",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "demand.demandAnchors",
+      "tabId": "demand",
+      "uiComponent": "demand.drivers",
+      "label": "Demand drivers",
+      "destinationKind": "DEMAND_ANCHORS",
+      "airtableField": "Demand Anchors (geo query)",
+      "apiPath": "demand.items",
+      "dataType": "geo_list",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 120,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "access.travelInfrastructure",
+      "tabId": "access",
+      "uiComponent": "access.connectivity",
+      "label": "Access & connectivity",
+      "destinationKind": "TRAVEL_INFRA",
+      "airtableField": "Travel Infrastructure Data (geo query)",
+      "apiPath": "access.items",
+      "dataType": "geo_list",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 120,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "sources.evidenceRegister",
+      "tabId": "sources",
+      "uiComponent": "sources.register",
+      "label": "Sources & Evidence",
+      "destinationKind": "HI_EVIDENCE",
+      "airtableField": "HI Graph Evidence",
+      "apiPath": "ownership.report.evidence",
+      "dataType": "evidence_list",
+      "verification": "REQUIRED",
+      "publication": "CUSTOMER",
+      "refreshDays": 90,
+      "disposition": "REVIEW",
+      "observed": null
+    },
+    {
+      "fieldId": "submarket.snapshot",
+      "tabId": "submarket",
+      "uiComponent": "submarket.snapshot",
+      "label": "Submarket snapshot",
+      "destinationKind": "CALCULATED",
+      "airtableField": null,
+      "apiPath": "submarketSnapshot",
+      "dataType": "object",
+      "verification": "DERIVED",
+      "publication": "CUSTOMER",
+      "refreshDays": 30,
+      "calculatedContract": "he_submarket_snapshot_v1",
+      "disposition": "CALCULATED_CONTRACT",
+      "observed": null
+    },
+    {
+      "fieldId": "area.comparables",
+      "tabId": "area",
+      "uiComponent": "area.list",
+      "label": "Area hotels",
+      "destinationKind": "CALCULATED",
+      "airtableField": null,
+      "apiPath": "areaHotels",
+      "dataType": "hotel_list",
+      "verification": "DERIVED",
+      "publication": "CUSTOMER",
+      "refreshDays": 30,
+      "calculatedContract": "he_area_hotels_v1",
+      "disposition": "CALCULATED_CONTRACT",
+      "observed": null
+    },
+    {
+      "fieldId": "sentiment.platformIdentities",
+      "tabId": "sentiment",
+      "uiComponent": "sentiment.platforms",
+      "label": "Guest Sentiment",
+      "destinationKind": "DISABLED",
+      "airtableField": null,
+      "apiPath": "guestSentiment",
+      "dataType": "object",
+      "verification": "DISABLED_BY_FOUNDER",
+      "publication": "DISABLED",
+      "refreshDays": null,
+      "disposition": "DISABLED_BY_FOUNDER",
+      "observed": null
+    }
+  ],
+  "historicalFacts": {
+    "yearBuilt": {
+      "yearBuilt": 1979,
+      "sourceField": "Opening Date",
+      "class": "VERIFIED_DERIVED_FROM_OPENING_DATE",
+      "openingDate": "1979-01-01",
+      "sourceUrl": "https://cmbs.news/property/bethesda-marriott-bethesda-md/",
+      "note": "Construction year derived from HPC Opening Date (no Year Built column)."
+    },
+    "renovation": {
+      "lastRenovated": 2015,
+      "yearRenovated": 2015,
+      "sourceField": "Renovation / Conversion Date",
+      "class": "VERIFIED_HPC",
+      "status": "Major renovation 2015 (SEC/CMBS). Guestroom unveil press 2017 retained as separate milestone — not a replacement year.",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949724000828/n4133-x6ts.htm",
+      "note": "Major renovation 2015 (SEC/CMBS). Guestroom unveil press 2017 retained as separate milestone — not a replacement year.",
+      "renovationEvents": [
+        {
+          "eventId": "beth_reno_2015_major",
+          "year": 2015,
+          "scope": "PROPERTY_WIDE_MAJOR_RENOVATION",
+          "role": "primary_last_renovated_display",
+          "claim": "Renovated 2015 (SEC CMBS / Travel Weekly / local press)",
+          "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949724000828/n4133-x6ts.htm",
+          "corroboratingUrls": [
+            "https://patch.com/maryland/bethesda-chevychase/open-door-unexpected-bethesda-marriott-unveils-contemporary-guestroom-design",
+            "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+          ],
+          "verification": "VERIFIED",
+          "displayPriority": 1
+        },
+        {
+          "eventId": "beth_unveil_2017_guestroom",
+          "year": 2017,
+          "scope": "GUESTROOM_PUBLIC_SPACE_UNVEIL_PRESS",
+          "role": "secondary_milestone",
+          "claim": "2017 guestroom / public-space unveil press; Cvent lists Renovated 2017",
+          "url": "https://www.cvent.com/venues/es-ES/bethesda/hotel/bethesda-marriott/venue-759e1222-3f0f-4739-9375-e9cb7962c6a4",
+          "corroboratingUrls": [
+            "https://patch.com/maryland/bethesda-chevychase/open-door-unexpected-bethesda-marriott-unveils-contemporary-guestroom-design"
+          ],
+          "verification": "VERIFIED_AS_MILESTONE_NOT_REPLACEMENT",
+          "displayPriority": 2,
+          "note": "Do not overwrite 2015 major renovation with 2017 solely from Cvent."
+        }
+      ]
+    },
+    "bethesdaEvidence": {
+      "yearBuilt": {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "yearBuilt": 1979,
+        "disposition": "VERIFIED_MAPPED_VIA_OPENING_DATE",
+        "hpcField": "Opening Date",
+        "hpcValue": "1979-01-01",
+        "note": "HPC has no Year Built field. Verified construction year 1979 is stored as Opening Date and must hydrate hotel.yearBuilt in all HE DTOs.",
+        "sources": [
+          {
+            "role": "primary_sec_cmbs",
+            "year": 1979,
+            "claim": "Built 1979",
+            "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949724000828/n4133-x6ts.htm",
+            "verification": "VERIFIED"
+          },
+          {
+            "role": "corroborating_cmbs_news",
+            "year": 1979,
+            "claim": "Built 1979",
+            "url": "https://cmbs.news/property/bethesda-marriott-bethesda-md/",
+            "verification": "VERIFIED"
+          }
+        ]
+      },
+      "renovationEvents": [
+        {
+          "eventId": "beth_reno_2015_major",
+          "year": 2015,
+          "scope": "PROPERTY_WIDE_MAJOR_RENOVATION",
+          "role": "primary_last_renovated_display",
+          "claim": "Renovated 2015 (SEC CMBS / Travel Weekly / local press)",
+          "url": "https://www.sec.gov/Archives/edgar/data/1013611/000153949724000828/n4133-x6ts.htm",
+          "corroboratingUrls": [
+            "https://patch.com/maryland/bethesda-chevychase/open-door-unexpected-bethesda-marriott-unveils-contemporary-guestroom-design",
+            "https://cmbs.news/property/bethesda-marriott-bethesda-md/"
+          ],
+          "verification": "VERIFIED",
+          "displayPriority": 1
+        },
+        {
+          "eventId": "beth_unveil_2017_guestroom",
+          "year": 2017,
+          "scope": "GUESTROOM_PUBLIC_SPACE_UNVEIL_PRESS",
+          "role": "secondary_milestone",
+          "claim": "2017 guestroom / public-space unveil press; Cvent lists Renovated 2017",
+          "url": "https://www.cvent.com/venues/es-ES/bethesda/hotel/bethesda-marriott/venue-759e1222-3f0f-4739-9375-e9cb7962c6a4",
+          "corroboratingUrls": [
+            "https://patch.com/maryland/bethesda-chevychase/open-door-unexpected-bethesda-marriott-unveils-contemporary-guestroom-design"
+          ],
+          "verification": "VERIFIED_AS_MILESTONE_NOT_REPLACEMENT",
+          "displayPriority": 2,
+          "note": "Do not overwrite 2015 major renovation with 2017 solely from Cvent."
+        }
+      ]
+    }
+  },
+  "applyResult": null,
+  "statePath": "C:\\Dev\\dealality\\wt-he-factory-v1-1\\reports\\hotel-explorer\\he-factory-v1-1\\factory-state-recLuxvwwxID7U2B8.json",
+  "publicationSequence": [
+    "1_RESOLVE_CANONICAL_HPC",
+    "2_REUSE_EXISTING_VERIFIED_RESEARCH",
+    "3_IDENTIFY_ACTUAL_FIELD_GAPS",
+    "4_VALIDATE_SOURCES",
+    "5_DEDUPLICATE_ENTITIES",
+    "6_APPLY_AUTHORIZED_AIRTABLE_MUTATIONS",
+    "7_READ_BACK_PERSISTED_RECORDS",
+    "8_CONFIRM_API_HYDRATION",
+    "9_CONFIRM_LIVE_RENDERING",
+    "10_RECORD_REFRESH_AND_PROVENANCE"
+  ]
+}
