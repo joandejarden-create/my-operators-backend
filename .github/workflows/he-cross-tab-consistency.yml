@@ -1,0 +1,60 @@
+# Hotel Explorer permanent cross-tab consistency gate (fixture + unit; no paid APIs).
+name: HE cross-tab consistency
+
+concurrency:
+  group: he-cross-tab-consistency-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "lib/hotel-intelligence/he-cross-tab-parity-v1.js"
+      - "lib/hotel-intelligence/he-shared-hotel-view-model-v1.js"
+      - "lib/hotel-intelligence/he-hpc-submarket-snapshot-v1.js"
+      - "lib/hotel-intelligence/he-factory/**"
+      - "lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js"
+      - "scripts/hotel-explorer/Invoke-HotelExplorerFactory.ps1"
+      - "scripts/hotel-explorer/run-he-cross-tab-validate.mjs"
+      - "scripts/test-he-cross-tab-parity-v1.mjs"
+      - "scripts/test-he-cross-tab-consistency-report-v1.mjs"
+      - "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"
+      - "docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json"
+      - "package.json"
+      - ".github/workflows/he-cross-tab-consistency.yml"
+  push:
+    branches: [main]
+    paths:
+      - "lib/hotel-intelligence/he-factory/**"
+      - "lib/hotel-intelligence/he-cross-tab-parity-v1.js"
+      - "lib/hotel-intelligence/he-shared-hotel-view-model-v1.js"
+      - "scripts/test-he-cross-tab-consistency-report-v1.mjs"
+      - "scripts/hotel-explorer/run-he-cross-tab-validate.mjs"
+      - ".github/workflows/he-cross-tab-consistency.yml"
+
+jobs:
+  consistency-gates:
+    name: HE cross-tab consistency gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_ENV: development
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Cross-tab parity unit gate
+        run: npm run test:he-cross-tab-parity-v1
+
+      - name: Cross-tab consistency report gate
+        run: npm run test:he-cross-tab-consistency-report-v1
+
+      - name: Fixture Validate (SkipBrowser → NOT_TESTED; E2E certification)
+        run: npm run he:cross-tab-validate -- --fixture

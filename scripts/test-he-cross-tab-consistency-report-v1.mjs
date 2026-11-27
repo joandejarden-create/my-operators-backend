@@ -167,7 +167,23 @@ const ps1 = fs.readFileSync(
 assert.match(ps1, /HE-CROSS-TAB-CONSISTENCY/);
 assert.match(ps1, /SkipBrowser/);
 assert.match(ps1, /Audit/);
+assert.match(ps1, /Validate/);
+assert.match(ps1, /Full/);
+assert.match(ps1, /Refresh/);
 assert.match(ps1, /HE_E2E_CROSS_TAB_CERTIFICATION/);
+
+const workflow = fs.readFileSync(
+  path.join(ROOT, ".github/workflows/he-cross-tab-consistency.yml"),
+  "utf8"
+);
+assert.match(workflow, /test:he-cross-tab-consistency-report-v1/);
+assert.match(workflow, /he:cross-tab-validate/);
+
+const matrix = fs.readFileSync(
+  path.join(ROOT, "lib/dealality-pr-check-matrix.js"),
+  "utf8"
+);
+assert.match(matrix, /he-cross-tab-consistency/);
 
 console.log(
   JSON.stringify({
