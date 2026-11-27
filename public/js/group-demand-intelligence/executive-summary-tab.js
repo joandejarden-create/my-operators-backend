@@ -103,31 +103,99 @@
     return "";
   }
 
-  function infoTip(text) {
-    if (!text) return "";
+  function infoIconSvg() {
     return (
-      '<button type="button" class="gdi-es-info" title="' +
-      esc(text) +
-      '" aria-label="' +
-      esc(text) +
-      '">i</button>'
+      '<svg class="gdi-es-info__svg" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
+      '<circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.25"/>' +
+      '<circle cx="8" cy="4.6" r="0.9" fill="currentColor"/>' +
+      '<path d="M8 7.1v4.4" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>' +
+      "</svg>"
     );
   }
 
-  function kpiCard(label, value, note, tooltip) {
+  function infoTip(text, label) {
+    if (!text) return "";
+    var tipId =
+      "gdi-es-tip-" +
+      String(label || "metric")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "") +
+      "-" +
+      Math.random().toString(36).slice(2, 7);
+    return (
+      '<span class="gdi-es-info-tooltip">' +
+      '<button type="button" class="gdi-es-info" aria-expanded="false" aria-controls="' +
+      esc(tipId) +
+      '" aria-label="About ' +
+      esc(label || "this metric") +
+      '">' +
+      infoIconSvg() +
+      "</button>" +
+      '<span class="gdi-es-info-panel" id="' +
+      esc(tipId) +
+      '" role="tooltip" hidden>' +
+      '<span class="gdi-es-info-panel__title">' +
+      esc(label || "Metric") +
+      "</span>" +
+      '<span class="gdi-es-info-panel__body">' +
+      esc(text) +
+      "</span></span></span>"
+    );
+  }
+
+  function assessmentIcon(kind) {
+    var paths = {
+      market:
+        '<path d="M2 12.5L5.5 8l2.5 2.5L14 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 4h4v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+      focus:
+        '<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.35"/><path d="M8 2.5v2.2M8 11.3v2.2M2.5 8h2.2M11.3 8h2.2" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>',
+      outlook:
+        '<rect x="3" y="8" width="2.2" height="5" rx="0.4" fill="currentColor"/><rect x="6.9" y="5.5" width="2.2" height="7.5" rx="0.4" fill="currentColor"/><rect x="10.8" y="3.5" width="2.2" height="9.5" rx="0.4" fill="currentColor"/>',
+      competitive:
+        '<path d="M3 12.5l3-3 2.2 2.2 4.5-5.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12.2" cy="4.2" r="1.2" fill="currentColor"/>',
+      changes:
+        '<path d="M3.5 8a4.5 4.5 0 0 1 7.6-3.2M12.5 8a4.5 4.5 0 0 1-7.6 3.2" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><path d="M11.2 2.8v2.6h-2.6M4.8 13.2v-2.6h2.6" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>',
+    };
+    return (
+      '<span class="gdi-es-assessment__icon" aria-hidden="true">' +
+      '<svg width="18" height="18" viewBox="0 0 16 16" focusable="false">' +
+      (paths[kind] || paths.market) +
+      "</svg></span>"
+    );
+  }
+
+  function kpiCard(label, value, note, tooltip, opts) {
+    opts = opts || {};
     var unavailable = value == null;
+    var unit = opts.unit || "";
+    var valueHtml;
+    if (unavailable) {
+      valueHtml = "—";
+    } else if (unit) {
+      valueHtml =
+        '<span class="gdi-es-kpi__num">' +
+        esc(fmtNum(value)) +
+        '</span><span class="gdi-es-kpi__unit"> ' +
+        esc(unit) +
+        "</span>";
+    } else {
+      valueHtml = esc(fmtNum(value));
+    }
     return (
       '<div class="gdi-es-kpi' +
       (unavailable ? " is-unavailable" : "") +
+      (opts.prominent ? " gdi-es-kpi--prominent" : "") +
+      (opts.compact ? " gdi-es-kpi--compact" : "") +
       '">' +
       '<div class="gdi-es-kpi__label-row">' +
       '<div class="gdi-es-kpi__label">' +
       esc(label) +
       "</div>" +
-      infoTip(tooltip) +
+      infoTip(tooltip, label) +
       "</div>" +
       '<div class="gdi-es-kpi__value">' +
-      esc(unavailable ? "—" : fmtNum(value)) +
+      valueHtml +
       "</div>" +
       (note
         ? '<div class="gdi-es-kpi__note">' + esc(note) + "</div>"
@@ -142,17 +210,27 @@
     if (
       k.value == null &&
       (k.availability === "NOT_CURRENTLY_SUPPORTED" ||
-        k.omitWhenUnavailable === true)
+        k.omitWhenUnavailable === true ||
+        k.availability === "UNAVAILABLE")
     ) {
-      return "";
+      if (k.omitWhenUnavailable === true || k.availability === "UNAVAILABLE") {
+        return "";
+      }
     }
     var note = "";
     if (k.value == null) {
       note = availabilityNote(k) || k.note || "Unavailable";
-    } else if (k.estimateClass === "PROVISIONAL_ESTIMATE") {
-      note = "Provisional estimate";
+    } else if (
+      k.customerEstimateLabel === "Estimated" ||
+      k.estimateClass === "PROVISIONAL_ESTIMATE"
+    ) {
+      note = k.customerEstimateLabel || "Estimated";
     }
-    return kpiCard(k.label || k.key, k.value, note, k.tooltip || k.note);
+    return kpiCard(k.label || k.key, k.value, note, k.tooltip || k.note, {
+      unit: k.displayUnit || "",
+      prominent: k.prominent === true,
+      compact: k.compact === true,
+    });
   }
 
   function renderBarChart(composition) {
@@ -235,17 +313,20 @@
       ) +
       "</div>" +
       (timeline.length
-        ? '<div class="gdi-es-bars gdi-es-bars--compact" role="img" aria-label="Upcoming demand by month">' +
+        ? '<div class="gdi-es-columns" role="img" aria-label="Upcoming demand by month">' +
           timeline
             .map(function (t) {
-              var width = Math.round(((t.count || 0) / max) * 100);
+              var height = Math.round(((t.count || 0) / max) * 100);
               return (
-                '<div class="gdi-es-bar-row"><div class="gdi-es-bar-label">' +
-                esc(t.monthLabel || t.month) +
-                '</div><div class="gdi-es-bar-track"><div class="gdi-es-bar-fill" style="width:' +
-                width +
-                '%"></div></div><div class="gdi-es-bar-count">' +
+                '<div class="gdi-es-columns__item">' +
+                '<div class="gdi-es-columns__value">' +
                 esc(t.count) +
+                "</div>" +
+                '<div class="gdi-es-columns__track"><div class="gdi-es-columns__fill" style="height:' +
+                height +
+                '%"></div></div>' +
+                '<div class="gdi-es-columns__label">' +
+                esc(t.monthLabel || t.month) +
                 "</div></div>"
               );
             })
@@ -272,13 +353,19 @@
       Array.isArray(a.primaryCards) && a.primaryCards.length
         ? a.primaryCards.concat(a.optionalCards || [])
         : [
-            { title: "Market Opportunity", body: a.marketOpportunity },
+            {
+              title: "Market Opportunity",
+              icon: "market",
+              body: a.marketOpportunity,
+            },
             {
               title: "Recommended Commercial Focus",
+              icon: "focus",
               body: a.recommendedCommercialFocus || a.immediateCommercialFocus,
             },
             {
               title: "Forward Demand Outlook",
+              icon: "outlook",
               body: a.forwardDemandOutlook || a.businessImpact,
             },
           ].concat(
@@ -286,22 +373,28 @@
               ? [
                   {
                     title: "Competitive Capture",
+                    icon: "competitive",
                     body: a.competitiveCapture || a.competitiveCapturePotential,
                   },
                 ]
               : [],
           );
+    var visible = cards.filter(function (c) {
+      return c && c.body;
+    });
     return (
-      '<div class="gdi-es-assessment gdi-es-assessment--primary">' +
-      cards
-        .filter(function (c) {
-          return c && c.body;
-        })
+      '<div class="gdi-es-assessment gdi-es-assessment--primary" data-card-count="' +
+      esc(String(visible.length)) +
+      '">' +
+      visible
         .map(function (c) {
           return (
-            '<article class="gdi-es-assessment__item"><h3>' +
+            '<article class="gdi-es-assessment__item">' +
+            '<div class="gdi-es-assessment__head">' +
+            assessmentIcon(c.icon || "market") +
+            "<h3>" +
             esc(c.title) +
-            "</h3><p>" +
+            "</h3></div><p>" +
             esc(c.body) +
             "</p></article>"
           );
@@ -321,12 +414,22 @@
 
   function renderConsolidatedReceipt(receipt, productivity) {
     receipt = receipt || {};
-    productivity = productivity || {};
-    var metrics = (receipt.metrics || []).filter(function (m) {
-      return m && m.value != null;
-    });
+    productivity = productivity || receipt.researchProductivity || {};
+    var funnel =
+      (receipt.researchFunnel && receipt.researchFunnel.stages) ||
+      [];
+    var supporting =
+      receipt.supportingMetrics ||
+      (receipt.metrics || []).filter(function (m) {
+        return (
+          m &&
+          m.key !== "potentialOpportunitiesIdentified" &&
+          m.key !== "opportunitiesResearched" &&
+          m.key !== "opportunitiesValidated" &&
+          m.key !== "qualifiedOpportunitiesDelivered"
+        );
+      });
     var prodMetrics = (productivity.metrics || []).filter(function (m) {
-      // Hide labor value unless authorized value is present.
       if (m.key === "estimatedResearchLaborValue" && m.value == null) return false;
       return true;
     });
@@ -337,7 +440,7 @@
       "<p>" +
       esc(
         productivity.lede ||
-          "Your Time. Better Invested. — less time searching for demand, more time converting opportunities.",
+          "Your time. Better invested — less time searching for demand, more time converting opportunities.",
       ) +
       "</p></header>" +
       (prodMetrics.length
@@ -347,32 +450,70 @@
               var note =
                 m.value == null
                   ? availabilityNote(m) || "Unavailable"
-                  : m.estimateClass === "PROVISIONAL_ESTIMATE"
-                    ? "Provisional estimate"
-                    : "";
+                  : m.customerEstimateLabel ||
+                    (m.estimateClass === "PROVISIONAL_ESTIMATE"
+                      ? "Estimated"
+                      : "");
               return kpiCard(
                 m.label || m.key,
                 m.value,
                 note,
-                m.note || m.tooltip,
+                m.tooltip || m.note,
+                {
+                  unit: m.displayUnit || "",
+                  prominent: true,
+                },
               );
             })
             .join("") +
           "</div>"
         : "") +
-      (metrics.length
-        ? '<div class="gdi-es-receipt-grid">' +
-          metrics
-            .map(function (m) {
-              return kpiCard(
-                m.label || m.key,
-                m.value,
-                availabilityNote(m),
-                m.note,
+      (funnel.length
+        ? '<div class="gdi-es-receipt__funnel-block">' +
+          '<h3 class="gdi-es-subhead">Research Funnel</h3>' +
+          '<p class="gdi-es-muted">' +
+          esc(
+            (receipt.researchFunnel && receipt.researchFunnel.lede) ||
+              "Research volume leading to commercially qualified opportunities.",
+          ) +
+          "</p>" +
+          '<div class="gdi-es-funnel gdi-es-funnel--research" data-stage-count="' +
+          esc(String(funnel.length)) +
+          '">' +
+          funnel
+            .map(function (m, idx) {
+              return (
+                '<div class="gdi-es-funnel__stage">' +
+                (idx > 0
+                  ? '<span class="gdi-es-funnel__connector" aria-hidden="true"></span>'
+                  : "") +
+                '<div class="gdi-es-kpi__label-row"><div class="gdi-es-kpi__label">' +
+                esc(m.label || m.key) +
+                "</div>" +
+                infoTip(m.tooltip || m.note, m.label || m.key) +
+                '</div><div class="gdi-es-kpi__value">' +
+                esc(m.value == null ? "—" : fmtNum(m.value)) +
+                "</div></div>"
               );
             })
             .join("") +
-          "</div>"
+          "</div></div>"
+        : "") +
+      (supporting.length
+        ? '<div class="gdi-es-receipt__supporting">' +
+          '<h3 class="gdi-es-subhead">Supporting Research Metrics</h3>' +
+          '<div class="gdi-es-kpi-ribbon gdi-es-kpi-ribbon--compact">' +
+          supporting
+            .map(function (m) {
+              return kpiFromObj(
+                Object.assign({}, m, {
+                  compact: true,
+                  omitWhenUnavailable: m.omitWhenUnavailable !== false,
+                }),
+              );
+            })
+            .join("") +
+          "</div></div>"
         : "") +
       '<details class="gdi-es-methodology">' +
       "<summary>How Research Hours Are Estimated</summary>" +
@@ -385,7 +526,7 @@
       "<p>" +
       esc(
         productivity.disclaimer ||
-          "Provisional estimate — not payroll savings and not booked revenue.",
+          "Estimated productivity — not payroll savings and not booked revenue.",
       ) +
       "</p></details></section>"
     );
@@ -418,7 +559,7 @@
       '<p class="gdi-es-muted">' +
       esc(
         section.disclaimer ||
-          "Provisional estimates. Ordinary commercial pursuit is excluded.",
+          "Estimated research productivity. Ordinary commercial pursuit is excluded.",
       ) +
       "</p></section>"
     );
@@ -722,7 +863,12 @@
     var snap =
       (payload.sections && payload.sections.executiveCommercialSnapshot) || {};
     var period = snap.reportingPeriod || {};
-    var asOf =
+    var asOfLabel =
+      period.asOfLabel ||
+      period.customerLabel ||
+      period.label ||
+      "";
+    var asOfDay =
       period.asOfDay ||
       (snap.lastResearchCompletionDay
         ? String(snap.lastResearchCompletionDay).slice(0, 10)
@@ -731,13 +877,12 @@
           : "");
     var metaParts = [];
     if (payload.hotelName) metaParts.push(esc(payload.hotelName));
-    if (asOf) metaParts.push("Updated " + esc(asOf));
-    if (period.customerLabel || period.label) {
-      var periodLabel = String(period.customerLabel || period.label || "");
-      // Avoid duplicating the same date line when label already embeds it.
-      if (periodLabel && (!asOf || periodLabel.indexOf(asOf) === -1)) {
-        metaParts.push(esc(periodLabel));
-      }
+    if (asOfLabel && /Research updated/i.test(asOfLabel)) {
+      metaParts.push(esc(asOfLabel));
+    } else if (asOfLabel) {
+      metaParts.push("Updated " + esc(asOfLabel));
+    } else if (asOfDay) {
+      metaParts.push("Updated " + esc(asOfDay));
     }
     return (
       '<div class="gdi-es-page" data-ui-version="v2" data-es-layout="premium-customer">' +
@@ -756,6 +901,102 @@
     );
   }
 
+  function bindInfoTooltips(root) {
+    if (!root) return;
+    function closeAllInfoTips(exceptBtn) {
+      root.querySelectorAll(".gdi-es-info-tooltip.is-open").forEach(function (wrap) {
+        if (exceptBtn && wrap.contains(exceptBtn)) return;
+        wrap.classList.remove("is-open");
+        var btn = wrap.querySelector(".gdi-es-info");
+        var panel = wrap.querySelector(".gdi-es-info-panel");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        if (panel) {
+          panel.hidden = true;
+          panel.classList.remove(
+            "gdi-es-info-panel--fixed",
+            "gdi-es-info-panel--flip",
+            "gdi-es-info-panel--align-end",
+          );
+          panel.style.top = "";
+          panel.style.left = "";
+        }
+      });
+    }
+
+    function positionInfoPanel(btn, panel) {
+      panel.classList.add("gdi-es-info-panel--fixed");
+      panel.hidden = false;
+      var rect = btn.getBoundingClientRect();
+      var width = panel.offsetWidth || 260;
+      var height = panel.offsetHeight || 120;
+      var left = rect.right - width;
+      if (left < 12) left = 12;
+      if (left + width > window.innerWidth - 12) {
+        left = Math.max(12, window.innerWidth - width - 12);
+        panel.classList.add("gdi-es-info-panel--align-end");
+      }
+      var top = rect.bottom + 8;
+      if (top + height > window.innerHeight - 12) {
+        top = Math.max(12, rect.top - height - 8);
+        panel.classList.add("gdi-es-info-panel--flip");
+      }
+      panel.style.left = Math.round(left) + "px";
+      panel.style.top = Math.round(top) + "px";
+    }
+
+    function openInfoTip(btn) {
+      var wrap = btn.closest(".gdi-es-info-tooltip");
+      if (!wrap) return;
+      closeAllInfoTips(btn);
+      var panel = wrap.querySelector(".gdi-es-info-panel");
+      if (!panel) return;
+      wrap.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+      positionInfoPanel(btn, panel);
+    }
+
+    root.querySelectorAll(".gdi-es-info-tooltip .gdi-es-info").forEach(function (btn) {
+      if (btn.getAttribute("data-bound") === "1") return;
+      btn.setAttribute("data-bound", "1");
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        var wrap = btn.closest(".gdi-es-info-tooltip");
+        if (wrap && wrap.classList.contains("is-open")) {
+          closeAllInfoTips();
+        } else {
+          openInfoTip(btn);
+        }
+      });
+      btn.addEventListener("mouseenter", function () {
+        openInfoTip(btn);
+      });
+      btn.addEventListener("focus", function () {
+        openInfoTip(btn);
+      });
+      btn.addEventListener("keydown", function (ev) {
+        if (ev.key === "Escape") {
+          closeAllInfoTips();
+          btn.blur();
+        }
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          openInfoTip(btn);
+        }
+      });
+    });
+    if (root.getAttribute("data-es-tip-doc-bound") === "1") return;
+    root.setAttribute("data-es-tip-doc-bound", "1");
+    document.addEventListener("click", function (ev) {
+      if (!ev.target.closest || !ev.target.closest(".gdi-es-info-tooltip")) {
+        closeAllInfoTips();
+      }
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape") closeAllInfoTips();
+    });
+  }
+
   function createTabController(opts) {
     opts = opts || {};
     var root = opts.root;
@@ -765,6 +1006,7 @@
     var lastPayload = null;
 
     function bindInteractions() {
+      bindInfoTooltips(root);
       root.querySelectorAll("[data-open]").forEach(function (el) {
         el.addEventListener("click", function (ev) {
           var innermost = ev.target.closest("[data-open]");
@@ -863,6 +1105,7 @@
     renderSalesPerformance: renderSalesPerformance,
     renderResearchIntelligence: renderResearchIntelligence,
     renderPrioritySharedTiles: renderPrioritySharedTiles,
+    bindInfoTooltips: bindInfoTooltips,
     _active: false,
   };
 })(typeof window !== "undefined" ? window : globalThis);
