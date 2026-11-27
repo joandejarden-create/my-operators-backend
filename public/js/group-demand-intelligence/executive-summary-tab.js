@@ -93,16 +93,6 @@
     return r.json();
   }
 
-  function stagedChip(payload) {
-    if (payload && payload.dataState === "FOUNDER_PREVIEW") {
-      return '<span class="gdi-es-status-chip gdi-es-status-chip--staged">Staged</span>';
-    }
-    if (payload && payload.dataState === "CURRENT_AVAILABLE") {
-      return '<span class="gdi-es-status-chip gdi-es-status-chip--current">Current</span>';
-    }
-    return "";
-  }
-
   function infoIconSvg() {
     return (
       '<svg class="gdi-es-info__svg" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
@@ -956,9 +946,7 @@
     return (
       '<div class="gdi-es-page" data-ui-version="v2" data-es-layout="premium-customer">' +
       '<header class="gdi-es-hero">' +
-      '<div class="gdi-es-hero__title"><h1>Executive Summary</h1>' +
-      stagedChip(payload) +
-      "</div>" +
+      '<div class="gdi-es-hero__title"><h1>Executive Summary</h1></div>' +
       (metaParts.length
         ? '<div class="gdi-es-hero__meta">' + metaParts.join(" · ") + "</div>"
         : "") +
