@@ -11,9 +11,9 @@
 |---|---|---|
 | `GUEST_SENTIMENT_DISABLED_BY_FOUNDER` | **PENDING_MERGE** | PR [#621](https://github.com/joandejarden-create/my-operators-backend/pull/621) CI **green** / MERGEABLE; not on `main` yet |
 | `ELEVEN_TAB_COMPONENT_PARITY` | **PENDING_MERGE** | Same PR #621 (registry 12 / active 11) |
-| `CANONICAL_FIELD_MAPPING_COMPLETE` | **NO** | Live reconcile: 4 product fields already on HPC; 10 CONNECT rows remain (ownership/contacts/demand/access/sources) |
-| `VERIFIED_RESEARCH_PERSISTENCE_COMPLETE` | **NO** | Bethesda rooms/meeting/year **persisted** on HPC; ownership/contacts connect incomplete |
-| `BETHESDA_FULL_LIVE_VALIDATED` | **NO** | HPC→API rooms DTO wired in this PR; Radar 8080 Live tab pass not run |
+| `CANONICAL_FIELD_MAPPING_COMPLETE` | **NO** | Live reconcile: product + ownership + demand(16)/access(6) API-hydrated; remaining = 3 research + 1 renovation conflict + Live UI proof |
+| `VERIFIED_RESEARCH_PERSISTENCE_COMPLETE` | **NO** | Core Bethesda intelligence persisted/read-back; headline/description/star + Live Radar still open |
+| `BETHESDA_FULL_LIVE_VALIDATED` | **NO** | HPC→API rooms DTO wired; ownership graph live; Radar 8080 11-tab pass not run |
 | `EIGHT_HOTEL_AIRTABLE_READBACK_VALIDATED` | **NO** | Read-only product audit: 8/8 HPC exist; Bethesda richest (16/18 fields); peers thin on meeting/mix |
 | `EIGHT_HOTEL_RADAR_BROWSER_VALIDATED` | **NO** | 88 hotel×tab Radar checks blocked until #619+#621 on synchronized 8080 |
 | `FULL_HE_E2E_VALIDATED` | **NO** | Explicitly not auto-promoted |
@@ -38,7 +38,11 @@
 
 **Code connect this PR:** `he-hpc-guest-rooms-meeting-space-v1` maps HPC → Live ownership API `guestRoomsMeetingSpace` (no staged-JSON dependency for summary metrics).
 
-**Still open (reuse / connect, no invent):** ownership legal/economic/AM, contacts channels, demand/access wiring, sources register, headline/description/star research, renovation SOURCE_CONFLICT.
+**HI graph already persisted (live):** Legal Owner Marbeth Acquisition; Economic Owner Mullen Real Estate Capital; Asset Manager + Operator/Brand Marriott; 8 org contacts (Mullen/Button/Reece/Lang/Pyne — no direct emails persisted); 13 evidence rows.
+
+**Demand/Access API:** 16 Demand Anchors + 6 Travel Infrastructure items hydrate for Bethesda (reuse — no new research).
+
+**Still open:** headline/description/star research (3); renovation SOURCE_CONFLICT (1); authenticated Radar Live 11-tab validation.
 
 Artifacts:
 - `BETHESDA_LIVE_GAP_RECONCILE_V1.json`
