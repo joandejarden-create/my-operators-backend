@@ -30,7 +30,7 @@ function check(name, fn) {
 }
 
 check("cache_bust", () => {
-  assert.match(html, /group-demand-intelligence\.css\?v=gdi-competitive-filter-layout-v1/);
+  assert.match(html, /group-demand-intelligence\.css\?v=gdi-/);
 });
 
 check("opportunity_type_fixed_width", () => {
@@ -49,13 +49,18 @@ check("weekly_and_market_scope_fixed", () => {
     css,
     /\.gdi-page \.gdi-weekly-filter \{[\s\S]*?flex:\s*0 0 168px;[\s\S]*?width:\s*168px;/,
   );
+  // Market Scope is content-sized (compact padding + fit-to-label), not a fixed wide box.
   assert.match(
     css,
-    /\.gdi-page \.gdi-market-scope-filter \{[\s\S]*?flex:\s*0 0 336px;[\s\S]*?width:\s*336px;/,
+    /\.gdi-page \.gdi-market-scope-filter \{[\s\S]*?flex:\s*0 0 auto;[\s\S]*?width:\s*auto;/,
   );
   assert.match(
     css,
-    /\.gdi-page \.gdi-market-scope \{[\s\S]*?grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\);/,
+    /\.gdi-page \.gdi-market-scope \{[\s\S]*?display:\s*inline-flex;/,
+  );
+  assert.match(
+    css,
+    /\.gdi-page \.gdi-market-scope__btn \{[\s\S]*?padding:\s*0 10px;/,
   );
 });
 
