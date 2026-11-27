@@ -284,17 +284,17 @@
       '<section class="hiw-section"><h3 class="hiw-section__h">Guestroom Overview</h3>' +
       '<div class="hex-rms-metrics">' +
       metricCard(
-        "Total guestrooms",
+        "Total Guestrooms",
         fmt(gr.totalGuestrooms && gr.totalGuestrooms.value),
         statusLabel(gr.totalGuestrooms && gr.totalGuestrooms.verificationStatus, inv)
       ) +
       metricCard(
-        "Single-bed rooms",
+        "Single-Bed Rooms",
         fmt(gr.singleBedRooms && gr.singleBedRooms.value),
         statusLabel(gr.singleBedRooms && gr.singleBedRooms.verificationStatus, inv)
       ) +
       metricCard(
-        "Double-bed rooms",
+        "Double-Bed Rooms",
         fmt(gr.doubleBedRooms && gr.doubleBedRooms.value),
         statusLabel(gr.doubleBedRooms && gr.doubleBedRooms.verificationStatus, inv)
       ) +
@@ -312,19 +312,19 @@
       '<section class="hiw-section"><h3 class="hiw-section__h">Meeting &amp; Event Overview</h3>' +
       '<div class="hex-rms-metrics">' +
       metricCard(
-        "Total meeting space",
+        "Total Meeting Space",
         sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value != null
           ? formatAreaSqFt(sum.totalMeetingSpaceSqFt.value)
           : "—",
         statusLabel(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.verificationStatus, inv)
       ) +
       metricCard(
-        "Meeting rooms (published)",
+        "Meeting Rooms (Published)",
         fmt(sum.meetingRoomCount && sum.meetingRoomCount.value),
         statusLabel(sum.meetingRoomCount && sum.meetingRoomCount.verificationStatus, inv)
       ) +
       metricCard(
-        "Largest room",
+        "Largest Room",
         largest.name
           ? largest.name +
               (largest.areaSqFt != null ? " · " + formatAreaSqFt(largest.areaSqFt) : "")
@@ -332,7 +332,7 @@
         statusLabel(largest.verificationStatus, inv)
       ) +
       metricCard(
-        "Marketing private-space figure",
+        "Marketing Private-Space Figure",
         sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.value != null
           ? formatAreaSqFt(sum.privateSpaceMarketingSqFt.value)
           : "—",
