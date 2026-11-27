@@ -1,0 +1,178 @@
+/**
+ * Hotel Explorer — customer presentation tokens (footnotes + directory density).
+ */
+
+.he-about-this-analysis {
+  margin-top: 16px;
+  border: 1px solid var(--hdp-border, #37446b);
+  border-radius: 8px;
+  background: rgba(8, 15, 37, 0.35);
+  color: var(--hdp-text-body, #c5cee8);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.he-about-this-analysis > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 12px;
+  font-weight: 600;
+  color: var(--hdp-text, #ffffff);
+}
+
+.he-about-this-analysis > summary::-webkit-details-marker {
+  display: none;
+}
+
+.he-about-this-analysis__body {
+  padding: 0 12px 12px;
+}
+
+.he-about-block + .he-about-block {
+  margin-top: 10px;
+}
+
+.he-about-block__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--hdp-text, #ffffff);
+  margin-bottom: 4px;
+}
+
+.he-about-block__body p,
+.he-about-list {
+  margin: 0;
+  color: var(--hci-muted, #9aa6d0);
+}
+
+.he-about-list {
+  padding-left: 18px;
+}
+
+.he-about-list li + li {
+  margin-top: 4px;
+}
+
+/* Property Facts — ALL CAPS field headers (permanent HE capitalization standard) */
+.hdp-overview__label,
+.hex-radar-host .hdp-overview__label,
+.he-market-coverage__label,
+.hex-rms-metric__label {
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Contact directory — five-column customer layout */
+.hci-root .hci-directory-table {
+  --hci-col-contact: minmax(160px, 1.4fr);
+  --hci-col-org: minmax(140px, 1.1fr);
+  --hci-col-function: minmax(140px, 1.1fr);
+  --hci-col-channels: minmax(150px, 1.2fr);
+  --hci-col-details: 88px;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.hci-root .hci-directory-table th[data-sort-key="contact"],
+.hci-root .hci-directory-table td[data-col="contact"],
+.hci-root .hci-directory-table th:nth-child(1),
+.hci-root .hci-directory-table td:nth-child(1) {
+  width: 22%;
+  min-width: 160px;
+}
+
+.hci-root .hci-directory-table th:nth-child(2),
+.hci-root .hci-directory-table td:nth-child(2) {
+  width: 20%;
+  min-width: 140px;
+}
+
+.hci-root .hci-directory-table th:nth-child(3),
+.hci-root .hci-directory-table td:nth-child(3) {
+  width: 20%;
+  min-width: 140px;
+}
+
+.hci-root .hci-directory-table th:nth-child(4),
+.hci-root .hci-directory-table td:nth-child(4) {
+  width: 24%;
+  min-width: 150px;
+}
+
+.hci-root .hci-directory-table th:nth-child(5),
+.hci-root .hci-directory-table td:nth-child(5) {
+  width: 88px;
+  min-width: 88px;
+  max-width: 96px;
+}
+
+.hci-root .hci-directory-table th,
+.hci-root .hci-directory-table td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  vertical-align: top;
+}
+
+.hci-dir-contact-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hci-dir-contact-stack__name {
+  font-weight: 600;
+  color: var(--hci-text, #fff);
+}
+
+.hci-dir-contact-stack__title {
+  font-size: 12px;
+  color: var(--hci-muted, #9aa6d0);
+}
+
+.hci-dir-channel-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hci-dir-details-btn {
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.he-market-coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+
+.he-market-coverage__card {
+  border: 1px solid var(--hdp-border, #37446b);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(33, 44, 77, 0.55);
+}
+
+.he-market-coverage__label {
+  font-size: 11px;
+  color: var(--hci-muted, #9aa6d0);
+  margin-bottom: 4px;
+}
+
+.he-market-coverage__value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--hdp-text, #fff);
+}
+
+@media (max-width: 720px) {
+  .he-market-coverage {
+    grid-template-columns: 1fr;
+  }
+}

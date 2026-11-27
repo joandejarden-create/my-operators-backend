@@ -820,6 +820,26 @@
     return out;
   }
 
+  function renderVerifiedChannelSummary(p) {
+    var emails = personEmails(p);
+    var phones = personPhones(p);
+    var li = linkedInUrl(p);
+    var bits = [];
+    if (emails.length) bits.push(renderCompactChannel(emails[0], "email"));
+    if (phones.length) bits.push(renderCompactChannel(phones[0], "phone"));
+    if (li) {
+      bits.push(
+        '<a class="hci-action-link hex-rms-ext-link" href="' +
+          esc(li) +
+          '" target="_blank" rel="noopener">LinkedIn</a>'
+      );
+    }
+    if (!bits.length) {
+      return '<span class="hci-muted">No verified channels yet</span>';
+    }
+    return '<div class="hci-dir-channel-summary">' + bits.join("") + "</div>";
+  }
+
   function renderDirectoryRowCells(p, hotelId, capability, vm) {
     var emails = personEmails(p);
     var phones = personPhones(p);
@@ -828,28 +848,14 @@
     var detailsId =
       "hci-dir-" +
       String(p.personId || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, "_");
-    var emailHtml = emails.length
-      ? renderCompactChannel(emails[0], "email")
-      : missingChannelHtml("Email");
-    var phoneHtml = phones.length
-      ? renderCompactChannel(phones[0], "phone")
-      : missingChannelHtml("Telephone");
-    var liHtml = li
-      ? '<a class="hci-action-link hex-rms-ext-link" href="' +
-        esc(li) +
-        '" target="_blank" rel="noopener">LinkedIn</a>'
-      : missingChannelHtml("LinkedIn");
     var qualify = showResponsibilityQualification(p)
       ? '<div class="hci-dir-qualify">' + esc(humanResponsibility(p)) + "</div>"
       : "";
+    // Details only in the table; Find Contact Details stays drawer-only.
     var actions =
       '<button type="button" class="hci-btn hci-btn--ghost hci-dir-details-btn" data-hci-toggle="' +
       detailsId +
       '" aria-expanded="false">Details</button>';
-    var enrich = resolveEnrichMeta(p, capability);
-    if (enrich.label && enrich.enabled) {
-      actions += renderEnrichAction(p, hotelId, capability, { inline: true });
-    }
     var detailOrgRoutes = orgRoutes
       .map(function (c) {
         return (
@@ -861,47 +867,83 @@
         );
       })
       .join("");
+    var enrichBlock = "";
+    var enrich = resolveEnrichMeta(p, capability);
+    if (enrich.label) {
+      enrichBlock = renderEnrichAction(p, hotelId, capability, { inline: false });
+    }
+    var authorityNote =
+      p.propertyAuthorityVerified === false || p.propertyAuthority === "unverified"
+        ? '<p class="hci-muted">Property-level authority for this contact is not yet verified.</p>'
+        : "";
     var detailsHtml =
       '<div class="hci-dir-details-panel" id="' +
       detailsId +
       '" hidden>' +
       '<div class="hci-dir-details">' +
+      "<div><strong>Name</strong> " +
+      esc(p.name || "—") +
+      "</div>" +
+      "<div><strong>Title</strong> " +
+      esc(p.title || "—") +
+      "</div>" +
+      "<div><strong>Organization</strong> " +
+      esc(p.organization || p.organizationName || "—") +
+      "</div>" +
+      "<div><strong>Function / Relationship</strong> " +
+      esc(relationshipLabel(p)) +
+      "</div>" +
       qualify +
-      "<div><strong>Hotel responsibility</strong> " +
+      "<div><strong>Hotel relationship</strong> " +
       esc(humanResponsibility(p)) +
       "</div>" +
       (present(customerWhyRelevant(p))
         ? "<div><strong>Relevance</strong> " + esc(customerWhyRelevant(p)) + "</div>"
         : "") +
+      (emails.length
+        ? "<div><strong>Email</strong> " + renderCompactChannel(emails[0], "email") + "</div>"
+        : "") +
+      (phones.length
+        ? "<div><strong>Telephone</strong> " + renderCompactChannel(phones[0], "phone") + "</div>"
+        : "") +
+      (li
+        ? "<div><strong>LinkedIn</strong> <a class=\"hci-action-link hex-rms-ext-link\" href=\"" +
+          esc(li) +
+          '" target="_blank" rel="noopener">Profile</a></div>'
+        : "") +
       detailOrgRoutes +
+      enrichBlock +
+      authorityNote +
       (present(p.lastVerified)
         ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
         : "") +
       '<p class="hci-muted">Organization websites and switchboards are company routes, not personal inboxes. On-demand lookup results stay in this session and are not saved.</p>' +
       "</div></div>";
     return {
-      name: p.name || "",
-      title: p.title || "",
+      contact: (p.name || "") + " " + (p.title || ""),
       organization: p.organization || p.organizationName || "",
       relationship: relationshipLabel(p),
-      email: emails.length ? channelValue(emails[0]) : "",
-      telephone: phones.length ? channelValue(phones[0]) : "",
-      linkedin: li || "",
-      actions: "",
+      channels:
+        (emails.length ? channelValue(emails[0]) : "") +
+        " " +
+        (phones.length ? channelValue(phones[0]) : "") +
+        " " +
+        (li || ""),
+      details: "",
       _rowClass: "hci-dir-row",
       _cells: {
-        name:
-          '<div class="hci-dir-name">' +
+        contact:
+          '<div class="hci-dir-contact-stack">' +
+          '<div class="hci-dir-contact-stack__name">' +
           esc(p.name || "—") +
           "</div>" +
-          qualify,
-        title: esc(p.title || "—"),
+          '<div class="hci-dir-contact-stack__title">' +
+          esc(p.title || "—") +
+          "</div></div>",
         organization: esc(p.organization || p.organizationName || "—"),
         relationship: esc(relationshipLabel(p)),
-        email: emailHtml,
-        telephone: phoneHtml,
-        linkedin: liHtml,
-        actions: actions,
+        channels: renderVerifiedChannelSummary(p),
+        details: actions,
       },
       _detailsHtml: detailsHtml,
       _person: p,
@@ -911,15 +953,21 @@
   function renderContactDirectoryTable(vm, purposeId) {
     var hotelId = vm.hotelId || "";
     var people = directoryPeopleForFilter(vm, purposeId);
+    var caps =
+      global.HeCustomerPresentationFormat &&
+      typeof global.HeCustomerPresentationFormat.allCapsFieldLabel === "function"
+        ? global.HeCustomerPresentationFormat.allCapsFieldLabel
+        : function (s) {
+            return String(s || "")
+              .trim()
+              .toUpperCase();
+          };
     var columns = [
-      { key: "name", label: "Contact Name", sortable: true },
-      { key: "title", label: "Title", sortable: true },
-      { key: "organization", label: "Organization", sortable: true },
-      { key: "relationship", label: "Relationship / Function", sortable: true },
-      { key: "email", label: "Email", sortable: true },
-      { key: "telephone", label: "Telephone", sortable: true },
-      { key: "linkedin", label: "LinkedIn", sortable: false },
-      { key: "actions", label: "Details / Actions", sortable: false },
+      { key: "contact", label: caps("Contact"), sortable: true },
+      { key: "organization", label: caps("Organization"), sortable: true },
+      { key: "relationship", label: caps("Function / Relationship"), sortable: true },
+      { key: "channels", label: caps("Channels"), sortable: false },
+      { key: "details", label: caps("Details"), sortable: false },
     ];
     var rows = people.map(function (p) {
       return renderDirectoryRowCells(p, hotelId, vmCapability, vm);
@@ -930,9 +978,9 @@
       tableHtml = api.renderMarkup({
         columns: columns,
         rows: rows,
-        tableClass: "hci-directory-table",
+        tableClass: "hci-directory-table hci-directory-table--5col",
         emptyMessage: "No contacts match this business purpose yet.",
-        defaultSortKey: "name",
+        defaultSortKey: "contact",
         defaultSortDir: "asc",
       });
     } else {
@@ -945,8 +993,12 @@
         return row._detailsHtml || "";
       })
       .join("");
+    var about =
+      global.HeAboutThisAnalysis && typeof global.HeAboutThisAnalysis.defaultContactNote === "function"
+        ? global.HeAboutThisAnalysis.defaultContactNote()
+        : "";
     return (
-      '<section class="hci-section hci-section--directory" data-hci-directory="v3">' +
+      '<section class="hci-section hci-section--directory" data-hci-directory="v3" data-hci-columns="5">' +
       '<div class="hci-directory-meta hci-muted">' +
       people.length +
       " contact" +
@@ -955,7 +1007,9 @@
       tableHtml +
       '<div class="hci-dir-details-host">' +
       detailsPanels +
-      "</div></section>"
+      "</div>" +
+      about +
+      "</section>"
     );
   }
 

@@ -57,6 +57,7 @@ const contactTests = [
   "test:he-contact-intelligence-cx-v2",
   "test:he-contact-intelligence-directory-ux-v1",
   "test:he-loading-ux-toast-v1",
+  "audit:he-customer-presentation-v1",
 ].map(runNpm);
 
 const contactOk = contactTests.every((t) => t.ok);

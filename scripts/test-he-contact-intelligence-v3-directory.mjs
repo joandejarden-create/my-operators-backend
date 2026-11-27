@@ -74,10 +74,14 @@ run("renderer_is_directory_table_v3_no_recommended_hierarchy", () => {
   const src = read("public/js/hotel-contact-intelligence.js");
   assert.match(src, /data-hci-cx="v3"/);
   assert.match(src, /data-hci-directory="v3"/);
-  assert.match(src, /hci-directory-table/);
+  assert.match(src, /data-hci-columns="5"/);
+  assert.match(src, /hci-directory-table--5col/);
+  assert.match(src, /hci-dir-contact-stack/);
   assert.match(src, /DealalitySortableTable/);
   assert.match(src, /personBelongsToOrganization/);
   assert.doesNotMatch(src, /Recommended First Contact/);
+  assert.doesNotMatch(src, /label: "Email"/);
+  assert.doesNotMatch(src, /label: "Telephone"/);
   assert.match(src, /All Contacts/);
   assert.match(src, /Hotel Leadership/);
   assert.match(src, /Sales & Commercial/);
@@ -102,7 +106,7 @@ run("vm_render_directory_and_blocks_mullen_leak_on_marriott", () => {
           .map(
             (r) =>
               "<tr><td>" +
-              (r._cells?.name || r.name) +
+              (r._cells?.contact || r._cells?.name || r.contact || r.name) +
               "</td><td>" +
               (r._cells?.organization || r.organization) +
               "</td></tr>"
@@ -131,8 +135,15 @@ run("ps1_and_package_gates_named", () => {
   assert.match(ps1, /HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED/);
   assert.match(ps1, /HE_CONTACT_PRESENTATION_VALIDATED/);
   assert.match(ps1, /HE_LOADING_COMPONENT_CONSISTENT/);
+  assert.match(ps1, /HE_CUSTOMER_COPY_VALIDATED/);
+  assert.match(ps1, /HE_PROPERTY_FACTS_FORMAT_VALIDATED/);
+  assert.match(ps1, /HE_CONTACT_TABLE_LAYOUT_VALIDATED/);
+  assert.match(ps1, /HE_CONTACT_DETAILS_DRAWER_VALIDATED/);
+  assert.match(ps1, /HE_SUBMARKET_METHODOLOGY_VALIDATED/);
+  assert.match(ps1, /HE_NO_INTERNAL_TERMINOLOGY_LEAKAGE/);
   const pkg = read("package.json");
   assert.match(pkg, /test:he-contact-intelligence-v3-directory/);
+  assert.match(pkg, /audit:he-customer-presentation-v1/);
 });
 
 run("hi_overlay_resolves_employer_independently_no_sponsor_default", async () => {

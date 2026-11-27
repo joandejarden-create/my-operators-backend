@@ -345,13 +345,35 @@
     return parts.join(" ");
   }
 
+  function fieldLabel(label) {
+    var fmt = window.HeCustomerPresentationFormat;
+    if (fmt && typeof fmt.allCapsFieldLabel === "function") {
+      return fmt.allCapsFieldLabel(label);
+    }
+    return String(label || "")
+      .trim()
+      .toUpperCase();
+  }
+
+  function factValue(value) {
+    var fmt = window.HeCustomerPresentationFormat;
+    var raw = String(value == null ? "" : value);
+    if (fmt && typeof fmt.stripRedundantRelationshipSuffix === "function") {
+      raw = fmt.stripRedundantRelationshipSuffix(raw) || raw;
+    }
+    if (fmt && typeof fmt.properCaseValue === "function") {
+      return fmt.properCaseValue(raw) || raw;
+    }
+    return raw;
+  }
+
   function fact(value, label) {
     if (!value || value === "—") return "";
     return (
       '<div class="hex-fact"><div class="label">' +
-      esc(label) +
+      esc(fieldLabel(label)) +
       '</div><div class="value">' +
-      esc(value) +
+      esc(factValue(value)) +
       "</div></div>"
     );
   }
@@ -372,9 +394,9 @@
   function meta(label, value) {
     return (
       '<div class="hex-meta-card"><div class="label">' +
-      esc(label) +
+      esc(fieldLabel(label)) +
       '</div><div class="value">' +
-      esc(value || "—") +
+      esc(value ? factValue(value) : "—") +
       "</div></div>"
     );
   }
