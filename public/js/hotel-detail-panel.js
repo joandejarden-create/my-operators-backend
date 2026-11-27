@@ -836,9 +836,41 @@
       hotel.YearRenovated ||
       (hotel.commercialProfile && hotel.commercialProfile.yearRenovated) ||
       null;
-    if (v == null || v === "" || v === "—") return null;
+    if (v == null || v === "" || v === "—") {
+      var events = hotel.renovationEvents || (hotel.fieldProvenance && hotel.fieldProvenance.lastRenovated && hotel.fieldProvenance.lastRenovated.events) || null;
+      if (Array.isArray(events) && events.length) {
+        var primary = events.slice().sort(function (a, b) {
+          return (a.displayPriority || 99) - (b.displayPriority || 99);
+        })[0];
+        if (primary && primary.year) {
+          var secondary = events.filter(function (e) {
+            return e && e.year && e.year !== primary.year;
+          });
+          if (secondary.length) {
+            return String(primary.year) + " (major); " + secondary.map(function (e) {
+              return String(e.year);
+            }).join(", ") + " milestone";
+          }
+          return String(primary.year);
+        }
+      }
+      return null;
+    }
     var n = Number(v);
-    if (Number.isFinite(n) && n >= 1800 && n <= 2100) return String(Math.round(n));
+    if (Number.isFinite(n) && n >= 1800 && n <= 2100) {
+      var ev = hotel.renovationEvents || null;
+      if (Array.isArray(ev) && ev.length > 1) {
+        var others = ev.filter(function (e) {
+          return e && e.year && Number(e.year) !== Math.round(n);
+        });
+        if (others.length) {
+          return String(Math.round(n)) + " (major); " + others.map(function (e) {
+            return String(e.year);
+          }).join(", ") + " milestone";
+        }
+      }
+      return String(Math.round(n));
+    }
     var s = String(v).trim();
     return s || null;
   }

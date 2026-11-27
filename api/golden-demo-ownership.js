@@ -405,6 +405,18 @@ export async function getGoldenDemoHotelOwnership(req, res) {
                 const y = Number(String(od).slice(0, 4));
                 return Number.isFinite(y) ? y : payload.hotel?.yearBuilt ?? null;
               })(),
+              lastRenovated: (() => {
+                const rd = fields["Renovation / Conversion Date"];
+                if (!rd) return payload.hotel?.lastRenovated ?? null;
+                const y = Number(String(rd).slice(0, 4));
+                return Number.isFinite(y) ? y : payload.hotel?.lastRenovated ?? null;
+              })(),
+              yearRenovated: (() => {
+                const rd = fields["Renovation / Conversion Date"];
+                if (!rd) return payload.hotel?.yearRenovated ?? null;
+                const y = Number(String(rd).slice(0, 4));
+                return Number.isFinite(y) ? y : payload.hotel?.yearRenovated ?? null;
+              })(),
             };
             const report = payload.report || {};
             payload.report = {
