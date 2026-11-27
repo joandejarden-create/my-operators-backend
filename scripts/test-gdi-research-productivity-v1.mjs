@@ -38,7 +38,13 @@ const opps = loaded.package.opportunities;
 assert.equal(opps.length, 26);
 
 const volumes = deriveResearchActivityVolumes({ opportunities: opps });
-assert.equal(volumes.demand_discovery_and_screening.count, 26);
+// Overlap rule: deep-researched rows are counted under deep research only
+// (discovery count may be 0 when every staged opp has a deep dossier).
+assert.ok(
+  volumes.demand_discovery_and_screening.count +
+    volumes.deep_opportunity_research.count >=
+    opps.length,
+);
 assert.ok(volumes.deep_opportunity_research.count > 0);
 assert.equal(
   volumes.opportunities_screened_out.availability,
@@ -64,6 +70,7 @@ assert.equal(
   "HOTEL_INPUT_REQUIRED",
 );
 assert.match(productivity.disclaimer, /not actual payroll savings/i);
+assert.ok(productivity.methodologyExplanation?.activities?.length >= 5);
 assert.equal(
   productivity.customerMetrics.researchProductivityMultiple.value,
   null,

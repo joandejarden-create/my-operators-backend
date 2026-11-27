@@ -574,20 +574,76 @@
             .join("") +
           "</div></div>"
         : "") +
+      renderResearchHoursMethodology(productivity) +
+      "</section>"
+    );
+  }
+
+  /**
+   * Expandable customer methodology — activity ranges come from the live
+   * benchmark contract via methodologyExplanation (never hardcoded minutes).
+   */
+  function renderResearchHoursMethodology(productivity) {
+    var expl =
+      (productivity && productivity.methodologyExplanation) || null;
+    var title = "How Research Hours Are Estimated";
+    if (!expl || !Array.isArray(expl.activities) || !expl.activities.length) {
+      return (
+        '<details class="gdi-es-methodology">' +
+        "<summary>" +
+        esc(title) +
+        "</summary>" +
+        "<p>" +
+        esc(
+          (productivity && productivity.methodologySummary) ||
+            "Dealality estimates the time your sales team would otherwise spend manually identifying, researching and qualifying business opportunities.",
+        ) +
+        "</p>" +
+        "<p>" +
+        esc(
+          (productivity && productivity.disclaimer) ||
+            "These are estimated productivity benefits, not actual payroll savings or revenue generated.",
+        ) +
+        "</p></details>"
+      );
+    }
+    var list =
+      '<ul class="gdi-es-methodology__list">' +
+      expl.activities
+        .map(function (a) {
+          return (
+            "<li><strong>" +
+            esc(a.label) +
+            ":</strong> " +
+            esc(a.rangeLabel) +
+            " " +
+            esc(a.perUnitPhrase || "per opportunity") +
+            ".</li>"
+          );
+        })
+        .join("") +
+      "</ul>";
+    return (
       '<details class="gdi-es-methodology">' +
-      "<summary>How Research Hours Are Estimated</summary>" +
+      "<summary>" +
+      esc(expl.summaryTitle || title) +
+      "</summary>" +
       "<p>" +
-      esc(
-        productivity.methodologySummary ||
-          "Verified research activity volumes × provisional benchmarks − residual hotel review time.",
-      ) +
+      esc(expl.intro || "") +
       "</p>" +
       "<p>" +
-      esc(
-        productivity.disclaimer ||
-          "Estimated productivity — not payroll savings and not booked revenue.",
-      ) +
-      "</p></details></section>"
+      esc(expl.activitiesIntro || "") +
+      "</p>" +
+      list +
+      "<p>" +
+      esc(expl.calculationNote || "") +
+      "</p>" +
+      "<p>" +
+      esc(expl.workingDayNote || "") +
+      "</p>" +
+      "<p>" +
+      esc(expl.disclaimer || (productivity && productivity.disclaimer) || "") +
+      "</p></details>"
     );
   }
 
