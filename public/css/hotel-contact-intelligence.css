@@ -433,22 +433,101 @@ a.hci-channel__value {
 .hci-people {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.hci-people--featured {
-  gap: 0;
-}
-
+.hci-people--featured,
 .hci-people--compact {
-  gap: 8px;
+  /* CX V2: all people lists share the same full-width card contract */
+  gap: 12px;
+  width: 100%;
+}
+
+.hci-person,
+.hci-person--featured,
+.hci-person--compact {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+  background: var(--hex-surface-section, rgba(8, 15, 37, 0.5));
+  border: 1px solid var(--hci-border);
+  border-radius: 12px;
+  padding: 14px 16px;
 }
 
 .hci-person {
   background: var(--hex-surface-section, rgba(8, 15, 37, 0.5));
   border: 1px solid var(--hci-border);
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 14px 16px;
+}
+
+.hci-purpose-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: min(240px, 100%);
+}
+
+.hci-purpose-filter__label {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--hci-muted);
+  letter-spacing: 0.02em;
+}
+
+.hci-purpose-filter__select {
+  background: rgba(16, 25, 53, 0.85);
+  color: var(--hci-text);
+  border: 1px solid var(--hci-border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.hci-section--purpose {
+  margin-top: 14px;
+}
+
+.hci-section__desc {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--hci-muted);
+  line-height: 1.4;
+}
+
+.hci-person__qualify {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--hci-warn);
+  line-height: 1.35;
+}
+
+.hci-btn--primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(108, 114, 255, 0.55);
+  background: rgba(108, 114, 255, 0.22);
+  color: #e8e7ff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.hci-btn--primary:hover {
+  background: rgba(108, 114, 255, 0.34);
+  color: #fff;
+}
+
+.hci-admin-only {
+  opacity: 0.85;
 }
 
 .hci-person__row {
@@ -611,10 +690,11 @@ a.hci-channel__value {
 }
 
 .hci-section--recommend {
-  background: rgba(108, 114, 255, 0.08);
-  border: 1px solid rgba(108, 114, 255, 0.35);
-  border-radius: 12px;
-  padding: 12px 14px;
+  /* Legacy recommend chrome retired in CX V2 — keep selector harmless */
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .hci-recommend__rationale {
@@ -624,18 +704,20 @@ a.hci-channel__value {
   line-height: 1.45;
 }
 
-.hci-person--featured {
-  border-color: rgba(108, 114, 255, 0.55);
-  box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.18);
-  padding: 14px 16px;
-}
-
+.hci-person--featured,
 .hci-person--compact {
-  padding: 10px 12px;
+  /* CX V2: featured/compact modifiers must not change width or horizontal padding */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-color: var(--hci-border);
+  box-shadow: none;
 }
 
+.hci-person--featured h5,
 .hci-person--compact h5 {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .hci-person[data-enriching="1"] .hci-btn--enrich {
