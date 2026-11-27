@@ -10,6 +10,22 @@ Use before finalizing any feature, content import, or significant change.
 - [ ] Does this preserve owner control?
 - [ ] Does this respect brand/operator/owner separation?
 
+## Additive development & non-regression
+
+Permanent principle: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md).
+
+- [ ] New work is additive within the established design language (no silent UI redesign).
+- [ ] Previously accepted layouts, navigation, spacing, icons, and interactions still behave as certified.
+- [ ] Previously accepted intelligence remains accessible under existing authorization (no silent hide/overwrite/downgrade).
+- [ ] Inventory/data comparisons use **record IDs**, not counts alone.
+- [ ] Existing filters, selectors, drawers, deep links, exports, and workflows still work.
+- [ ] Before/after baseline established; intentional vs unintended diffs classified.
+- [ ] Unintended regressions resolved before certification.
+- [ ] PR includes a non-regression assessment for Integration Controller.
+- [ ] Intentional material redesign/removal has explicit founder approval.
+- [ ] Defect class covered by permanent automated regression tests where applicable.
+- [ ] Completion claim satisfies: new capability works **and** previously accepted functionality continues to work.
+
 ## AI Output Quality
 
 - [ ] Does the output separate evidence, interpretation, and next action?
