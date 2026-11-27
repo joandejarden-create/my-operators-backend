@@ -2826,8 +2826,8 @@
           verificationStatus:
             p.identity_verified === true ||
             /VERIFIED|HIGH/i.test(String(p.verification_status || p.identityVerification || ""))
-              ? "Verified identity"
-              : "Directory contact",
+              ? "Verified"
+              : "Directory",
           linkedinUrl: p.linkedin_url || p.linkedinUrl || null,
           professional_profile_url: p.linkedin_url || p.linkedinUrl || null,
           professional_profile_verified: Boolean(p.linkedin_url || p.linkedinUrl),
