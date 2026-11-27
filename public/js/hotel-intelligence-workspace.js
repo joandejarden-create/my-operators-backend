@@ -871,6 +871,43 @@
     };
   }
 
+  function resolveCustomerSupportsLabel(citation) {
+    var api =
+      typeof window !== "undefined" && window.HeCustomerSupportsLabel
+        ? window.HeCustomerSupportsLabel
+        : null;
+    if (api && typeof api.customerSupportsLabel === "function") {
+      return api.customerSupportsLabel(citation);
+    }
+    // Fallback if browser adapter not loaded — still scrub technical register claims.
+    var raw = citation && (citation.source_claim || citation.claim || citation.proves || citation.supports);
+    var text = String(raw || "Property Research Evidence");
+    if (/\brec[a-zA-Z0-9]{10,}\b/i.test(text) || /\bHI\s*graph\b/i.test(text) || /\bownership edges?\b/i.test(text)) {
+      var code = String((citation && citation.supports) || "").trim();
+      if (code === "ownership") return "Hotel Ownership Structure";
+      if (code === "history") return "Property Acquisition";
+      if (code === "operator") return "Hotel Management";
+      if (code === "brand" || code === "brand_census") return "Brand Affiliation";
+      if (code === "contact_research") return "Hotel Leadership";
+      if (code === "guest_sentiment") return "Guest Reputation";
+      return "Property Research Evidence";
+    }
+    return text;
+  }
+
+  function isGuestSentimentOnlyCitationLocal(citation) {
+    var api =
+      typeof window !== "undefined" && window.HeCustomerSupportsLabel
+        ? window.HeCustomerSupportsLabel
+        : null;
+    if (api && typeof api.isGuestSentimentOnlyCitation === "function") {
+      return api.isGuestSentimentOnlyCitation(citation);
+    }
+    var supports = String((citation && citation.supports) || "").toLowerCase();
+    var category = String((citation && citation.category) || "").toLowerCase();
+    return supports === "guest_sentiment" || category === "sentiment";
+  }
+
   function buildCitations(hotel, ownership) {
     var list = [];
     var deepSources =
@@ -880,7 +917,37 @@
     var ev = ownership && ownership.report && ownership.report.evidence;
     var sources = deepSources.length ? deepSources : (ev && ev.sources) || [];
     var defaultSupports = deepSources.length ? "ownership" : "operator";
+    var registerClaim =
+      (ev && ev.claim) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.evidence &&
+        ownership.report.evidence.claim) ||
+      "";
+    var registerProves =
+      (ev && ev.what_it_proves) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.evidence &&
+        ownership.report.evidence.what_it_proves) ||
+      "";
+    var registerDoesNot =
+      (ev && ev.what_it_does_not_prove) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.evidence &&
+        ownership.report.evidence.what_it_does_not_prove) ||
+      "";
     sources.forEach(function (s) {
+      // Prefer per-source claim / claims (HI graph projection) over the shared
+      // register-level claim, which historically leaked "Validated HI graph…" copy.
+      var perSourceClaim =
+        (Array.isArray(s.claims) && s.claims.length ? s.claims.join(" | ") : "") ||
+        s.claim ||
+        s.source_claim ||
+        s.fieldName ||
+        "";
+      var perSourceProves = s.proves || s.what_it_proves || perSourceClaim || "";
       list.push(
         enrichCitation({
           title: s.title || s.provider || "Source",
@@ -892,31 +959,19 @@
           accessed_at: s.accessed_at || s.retrieved_at || null,
           observed_date: s.observed_date || null,
           excerpt: s.evidence_excerpt || s.note || "",
-          claim:
-            (ev && ev.claim) ||
-            (ownership &&
-              ownership.report &&
-              ownership.report.evidence &&
-              ownership.report.evidence.claim) ||
-            "",
+          claim: perSourceClaim || registerClaim,
+          source_claim: perSourceClaim,
+          claims: Array.isArray(s.claims) ? s.claims.slice() : perSourceClaim ? [perSourceClaim] : [],
+          fieldName: s.fieldName || s.field_name || null,
           relationship:
+            s.relationship ||
             (ev && ev.relationship) ||
             (ownership &&
               ownership.report &&
               ownership.report.evidence &&
               ownership.report.evidence.relationship),
-          proves:
-            (ev && ev.what_it_proves) ||
-            (ownership &&
-              ownership.report &&
-              ownership.report.evidence &&
-              ownership.report.evidence.what_it_proves),
-          does_not:
-            (ev && ev.what_it_does_not_prove) ||
-            (ownership &&
-              ownership.report &&
-              ownership.report.evidence &&
-              ownership.report.evidence.what_it_does_not_prove),
+          proves: perSourceProves || registerProves,
+          does_not: s.does_not || s.what_it_does_not_prove || registerDoesNot,
           supports: s.supports || defaultSupports,
           source_type: sourceTypeLabel(s.provider || s.title),
           verification_status: s.verification_status || null,
@@ -938,6 +993,8 @@
           (hotel && hotel.name ? hotel.name + ": " : "") +
           "Affiliation / brand field and Management Company as stored in Hotel Census.",
         claim: "Census identity fields for brand affiliation and management company",
+        source_claim: "brand affiliation and management company",
+        claims: ["brand:affiliation", "operator:management company"],
         proves:
           "Documents how Dealality currently stores trading name, affiliation, and management company for this hotel.",
         does_not:
@@ -949,9 +1006,19 @@
       })
     );
     list = mergeMarketAlertsCitationsLocal(list, state.marketAlertsCitations || []);
-    list = mergeMarketAlertsCitationsLocal(list, state.guestSentimentCitations || []);
+    // Guest Sentiment–only sources stay out of the customer list when that tab is disabled,
+    // unless the same URL already supports another eligible claim (dedupe keeps the other).
+    if (isGuestSentimentEnabled()) {
+      list = mergeMarketAlertsCitationsLocal(list, state.guestSentimentCitations || []);
+    }
     list = mergeMarketAlertsCitationsLocal(list, state.contactCitations || []);
-    return dedupeCitations(list.map(enrichCitation));
+    list = dedupeCitations(list.map(enrichCitation));
+    if (!isGuestSentimentEnabled()) {
+      list = list.filter(function (s) {
+        return !isGuestSentimentOnlyCitationLocal(s);
+      });
+    }
+    return list;
   }
 
   function applyContactEvidenceCitations(evidenceList) {
@@ -2880,7 +2947,7 @@
     var dates = normalizeCitationDates(s);
     var pub = formatSourceDate(dates.publication_date);
     var verified = formatSourceDate(dates.verified_at || dates.accessed_at);
-    var claim = s.claim || s.proves || s.supports || "—";
+    var claim = resolveCustomerSupportsLabel(s);
     if (String(claim).length > 120) claim = String(claim).slice(0, 117) + "…";
     var catLabel =
       (SOURCE_CATEGORY_DEFS.find(function (c) {
@@ -4869,7 +4936,7 @@
         : "") +
       (cite.excerpt ? "<p>" + esc(cite.excerpt) + "</p>" : "") +
       "<p><strong>Supports</strong> — " +
-      esc(cite.proves || "") +
+      esc(resolveCustomerSupportsLabel(cite)) +
       "</p>" +
       '<p class="hiw-prove-not"><strong>Does not establish</strong> — ' +
       esc(cite.does_not || "") +

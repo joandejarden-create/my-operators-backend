@@ -335,18 +335,20 @@ export async function getGoldenDemoHotelOwnership(req, res) {
               : "HI graph partial — operator/brand may be present; economic owner unresolved.",
           },
           // Sources tab SoT: HI Graph Evidence projected into existing citation shape.
+          // Customer-facing SUPPORTS labels are derived per-source in the workspace
+          // renderer; keep this register claim free of Airtable IDs / HI-graph jargon.
           evidence: {
             ...(report.evidence || {}),
             claim:
               (report.evidence && report.evidence.claim) ||
               (economicResolved
-                ? `Validated HI graph ownership edges for ${payload.hotel?.name || recordId}`
-                : `HI graph evidence and relationship edges for ${payload.hotel?.name || recordId}`),
+                ? "Hotel Ownership Structure"
+                : "Property Research Evidence"),
             sources: graphSources.length
               ? graphSources
               : (report.evidence && report.evidence.sources) || [],
             what_it_proves:
-              "Source documents persisted in HI Graph Evidence and linked to this hotel.",
+              "Source documents that support ownership, management, brand, or related property claims for this hotel.",
             what_it_does_not_prove:
               "Does not invent ultimate beneficial ownership; historical sources remain historical.",
             source: "HI_GRAPH_EVIDENCE",
