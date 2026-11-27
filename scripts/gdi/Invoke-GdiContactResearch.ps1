@@ -4,9 +4,12 @@
 
 .DESCRIPTION
   Runs after identity/role research. Public-first for email / phone / LinkedIn.
-  Findymail is a permanent Stage 4 component for unresolved professional email
-  gaps when -AuthorizeFindymail is supplied with Live + paid authorization.
-  Surfe is never auto-invoked from Full E2E (explicit-click only).
+  Enforces GDI_CONTACT_RESEARCH_BEST_EFFORT_V1: every applicable channel for
+  primary and alternative contacts must be researched (finding one channel does
+  not terminate the others). Findymail is a permanent Stage 4 component for
+  unresolved professional email gaps when -AuthorizeFindymail is supplied with
+  Live + paid authorization. Surfe is never auto-invoked from Full E2E
+  (explicit-click only).
 
 .EXAMPLE
   .\scripts\gdi\Invoke-GdiContactResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
