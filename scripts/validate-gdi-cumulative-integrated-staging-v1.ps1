@@ -84,16 +84,47 @@ function Get-Json($url) {
 }
 
 $wyStaged = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=staged&surface=customer"
-if (-not $wyStaged.ok -or [int]$wyStaged.count -lt 1) {
-  Fail "Wyndham STAGED unavailable or empty (ok=$($wyStaged.ok) count=$($wyStaged.count) err=$($wyStaged.error))"
+if (-not $wyStaged.ok -or [int]$wyStaged.count -ne 11) {
+  Fail "Wyndham STAGED expected 11 (ok=$($wyStaged.ok) count=$($wyStaged.count) err=$($wyStaged.error))"
 }
 Write-Host "[5] Wyndham STAGED count=$($wyStaged.count)"
+
+$wyProposed = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=proposed&surface=customer"
+if (-not $wyProposed.ok -or [int]$wyProposed.count -ne 26) {
+  Fail "Wyndham Proposed expected 26 (ok=$($wyProposed.ok) count=$($wyProposed.count) err=$($wyProposed.error) scope=$($wyProposed.listScope))"
+}
+if ($wyProposed.listScope -ne "FOUNDER_PROPOSED_WRITE_SET") {
+  Fail "Wyndham Proposed listScope expected FOUNDER_PROPOSED_WRITE_SET got $($wyProposed.listScope)"
+}
+Write-Host "[5a] Wyndham Proposed locked-26 count=$($wyProposed.count) scope=$($wyProposed.listScope)"
+
+$wyHold = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recnPB3Q02NO8Ma1o/opportunities?publicationPackage=1&preview=hold&surface=customer"
+if (-not $wyHold.ok -or [int]$wyHold.count -ne 2) {
+  Fail "Wyndham HOLD expected 2"
+}
+Write-Host "[5a2] Wyndham HOLD count=$($wyHold.count)"
 
 $beth = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities?publicationPackage=1&preview=current&surface=customer"
 if (-not $beth.ok -or [int]$beth.count -lt 1) {
   Fail "Bethesda CURRENT unavailable or empty"
 }
 Write-Host "[5b] Bethesda CURRENT count=$($beth.count)"
+
+$yotel = Get-Json "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recrPQcZg7SFARRb2/opportunities?publicationPackage=1&preview=current&surface=customer"
+if (-not $yotel.ok -or [int]$yotel.count -lt 1) {
+  Fail "YOTEL CURRENT unavailable or empty"
+}
+Write-Host "[5c] YOTEL CURRENT count=$($yotel.count)"
+
+# 6) Served toolbar contract (single-row Columns SVG)
+$html2 = (Invoke-WebRequest "http://127.0.0.1:8080/group-demand-intelligence.html?ts=$(Get-Random)" -UseBasicParsing).Content
+if ($html2 -notmatch 'gdi-founder-inv-toolbar-v1') { Fail "Served HTML missing founder-inv-toolbar cache marker" }
+$uiJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/dealality-gdi-ui.js?v=gdi-founder-inv-toolbar-v1" -UseBasicParsing).Content
+if ($uiJs -notmatch 'data-gdi-toolbar-row') { Fail "Served UI missing single-row toolbar marker" }
+$tableJs = (Invoke-WebRequest "http://127.0.0.1:8080/js/group-demand-intelligence/gdi-commercial-list-table-v1.js?v=gdi-founder-inv-toolbar-v1" -UseBasicParsing).Content
+if ($tableJs -notmatch 'Customize Columns') { Fail "Served list table missing Customize Columns control" }
+if ($tableJs -match 'gdi-list-table-toolbar') { Fail "Served list table still renders separate Columns toolbar row" }
+Write-Host "[6] Single-row List toolbar + Columns SVG contract OK"
 
 Write-Host "`nPASS validate-gdi-cumulative-integrated-staging-v1" -ForegroundColor Green
 Write-Host "Browser: http://localhost:8080/group-demand-intelligence.html (authorized founder session)"

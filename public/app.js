@@ -1187,16 +1187,30 @@
                 return 'research';
             }
             if (inventory === 'staged') return 'staged';
+            if (inventory === 'proposed') return 'proposed';
+            if (inventory === 'hold') return 'hold';
+            if (inventory === 'continuation' || inventory === 'continuations') return 'continuation';
             if (inventory === 'published' || inventory === 'current') return 'published';
             var preview = String(hashQs.get('preview') || parentQs.get('preview') || '')
                 .trim()
                 .toLowerCase();
             if (preview === 'staged') return 'staged';
+            if (preview === 'proposed') return 'proposed';
+            if (preview === 'hold') return 'hold';
+            if (preview === 'continuation') return 'continuation';
             if (preview === 'current' || preview === 'published') return 'published';
             // Ignore legacy ?inventory=research / ?live=1 without admin flag — do not
             // surface research store in the local GDI presentation.
             var stored = readStoredGdiInventoryMode();
-            if (stored === 'staged' || stored === 'published') return stored;
+            if (
+                stored === 'staged' ||
+                stored === 'published' ||
+                stored === 'proposed' ||
+                stored === 'hold' ||
+                stored === 'continuation'
+            ) {
+                return stored;
+            }
             // Local founder shell: Finalized STAGED review by default (FQO policy).
             return isLocalFounderShellHost() ? 'staged' : 'published';
         } catch (_err) {
@@ -1217,6 +1231,15 @@
         } else if (next === 'staged') {
             params.set('inventory', 'staged');
             params.set('preview', 'staged');
+        } else if (next === 'proposed') {
+            params.set('inventory', 'proposed');
+            params.set('preview', 'proposed');
+        } else if (next === 'hold') {
+            params.set('inventory', 'hold');
+            params.set('preview', 'hold');
+        } else if (next === 'continuation' || next === 'continuations') {
+            params.set('inventory', 'continuation');
+            params.set('preview', 'continuation');
         } else if (next === 'published') {
             params.set('inventory', 'published');
             params.set('preview', 'current');

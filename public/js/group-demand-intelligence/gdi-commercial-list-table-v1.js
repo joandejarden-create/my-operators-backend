@@ -475,13 +475,18 @@
       .join("");
   }
 
+  var COLUMNS_ICON_SVG =
+    '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="16" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>';
+
   function columnSettingsHtml(optionalMap) {
     optionalMap = optionalMap || loadOptionalColumns();
     return (
       '<div class="gdi-list-col-settings">' +
-      '<button type="button" class="gdi-btn gdi-btn-ghost gdi-list-col-settings__toggle" id="gdiListColumnSettingsBtn" aria-expanded="false" aria-controls="gdiListColumnSettingsPanel">Columns</button>' +
-      '<div class="gdi-list-col-settings__panel" id="gdiListColumnSettingsPanel" hidden>' +
-      "<p class=\"gdi-list-col-settings__hint\">Optional columns (existing data only)</p>" +
+      '<button type="button" class="gdi-list-col-settings__toggle sort-icon" id="gdiListColumnSettingsBtn" title="Customize Columns" aria-label="Customize Columns" aria-expanded="false" aria-controls="gdiListColumnSettingsPanel" aria-haspopup="true">' +
+      COLUMNS_ICON_SVG +
+      "</button>" +
+      '<div class="gdi-list-col-settings__panel" id="gdiListColumnSettingsPanel" hidden role="menu">' +
+      '<p class="gdi-list-col-settings__hint">Optional columns (existing data only)</p>' +
       OPTIONAL_COLUMNS.map(function (c) {
         var on = optionalMap[c.id] === true;
         return (
@@ -524,13 +529,12 @@
         cols.length +
         '"><div class="gdi-list-empty">No opportunities match these filters.</div></td></tr>';
 
+    // Columns control lives in the shared results toolbar (single row).
+    // Do not render a separate list-table toolbar row.
     return (
       '<div class="gdi-list-table-wrap" data-gdi-view-mode="list" data-gdi-contract="' +
       CONTRACT +
       '">' +
-      '<div class="gdi-list-table-toolbar">' +
-      columnSettingsHtml(optionalMap) +
-      "</div>" +
       '<div class="gdi-list-table-scroll">' +
       '<table class="gdi-commercial-table deals-table" id="gdiCommercialOppTable">' +
       "<thead><tr>" +

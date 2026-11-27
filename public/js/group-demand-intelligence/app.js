@@ -876,6 +876,7 @@
   /**
    * Founder inventory views (FQO policy):
    * staged = explicit STAGED Finalized Qualified packages only (fail-closed)
+   * proposed / hold / continuation = Wyndham locked write-set founder review
    * published = CURRENT customer package only
    * research = authorized admin escape only (?gdiAdminResearch=1) — not a UI tab
    */
@@ -902,6 +903,15 @@
       ) {
         return "research";
       }
+      if (inventory === "proposed" || preview === "proposed") return "proposed";
+      if (inventory === "hold" || preview === "hold") return "hold";
+      if (
+        inventory === "continuation" ||
+        inventory === "continuations" ||
+        preview === "continuation"
+      ) {
+        return "continuation";
+      }
       if (inventory === "staged") return "staged";
       if (inventory === "published" || inventory === "current") {
         return "published";
@@ -919,7 +929,13 @@
 
   function wantsPublicationPackagePreview() {
     var mode = resolveFounderInventoryMode();
-    return mode === "published" || mode === "staged";
+    return (
+      mode === "published" ||
+      mode === "staged" ||
+      mode === "proposed" ||
+      mode === "hold" ||
+      mode === "continuation"
+    );
   }
 
   function wantsLiveResearchBrowse() {
@@ -928,6 +944,17 @@
 
   function wantsExplicitStagedPreview() {
     return resolveFounderInventoryMode() === "staged";
+  }
+
+  function wantsFounderWriteSetPreview() {
+    var mode = resolveFounderInventoryMode();
+    return (
+      mode === "proposed" || mode === "hold" || mode === "continuation"
+    );
+  }
+
+  function isWyndhamFounderReviewHotel() {
+    return String(state.hotelId || "") === "recnPB3Q02NO8Ma1o";
   }
 
   function isLocalFounderHost() {
@@ -963,6 +990,15 @@
       } else if (next === "staged") {
         url.searchParams.set("inventory", "staged");
         url.searchParams.set("preview", "staged");
+      } else if (next === "proposed") {
+        url.searchParams.set("inventory", "proposed");
+        url.searchParams.set("preview", "proposed");
+      } else if (next === "hold") {
+        url.searchParams.set("inventory", "hold");
+        url.searchParams.set("preview", "hold");
+      } else if (next === "continuation" || next === "continuations") {
+        url.searchParams.set("inventory", "continuation");
+        url.searchParams.set("preview", "continuation");
       } else if (next === "published") {
         url.searchParams.set("inventory", "published");
         url.searchParams.set("preview", "current");
@@ -1020,8 +1056,15 @@
         // Canonical customer surface — same immutable package as external share.
         q.push("publicationPackage=1");
         q.push("surface=customer");
-        // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
-        if (wantsExplicitStagedPreview()) {
+        var invMode = resolveFounderInventoryMode();
+        if (invMode === "proposed") {
+          q.push("preview=proposed");
+        } else if (invMode === "hold") {
+          q.push("preview=hold");
+        } else if (invMode === "continuation") {
+          q.push("preview=continuation");
+        } else if (wantsExplicitStagedPreview()) {
+          // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
           q.push("preview=staged");
         } else {
           // Published Inventory: CURRENT only — never STAGED or research substitute.
@@ -1638,9 +1681,18 @@
           path += "?live=1";
         } else if (wantsPublicationPackagePreview()) {
           path += "?publicationPackage=1&surface=customer";
-          // Must match list opportunitiesApiPath — same STAGED package.
-          if (wantsExplicitStagedPreview()) {
+          // Must match list opportunitiesApiPath inventory mode.
+          var detailMode = resolveFounderInventoryMode();
+          if (detailMode === "proposed") {
+            path += "&preview=proposed";
+          } else if (detailMode === "hold") {
+            path += "&preview=hold";
+          } else if (detailMode === "continuation") {
+            path += "&preview=continuation";
+          } else if (wantsExplicitStagedPreview()) {
             path += "&preview=staged";
+          } else {
+            path += "&preview=current";
           }
         }
         return path;
@@ -2036,7 +2088,13 @@
         ? "LIVE_RESEARCH"
         : inventoryMode === "staged"
           ? "FOUNDER_STAGED_PREVIEW"
-          : "FOUNDER_PUBLICATION_PREVIEW";
+          : inventoryMode === "proposed"
+            ? "FOUNDER_PROPOSED_WRITE_SET_PREVIEW"
+            : inventoryMode === "hold"
+              ? "FOUNDER_HOLD_REVIEW"
+              : inventoryMode === "continuation"
+                ? "FOUNDER_CONTINUATION_REVIEW"
+                : "FOUNDER_PUBLICATION_PREVIEW";
     var pubMeta = state.publication || {};
     try {
       if (typeof console !== "undefined" && console.debug) {
@@ -2079,7 +2137,20 @@
       UI.contentTabsHtml(state.tab, UI.GDI_CUSTOMER_TABS || [UI.GDI_MAIN_TAB]) +
       (hideOpportunityChrome
         ? ""
-        : UI.propertyBarHtml({
+        : (isLocalFounderHost() && isWyndhamFounderReviewHotel()
+            ? UI.founderInventoryModeSelectorHtml({
+                show: true,
+                mode: inventoryMode,
+                counts: {
+                  staged: 11,
+                  proposed: 26,
+                  hold: 2,
+                  continuation: 25,
+                  published: 0,
+                },
+              })
+            : "") +
+          UI.propertyBarHtml({
             mode: "auth",
             hotel: hotel,
             hotelId: state.hotelId,
@@ -2312,6 +2383,25 @@
       btn.addEventListener("click", function () {
         state.tab = btn.getAttribute("data-tab");
         render();
+      });
+    });
+
+    root.querySelectorAll("[data-gdi-founder-inventory]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = btn.getAttribute("data-gdi-founder-inventory") || "staged";
+        if (resolveFounderInventoryMode() === next) return;
+        applyFounderInventoryMode(next);
+        setLoading(true, "Loading founder inventory\u2026");
+        loadAll()
+          .then(function () {
+            render();
+          })
+          .catch(function (err) {
+            handleLoadFailure(err);
+          })
+          .finally(function () {
+            setLoading(false);
+          });
       });
     });
 

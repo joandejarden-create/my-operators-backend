@@ -3982,8 +3982,31 @@
     var viewMode = opts.viewMode === "tiles" ? "tiles" : "list";
     var noun = opts.noun || "Opportunities";
     var exportHref = opts.exportHref || "";
+    // Order: Export CSV → Sort Direction → Sort By → Columns SVG → List/Tiles
+    var columnsHtml = "";
+    if (
+      viewMode === "list" &&
+      typeof global !== "undefined" &&
+      global.DealalityGdiCommercialListTable &&
+      typeof global.DealalityGdiCommercialListTable.columnSettingsHtml ===
+        "function"
+    ) {
+      columnsHtml = global.DealalityGdiCommercialListTable.columnSettingsHtml(
+        opts.optionalColumns || null
+      );
+    } else if (
+      viewMode === "list" &&
+      typeof window !== "undefined" &&
+      window.DealalityGdiCommercialListTable &&
+      typeof window.DealalityGdiCommercialListTable.columnSettingsHtml ===
+        "function"
+    ) {
+      columnsHtml = window.DealalityGdiCommercialListTable.columnSettingsHtml(
+        opts.optionalColumns || null
+      );
+    }
     return (
-      '<div class="results-toolbar gdi-browse-toolbar">' +
+      '<div class="results-toolbar gdi-browse-toolbar" data-gdi-toolbar-row="1">' +
       '<div class="results-count" aria-live="polite">Showing <strong>' +
       esc(shown) +
       "</strong> of <strong>" +
@@ -4012,6 +4035,7 @@
         );
       }).join("") +
       "</select></div>" +
+      columnsHtml +
       '<div class="gdi-view-toggle" role="group" aria-label="Layout">' +
       '<button type="button" class="gdi-view-toggle__btn' +
       (viewMode === "list" ? " is-active" : "") +
@@ -4024,6 +4048,46 @@
       (viewMode === "tiles") +
       '">Tiles</button>' +
       "</div></div></div>"
+    );
+  }
+
+  function founderInventoryModeSelectorHtml(opts) {
+    opts = opts || {};
+    if (!opts.show) return "";
+    var mode = String(opts.mode || "staged").toLowerCase();
+    var counts = opts.counts || {};
+    var items = [
+      { id: "staged", label: "Staged", count: counts.staged },
+      { id: "proposed", label: "Proposed", count: counts.proposed },
+      { id: "hold", label: "HOLD", count: counts.hold },
+      { id: "continuation", label: "Continuations", count: counts.continuation },
+      { id: "published", label: "Published", count: counts.published },
+    ];
+    return (
+      '<div class="gdi-founder-inventory-modes" role="group" aria-label="Founder inventory mode">' +
+      '<span class="gdi-founder-inventory-modes__label">Founder inventory</span>' +
+      items
+        .map(function (it) {
+          var countLabel =
+            it.count != null && it.count !== ""
+              ? " (" + String(it.count) + ")"
+              : "";
+          return (
+            '<button type="button" class="gdi-founder-inventory-modes__btn' +
+            (mode === it.id ? " is-active" : "") +
+            '" data-gdi-founder-inventory="' +
+            esc(it.id) +
+            '" aria-pressed="' +
+            (mode === it.id) +
+            '">' +
+            esc(it.label) +
+            esc(countLabel) +
+            "</button>"
+          );
+        })
+        .join("") +
+      '<span class="gdi-founder-inventory-modes__hint">Review only — not CURRENT publication</span>' +
+      "</div>"
     );
   }
 
@@ -10924,6 +10988,7 @@
     workflowPresetHtml: workflowPresetHtml,
     normalizeCustomerWorkflowFilter: normalizeCustomerWorkflowFilter,
     resultsToolbarHtml: resultsToolbarHtml,
+    founderInventoryModeSelectorHtml: founderInventoryModeSelectorHtml,
     filterOpportunities: filterOpportunities,
     sortOpportunities: sortOpportunities,
     opportunityToBriefItem: opportunityToBriefItem,

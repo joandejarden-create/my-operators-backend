@@ -4187,26 +4187,75 @@ a.gdi-contact-reveal-signin {
 .gdi-exec-loading { color: var(--gdi-muted); padding: 1.5rem; }
 /* ---- GDI sortable commercial list table (Deal Opportunities parity) ---- */
 .gdi-list-table-wrap { width: 100%; margin: 0 0 1.5rem; }
-.gdi-list-table-toolbar {
-  display: flex;
-  justify-content: flex-end;
+/* Columns control sits in .results-toolbar-sort (single row). */
+.gdi-list-col-settings { position: relative; flex-shrink: 0; }
+.gdi-page .results-toolbar-sort .gdi-list-col-settings__toggle.sort-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.65rem;
-  position: relative;
+  justify-content: center;
 }
-.gdi-list-col-settings { position: relative; }
+.gdi-page .results-toolbar-sort .gdi-list-col-settings__toggle.sort-icon.is-active,
+.gdi-page .results-toolbar-sort .gdi-list-col-settings__toggle.sort-icon[aria-expanded="true"] {
+  color: var(--neutral--100);
+  border-color: var(--primary--color-1, #6ea8ff);
+}
 .gdi-list-col-settings__panel {
   position: absolute;
   right: 0;
   top: calc(100% + 6px);
-  z-index: 20;
+  z-index: 30;
   min-width: 240px;
   background: var(--gdi-panel-2, #1a2440);
   border: 1px solid var(--gdi-border, #37446b);
   border-radius: 8px;
   padding: 0.75rem 0.85rem;
   box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.gdi-founder-inventory-modes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(110, 168, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(26, 36, 64, 0.55);
+}
+.gdi-founder-inventory-modes__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--300, #c5cde0);
+  margin-right: 4px;
+}
+.gdi-founder-inventory-modes__btn {
+  appearance: none;
+  border: 1px solid var(--neutral--600, #4a5570);
+  background: var(--secondary--color-4, #343b4f);
+  color: var(--neutral--200, #e4e9f5);
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.gdi-founder-inventory-modes__btn:hover {
+  border-color: var(--primary--color-1, #6ea8ff);
+}
+.gdi-founder-inventory-modes__btn.is-active {
+  border-color: var(--primary--color-1, #6ea8ff);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(110, 168, 255, 0.35);
+}
+.gdi-founder-inventory-modes__hint {
+  font-size: 11px;
+  color: var(--neutral--400, #9aa6c2);
+  margin-left: auto;
 }
 .gdi-list-col-settings__hint {
   margin: 0 0 0.5rem;

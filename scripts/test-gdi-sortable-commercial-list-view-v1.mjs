@@ -19,7 +19,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-cumulative-es-list-v1";
+const CACHE = "gdi-founder-inv-toolbar-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -169,7 +169,17 @@ check("list_view_renders_commercial_table_not_tile_grid", () => {
   assert.match(html, /data-sort="eventStartDate"/);
   assert.match(html, /Who to Contact/);
   assert.match(html, /Contact Readiness/);
-  assert.match(html, /gdiListColumnSettingsBtn/);
+  // Columns SVG lives in the shared results toolbar (single row), not table wrap.
+  assert.doesNotMatch(html, /gdiListColumnSettingsBtn/);
+  assert.doesNotMatch(html, /gdi-list-table-toolbar/);
+  const toolbar = UI.resultsToolbarHtml({
+    shown: 3,
+    total: 3,
+    viewMode: "list",
+    sort: "priority",
+  });
+  assert.match(toolbar, /gdiListColumnSettingsBtn/);
+  assert.match(toolbar, /Customize Columns/);
   assert.doesNotMatch(html, /gdi-results-grid--list/);
   assert.doesNotMatch(html, /brand-card__/);
   assert.ok(html.includes("opp-a"));
