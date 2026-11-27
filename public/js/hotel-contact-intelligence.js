@@ -405,25 +405,22 @@
   }
 
   function renderLoading() {
+    // Same shared HeLoadingUx toast used by Ownership / News / Sentiment — no custom HCI loader.
     var body =
-      window.HeLoadingUx && window.HeLoadingUx.toastHtml
-        ? window.HeLoadingUx.toastHtml("Loading Contacts…")
-        : window.HeAsyncSection && window.HeAsyncSection.waveCompact
-          ? window.HeAsyncSection.waveCompact("Loading Contacts…")
-          : window.DealalityWaveLoader && window.DealalityWaveLoader.toastHtml
-            ? window.DealalityWaveLoader.toastHtml("Loading Contacts…")
-            : window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml
-              ? '<div class="dealality-loading-toast-host">' +
-                window.DealalityWaveLoader.compactHtml("Loading Contacts…", {
-                  progress: false,
-                }) +
-                "</div>"
-              : '<div class="dealality-loading-toast-host" role="status">Loading Contacts…</div>';
+      window.HeLoadingUx && typeof window.HeLoadingUx.sectionHtml === "function"
+        ? window.HeLoadingUx.sectionHtml("Loading Contacts…")
+        : window.HeLoadingUx && typeof window.HeLoadingUx.toastHtml === "function"
+          ? window.HeLoadingUx.toastHtml("Loading Contacts…")
+          : window.HeAsyncSection && typeof window.HeAsyncSection.waveCompact === "function"
+            ? window.HeAsyncSection.waveCompact("Loading Contacts…")
+            : window.DealalityWaveLoader && typeof window.DealalityWaveLoader.toastHtml === "function"
+              ? window.DealalityWaveLoader.toastHtml("Loading Contacts…")
+              : '<div class="dealality-loading-toast-host he-loading-toast-host" role="status" aria-live="polite">Loading Contacts…</div>';
     return (
       '<div class="hci-root hci-root--loading" data-hci-state="loading">' +
-      '<div class="hci-loading" data-hci-wave-loading="1" data-he-loading-toast="1">' +
+      '<section class="hci-section he-async-loading" data-hci-wave-loading="1" data-he-loading-toast="1">' +
       body +
-      "</div></div>"
+      "</section></div>"
     );
   }
 
@@ -1778,82 +1775,93 @@
     // Surfe session results must not survive hotel remount / reload.
     _sessionSurfeByPerson = Object.create(null);
     host.innerHTML = renderLoading();
-    return Promise.all([loadViewModel(hotelId), loadEnrichmentCapability()]).then(function (pack) {
-      var vm = pack[0];
-      vmCapability = pack[1] || null;
-      if (vm && present(opts.hotelName) && (!present(vm.hotelName) || /^rec[a-zA-Z0-9]{14}$/.test(String(vm.hotelName)))) {
-        vm.hotelName = opts.hotelName;
-        if (vm.ownershipSummary && vm.ownershipSummary.hotel) {
-          vm.ownershipSummary.hotel.name = opts.hotelName;
-        }
-      }
-      var hasPeople = vm && Array.isArray(vm.people) && vm.people.length > 0;
-      var hasOwner =
-        vm &&
-        vm.ownershipSummary &&
-        (vm.ownershipSummary.sponsor ||
-          vm.ownershipSummary.operator ||
-          vm.contactableOwnerOrg);
-      if (vm && vm.ownershipSummary && (hasPeople || hasOwner)) {
-        if (Array.isArray(vm.people)) {
-          vm.people = vm.people.map(function (p) {
-            return patchPersonEnrichAction(p, vmCapability);
-          });
-        }
-        if (Array.isArray(vm.recommendedContacts)) {
-          vm.recommendedContacts = vm.recommendedContacts.map(function (p) {
-            return patchPersonEnrichAction(p, vmCapability);
-          });
-        }
-        if (Array.isArray(vm.otherContacts)) {
-          vm.otherContacts = vm.otherContacts.map(function (p) {
-            return patchPersonEnrichAction(p, vmCapability);
-          });
-        }
-        if (vm.recommendation && vm.recommendation.person) {
-          vm.recommendation.person = patchPersonEnrichAction(
-            vm.recommendation.person,
-            vmCapability
-          );
-        }
-        if (vm.recommendation && Array.isArray(vm.recommendation.alternatives)) {
-          vm.recommendation.alternatives = vm.recommendation.alternatives.map(function (p) {
-            return patchPersonEnrichAction(p, vmCapability);
-          });
-        }
-        if (!Array.isArray(vm.purposeSections) || !vm.purposeSections.length) {
-          vm.purposeSections = buildPurposeSectionsFromPeople(vm.people || []);
-        }
-        host.innerHTML = renderViewModel(vm, vm.activeBusinessPurpose || "all");
-        host._hciViewModel = vm;
-        var painted =
-          typeof host.querySelector === "function" ? host.querySelector(".hci-root") : null;
-        if (painted) painted._hciViewModel = vm;
-        bindToggles(host);
+    return Promise.all([loadViewModel(hotelId), loadEnrichmentCapability()])
+      .then(function (pack) {
+        var vm = pack[0];
+        vmCapability = pack[1] || null;
         if (
-          Array.isArray(vm.contactEvidence) &&
-          window.HotelIntelligenceWorkspace &&
-          typeof window.HotelIntelligenceWorkspace.applyContactEvidenceCitations === "function"
+          vm &&
+          present(opts.hotelName) &&
+          (!present(vm.hotelName) || /^rec[a-zA-Z0-9]{14}$/.test(String(vm.hotelName)))
         ) {
-          window.HotelIntelligenceWorkspace.applyContactEvidenceCitations(vm.contactEvidence);
+          vm.hotelName = opts.hotelName;
+          if (vm.ownershipSummary && vm.ownershipSummary.hotel) {
+            vm.ownershipSummary.hotel.name = opts.hotelName;
+          }
         }
-        return;
-      }
-      return loadHpcPropertyFallback(hotelId).then(function (fallback) {
-        if (fallback) {
-          host.innerHTML = renderHpcPropertyFallback(
-            hotelId,
-            fallback.contacts,
-            fallback.hotelName,
-            fallback.ownershipSummary
-          );
+        var hasPeople = vm && Array.isArray(vm.people) && vm.people.length > 0;
+        var hasOwner =
+          vm &&
+          vm.ownershipSummary &&
+          (vm.ownershipSummary.sponsor ||
+            vm.ownershipSummary.operator ||
+            vm.contactableOwnerOrg);
+        if (vm && vm.ownershipSummary && (hasPeople || hasOwner)) {
+          if (Array.isArray(vm.people)) {
+            vm.people = vm.people.map(function (p) {
+              return patchPersonEnrichAction(p, vmCapability);
+            });
+          }
+          if (Array.isArray(vm.recommendedContacts)) {
+            vm.recommendedContacts = vm.recommendedContacts.map(function (p) {
+              return patchPersonEnrichAction(p, vmCapability);
+            });
+          }
+          if (Array.isArray(vm.otherContacts)) {
+            vm.otherContacts = vm.otherContacts.map(function (p) {
+              return patchPersonEnrichAction(p, vmCapability);
+            });
+          }
+          if (vm.recommendation && vm.recommendation.person) {
+            vm.recommendation.person = patchPersonEnrichAction(
+              vm.recommendation.person,
+              vmCapability
+            );
+          }
+          if (vm.recommendation && Array.isArray(vm.recommendation.alternatives)) {
+            vm.recommendation.alternatives = vm.recommendation.alternatives.map(function (p) {
+              return patchPersonEnrichAction(p, vmCapability);
+            });
+          }
+          if (!Array.isArray(vm.purposeSections) || !vm.purposeSections.length) {
+            vm.purposeSections = buildPurposeSectionsFromPeople(vm.people || []);
+          }
+          host.innerHTML = renderViewModel(vm, vm.activeBusinessPurpose || "all");
+          host._hciViewModel = vm;
+          var painted =
+            typeof host.querySelector === "function" ? host.querySelector(".hci-root") : null;
+          if (painted) painted._hciViewModel = vm;
+          bindToggles(host);
+          if (
+            Array.isArray(vm.contactEvidence) &&
+            window.HotelIntelligenceWorkspace &&
+            typeof window.HotelIntelligenceWorkspace.applyContactEvidenceCitations === "function"
+          ) {
+            window.HotelIntelligenceWorkspace.applyContactEvidenceCitations(vm.contactEvidence);
+          }
           return;
         }
+        return loadHpcPropertyFallback(hotelId).then(function (fallback) {
+          if (fallback) {
+            host.innerHTML = renderHpcPropertyFallback(
+              hotelId,
+              fallback.contacts,
+              fallback.hotelName,
+              fallback.ownershipSummary
+            );
+            return;
+          }
+          host.innerHTML = renderEmpty(
+            "Contact Intelligence staging is not available for this hotel yet."
+          );
+        });
+      })
+      .catch(function (err) {
+        console.warn("[HotelContactIntelligence] mount failed", err);
         host.innerHTML = renderEmpty(
-          "Contact Intelligence staging is not available for this hotel yet."
+          "Contact Intelligence is temporarily unavailable. Please try again."
         );
       });
-    });
   }
 
   global.HotelContactIntelligence = {

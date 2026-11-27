@@ -130,6 +130,7 @@ run("ps1_and_package_gates_named", () => {
   assert.match(ps1, /HE_CONTACT_ORG_MAPPING_VALIDATED/);
   assert.match(ps1, /HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED/);
   assert.match(ps1, /HE_CONTACT_PRESENTATION_VALIDATED/);
+  assert.match(ps1, /HE_LOADING_COMPONENT_CONSISTENT/);
   const pkg = read("package.json");
   assert.match(pkg, /test:he-contact-intelligence-v3-directory/);
 });

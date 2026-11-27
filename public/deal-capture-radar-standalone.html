@@ -770,7 +770,8 @@
             font-size: 12px;
         }
 
-        .loading {
+        /* Map empty-state only — do not target DealalityWaveLoader (.loading.dealality-wave-loader). */
+        .loading:not(.dealality-wave-loader) {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -778,7 +779,7 @@
             color: #888;
         }
 
-        .loading .wave-container {
+        .loading:not(.dealality-wave-loader) .wave-container {
             width: 40px;
             height: 40px;
             position: relative;

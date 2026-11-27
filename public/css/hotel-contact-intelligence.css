@@ -16,29 +16,20 @@
   padding: 8px 4px 28px;
 }
 
-.hci-loading {
+/* Loading uses shared HE .he-async-loading + HeLoadingUx toast — no custom HCI card. */
+.hci-root--loading {
+  min-height: 0;
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+
+.hci-root--loading > .he-async-loading {
+  min-height: 0;
+  padding: 8px 4px;
+  background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 28px 12px;
-  min-height: 96px;
-  background: transparent;
-  color: var(--hci-muted);
-  font-size: 14px;
-}
-
-.hci-root--loading {
-  min-height: 120px;
-}
-
-.hci-loading .dealality-loading-toast-host,
-.hci-loading .dealality-wave-loader {
-  width: auto;
-  max-width: min(100%, 320px);
-}
-
-.hci-loading .dealality-wave-loader--compact:not(.dealality-wave-loader--toast) {
-  width: auto;
 }
 
 .hci-empty {
