@@ -5111,9 +5111,36 @@
       var role = frozenRole
         ? sanitizeDisplayRole(frozenRole, { preserveFrozen: true })
         : sanitizeDisplayRole("");
+      var previewName = String(preview.name).replace(/\s+/g, " ").trim();
+      // Prefer fuller primaryContact name when tile preview is stale/abbreviated
+      // (e.g. tile "Lily Y." vs recovered primary "Lily Yuan").
+      var primaryNameCandidate = String(
+        (linked.primaryContact && linked.primaryContact.name) ||
+          (it.primaryContact && it.primaryContact.name) ||
+          (canon && canon.contact && canon.contact.name) ||
+          ""
+      )
+        .replace(/\s+/g, " ")
+        .trim();
+      function isAbbrevSurnameLocal(n) {
+        var s = String(n || "").replace(/\s+/g, " ").trim();
+        if (!s) return true;
+        if (/^[A-Za-z][A-Za-z'’\-]+\s+[A-Za-z]\.?$/i.test(s)) return true;
+        var toks = s.split(/\s+/).filter(Boolean);
+        return toks.length >= 2 && /^[A-Za-z]\.?$/.test(toks[toks.length - 1]);
+      }
+      var displayName = previewName;
+      if (
+        primaryNameCandidate &&
+        looksLikePersonNameLocal(primaryNameCandidate) &&
+        isAbbrevSurnameLocal(previewName) &&
+        !isAbbrevSurnameLocal(primaryNameCandidate)
+      ) {
+        displayName = primaryNameCandidate;
+      }
       return {
         kind: "named",
-        name: String(preview.name).replace(/\s+/g, " ").trim(),
+        name: displayName,
         role: role,
       };
     }
