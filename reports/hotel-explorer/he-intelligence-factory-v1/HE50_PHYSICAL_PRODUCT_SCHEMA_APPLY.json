@@ -1,0 +1,285 @@
+{
+  "version": "he-physical-product-schema-v1",
+  "at": "2026-11-27T13:30:48.347Z",
+  "mode": "APPLY",
+  "founderAuthorization": "HE_5_0_PHYSICAL_PRODUCT_SCHEMA_2026-11-27",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "tableId": "tbl9aY5ijiuIzzWam",
+  "confirms": {
+    "schema": true,
+    "additiveOnly": true,
+    "noLegacyCensus": true
+  },
+  "existingNearDuplicates": [
+    {
+      "name": "Meeting Space Flag",
+      "id": "fldkt2RvZhOhHiEGU",
+      "type": "checkbox"
+    }
+  ],
+  "createPlan": [
+    {
+      "name": "Total Meeting Space (sq ft)",
+      "type": "number",
+      "description": "Published capacity-chart aggregate meeting space in square feet. Never store marketing private-space figures here.",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "name": "Meeting Rooms Count",
+      "type": "number",
+      "description": "Published meeting-room count from official capacity materials.",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "name": "Largest Meeting Room Name",
+      "type": "singleLineText",
+      "description": "Name of the largest function room (e.g. Grand Ballroom)."
+    },
+    {
+      "name": "Largest Meeting Room (sq ft)",
+      "type": "number",
+      "description": "Area of the largest function room in square feet.",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "name": "Guestroom Single Count",
+      "type": "number",
+      "description": "Classified single-bed guestrooms. Part of Rooms / Keys total; must not exceed Rooms / Keys.",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "name": "Guestroom Double Count",
+      "type": "number",
+      "description": "Classified double-bed guestrooms. Part of Rooms / Keys total; Single+Double should equal Rooms / Keys when both known.",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "name": "Guestroom Suites Count",
+      "type": "number",
+      "description": "Suite classification WITHIN Rooms / Keys. Never additive to the rooms total.",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "name": "Guestroom Mix Confidence",
+      "type": "singleSelect",
+      "description": "Confidence for guestroom configuration / mix classification.",
+      "options": {
+        "choices": [
+          {
+            "name": "High"
+          },
+          {
+            "name": "Medium"
+          },
+          {
+            "name": "Brand Materials Reference"
+          },
+          {
+            "name": "Insufficient"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Meeting Space Source URL",
+      "type": "url",
+      "description": "Official capacity-chart / meeting events source URL."
+    }
+  ],
+  "skipAlreadyExists": [],
+  "quarantined": [],
+  "evidenceGate": {
+    "ok": true,
+    "checks": {
+      "total": true,
+      "single": true,
+      "double": true,
+      "suites": true,
+      "partition": true,
+      "meeting": true,
+      "rooms": true,
+      "largestName": true,
+      "largestSqFt": true,
+      "marketingDistinct": true
+    },
+    "sourceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/"
+  },
+  "schemaCreated": [
+    {
+      "name": "Total Meeting Space (sq ft)",
+      "id": "fldf71O9qXudNXTzH",
+      "type": "number"
+    },
+    {
+      "name": "Meeting Rooms Count",
+      "id": "fldQYlsDlStvOdQoM",
+      "type": "number"
+    },
+    {
+      "name": "Largest Meeting Room Name",
+      "id": "fldlDA9ZofCzIYy44",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Largest Meeting Room (sq ft)",
+      "id": "fldEKS32L1cG8lYk0",
+      "type": "number"
+    },
+    {
+      "name": "Guestroom Single Count",
+      "id": "fldces3lSiyJIlNTM",
+      "type": "number"
+    },
+    {
+      "name": "Guestroom Double Count",
+      "id": "fldh685tSO7t2NpMc",
+      "type": "number"
+    },
+    {
+      "name": "Guestroom Suites Count",
+      "id": "fldxTzSkzlQK7rD3V",
+      "type": "number"
+    },
+    {
+      "name": "Guestroom Mix Confidence",
+      "id": "fldKMizMvYzV03k6Q",
+      "type": "singleSelect"
+    },
+    {
+      "name": "Meeting Space Source URL",
+      "id": "fldmAQx8Ul5rMjzDb",
+      "type": "url"
+    }
+  ],
+  "schemaReadback": {
+    "fieldCount": 165,
+    "physicalProductFields": [
+      {
+        "name": "Total Meeting Space (sq ft)",
+        "id": "fldf71O9qXudNXTzH",
+        "type": "number",
+        "present": true
+      },
+      {
+        "name": "Meeting Rooms Count",
+        "id": "fldQYlsDlStvOdQoM",
+        "type": "number",
+        "present": true
+      },
+      {
+        "name": "Largest Meeting Room Name",
+        "id": "fldlDA9ZofCzIYy44",
+        "type": "singleLineText",
+        "present": true
+      },
+      {
+        "name": "Largest Meeting Room (sq ft)",
+        "id": "fldEKS32L1cG8lYk0",
+        "type": "number",
+        "present": true
+      },
+      {
+        "name": "Guestroom Single Count",
+        "id": "fldces3lSiyJIlNTM",
+        "type": "number",
+        "present": true
+      },
+      {
+        "name": "Guestroom Double Count",
+        "id": "fldh685tSO7t2NpMc",
+        "type": "number",
+        "present": true
+      },
+      {
+        "name": "Guestroom Suites Count",
+        "id": "fldxTzSkzlQK7rD3V",
+        "type": "number",
+        "present": true
+      },
+      {
+        "name": "Guestroom Mix Confidence",
+        "id": "fldKMizMvYzV03k6Q",
+        "type": "singleSelect",
+        "present": true
+      },
+      {
+        "name": "Meeting Space Source URL",
+        "id": "fldmAQx8Ul5rMjzDb",
+        "type": "url",
+        "present": true
+      }
+    ]
+  },
+  "bethPersist": {
+    "hpcId": "recLuxvwwxID7U2B8",
+    "beforeRooms": 407,
+    "patch": {
+      "Total Meeting Space (sq ft)": 18719,
+      "Meeting Rooms Count": 27,
+      "Largest Meeting Room Name": "Grand Ballroom",
+      "Largest Meeting Room (sq ft)": 4592,
+      "Guestroom Single Count": 171,
+      "Guestroom Double Count": 236,
+      "Guestroom Suites Count": 8,
+      "Guestroom Mix Confidence": "Brand Materials Reference",
+      "Meeting Space Source URL": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/"
+    },
+    "skipped": [
+      {
+        "field": "Rooms / Keys",
+        "reason": "already_matches",
+        "value": 407
+      },
+      {
+        "field": "Meeting Space Flag",
+        "reason": "already_matches",
+        "value": true
+      }
+    ],
+    "applied": {
+      "id": "recLuxvwwxID7U2B8",
+      "keys": [
+        "Total Meeting Space (sq ft)",
+        "Meeting Rooms Count",
+        "Largest Meeting Room Name",
+        "Largest Meeting Room (sq ft)",
+        "Guestroom Single Count",
+        "Guestroom Double Count",
+        "Guestroom Suites Count",
+        "Guestroom Mix Confidence",
+        "Meeting Space Source URL"
+      ]
+    },
+    "readback": {
+      "Rooms / Keys": 407,
+      "Total Meeting Space (sq ft)": 18719,
+      "Meeting Rooms Count": 27,
+      "Largest Meeting Room Name": "Grand Ballroom",
+      "Largest Meeting Room (sq ft)": 4592,
+      "Guestroom Single Count": 171,
+      "Guestroom Double Count": 236,
+      "Guestroom Suites Count": 8,
+      "Guestroom Mix Confidence": "Brand Materials Reference",
+      "Meeting Space Source URL": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+      "Meeting Space Flag": true
+    },
+    "readbackOk": true
+  },
+  "gates": {
+    "PHYSICAL_PRODUCT_SCHEMA_VALIDATED": true,
+    "BETHESDA_PHYSICAL_PRODUCT_PERSISTED": true,
+    "AIRTABLE_READBACK_VALIDATED": true
+  }
+}

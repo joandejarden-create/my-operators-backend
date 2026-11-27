@@ -1,0 +1,62 @@
+{
+  "version": "he-physical-product-audit-ledger-v1",
+  "at": "2026-11-27T13:45:00.000Z",
+  "founderAuthorization": "HE_5_0_PHYSICAL_PRODUCT_SCHEMA_2026-11-27",
+  "operation": "HPC_PHYSICAL_PRODUCT_SCHEMA_CREATE_AND_BETHESDA_PERSIST",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "tableId": "tbl9aY5ijiuIzzWam",
+  "tableName": "Hotel Property Census",
+  "destructiveOps": false,
+  "legacyHotelCensusTouched": false,
+  "schemaCreatedFieldIds": {
+    "Total Meeting Space (sq ft)": "fldf71O9qXudNXTzH",
+    "Meeting Rooms Count": "fldQYlsDlStvOdQoM",
+    "Largest Meeting Room Name": "fldlDA9ZofCzIYy44",
+    "Largest Meeting Room (sq ft)": "fldEKS32L1cG8lYk0",
+    "Guestroom Single Count": "fldces3lSiyJIlNTM",
+    "Guestroom Double Count": "fldh685tSO7t2NpMc",
+    "Guestroom Suites Count": "fldxTzSkzlQK7rD3V",
+    "Guestroom Mix Confidence": "fldKMizMvYzV03k6Q",
+    "Meeting Space Source URL": "fldmAQx8Ul5rMjzDb"
+  },
+  "nearDuplicatePreserved": {
+    "Meeting Space Flag": "fldkt2RvZhOhHiEGU",
+    "note": "Existing checkbox retained; not duplicated; not converted"
+  },
+  "bethesda": {
+    "hpcId": "recLuxvwwxID7U2B8",
+    "persisted": {
+      "Rooms / Keys": 407,
+      "Total Meeting Space (sq ft)": 18719,
+      "Meeting Rooms Count": 27,
+      "Largest Meeting Room Name": "Grand Ballroom",
+      "Largest Meeting Room (sq ft)": 4592,
+      "Guestroom Single Count": 171,
+      "Guestroom Double Count": 236,
+      "Guestroom Suites Count": 8,
+      "Guestroom Mix Confidence": "Brand Materials Reference",
+      "Meeting Space Source URL": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/"
+    },
+    "marketingPrivateSpaceSqFtExcluded": 19000,
+    "suitesClassificationWithinTotal": true,
+    "evidencePacket": "reports/hotel-explorer/phase4-quality/HE-BETH-GUEST-ROOMS-MEETING-SPACE-STAGED-V1.json",
+    "applyReport": "reports/hotel-explorer/he-intelligence-factory-v1/HE50_PHYSICAL_PRODUCT_SCHEMA_APPLY.json"
+  },
+  "architecture": {
+    "liveSourceOfTruth": "Hotel Property Census via he-physical-product-adapter-v1",
+    "stagedOverlayRole": "Meeting-room row inventory + marketing figure only; not Live primary",
+    "ownershipApiDecoupled": true,
+    "adapterModule": "lib/hotel-intelligence/he-physical-product-adapter-v1.js"
+  },
+  "gates": {
+    "PHYSICAL_PRODUCT_SCHEMA_VALIDATED": true,
+    "BETHESDA_PHYSICAL_PRODUCT_PERSISTED": true,
+    "AIRTABLE_READBACK_VALIDATED": true,
+    "PHYSICAL_PRODUCT_API_HYDRATION_VALIDATED": true,
+    "RADAR_TWELVE_TAB_RENDER_VALIDATED": true,
+    "EIGHT_HOTEL_PHYSICAL_PRODUCT_COVERAGE_REVIEWED": true,
+    "FULL_HE_E2E_VALIDATED": false
+  },
+  "liveValidation": "reports/hotel-explorer/he-intelligence-factory-v1/PHYSICAL_PRODUCT_LIVE_VALIDATION_V1.json",
+  "eightHotelCoverage": "reports/hotel-explorer/he-intelligence-factory-v1/EIGHT_HOTEL_PHYSICAL_PRODUCT_COVERAGE_V1.json"
+}
