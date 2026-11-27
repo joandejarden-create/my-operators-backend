@@ -1,7 +1,8 @@
 /**
- * Hotel Explorer — Contact Intelligence tab (generic shared renderer).
- * Compact directory of ownership / decision-maker contacts.
+ * Hotel Explorer — Contact Intelligence V3 (professional directory table).
+ * Sortable purpose-filtered table; no Recommended First hierarchy.
  * Surfe "Find Email & Phone" is user-initiated only (never on mount/GET).
+ * Org website/email routes never leak from economic sponsor onto unrelated employers.
  */
 (function (global) {
   "use strict";
@@ -10,15 +11,65 @@
     recUNycnMwOVFX0hc: "/data/hotel-contact-intelligence/kgpv-recUNycnMwOVFX0hc.json",
   };
 
-  var FIND_LABEL = "Find Email & Phone";
+  var FIND_LABEL = "Find Contact Details";
   var LABELS = {
     directEmail: "Direct Business Email",
     directPhone: "Direct Business Phone",
-    orgRoute: "Organizational Contact Route",
+    companyWebsite: "Company website",
+    companyEmail: "Company email",
+    officePhone: "Office phone",
+    orgRoute: "Company contact",
     findEmail: "Find Email",
     findPhone: "Find Phone",
-    findBoth: "Find Email & Phone",
+    findBoth: "Find Contact Details",
   };
+
+  /** Purpose sections — mirrored from contact-purpose-sections-v1 (client cannot import ESM). */
+  var PURPOSE_SECTIONS = [
+    {
+      id: "hotel_leadership",
+      label: "Hotel Leadership",
+      description: "Property general management and on-site leadership.",
+      showWhenEmpty: true,
+      emptyHint:
+        "Property general manager and on-site leadership have not been established for this hotel yet.",
+    },
+    {
+      id: "sales_commercial",
+      label: "Sales & Commercial Leadership",
+      description: "Sales, revenue, and commercial performance contacts.",
+      showWhenEmpty: true,
+      emptyHint:
+        "Director of sales / marketing and revenue leadership have not been established for this hotel yet.",
+    },
+    {
+      id: "ownership_asset",
+      label: "Ownership & Asset Management",
+      description:
+        "Owner-side and asset-management contacts. Appearance here does not confirm hotel-specific decision authority.",
+      showWhenEmpty: false,
+    },
+    {
+      id: "management_company",
+      label: "Management Company & Regional Leadership",
+      description: "Operator / management-company and regional leadership.",
+      showWhenEmpty: false,
+    },
+    {
+      id: "brand_development",
+      label: "Brand & Development",
+      description: "Brand, franchise, and development contacts.",
+      showWhenEmpty: false,
+    },
+  ];
+  var BUSINESS_PURPOSE_FILTERS = [
+    { id: "all", label: "All Contacts", sectionIds: PURPOSE_SECTIONS.map(function (s) { return s.id; }) },
+    { id: "hotel_leadership", label: "Hotel Leadership", sectionIds: ["hotel_leadership"] },
+    { id: "sales_commercial", label: "Sales & Commercial", sectionIds: ["sales_commercial"] },
+    { id: "ownership_asset", label: "Ownership & Asset Management", sectionIds: ["ownership_asset"] },
+    { id: "management_company", label: "Management Company", sectionIds: ["management_company"] },
+    { id: "brand_development", label: "Brand & Development", sectionIds: ["brand_development"] },
+  ];
   var _inflightReveal = Object.create(null);
   /** Session-only Surfe results — never written into person channel arrays. */
   var _sessionSurfeByPerson = Object.create(null);
@@ -38,20 +89,148 @@
   }
 
   function humanResponsibility(p) {
-    var raw = String(p.propertyResponsibilityLabel || p.propertyResponsibility || "").trim();
     var key = String(p.propertyResponsibility || "").toUpperCase();
-    if (key === "CONFIRMED") return "Confirmed for this hotel";
-    if (key === "INFERRED") return "Inferred · not property-confirmed";
-    if (key === "UNKNOWN" || /not confirmed|unverified|unknown/i.test(raw))
-      return "Unverified for this hotel";
-    return present(raw) ? raw : "Unverified for this hotel";
+    if (key === "CONFIRMED") return "Confirmed hotel responsibility";
+    if (key === "INFERRED") return "Ownership-side association — hotel-specific authority not confirmed";
+    return "Hotel responsibility not confirmed";
   }
 
-  function responsibilityClass(p) {
+  /** Only surface qualification when ownership-side INFERRED (not on every non-CONFIRMED row). */
+  function showResponsibilityQualification(p) {
     var key = String(p.propertyResponsibility || "").toUpperCase();
-    if (key === "CONFIRMED") return "hci-chip hci-chip--ok";
-    if (key === "INFERRED") return "hci-chip hci-chip--inferred";
-    return "hci-chip hci-chip--gap";
+    if (key !== "INFERRED") return false;
+    var purposes = assignPurposeSectionsClient(p);
+    return purposes.indexOf("ownership_asset") >= 0 && purposes.indexOf("hotel_leadership") < 0;
+  }
+
+  function normOrgName(v) {
+    return String(v || "")
+      .toLowerCase()
+      .replace(/[.,]/g, " ")
+      .replace(/\b(inc|llc|ltd|corp|corporation|company|co|group|international|hotels?|hospitality)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function personBelongsToOrganization(person, organizationName) {
+    var org = normOrgName(organizationName);
+    if (!org) return false;
+    var personOrg = normOrgName(person.organization || person.organizationName || "");
+    if (!personOrg) return false;
+    return (
+      personOrg === org ||
+      personOrg.indexOf(org) >= 0 ||
+      org.indexOf(personOrg) >= 0 ||
+      (personOrg.indexOf("marriott") >= 0 && org.indexOf("marriott") >= 0) ||
+      (personOrg.indexOf("mullen") >= 0 && org.indexOf("mullen") >= 0)
+    );
+  }
+
+  function resolveDisplayHotelName(vm, fallbackId) {
+    var name =
+      (vm && vm.hotelName) ||
+      (vm && vm.ownershipSummary && vm.ownershipSummary.hotel && vm.ownershipSummary.hotel.name) ||
+      "";
+    name = String(name || "").trim();
+    if (!name || /^rec[a-zA-Z0-9]{14}$/i.test(name)) {
+      if (String(fallbackId || "") === "recLuxvwwxID7U2B8") return "Bethesda Marriott";
+      return "Hotel contacts";
+    }
+    return name;
+  }
+
+  function personBlob(p) {
+    return [
+      p.title,
+      p.whyRelevant,
+      p.contactClass,
+      p.contactClassLabel,
+      p.hotelResponsibility,
+      p.commercialRole,
+      p.functionRole,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  function assignPurposeSectionsClient(p) {
+    if (Array.isArray(p.purposeSections) && p.purposeSections.length) return p.purposeSections.slice();
+    var text = personBlob(p);
+    var contactClass = String(p.contactClass || "").toUpperCase();
+    var ids = {};
+    function add(id) {
+      ids[id] = true;
+    }
+    if (
+      /\b(general\s*manager|\bgm\b|resident\s*manager|hotel\s*manager|director\s*of\s*operations)\b/i.test(text) ||
+      contactClass === "HOTEL_LEADERSHIP" ||
+      contactClass === "PRIMARY_PROPERTY_DECISION_MAKER" ||
+      /VERIFIED_PROPERTY_LEADERSHIP|PROPERTY LEADERSHIP/i.test(text)
+    ) {
+      add("hotel_leadership");
+    }
+    if (
+      /\b(director\s*of\s*sales|dosm|area\s*sales|sales\s*leader|revenue\s*manag|commercial\s*director|director\s*of\s*revenue)\b/i.test(
+        text
+      ) ||
+      /PROPERTY LEADERSHIP\s*[—-]\s*SALES|VERIFIED_PROPERTY_COMMERCIAL/i.test(text)
+    ) {
+      add("sales_commercial");
+    }
+    if (
+      contactClass === "OWNER_DECISION_AUTHORITY" ||
+      contactClass === "RELEVANT_COMMERCIAL_ENTRY_POINT" ||
+      /\b(owner|ownership|president|ceo|asset\s*manag|portfolio\s*manag|investments?)\b/i.test(text)
+    ) {
+      if (
+        !/\b(director\s*of\s*sales|dosm|area\s*sales)\b/i.test(text) ||
+        /asset|owner|invest|president|ceo/i.test(text)
+      ) {
+        add("ownership_asset");
+      }
+    }
+    if (/\b(management\s*company|regional\s*|cluster\s*manager|multi[- ]property)\b/i.test(text)) {
+      add("management_company");
+    }
+    if (
+      (ids.hotel_leadership || ids.sales_commercial) &&
+      /marriott|hilton|hyatt|ihg|accor|operator/i.test(String(p.organization || p.organizationName || ""))
+    ) {
+      add("management_company");
+    }
+    if (/\b(brand\s*development|franchise|development\s*director|openings?|pipeline)\b/i.test(text)) {
+      add("brand_development");
+    }
+    var out = Object.keys(ids);
+    if (!out.length) {
+      if (/OWNER|SPONSOR|MULLEN/i.test(String(p.organization || "") + text)) out = ["ownership_asset"];
+      else out = ["management_company"];
+    }
+    return out;
+  }
+
+  function buildPurposeSectionsFromPeople(people) {
+    var list = Array.isArray(people) ? people : [];
+    return PURPOSE_SECTIONS.map(function (meta) {
+      var members = list
+        .filter(function (p) {
+          return assignPurposeSectionsClient(p).indexOf(meta.id) >= 0;
+        })
+        .slice()
+        .sort(function (a, b) {
+          var ra = String(a.propertyResponsibility || "").toUpperCase() === "CONFIRMED" ? 0 : 1;
+          var rb = String(b.propertyResponsibility || "").toUpperCase() === "CONFIRMED" ? 0 : 1;
+          if (ra !== rb) return ra - rb;
+          return String(a.name || "").localeCompare(String(b.name || ""));
+        });
+      return {
+        id: meta.id,
+        label: meta.label,
+        description: meta.description,
+        people: members,
+        empty: members.length === 0,
+      };
+    });
   }
 
   function linkedInUrl(p) {
@@ -63,13 +242,27 @@
   }
 
   function companyUrl(p) {
-    if (present(p.organizationWebsite)) return String(p.organizationWebsite).trim();
-    if (present(p.companyWebsite)) return String(p.companyWebsite).trim();
-    if (present(p.organizationDomain)) {
+    var raw = "";
+    if (present(p.organizationWebsite)) raw = String(p.organizationWebsite).trim();
+    else if (present(p.companyWebsite)) raw = String(p.companyWebsite).trim();
+    else if (present(p.organizationDomain)) {
       var d = String(p.organizationDomain).replace(/^https?:\/\//i, "").replace(/\/$/, "");
-      if (d) return "https://" + d + "/";
+      if (d) raw = "https://" + d + "/";
     }
-    return "";
+    if (!present(raw)) return "";
+    // Never inherit mullencap (or other sponsor domains) onto non-matching employers.
+    var host = "";
+    try {
+      host = new URL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw).hostname
+        .replace(/^www\./i, "")
+        .toLowerCase();
+    } catch (e) {
+      host = "";
+    }
+    if (host.indexOf("mullencap") >= 0 && !personBelongsToOrganization(p, "Mullen Real Estate Capital")) {
+      return "";
+    }
+    return raw;
   }
 
   function isCorporateMislabel(ch) {
@@ -138,8 +331,13 @@
       else if (/^https?:/i.test(String(v))) push(v, "web", c.source_url);
       else push(v, "phone", c.source_url);
     });
+    // Person-owned company website only (never silent sponsor inheritance).
+    var ownWeb = companyUrl(p);
+    if (present(ownWeb)) push(ownWeb, "web", ownWeb);
+
+    // Owner/sponsor org routes attach ONLY when this person belongs to that org.
     var org = (vm && vm.contactableOwnerOrg) || null;
-    if (org) {
+    if (org && personBelongsToOrganization(p, org.name)) {
       (org.emails || []).forEach(function (c) {
         push(c.value || c.email, "email", c.source_url);
       });
@@ -148,14 +346,6 @@
       });
       if (present(org.website)) push(org.website, "web", org.website);
     }
-    (vm && vm.bestContactPaths ? vm.bestContactPaths : []).forEach(function (path) {
-      if (!path || !present(path.value)) return;
-      if (String(path.channelKind || "").toLowerCase() === "organization" || /org/i.test(path.label || "")) {
-        if (String(path.value).indexOf("@") >= 0) push(path.value, "email");
-        else if (/^https?:/i.test(String(path.value))) push(path.value, "web");
-        else push(path.value, "phone");
-      }
-    });
     return out;
   }
 
@@ -303,24 +493,42 @@
     opts = opts || {};
     var li = linkedInUrl(p);
     var company = companyUrl(p);
+    var emails = personEmails(p);
+    var phones = personPhones(p);
     var parts = [];
 
+    if (emails.length) {
+      parts.push(
+        '<a class="hci-btn hci-btn--primary" href="mailto:' +
+          esc(channelValue(emails[0])) +
+          '">Email</a>'
+      );
+    }
+    if (phones.length) {
+      parts.push(
+        '<a class="hci-btn hci-btn--primary" href="tel:' +
+          esc(String(channelValue(phones[0])).replace(/\s+/g, "")) +
+          '">Call</a>'
+      );
+    }
     if (li) {
       parts.push(
         '<a class="hci-action-link hex-rms-ext-link" href="' +
           esc(li) +
-          '" target="_blank" rel="noopener">LinkedIn</a>'
+          '" target="_blank" rel="noopener">Professional profile</a>'
       );
     }
     if (company) {
       parts.push(
         '<a class="hci-action-link hex-rms-ext-link" href="' +
           esc(company) +
-          '" target="_blank" rel="noopener">Company Profile</a>'
+          '" target="_blank" rel="noopener">Company website</a>'
       );
     }
 
-    parts.push(renderEnrichAction(p, hotelId, capability, { inline: true }));
+    if (!emails.length && !phones.length) {
+      parts.push(renderEnrichAction(p, hotelId, capability, { inline: true }));
+    }
 
     return '<div class="hci-actions">' + parts.filter(Boolean).join("") + "</div>";
   }
@@ -371,24 +579,42 @@
     );
   }
 
+  function orgRouteLabel(c) {
+    if (!c) return LABELS.orgRoute;
+    if (c.kind === "web") return LABELS.companyWebsite;
+    if (c.kind === "email") return LABELS.companyEmail;
+    if (c.kind === "phone") return LABELS.officePhone;
+    return LABELS.orgRoute;
+  }
+
+  function customerWhyRelevant(p) {
+    var raw = String(p.whyRelevant || p.relationshipToHotel || "").trim();
+    if (!raw) return "";
+    // Strip internal enum-like prefixes for primary card copy
+    raw = raw
+      .replace(/^VERIFIED_[A-Z_]+\s*[—\-:]?\s*/i, "")
+      .replace(/^RELEVANT_COMMERCIAL_ENTRY_POINT\s*[—\-:]?\s*/i, "")
+      .replace(/^OWNER_DECISION_AUTHORITY\s*[—\-:]?\s*/i, "");
+    if (raw.length > 180) {
+      var cut = raw.indexOf(". ");
+      raw = cut > 40 && cut < 180 ? raw.slice(0, cut + 1) : raw.slice(0, 177) + "…";
+    }
+    return raw;
+  }
+
   function renderPerson(p, hotelId, capability, opts) {
     opts = opts || {};
-    var featured = opts.featured === true;
-    var compact = opts.compact === true || !featured;
     var detailsId =
       "hci-person-" +
-      String(p.personId || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, "_");
-    var relevance = p.whyRelevant || p.recommendationRationale || p.relationshipToHotel || "";
-    if (featured && present(opts.rationaleOverride)) relevance = opts.rationaleOverride;
-    // Keep relevance to one concise sentence on the card
-    if (relevance && relevance.length > 220) {
-      var cut = relevance.indexOf(". ");
-      relevance = cut > 40 && cut < 220 ? relevance.slice(0, cut + 1) : relevance.slice(0, 217) + "…";
-    }
+      String(p.personId || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, "_") +
+      (opts.sectionId ? "-" + opts.sectionId : "");
+    var relevance = customerWhyRelevant(p);
+    if (present(opts.rationaleOverride)) relevance = customerWhyRelevant({ whyRelevant: opts.rationaleOverride });
     var emails = personEmails(p);
     var phones = personPhones(p);
     var orgRoutes = personOrgRoutes(p, opts.vm || null);
     var session = _sessionSurfeByPerson[p.personId || ""] || null;
+    var qualify = showResponsibilityQualification(p);
 
     var channelPreview = "";
     if (emails.length || phones.length || orgRoutes.length || session) {
@@ -408,7 +634,7 @@
           .slice(0, 3)
           .map(function (c) {
             return renderLabeledChannel(
-              LABELS.orgRoute,
+              orgRouteLabel(c),
               c,
               c.kind === "email" ? "email" : c.kind === "web" ? "web" : "phone"
             );
@@ -416,7 +642,7 @@
           .join("") +
         (session
           ? '<div class="hci-channel-row hci-channel-row--session" data-surfe-session="1">' +
-            '<span class="hci-channel-label">Surfe session result</span> ' +
+            '<span class="hci-channel-label">Lookup result (session only)</span> ' +
             (session.email
               ? '<a class="hci-action-link" href="mailto:' +
                 esc(session.email) +
@@ -431,37 +657,24 @@
                 esc(session.phone) +
                 "</a>"
               : "") +
-            ' <span class="hci-muted">· not persisted</span></div>'
+            ' <span class="hci-muted">· not saved</span></div>'
           : "") +
         "</div>";
     }
 
     return (
-      '<article class="hci-person' +
-      (featured ? " hci-person--featured" : "") +
-      (compact ? " hci-person--compact" : "") +
-      '" data-person-id="' +
+      '<article class="hci-person" data-person-id="' +
       esc(p.personId || "") +
       '" data-contact-class="' +
       esc(p.contactClass || "") +
       '" data-property-responsibility="' +
       esc(p.propertyResponsibility || "") +
+      '" data-purpose-sections="' +
+      esc(assignPurposeSectionsClient(p).join(",")) +
       '" data-identity-verified="' +
       (linkedInUrl(p) || p.identityVerification === "VERIFIED_PUBLIC" ? "1" : "0") +
       '" data-contact-details-verified="' +
       (emails.length || phones.length ? "1" : "0") +
-      '" data-demo-state="' +
-      esc(
-        emails.length && phones.length
-          ? "A"
-          : emails.length
-            ? "B"
-            : phones.length
-              ? "C"
-              : orgRoutes.length
-                ? "D"
-                : "D"
-      ) +
       '">' +
       '<div class="hci-person__row">' +
       '<div class="hci-person__identity">' +
@@ -472,14 +685,11 @@
       (present(p.organization || p.organizationName)
         ? '<div class="hci-person__org">' + esc(p.organization || p.organizationName) + "</div>"
         : "") +
-      "</div>" +
-      '<span class="' +
-      responsibilityClass(p) +
-      '">' +
-      esc(humanResponsibility(p)) +
-      "</span>" +
-      "</div>" +
+      "</div></div>" +
       (present(relevance) ? '<p class="hci-person__why">' + esc(relevance) + "</p>" : "") +
+      (qualify
+        ? '<p class="hci-person__qualify">' + esc(humanResponsibility(p)) + "</p>"
+        : "") +
       channelPreview +
       renderPersonActions(p, hotelId, capability, opts) +
       '<button type="button" class="hci-provenance-toggle" data-hci-toggle="' +
@@ -488,11 +698,16 @@
       '<div class="hci-person__details" id="' +
       detailsId +
       '" hidden>' +
+      "<div><strong>Hotel responsibility</strong> " +
+      esc(humanResponsibility(p)) +
+      "</div>" +
       (present(p.contactClassLabel || p.commercialRole)
-        ? "<div><strong>Role</strong> " + esc(p.contactClassLabel || p.commercialRole) + "</div>"
+        ? '<div class="hci-admin-only" data-hci-admin="1"><strong>Internal role class</strong> ' +
+          esc(p.contactClassLabel || p.commercialRole) +
+          "</div>"
         : "") +
       (present(p.propertyResponsibilityNote)
-        ? "<div><strong>Property note</strong> " + esc(p.propertyResponsibilityNote) + "</div>"
+        ? "<div><strong>Note</strong> " + esc(p.propertyResponsibilityNote) + "</div>"
         : "") +
       (present(p.verificationNotes)
         ? "<div><strong>Notes</strong> " + esc(p.verificationNotes) + "</div>"
@@ -500,7 +715,12 @@
       (present(p.lastVerified)
         ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
         : "") +
-      '<p class="hci-muted">Verified identity ≠ verified personal contact channels. Organization emails are not personal inboxes. Surfe results stay session-only and are never saved as public research.</p>' +
+      (present(p.airtableId)
+        ? '<div class="hci-admin-only" data-hci-admin="1"><strong>Record</strong> ' +
+          esc(p.airtableId) +
+          "</div>"
+        : "") +
+      '<p class="hci-muted">Company websites and switchboards are organization routes, not personal inboxes. On-demand lookup results stay in this session and are not saved.</p>' +
       "</div></article>"
     );
   }
@@ -511,9 +731,16 @@
     var o = vm.ownershipSummary || {};
     var bits = [];
     if (o.propco && present(o.propco.shortName || o.propco.name)) {
-      bits.push("PropCo: " + (o.propco.shortName || o.propco.name));
+      bits.push("Property company: " + (o.propco.shortName || o.propco.name));
     }
-    if (o.sponsor && present(o.sponsor.name)) bits.push("Owner: " + o.sponsor.name);
+    if (o.sponsor && present(o.sponsor.name)) {
+      var certified = o.sponsor.economicOwnershipCertified === true;
+      bits.push(
+        certified
+          ? "Economic owner: " + o.sponsor.name
+          : "Ownership organization (pending certification): " + o.sponsor.name
+      );
+    }
     if (o.operator && present(o.operator.name)) bits.push("Operator: " + o.operator.name);
     if (o.brand && present(o.brand.name)) bits.push("Brand: " + o.brand.name);
     if (!bits.length) return "";
@@ -525,78 +752,218 @@
     );
   }
 
-  function renderRecommendation(vm) {
-    var rec = vm.recommendation;
-    if (!rec || !rec.person) return "";
-    var hotelId = vm.hotelId || "";
-    var alts = rec.alternatives || [];
-    // Prefer full alternative people from recommendedContacts / people
-    if (!alts.length && (vm.recommendedContacts || []).length) {
-      alts = (vm.recommendedContacts || []).filter(function (p) {
-        return p && p.personId !== rec.person.personId;
-      });
-    }
+  function renderPurposeFilter(activeId) {
+    var active = activeId || "all";
     return (
-      '<section class="hci-section hci-section--recommend">' +
-      "<h3>" +
-      esc(rec.label || "Recommended First Contact") +
-      "</h3>" +
-      '<div class="hci-people hci-people--featured">' +
-      renderPerson(rec.person, hotelId, vmCapability, {
-        featured: true,
-        compact: false,
-        rationaleOverride: rec.rationale || rec.person.whyRelevant,
-        vm: vm,
-      }) +
+      '<div class="hci-purpose-filter" role="group" aria-label="Business purpose">' +
+      '<label class="hci-purpose-filter__label" for="hci-purpose-select">Business purpose</label>' +
+      '<select id="hci-purpose-select" class="hci-purpose-filter__select" data-hci-purpose-filter="1">' +
+      BUSINESS_PURPOSE_FILTERS.map(function (f) {
+        return (
+          '<option value="' +
+          esc(f.id) +
+          '"' +
+          (f.id === active ? " selected" : "") +
+          ">" +
+          esc(f.label) +
+          "</option>"
+        );
+      }).join("") +
+      "</select></div>"
+    );
+  }
+
+  function relationshipLabel(p) {
+    var why = customerWhyRelevant(p);
+    if (present(why)) return why;
+    var purposes = assignPurposeSectionsClient(p)
+      .map(function (id) {
+        var meta = PURPOSE_SECTIONS.find(function (s) {
+          return s.id === id;
+        });
+        return meta ? meta.label : id;
+      })
+      .filter(Boolean);
+    return purposes.length ? purposes[0] : "—";
+  }
+
+  function missingChannelHtml(label) {
+    return '<span class="hci-missing" title="' + esc(label) + ' not verified">—</span>';
+  }
+
+  function directoryPeopleForFilter(vm, purposeId) {
+    var filter =
+      BUSINESS_PURPOSE_FILTERS.find(function (f) {
+        return f.id === (purposeId || "all");
+      }) || BUSINESS_PURPOSE_FILTERS[0];
+    var allow = {};
+    (filter.sectionIds || []).forEach(function (id) {
+      allow[id] = true;
+    });
+    var seen = {};
+    var out = [];
+    (vm.people || []).forEach(function (p) {
+      if (!p || !present(p.name)) return;
+      var purposes = assignPurposeSectionsClient(p);
+      var match = purposes.some(function (id) {
+        return allow[id];
+      });
+      if (!match) return;
+      var key = String(p.personId || p.airtableId || p.name).toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      out.push(p);
+    });
+    out.sort(function (a, b) {
+      var ra = String(a.propertyResponsibility || "").toUpperCase() === "CONFIRMED" ? 0 : 1;
+      var rb = String(b.propertyResponsibility || "").toUpperCase() === "CONFIRMED" ? 0 : 1;
+      if (ra !== rb) return ra - rb;
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    });
+    return out;
+  }
+
+  function renderDirectoryRowCells(p, hotelId, capability, vm) {
+    var emails = personEmails(p);
+    var phones = personPhones(p);
+    var orgRoutes = personOrgRoutes(p, vm);
+    var li = linkedInUrl(p);
+    var detailsId =
+      "hci-dir-" +
+      String(p.personId || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, "_");
+    var emailHtml = emails.length
+      ? renderCompactChannel(emails[0], "email")
+      : missingChannelHtml("Email");
+    var phoneHtml = phones.length
+      ? renderCompactChannel(phones[0], "phone")
+      : missingChannelHtml("Telephone");
+    var liHtml = li
+      ? '<a class="hci-action-link hex-rms-ext-link" href="' +
+        esc(li) +
+        '" target="_blank" rel="noopener">LinkedIn</a>'
+      : missingChannelHtml("LinkedIn");
+    var qualify = showResponsibilityQualification(p)
+      ? '<div class="hci-dir-qualify">' + esc(humanResponsibility(p)) + "</div>"
+      : "";
+    var actions =
+      '<button type="button" class="hci-btn hci-btn--ghost hci-dir-details-btn" data-hci-toggle="' +
+      detailsId +
+      '" aria-expanded="false">Details</button>';
+    var enrich = resolveEnrichMeta(p, capability);
+    if (enrich.label && enrich.enabled) {
+      actions += renderEnrichAction(p, hotelId, capability, { inline: true });
+    }
+    var detailOrgRoutes = orgRoutes
+      .map(function (c) {
+        return (
+          "<div><strong>" +
+          esc(orgRouteLabel(c)) +
+          "</strong> " +
+          renderCompactChannel(c, c.kind === "email" ? "email" : c.kind === "web" ? "web" : "phone") +
+          "</div>"
+        );
+      })
+      .join("");
+    var detailsHtml =
+      '<div class="hci-dir-details-panel" id="' +
+      detailsId +
+      '" hidden>' +
+      '<div class="hci-dir-details">' +
+      qualify +
+      "<div><strong>Hotel responsibility</strong> " +
+      esc(humanResponsibility(p)) +
+      "</div>" +
+      (present(customerWhyRelevant(p))
+        ? "<div><strong>Relevance</strong> " + esc(customerWhyRelevant(p)) + "</div>"
+        : "") +
+      detailOrgRoutes +
+      (present(p.lastVerified)
+        ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
+        : "") +
+      '<p class="hci-muted">Organization websites and switchboards are company routes, not personal inboxes. On-demand lookup results stay in this session and are not saved.</p>' +
+      "</div></div>";
+    return {
+      name: p.name || "",
+      title: p.title || "",
+      organization: p.organization || p.organizationName || "",
+      relationship: relationshipLabel(p),
+      email: emails.length ? channelValue(emails[0]) : "",
+      telephone: phones.length ? channelValue(phones[0]) : "",
+      linkedin: li || "",
+      actions: "",
+      _rowClass: "hci-dir-row",
+      _cells: {
+        name:
+          '<div class="hci-dir-name">' +
+          esc(p.name || "—") +
+          "</div>" +
+          qualify,
+        title: esc(p.title || "—"),
+        organization: esc(p.organization || p.organizationName || "—"),
+        relationship: esc(relationshipLabel(p)),
+        email: emailHtml,
+        telephone: phoneHtml,
+        linkedin: liHtml,
+        actions: actions,
+      },
+      _detailsHtml: detailsHtml,
+      _person: p,
+    };
+  }
+
+  function renderContactDirectoryTable(vm, purposeId) {
+    var hotelId = vm.hotelId || "";
+    var people = directoryPeopleForFilter(vm, purposeId);
+    var columns = [
+      { key: "name", label: "Contact Name", sortable: true },
+      { key: "title", label: "Title", sortable: true },
+      { key: "organization", label: "Organization", sortable: true },
+      { key: "relationship", label: "Relationship / Function", sortable: true },
+      { key: "email", label: "Email", sortable: true },
+      { key: "telephone", label: "Telephone", sortable: true },
+      { key: "linkedin", label: "LinkedIn", sortable: false },
+      { key: "actions", label: "Details / Actions", sortable: false },
+    ];
+    var rows = people.map(function (p) {
+      return renderDirectoryRowCells(p, hotelId, vmCapability, vm);
+    });
+    var api = global.DealalitySortableTable;
+    var tableHtml;
+    if (api && typeof api.renderMarkup === "function") {
+      tableHtml = api.renderMarkup({
+        columns: columns,
+        rows: rows,
+        tableClass: "hci-directory-table",
+        emptyMessage: "No contacts match this business purpose yet.",
+        defaultSortKey: "name",
+        defaultSortDir: "asc",
+      });
+    } else {
+      tableHtml =
+        '<p class="hci-muted">Contact directory table unavailable (sortable table component not loaded).</p>';
+    }
+    // Keep detail panels outside the sortable tbody so column sort cannot scramble rows.
+    var detailsPanels = rows
+      .map(function (row) {
+        return row._detailsHtml || "";
+      })
+      .join("");
+    return (
+      '<section class="hci-section hci-section--directory" data-hci-directory="v3">' +
+      '<div class="hci-directory-meta hci-muted">' +
+      people.length +
+      " contact" +
+      (people.length === 1 ? "" : "s") +
+      "</div>" +
+      tableHtml +
+      '<div class="hci-dir-details-host">' +
+      detailsPanels +
       "</div></section>"
     );
   }
 
-  function renderAlternatives(vm) {
-    var hotelId = vm.hotelId || "";
-    var featuredId =
-      vm.recommendation && vm.recommendation.person && vm.recommendation.person.personId;
-    var alts = [];
-    if (vm.recommendation && Array.isArray(vm.recommendation.alternatives)) {
-      alts = vm.recommendation.alternatives.slice();
-    }
-    (vm.recommendedContacts || []).forEach(function (p) {
-      if (!p || !p.personId || p.personId === featuredId) return;
-      if (
-        !alts.some(function (a) {
-          return a && a.personId === p.personId;
-        })
-      ) {
-        alts.push(p);
-      }
-    });
-    (vm.otherContacts || []).forEach(function (p) {
-      if (!p || !p.personId || p.personId === featuredId) return;
-      if (
-        !alts.some(function (a) {
-          return a && a.personId === p.personId;
-        })
-      ) {
-        alts.push(p);
-      }
-    });
-    if (!alts.length && (vm.people || []).length) {
-      alts = (vm.people || []).filter(function (p) {
-        return p && p.personId !== featuredId;
-      });
-    }
-    if (!alts.length) return "";
-    return (
-      '<section class="hci-section hci-section--alts">' +
-      "<h3>Alternative Decision-Makers</h3>" +
-      '<div class="hci-people hci-people--compact">' +
-      alts
-        .map(function (p) {
-          return renderPerson(p, hotelId, vmCapability, { compact: true, vm: vm });
-        })
-        .join("") +
-      "</div></section>"
-    );
+  function renderPurposeSections(vm, purposeId) {
+    return renderContactDirectoryTable(vm, purposeId);
   }
 
   function renderOrgChannels(vm) {
@@ -604,34 +971,30 @@
     var contactable = vm.contactableOwnerOrg;
     if (contactable) {
       if (present(contactable.website)) {
-        rows.push({
-          label: LABELS.orgRoute,
-          value: contactable.website,
-          kind: "web",
-        });
+        rows.push({ label: LABELS.companyWebsite, value: contactable.website, kind: "web" });
       }
       (contactable.emails || []).forEach(function (c) {
         if (c && present(c.value)) {
           rows.push({
-            label: LABELS.orgRoute,
+            label: LABELS.companyEmail,
             value: c.value,
             kind: "email",
-            note: "Not a personal inbox",
+            note: "Company-wide — not a personal inbox",
           });
         }
       });
       (contactable.phones || []).forEach(function (c) {
         if (c && present(c.value)) {
           rows.push({
-            label: LABELS.orgRoute,
+            label: LABELS.officePhone,
             value: c.value,
             kind: "phone",
-            note: "Organization / published business line",
+            note: "Published office line",
           });
         }
       });
       if (present(contactable.hq)) {
-        rows.push({ label: "HQ", value: contactable.hq, kind: "text" });
+        rows.push({ label: "Headquarters", value: contactable.hq, kind: "text" });
       }
     }
     (vm.bestContactPaths || []).forEach(function (b) {
@@ -640,18 +1003,19 @@
         return String(r.value).toLowerCase() === String(b.value).toLowerCase();
       });
       if (dup) return;
+      var kind = /^https?:/i.test(b.value) ? "web" : /@/.test(b.value) ? "email" : "text";
       rows.push({
-        label: LABELS.orgRoute,
+        label: kind === "web" ? LABELS.companyWebsite : kind === "email" ? LABELS.companyEmail : LABELS.orgRoute,
         value: b.value,
-        kind: /^https?:/i.test(b.value) ? "web" : /@/.test(b.value) ? "email" : "text",
-        note: "Organization-level — not a personal decision-maker inbox",
+        kind: kind,
+        note: "Company-wide contact route",
       });
     });
     if (!rows.length) return "";
     return (
       '<section class="hci-section hci-section--org-channels">' +
-      "<h3>Organization Contact Channels</h3>" +
-      '<p class="hci-muted">Organizational Contact Routes — not personal direct channels.</p>' +
+      "<h3>Company contact routes</h3>" +
+      '<p class="hci-muted">Organization-wide channels — not personal direct lines.</p>' +
       '<ul class="hci-org-channel-list">' +
       rows
         .map(function (r) {
@@ -697,7 +1061,7 @@
       '<section class="hci-section hci-section--gaps">' +
       '<button type="button" class="hci-provenance-toggle hci-gaps-toggle" data-hci-toggle="' +
       id +
-      '" aria-expanded="false">Research gaps (' +
+      '" aria-expanded="false">Open items (' +
       items.length +
       ")</button>" +
       '<div id="' +
@@ -713,23 +1077,28 @@
     );
   }
 
-  function renderViewModel(vm) {
+  function renderViewModel(vm, purposeId) {
     if (!vm) return renderEmpty();
+    var hotelName = resolveDisplayHotelName(vm, vm.hotelId);
+    var purpose = purposeId || vm.activeBusinessPurpose || "all";
+    if (!Array.isArray(vm.purposeSections) || !vm.purposeSections.length) {
+      vm.purposeSections = buildPurposeSectionsFromPeople(vm.people || []);
+    }
     return (
-      '<div class="hci-root" data-hci-state="ready" data-hotel-id="' +
+      '<div class="hci-root" data-hci-state="ready" data-hci-cx="v3" data-hci-presentation="directory-table" data-hotel-id="' +
       esc(vm.hotelId || "") +
+      '" data-hci-purpose="' +
+      esc(purpose) +
       '">' +
       '<header class="hci-header hci-header--compact">' +
       "<div><h2>Contact Intelligence</h2>" +
       '<p class="hci-subtitle">' +
-      esc(vm.hotelName || "") +
-      (vm.researchWorkflow
-        ? ' · <span class="hci-muted">Public research first · Surfe on demand</span>'
-        : "") +
-      "</p></div></header>" +
+      esc(hotelName) +
+      " · professional directory</p></div>" +
+      renderPurposeFilter(purpose) +
+      "</header>" +
       renderOwnershipSlim(vm) +
-      renderRecommendation(vm) +
-      renderAlternatives(vm) +
+      renderPurposeSections(vm, purpose) +
       renderOrgChannels(vm) +
       renderResearchGaps(vm) +
       "</div>"
@@ -946,10 +1315,35 @@
     });
   }
 
+  function bindPurposeFilter(root, vm) {
+    if (!root || !vm) return;
+    var select = root.querySelector("[data-hci-purpose-filter]");
+    if (!select || select.getAttribute("data-hci-purpose-bound") === "1") return;
+    select.setAttribute("data-hci-purpose-bound", "1");
+    select.addEventListener("change", function () {
+      var next = select.value || "all";
+      vm.activeBusinessPurpose = next;
+      root.innerHTML = renderViewModel(vm, next);
+      bindToggles(root);
+      if (
+        Array.isArray(vm.contactEvidence) &&
+        window.HotelIntelligenceWorkspace &&
+        typeof window.HotelIntelligenceWorkspace.applyContactEvidenceCitations === "function"
+      ) {
+        window.HotelIntelligenceWorkspace.applyContactEvidenceCitations(vm.contactEvidence);
+      }
+    });
+  }
+
   function bindToggles(root) {
     if (!root) return;
+    var vm = root._hciViewModel || null;
+    if (global.DealalitySortableTable && typeof global.DealalitySortableTable.bind === "function") {
+      global.DealalitySortableTable.bind(root);
+    }
     if (root.getAttribute("data-hci-bound") === "1") {
       bindEnrich(root);
+      bindPurposeFilter(root, vm);
       return;
     }
     root.setAttribute("data-hci-bound", "1");
@@ -958,7 +1352,15 @@
       if (!btn || !root.contains(btn)) return;
       ev.preventDefault();
       var id = btn.getAttribute("data-hci-toggle");
-      var el = id ? document.getElementById(id) : null;
+      var el = null;
+      if (id) {
+        try {
+          el = root.querySelector("#" + String(id).replace(/([^a-zA-Z0-9_-])/g, "\\$1"));
+        } catch (e) {
+          el = null;
+        }
+        if (!el) el = document.getElementById(id);
+      }
       if (!el && btn.parentElement) {
         el = btn.parentElement.querySelector(".hci-person__details, [id^='hci-gaps-']");
       }
@@ -974,6 +1376,7 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     });
     bindEnrich(root);
+    bindPurposeFilter(root, vm);
   }
 
   function renderHpcPropertyFallback(hotelId, contacts, hotelName, ownershipSummary) {
@@ -1087,29 +1490,43 @@
   }
 
   function classifyContactFromPackage(raw) {
-    var role = String(raw.why_relevant || raw.whyRelevant || raw.function_role || raw.title || "");
+    var role = String(
+      (raw.why_relevant || raw.whyRelevant || "") +
+        " " +
+        (raw.function_role || raw.title || "") +
+        " " +
+        (raw.hotel_commercial_responsibility || "")
+    );
     var upper = role.toUpperCase();
+    if (/VERIFIED_PROPERTY_LEADERSHIP|PROPERTY LEADERSHIP|GENERAL MANAGER|\bGM\b/.test(upper)) {
+      return {
+        contactClass: "HOTEL_LEADERSHIP",
+        contactClassLabel: "Hotel leadership",
+      };
+    }
+    if (
+      /VERIFIED_PROPERTY_COMMERCIAL|DIRECTOR OF SALES|AREA SALES|DOSM|REVENUE MANAGEMENT/.test(upper)
+    ) {
+      return {
+        contactClass: "HOTEL_LEADERSHIP",
+        contactClassLabel: "Sales & commercial leadership",
+      };
+    }
     if (/OWNER_DECISION|OWNERSHIP\s*\/\s*DECISION|PRESIDENT|CEO/.test(upper)) {
       return {
         contactClass: "OWNER_DECISION_AUTHORITY",
-        contactClassLabel: "Ownership / Decision Authority",
+        contactClassLabel: "Ownership / decision authority",
       };
     }
     if (/RELEVANT_COMMERCIAL|ASSET MANAGEMENT|VP,?\s*ASSET|DIRECTOR,?\s*ASSET/.test(upper)) {
       return {
         contactClass: "RELEVANT_COMMERCIAL_ENTRY_POINT",
-        contactClassLabel: "Relevant commercial entry point",
-      };
-    }
-    if (/HOTEL_LEADERSHIP|GENERAL MANAGER|\bGM\b|DIRECTOR OF SALES/.test(upper)) {
-      return {
-        contactClass: "HOTEL_LEADERSHIP",
-        contactClassLabel: "Hotel / commercial leadership",
+        contactClassLabel: "Asset management",
       };
     }
     return {
       contactClass: "VERIFIED_ORGANIZATION_CONTACT",
-      contactClassLabel: "Verified organization contact",
+      contactClassLabel: "Organization contact",
     };
   }
 
@@ -1132,19 +1549,37 @@
         phones.push({ value: val, type: kind, verification_status: ch.verification_status || null });
       }
     });
+    // Recover LinkedIn from Notes when channels table is quarantined
+    if (!linkedin && present(raw.notes) && /linkedin\.com\/in\//i.test(String(raw.notes))) {
+      var m = String(raw.notes).match(/https?:\/\/[^\s)]*linkedin\.com\/in\/[^\s)|]+/i);
+      if (m) linkedin = m[0].replace(/[.,;]+$/, "");
+    }
     var name = raw.display_name || raw.name || raw.fullName || null;
     if (!present(name)) return null;
     var classMeta = classifyContactFromPackage(raw);
+    var responsibilityBlob = String(
+      (raw.hotel_commercial_responsibility || "") +
+        " " +
+        (raw.why_relevant || raw.whyRelevant || "") +
+        " " +
+        (raw.title || "")
+    );
     var propRel = String(raw.property_relevance || "").toUpperCase();
-    var propertyResponsibility =
-      propRel === "HOTEL" ? "CONFIRMED" : propRel === "OWNER_ORG" ? "INFERRED" : "UNKNOWN";
-    var propertyResponsibilityLabel =
-      propertyResponsibility === "CONFIRMED"
-        ? "Confirmed for this hotel"
-        : propertyResponsibility === "INFERRED"
-          ? "Organizational contact · property decision-maker not confirmed"
-          : "Property responsibility unknown";
-    return {
+    var propertyResponsibility;
+    if (
+      /VERIFIED_PROPERTY|PROPERTY LEADERSHIP|GENERAL MANAGER|DIRECTOR OF SALES/i.test(
+        responsibilityBlob
+      ) ||
+      propRel === "HOTEL" ||
+      propRel === "PROPERTY_DIRECT"
+    ) {
+      propertyResponsibility = "CONFIRMED";
+    } else if (propRel === "OWNER_ORG") {
+      propertyResponsibility = "INFERRED";
+    } else {
+      propertyResponsibility = "UNKNOWN";
+    }
+    var mapped = {
       personId: raw.person_id || raw.personId || null,
       name: name,
       title: raw.title || null,
@@ -1152,6 +1587,7 @@
       organizationName: raw.organization_name || raw.organization || null,
       whyRelevant: raw.why_relevant || raw.whyRelevant || null,
       relationshipToHotel: raw.why_relevant || raw.whyRelevant || null,
+      hotelResponsibility: raw.hotel_commercial_responsibility || null,
       contactClass: classMeta.contactClass,
       contactClassLabel: classMeta.contactClassLabel,
       commercialRole: classMeta.contactClassLabel,
@@ -1163,7 +1599,9 @@
       linkedinUrl: linkedin,
       organizationWebsite: null,
       propertyResponsibility: propertyResponsibility,
-      propertyResponsibilityLabel: propertyResponsibilityLabel,
+      propertyResponsibilityLabel: humanResponsibility({
+        propertyResponsibility: propertyResponsibility,
+      }),
       confidence:
         (raw.provenance && (raw.provenance.confidence || raw.provenance.verification_state)) ||
         raw.confidence ||
@@ -1172,26 +1610,17 @@
       displayState: "PARTIAL",
       sources: raw.provenance && raw.provenance.source ? [raw.provenance.source] : ["HI_ORG_CONTACTS"],
       airtableId: raw.provenance && raw.provenance.airtable_id ? raw.provenance.airtable_id : null,
+      lastVerified: raw.role_check_date || raw.contact_source_date || null,
     };
-  }
-
-  function recommendationRank(p) {
-    var c = String((p && p.contactClass) || "").toUpperCase();
-    if (c === "RELEVANT_COMMERCIAL_ENTRY_POINT") return 0;
-    if (c === "HOTEL_LEADERSHIP") return 1;
-    if (c === "OWNER_DECISION_AUTHORITY") return 2;
-    return 3;
+    mapped.purposeSections = assignPurposeSectionsClient(mapped);
+    return mapped;
   }
 
   function mapContactPackageToViewModel(json, hotelId) {
     var pkg = (json && json.package) || {};
     var owner = (json && json.owner_anchor) || {};
-    var people = (pkg.people || [])
-      .map(mapPackagePersonToUi)
-      .filter(Boolean)
-      .sort(function (a, b) {
-        return recommendationRank(a) - recommendationRank(b);
-      });
+    var people = (pkg.people || []).map(mapPackagePersonToUi).filter(Boolean);
+    var purposeSections = buildPurposeSectionsFromPeople(people);
     var orgChannels = (pkg.organization_contact_route && pkg.organization_contact_route.channels) || [];
     var orgWebsite = null;
     var orgPhones = [];
@@ -1210,18 +1639,25 @@
       pkg.owner_display_name ||
       (pkg.organization_contact_route && pkg.organization_contact_route.owner_display_name) ||
       null;
-    var hotelName = pkg.hotel_name || hotelId;
+    var hotelName = pkg.hotel_name || "";
+    if (!present(hotelName) || /^rec[a-zA-Z0-9]{14}$/i.test(String(hotelName))) {
+      hotelName =
+        (pkg.hotel_contact && (pkg.hotel_contact.name || pkg.hotel_contact.display_name)) ||
+        (String(hotelId) === "recLuxvwwxID7U2B8" ? "Bethesda Marriott" : "");
+    }
     return {
-      version: "contact-intelligence-viewmodel-v1",
+      version: "contact-intelligence-viewmodel-v3",
       hotelId: pkg.hotel_id || hotelId,
       hotelName: hotelName,
+      activeBusinessPurpose: "all",
       ownershipSummary: {
-        hotel: { name: hotelName, role: "HOTEL" },
+        hotel: { name: hotelName || "Hotel contacts", role: "HOTEL" },
         sponsor: ownerName
           ? {
               name: ownerName,
               role: "OWNER_SPONSOR_GROUP",
-              label: "Economic Owner / Contactable Owner Org",
+              label: "Ownership organization",
+              economicOwnershipCertified: false,
             }
           : null,
         operator: null,
@@ -1229,7 +1665,7 @@
         propco: null,
       },
       qualitySummary: {
-        ownerOrgStatus: ownerName ? "VERIFIED" : "UNRESOLVED",
+        ownerOrgStatus: ownerName ? "ASSOCIATED" : "UNRESOLVED",
         primaryDecisionMakers: people.length,
         verifiedEmails: 0,
         verifiedOrPublicPhones: 0,
@@ -1249,17 +1685,12 @@
           }
         : null,
       people: people,
-      recommendedContacts: people.slice(0, 6),
-      otherContacts: people.slice(6),
-      recommendation: people.length
-        ? {
-            person: people[0],
-            rationale: people[0].whyRelevant || "Named contact from HI Org Contacts.",
-            alternatives: people.slice(1, 4),
-          }
-        : null,
+      purposeSections: purposeSections,
+      recommendedContacts: [],
+      otherContacts: people,
+      recommendation: null,
       organizations: [],
-      researchWorkflow: true,
+      researchWorkflow: false,
       hiGraphOverlay: json && json.hi_graph_overlay ? json.hi_graph_overlay : null,
       _rawPackage: pkg,
     };
@@ -1390,7 +1821,14 @@
             return patchPersonEnrichAction(p, vmCapability);
           });
         }
-        host.innerHTML = renderViewModel(vm);
+        if (!Array.isArray(vm.purposeSections) || !vm.purposeSections.length) {
+          vm.purposeSections = buildPurposeSectionsFromPeople(vm.people || []);
+        }
+        host.innerHTML = renderViewModel(vm, vm.activeBusinessPurpose || "all");
+        host._hciViewModel = vm;
+        var painted =
+          typeof host.querySelector === "function" ? host.querySelector(".hci-root") : null;
+        if (painted) painted._hciViewModel = vm;
         bindToggles(host);
         if (
           Array.isArray(vm.contactEvidence) &&

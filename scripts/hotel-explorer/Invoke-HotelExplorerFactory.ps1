@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-  Hotel Explorer Intelligence Factory entry (cross-tab consistency report included).
+  Hotel Explorer Intelligence Factory V1.1 + permanent cross-tab consistency gates.
 
 .DESCRIPTION
   Modes: Audit, Research, Apply, Validate, Full, Refresh, CrossTabValidate
@@ -17,19 +17,44 @@
     HE_CROSS_TAB_PARITY_VALIDATED
     HE_CROSS_TAB_CONSISTENCY_REPORT_GENERATED
     HE_E2E_CROSS_TAB_CERTIFICATION
+    HE_ACTIVE_TAB_COUNT (11 when HE_GUEST_SENTIMENT_ENABLED=false)
+    HE_CONTACT_COMPONENT_PARITY
+    HE_CONTACT_DIRECTORY_VALIDATED
+    HE_CONTACT_ORG_MAPPING_VALIDATED
+    HE_CONTACT_CHANNEL_PROVENANCE_VALIDATED
+    HE_CONTACT_PRESENTATION_VALIDATED
+    HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE
+    HE_OWNERSHIP_VERIFICATION_STATE_PARITY
+    HE_UNIFIED_THEME_CONSISTENCY
+    HE_CANONICAL_AIRTABLE_READBACK
+    HE_AUTHENTICATED_LIVE_RENDERING (NOT_TESTED when -SkipBrowser)
+    FULL_HE_E2E_VALIDATED (remains NO until eight-hotel browser program passes)
 
   Browser policy: -SkipBrowser forces browser checks to NOT_TESTED (never PASS).
 
+  Release acceptance (Contact V3 + Live API probes):
+    node scripts/hotel-explorer/run-he50-release-acceptance-gates-v1.mjs [--skip-browser|--browser]
+
 .EXAMPLE
   .\scripts\hotel-explorer\Invoke-HotelExplorerFactory.ps1 -Mode Validate -HotelId recLuxvwwxID7U2B8 -SkipBrowser
-  .\scripts\hotel-explorer\Invoke-HotelExplorerFactory.ps1 -Mode Audit -HotelId recLuxvwwxID7U2B8
-  .\scripts\hotel-explorer\Invoke-HotelExplorerFactory.ps1 -Mode CrossTabValidate -Fixture
+
+.EXAMPLE
+  .\scripts\hotel-explorer\Invoke-HotelExplorerFactory.ps1 -HotelId recLuxvwwxID7U2B8 -Mode Full
+
+.EXAMPLE
+  .\scripts\hotel-explorer\Invoke-HotelExplorerFactory.ps1 -BatchFile configs/hotel-explorer/he50-eight-hotel-batch-v1.json -Mode Audit
 #>
 [CmdletBinding()]
 param(
+  [string]$HotelId = "recLuxvwwxID7U2B8",
+  [string]$HotelName,
   [ValidateSet("Audit", "Research", "Apply", "Validate", "Full", "Refresh", "CrossTabValidate")]
   [string]$Mode = "Validate",
-  [string]$HotelId = "recLuxvwwxID7U2B8",
+  [switch]$Apply,
+  [double]$MaxSpendUSD = 0,
+  [string]$OutputDir,
+  [switch]$Resume,
+  [string]$BatchFile,
   [switch]$Fixture,
   [switch]$SkipBrowser
 )
@@ -38,7 +63,7 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 Set-Location $RepoRoot
 
-Write-Host "[HE Factory] mode=$Mode hotelId=$HotelId fixture=$Fixture skipBrowser=$SkipBrowser"
+Write-Host "[HE Factory] mode=$Mode hotelId=$HotelId hotelName=$HotelName fixture=$Fixture skipBrowser=$SkipBrowser"
 
 $ConsistencyModes = @("Audit", "Validate", "Full", "Refresh", "CrossTabValidate")
 if ($ConsistencyModes -contains $Mode) {
@@ -46,7 +71,7 @@ if ($ConsistencyModes -contains $Mode) {
   if ($Fixture) {
     $nodeArgs = @(".\scripts\hotel-explorer\run-he-cross-tab-validate.mjs", "--fixture")
   } else {
-    $nodeArgs += "--hotelId=$HotelId"
+    if ($HotelId) { $nodeArgs += "--hotelId=$HotelId" }
     if ($SkipBrowser) { $nodeArgs += "--skip-browser" } else { $nodeArgs += "--browser" }
   }
   & node @nodeArgs
@@ -65,15 +90,39 @@ if ($ConsistencyModes -contains $Mode) {
   }
 }
 
-# When the fuller factory runner exists (merged HE Factory V1.1+), delegate remaining modes.
-$FullRunner = Join-Path $RepoRoot "scripts\hotel-explorer\run-hotel-explorer-factory.mjs"
-if (($Mode -ne "CrossTabValidate") -and (Test-Path $FullRunner)) {
-  $factoryArgs = @("--mode", $Mode, "--hotelId", $HotelId)
-  if ($SkipBrowser) { $factoryArgs += "--skip-browser" }
-  node $FullRunner @factoryArgs
+$NodeRunner = Join-Path $RepoRoot "scripts\hotel-explorer\run-hotel-explorer-factory.mjs"
+if (($Mode -ne "CrossTabValidate") -and (Test-Path $NodeRunner)) {
+  $argsList = @($NodeRunner, "--mode", $Mode)
+  if ($HotelId) { $argsList += @("--hotel-id", $HotelId) }
+  if ($HotelName) { $argsList += @("--hotel-name", $HotelName) }
+  if ($Apply) { $argsList += "--apply" }
+  $argsList += @("--max-spend-usd", "$MaxSpendUSD")
+  if ($OutputDir) { $argsList += @("--output-dir", $OutputDir) }
+  if ($Resume) { $argsList += "--resume" }
+  if ($BatchFile) { $argsList += @("--batch-file", $BatchFile) }
+  if ($SkipBrowser) {
+    # Node defaults skipBrowser=true unless --browser
+  } else {
+    $argsList += "--browser"
+  }
+  Write-Host "[HE Factory] V1.1 runner → Mode=$Mode HotelId=$HotelId Apply=$Apply"
+  & node @argsList
   if ($LASTEXITCODE -ne 0) { throw "Hotel Explorer factory mode $Mode failed" }
 } elseif ($Mode -eq "Research" -or $Mode -eq "Apply") {
-  Write-Warning "Full factory runner not present on this branch — cross-tab gates completed; Research/Apply require HE Factory V1.1 merge."
+  if (-not (Test-Path $NodeRunner)) {
+    Write-Warning "Full factory runner not present — cross-tab gates completed; Research/Apply require factory runner."
+  }
+}
+
+# Permanent Contact V3 + physical/ownership/theme Live probes (Bethesda default).
+if ($ConsistencyModes -contains $Mode) {
+  $acceptArgs = @(".\scripts\hotel-explorer\run-he50-release-acceptance-gates-v1.mjs")
+  if ($SkipBrowser) { $acceptArgs += "--skip-browser" } else { $acceptArgs += "--browser" }
+  Write-Host "[HE Factory] release acceptance gates → $($acceptArgs -join ' ')"
+  & node @acceptArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
+  }
 }
 
 Write-Host "[HE Factory] done mode=$Mode"

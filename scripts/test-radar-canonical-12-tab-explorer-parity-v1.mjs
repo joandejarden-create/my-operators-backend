@@ -8,8 +8,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  HE_ACTIVE_TAB_IDS,
+  HE_ALL_TAB_IDS,
   HE_CANONICAL_TAB_IDS,
   HE_HI_WORKSPACE_TAB_IDS,
+  HE_PRESERVED_DISABLED_TAB_IDS,
   HE_RADAR_EMBED_TAB_IDS,
   assertHtmlLoadsCanonicalExplorerAssets,
 } from "../lib/hotel-intelligence/he-canonical-explorer-assets-v1.js";
@@ -57,7 +60,7 @@ assert.match(heJs, /HotelContactIntelligence/);
 assert.match(heJs, /HotelExplorerRoomsMeetingSpace/);
 assert.match(heJs, /mountGuestSentiment/);
 
-for (const tab of HE_CANONICAL_TAB_IDS) {
+for (const tab of HE_ALL_TAB_IDS) {
   assert.match(
     heJs,
     new RegExp(`id:\\s*"${tab}"`),
@@ -65,6 +68,12 @@ for (const tab of HE_CANONICAL_TAB_IDS) {
   );
 }
 assert.equal(HE_CANONICAL_TAB_IDS.length, 12);
+assert.equal(HE_ALL_TAB_IDS.length, 12);
+assert.equal(HE_ACTIVE_TAB_IDS.length, 11);
+assert.ok(HE_PRESERVED_DISABLED_TAB_IDS.includes("sentiment"));
+assert.match(heJs, /ALL_TABS/);
+assert.match(radarHtml, /he-guest-sentiment-feature-flag-v1\.js/);
+assert.match(previewHtml, /he-guest-sentiment-feature-flag-v1\.js/);
 
 for (const tab of HE_RADAR_EMBED_TAB_IDS) {
   assert.match(heJs, new RegExp(`${tab}:`), `RADAR_TABS must include ${tab}`);
@@ -97,6 +106,8 @@ console.log(
       ok: true,
       gate: "test:radar-canonical-12-tab-explorer-parity-v1",
       tabCount: HE_CANONICAL_TAB_IDS.length,
+      activeCustomerTabs: HE_ACTIVE_TAB_IDS.length,
+      preservedDisabledTabs: HE_PRESERVED_DISABLED_TAB_IDS,
       radarAssetsOk: radarCheck.ok,
       previewAssetsOk: previewCheck.ok,
       hiWorkspaceRequiredTabs: HE_HI_WORKSPACE_TAB_IDS.length,
@@ -104,6 +115,9 @@ console.log(
       certifications: {
         OPPORTUNITY_RADAR_CANONICAL_EXPLORER: true,
         TWELVE_TAB_COMPONENT_PARITY: true,
+        ELEVEN_ACTIVE_CUSTOMER_TABS: true,
+        GUEST_SENTIMENT_TAB_STATUS: "DISABLED_BY_FOUNDER",
+        FULL_HE_E2E_VALIDATED: false,
       },
     },
     null,

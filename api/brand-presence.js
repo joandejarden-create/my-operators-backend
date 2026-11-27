@@ -314,10 +314,42 @@ function formatHotelRecord(hotel) {
       readDateField(fields, "Open Date") ||
       readDateField(fields, "Opening Date"),
     yearBuilt: (() => {
+      const dedicated =
+        readNumberField(fields, "Year Built") ||
+        readDateField(fields, "Year Built");
+      if (dedicated != null) {
+        const m = String(dedicated).match(/(18|19|20)\d{2}/);
+        if (m) {
+          const y = Number(m[0]);
+          if (Number.isFinite(y) && y >= 1800 && y <= 2100) return y;
+        }
+      }
       const raw =
         readDateField(fields, F.hotels.openDate) ||
         readDateField(fields, "Open Date") ||
         readDateField(fields, "Opening Date");
+      if (!raw) return null;
+      const m = String(raw).match(/(18|19|20)\d{2}/);
+      if (!m) return null;
+      const y = Number(m[0]);
+      return Number.isFinite(y) && y >= 1800 && y <= 2100 ? y : null;
+    })(),
+    lastRenovated: (() => {
+      const raw =
+        readDateField(fields, "Renovation / Conversion Date") ||
+        readDateField(fields, "Last Renovated") ||
+        readNumberField(fields, "Year Renovated");
+      if (!raw) return null;
+      const m = String(raw).match(/(18|19|20)\d{2}/);
+      if (!m) return null;
+      const y = Number(m[0]);
+      return Number.isFinite(y) && y >= 1800 && y <= 2100 ? y : null;
+    })(),
+    yearRenovated: (() => {
+      const raw =
+        readDateField(fields, "Renovation / Conversion Date") ||
+        readDateField(fields, "Last Renovated") ||
+        readNumberField(fields, "Year Renovated");
       if (!raw) return null;
       const m = String(raw).match(/(18|19|20)\d{2}/);
       if (!m) return null;
@@ -351,8 +383,10 @@ function formatHotelRecord(hotel) {
     floors: readNumberField(fields, F.hotels.floors),
     totalMeetingSpace: readNumberFieldAliases(fields, [
       F.hotels.totalMeetingSpace,
+      "Total Meeting Space (sq ft)",
       "Total Meeting Space Sq Ft",
       "Meeting Space Sq Ft",
+      "Total Meeting Space",
     ]),
     dataConfidence: readTextField(fields, F.hotels.dataConfidence),
     censusPropertyType: readTextField(fields, F.hotels.censusPropertyType),

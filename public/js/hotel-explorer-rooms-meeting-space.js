@@ -20,10 +20,17 @@
     return Math.round(num).toLocaleString("en-US");
   }
 
-  function statusLabel(raw) {
+  function statusLabel(raw, inventory) {
     var s = String(raw || "").toUpperCase();
+    var fromHpc =
+      inventory &&
+      (inventory.sourceOfTruth === "HOTEL_PROPERTY_CENSUS" || inventory.persisted === true);
     if (s === "VERIFIED" || s === "VERIFIED_FACT") return "Verified";
-    if (s === "BRAND_MATERIALS_REFERENCE") return "Brand reference · not Airtable-persisted";
+    if (s === "BRAND_MATERIALS_REFERENCE") {
+      return fromHpc
+        ? "Brand materials reference · HPC persisted"
+        : "Brand reference · staged / not yet HPC-persisted";
+    }
     if (s === "MARKETING_FIGURE") return "Marketing figure · distinct from capacity chart";
     if (s === "NOT_YET_VERIFIED" || !s) return "Not yet verified";
     if (s === "PROPOSED" || s === "PROPOSED_STAGED") return "Proposed · not persisted";
@@ -173,7 +180,7 @@
     );
   }
 
-  function renderSupportingDocs(sum, sources) {
+  function renderSupportingDocs(sum, sources, inventory) {
     var items = [];
     if (sum.floorPlanUrl && sum.floorPlanUrl.value) {
       items.push({
@@ -209,7 +216,7 @@
               ? ' <span class="hex-rms-src-pub">' + esc(s.publisher) + "</span>"
               : "") +
             ' <span class="hex-rms-src-state">' +
-            esc(statusLabel(s.verificationStatus)) +
+            esc(statusLabel(s.verificationStatus, inventory)) +
             "</span>" +
             (s.supports
               ? '<div class="hiw-muted">Supports: ' + esc((s.supports || []).join(", ")) + "</div>"
@@ -279,22 +286,22 @@
       metricCard(
         "Total guestrooms",
         fmt(gr.totalGuestrooms && gr.totalGuestrooms.value),
-        statusLabel(gr.totalGuestrooms && gr.totalGuestrooms.verificationStatus)
+        statusLabel(gr.totalGuestrooms && gr.totalGuestrooms.verificationStatus, inv)
       ) +
       metricCard(
         "Single-bed rooms",
         fmt(gr.singleBedRooms && gr.singleBedRooms.value),
-        statusLabel(gr.singleBedRooms && gr.singleBedRooms.verificationStatus)
+        statusLabel(gr.singleBedRooms && gr.singleBedRooms.verificationStatus, inv)
       ) +
       metricCard(
         "Double-bed rooms",
         fmt(gr.doubleBedRooms && gr.doubleBedRooms.value),
-        statusLabel(gr.doubleBedRooms && gr.doubleBedRooms.verificationStatus)
+        statusLabel(gr.doubleBedRooms && gr.doubleBedRooms.verificationStatus, inv)
       ) +
       metricCard(
         "Suites",
         fmt(gr.suites && gr.suites.value),
-        statusLabel(gr.suites && gr.suites.verificationStatus)
+        statusLabel(gr.suites && gr.suites.verificationStatus, inv)
       ) +
       "</div>" +
       '<p class="hiw-muted">Total guestrooms is canonical. Suite count is a classification within the inventory and is not added on top of the total.</p>' +
@@ -309,12 +316,12 @@
         sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value != null
           ? formatAreaSqFt(sum.totalMeetingSpaceSqFt.value)
           : "—",
-        statusLabel(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.verificationStatus)
+        statusLabel(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.verificationStatus, inv)
       ) +
       metricCard(
         "Meeting rooms (published)",
         fmt(sum.meetingRoomCount && sum.meetingRoomCount.value),
-        statusLabel(sum.meetingRoomCount && sum.meetingRoomCount.verificationStatus)
+        statusLabel(sum.meetingRoomCount && sum.meetingRoomCount.verificationStatus, inv)
       ) +
       metricCard(
         "Largest room",
@@ -322,14 +329,17 @@
           ? largest.name +
               (largest.areaSqFt != null ? " · " + formatAreaSqFt(largest.areaSqFt) : "")
           : "—",
-        statusLabel(largest.verificationStatus)
+        statusLabel(largest.verificationStatus, inv)
       ) +
       metricCard(
         "Marketing private-space figure",
         sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.value != null
           ? formatAreaSqFt(sum.privateSpaceMarketingSqFt.value)
           : "—",
-        statusLabel(sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.verificationStatus)
+        statusLabel(
+          sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.verificationStatus,
+          inv
+        )
       ) +
       "</div>" +
       '<p class="hiw-muted">Capacity-chart totals and marketing private-space figures are not interchangeable. Units follow the Hotel Explorer measurement preference (presentation only).</p>' +
@@ -356,7 +366,7 @@
       guestHtml +
       meetHtml +
       renderMeetingTable(rows) +
-      renderSupportingDocs(sum, sources) +
+      renderSupportingDocs(sum, sources, inv) +
       "</article>"
     );
   }

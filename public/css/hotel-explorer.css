@@ -3,6 +3,8 @@
  * Tokens from dealality-explorer-platform / brand-explorer-gold-surface.
  * Does not share selectors with the Packet 2.6 hiw-* reference workspace.
  */
+@import url("./hotel-explorer-theme-tokens-v1.css");
+
 .hex-root {
   --neutral--800: #080f25;
   --neutral--700: #212c4d;
@@ -25,7 +27,7 @@
   --hex-surface-border-table: #2a3550;
   --hex-surface-hover: rgba(108, 114, 255, 0.12);
   --panel: var(--hex-surface-section);
-  /* Alias: formerly #0c132c — that third navy caused patchy section backgrounds */
+  /* Alias: retired intermediate navy that caused patchy section backgrounds */
   --panel-soft: var(--hex-surface-section);
   --runbook-surface: var(--hex-surface-table);
   --runbook-border: var(--hex-surface-border-table);
@@ -2003,7 +2005,7 @@ button.hex-action {
   min-height: 220px;
   border: 0.6px solid var(--border);
   border-radius: 12px;
-  background: #080f25;
+  background: var(--hex-surface-canvas, #080f25);
 }
 
 /* Ownership Intelligence — Snapshot-style subsection boxes */
@@ -2238,10 +2240,10 @@ button.hex-action {
   }
 }
 .hex-rms-metric {
-  border: 1px solid rgba(156, 170, 220, 0.18);
+  border: 1px solid var(--hex-surface-border, #37446b);
   border-radius: 10px;
   padding: 12px 12px 10px;
-  background: rgba(10, 18, 42, 0.55);
+  background: var(--hex-surface-section, #101935);
 }
 .hex-rms-metric__value {
   font-size: 1.05rem;
@@ -2467,7 +2469,8 @@ button.hex-action {
 .hex-root .hex-scroll,
 .hex-root #hexHiHost,
 .hex-root #hexRadarHost {
-  background: transparent;
+  /* Continuous canvas — do not leave translucent holes that expose host navy */
+  background: var(--he-canvas, var(--hex-surface-canvas, #080f25));
 }
 .hex-root .hiw-gap-box,
 .hex-root .hiw-finding,
