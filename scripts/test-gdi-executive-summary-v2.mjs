@@ -75,7 +75,18 @@ assert.equal(
 );
 assert.match(
   withIntel.sections.executiveCommercialSnapshot.reportingPeriod.label || "",
-  /STAGED research as of \d{4}-\d{2}-\d{2}/,
+  /Research updated \d{4}-\d{2}-\d{2}/,
+);
+assert.equal(
+  /STAGED|CURRENT/i.test(
+    withIntel.sections.executiveCommercialSnapshot.reportingPeriod.label || "",
+  ),
+  false,
+  "customer-facing reporting period must not embed STAGED/CURRENT jargon",
+);
+assert.equal(
+  withIntel.sections.executiveCommercialSnapshot.reportingPeriod.founderStatusLabel,
+  "Staged",
 );
 
 const receipt = withIntel.sections.researchReceipt.metrics;

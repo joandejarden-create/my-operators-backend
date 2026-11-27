@@ -103,14 +103,31 @@
     return "";
   }
 
-  function kpiCard(label, value, note) {
+  function infoTip(text) {
+    if (!text) return "";
     return (
-      '<div class="gdi-es-kpi">' +
-      '<div class="gdi-es-kpi__value">' +
-      esc(value == null ? "—" : fmtNum(value)) +
-      "</div>" +
+      '<button type="button" class="gdi-es-info" title="' +
+      esc(text) +
+      '" aria-label="' +
+      esc(text) +
+      '">i</button>'
+    );
+  }
+
+  function kpiCard(label, value, note, tooltip) {
+    var unavailable = value == null;
+    return (
+      '<div class="gdi-es-kpi' +
+      (unavailable ? " is-unavailable" : "") +
+      '">' +
+      '<div class="gdi-es-kpi__label-row">' +
       '<div class="gdi-es-kpi__label">' +
       esc(label) +
+      "</div>" +
+      infoTip(tooltip) +
+      "</div>" +
+      '<div class="gdi-es-kpi__value">' +
+      esc(unavailable ? "—" : fmtNum(value)) +
       "</div>" +
       (note
         ? '<div class="gdi-es-kpi__note">' + esc(note) + "</div>"
@@ -120,15 +137,27 @@
   }
 
   function kpiFromObj(k) {
-    var note = "";
-    if (k && k.value == null) {
-      note = availabilityNote(k) || k.note || "Unavailable";
+    if (!k) return "";
+    // Skip measured-zero optional KPIs that are actually unsupported.
+    if (
+      k.value == null &&
+      (k.availability === "NOT_CURRENTLY_SUPPORTED" ||
+        k.omitWhenUnavailable === true)
+    ) {
+      return "";
     }
-    return kpiCard(k.label || k.key, k ? k.value : null, note);
+    var note = "";
+    if (k.value == null) {
+      note = availabilityNote(k) || k.note || "Unavailable";
+    } else if (k.estimateClass === "PROVISIONAL_ESTIMATE") {
+      note = "Provisional estimate";
+    }
+    return kpiCard(k.label || k.key, k.value, note, k.tooltip || k.note);
   }
 
   function renderBarChart(composition) {
     var rows = (composition && composition.rows) || [];
+    var total = Number(composition && composition.total) || 0;
     if (!rows.length) {
       return '<p class="gdi-es-muted">Demand composition is unavailable for this inventory.</p>';
     }
@@ -139,21 +168,26 @@
       }),
     );
     return (
-      '<div class="gdi-es-bars" role="img" aria-label="Demand composition chart">' +
+      '<div class="gdi-es-bars" role="img" aria-label="Demand composition by segment">' +
       rows
         .map(function (r) {
-          var pct = max ? Math.round((r.count / max) * 100) : 0;
+          var pctMax = max ? Math.round((r.count / max) * 100) : 0;
+          var share = total ? Math.round((r.count / total) * 100) : 0;
           return (
             '<div class="gdi-es-bar-row">' +
-            '<div class="gdi-es-bar-label">' +
+            '<div class="gdi-es-bar-label" title="' +
+            esc(r.name) +
+            '">' +
             esc(r.name) +
             "</div>" +
             '<div class="gdi-es-bar-track"><div class="gdi-es-bar-fill" style="width:' +
-            pct +
+            pctMax +
             '%"></div></div>' +
             '<div class="gdi-es-bar-count">' +
             esc(r.count) +
-            "</div></div>"
+            ' <span class="gdi-es-bar-share">(' +
+            esc(share) +
+            "%)</span></div></div>"
           );
         })
         .join("") +
@@ -164,34 +198,68 @@
   function renderOutlook(outlook) {
     var timeline = (outlook && outlook.timeline) || [];
     var buckets = (outlook && outlook.buckets) || {};
+    var max = Math.max.apply(
+      null,
+      [1].concat(
+        timeline.map(function (t) {
+          return t.count || 0;
+        }),
+      ),
+    );
     return (
       '<div class="gdi-es-outlook">' +
       '<div class="gdi-es-outlook__buckets">' +
-      kpiCard("Established Dates", buckets.establishedEventDates) +
-      kpiCard("Estimated Periods", buckets.estimatedDemandPeriods) +
-      kpiCard("Ongoing Accounts", buckets.ongoingAccountRelationships) +
-      kpiCard("Timing Not Established", buckets.timingNotEstablished) +
+      kpiCard(
+        "Established Event Dates",
+        buckets.establishedEventDates,
+        null,
+        "Opportunities with evidenced calendar event dates.",
+      ) +
+      kpiCard(
+        "Estimated Demand Periods",
+        buckets.estimatedDemandPeriods,
+        null,
+        "Estimated windows without a confirmed event start date.",
+      ) +
+      kpiCard(
+        "Ongoing Accounts",
+        buckets.ongoingAccountRelationships,
+        null,
+        "Account relationships without a single event month.",
+      ) +
+      kpiCard(
+        "Timing Not Established",
+        buckets.timingNotEstablished,
+        null,
+        "Qualified opportunities without evidenced timing yet.",
+      ) +
       "</div>" +
       (timeline.length
-        ? '<div class="gdi-es-bars gdi-es-bars--compact">' +
+        ? '<div class="gdi-es-bars gdi-es-bars--compact" role="img" aria-label="Upcoming demand by month">' +
           timeline
             .map(function (t) {
+              var width = Math.round(((t.count || 0) / max) * 100);
               return (
                 '<div class="gdi-es-bar-row"><div class="gdi-es-bar-label">' +
-                esc(t.month) +
+                esc(t.monthLabel || t.month) +
                 '</div><div class="gdi-es-bar-track"><div class="gdi-es-bar-fill" style="width:' +
-                Math.min(100, t.count * 18) +
+                width +
                 '%"></div></div><div class="gdi-es-bar-count">' +
                 esc(t.count) +
                 "</div></div>"
               );
             })
             .join("") +
-          "</div>"
+          "</div>" +
+          (outlook.note
+            ? '<p class="gdi-es-muted gdi-es-outlook__note">' +
+              esc(outlook.note) +
+              "</p>"
+            : "")
         : '<p class="gdi-es-muted">' +
           esc(
             (outlook && outlook.note) ||
-              "No established event months — dates are not invented.",
+              "No evidenced future event months. Dates are never invented.",
           ) +
           "</p>") +
       "</div>"
@@ -200,51 +268,42 @@
 
   function renderAssessment(a) {
     a = a || {};
-    var rows = [
-      ["Market Opportunity", a.marketOpportunity],
-      ["Strongest Demand Segments", a.strongestCommercialDemandSegments],
-      ["Immediate Commercial Focus", a.immediateCommercialFocus],
-      ["Competitive Capture Potential", a.competitiveCapturePotential],
-      ["Material Changes", a.materialChangesSinceLastResearch],
-      ["Business Impact", a.businessImpact],
-    ];
-    return (
-      '<div class="gdi-es-assessment">' +
-      rows
-        .map(function (r) {
-          return (
-            '<div class="gdi-es-assessment__item"><h3>' +
-            esc(r[0]) +
-            "</h3><p>" +
-            esc(r[1] || "—") +
-            "</p></div>"
+    var cards =
+      Array.isArray(a.primaryCards) && a.primaryCards.length
+        ? a.primaryCards.concat(a.optionalCards || [])
+        : [
+            { title: "Market Opportunity", body: a.marketOpportunity },
+            {
+              title: "Recommended Commercial Focus",
+              body: a.recommendedCommercialFocus || a.immediateCommercialFocus,
+            },
+            {
+              title: "Forward Demand Outlook",
+              body: a.forwardDemandOutlook || a.businessImpact,
+            },
+          ].concat(
+            a.competitiveCapture || a.competitiveCapturePotential
+              ? [
+                  {
+                    title: "Competitive Capture",
+                    body: a.competitiveCapture || a.competitiveCapturePotential,
+                  },
+                ]
+              : [],
           );
-        })
-        .join("") +
-      "</div>"
-    );
-  }
-
-  function renderReceipt(receipt) {
-    var metrics = (receipt && receipt.metrics) || [];
     return (
-      '<div class="gdi-es-receipt-grid">' +
-      metrics
-        .map(function (m) {
+      '<div class="gdi-es-assessment gdi-es-assessment--primary">' +
+      cards
+        .filter(function (c) {
+          return c && c.body;
+        })
+        .map(function (c) {
           return (
-            '<div class="gdi-es-receipt-card' +
-            (m.value == null ? " is-unavailable" : "") +
-            '"><div class="gdi-es-kpi__value">' +
-            esc(metricValue(m)) +
-            '</div><div class="gdi-es-kpi__label">' +
-            esc(m.label || m.key) +
-            "</div>" +
-            (availabilityNote(m)
-              ? '<div class="gdi-es-kpi__note">' +
-                esc(availabilityNote(m)) +
-                "</div>"
-              : "") +
-            "</div>"
+            '<article class="gdi-es-assessment__item"><h3>' +
+            esc(c.title) +
+            "</h3><p>" +
+            esc(c.body) +
+            "</p></article>"
           );
         })
         .join("") +
@@ -260,58 +319,73 @@
     return fmtNum(m.value);
   }
 
-  function renderResearchProductivity(section) {
-    section = section || {};
-    var metrics = section.metrics || [];
+  function renderConsolidatedReceipt(receipt, productivity) {
+    receipt = receipt || {};
+    productivity = productivity || {};
+    var metrics = (receipt.metrics || []).filter(function (m) {
+      return m && m.value != null;
+    });
+    var prodMetrics = (productivity.metrics || []).filter(function (m) {
+      // Hide labor value unless authorized value is present.
+      if (m.key === "estimatedResearchLaborValue" && m.value == null) return false;
+      return true;
+    });
     return (
-      '<section class="gdi-es-section gdi-es-productivity">' +
+      '<section class="gdi-es-section gdi-es-receipt">' +
       '<header class="gdi-es-section__head">' +
-      "<h2>" +
-      esc(section.headline || "Your Time. Better Invested.") +
-      "</h2>" +
+      "<h2>Dealality Research Receipt</h2>" +
       "<p>" +
       esc(
-        section.lede ||
-          "Less time searching for business. More time building relationships, pursuing opportunities and converting demand into bookings.",
+        productivity.lede ||
+          "Your Time. Better Invested. — less time searching for demand, more time converting opportunities.",
       ) +
       "</p></header>" +
-      '<div class="gdi-es-kpi-ribbon gdi-es-productivity__kpis">' +
-      metrics
-        .map(function (m) {
-          var note =
-            m.value == null
-              ? availabilityNote(m) || m.note || "Unavailable"
-              : m.estimateClass === "PROVISIONAL_ESTIMATE"
-                ? "Provisional estimate"
-                : "";
-          return (
-            '<div class="gdi-es-kpi' +
-            (m.value == null ? " is-unavailable" : "") +
-            '"><div class="gdi-es-kpi__value">' +
-            esc(fmtProductivityValue(m)) +
-            '</div><div class="gdi-es-kpi__label">' +
-            esc(m.label || m.key) +
-            "</div>" +
-            (note
-              ? '<div class="gdi-es-kpi__note">' + esc(note) + "</div>"
-              : "") +
-            "</div>"
-          );
-        })
-        .join("") +
-      "</div>" +
+      (prodMetrics.length
+        ? '<div class="gdi-es-kpi-ribbon gdi-es-receipt__productivity">' +
+          prodMetrics
+            .map(function (m) {
+              var note =
+                m.value == null
+                  ? availabilityNote(m) || "Unavailable"
+                  : m.estimateClass === "PROVISIONAL_ESTIMATE"
+                    ? "Provisional estimate"
+                    : "";
+              return kpiCard(
+                m.label || m.key,
+                m.value,
+                note,
+                m.note || m.tooltip,
+              );
+            })
+            .join("") +
+          "</div>"
+        : "") +
+      (metrics.length
+        ? '<div class="gdi-es-receipt-grid">' +
+          metrics
+            .map(function (m) {
+              return kpiCard(
+                m.label || m.key,
+                m.value,
+                availabilityNote(m),
+                m.note,
+              );
+            })
+            .join("") +
+          "</div>"
+        : "") +
       '<details class="gdi-es-methodology">' +
-      "<summary>How This Estimate Is Calculated</summary>" +
+      "<summary>How Research Hours Are Estimated</summary>" +
       "<p>" +
       esc(
-        section.methodologySummary ||
-          "Verified research activity volumes × provisional manual effort benchmarks, minus residual hotel review time.",
+        productivity.methodologySummary ||
+          "Verified research activity volumes × provisional benchmarks − residual hotel review time.",
       ) +
       "</p>" +
       "<p>" +
       esc(
-        section.disclaimer ||
-          "Estimated research productivity — not payroll savings and not booked revenue.",
+        productivity.disclaimer ||
+          "Provisional estimate — not payroll savings and not booked revenue.",
       ) +
       "</p></details></section>"
     );
@@ -413,54 +487,55 @@
 
   function renderOutcomes(section) {
     var s = section || {};
-    function row(label, m) {
-      var val = m && m.value != null ? fmtNum(m.value) : "—";
-      var note =
-        m && m.value == null
-          ? " <span class=\"gdi-es-kpi__note\">(" +
-            esc(availabilityNote(m) || "Unavailable") +
-            ")</span>"
-          : "";
+    var items = [
+      { label: "Opportunities Pursued", m: s.opportunitiesPursued },
+      { label: "RFPs & Proposals", m: s.rfpOrProposalActivity },
+      { label: "Business Won", m: s.opportunitiesWon },
+      { label: "Business Lost", m: s.opportunitiesLost },
+      { label: "Booked Room Nights", m: s.reportedRoomNights },
+      { label: "Attributed Revenue", m: s.attributedRevenue },
+    ];
+    var anyValue = items.some(function (it) {
+      return it.m && it.m.value != null;
+    });
+    if (!anyValue) {
       return (
-        "<li><span>" +
-        esc(label) +
-        "</span><strong>" +
-        esc(val) +
-        "</strong>" +
-        note +
-        "</li>"
+        '<p class="gdi-es-muted">' +
+        "Commercial outcomes appear here when the hotel reports pursuits, proposals, wins, or booked room nights. Research-time estimates stay separate and are never shown as realized revenue." +
+        "</p>"
       );
     }
     return (
-      '<ul class="gdi-es-outcomes">' +
-      row("Opportunities Pursued", s.opportunitiesPursued) +
-      row("RFP / Proposal", s.rfpOrProposalActivity) +
-      row("Business Won", s.opportunitiesWon) +
-      row("Business Lost", s.opportunitiesLost) +
-      row("Reported Room Nights", s.reportedRoomNights) +
-      "</ul>" +
-      '<p class="gdi-es-muted">Estimated opportunity potential is never mixed with realized business.</p>'
+      '<div class="gdi-es-kpi-ribbon gdi-es-outcomes-ribbon">' +
+      items
+        .map(function (it) {
+          return kpiFromObj({
+            label: it.label,
+            value: it.m && it.m.value,
+            availability: it.m && it.m.availability,
+            note: it.m && it.m.note,
+          });
+        })
+        .join("") +
+      "</div>"
     );
   }
 
   function renderCustomerExecutiveSummary(payload, hotelId) {
     var ov = (payload.sections && payload.sections.executiveOverview) || {};
-    var snap =
-      (payload.sections && payload.sections.executiveCommercialSnapshot) || {};
-    var period = (snap.reportingPeriod && snap.reportingPeriod.label) || "—";
     var priorities =
       (ov && ov.priorityCommercialOpportunities) ||
       (payload.sections && payload.sections.priorityCommercialOpportunities) ||
       {};
+    var productivity =
+      ov.researchProductivity ||
+      (ov.customerResearchReceipt &&
+        ov.customerResearchReceipt.researchProductivity) ||
+      {};
     return (
       '<section class="gdi-es-section">' +
       '<header class="gdi-es-section__head"><h2>Commercial Snapshot</h2>' +
-      "<p>Reporting period: " +
-      esc(period) +
-      (snap.lastResearchCompletionDate
-        ? " · As of " + esc(String(snap.lastResearchCompletionDate).slice(0, 10))
-        : "") +
-      "</p></header>" +
+      "<p>Key commercial metrics for this hotel’s qualified demand.</p></header>" +
       '<div class="gdi-es-kpi-ribbon">' +
       (ov.commercialKpiRibbon || [])
         .map(function (k) {
@@ -472,53 +547,20 @@
       renderAssessment(ov.executiveAssessment) +
       "</section>" +
       '<div class="gdi-es-split">' +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Demand Composition</h2><p>Qualified inventory by canonical demand segment.</p></header>' +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Demand Composition</h2><p>Qualified opportunities by demand segment.</p></header>' +
       renderBarChart(ov.demandComposition) +
       "</section>" +
       '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Demand Outlook</h2><p>Evidenced future demand windows only.</p></header>' +
       renderOutlook(ov.commercialDemandOutlook) +
       "</section></div>" +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Dealality Research Receipt</h2><p>Commercially meaningful research metrics for this hotel.</p></header>' +
-      renderReceipt(ov.customerResearchReceipt) +
-      "</section>" +
-      renderResearchProductivity(
-        ov.researchProductivity ||
-          (ov.customerResearchReceipt &&
-            ov.customerResearchReceipt.researchProductivity),
-      ) +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2>' +
-      "<p>Same opportunity tiles as Group &amp; Demand Opportunities.</p></header>" +
+      renderConsolidatedReceipt(ov.customerResearchReceipt, productivity) +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2></header>' +
       renderPrioritySharedTiles(priorities, hotelId) +
       "</section>" +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Outcomes &amp; Investment Recovery</h2></header>' +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Outcomes</h2>' +
+      "<p>Verified hotel-reported results — separate from research-time estimates.</p></header>" +
       renderOutcomes(ov.commercialOutcomes) +
-      '<div class="gdi-es-invest-split">' +
-      '<div class="gdi-es-invest-card"><h3>A. Estimated Research Productivity Value</h3><p>' +
-      esc(
-        (ov.investmentRecovery &&
-          ov.investmentRecovery.categories &&
-          ov.investmentRecovery.categories.estimatedResearchProductivityValue &&
-          ov.investmentRecovery.categories.estimatedResearchProductivityValue
-            .note) ||
-          "Redeployable research time estimate — not actual payroll savings.",
-      ) +
-      "</p></div>" +
-      '<div class="gdi-es-invest-card"><h3>B. Verified Incremental Commercial Value</h3><p>' +
-      esc(
-        (ov.investmentRecovery &&
-          ov.investmentRecovery.categories &&
-          ov.investmentRecovery.categories.verifiedIncrementalCommercialValue &&
-          ov.investmentRecovery.categories.verifiedIncrementalCommercialValue
-            .note) ||
-          "Hotel-reported or otherwise verified commercial outcomes only.",
-      ) +
-      "</p></div></div>" +
-      '<p class="gdi-es-muted">' +
-      esc(
-        (ov.investmentRecovery && ov.investmentRecovery.customerCopy) ||
-          "Category A and Category B are never combined into a single realized ROI claim.",
-      ) +
-      "</p></section>"
+      "</section>"
     );
   }
 
@@ -638,16 +680,36 @@
   }
 
   function renderPayload(payload, hotelId) {
+    var snap =
+      (payload.sections && payload.sections.executiveCommercialSnapshot) || {};
+    var period = snap.reportingPeriod || {};
+    var asOf =
+      period.asOfDay ||
+      (snap.lastResearchCompletionDay
+        ? String(snap.lastResearchCompletionDay).slice(0, 10)
+        : snap.lastResearchCompletionDate
+          ? String(snap.lastResearchCompletionDate).slice(0, 10)
+          : "");
+    var metaParts = [];
+    if (payload.hotelName) metaParts.push(esc(payload.hotelName));
+    if (asOf) metaParts.push("Updated " + esc(asOf));
+    if (period.customerLabel || period.label) {
+      var periodLabel = String(period.customerLabel || period.label || "");
+      // Avoid duplicating the same date line when label already embeds it.
+      if (periodLabel && (!asOf || periodLabel.indexOf(asOf) === -1)) {
+        metaParts.push(esc(periodLabel));
+      }
+    }
     return (
-      '<div class="gdi-es-page" data-ui-version="v2" data-es-layout="consolidated-customer">' +
+      '<div class="gdi-es-page" data-ui-version="v2" data-es-layout="premium-customer">' +
       '<header class="gdi-es-hero">' +
       '<div class="gdi-es-hero__title"><h1>Executive Summary</h1>' +
       stagedChip(payload) +
       "</div>" +
-      (payload.hotelName
-        ? '<div class="gdi-es-hotel">' + esc(payload.hotelName) + "</div>"
+      (metaParts.length
+        ? '<div class="gdi-es-hero__meta">' + metaParts.join(" · ") + "</div>"
         : "") +
-      '<p class="gdi-es-hero__lede">Commercial intelligence for leadership — not a technical validation page.</p>' +
+      '<p class="gdi-es-hero__lede">Commercial briefing for hotel leadership and regional commercial teams.</p>' +
       "</header>" +
       '<div class="gdi-es-body">' +
       renderCustomerExecutiveSummary(payload, hotelId) +
