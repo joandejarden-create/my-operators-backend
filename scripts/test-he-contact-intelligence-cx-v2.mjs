@@ -83,17 +83,19 @@ run("build_purpose_groups_no_global_recommendation", () => {
   assert.ok(ownership.people.some((p) => p.name === "Jeff Mullen"));
 });
 
-run("renderer_source_customer_language_and_uniform_cards", () => {
+run("renderer_source_customer_language_and_directory_table_v3", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
   const css = read("public/css/hotel-contact-intelligence.css");
   assert.ok(hci.includes("Find Contact Details"));
   assert.ok(hci.includes("Hotel Leadership"));
-  assert.ok(hci.includes("Sales & Commercial Leadership"));
+  assert.ok(hci.includes("Sales & Commercial"));
   assert.ok(hci.includes("Ownership & Asset Management"));
-  assert.ok(hci.includes("Management Company & Regional Leadership"));
+  assert.ok(hci.includes("Management Company"));
   assert.ok(hci.includes("data-hci-purpose-filter"));
-  assert.ok(hci.includes("showWhenEmpty"));
-  assert.ok(hci.includes("data-hci-section-empty"));
+  assert.ok(hci.includes("data-hci-cx=\"v3\""));
+  assert.ok(hci.includes("data-hci-directory=\"v3\""));
+  assert.ok(hci.includes("hci-directory-table"));
+  assert.ok(hci.includes("DealalitySortableTable"));
   assert.ok(hci.includes("Direct Business Email"));
   assert.ok(hci.includes("Direct Business Phone"));
   assert.ok(hci.includes("Company website") || hci.includes("companyWebsite"));
@@ -104,7 +106,7 @@ run("renderer_source_customer_language_and_uniform_cards", () => {
   assert.ok(!hci.includes("Surfe on demand"));
   assert.ok(!hci.includes("Inferred · not property-confirmed"));
   assert.ok(!hci.includes("Organizational Contact Route"));
-  assert.ok(css.includes("hci-person--featured") && css.includes("width: 100%"));
+  assert.ok(css.includes("hci-directory-table") || css.includes("hci-purpose-filter"));
   assert.ok(css.includes("hci-purpose-filter"));
 });
 
@@ -211,12 +213,33 @@ run("screenshot_and_api_evidence_artifacts_present", () => {
     },
     unresolvedItems: [],
   };
+  sandbox.window.DealalitySortableTable = {
+    renderMarkup(opts) {
+      const rows = opts.rows || [];
+      return (
+        '<div class="dl-table-wrap"><table class="dl-table hci-directory-table"><tbody>' +
+        rows
+          .map(
+            (r) =>
+              "<tr class=\"hci-dir-row\"><td>" +
+              (r._cells?.name || r.name) +
+              "</td><td>" +
+              (r._cells?.organization || r.organization) +
+              "</td></tr>"
+          )
+          .join("") +
+        "</tbody></table></div>"
+      );
+    },
+    bind() {},
+  };
   const html = HCI.renderViewModel(vmModel);
-  run("vm_render_purpose_sections_and_hotel_name", () => {
+  run("vm_render_directory_table_and_hotel_name", () => {
     const subtitle = (html.match(/<p class="hci-subtitle">([^<]*)<\/p>/) || [])[1] || "";
-    assert.equal(subtitle.trim(), "Bethesda Marriott");
-    assert.ok(html.includes("Hotel Leadership"));
-    assert.ok(/Ownership &amp; Asset Management|Ownership & Asset Management/.test(html));
+    assert.ok(subtitle.includes("Bethesda Marriott"));
+    assert.ok(html.includes("data-hci-cx=\"v3\""));
+    assert.ok(html.includes("data-hci-directory=\"v3\"") || html.includes("hci-directory-table"));
+    assert.ok(html.includes("All Contacts") || html.includes("hci-purpose-filter"));
     assert.ok(html.includes("Meinrad Lang III"));
     assert.ok(html.includes("Katherine Button"));
     assert.ok(html.includes("Jeff Mullen"));
@@ -224,12 +247,13 @@ run("screenshot_and_api_evidence_artifacts_present", () => {
     assert.ok(!html.includes("Recommended First Contact"));
     assert.ok(!html.includes("Owner: Mullen"));
     assert.ok(!html.includes("Inferred · not property-confirmed"));
-    assert.ok(html.includes("Hotel responsibility not confirmed"));
     assert.ok(html.includes("Company contact routes") || html.includes("Company website"));
-    const articles = html.match(/<article class="hci-person"/g) || [];
-    assert.ok(articles.length >= 3, "uniform hci-person cards only");
     assert.ok(!html.includes("hci-person--featured"));
     assert.ok(!html.includes("hci-person--compact"));
+    // Marriott people must not surface mullencap in their directory row cells
+    const meinradIdx = html.indexOf("Meinrad Lang III");
+    const slice = html.slice(Math.max(0, meinradIdx - 50), meinradIdx + 400);
+    assert.ok(!/mullencap/i.test(slice), "Meinrad row must not inherit mullencap route");
   });
 }
 

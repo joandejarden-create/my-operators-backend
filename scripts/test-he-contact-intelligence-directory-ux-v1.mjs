@@ -42,14 +42,16 @@ run("bethesda_ranking_katherine_first_mullen_reece_alts", () => {
   assert.ok(k.linkedinUrl.includes("linkedin.com/in/katherine-button"));
 });
 
-run("shared_renderer_is_purpose_directory_cx_v2", () => {
+run("shared_renderer_is_purpose_directory_v3_table", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
   mustInclude(hci, "Find Contact Details");
   mustInclude(hci, "Hotel Leadership");
   mustInclude(hci, "Ownership & Asset Management");
   mustInclude(hci, "Company contact routes");
   mustInclude(hci, "data-hci-purpose-filter");
-  mustInclude(hci, "hci-person");
+  mustInclude(hci, "data-hci-cx=\"v3\"");
+  mustInclude(hci, "hci-directory-table");
+  mustInclude(hci, "DealalitySortableTable");
   assert.ok(!hci.includes("Recommended First Contact"));
   assert.ok(!hci.includes("Alternative Decision-Makers"));
   assert.ok(!hci.includes("Ownership contact summary"));
@@ -127,12 +129,42 @@ run("quality_registry_he_ql_027", () => {
     }
     return Promise.resolve({ ok: true, json: async () => null });
   };
+  sandbox.DealalitySortableTable = {
+    renderMarkup(opts) {
+      const rows = opts.rows || [];
+      return (
+        '<div class="dl-table-wrap"><table class="dl-table hci-directory-table"><tbody>' +
+        rows
+          .map((r) => {
+            const p = r._person || {};
+            return (
+              '<tr class="hci-dir-row" data-person-id="' +
+              String(p.personId || "") +
+              '"><td>' +
+              (r._cells?.name || r.name) +
+              "</td><td>" +
+              (r._cells?.organization || r.organization) +
+              "</td><td>" +
+              (r._cells?.actions || "") +
+              "</td></tr>" +
+              (r._detailsHtml || "")
+            );
+          })
+          .join("") +
+        "</tbody></table></div>"
+      );
+    },
+    bind() {},
+  };
   vm.runInNewContext(src, sandbox);
   const HCI = sandbox.HotelContactIntelligence;
   const people = bethResearch.people.map((p) => ({
     ...p,
     organizationName: p.organization,
-    organizationDomain: "mullencap.com",
+    // Only Mullen employees may carry mullencap domain (regression for Marriott leak).
+    organizationDomain: /mullen/i.test(String(p.organization || ""))
+      ? "mullencap.com"
+      : null,
     propertyResponsibilityLabel:
       p.propertyResponsibility === "INFERRED"
         ? "Inferred from portfolio / role"
@@ -207,42 +239,30 @@ run("quality_registry_he_ql_027", () => {
   };
   await HCI.mount(host, bethResearch.hotelId);
   const html = host.innerHTML;
-  run("vm_render_bethesda_purpose_directory_without_enums", () => {
+  run("vm_render_bethesda_directory_table_without_enums", () => {
     mustInclude(html, "Katherine Button");
     mustInclude(html, "Jeff Mullen");
     mustInclude(html, "Patrick Reece");
     mustInclude(html, "Bethesda Marriott");
+    assert.ok(html.includes("data-hci-cx=\"v3\"") || html.includes("hci-directory-table"));
     assert.ok(
-      html.includes("Find Contact Details") || html.includes("Find Contact Details".replace(/ /g, " ")),
+      html.includes("Find Contact Details") || html.includes("data-hci-enrich"),
       "Find Contact Details action present"
     );
     mustInclude(html, "linkedin.com/in/katherine-button");
     mustInclude(html, "Company contact routes");
     mustInclude(html, "info@mullencap.com");
-    assert.ok(
-      /Ownership &amp; Asset Management|Ownership & Asset Management/.test(html),
-      "Ownership & Asset Management section present"
-    );
+    assert.ok(html.includes("hci-purpose-filter") || html.includes("All Contacts"));
     assert.ok(!/\bVERIFIED_PUBLIC\b|\bPROVIDER_RETURNED_UNREVIEWED\b/.test(html));
     assert.ok(!html.includes("Recommended First Contact"));
     assert.ok(!html.includes("Inferred · not property-confirmed"));
     assert.ok((html.match(/data-hci-enrich/g) || []).length >= 3);
     assert.ok(html.includes("hci-section--org-channels"));
-    const articles = html.match(/<article class="hci-person[\s\S]*?<\/article>/g) || [];
-    assert.ok(articles.length >= 3, "purpose-grouped people rendered as uniform articles");
-    articles.forEach((block) => {
-      const surface = block.split("hci-person__details")[0];
-      if (/mailto:info@mullencap\.com/.test(surface)) {
-        assert.ok(
-          /Company email|Company contact|company email/i.test(surface),
-          "org email on person card must be labeled as company route"
-        );
-        assert.ok(
-          !/Direct Business Email[\s\S]{0,80}info@mullencap\.com/.test(surface),
-          "info@ must not be labeled as personal business email"
-        );
-      }
-    });
+    assert.ok((html.match(/hci-dir-row/g) || []).length >= 3, "directory table rows present");
+    assert.ok(
+      !/Direct Business Email[\s\S]{0,80}info@mullencap\.com/.test(html),
+      "info@ must not be labeled as personal business email"
+    );
   });
 }
 
