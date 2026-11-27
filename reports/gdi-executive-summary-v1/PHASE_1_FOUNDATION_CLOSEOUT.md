@@ -61,7 +61,13 @@ No hotels were published to facilitate testing.
 - Fail-closed page-count === 2 in Phase 4  
 - Compact receipt helper: `buildCompactResearchReceiptForPdf`
 
-## 7. Gaps → Phase 2
+## 7. Permanent principle (docs only — no Phase 1 scope expansion)
+
+Founder accepted **Dealality Research Receipt** as a long-term product-wide brand/design principle.
+Implementation remains **GDI-only**. Do not build ADP / Hotel Explorer / Deal Opportunities receipts or a cross-product reporting engine in this cycle.
+Canonical principles: `docs/ai-build-system/DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md`.
+
+## 8. Gaps → Phase 2
 
 1. Durable hotel-attributable Research Receipt telemetry (signals evaluated, screened-out, reuse).  
 2. Need-period markers on package DTOs where missing.  
@@ -69,11 +75,11 @@ No hotels were published to facilitate testing.
 4. Strict two-page PDF export + layout validation.  
 5. Authorized investment / contribution inputs (no hardcoded ADR).
 
-## 8. Governance held
+## 9. Governance held
 
 NO_PAID_RESEARCH · NO_PAID_ENRICHMENT · NO_FINDYMAIL · NO_SURFE_AUTO · NO_AIRTABLE_WRITES · NO_STAGED_ACTIVATE · NO_CURRENT_PUBLISH · NO_PRODUCTION_DEPLOYMENT · no Wyndham write-set interference
 
-## 9. Exact validation commands
+## 10. Exact validation commands
 
 ```powershell
 cd C:\Dev\dealality\ws-gdi
