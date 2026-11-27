@@ -2561,6 +2561,54 @@
     };
   }
 
+  function personLinkedInFromRaw(raw) {
+    if (!raw || typeof raw !== "object") return "";
+    var direct = String(
+      raw.linkedinUrl ||
+        raw.linkedin_url ||
+        raw.professional_profile_url ||
+        (raw.professional_profile && raw.professional_profile.url) ||
+        ""
+    ).trim();
+    if (/^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(direct)) {
+      return direct;
+    }
+    if (Array.isArray(raw.profileUrls)) {
+      for (var i = 0; i < raw.profileUrls.length; i++) {
+        var pr = raw.profileUrls[i];
+        var u = pr && pr.url ? String(pr.url).trim() : "";
+        if (/^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(u)) return u;
+      }
+    }
+    if (Array.isArray(raw.channels)) {
+      for (var c = 0; c < raw.channels.length; c++) {
+        var ch = raw.channels[c];
+        if (!ch) continue;
+        var kind = String(ch.kind || ch.type || "");
+        var val = String(ch.value || ch.url || "").trim();
+        if (
+          (/linkedin/i.test(kind) || /linkedin\.com\/in\//i.test(val)) &&
+          /^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(val)
+        ) {
+          return val;
+        }
+      }
+    }
+    return "";
+  }
+
+  function enrichOrgKeyPeopleRowProfile(row, raw) {
+    if (!row || !raw) return;
+    if (personProfessionalProfile(row).verified) return;
+    var li = personLinkedInFromRaw(raw);
+    if (!li) return;
+    row.linkedinUrl = li;
+    row.professional_profile_url = li;
+    row.professional_profile_verified = true;
+    row.professional_profile = { type: "LINKEDIN", url: li, verified: true };
+    row.profileUrls = [{ type: "LINKEDIN", url: li, verified: true }];
+  }
+
   function normalizeOrgKeyPeopleRows(people) {
     var rows = [];
     var seen = {};
@@ -2569,8 +2617,11 @@
       var name = String(raw.display_name || raw.name || "").trim();
       if (!name) return;
       var key = name.toLowerCase();
-      if (seen[key]) return;
-      seen[key] = true;
+      if (seen[key]) {
+        // Seed rows often lack LinkedIn; enrich from later Contact Intelligence rows.
+        enrichOrgKeyPeopleRowProfile(seen[key], raw);
+        return;
+      }
       var relevance = String(
         raw.whyRelevant ||
           raw.strategic_relevance ||
@@ -2607,7 +2658,8 @@
       ).trim();
       if (/VERIFIED|HIGH/i.test(verification)) verification = "Verified identity";
       else if (/PROPOSED|STAGED|MEDIUM/i.test(verification)) verification = "Proposed";
-      rows.push({
+      var linkedin = personLinkedInFromRaw(raw);
+      var row = {
         name: name,
         title: String(raw.title || raw.role || "").trim() || "—",
         organization: String(raw.organization || raw.organizationName || "").trim() || "—",
@@ -2617,16 +2669,24 @@
         verificationStatus: verification || "Proposed",
         confidence: raw.confidence,
         professional_profile: raw.professional_profile,
-        professional_profile_url: raw.professional_profile_url || raw.linkedinUrl,
-        professional_profile_verified: raw.professional_profile_verified,
-        linkedinUrl: raw.linkedinUrl,
-        profileUrls: raw.profileUrls,
+        professional_profile_url: raw.professional_profile_url || raw.linkedinUrl || linkedin || null,
+        professional_profile_verified:
+          raw.professional_profile_verified === true || Boolean(linkedin),
+        linkedinUrl: raw.linkedinUrl || linkedin || null,
+        profileUrls:
+          raw.profileUrls ||
+          (linkedin ? [{ type: "LINKEDIN", url: linkedin, verified: true }] : null),
         decision_authority_category:
           raw.decision_authority_category || raw.role_group || raw.contactClass || raw.category,
         category: raw.role_group || raw.contactClass || raw.category,
         strategic_relevance: relevance,
         relationship_to_hotel: relevance,
-      });
+      };
+      if (linkedin && !personProfessionalProfile(row).verified) {
+        enrichOrgKeyPeopleRowProfile(row, { linkedinUrl: linkedin });
+      }
+      seen[key] = row;
+      rows.push(row);
     });
     return rows;
   }
@@ -2859,6 +2919,9 @@
     return (pkgPeople || [])
       .map(function (p) {
         if (!p || typeof p !== "object") return null;
+        // Same canonical person LinkedIn as Contact Intelligence UI:
+        // PERSON_LINKEDIN channel value (linkedin.com/in/…), never company pages.
+        var linkedin = personLinkedInFromRaw(p);
         return {
           name: p.display_name || p.name || "",
           title: p.title || p.role || "",
@@ -2882,9 +2945,15 @@
             /VERIFIED|HIGH/i.test(String(p.verification_status || p.identityVerification || ""))
               ? "Verified"
               : "Directory",
-          linkedinUrl: p.linkedin_url || p.linkedinUrl || null,
-          professional_profile_url: p.linkedin_url || p.linkedinUrl || null,
-          professional_profile_verified: Boolean(p.linkedin_url || p.linkedinUrl),
+          linkedinUrl: linkedin || null,
+          professional_profile_url: linkedin || null,
+          professional_profile_verified: Boolean(linkedin),
+          professional_profile: linkedin
+            ? { type: "LINKEDIN", url: linkedin, verified: true }
+            : null,
+          profileUrls: linkedin
+            ? [{ type: "LINKEDIN", url: linkedin, verified: true }]
+            : [],
           decision_authority_category:
             p.role_group || p.contactClass || p.property_relevance || "contacts",
           category: p.property_relevance || "contacts",
