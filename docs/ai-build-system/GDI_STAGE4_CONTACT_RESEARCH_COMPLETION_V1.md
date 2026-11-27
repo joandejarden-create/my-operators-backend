@@ -42,11 +42,16 @@ pwsh -File scripts/gdi/Invoke-GdiWhoHow.ps1 ...
 pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 ...
 ```
 
-Rematerialize contact hydration (Wyndham example):
+Rematerialize contact hydration / identity recovery (Wyndham example):
 
 ```bash
 node scripts/gdi-wyndham-contact-hydration-rematerialize-v1.mjs --dry-run
-node scripts/gdi-wyndham-contact-hydration-rematerialize-v1.mjs --apply --auth "FOUNDER_GO AUTHORIZE_WYNDHAM_STAGED_CONTACT_HYDRATION_RECOVERY"
+node scripts/gdi-wyndham-contact-hydration-rematerialize-v1.mjs --apply --auth "FOUNDER_GO AUTHORIZE_WYNDHAM_STAGED_CONTACT_ENRICHMENT_COMPLETION"
+# also accepted: FOUNDER_GO AUTHORIZE_WYNDHAM_STAGED_CONTACT_HYDRATION_RECOVERY
 ```
 
-Gate: `npm run test:gdi-contact-research-hydration-v1`
+Identity recoveries require verified LinkedIn-slug evidence (e.g. `Lily Y.` → `Lily Yuan` via `lilyyuan26`). Do not invent surnames.
+
+Findymail remains separate founder credit authorization; no dedicated auto-persist client. Gate when no usable email/phone/**LinkedIn**.
+
+Gates: `npm run test:gdi-contact-research-hydration-v1` · `npm run test:gdi-contact-enrichment-actions-v1` · `npm run test:gdi-list-view-contact-actions-v1`

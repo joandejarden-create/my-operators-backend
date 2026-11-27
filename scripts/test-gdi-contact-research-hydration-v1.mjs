@@ -134,7 +134,7 @@ check("list_html_cache_bust_updated", () => {
     path.join(ROOT, "public/group-demand-intelligence.html"),
     "utf8",
   );
-  assert.match(html, /gdi-commercial-list-table-v1\.js\?v=gdi-contact-hydration-linkedin-v1/);
+  assert.match(html, /gdi-commercial-list-table-v1\.js\?v=gdi-list-cols-simplify-20261127/);
 });
 
 if (failed) {

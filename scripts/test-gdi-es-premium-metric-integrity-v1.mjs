@@ -128,13 +128,15 @@ check("customer_copy_audit_on_shell_assets", () => {
   assert.doesNotMatch(js, /canonical demand segment/i);
   assert.doesNotMatch(js, /Same opportunity tiles as/i);
   assert.match(js, /Dealality Research Receipt/);
-  assert.match(js, /Your Time\. Better Invested/);
+  assert.match(js, /Your [Tt]ime\. Better [Ii]nvested/);
   assert.match(js, /opportunityCardsGridHtml/);
+  assert.match(js, /Research Funnel/);
+  assert.match(js, /gdi-es-kpi__unit/);
   const html = fs.readFileSync(
     path.join(ROOT, "public/group-demand-intelligence.html"),
     "utf8",
   );
-  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-premium-v1/);
+  assert.match(html, /executive-summary-tab\.js\?v=gdi-es-outlook-12mo-kpis-20261127/);
 });
 
 if (failed) {
