@@ -182,6 +182,20 @@
             internalRunbookOnly: false,
             platformAdmin: true
         },
+        '/admin/gdi-sales-performance': {
+            file: '/app/admin/gdi-sales-performance.html',
+            title: 'GDI Sales Performance',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            platformAdmin: true
+        },
+        '/admin/gdi-research-intelligence': {
+            file: '/app/admin/gdi-research-intelligence.html',
+            title: 'GDI Research Intelligence',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            platformAdmin: true
+        },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -376,6 +390,22 @@
                             internalRunbookOnly: false,
                             platformAdmin: true,
                             navId: 'surfe-usage'
+                        },
+                        {
+                            label: 'GDI Sales Performance',
+                            route: '/admin/gdi-sales-performance',
+                            roles: ['admin'],
+                            internalRunbookOnly: false,
+                            platformAdmin: true,
+                            navId: 'gdi-sales-performance'
+                        },
+                        {
+                            label: 'GDI Research Intelligence',
+                            route: '/admin/gdi-research-intelligence',
+                            roles: ['admin'],
+                            internalRunbookOnly: false,
+                            platformAdmin: true,
+                            navId: 'gdi-research-intelligence'
                         },
                         {
                             // Permanent founder review workspace (CURRENT vs PROPOSED).
@@ -982,7 +1012,11 @@
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') {
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
-        if (normalized === '/admin/surfe-usage') {
+        if (
+            normalized === '/admin/surfe-usage' ||
+            normalized === '/admin/gdi-sales-performance' ||
+            normalized === '/admin/gdi-research-intelligence'
+        ) {
             // Parity with SupportAdminGate.isAdminMe / requireAdminAccess (incl. local QA admin).
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
@@ -1000,7 +1034,13 @@
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
         if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
-        if (normalized === '/admin/surfe-usage') return '/home';
+        if (
+            normalized === '/admin/surfe-usage' ||
+            normalized === '/admin/gdi-sales-performance' ||
+            normalized === '/admin/gdi-research-intelligence'
+        ) {
+            return '/home';
+        }
         if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') return '/home';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }

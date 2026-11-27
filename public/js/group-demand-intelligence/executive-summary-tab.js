@@ -1,18 +1,15 @@
 /**
- * GDI Executive Summary tab — V2 full-width commercial dashboard.
- * Three audience perspectives (secondary selector): Executive Overview,
- * Sales Performance, Research Intelligence (founder/admin only).
- * Opportunities remains the default landing tab (wired in app.js).
+ * GDI Executive Summary tab — consolidated customer commercial dashboard.
+ *
+ * Founder direction (simplification): no secondary perspective tabs.
+ * Sales Performance + Research Intelligence live under Admin Resources.
+ * Priority Commercial Opportunities reuse DealalityGdiUi.opportunityTileHtml
+ * (exact same component as Group & Demand Opportunities Tiles View).
  */
 (function (global) {
   "use strict";
 
   var API_BASE = "/api/group-demand-intelligence";
-  var PERSPECTIVE = {
-    EXECUTIVE_OVERVIEW: "EXECUTIVE_OVERVIEW",
-    SALES_PERFORMANCE: "SALES_PERFORMANCE",
-    RESEARCH_INTELLIGENCE: "RESEARCH_INTELLIGENCE",
-  };
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -104,42 +101,6 @@
       return '<span class="gdi-es-status-chip gdi-es-status-chip--current">Current</span>';
     }
     return "";
-  }
-
-  function perspectiveNav(active, available) {
-    var items = [
-      { id: PERSPECTIVE.EXECUTIVE_OVERVIEW, label: "Executive Overview" },
-      { id: PERSPECTIVE.SALES_PERFORMANCE, label: "Sales Performance" },
-    ];
-    if (
-      available &&
-      available.indexOf(PERSPECTIVE.RESEARCH_INTELLIGENCE) >= 0
-    ) {
-      items.push({
-        id: PERSPECTIVE.RESEARCH_INTELLIGENCE,
-        label: "Research Intelligence",
-      });
-    }
-    return (
-      '<div class="gdi-es-perspective" role="tablist" aria-label="Executive Summary perspectives">' +
-      items
-        .map(function (it) {
-          var on = it.id === active;
-          return (
-            '<button type="button" class="gdi-es-perspective__btn' +
-            (on ? " is-active" : "") +
-            '" role="tab" aria-selected="' +
-            (on ? "true" : "false") +
-            '" data-perspective="' +
-            esc(it.id) +
-            '">' +
-            esc(it.label) +
-            "</button>"
-          );
-        })
-        .join("") +
-      "</div>"
-    );
   }
 
   function kpiCard(label, value, note) {
@@ -389,56 +350,63 @@
     );
   }
 
-  function renderPriorities(section, hotelId) {
-    var items = (section && section.items) || [];
-    if (!items.length) {
+  /**
+   * Priority Commercial Opportunities — exact Opportunities Tiles View component.
+   * OOTW badge is outside the tile so the tile markup stays identical.
+   */
+  function renderPrioritySharedTiles(section, hotelId) {
+    var UI = global.DealalityGdiUi;
+    var rows =
+      (section && section.opportunityRows) ||
+      (section && section.items
+        ? section.items
+            .map(function () {
+              return null;
+            })
+            .filter(Boolean)
+        : []);
+    if (!section || (!rows.length && !(section.items && section.items.length))) {
       return '<p class="gdi-es-muted">No priority opportunities available for this publication state.</p>';
     }
+    if (!UI || typeof UI.opportunityCardsGridHtml !== "function") {
+      return (
+        '<p class="gdi-es-banner gdi-es-banner--warn" role="alert">' +
+        "Canonical opportunity tile component failed to load." +
+        "</p>"
+      );
+    }
+    var tileRows = Array.isArray(section.opportunityRows)
+      ? section.opportunityRows.slice(0, 4)
+      : [];
+    if (!tileRows.length) {
+      return '<p class="gdi-es-muted">Priority opportunity rows are unavailable for shared tiles.</p>';
+    }
+    var ootwId =
+      (section.opportunityOfTheWeek &&
+        section.opportunityOfTheWeek.opportunityId) ||
+      (tileRows[0] &&
+        (tileRows[0].opportunityId ||
+          tileRows[0].id ||
+          (tileRows[0].identity && tileRows[0].identity.opportunityId))) ||
+      "";
+    var gridHtml = UI.opportunityCardsGridHtml(tileRows, "tiles", null, {
+      sharedSurface: "executive-summary",
+    });
+    var viewAllHref =
+      "?hotelId=" +
+      encodeURIComponent(hotelId || "") +
+      "&tab=opportunities";
     return (
-      '<div class="gdi-es-priority-grid">' +
-      items
-        .map(function (item, i) {
-          var href =
-            "?hotelId=" +
-            encodeURIComponent(hotelId || "") +
-            "&tab=opportunities&" +
-            (item.deepLinkQuery || "");
-          return (
-            '<article class="gdi-es-priority' +
-            (item.opportunityOfTheWeek || i === 0 ? " is-ootw" : "") +
-            '">' +
-            (item.opportunityOfTheWeek || i === 0
-              ? '<span class="gdi-es-ootw">Opportunity of the Week</span>'
-              : '<span class="gdi-es-rank">#' + (i + 1) + "</span>") +
-            "<h3>" +
-            esc(item.name) +
-            "</h3>" +
-            '<div class="gdi-es-priority__meta">' +
-            esc(item.segment || "—") +
-            " · " +
-            esc(item.demandTiming || "—") +
-            " · " +
-            esc(item.contactActionabilityLabel || "—") +
-            "</div>" +
-            (item.whyItMatters || item.hotelRationale
-              ? "<p>" +
-                esc(item.whyItMatters || item.hotelRationale).slice(0, 220) +
-                "</p>"
-              : "") +
-            (item.recommendedNextAction
-              ? '<p class="gdi-es-priority__action"><strong>Sales Action:</strong> ' +
-                esc(item.recommendedNextAction) +
-                "</p>"
-              : "") +
-            '<a class="gdi-es-deep-link" href="' +
-            esc(href) +
-            '" data-opportunity-id="' +
-            esc(item.opportunityId) +
-            '">Open Opportunity</a>' +
-            "</article>"
-          );
-        })
-        .join("") +
+      '<div class="gdi-es-priority-shared" data-shared-tile-component="DealalityGdiUi.opportunityTileHtml">' +
+      (ootwId
+        ? '<div class="gdi-es-ootw-outside" data-ootw-opportunity-id="' +
+          esc(String(ootwId)) +
+          '"><span class="gdi-es-ootw">Opportunity of the Week</span></div>'
+        : "") +
+      gridHtml +
+      '<p class="gdi-es-view-all"><a class="gdi-es-deep-link gdi-es-view-all__link" href="' +
+      esc(viewAllHref) +
+      '" data-view-all-opportunities="1">View All Opportunities</a></p>' +
       "</div>"
     );
   }
@@ -475,10 +443,15 @@
     );
   }
 
-  function renderExecutiveOverview(payload, hotelId) {
+  function renderCustomerExecutiveSummary(payload, hotelId) {
     var ov = (payload.sections && payload.sections.executiveOverview) || {};
-    var snap = (payload.sections && payload.sections.executiveCommercialSnapshot) || {};
+    var snap =
+      (payload.sections && payload.sections.executiveCommercialSnapshot) || {};
     var period = (snap.reportingPeriod && snap.reportingPeriod.label) || "—";
+    var priorities =
+      (ov && ov.priorityCommercialOpportunities) ||
+      (payload.sections && payload.sections.priorityCommercialOpportunities) ||
+      {};
     return (
       '<section class="gdi-es-section">' +
       '<header class="gdi-es-section__head"><h2>Commercial Snapshot</h2>' +
@@ -513,8 +486,9 @@
           (ov.customerResearchReceipt &&
             ov.customerResearchReceipt.researchProductivity),
       ) +
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2></header>' +
-      renderPriorities(ov.priorityCommercialOpportunities, hotelId) +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Priority Commercial Opportunities</h2>' +
+      "<p>Same opportunity tiles as Group &amp; Demand Opportunities.</p></header>" +
+      renderPrioritySharedTiles(priorities, hotelId) +
       "</section>" +
       '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Commercial Outcomes &amp; Investment Recovery</h2></header>' +
       renderOutcomes(ov.commercialOutcomes) +
@@ -553,7 +527,7 @@
     var funnel = sp.funnel || {};
     var focus = sp.commercialFocus || {};
     return (
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Sales Performance</h2><p>Pursuit priorities for hotel sales leadership.</p></header>' +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>GDI Sales Performance</h2><p>Internal commercial performance for Dealality founder and admin users.</p></header>' +
       '<div class="gdi-es-kpi-ribbon">' +
       (sp.kpis || [])
         .map(function (k) {
@@ -590,7 +564,7 @@
             "</li>"
           );
         })
-        .join("") || "<li class=\"gdi-es-muted\">None queued</li>") +
+        .join("") || '<li class="gdi-es-muted">None queued</li>') +
       "</ul></div>" +
       '<div class="gdi-es-focus-card"><h3>Upcoming Booking Windows</h3><ul>' +
       ((focus.upcomingBookingWindows || [])
@@ -600,17 +574,25 @@
           );
         })
         .join("") ||
-        "<li class=\"gdi-es-muted\">No established event months</li>") +
+        '<li class="gdi-es-muted">No established event months</li>') +
       "</ul></div>" +
       '<div class="gdi-es-focus-card"><h3>Account &amp; Competitive</h3><ul>' +
       "<li>Corporate account actions: " +
-      esc(focus.corporateAccountDevelopment == null ? "—" : focus.corporateAccountDevelopment) +
+      esc(
+        focus.corporateAccountDevelopment == null
+          ? "—"
+          : focus.corporateAccountDevelopment,
+      ) +
       "</li>" +
       "<li>Competitive capture: " +
       esc(focus.competitiveCapture == null ? "—" : focus.competitiveCapture) +
       "</li>" +
       "<li>Need-period opportunities: " +
-      esc(focus.needPeriodOpportunities == null ? "—" : focus.needPeriodOpportunities) +
+      esc(
+        focus.needPeriodOpportunities == null
+          ? "—"
+          : focus.needPeriodOpportunities,
+      ) +
       "</li></ul></div></div></section>" +
       renderSalesTimeSaved(sp.researchTimeSaved)
     );
@@ -626,7 +608,7 @@
       );
     }
     return (
-      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>Research Intelligence</h2>' +
+      '<section class="gdi-es-section"><header class="gdi-es-section__head"><h2>GDI Research Intelligence</h2>' +
       "<p>Internal operational metrics for qualified inventory grain. Raw discovery volume is separate.</p></header>" +
       '<div class="gdi-es-kpi-ribbon">' +
       (ri.metrics || [])
@@ -639,7 +621,7 @@
         })
         .join("") +
       "</div>" +
-      "<h3 class=\"gdi-es-subhead\">Demand Segment Coverage</h3>" +
+      '<h3 class="gdi-es-subhead">Demand Segment Coverage</h3>' +
       renderBarChart(ri.demandComposition) +
       (ri.researchProductivity
         ? '<p class="gdi-es-muted">Benchmark status: ' +
@@ -655,24 +637,9 @@
     );
   }
 
-  function renderPayload(payload, hotelId, perspective) {
-    var available =
-      (payload.perspectives && payload.perspectives.available) ||
-      [PERSPECTIVE.EXECUTIVE_OVERVIEW, PERSPECTIVE.SALES_PERFORMANCE];
-    var active = perspective || PERSPECTIVE.EXECUTIVE_OVERVIEW;
-    if (available.indexOf(active) < 0) active = PERSPECTIVE.EXECUTIVE_OVERVIEW;
-
-    var body = "";
-    if (active === PERSPECTIVE.SALES_PERFORMANCE) {
-      body = renderSalesPerformance(payload);
-    } else if (active === PERSPECTIVE.RESEARCH_INTELLIGENCE) {
-      body = renderResearchIntelligence(payload);
-    } else {
-      body = renderExecutiveOverview(payload, hotelId);
-    }
-
+  function renderPayload(payload, hotelId) {
     return (
-      '<div class="gdi-es-page" data-ui-version="v2">' +
+      '<div class="gdi-es-page" data-ui-version="v2" data-es-layout="consolidated-customer">' +
       '<header class="gdi-es-hero">' +
       '<div class="gdi-es-hero__title"><h1>Executive Summary</h1>' +
       stagedChip(payload) +
@@ -682,11 +649,8 @@
         : "") +
       '<p class="gdi-es-hero__lede">Commercial intelligence for leadership — not a technical validation page.</p>' +
       "</header>" +
-      perspectiveNav(active, available) +
-      '<div class="gdi-es-body" data-active-perspective="' +
-      esc(active) +
-      '">' +
-      body +
+      '<div class="gdi-es-body">' +
+      renderCustomerExecutiveSummary(payload, hotelId) +
       "</div></div>"
     );
   }
@@ -698,24 +662,29 @@
     var hotelId = String(opts.hotelId || "").trim();
     var active = true;
     var lastPayload = null;
-    var perspective = PERSPECTIVE.EXECUTIVE_OVERVIEW;
 
-    function bindPerspective() {
-      root.querySelectorAll("[data-perspective]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          perspective = btn.getAttribute("data-perspective");
-          if (lastPayload) {
-            root.innerHTML = renderPayload(lastPayload, hotelId, perspective);
-            bindPerspective();
-            bindDeepLinks();
+    function bindInteractions() {
+      root.querySelectorAll("[data-open]").forEach(function (el) {
+        el.addEventListener("click", function (ev) {
+          var innermost = ev.target.closest("[data-open]");
+          if (innermost !== el) return;
+          var id = el.getAttribute("data-open");
+          if (!id) return;
+          if (typeof opts.onOpenOpportunity === "function") {
+            ev.preventDefault();
+            opts.onOpenOpportunity(id);
           }
         });
       });
-    }
-
-    function bindDeepLinks() {
       root.querySelectorAll("a.gdi-es-deep-link").forEach(function (a) {
         a.addEventListener("click", function (ev) {
+          if (a.getAttribute("data-view-all-opportunities") === "1") {
+            if (typeof opts.onOpenOpportunity === "function") {
+              ev.preventDefault();
+              opts.onOpenOpportunity(null);
+            }
+            return;
+          }
           if (typeof opts.onOpenOpportunity === "function") {
             ev.preventDefault();
             opts.onOpenOpportunity(a.getAttribute("data-opportunity-id"));
@@ -755,9 +724,8 @@
           return;
         }
         lastPayload = data;
-        root.innerHTML = renderPayload(data, hotelId, perspective);
-        bindPerspective();
-        bindDeepLinks();
+        root.innerHTML = renderPayload(data, hotelId);
+        bindInteractions();
       } catch (err) {
         if (!active) return;
         root.innerHTML =
@@ -769,7 +737,6 @@
     function setHotelId(next) {
       hotelId = String(next || "").trim();
       lastPayload = null;
-      perspective = PERSPECTIVE.EXECUTIVE_OVERVIEW;
       return load();
     }
 
@@ -791,7 +758,10 @@
   global.DealalityGdiExecutiveSummaryTab = {
     mount: mount,
     createTabController: createTabController,
+    renderCustomerExecutiveSummary: renderCustomerExecutiveSummary,
+    renderSalesPerformance: renderSalesPerformance,
+    renderResearchIntelligence: renderResearchIntelligence,
+    renderPrioritySharedTiles: renderPrioritySharedTiles,
     _active: false,
-    PERSPECTIVE: PERSPECTIVE,
   };
 })(typeof window !== "undefined" ? window : globalThis);

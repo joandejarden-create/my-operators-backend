@@ -94,12 +94,22 @@ assert.equal(
 
 const stripped = stripResearchIntelligencePerspective(withIntel);
 assert.equal(stripped.sections.researchIntelligence, undefined);
+assert.equal(stripped.sections.salesPerformance, undefined);
 assert.equal(
   stripped.perspectives.available.includes(
     EXEC_SUMMARY_PERSPECTIVE.RESEARCH_INTELLIGENCE,
   ),
   false,
 );
+assert.equal(
+  stripped.perspectives.available.includes(
+    EXEC_SUMMARY_PERSPECTIVE.SALES_PERFORMANCE,
+  ),
+  false,
+);
+assert.deepEqual(stripped.perspectives.available, [
+  EXEC_SUMMARY_PERSPECTIVE.EXECUTIVE_OVERVIEW,
+]);
 
 const customerish = buildGdiExecutiveSummaryV2({
   hotelId: "recnPB3Q02NO8Ma1o",

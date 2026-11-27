@@ -2176,9 +2176,9 @@
           hotelId: state.hotelId,
           api: api,
           onOpenOpportunity: function (opportunityId) {
-            if (!opportunityId) return;
             state.tab = "opportunities";
             render();
+            if (!opportunityId) return;
             openDetail(opportunityId).catch(function (err) {
               handleLoadFailure(err);
             });

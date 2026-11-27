@@ -256,6 +256,7 @@ export async function getGdiExecutiveSummary(req, res) {
       version: GDI_EXECUTIVE_SUMMARY_V2,
       v1CompatVersion: GDI_EXECUTIVE_SUMMARY_V1,
       researchIntelligenceAuthorized: isFounderAdmin === true,
+      salesPerformanceAuthorized: isFounderAdmin === true,
     });
   } catch (err) {
     console.error("[gdi-executive-summary]", err);
