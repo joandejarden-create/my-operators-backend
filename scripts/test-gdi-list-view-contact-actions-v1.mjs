@@ -10,7 +10,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-list-columns-hydration-v1";
+const CACHE = "gdi-competitive-filter-layout-v1";
 
 let failed = 0;
 function check(name, fn) {

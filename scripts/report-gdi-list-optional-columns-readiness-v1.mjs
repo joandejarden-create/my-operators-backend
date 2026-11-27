@@ -101,7 +101,7 @@ let md = `# GDI List View — Optional Column Readiness Assessment
 
 Date: 2026-11-27  
 Server: http://localhost:8080 (ws-gdi cumulative)  
-Cache: gdi-list-columns-hydration-v1  
+Cache: gdi-competitive-filter-layout-v1  
 Contract: DEALALITY_ADDITIVE_NON_REGRESSION_V1 — List presentation/mapping only
 
 ## Cross-hotel decisions

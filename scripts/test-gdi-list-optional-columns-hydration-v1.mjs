@@ -10,7 +10,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-list-columns-hydration-v1";
+const CACHE = "gdi-competitive-filter-layout-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -139,8 +139,9 @@ check("menu_hides_empty_and_redundant_market_scope_when_uniform", () => {
   const byId = Object.fromEntries(hotelAssess.map((a) => [a.id, a]));
   assert.equal(byId.contactReadiness.offer, true);
   assert.equal(byId.opportunityStatus.offer, true);
-  assert.equal(byId.marketScope.offer, false);
-  assert.equal(byId.marketScope.decision, "HIDDEN_FILTER_SUFFICES");
+  // Hotel-only inventory still offers Market Scope so column matches filter taxonomy.
+  assert.equal(byId.marketScope.offer, true);
+  assert.equal(byId.marketScope.decision, "RETAIN_HYDRATED_HOTEL_ONLY");
   assert.equal(byId.estimatedRoomNights.offer, false);
   assert.equal(byId.weeklyChange.offer, false);
   assert.equal(byId.lastVerified.offer, false);
@@ -170,7 +171,7 @@ check("column_menu_html_data_driven_and_prefs_preserved", () => {
   });
   assert.match(htmlHotel, /Contact Readiness/);
   assert.doesNotMatch(htmlHotel, /Sales Opportunity Type/);
-  assert.doesNotMatch(htmlHotel, /Market Scope/);
+  assert.match(htmlHotel, /Market Scope/);
   assert.doesNotMatch(htmlHotel, /Estimated Room Nights/);
   assert.match(htmlHotel, /checked/);
 

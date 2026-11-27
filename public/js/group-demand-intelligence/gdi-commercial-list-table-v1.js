@@ -749,14 +749,12 @@
     } else if (!offer) {
       decision = "HIDDEN_NO_DATA";
     } else if (colId === "marketScope") {
-      // Filter already exposes All/Hotel/Competitive. Offer the column only when
-      // Competitive rows exist or scopes vary within the hotel inventory.
-      if (!(competitive > 0 || distinctCount > 1)) {
-        offer = false;
-        decision = "HIDDEN_FILTER_SUFFICES";
-      } else {
-        decision = "RETAIN_HYDRATED";
-      }
+      // Same canonical taxonomy as the Market Scope filter. Always offer when
+      // rows resolve Hotel/Competitive so the optional column is never empty
+      // while the filter classifies the opportunity.
+      decision = competitive > 0 || distinctCount > 1
+        ? "RETAIN_HYDRATED"
+        : "RETAIN_HYDRATED_HOTEL_ONLY";
     } else if (coveragePct < 100) {
       decision = "RETAIN_HYDRATED";
     } else {

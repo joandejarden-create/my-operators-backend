@@ -254,14 +254,25 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 .gdi-page .gdi-property-bar .filter-group {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
 }
 
 .gdi-page .gdi-property-bar .filter-group--grow {
-  flex: 1 1 220px;
-  min-width: 160px;
-  max-width: none;
+  flex: 1 1 0;
+  min-width: 200px;
+  max-width: 360px;
+}
+
+.gdi-page .gdi-property-bar .filter-group--grow .filter-select,
+.gdi-page .gdi-property-bar .filter-group--grow select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .gdi-page .gdi-filter-static {
@@ -279,26 +290,37 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 .gdi-page .gdi-weekly-filter {
-  flex: 0 1 150px;
-  min-width: 120px;
-  max-width: 200px;
+  flex: 0 0 168px;
+  width: 168px;
+  min-width: 168px;
+  max-width: 168px;
 }
 
 .gdi-page .gdi-weekly-filter .filter-select {
-  min-width: 0;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .gdi-page .gdi-opportunity-type-filter {
-  flex: 0 1 170px;
-  min-width: 130px;
-  max-width: 240px;
+  flex: 0 0 220px;
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
 }
 
 .gdi-page .gdi-opportunity-type-filter .filter-select {
-  min-width: 0;
   width: 100%;
+  min-width: 0;
   max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .gdi-page .gdi-property-bar {
@@ -330,14 +352,16 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 .gdi-page .gdi-market-scope-filter {
-  flex: 0 0 auto;
-  min-width: 0;
-  max-width: none;
+  flex: 0 0 336px;
+  width: 336px;
+  min-width: 336px;
+  max-width: 336px;
 }
 
 .gdi-page .gdi-market-scope {
-  display: inline-flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
   align-items: stretch;
   gap: 0;
   box-sizing: border-box;
@@ -358,14 +382,17 @@ body.gdi-page.embed-mode .gdi-shell {
   background: transparent;
   color: var(--neutral--400);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  padding: 0 12px;
+  padding: 0 8px;
   height: 100%;
+  min-width: 0;
   min-height: 0;
   line-height: 1.35;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -393,8 +420,17 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 @media (max-width: 1100px) {
+  .gdi-page .gdi-property-bar__primary {
+    flex-wrap: wrap;
+  }
+
+  .gdi-page .gdi-weekly-filter,
+  .gdi-page .gdi-opportunity-type-filter,
   .gdi-page .gdi-market-scope-filter {
-    flex: 1 1 100%;
+    flex: 1 1 calc(50% - 12px);
+    width: auto;
+    min-width: 160px;
+    max-width: none;
   }
 
   .gdi-page .gdi-market-scope {
@@ -402,7 +438,6 @@ body.gdi-page.embed-mode .gdi-shell {
   }
 
   .gdi-page .gdi-market-scope__btn {
-    flex: 1 1 0;
     text-align: center;
     padding: 0 8px;
   }
