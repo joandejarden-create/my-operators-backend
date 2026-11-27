@@ -902,9 +902,29 @@ export async function getHotelExplorerFounderPreview(req, res) {
       return res.status(live.statusCode).json(live.body);
     }
     const livePayload = live.body || {};
-    const roomsInv = recordId === BETHESDA_ID ? loadRoomsMeetingInventory() : null;
+    // Proposed mode may attach staged meeting-room row detail; Live SoT is HPC via ownership adapter.
+    const stagedRoomsInv = recordId === BETHESDA_ID ? loadRoomsMeetingInventory() : null;
 
-    function withRooms(payload) {
+    function withProposedRoomsOverlay(payload) {
+      const canonical = payload?.guestRoomsMeetingSpace || payload?.hotel?.guestRoomsMeetingSpace;
+      const roomsInv =
+        canonical && canonical.sourceOfTruth === "HOTEL_PROPERTY_CENSUS"
+          ? {
+              ...canonical,
+              meetingRooms:
+                (Array.isArray(stagedRoomsInv?.meetingRooms) && stagedRoomsInv.meetingRooms.length
+                  ? stagedRoomsInv.meetingRooms
+                  : canonical.meetingRooms) || [],
+              meetingSpaceSummary: {
+                ...(canonical.meetingSpaceSummary || {}),
+                privateSpaceMarketingSqFt:
+                  stagedRoomsInv?.meetingSpaceSummary?.privateSpaceMarketingSqFt ||
+                  canonical.meetingSpaceSummary?.privateSpaceMarketingSqFt ||
+                  null,
+              },
+              stagedDetailRole: "PROPOSED_MEETING_ROW_AND_MARKETING_FIGURE_ONLY",
+            }
+          : stagedRoomsInv;
       if (!roomsInv) return payload;
       const hotel = {
         ...(payload.hotel || {}),
@@ -926,7 +946,7 @@ export async function getHotelExplorerFounderPreview(req, res) {
         does_not: s.does_not || null,
         preview_state:
           s.verificationStatus === "VERIFIED" ? "BRAND_VERIFIED" : "STAGED_REFERENCE",
-        persisted: false,
+        persisted: roomsInv.sourceOfTruth === "HOTEL_PROPERTY_CENSUS",
       }));
       const seen = new Set(
         existingSources.map((s) => String(s.url || s.title || "").toLowerCase()),
@@ -955,18 +975,21 @@ export async function getHotelExplorerFounderPreview(req, res) {
     }
 
     if (mode === "live") {
-      return res.json(
-        withRooms({
-          ...livePayload,
-          success: true,
-          preview_mode: "LIVE_AIRTABLE",
-          preview_banner:
-            "Live Airtable — only information already persisted and retrievable from canonical sources. Guest Rooms & Meeting Space brand materials are read-only presentation overlays (not Airtable writes).",
-          apply_authorized: false,
-          write_on_get: false,
-          founder_preview: true,
-        }),
-      );
+      // Do not overlay staged packets on Live — ownership API hydrates from HPC adapter.
+      return res.json({
+        ...livePayload,
+        success: true,
+        preview_mode: "LIVE_AIRTABLE",
+        preview_banner:
+          "Live Airtable — Guest Rooms & Meeting Space from canonical Hotel Property Census (physical-product adapter). Staged research overlays are not Live primary.",
+        apply_authorized: false,
+        write_on_get: false,
+        founder_preview: true,
+        physicalProductSourceOfTruth:
+          livePayload.physicalProductSourceOfTruth ||
+          livePayload.guestRoomsMeetingSpace?.sourceOfTruth ||
+          null,
+      });
     }
 
     if (recordId !== BETHESDA_ID) {
@@ -989,7 +1012,7 @@ export async function getHotelExplorerFounderPreview(req, res) {
 
     const overlay = buildProposedOverlay(staged.dryRun, livePayload);
     return res.json(
-      withRooms({
+      withProposedRoomsOverlay({
         ...livePayload,
         ...overlay,
         success: true,

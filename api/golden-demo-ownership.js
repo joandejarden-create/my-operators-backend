@@ -30,7 +30,7 @@ export async function getGoldenDemoHotelOwnership(req, res) {
     if (!recordId.startsWith("rec")) {
       return sendError(res, 400, "invalid_airtable_record_id");
     }
-    const payload = buildHotelOwnershipReport(recordId);
+    let payload = buildHotelOwnershipReport(recordId);
 
     // Airtable-first overlay from HI Organizations + HI Hotel–Org Relationships.
     // For out-of-cohort hotels (e.g. Bethesda): graph is the canonical HE source.
@@ -127,7 +127,54 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             String(h.relationship_type || h.relationship || ""),
           ),
         );
-        const economicResolved = Boolean(nameOf(proj.economic_owner));
+        const economicOrg = proj.economic_owner || null;
+        const economicName = nameOf(economicOrg);
+        const economicRel =
+          (airtableGraph.relationships || []).find(
+            (r) => String(r.relationshipType) === "Economic Owner" && r.current !== false,
+          ) ||
+          (airtableGraph.relationships || []).find(
+            (r) => String(r.relationshipType) === "Economic Owner",
+          ) ||
+          null;
+        // Sponsor-attribution edges (MEDIUM confidence / explicit sponsor notes / non-HIGH)
+        // must not render as certified Validated economic ownership headlines.
+        const economicNotes = String(economicRel?.notes || "");
+        const economicConfidence = String(
+          economicRel?.confidence || economicOrg?.confidence || "MEDIUM",
+        ).toUpperCase();
+        const economicIsSponsorAttribution =
+          /sponsor attribution|ubo unresolved|not (a )?certified|proposed/i.test(
+            economicNotes,
+          ) || economicConfidence === "MEDIUM" || economicConfidence === "LOW";
+        const economicResolved = Boolean(economicName);
+        const economicUiStatus = !economicResolved
+          ? "NOT_YET_VERIFIED"
+          : economicIsSponsorAttribution
+            ? "PROPOSED"
+            : "VALIDATED";
+        const economicVerificationBucket = !economicResolved
+          ? "PARTIAL"
+          : economicIsSponsorAttribution
+            ? "PROPOSED"
+            : economicConfidence || "HIGH";
+        const propcoName = nameOf(proj.property_company);
+        const propcoParty = propcoName
+          ? {
+              name: propcoName,
+              known: true,
+              status: "VALIDATED",
+              verification_bucket:
+                proj.property_company?.confidence || "HIGH",
+              source: "HI_AIRTABLE_GRAPH",
+              note: "Legal Owner / PropCo from HI Hotel–Org Relationships",
+            }
+          : {
+              name: null,
+              known: false,
+              status: "UNKNOWN",
+              note: "PropCo / legal title unknown.",
+            };
         if (primaryOrg) {
           payload.organization = {
             id: primaryOrg.orgId || primaryOrg.airtableId,
@@ -149,7 +196,9 @@ export async function getGoldenDemoHotelOwnership(req, res) {
         }
         const operatorName = nameOf(proj.operator);
         const execText = economicResolved
-          ? `Validated HI graph economic owner: ${nameOf(proj.economic_owner)}. Operator/brand edges also present where validated.`
+          ? economicIsSponsorAttribution
+            ? `HI graph lists ${economicName} as an economic sponsor attribution (not certified ultimate beneficial ownership). Legal owner / PropCo and operator/brand edges are shown separately where present.`
+            : `Validated HI graph economic owner: ${economicName}. Operator/brand edges also present where validated.`
           : `HI Airtable graph has ${airtableGraph.relationshipCount} validated relationship(s)` +
             (operatorName ? ` including operator ${operatorName}` : "") +
             `. Economic owner is not verified. No fabricated ownership is shown.`;
@@ -157,23 +206,27 @@ export async function getGoldenDemoHotelOwnership(req, res) {
           ...report,
           executive_summary: {
             text: execText,
-            verification_bucket: economicResolved ? "HIGH" : "PARTIAL",
+            verification_bucket: economicVerificationBucket,
             source: "HI_AIRTABLE_GRAPH",
-            what_remains_uncertain: economicResolved
+            what_remains_uncertain: economicResolved && !economicIsSponsorAttribution
               ? []
               : [
-                  "Economic owner / controlling sponsor",
-                  "Property company (PropCo) / legal titleholder",
+                  economicIsSponsorAttribution
+                    ? "Certified economic ownership / UBO (sponsor attribution only)"
+                    : "Economic owner / controlling sponsor",
+                  propcoName ? null : "Property company (PropCo) / legal titleholder",
                   "Named decision-makers and outreach channels",
-                ],
+                ].filter(Boolean),
           },
-          what_remains_uncertain: economicResolved
+          what_remains_uncertain: economicResolved && !economicIsSponsorAttribution
             ? []
             : [
-                "Economic owner / controlling sponsor",
-                "Property company (PropCo) / legal titleholder",
+                economicIsSponsorAttribution
+                  ? "Certified economic ownership / UBO (sponsor attribution only)"
+                  : "Economic owner / controlling sponsor",
+                propcoName ? null : "Property company (PropCo) / legal titleholder",
                 "Named decision-makers and outreach channels",
-              ],
+              ].filter(Boolean),
           why_this_matters: {
             text: operatorName
               ? `${operatorName} appears on verified HI operator/brand relationships for this hotel. Operator/brand presence does not certify economic ownership. Use Ownership and Relationships tabs for verified edges only.`
@@ -200,11 +253,15 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             ...control,
             economic_owner_or_group: economicResolved
               ? {
-                  name: nameOf(proj.economic_owner),
+                  name: economicName,
                   known: true,
-                  status: "VALIDATED",
-                  verification_bucket: proj.economic_owner.confidence || "MEDIUM",
+                  status: economicUiStatus,
+                  verification_bucket: economicVerificationBucket,
+                  confidence: economicConfidence,
                   source: "HI_AIRTABLE_GRAPH",
+                  note: economicIsSponsorAttribution
+                    ? "Sponsor attribution — not certified verified economic ownership / UBO"
+                    : economicNotes || undefined,
                 }
               : {
                   name: null,
@@ -214,28 +271,25 @@ export async function getGoldenDemoHotelOwnership(req, res) {
                 },
             economic_owner: economicResolved
               ? {
-                  name: nameOf(proj.economic_owner),
+                  name: economicName,
                   known: true,
-                  verification_bucket: proj.economic_owner.confidence || "MEDIUM",
+                  status: economicUiStatus,
+                  verification_bucket: economicVerificationBucket,
+                  confidence: economicConfidence,
                   source: "HI_AIRTABLE_GRAPH",
+                  note: economicIsSponsorAttribution
+                    ? "Sponsor attribution — not certified verified economic ownership / UBO"
+                    : economicNotes || undefined,
                 }
               : {
                   name: null,
                   known: false,
                   note: "ECONOMIC_OWNER_UNRESOLVED",
                 },
-            property_company: nameOf(proj.property_company)
-              ? {
-                  name: nameOf(proj.property_company),
-                  known: true,
-                  source: "HI_AIRTABLE_GRAPH",
-                }
-              : {
-                  name: null,
-                  known: false,
-                  status: "UNKNOWN",
-                  note: "PropCo / legal title unknown.",
-                },
+            // Keep both keys in sync — UI historically reads legal_property_owner_propco;
+            // an empty stub object must not block property_company.
+            property_company: propcoParty,
+            legal_property_owner_propco: propcoParty,
             operator: operatorName
               ? {
                   name: operatorName,
@@ -271,10 +325,13 @@ export async function getGoldenDemoHotelOwnership(req, res) {
           research_status: {
             ...(report.research_status || {}),
             airtable_graph: true,
-            economic_owner_resolved: economicResolved,
+            economic_owner_resolved: economicResolved && !economicIsSponsorAttribution,
+            economic_sponsor_attribution: economicIsSponsorAttribution,
             evidence_count: airtableGraph.evidenceCount || 0,
             message: economicResolved
-              ? "HI graph includes validated economic owner."
+              ? economicIsSponsorAttribution
+                ? "HI graph includes economic sponsor attribution (not certified UBO)."
+                : "HI graph includes validated economic owner."
               : "HI graph partial — operator/brand may be present; economic owner unresolved.",
           },
           // Sources tab SoT: HI Graph Evidence projected into existing citation shape.
@@ -301,8 +358,16 @@ export async function getGoldenDemoHotelOwnership(req, res) {
               source: "HI Hotel–Org Relationships",
             },
             economic_owner: {
-              class: economicResolved ? "VERIFIED_HI_REL" : "UNVERIFIED",
+              class: economicResolved
+                ? economicIsSponsorAttribution
+                  ? "PROPOSED_SPONSOR_ATTRIBUTION"
+                  : "VERIFIED_HI_REL"
+                : "UNVERIFIED",
               source: "HI Hotel–Org Relationships",
+            },
+            property_company: {
+              class: propcoName ? "VERIFIED_HI_REL" : "UNVERIFIED",
+              source: "HI Hotel–Org Relationships (Legal Owner)",
             },
             portfolio_preview: {
               class: "VERIFIED_DERIVED",
@@ -381,6 +446,34 @@ export async function getGoldenDemoHotelOwnership(req, res) {
       console.warn(
         "[golden-demo-ownership] HPC contact fallback skipped",
         contactErr?.message || contactErr,
+      );
+    }
+
+    // Guest Rooms & Meeting Space: canonical HPC physical-product adapter (SoT).
+    // Staged packets are secondary detail / proposed overlay only — not Live primary.
+    try {
+      const { loadCanonicalPhysicalProductInventory } = await import(
+        "../lib/hotel-intelligence/he-physical-product-adapter-v1.js"
+      );
+      const inv = await loadCanonicalPhysicalProductInventory(recordId, {
+        hotelName: payload?.hotel?.name || payload?.hotel?.propertyName || null,
+        preferProposedOverlay: false,
+      });
+      if (inv) {
+        const hotel = { ...(payload.hotel || {}), guestRoomsMeetingSpace: inv };
+        const report = { ...(payload.report || {}), guestRoomsMeetingSpace: inv };
+        payload = {
+          ...payload,
+          hotel,
+          report,
+          guestRoomsMeetingSpace: inv,
+          physicalProductSourceOfTruth: inv.sourceOfTruth || "HOTEL_PROPERTY_CENSUS",
+        };
+      }
+    } catch (roomsErr) {
+      console.warn(
+        "[golden-demo-ownership] physical-product adapter skipped",
+        roomsErr?.message || roomsErr,
       );
     }
 
