@@ -3,11 +3,16 @@
   GDI Full E2E V3 Stage 4 — Professional contact research & verification.
 
 .DESCRIPTION
-  Runs after identity/role research. Public-first. Findymail/Surfe OFF by default.
-  Never invents emails. Surfe is never auto-invoked from Full E2E.
+  Runs after identity/role research. Public-first for email / phone / LinkedIn.
+  Findymail is a permanent Stage 4 component for unresolved professional email
+  gaps when -AuthorizeFindymail is supplied with Live + paid authorization.
+  Surfe is never auto-invoked from Full E2E (explicit-click only).
 
 .EXAMPLE
   .\scripts\gdi\Invoke-GdiContactResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
+
+.EXAMPLE
+  .\scripts\gdi\Invoke-GdiContactResearch.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode Live -AuthorizePaidResearch -AuthorizeFindymail
 #>
 [CmdletBinding()]
 param(
@@ -31,10 +36,14 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot '_GdiV3Common.ps1')
 
-if ($AuthorizeFindymail) {
-  throw 'Findymail requires a separate founder credit authorization — not enabled in this V3 DryRun runner.'
+if ($AuthorizeFindymail -and $Mode -ne 'Live') {
+  throw 'AuthorizeFindymail requires -Mode Live (use certification dry-run script for planning).'
+}
+if ($AuthorizeFindymail -and -not $AuthorizePaidResearch) {
+  throw 'AuthorizeFindymail requires -AuthorizePaidResearch.'
 }
 
 Invoke-GdiV3NodeStage -Stage 'PROFESSIONAL_CONTACT_RESEARCH' -HotelId $HotelId -Mode $Mode `
   -OpportunityId $OpportunityId -OutDir $OutDir -Fixtures $Fixtures -Resume:$Resume `
-  -AuthorizePaidResearch:$AuthorizePaidResearch -RepoPath $RepoPath
+  -AuthorizePaidResearch:$AuthorizePaidResearch -AuthorizeFindymail:$AuthorizeFindymail `
+  -RepoPath $RepoPath

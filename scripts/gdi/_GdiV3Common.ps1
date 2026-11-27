@@ -20,6 +20,7 @@ function Invoke-GdiV3NodeStage {
     [switch]$ContinuationOnly,
     [switch]$Resume,
     [switch]$AuthorizePaidResearch,
+    [switch]$AuthorizeFindymail,
     [string]$RepoPath = ''
   )
 
@@ -51,6 +52,7 @@ function Invoke-GdiV3NodeStage {
   if ($ContinuationOnly) { $nodeArgs += '--continuation-only' }
   if ($Resume) { $nodeArgs += '--resume' }
   if ($AuthorizePaidResearch) { $nodeArgs += '--authorize-paid-research' }
+  if ($AuthorizeFindymail) { $nodeArgs += '--authorize-findymail' }
 
   & node @nodeArgs
   if ($LASTEXITCODE -ne 0) {

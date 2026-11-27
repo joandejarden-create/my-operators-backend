@@ -1,0 +1,51 @@
+{
+  "fiveStages": [
+    {
+      "stage": 1,
+      "name": "Demand Discovery",
+      "runner": "scripts/gdi/Invoke-GdiDiscovery.ps1",
+      "status": "OPERATIONAL"
+    },
+    {
+      "stage": 2,
+      "name": "Opportunity Deep Research",
+      "runner": "scripts/gdi/Invoke-GdiDeepResearch.ps1",
+      "status": "OPERATIONAL"
+    },
+    {
+      "stage": 3,
+      "name": "WHO/HOW Resolution",
+      "runner": "scripts/gdi/Invoke-GdiWhoHow.ps1",
+      "status": "OPERATIONAL"
+    },
+    {
+      "stage": 4,
+      "name": "Professional Contact Research",
+      "runner": "scripts/gdi/Invoke-GdiContactResearch.ps1",
+      "findymail": "PERMANENT_COMPONENT",
+      "status": "OPERATIONAL_WITH_FINDYMAIL_GATE"
+    },
+    {
+      "stage": 5,
+      "name": "Commercial Qualification",
+      "runner": "scripts/gdi/Invoke-GdiQualification.ps1",
+      "status": "OPERATIONAL"
+    }
+  ],
+  "orchestrator": "scripts/gdi/Invoke-GdiFullE2E.ps1",
+  "validator": "scripts/gdi/Invoke-GdiValidateFullE2E.ps1",
+  "lifecycle": "FULL E2E → STAGED → FOUNDER APPROVAL → CURRENT",
+  "surfe": "EXPLICIT_CLICK_ONLY_NO_PERSIST",
+  "findymail": {
+    "permanentStage4Component": true,
+    "client": "lib/group-demand-intelligence/providers/gdi-findymail-client-v1.js",
+    "enrichment": "lib/group-demand-intelligence/workflow/gdi-findymail-stage4-enrichment-v1.js",
+    "airtablePersist": "lib/group-demand-intelligence/persistence/gdi-findymail-airtable-contact-persist-v1.js",
+    "authToken": "FOUNDER_GO_GDI_FINDYMAIL_STAGE4_PERMANENT_E2E_20261127",
+    "keyPresence": {
+      "present": true,
+      "env_var": "FINDYMAIL_API_KEY",
+      "len": 48
+    }
+  }
+}
