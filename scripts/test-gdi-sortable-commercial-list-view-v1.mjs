@@ -19,7 +19,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-sortable-list-v1";
+const CACHE = "gdi-cumulative-es-list-v1";
 
 let failed = 0;
 function check(name, fn) {

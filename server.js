@@ -372,6 +372,8 @@ import {
   postImportDemandCenters,
   postPreviewDemandCenterImport,
 } from "./api/market-demand.js";
+import { getGdiExecutiveSummary } from "./api/gdi-executive-summary.js";
+import { getGdiProposedWriteSetReview } from "./api/gdi-proposed-write-set-review.js";
 import {
   getGdiFlag,
   getGdiHotels,
@@ -546,6 +548,7 @@ import {
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
+import { gdiExecutiveSummaryAuth } from "./middleware/gdiExecutiveSummaryAuth.js";
 import { gdiPortfolioReadAuth } from "./middleware/gdiPortfolioReadAuth.js";
 import { gdiNeedDatesWriteAuth } from "./middleware/gdiNeedDatesWriteAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
@@ -1236,6 +1239,11 @@ app.get(
   getGdiSummary
 );
 app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/executive-summary",
+  gdiExecutiveSummaryAuth,
+  getGdiExecutiveSummary
+);
+app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/profile",
   gdiPilotReadAuth,
   getGdiProfile
@@ -1865,6 +1873,11 @@ app.get(
   "/api/admin/group-demand-intelligence/reports",
   ...adpMonthlyReviewAdminAuth,
   getAdminGdiReportCatalog
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/proposed-write-set-review",
+  ...adminAuth,
+  getGdiProposedWriteSetReview
 );
 app.get(
   "/api/admin/group-demand-intelligence/hotels/:hotelId/historical-research-recovery",

@@ -2026,7 +2026,9 @@
 
     var showPriorities = state.tab === "priorities";
     var showPortfolio = state.tab === "portfolio";
-    var hideOpportunityChrome = showPriorities || showPortfolio;
+    var showExecSummary = state.tab === "executive-summary";
+    var hideOpportunityChrome =
+      showPriorities || showPortfolio || showExecSummary;
     root.className = "gdi-shell dashboard-container aiv-dashboard";
     var inventoryMode = resolveFounderInventoryMode();
     var presentationMode =
@@ -2120,6 +2122,9 @@
       ">" +
       body +
       "</div>" +
+      '<div class="gdi-tab-panel gdi-exec-root" id="gdiExecutiveSummaryRoot"' +
+      (showExecSummary ? "" : ' hidden aria-hidden="true"') +
+      "></div>" +
       '<div class="gdi-tab-panel gdi-pdi-root" id="gdiPortfolioRoot"' +
       (showPortfolio ? "" : ' hidden aria-hidden="true"') +
       "></div>" +
@@ -2134,6 +2139,31 @@
       preservedPrioritiesRoot.setAttribute("aria-hidden", showPriorities ? "false" : "true");
       prioritiesRoot.parentNode.replaceChild(preservedPrioritiesRoot, prioritiesRoot);
       prioritiesRoot = preservedPrioritiesRoot;
+    }
+
+    if (showExecSummary) {
+      var execRoot = document.getElementById("gdiExecutiveSummaryRoot");
+      if (
+        window.DealalityGdiExecutiveSummaryTab &&
+        typeof window.DealalityGdiExecutiveSummaryTab.mount === "function"
+      ) {
+        window.DealalityGdiExecutiveSummaryTab.mount({
+          root: execRoot,
+          hotelId: state.hotelId,
+          api: api,
+          onOpenOpportunity: function (opportunityId) {
+            if (!opportunityId) return;
+            state.tab = "opportunities";
+            render();
+            openDetail(opportunityId).catch(function (err) {
+              handleLoadFailure(err);
+            });
+          },
+        });
+      } else if (execRoot) {
+        execRoot.innerHTML =
+          '<div class="gdi-exec-banner gdi-exec-banner--warn" role="alert">Executive Summary module failed to load.</div>';
+      }
     }
 
     if (showPortfolio) {

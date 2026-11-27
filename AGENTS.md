@@ -22,6 +22,7 @@
 8. **Radar authenticated-app acceptance** — Radar/HE visibility, filter, search, map, auth, HE navigation, or dynamic HPC Open/Pipeline changes require PASS on `http://localhost:8080/app#/opportunity-radar` (not API 200 / unit / demo page / CI alone). States: PASS / FAIL / BLOCKED; tests cannot upgrade BLOCKED→PASS. See `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md` and `.cursor/rules/dealality-radar-authenticated-acceptance-gate.mdc`.
 9. **Universal PR completion + workspace ownership** — merge ≠ done. Owning permanent home must return to `ws/*` (or Integration `main`), sync `origin/main`, correct Cursor branch, retire feature branches when safe, and report `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY` or a `BLOCKED — …` status. Cross-stream checkouts fail closed. See `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md`.
 10. **Airtable persistence gate** — durable intelligence cannot be FULL E2E COMPLETE from UI/API/PDF/local JSON alone. Require Airtable SoT mapping, idempotent persistence, retrieval proof, provenance/history, and an explicit classification (`PROTOTYPE` → `CUSTOMER_PUBLISHED`). See `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md`.
+11. **Additive development & non-regression** — new work must be additive; do not silently regress accepted UI, inventory, data access, or customer surfaces. Compare before/after by record IDs; IC blocks unintentional regression; intentional material change needs founder approval. Complete only when new **and** prior accepted functionality both work. See `docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md`.
 
 ## Dealality AI Build Operating System
 
@@ -41,6 +42,7 @@ For meaningful product, platform, data, or AI-output work, read the relevant doc
 - `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md` — HE/Radar authenticated `/app#/opportunity-radar` gate
 - `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md` — universal home-sync completion gate
 - `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md` — durable intelligence SoT / E2E classification gate
+- `docs/ai-build-system/DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md` — additive development / non-regression gate
 
 **Also read when the task touches** brand/operator profiles, market intelligence, PDFs, source extraction, platform content, AI-generated content, validation status, confidence, or source-backed intelligence:
 

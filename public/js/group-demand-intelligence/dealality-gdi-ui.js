@@ -2630,6 +2630,12 @@
     label: "Group & Demand\nOpportunities",
   };
 
+  /** Phase 1 — first in chrome; Opportunities remains default landing in app.js */
+  var GDI_EXEC_SUMMARY_TAB = {
+    id: "executive-summary",
+    label: "Executive\nSummary",
+  };
+
   /** PDI-3 — retained after Commercial Priorities (founder middle-tab order) */
   var GDI_PORTFOLIO_TAB = {
     id: "portfolio",
@@ -2641,8 +2647,13 @@
     label: "Commercial Priorities",
   };
 
-  /** Primary tabs: Opportunities → Commercial Priorities → Portfolio. How to Read stays a right-rail info link. */
-  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB, GDI_PORTFOLIO_TAB];
+  /** Primary tabs: Executive Summary → Opportunities → Commercial Priorities → Portfolio. */
+  var GDI_CUSTOMER_TABS = [
+    GDI_EXEC_SUMMARY_TAB,
+    GDI_MAIN_TAB,
+    GDI_PRIORITIES_TAB,
+    GDI_PORTFOLIO_TAB,
+  ];
 
   /**
    * Customer/share property-bar status only.
@@ -2871,6 +2882,8 @@
   function contentTabsHtml(activeTab, tabs) {
     tabs = tabs || [GDI_MAIN_TAB];
     var icons = {
+      "executive-summary":
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4z"/><path d="M4 11h10v2H4z"/><path d="M4 17h16v2H4z"/><circle cx="18" cy="12" r="2.5"/></svg>',
       opportunities:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
       audit:
@@ -6345,9 +6358,7 @@
   }
 
   /**
-   * List/Tiles results.
-   * Tiles View: unchanged card grid.
-   * List View: additive sortable commercial table (Deal Opportunities parity).
+   * List/Tiles grid of opportunity cards (same tile content; layout differs).
    * Classification: REUSABLE_PRODUCT_UI
    */
   function opportunityCardsGridHtml(rows, viewMode, activeFilters, opts) {
@@ -10884,6 +10895,7 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    GDI_EXEC_SUMMARY_TAB: GDI_EXEC_SUMMARY_TAB,
     GDI_PORTFOLIO_TAB: GDI_PORTFOLIO_TAB,
     GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
     GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,
@@ -10941,9 +10953,9 @@
     tileSalesActionPill: tileSalesActionPill,
     tileEventDatePill: tileEventDatePill,
     selectCompactTileContact: selectCompactTileContact,
-    normalizePriorityFilterKey: normalizePriorityFilterKey,
     resolveTileContactPreviewBlock: resolveTileContactPreviewBlock,
     compactTileContactHtml: compactTileContactHtml,
+    normalizePriorityFilterKey: normalizePriorityFilterKey,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
     inventoryViewToggleHtml: inventoryViewToggleHtml,

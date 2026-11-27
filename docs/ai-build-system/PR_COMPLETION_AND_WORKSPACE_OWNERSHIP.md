@@ -75,6 +75,20 @@ Owns: merge authorization/execution, CI verification, remote merges that do not 
 
 Product chats must not independently merge to `main` or run disruptive cross-worktree operations.
 
+### Additive development & non-regression review (binding)
+
+Every relevant product PR must include a **non-regression assessment**. Integration Controller **must block acceptance** when previously approved UI layouts, opportunity inventory, data accessibility, presentation, or customer-facing functionality has **unintentionally** regressed.
+
+Required closeout evidence (scale to change surface):
+
+1. Pre-change baseline for affected UI / inventory / workflows  
+2. After-change comparison (prefer record IDs over counts alone)  
+3. Explicit classification of differences as intentional vs unintended  
+4. Unintended regressions resolved before certification  
+5. Automated regression coverage added when a defect class is identified  
+
+Intentional removal, replacement, redesign, or material change to previously accepted functionality requires **explicit founder approval**. Binding completion rule: new functionality works **and** previously accepted functionality continues to work. Principles: [DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md](./DEALALITY_ADDITIVE_NON_REGRESSION_PRINCIPLES.md).
+
 ### Durable intelligence persistence review (binding)
 
 When a PR creates or changes durable business intelligence, Integration Controller must verify the PR closeout includes the [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md) package:

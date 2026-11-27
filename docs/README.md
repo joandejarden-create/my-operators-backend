@@ -20,6 +20,7 @@ docs/
 | Document | Purpose |
 |----------|---------|
 | [ai-build-system/DEALALITY_PRODUCT_CONSTITUTION.md](./ai-build-system/DEALALITY_PRODUCT_CONSTITUTION.md) | Permanent product principles |
+| [ai-build-system/DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md](./ai-build-system/DEALALITY_RESEARCH_RECEIPT_PRINCIPLES.md) | Research Receipt brand principles (GDI first; no cross-product engine) |
 | [ai-build-system/AI_BUILD_PROTOCOL.md](./ai-build-system/AI_BUILD_PROTOCOL.md) | Standard AI build flow and rules |
 | [ai-build-system/CURSOR_IMPLEMENTATION_PROTOCOL.md](./ai-build-system/CURSOR_IMPLEMENTATION_PROTOCOL.md) | Cursor-specific implementation steps |
 | [ai-build-system/OLD_HOME_ANTI_GLITCH_RULES.md](./ai-build-system/OLD_HOME_ANTI_GLITCH_RULES.md) | Old Home FOUC: bake final chrome before reveal |
