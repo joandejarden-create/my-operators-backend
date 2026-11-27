@@ -143,6 +143,26 @@ const bethContactsOk =
   !channelsLeakMullen("Meinrad Lang III") &&
   !channelsLeakMullen("Jenny Pyne");
 
+const corpContacts =
+  ownershipPayload.report?.corporate_contacts ||
+  ownershipPayload.corporate_contacts ||
+  {};
+const headerWebsite =
+  String(hotel.website || hotel.hotelWebsite || shared.website || "").trim() || null;
+const headerPhone =
+  String(
+    hotel.telephone || hotel.phone || shared.telephone || shared.phone || corpContacts.property_phone || ""
+  ).trim() || null;
+const headerWebsiteOk =
+  Boolean(headerWebsite) &&
+  /^https?:\/\//i.test(headerWebsite) &&
+  !/mullencap/i.test(headerWebsite);
+const headerPhoneOk =
+  Boolean(headerPhone) &&
+  /301/.test(headerPhone.replace(/\D/g, "")) &&
+  /8979400/.test(headerPhone.replace(/\D/g, ""));
+const headerActionsHydrated = headerWebsiteOk && headerPhoneOk;
+
 const economicClass = shared.economicOwnerClassification || null;
 const propCo = shared.propertyCompany || null;
 
@@ -243,6 +263,7 @@ const gates = {
       /marbeth/i.test(String(propCo || ""))
   ),
   HE_UNIFIED_THEME_CONSISTENCY: gate(themeCssExists && cacheBustOk),
+  HE_HEADER_ACTIONS_HYDRATED: gate(headerActionsHydrated),
   HE_CANONICAL_AIRTABLE_READBACK: gate(
     persistence.rooms.canonicalPersisted &&
       persistence.yearBuilt.canonicalPersisted &&
@@ -259,6 +280,7 @@ const ok =
   gates.HE_CONTACT_DIRECTORY_VALIDATED === "YES" &&
   gates.HE_CONTACT_ORG_MAPPING_VALIDATED === "YES" &&
   gates.HE_CONTACT_PRESENTATION_VALIDATED === "YES" &&
+  gates.HE_HEADER_ACTIONS_HYDRATED === "YES" &&
   gates.FULL_HE_E2E_VALIDATED === "NO";
 
 const outDir = path.join(ROOT, "reports/hotel-explorer");
@@ -292,6 +314,9 @@ const report = {
     economicClass,
     propCo,
     contactCount: people.length,
+    headerWebsite,
+    headerPhone,
+    headerActionsHydrated,
   },
   generatedAt: new Date().toISOString(),
 };
