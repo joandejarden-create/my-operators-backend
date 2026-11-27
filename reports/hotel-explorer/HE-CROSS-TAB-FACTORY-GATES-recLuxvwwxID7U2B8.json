@@ -1,93 +1,22 @@
 {
   "ok": true,
-  "version": "he-cross-tab-factory-gates-v1",
-  "hotelId": "recLuxvwwxID7U2B8",
-  "shared": {
-    "version": "he-shared-hotel-view-model-v1",
-    "hotelId": "recLuxvwwxID7U2B8",
-    "name": "Bethesda Marriott",
-    "rooms": 407,
-    "roomsKnown": true,
-    "brand": "Marriott Hotels",
-    "market": "Bethesda / Montgomery County",
-    "submarket": "Pooks Hill / Rockville Pike",
-    "operator": "Marriott International (Managed)",
-    "propertyCompany": null,
-    "economicOwner": null,
-    "economicOwnerClassification": null,
-    "chainScale": "Upper Upscale",
-    "status": "Open",
-    "city": "Bethesda",
-    "country": "United States",
-    "location": "Bethesda, United States",
-    "sources": {
-      "rooms": "hpc",
-      "brand": "hpc",
-      "market": "hpc",
-      "operator": "hpc",
-      "propertyCompany": null,
-      "economicOwner": null
-    },
-    "transformations": {
-      "rooms": "HPC Rooms/Keys or verified physical-product totalGuestrooms; never invent; never treat unknown as 0.",
-      "brand": "HPC Current Brand / Affiliation; HI Brand relationship is corroboration only.",
-      "market": "HPC Market (Dealality geography) — never legacy Hotel Census.",
-      "operator": "HPC Operator/Management Company or HI Operator relationship.",
-      "propertyCompany": "HI Legal Owner / PropCo only — not economic sponsor.",
-      "economicOwner": "HI Economic Owner with founder classification preserved (Proposed vs Validated)."
-    }
-  },
-  "portfolioFocus": {
-    "airtable_record_id": "recLuxvwwxID7U2B8",
-    "focus_hotel": true,
-    "hotel_name": "Bethesda Marriott",
-    "economic_owner_verified": true,
-    "include_as_owned": true,
-    "name": "Bethesda Marriott",
-    "rooms": 407,
-    "rooms_known": true,
-    "brand_display": "Marriott Hotels",
-    "market_display": "Bethesda / Montgomery County",
-    "city": null,
-    "operator": "Marriott International (Managed)",
-    "ownership_evidence_class": "PROPOSED",
-    "ownership_evidence_label": "Proposed",
-    "pending_hpc_match": false,
-    "rooms_display": "407",
-    "rooms_source": "hpc",
-    "brand": "Marriott Hotels",
-    "market": "Bethesda / Montgomery County",
-    "management_company": "Marriott International (Managed)",
-    "status": "Open",
-    "hydrated_from_shared_view": true,
-    "ownership_relationship_label": "Owned / controlled",
-    "operator_relationship_label": "Managed by Marriott International (Managed) · branded Marriott Hotels"
-  },
-  "submarketCoverage": {
-    "complete": false,
-    "partial": true,
-    "label": "Partial HPC coverage — 1 matched hotel(s) for Pooks Hill / Rockville Pike. Not a complete submarket census.",
-    "researchNeeded": true,
-    "inventGeography": false,
-    "disclosed": true,
-    "marketShareFabricated": false,
-    "cohorts": {
-      "matchedHpcInventory": 1,
-      "geographicSubmarketInventory": 1,
-      "competitiveSet": 1
-    }
+  "gates": {
+    "HE_SUBMARKET_COHORT_VALIDATED": "YES",
+    "HE_SUBMARKET_COVERAGE_DISCLOSED": "YES",
+    "HE_ORG_PORTFOLIO_HYDRATION_VALIDATED": "YES",
+    "HE_SHARED_HOTEL_ATTRIBUTES_CONSISTENT": "YES",
+    "HE_CROSS_TAB_PARITY_VALIDATED": "YES",
+    "HE_CROSS_TAB_CONSISTENCY_REPORT_GENERATED": "YES",
+    "HE_E2E_CROSS_TAB_CERTIFICATION": "YES"
   },
   "cohorts": {
     "matched": 1,
     "geographic": 1,
     "competitive": 1
   },
-  "conflicts": [],
-  "gates": {
-    "HE_SUBMARKET_COHORT_VALIDATED": "YES",
-    "HE_SUBMARKET_COVERAGE_DISCLOSED": "YES",
-    "HE_ORG_PORTFOLIO_HYDRATION_VALIDATED": "YES",
-    "HE_SHARED_HOTEL_ATTRIBUTES_CONSISTENT": "YES",
-    "HE_CROSS_TAB_PARITY_VALIDATED": "YES"
+  "e2eCertification": "PASS",
+  "artifacts": {
+    "jsonPath": "C:\\Dev\\dealality\\wt-he-cross-tab-hydration-v1\\reports\\hotel-explorer\\HE-CROSS-TAB-CONSISTENCY-recLuxvwwxID7U2B8.json",
+    "mdPath": "C:\\Dev\\dealality\\wt-he-cross-tab-hydration-v1\\reports\\hotel-explorer\\HE-CROSS-TAB-CONSISTENCY-recLuxvwwxID7U2B8.md"
   }
 }
