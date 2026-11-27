@@ -200,6 +200,19 @@
   }
 
   function demandWindowDisplay(o, UI) {
+    // Canonical hydrated timing first — keep List aligned with Tiles/Drawer.
+    var baked = text(
+      o.datePillDisplayLabel ||
+        o.eventDateDisplay ||
+        o.demandWindowLabel ||
+        "",
+    );
+    if (baked) {
+      if (/ongoing|continuous|recurring/i.test(baked)) {
+        return toPresentationProperCase(baked, UI);
+      }
+      return baked;
+    }
     if (UI && typeof UI.eventDateRangeLabel === "function") {
       try {
         var labeled = UI.eventDateRangeLabel(

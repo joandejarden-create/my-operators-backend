@@ -1884,7 +1884,8 @@
           var selected = active === o.value;
           var countText =
             o.count == null || o.count === "" ? "" : " (" + o.count + ")";
-          var label = o.shortLabel + countText;
+          // Show full Market Scope labels (incl. Competitive Market Intelligence).
+          var label = o.fullLabel + countText;
           return (
             '<button type="button" class="gdi-market-scope__btn' +
             (selected ? " is-active" : "") +
@@ -1893,7 +1894,7 @@
             '" data-gdi-market-scope="' +
             esc(o.value) +
             '" title="' +
-            esc(o.fullLabel) +
+            esc(o.fullLabel + (countText || "")) +
             '" aria-label="' +
             esc(o.fullLabel + (countText || "")) +
             '">' +
@@ -5049,9 +5050,24 @@
       opts = opts || {};
       var r = shortContactRoleLabel(raw);
       if (!r || FORBIDDEN[r]) return "Role Not Yet Verified";
+      // Department / programme labels are not professional titles (List parity).
+      if (
+        /^(events|event|gala|membership|membership events|gala\s*\/\s*membership events)$/i.test(
+          r,
+        )
+      ) {
+        return "Role Not Yet Verified";
+      }
       // Frozen professional_title / package subtitle: do not remap to opportunity roles.
       if (opts.preserveFrozen) {
         if (/decision[-\s]?maker|potential buyer|contact under review|role unverified|^relevant contact$/i.test(r)) {
+          return "Role Not Yet Verified";
+        }
+        if (
+          /^(events|event|gala|membership|membership events|gala\s*\/\s*membership events)$/i.test(
+            r,
+          )
+        ) {
           return "Role Not Yet Verified";
         }
         return toProperCaseContactRoleLabel(r);
