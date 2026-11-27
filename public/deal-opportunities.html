@@ -1051,98 +1051,23 @@
     state.toastTimer = setTimeout(() => el.classList.remove("show"), 4200);
   }
 
-  /** Only Memberstack session JWTs (eyJ…) — never mem_ ids or `_ms-mem` JSON blobs. */
-  function isValidMsJwt(token) {
-    if (!token || typeof token !== "string") return false;
-    const t = token.trim();
-    if (!t || t.indexOf("eyJ") !== 0) return false;
-    if (t.indexOf("mem_") === 0 || t.indexOf("mem_sb_") === 0) return false;
-    return true;
-  }
-
-  function pickBearerJwt() {
-    try {
-      const published = window.__dealalityMemberstackJwt;
-      if (isValidMsJwt(published)) return String(published).trim();
-    } catch (_) {}
-    try {
-      const params = new URLSearchParams(window.location.search || "");
-      const q = params.get("msToken") || params.get("memberstackToken");
-      if (isValidMsJwt(q)) return q.trim();
-      const hash = String(window.location.hash || "");
-      const hq = hash.indexOf("?") >= 0 ? hash.slice(hash.indexOf("?") + 1) : "";
-      if (hq) {
-        const hp = new URLSearchParams(hq);
-        const ht = hp.get("msToken") || hp.get("memberstackToken");
-        if (isValidMsJwt(ht)) return ht.trim();
-      }
-    } catch (_) {}
-    try {
-      const raw = window.MemberStack?.getToken && window.MemberStack.getToken();
-      // Ignore Promises in sync path — authFetch handles async acquisition.
-      if (raw && typeof raw.then !== "function" && isValidMsJwt(raw)) return String(raw).trim();
-    } catch (_) {}
-    try {
-      const ls = localStorage.getItem("msToken") || sessionStorage.getItem("msToken");
-      if (isValidMsJwt(ls)) return ls.trim();
-    } catch (_) {}
-    // Intentionally never read localStorage `_ms-mem` — not a Bearer JWT.
-    return null;
-  }
-
   function authHeaders() {
     const h = {
       Accept: "application/json",
       // Required for local DEV_AUTH_BYPASS admin internal-preview authorization.
       "X-Dealality-Owner-App": "1",
     };
-    const bearer = pickBearerJwt();
-    if (bearer) h.Authorization = "Bearer " + bearer;
+    try {
+      const t =
+        (window.MemberStack?.getToken && window.MemberStack.getToken()) ||
+        localStorage.getItem("_ms-mem") ||
+        localStorage.getItem("msToken") ||
+        sessionStorage.getItem("msToken");
+      const parentTok = new URLSearchParams(window.location.search).get("msToken");
+      const bearer = parentTok || (typeof t === "string" && t.length > 20 ? t : null);
+      if (bearer) h.Authorization = "Bearer " + bearer;
+    } catch (_) {}
     return h;
-  }
-
-  function isAuthFailure(res, data) {
-    const status = res && res.status;
-    const err = String((data && data.error) || "").toLowerCase();
-    if (status === 401 || status === 403) return true;
-    return (
-      err === "invalid_token" ||
-      err === "token_expired" ||
-      err === "authentication_required" ||
-      err === "forbidden"
-    );
-  }
-
-  function authFailureUserMessage(data, status) {
-    const err = String((data && data.error) || "");
-    const raw = String((data && data.message) || "");
-    if (err === "token_expired" || /expired/i.test(raw)) {
-      return "Your session expired. Sign in again to load DealSignal opportunities.";
-    }
-    if (err === "authentication_required") {
-      return "Sign in required to load DealSignal opportunities.";
-    }
-    if (err === "invalid_token" || /unverifiable|invalid/i.test(raw)) {
-      return "Your Memberstack session could not be verified. Sign out and sign in again, or remove a stale msToken from the URL.";
-    }
-    if (status === 403) {
-      return "You are signed in but are not authorized to view DealSignal for this workspace.";
-    }
-    return raw || "Authentication failed while loading DealSignal.";
-  }
-
-  function failAuthLoad(message) {
-    setPageLoading(false);
-    const errEl = $("loadError");
-    if (errEl) {
-      errEl.hidden = false;
-      errEl.textContent = message;
-    }
-    const body = $("body");
-    if (body) {
-      body.innerHTML = `<tr><td colspan="6"><div class="dop-empty">${esc(message)}</div></td></tr>`;
-    }
-    showToast(message, "warn");
   }
 
   /** Founder/admin internal preview of CM permanent-rule Qualified (CUSTOMER_BLOCKED). */
@@ -2563,40 +2488,6 @@
     }
   }
 
-  async function fetchDealOpportunities() {
-    const url = dealOpportunitiesApiUrl();
-    const common = {
-      credentials: "same-origin",
-      cache: "no-store",
-    };
-    const host = String(window.location.hostname || "");
-    const isLocal = host === "localhost" || host === "127.0.0.1";
-    const jwt = pickBearerJwt();
-
-    // Localhost: only send a verified-shape JWT. Missing JWT → no Authorization so
-    // server DEV_AUTH_BYPASS can authorize founder preview (existing local contract).
-    // Never attach `_ms-mem` / mem_ ids (that yields "Invalid or unverifiable…").
-    if (isLocal) {
-      const headers = {
-        Accept: "application/json",
-        "X-Dealality-Owner-App": "1",
-      };
-      if (jwt) headers.Authorization = "Bearer " + jwt;
-      return fetch(url, { ...common, headers });
-    }
-
-    if (window.DealalityMemberstackAuth && typeof window.DealalityMemberstackAuth.authFetch === "function") {
-      return window.DealalityMemberstackAuth.authFetch(url, {
-        ...common,
-        headers: { "X-Dealality-Owner-App": "1", Accept: "application/json" },
-        waitForLogin: false,
-        silent: true,
-        notifyLoginRequired: false,
-      });
-    }
-    return fetch(url, { ...common, headers: authHeaders() });
-  }
-
   async function load(attempt) {
     const n = attempt || 1;
     try {
@@ -2604,19 +2495,16 @@
       else setPageLoading(true, `Retrying Deal Capture… (${n}/3)`);
       $("count").innerHTML = n > 1 ? `Retrying… <strong>${n}</strong>` : "Loading…";
       const [res] = await Promise.all([
-        fetchDealOpportunities(),
+        fetch(dealOpportunitiesApiUrl(), {
+          headers: authHeaders(),
+          credentials: "same-origin",
+          cache: "no-store",
+        }),
         n === 1 ? loadBrandLogoMap() : Promise.resolve(),
       ]);
-      const data = await res.json().catch(() => ({}));
-      if (isAuthFailure(res, data)) {
-        // Do not retry the same rejected token — surface a clear reauth message.
-        failAuthLoad(authFailureUserMessage(data, res.status));
-        return;
-      }
+      const data = await res.json();
       if (!res.ok || !data.success) {
-        const err = new Error(data.message || data.error || "Load failed (" + res.status + ")");
-        err.httpStatus = res.status;
-        throw err;
+        throw new Error(data.message || data.error || "Load failed (" + res.status + ")");
       }
       state.opps = data.opportunities || [];
       state.founderPreview = data.founderPreview || null;
@@ -2632,20 +2520,16 @@
       $("loadError").hidden = true;
       setPageLoading(false);
     } catch (err) {
-      const msg = err && err.message ? String(err.message) : String(err);
-      const authLike = /sign in|session expired|unverifiable|authentication|invalid_token|token_expired/i.test(
-        msg,
-      );
-      // Retry only transient non-auth failures — never loop a rejected Memberstack JWT.
-      if (!authLike && n < 3) {
+      if (n < 3) {
         setTimeout(() => load(n + 1), 800 * n);
         return;
       }
       setPageLoading(false);
       $("loadError").hidden = false;
-      $("loadError").textContent = "Could not load HIF opportunities: " + msg;
+      $("loadError").textContent =
+        "Could not load HIF opportunities: " + (err && err.message ? err.message : String(err));
       $("body").innerHTML = `<tr><td colspan="6"><div class="dop-empty">Unable to load opportunities.</div></td></tr>`;
-      showToast(authLike ? msg : "Data loading failed. Check the network and try again.", authLike ? "warn" : "error");
+      showToast("Data loading failed. Check the network and try again.", "error");
     }
   }
 
