@@ -376,6 +376,48 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             },
           };
         }
+
+        // Durable rooms / meeting-space summary from HPC (not founder-preview staged JSON).
+        try {
+          const { buildGuestRoomsMeetingSpaceFromHpc } = await import(
+            "../lib/hotel-intelligence/he-hpc-guest-rooms-meeting-space-v1.js"
+          );
+          const roomsInv = buildGuestRoomsMeetingSpaceFromHpc(fields, {
+            hpcId: recordId,
+            hotelName: hotelName || payload.hotel?.name || null,
+          });
+          if (roomsInv) {
+            payload.guestRoomsMeetingSpace = roomsInv;
+            payload.hotel = {
+              ...(payload.hotel || {}),
+              guestRoomsMeetingSpace: roomsInv,
+              rooms:
+                roomsInv.guestRooms?.totalGuestrooms?.value ??
+                payload.hotel?.rooms ??
+                null,
+              totalMeetingSpace:
+                roomsInv.meetingSpaceSummary?.totalMeetingSpaceSqFt?.value ??
+                payload.hotel?.totalMeetingSpace ??
+                null,
+              yearBuilt: (() => {
+                const od = fields["Opening Date"];
+                if (!od) return payload.hotel?.yearBuilt ?? null;
+                const y = Number(String(od).slice(0, 4));
+                return Number.isFinite(y) ? y : payload.hotel?.yearBuilt ?? null;
+              })(),
+            };
+            const report = payload.report || {};
+            payload.report = {
+              ...report,
+              guestRoomsMeetingSpace: roomsInv,
+            };
+          }
+        } catch (roomsErr) {
+          console.warn(
+            "[golden-demo-ownership] HPC rooms/meeting hydrate skipped",
+            roomsErr?.message || roomsErr,
+          );
+        }
       }
     } catch (contactErr) {
       console.warn(

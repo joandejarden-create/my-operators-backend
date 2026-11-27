@@ -1,0 +1,129 @@
+{
+  "version": "he50-intelligence-factory-dry-run-v1",
+  "at": "2026-11-27T15:08:50.993Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "pilotKey": "bethesda_marriott",
+  "mode": "DRY_RUN",
+  "paidResearchSpendUsd": 0,
+  "steps": [
+    {
+      "step": "1_RESOLVE_CANONICAL_HPC",
+      "status": "PASS",
+      "detail": {
+        "hpcId": "recLuxvwwxID7U2B8",
+        "pilotKey": "bethesda_marriott",
+        "propertyName": "Bethesda Marriott",
+        "legacyCensus": "BLOCKED_NOT_USED"
+      }
+    },
+    {
+      "step": "2_REUSE_EXISTING_VERIFIED_RESEARCH",
+      "status": "PASS",
+      "detail": {
+        "stagedRoomsExists": true,
+        "gapMatrixExists": true,
+        "note": "Reuse staged/verified artifacts; no rediscovery this run"
+      }
+    },
+    {
+      "step": "3_IDENTIFY_ACTUAL_FIELD_GAPS",
+      "status": "PASS",
+      "detail": {
+        "gapTotals": {
+          "rows": 48,
+          "persistedOnHpc": 4,
+          "disabledByFounder": 2,
+          "stillConnectPersist": 10,
+          "verifyApiLive": 4,
+          "researchRequired": 3,
+          "conflicts": 1,
+          "openFactoryWork": 18
+        },
+        "note": "Live reconcile present"
+      }
+    },
+    {
+      "step": "4_VALIDATE_SOURCES",
+      "status": "PASS",
+      "detail": {
+        "roomsSource": null,
+        "openingDateSource": "https://cmbs.news/property/bethesda-marriott-bethesda-md/",
+        "meetingSpaceSource": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+        "officialUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/"
+      }
+    },
+    {
+      "step": "5_DEDUPLICATE_ENTITIES",
+      "status": "PASS",
+      "detail": {
+        "occurrencesInPilotMap": 1
+      }
+    },
+    {
+      "step": "6_APPLY_AUTHORIZED_AIRTABLE_MUTATIONS",
+      "status": "DRY_RUN_ONLY",
+      "detail": {
+        "applyAuthorized": false,
+        "proposedWrites": [],
+        "note": "No mutations this run. Rooms/meeting already on HPC for Bethesda when present.",
+        "roomsDtoBuilt": true
+      }
+    },
+    {
+      "step": "7_READ_BACK_PERSISTED_RECORDS",
+      "status": "PASS",
+      "detail": {
+        "rooms": 407,
+        "openingDate": "1979-01-01",
+        "meetingSqFt": 18719,
+        "suites": 8,
+        "meetingRoomsCount": 27
+      }
+    },
+    {
+      "step": "8_CONFIRM_API_HYDRATION",
+      "status": "PASS_STRUCTURAL",
+      "detail": {
+        "guestRoomsMeetingSpace": true,
+        "note": "Structural HPC→DTO map. Live HTTP ownership probe still required for full PASS."
+      }
+    },
+    {
+      "step": "9_CONFIRM_LIVE_RENDERING",
+      "status": "NOT_RUN",
+      "detail": {
+        "note": "Requires authenticated Radar 8080 hotel×tab checks"
+      }
+    },
+    {
+      "step": "10_RECORD_REFRESH_AND_PROVENANCE",
+      "status": "PASS",
+      "detail": {
+        "sequence": [
+          "1_RESOLVE_CANONICAL_HPC",
+          "2_REUSE_EXISTING_VERIFIED_RESEARCH",
+          "3_IDENTIFY_ACTUAL_FIELD_GAPS",
+          "4_VALIDATE_SOURCES",
+          "5_DEDUPLICATE_ENTITIES",
+          "6_APPLY_AUTHORIZED_AIRTABLE_MUTATIONS",
+          "7_READ_BACK_PERSISTED_RECORDS",
+          "8_CONFIRM_API_HYDRATION",
+          "9_CONFIRM_LIVE_RENDERING",
+          "10_RECORD_REFRESH_AND_PROVENANCE"
+        ],
+        "recordedAt": "2026-11-27T15:08:50.992Z"
+      }
+    }
+  ],
+  "acceptanceGates": {
+    "GUEST_SENTIMENT_DISABLED_BY_FOUNDER": "YES",
+    "ELEVEN_TAB_COMPONENT_PARITY": "YES",
+    "CANONICAL_FIELD_MAPPING_COMPLETE": "NO",
+    "VERIFIED_RESEARCH_PERSISTENCE_COMPLETE": "NO",
+    "BETHESDA_FULL_LIVE_VALIDATED": "NO",
+    "EIGHT_HOTEL_AIRTABLE_READBACK_VALIDATED": "NO",
+    "EIGHT_HOTEL_RADAR_BROWSER_VALIDATED": "NO",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  },
+  "ok": true
+}

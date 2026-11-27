@@ -23,7 +23,7 @@
   function statusLabel(raw) {
     var s = String(raw || "").toUpperCase();
     if (s === "VERIFIED" || s === "VERIFIED_FACT") return "Verified";
-    if (s === "BRAND_MATERIALS_REFERENCE") return "Brand reference · not Airtable-persisted";
+    if (s === "BRAND_MATERIALS_REFERENCE") return "Brand materials reference";
     if (s === "MARKETING_FIGURE") return "Marketing figure · distinct from capacity chart";
     if (s === "NOT_YET_VERIFIED" || !s) return "Not yet verified";
     if (s === "PROPOSED" || s === "PROPOSED_STAGED") return "Proposed · not persisted";
