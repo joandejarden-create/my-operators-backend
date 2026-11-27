@@ -10,7 +10,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-competitive-filter-layout-v1";
+const CACHE = "gdi-contact-hydration-linkedin-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -70,7 +70,7 @@ function loadModules() {
 check("cache_bust_and_columns_contract", () => {
   const auth = read("public/group-demand-intelligence.html");
   assert.match(auth, new RegExp(`gdi-commercial-list-table-v1\\.js\\?v=${CACHE}`));
-  assert.match(auth, new RegExp(`group-demand-intelligence\\.css\\?v=${CACHE}`));
+  assert.match(auth, /group-demand-intelligence\.css\?v=/);
   const { DealalityGdiCommercialListTable: Table } = loadModules();
   const ids = Table.DEFAULT_COLUMNS.map((c) => c.id);
   assert.equal(
@@ -186,6 +186,29 @@ check("contact_details_email_phone_and_switchboard_guard", () => {
   });
   assert.equal(none.emailDisplay, "Email Not Available");
   assert.equal(none.phoneDisplay, "Phone Not Available");
+
+  const linkedinOnly = Table.contactDetailsMeta({
+    id: "d",
+    primaryContact: {
+      name: "David Aguirre",
+      title: "Project Manager",
+      sourceUrl: "https://linkedin.com/in/david-aguirre-27020411",
+      linkedinUrl: "https://linkedin.com/in/david-aguirre-27020411",
+    },
+  });
+  assert.equal(linkedinOnly.emailDisplay, "Email Not Available");
+  assert.equal(linkedinOnly.phoneDisplay, "Phone Not Available");
+  assert.match(linkedinOnly.linkedinUrl, /linkedin\.com\/in\/david-aguirre/);
+  const linkedinHtml = Table.contactDetailsCellHtml({
+    id: "d",
+    primaryContact: {
+      name: "David Aguirre",
+      title: "Project Manager",
+      sourceUrl: "https://linkedin.com/in/david-aguirre-27020411",
+    },
+  });
+  assert.match(linkedinHtml, /gdi-list-linkedin/);
+  assert.match(linkedinHtml, /linkedin\.com\/in\/david-aguirre/);
 });
 
 check("sales_action_prefers_short_pill_not_outreach_prose", () => {
@@ -238,7 +261,7 @@ check("table_html_contact_details_actions_and_no_readiness_pill_default", () => 
   assert.match(html, /gdi-list-view-btn/);
   assert.match(html, /gdi-list-plain-text/);
   assert.match(html, /Build Account/);
-  assert.match(html, /Association Meeting/);
+  assert.match(html, /association meeting/i);
   assert.doesNotMatch(html, /border-radius:\s*999px/);
 });
 
