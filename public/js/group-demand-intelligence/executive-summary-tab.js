@@ -640,6 +640,44 @@
     );
   }
 
+  function renderContactCoverageScorecard(scorecard) {
+    if (!scorecard || scorecard.customerFacing === true) return "";
+    var opp = scorecard.opportunityLevel || {};
+    var person = scorecard.uniquePersonLevel || {};
+    var defects = scorecard.recoveryAndDefects || {};
+    var rows = [
+      ["Qualified opportunities", opp.totalQualifiedOpportunities],
+      ["Opportunities with verified named contacts", opp.withVerifiedNamedContacts],
+      ["Unique people (verified full name)", person.uniquePeople],
+      ["Contacts with verified professional titles", person.withVerifiedProfessionalTitle],
+      ["Contacts with verified email", person.withVerifiedEmail],
+      ["Contacts with verified telephone", person.withVerifiedTelephone],
+      ["Contacts with verified personal LinkedIn", person.withVerifiedPersonalLinkedIn],
+      ["Contacts with email or telephone", person.withEmailOrTelephone],
+      [
+        "Contacts with usable professional outreach route",
+        person.withUsableProfessionalOutreachRoute,
+      ],
+      ["Contacts with completed Stage 4 research", person.withCompletedStage4Research],
+      ["Contacts still requiring Stage 4 research", person.stillRequiringStage4Research],
+      [
+        "LinkedIn fields hydrated on contacts",
+        defects.linkedInFieldsHydratedOnContacts,
+      ],
+    ];
+    return (
+      '<h3 class="gdi-es-subhead">Contact Coverage Scorecard</h3>' +
+      '<p class="gdi-es-muted">Internal only — opportunity grain vs unique-person / channel grain. Not shown on customer Research Receipt.</p>' +
+      '<div class="gdi-es-kpi-ribbon gdi-es-kpi-ribbon--contact-coverage">' +
+      rows
+        .map(function (row) {
+          return kpiCard(row[0], row[1] == null ? "—" : row[1], "");
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
   function renderResearchIntelligence(payload) {
     var ri = payload.sections && payload.sections.researchIntelligence;
     if (!ri) {
@@ -663,6 +701,7 @@
         })
         .join("") +
       "</div>" +
+      renderContactCoverageScorecard(ri.contactCoverageScorecard) +
       '<h3 class="gdi-es-subhead">Demand Segment Coverage</h3>' +
       renderBarChart(ri.demandComposition) +
       (ri.researchProductivity
