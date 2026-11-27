@@ -60,6 +60,9 @@
         return;
       }
       root.innerHTML = Tab.renderResearchIntelligence(payload);
+      if (typeof Tab.bindInfoTooltips === "function") {
+        Tab.bindInfoTooltips(root);
+      }
       return;
     }
     if (!payload.sections || !payload.sections.salesPerformance) {
@@ -68,6 +71,9 @@
       return;
     }
     root.innerHTML = Tab.renderSalesPerformance(payload);
+    if (typeof Tab.bindInfoTooltips === "function") {
+      Tab.bindInfoTooltips(root);
+    }
   }
 
   async function load(mode) {
