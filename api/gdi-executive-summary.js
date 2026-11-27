@@ -5,7 +5,8 @@
  * GET /api/group-demand-intelligence/hotels/:hotelId/executive-summary
  *
  * Customer path: CURRENT publication only (never STAGED fallback).
- * Founder preview: ?preview=staged|founder requires authenticated non-pilot-unauth.
+ * Founder preview: ?preview=staged|founder via gdiExecutiveSummaryAuth
+ * (memberstack + Dealality user) then founder/admin gate — never pilot-unauth alone.
  * Generation never triggers paid research / Surfe / Findymail.
  */
 
@@ -22,6 +23,10 @@ import {
   EXEC_SUMMARY_DATA_STATE,
   GDI_EXECUTIVE_SUMMARY_V1,
 } from "../lib/group-demand-intelligence/executive-summary/gdi-executive-summary-v1.js";
+import {
+  assertExecutiveSummaryFounderPreviewAuth,
+  assertExecutiveSummaryHotelScope,
+} from "../lib/group-demand-intelligence/executive-summary/gdi-executive-summary-preview-auth-v1.js";
 import { createGdiPublicationPackageStore } from "../lib/group-demand-intelligence/publication-package/gdi-publication-package-store-v1.js";
 import {
   resolvePreviewOpportunitiesFromPublicationPackage,
@@ -138,12 +143,32 @@ export async function getGdiExecutiveSummary(req, res) {
       preview === "staged" || preview === "founder";
 
     if (wantsFounderPreview) {
-      if (req.gdiPilotUnauthRead || !req.dealalityUser) {
-        return res.status(401).json({
+      const auth = assertExecutiveSummaryFounderPreviewAuth({
+        dealalityUser: req.dealalityUser,
+        gdiPilotUnauthRead: req.gdiPilotUnauthRead === true,
+        req,
+      });
+      if (!auth.ok) {
+        return res.status(auth.status).json({
           ok: false,
-          error: "authentication_required",
-          message:
-            "Founder Executive Summary preview requires authenticated access.",
+          error: auth.error,
+          message: auth.message,
+        });
+      }
+      const allowedHotelIds = Array.isArray(req.dealalityUser?.allowedHotelIds)
+        ? req.dealalityUser.allowedHotelIds
+        : Array.isArray(req.dealalityUser?.hotelIds)
+          ? req.dealalityUser.hotelIds
+          : null;
+      const scope = assertExecutiveSummaryHotelScope({
+        hotelId,
+        allowedHotelIds,
+      });
+      if (!scope.ok) {
+        return res.status(scope.status).json({
+          ok: false,
+          error: scope.error,
+          message: scope.message,
         });
       }
     }

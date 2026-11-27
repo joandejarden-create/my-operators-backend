@@ -547,6 +547,7 @@ import {
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
+import { gdiExecutiveSummaryAuth } from "./middleware/gdiExecutiveSummaryAuth.js";
 import { gdiPortfolioReadAuth } from "./middleware/gdiPortfolioReadAuth.js";
 import { gdiNeedDatesWriteAuth } from "./middleware/gdiNeedDatesWriteAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
@@ -1238,7 +1239,7 @@ app.get(
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/executive-summary",
-  gdiPilotReadAuth,
+  gdiExecutiveSummaryAuth,
   getGdiExecutiveSummary
 );
 app.get(

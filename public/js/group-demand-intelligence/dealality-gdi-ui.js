@@ -2882,6 +2882,8 @@
   function contentTabsHtml(activeTab, tabs) {
     tabs = tabs || [GDI_MAIN_TAB];
     var icons = {
+      "executive-summary":
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4z"/><path d="M4 11h10v2H4z"/><path d="M4 17h16v2H4z"/><circle cx="18" cy="12" r="2.5"/></svg>',
       opportunities:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
       audit:

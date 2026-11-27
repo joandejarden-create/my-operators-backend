@@ -18,6 +18,10 @@ import {
   buildCompactResearchReceiptForPdf,
   emptyResearchReceiptShell,
 } from "../lib/group-demand-intelligence/executive-summary/gdi-research-receipt-contract-v1.js";
+import {
+  assertExecutiveSummaryFounderPreviewAuth,
+  assertExecutiveSummaryHotelScope,
+} from "../lib/group-demand-intelligence/executive-summary/gdi-executive-summary-preview-auth-v1.js";
 import { CONTACT_ACTIONABILITY_TIER } from "../lib/group-demand-intelligence/presentation/gdi-contact-actionability-v1.js";
 import { WEEKLY_DELTA_STATE } from "../lib/group-demand-intelligence/weekly-delta.js";
 
@@ -252,6 +256,63 @@ function pass(name) {
 }
 
 {
+  const unauth = assertExecutiveSummaryFounderPreviewAuth({
+    dealalityUser: null,
+    gdiPilotUnauthRead: false,
+  });
+  assert.equal(unauth.ok, false);
+  assert.equal(unauth.status, 401);
+  pass("preview_unauthenticated_refused");
+}
+
+{
+  const pilot = assertExecutiveSummaryFounderPreviewAuth({
+    dealalityUser: null,
+    gdiPilotUnauthRead: true,
+  });
+  assert.equal(pilot.ok, false);
+  assert.equal(pilot.status, 401);
+  pass("preview_pilot_unauth_refused");
+}
+
+{
+  const customer = assertExecutiveSummaryFounderPreviewAuth({
+    dealalityUser: { isAdmin: false, role: "owner", flags: {} },
+  });
+  assert.equal(customer.ok, false);
+  assert.equal(customer.status, 403);
+  assert.equal(customer.error, "forbidden_founder_preview");
+  pass("preview_ordinary_hotel_user_refused");
+}
+
+{
+  const admin = assertExecutiveSummaryFounderPreviewAuth({
+    dealalityUser: { isAdmin: true, flags: { isAdmin: true } },
+  });
+  assert.equal(admin.ok, true);
+  pass("preview_admin_allowed");
+}
+
+{
+  const cross = assertExecutiveSummaryHotelScope({
+    hotelId: "recOTHER",
+    allowedHotelIds: ["recALLOWED"],
+  });
+  assert.equal(cross.ok, false);
+  assert.equal(cross.error, "forbidden_cross_hotel_preview");
+  pass("preview_cross_hotel_refused");
+}
+
+{
+  const same = assertExecutiveSummaryHotelScope({
+    hotelId: "recALLOWED",
+    allowedHotelIds: ["recALLOWED"],
+  });
+  assert.equal(same.ok, true);
+  pass("preview_same_hotel_allowed");
+}
+
+{
   // Hotel isolation: two builds must not share opportunity IDs across hotels
   const a = buildGdiExecutiveSummaryV1({
     hotelId: "hotelA",
@@ -274,6 +335,27 @@ function pass(name) {
     "onlyB",
   );
   pass("hotel_isolation");
+}
+
+{
+  // Route wiring: STAGED preview must use dedicated auth (not pilot-unauth alone).
+  const fs = await import("fs");
+  const path = await import("path");
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..");
+  const serverSrc = fs.readFileSync(path.join(root, "server.js"), "utf8");
+  const mwSrc = fs.readFileSync(
+    path.join(root, "middleware/gdiExecutiveSummaryAuth.js"),
+    "utf8",
+  );
+  assert.ok(serverSrc.includes("gdiExecutiveSummaryAuth"));
+  assert.ok(
+    /executive-summary[\s\S]{0,200}gdiExecutiveSummaryAuth/.test(serverSrc),
+  );
+  assert.ok(mwSrc.includes("memberstackAuth"));
+  assert.ok(mwSrc.includes("requireDealalityUser"));
+  assert.ok(mwSrc.includes("gdiPilotReadAuth"));
+  assert.ok(mwSrc.includes('preview === "staged"'));
+  pass("preview_route_uses_founder_auth_middleware");
 }
 
 console.log(`\n${passed} PASS — gdi-executive-summary-v1 ($0)`);

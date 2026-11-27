@@ -39,14 +39,50 @@
     return m.reason ? String(m.reason) : "Unavailable";
   }
 
+  function withTimeout(promise, ms, label) {
+    return Promise.race([
+      promise,
+      new Promise(function (_, reject) {
+        setTimeout(function () {
+          var err = new Error(label || "timeout");
+          err.code = "TIMEOUT";
+          reject(err);
+        }, ms);
+      }),
+    ]);
+  }
+
   async function apiGet(path, apiFn) {
+    // Prefer the app-shell api() (handles 401→JWT retry) but never hang the tab.
     if (typeof apiFn === "function") {
-      return apiFn(path);
+      try {
+        return await withTimeout(apiFn(path), 8000, "executive_summary_api_timeout");
+      } catch (err) {
+        if (err && err.code === "TIMEOUT") {
+          return {
+            ok: false,
+            error: "timeout",
+            message:
+              "Executive Summary request timed out. Retry, or open from the Dealality app after signing in.",
+          };
+        }
+        return {
+          ok: false,
+          error: (err && err.code) || "request_failed",
+          message:
+            (err && err.message) ||
+            "Unable to load Executive Summary",
+          status: err && err.status,
+        };
+      }
     }
     var memberAuth = global.DealalityMemberstackAuth;
     if (memberAuth && typeof memberAuth.fetchMyDealsApi === "function") {
-      var res = await memberAuth.fetchMyDealsApi(path);
-      // fetchMyDealsApi may return a Response or already-parsed JSON.
+      var res = await withTimeout(
+        memberAuth.fetchMyDealsApi(path),
+        8000,
+        "executive_summary_api_timeout",
+      );
       if (res && typeof res.json === "function") return res.json();
       return res;
     }
