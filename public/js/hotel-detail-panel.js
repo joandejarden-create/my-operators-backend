@@ -356,6 +356,21 @@
     return String(value);
   }
 
+  function formatPropertyFactsValue(text) {
+    var s = String(text == null ? "" : text).trim();
+    if (!s) return s;
+    // Proper Case for descriptive fragments only — preserve names, numbers, acronyms.
+    s = s.replace(/\bsq\.?\s*ft\.?\b/gi, "Sq. Ft.");
+    s = s.replace(/\b(\d[\d,]*)\s+rooms\b/gi, "$1 Rooms");
+    s = s.replace(/\blargest:\s*/gi, "Largest: ");
+    s = s.replace(/\(\s*brand\s+parent\s*\)/gi, "(Brand Parent)");
+    s = s.replace(/\(\s*major(?:\s+renovation)?\s*\)/gi, function (m) {
+      return /renovation/i.test(m) ? "(Major Renovation)" : "(Major)";
+    });
+    s = s.replace(/\bmilestone\b/gi, "Milestone");
+    return s;
+  }
+
   function formatParentCompanyDisplay(value, hotel) {
     if (value == null || value === "" || value === "Unknown") return "No Parent Company (Blank)";
     var semantic =
@@ -364,7 +379,7 @@
       hotel.fieldProvenance.parentCompany &&
       hotel.fieldProvenance.parentCompany.semantic;
     if (semantic === "brand_parent_company") {
-      return String(value) + " (brand parent)";
+      return formatPropertyFactsValue(String(value) + " (brand parent)");
     }
     return String(value);
   }
@@ -847,9 +862,11 @@
             return e && e.year && e.year !== primary.year;
           });
           if (secondary.length) {
-            return String(primary.year) + " (major); " + secondary.map(function (e) {
-              return String(e.year);
-            }).join(", ") + " milestone";
+            return formatPropertyFactsValue(
+              String(primary.year) + " (major); " + secondary.map(function (e) {
+                return String(e.year);
+              }).join(", ") + " milestone"
+            );
           }
           return String(primary.year);
         }
@@ -864,9 +881,11 @@
           return e && e.year && Number(e.year) !== Math.round(n);
         });
         if (others.length) {
-          return String(Math.round(n)) + " (major); " + others.map(function (e) {
-            return String(e.year);
-          }).join(", ") + " milestone";
+          return formatPropertyFactsValue(
+            String(Math.round(n)) + " (major); " + others.map(function (e) {
+              return String(e.year);
+            }).join(", ") + " milestone"
+          );
         }
       }
       return String(Math.round(n));
@@ -878,9 +897,9 @@
   function buildOverviewRows(hotel) {
     var meetingValue = "—";
     if (hotel.meetingSpaceDisplay) {
-      meetingValue = String(hotel.meetingSpaceDisplay);
+      meetingValue = formatPropertyFactsValue(String(hotel.meetingSpaceDisplay));
     } else if (hotel.totalMeetingSpace != null && Number(hotel.totalMeetingSpace) > 0) {
-      meetingValue = formatNumber(hotel.totalMeetingSpace) + " sq ft";
+      meetingValue = formatPropertyFactsValue(formatNumber(hotel.totalMeetingSpace) + " sq ft");
     }
 
     var parentSemantic =
