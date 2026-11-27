@@ -6,19 +6,20 @@ How AI (Cursor, ChatGPT, and similar tools) should participate in the Dealality 
 
 1. Understand the objective.
 2. Read relevant docs.
-3. Inspect existing implementation (architecture audit + pre-change non-regression baseline).
-4. Summarize current state before editing.
-5. Identify assumptions and risks.
-6. Create an implementation plan.
-7. Implement in small phases.
-8. Avoid unrelated changes.
-9. Add or update tests where practical.
-10. Run available checks and functional validation.
-11. Open/update PR; run local CI prechecks.
-12. Coordinate Integration Controller merge (`dealality:remote-pr-merge` when CI green) — do not stop at PR OPEN.
-13. Post-merge sync owning product home; refresh canonical `:8080`; capture integrated browser evidence.
-14. Provide closeout: PR, merge SHA, serving commit, `:8080` identity, screenshots, regression/inventory assessment.
-15. Capture durable learnings; update relevant documentation.
+3. Run mandatory assignment preflight (`npm run dealality:assignment-preflight -- --stream <…>` / `DEALALITY_INTER_PROMPT_NON_REGRESSION_V1`). On FAIL: STOP and restore cumulative `:8080` before any feature work.
+4. Inspect existing implementation (architecture audit + pre-change non-regression baseline + cumulative functionality manifest).
+5. Summarize current state before editing.
+6. Identify assumptions and risks.
+7. Create an implementation plan.
+8. Implement in small phases.
+9. Avoid unrelated changes.
+10. Add or update tests where practical.
+11. Run available checks and functional validation.
+12. Open/update PR; run local CI prechecks.
+13. Coordinate Integration Controller merge (`dealality:remote-pr-merge` when CI green) — do not stop at PR OPEN.
+14. Post-merge sync owning product home; refresh canonical `:8080`; capture integrated browser evidence.
+15. Provide closeout: PR, merge SHA, serving commit, `:8080` identity, screenshots, regression/inventory assessment.
+16. Capture durable learnings; update relevant documentation.
 
 **Normal successful status:** `INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW` (not PR OPEN / feature-branch-only). Contract: [DEALALITY_INTEGRATED_DELIVERY_V1.md](./DEALALITY_INTEGRATED_DELIVERY_V1.md).
 

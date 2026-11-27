@@ -37,7 +37,17 @@ Otherwise `PARTIAL` or `BLOCKED` with the exact outstanding action.
 
 ## Port 8080
 
-Canonical cumulative founder review environment only. Feature streams use assigned ports. Enforce `DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1`. Apply `DEALALITY_ADDITIVE_NON_REGRESSION_V1`.
+Canonical cumulative founder review environment only. Feature streams use assigned ports (HE **8091**, ADP **8092**, BE **8093**, GDI feature **8095**). Enforce `DEALALITY_CANONICAL_PORT_8080_OWNERSHIP_V1` with **cwd + serverScriptDir** match — Integration cwd running a foreign `server.js` (e.g. `_verify_pr627_main`) is **denied** (`PORT_8080_SERVER_SCRIPT_MISMATCH`). Apply `DEALALITY_ADDITIVE_NON_REGRESSION_V1`. Live OS audit + reclaim: `npm run dealality:canonical-8080-guard -- --once` (or `--watch`). Meta PID files alone are not proof of ownership.
+
+## Mandatory assignment preflight
+
+**Before modifying any code** in an implementation assignment:
+
+```bash
+npm run dealality:assignment-preflight -- --stream <gdi|he|adp|be|integration>
+```
+
+Contract: `DEALALITY_INTER_PROMPT_NON_REGRESSION_V1`. On FAIL: STOP new feature work; restore cumulative `:8080` / STAGED baseline; revalidate. Do not implement from a regressed baseline. Cumulative capability baseline: `lib/dealality-dev-os/gdi-cumulative-functionality-manifest-v1.json` (must grow; never replace with an outdated subset).
 
 ## Distinctions
 

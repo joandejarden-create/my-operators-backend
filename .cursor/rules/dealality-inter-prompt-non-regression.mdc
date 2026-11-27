@@ -1,0 +1,30 @@
+---
+description: Mandatory pre-assignment baseline + canonical :8080 non-regression
+alwaysApply: true
+---
+
+# Dealality inter-prompt non-regression (permanent)
+
+**Contract:** `DEALALITY_INTER_PROMPT_NON_REGRESSION_V1`
+
+## Before modifying any code
+
+```bash
+npm run dealality:assignment-preflight -- --stream <gdi|he|adp|be|integration>
+```
+
+Must verify: registered home, `origin/main`, cumulative functionality manifest, live `:8080` **server.js path** (not meta PID alone), Wyndham STAGED tip when GDI.
+
+On FAIL → **STOP** feature work → restore via `npm run dealality:gdi-local-8080` + `npm run dealality:canonical-8080-guard -- --once` → IC if needed → revalidate.
+
+## Port 8080
+
+- Exclusive cumulative founder review environment.
+- Ownership requires **cwd AND serverScriptDir** match authorized home.
+- Integration cwd + foreign `_verify_* /server.js` → `PORT_8080_SERVER_SCRIPT_MISMATCH`.
+- Feature streams: HE 8091, ADP 8092, BE 8093, GDI feature 8095.
+- Do not stop/replace `:8080` from isolated feature worktrees.
+
+## Manifest
+
+`lib/dealality-dev-os/gdi-cumulative-functionality-manifest-v1.json` must **grow** with integrated enhancements — never replace with an outdated subset.
