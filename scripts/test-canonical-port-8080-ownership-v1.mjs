@@ -124,7 +124,6 @@ check("ci_repo_checkout_authorized_for_8080", () => {
     env: {
       NODE_ENV: "development",
       GITHUB_ACTIONS: "true",
-      CI: "true",
     },
     registry,
     registryRoot: ciCheckout,
@@ -133,6 +132,19 @@ check("ci_repo_checkout_authorized_for_8080", () => {
   assert.equal(r.authorizedFor8080, true);
   assert.equal(r.code, "AUTHORIZED_CI_REPO_CHECKOUT");
   assert.equal(r.durablePackageRoot.ok, true);
+
+  const ciOnlyDenied = evaluateCanonicalPort8080Ownership({
+    cwd: ciCheckout,
+    listenPort: 8080,
+    env: {
+      NODE_ENV: "development",
+      CI: "true",
+    },
+    registry,
+    registryRoot: ciCheckout,
+  });
+  assert.equal(ciOnlyDenied.ok, false);
+  assert.equal(ciOnlyDenied.code, "PORT_8080_UNAUTHORIZED_WORKSPACE");
 });
 
 check("ci_flag_cannot_authorize_foreign_worktree_8080", () => {
@@ -143,7 +155,6 @@ check("ci_flag_cannot_authorize_foreign_worktree_8080", () => {
     env: {
       NODE_ENV: "development",
       GITHUB_ACTIONS: "true",
-      CI: "true",
     },
     registry,
     registryRoot: ROOT,
