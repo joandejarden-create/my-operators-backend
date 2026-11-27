@@ -17,6 +17,8 @@
     '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
   var ICON_PHONE =
     '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>';
+  var ICON_LINKEDIN =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.05c.53-1 1.82-2.05 3.75-2.05 4.01 0 4.75 2.64 4.75 6.07V23h-4v-5.9c0-1.41-.03-3.22-1.96-3.22-1.96 0-2.26 1.53-2.26 3.12V23h-4V8.5z"/></svg>';
 
   var SORT_INDICATOR =
     '<span class="sort-indicator" aria-hidden="true"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
@@ -494,6 +496,30 @@
     return false;
   }
 
+  function resolveLinkedInUrl(contact, o) {
+    var pc = (o && o.primaryContact) || {};
+    var candidates = [
+      contact && contact.linkedinUrl,
+      contact && contact.linkedInUrl,
+      contact && contact.sourceUrl,
+      contact && contact.personSourceUrl,
+      contact && contact.profileUrl,
+      pc.linkedinUrl,
+      pc.linkedInUrl,
+      pc.sourceUrl,
+      pc.personSourceUrl,
+      pc.profileUrl,
+      o && o.linkedinUrl,
+    ];
+    for (var i = 0; i < candidates.length; i += 1) {
+      var u = text(candidates[i]);
+      if (/^https?:\/\/([a-z0-9-]+\.)?linkedin\.com\/in\//i.test(u)) {
+        return u.replace(/\/$/, "");
+      }
+    }
+    return "";
+  }
+
   function contactDetailsMeta(o, UI) {
     var who = whoContactMeta(o, UI);
     var contact = who.contact || resolveListContact(o, UI) || {};
@@ -512,6 +538,7 @@
     );
     var phoneOk =
       phoneRaw && !isSwitchboardOrDepartmentPhone(contact, o) ? phoneRaw : "";
+    var linkedinUrl = resolveLinkedInUrl(contact, o);
     var emailDisplay = email || "Email Not Available";
     var phoneDisplay = phoneOk || "Phone Not Available";
     var telHref = "";
@@ -523,11 +550,12 @@
     return {
       email: email,
       phone: phoneOk,
+      linkedinUrl: linkedinUrl,
       emailDisplay: emailDisplay,
       phoneDisplay: phoneDisplay,
       emailHref: email ? "mailto:" + email : "",
       telHref: telHref,
-      sort: (email || phoneOk || "").toLowerCase(),
+      sort: (email || phoneOk || linkedinUrl || "").toLowerCase(),
       whoName: who.name,
     };
   }
@@ -891,6 +919,15 @@
         esc(d.phone) +
         "</a>"
       : '<span class="gdi-list-contact-missing">' + esc(d.phoneDisplay) + "</span>";
+    var linkedinLine = d.linkedinUrl
+      ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
+        esc(d.linkedinUrl) +
+        '" target="_blank" rel="noopener noreferrer" title="Open LinkedIn profile" aria-label="Open LinkedIn profile for ' +
+        esc(d.whoName || "contact") +
+        '">' +
+        ICON_LINKEDIN +
+        '<span class="gdi-list-linkedin-label">LinkedIn</span></a>'
+      : "";
     return (
       '<div class="gdi-list-contact-details">' +
       '<div class="gdi-list-contact-line">' +
@@ -904,7 +941,13 @@
       ICON_PHONE +
       "</span>" +
       phoneLine +
-      "</div></div>"
+      "</div>" +
+      (linkedinLine
+        ? '<div class="gdi-list-contact-line gdi-list-contact-linkedin">' +
+          linkedinLine +
+          "</div>"
+        : "") +
+      "</div>"
     );
   }
 
@@ -1436,6 +1479,7 @@
     resolveProfessionalTitle: resolveProfessionalTitle,
     whoContactMeta: whoContactMeta,
     contactDetailsMeta: contactDetailsMeta,
+    contactDetailsCellHtml: contactDetailsCellHtml,
     salesActionMeta: salesActionMeta,
     optionalCellValue: optionalCellValue,
     assessOptionalColumnCoverage: assessOptionalColumnCoverage,
