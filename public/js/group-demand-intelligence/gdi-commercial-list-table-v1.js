@@ -925,9 +925,14 @@
         '" target="_blank" rel="noopener noreferrer" title="Open LinkedIn profile" aria-label="Open LinkedIn profile for ' +
         esc(d.whoName || "contact") +
         '">' +
+        '<span class="gdi-list-contact-icon" aria-hidden="true">' +
         ICON_LINKEDIN +
-        '<span class="gdi-list-linkedin-label">LinkedIn</span></a>'
-      : "";
+        "</span>" +
+        '<span class="gdi-list-linkedin-label">LinkedIn Profile</span></a>'
+      : '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+        ICON_LINKEDIN +
+        "</span>" +
+        '<span class="gdi-list-contact-missing">LinkedIn Not Available</span>';
     return (
       '<div class="gdi-list-contact-details">' +
       '<div class="gdi-list-contact-line">' +
@@ -942,11 +947,9 @@
       "</span>" +
       phoneLine +
       "</div>" +
-      (linkedinLine
-        ? '<div class="gdi-list-contact-line gdi-list-contact-linkedin">' +
-          linkedinLine +
-          "</div>"
-        : "") +
+      '<div class="gdi-list-contact-line gdi-list-contact-linkedin">' +
+      linkedinLine +
+      "</div>" +
       "</div>"
     );
   }

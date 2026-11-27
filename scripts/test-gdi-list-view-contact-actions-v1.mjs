@@ -10,7 +10,7 @@ import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CACHE = "gdi-contact-hydration-linkedin-v1";
+const CACHE = "gdi-contact-enrichment-actions-v1";
 
 let failed = 0;
 function check(name, fn) {
@@ -255,6 +255,7 @@ check("table_html_contact_details_actions_and_no_readiness_pill_default", () => 
   assert.doesNotMatch(html, />Contact Readiness</);
   assert.match(html, /mailto:brittanyjolly@esri\.nl/);
   assert.match(html, /Phone Not Available/);
+  assert.match(html, /LinkedIn Not Available/);
   assert.match(html, /Conference Team Lead/);
   assert.match(html, /gdi-list-more-btn/);
   assert.match(html, /action-icon--more/);
@@ -263,6 +264,29 @@ check("table_html_contact_details_actions_and_no_readiness_pill_default", () => 
   assert.match(html, /Build Account/);
   assert.match(html, /association meeting/i);
   assert.doesNotMatch(html, /border-radius:\s*999px/);
+});
+
+check("linkedin_profile_label_when_url_present", () => {
+  const { DealalityGdiCommercialListTable: Table } = loadModules();
+  const html = Table.tableHtml(
+    [
+      {
+        id: "opp-li",
+        title: "LinkedIn Present",
+        priority: "MEDIUM_PRIORITY",
+        primaryContact: {
+          name: "Casey Example",
+          title: "Director of Events",
+          linkedinUrl: "https://www.linkedin.com/in/casey-example",
+        },
+      },
+    ],
+    { sortKey: "priority", sortDir: 1 },
+  );
+  assert.match(html, /LinkedIn Profile/);
+  assert.doesNotMatch(html, /LinkedIn Not Available/);
+  assert.match(html, /Email Not Available/);
+  assert.match(html, /Phone Not Available/);
 });
 
 check("optional_contact_readiness_still_available", () => {
@@ -298,6 +322,19 @@ check("css_proper_case_headers_and_menu", () => {
   assert.match(css, /\.gdi-list-more-menu/);
   assert.match(css, /\.gdi-list-contact-details/);
   assert.match(css, /\.gdi-list-plain-text/);
+});
+
+check("actions_svg_unboxed_like_deal_opportunities", () => {
+  const css = read("public/css/group-demand-intelligence.css");
+  const m = css.match(
+    /\.gdi-page \.gdi-list-actions \.action-icon \{([^}]+)\}/,
+  );
+  assert.ok(m, "action-icon rule missing");
+  const block = m[1];
+  assert.match(block, /border:\s*none/);
+  assert.match(block, /background:\s*none/);
+  assert.doesNotMatch(block, /border:\s*1px\s+solid/);
+  assert.doesNotMatch(block, /width:\s*34px/);
 });
 
 check("surfe_not_auto_called_from_list_module", () => {
