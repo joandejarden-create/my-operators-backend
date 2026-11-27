@@ -94,6 +94,10 @@ let loadingBrowser = {
   status: skipBrowser ? "NOT_TESTED" : "PENDING",
   ok: false,
 };
+let ownershipGraphBrowser = {
+  status: skipBrowser ? "NOT_TESTED" : "PENDING",
+  ok: false,
+};
 if (!skipBrowser) {
   const r = spawnSync(
     "npm",
@@ -124,6 +128,37 @@ if (!skipBrowser) {
     ok: r.status === 0 && report?.status === "PASS",
     exitCode: r.status,
     report,
+  };
+
+  const ocnRun = spawnSync(
+    "npm",
+    ["run", "verify:he-ownership-graph-layout-browser-v1", "--", "--require-server"],
+    {
+      cwd: ROOT,
+      encoding: "utf8",
+      shell: true,
+      env: {
+        ...process.env,
+        DEALALITY_LOCAL_ADMIN_BASE: BASE,
+        HE_OCN_VERIFY_HOTEL_ID: HOTEL_ID,
+      },
+    }
+  );
+  const ocnReportPath = path.join(
+    ROOT,
+    "reports/hotel-explorer/HE-OWNERSHIP-GRAPH-LAYOUT-BROWSER-V1.json"
+  );
+  let ocnReport = null;
+  try {
+    ocnReport = JSON.parse(fs.readFileSync(ocnReportPath, "utf8"));
+  } catch {
+    ocnReport = null;
+  }
+  ownershipGraphBrowser = {
+    status: ocnReport?.status || (ocnRun.status === 0 ? "PASS" : "FAIL"),
+    ok: ocnRun.status === 0 && ocnReport?.status === "PASS",
+    exitCode: ocnRun.status,
+    report: ocnReport,
   };
 }
 
@@ -302,6 +337,11 @@ const gates = {
     : loadingBrowser.ok
       ? "PASS"
       : "FAIL",
+  HE_OWNERSHIP_GRAPH_LAYOUT_BROWSER: skipBrowser
+    ? "NOT_TESTED"
+    : ownershipGraphBrowser.ok
+      ? "PASS"
+      : "FAIL",
   HE_PHYSICAL_PRODUCT_ATTRIBUTE_COVERAGE: gate(
     physicalFacts.rooms407 &&
       physicalFacts.yearBuilt1979 &&
@@ -326,8 +366,50 @@ const gates = {
       persistence.contacts.canonicalPersisted
   ),
   HE_AUTHENTICATED_LIVE_RENDERING: browserGate("NO"),
+  HE_CONTACT_CX_REGRESSION: null,
+  HE_OWNERSHIP_GRAPH_REGRESSION: null,
+  HE_PORTFOLIO_LAYOUT_REGRESSION: null,
+  HE_SUBMARKET_PRESENTATION_REGRESSION: null,
+  HE_FOUNDER_UI_CONTRACT: null,
+  HE_CANONICAL_BROWSER_PARITY: skipBrowser ? "NOT_TESTED" : null,
   FULL_HE_E2E_VALIDATED: "NO",
 };
+
+// Founder four-tab UI contract (static; browser parity separate / NOT_TESTED when skipped).
+const founderContractRun = spawnSync(
+  "npm",
+  ["run", "audit:he-founder-ui-contract-v1", "--", skipBrowser ? "--skip-browser" : "--browser"],
+  { cwd: ROOT, encoding: "utf8", shell: true }
+);
+let founderReport = null;
+try {
+  founderReport = JSON.parse(
+    fs.readFileSync(
+      path.join(ROOT, "reports/hotel-explorer/HE-FOUNDER-UI-CONTRACT-FOUR-TABS-V1.json"),
+      "utf8"
+    )
+  );
+} catch {
+  founderReport = null;
+}
+gates.HE_CONTACT_CX_REGRESSION =
+  founderReport?.gates?.HE_CONTACT_CX_REGRESSION || (founderContractRun.status === 0 ? "PASS" : "FAIL");
+gates.HE_OWNERSHIP_GRAPH_REGRESSION =
+  founderReport?.gates?.HE_OWNERSHIP_GRAPH_REGRESSION ||
+  (founderContractRun.status === 0 ? "PASS" : "FAIL");
+gates.HE_PORTFOLIO_LAYOUT_REGRESSION =
+  founderReport?.gates?.HE_PORTFOLIO_LAYOUT_REGRESSION ||
+  (founderContractRun.status === 0 ? "PASS" : "FAIL");
+gates.HE_SUBMARKET_PRESENTATION_REGRESSION =
+  founderReport?.gates?.HE_SUBMARKET_PRESENTATION_REGRESSION ||
+  (founderContractRun.status === 0 ? "PASS" : "FAIL");
+gates.HE_FOUNDER_UI_CONTRACT =
+  founderReport?.gates?.HE_FOUNDER_UI_CONTRACT ||
+  (founderContractRun.status === 0 ? "PASS" : "FAIL");
+if (!skipBrowser) {
+  gates.HE_CANONICAL_BROWSER_PARITY =
+    founderReport?.gates?.HE_CANONICAL_BROWSER_PARITY || "FAIL";
+}
 
 const ok =
   gates.HE_CONTACT_DIRECTORY_VALIDATED === "YES" &&
@@ -335,6 +417,13 @@ const ok =
   gates.HE_CONTACT_PRESENTATION_VALIDATED === "YES" &&
   gates.HE_LOADING_COMPONENT_CONSISTENT === "YES" &&
   gates.HE_HEADER_ACTIONS_HYDRATED === "YES" &&
+  gates.HE_CONTACT_CX_REGRESSION === "PASS" &&
+  gates.HE_OWNERSHIP_GRAPH_REGRESSION === "PASS" &&
+  gates.HE_PORTFOLIO_LAYOUT_REGRESSION === "PASS" &&
+  gates.HE_SUBMARKET_PRESENTATION_REGRESSION === "PASS" &&
+  gates.HE_FOUNDER_UI_CONTRACT === "PASS" &&
+  (skipBrowser ||
+    (ownershipGraphBrowser.ok && gates.HE_CANONICAL_BROWSER_PARITY === "PASS")) &&
   gates.FULL_HE_E2E_VALIDATED === "NO";
 
 const outDir = path.join(ROOT, "reports/hotel-explorer");
@@ -347,6 +436,7 @@ const report = {
   headHint: process.env.GIT_HEAD || null,
   browserEnabled: !skipBrowser,
   loadingBrowser,
+  ownershipGraphBrowser,
   ok,
   gates,
   contactTests: contactTests.map((t) => ({

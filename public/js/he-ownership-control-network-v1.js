@@ -12,34 +12,41 @@
   var MIN_LABEL_PX = 13;
 
   var EDGE_LABELS = {
-    LEGALLY_OWNED_BY: "Legally owned by",
-    ECONOMICALLY_CONTROLLED_BY: "Economically controlled by",
-    ULTIMATE_CONTROL: "Ultimate control",
-    MANAGED_BY: "Managed by",
-    BRANDED_AS: "Branded as",
-    ASSOCIATED_PERSON: "Key person",
-    PORTFOLIO_HOTEL: "Related hotel",
-    ASSET_MANAGED_BY: "Asset managed by",
-    FINANCED_BY: "Financed by",
-    DEVELOPED_BY: "Developed by",
-    ADVISED_BY: "Advised by",
-    EQUITY_PARTNER: "Equity partner",
+    LEGALLY_OWNED_BY: "Legal Ownership",
+    ECONOMICALLY_CONTROLLED_BY: "Economic Sponsorship",
+    ULTIMATE_CONTROL: "Ultimate Control",
+    MANAGED_BY: "Hotel Management",
+    BRANDED_AS: "Brand Affiliation",
+    ASSOCIATED_PERSON: "Key Person",
+    PORTFOLIO_HOTEL: "Related Hotel",
+    ASSET_MANAGED_BY: "Asset Management",
+    FINANCED_BY: "Financing",
+    DEVELOPED_BY: "Developer",
+    ADVISED_BY: "Advisor",
+    EQUITY_PARTNER: "Equity Partner",
   };
 
+  /** Compact fallbacks only when connector gap cannot fit the full customer label. */
   var SHORT_EDGE = {
-    LEGALLY_OWNED_BY: "Legal",
-    ECONOMICALLY_CONTROLLED_BY: "Economic",
-    ULTIMATE_CONTROL: "UBO",
-    MANAGED_BY: "Managed",
-    BRANDED_AS: "Brand",
+    LEGALLY_OWNED_BY: "Legal Ownership",
+    ECONOMICALLY_CONTROLLED_BY: "Economic Sponsorship",
+    ULTIMATE_CONTROL: "Ultimate Control",
+    MANAGED_BY: "Hotel Management",
+    BRANDED_AS: "Brand Affiliation",
     ASSOCIATED_PERSON: "Role",
-    PORTFOLIO_HOTEL: "Portfolio",
-    ASSET_MANAGED_BY: "Asset mgmt",
+    PORTFOLIO_HOTEL: "Related Hotel",
+    ASSET_MANAGED_BY: "Asset Mgmt",
     FINANCED_BY: "Financing",
     DEVELOPED_BY: "Developer",
     ADVISED_BY: "Advisor",
     EQUITY_PARTNER: "Equity",
   };
+
+  var EDGE_LABEL_PAD_X = 8;
+  var EDGE_LABEL_PAD_Y = 4;
+  var EDGE_LABEL_FONT = 11;
+  var EDGE_LABEL_MIN_CLEARANCE = 10;
+  var PRIMARY_CHAIN_GAP_Y = 72;
 
   function esc(v) {
     return String(v == null ? "" : v)
@@ -598,9 +605,9 @@
         portfolioHidden: portfolioHidden,
       },
       legend: [
-        { key: "verified", label: "Verified current" },
-        { key: "proposed", label: "Proposed" },
-        { key: "historical", label: "Historical" },
+        { key: "verified", label: "Verified relationship" },
+        { key: "proposed", label: "Proposed relationship" },
+        { key: "historical", label: "Historical relationship" },
         { key: "unresolved", label: "Unresolved" },
       ],
       meta: {
@@ -676,8 +683,9 @@
     });
 
     var cx = width / 2;
-    var gapY = 40;
-    var y = 32;
+    var gapY = PRIMARY_CHAIN_GAP_Y;
+    var opsGapX = Math.max(260, Math.min(320, width * 0.28));
+    var y = 36;
 
     if (uboN) {
       positions[uboN.id] = { x: cx, y: y + boxes[uboN.id].h / 2 };
@@ -692,9 +700,9 @@
       y += boxes[propco.id].h + gapY;
     }
     if (focus) {
-      y += 10;
+      y += 12;
       positions[focus.id] = { x: cx, y: y + boxes[focus.id].h / 2 };
-      y += boxes[focus.id].h + gapY + 14;
+      y += boxes[focus.id].h + gapY + 18;
     }
 
     var opsY =
@@ -704,8 +712,8 @@
         (brand && boxes[brand.id].h) || 70
       ) /
         2;
-    if (operator) positions[operator.id] = { x: cx - 240, y: opsY };
-    if (brand) positions[brand.id] = { x: cx + 240, y: opsY };
+    if (operator) positions[operator.id] = { x: cx - opsGapX, y: opsY };
+    if (brand) positions[brand.id] = { x: cx + opsGapX, y: opsY };
     if (operator || brand) {
       y =
         opsY +
@@ -815,13 +823,13 @@
     return "none";
   }
 
-  function elbowPath(a, b, aw, ah, bw, bh) {
-    // Connect bottom/top centers with a vertical-then-horizontal elbow to reduce crossings.
+  function connectorAnchors(a, b, aw, ah, bw, bh) {
     var x1 = a.x;
     var y1 = a.y;
     var x2 = b.x;
     var y2 = b.y;
-    if (Math.abs(y2 - y1) > Math.abs(x2 - x1)) {
+    var vertical = Math.abs(y2 - y1) > Math.abs(x2 - x1);
+    if (vertical) {
       if (y2 > y1) {
         y1 += ah / 2;
         y2 -= bh / 2;
@@ -829,18 +837,145 @@
         y1 -= ah / 2;
         y2 += bh / 2;
       }
-      var midY = (y1 + y2) / 2;
-      return "M " + x1 + " " + y1 + " L " + x1 + " " + midY + " L " + x2 + " " + midY + " L " + x2 + " " + y2;
-    }
-    if (x2 > x1) {
+    } else if (x2 > x1) {
       x1 += aw / 2;
       x2 -= bw / 2;
     } else {
       x1 -= aw / 2;
       x2 += bw / 2;
     }
-    var midX = (x1 + x2) / 2;
-    return "M " + x1 + " " + y1 + " L " + midX + " " + y1 + " L " + midX + " " + y2 + " L " + x2 + " " + y2;
+    return { x1: x1, y1: y1, x2: x2, y2: y2, vertical: vertical };
+  }
+
+  function elbowPath(a, b, aw, ah, bw, bh) {
+    // Connect measured node borders with a vertical-then-horizontal elbow.
+    var c = connectorAnchors(a, b, aw, ah, bw, bh);
+    if (c.vertical) {
+      var midY = (c.y1 + c.y2) / 2;
+      return (
+        "M " +
+        c.x1 +
+        " " +
+        c.y1 +
+        " L " +
+        c.x1 +
+        " " +
+        midY +
+        " L " +
+        c.x2 +
+        " " +
+        midY +
+        " L " +
+        c.x2 +
+        " " +
+        c.y2
+      );
+    }
+    var midX = (c.x1 + c.x2) / 2;
+    return (
+      "M " +
+      c.x1 +
+      " " +
+      c.y1 +
+      " L " +
+      midX +
+      " " +
+      c.y1 +
+      " L " +
+      midX +
+      " " +
+      c.y2 +
+      " L " +
+      c.x2 +
+      " " +
+      c.y2
+    );
+  }
+
+  function estimateLabelWidth(label) {
+    return Math.ceil(String(label || "").length * 6.55) + EDGE_LABEL_PAD_X * 2;
+  }
+
+  function pickEdgeDisplayLabel(edge, gapPx, spanPx) {
+    var full =
+      EDGE_LABELS[edge.type] ||
+      edge.label ||
+      edge.shortLabel ||
+      SHORT_EDGE[edge.type] ||
+      "";
+    var compact = edge.shortLabel || SHORT_EDGE[edge.type] || full;
+    var fullW = estimateLabelWidth(full);
+    var canFitGap = gapPx >= EDGE_LABEL_FONT + EDGE_LABEL_PAD_Y * 2 + EDGE_LABEL_MIN_CLEARANCE * 2;
+    var canFitSpan = spanPx >= fullW + 8;
+    if (canFitGap && canFitSpan) return full;
+    if (estimateLabelWidth(compact) <= spanPx) return compact;
+    return compact;
+  }
+
+  function edgeLabelPlacement(a, b, aw, ah, bw, bh, labelText) {
+    var c = connectorAnchors(a, b, aw, ah, bw, bh);
+    var labelW = estimateLabelWidth(labelText);
+    var labelH = EDGE_LABEL_FONT + EDGE_LABEL_PAD_Y * 2;
+    var lx;
+    var ly;
+    var gapPx;
+    var spanPx;
+    if (c.vertical) {
+      gapPx = Math.abs(c.y2 - c.y1);
+      spanPx = Math.max(aw, bw, 220);
+      lx = (c.x1 + c.x2) / 2;
+      ly = (c.y1 + c.y2) / 2;
+      // Keep chip centered in the open connector gap, never on node borders.
+      var minY = Math.min(c.y1, c.y2) + EDGE_LABEL_MIN_CLEARANCE + labelH / 2;
+      var maxY = Math.max(c.y1, c.y2) - EDGE_LABEL_MIN_CLEARANCE - labelH / 2;
+      if (maxY > minY) {
+        ly = Math.max(minY, Math.min(maxY, ly));
+      }
+    } else {
+      gapPx = Math.abs(c.x2 - c.x1);
+      spanPx = gapPx;
+      lx = (c.x1 + c.x2) / 2;
+      ly = (c.y1 + c.y2) / 2;
+      var minX = Math.min(c.x1, c.x2) + EDGE_LABEL_MIN_CLEARANCE + labelW / 2;
+      var maxX = Math.max(c.x1, c.x2) - EDGE_LABEL_MIN_CLEARANCE - labelW / 2;
+      if (maxX > minX) {
+        lx = Math.max(minX, Math.min(maxX, lx));
+      }
+      // Lift slightly above the horizontal segment so text does not sit on the stroke.
+      ly -= labelH / 2 + 2;
+    }
+    return {
+      x: lx,
+      y: ly,
+      w: labelW,
+      h: labelH,
+      gapPx: gapPx,
+      spanPx: spanPx,
+    };
+  }
+
+  function renderEdgeLabelChip(labelText, place) {
+    var x = place.x - place.w / 2;
+    var y = place.y - place.h / 2;
+    return (
+      '<g class="ocn-edge-label-host" transform="translate(' +
+      x +
+      " " +
+      y +
+      ')" data-ocn-edge-chip="1">' +
+      '<rect class="ocn-edge-label-bg" width="' +
+      place.w +
+      '" height="' +
+      place.h +
+      '" rx="4"></rect>' +
+      '<text class="ocn-edge-label" x="' +
+      place.w / 2 +
+      '" y="' +
+      (place.h / 2 + 1) +
+      '" text-anchor="middle" dominant-baseline="middle">' +
+      esc(labelText) +
+      "</text></g>"
+    );
   }
 
   function renderNodeSvg(n, L) {
@@ -909,28 +1044,30 @@
         var bh = (L.boxes[e.to] && L.boxes[e.to].h) || 70;
         if (!a || !b) return "";
         var d = elbowPath(a, b, aw, ah, bw, bh);
-        var mx = (a.x + b.x) / 2;
-        var my = (a.y + b.y) / 2;
+        var anchors = connectorAnchors(a, b, aw, ah, bw, bh);
+        var provisionalGap = anchors.vertical
+          ? Math.abs(anchors.y2 - anchors.y1)
+          : Math.abs(anchors.x2 - anchors.x1);
+        var provisionalSpan = anchors.vertical ? Math.max(aw, bw, 220) : provisionalGap;
+        var labelText = pickEdgeDisplayLabel(e, provisionalGap, provisionalSpan);
+        var place = edgeLabelPlacement(a, b, aw, ah, bw, bh, labelText);
         return (
           '<g class="ocn-edge ocn-edge--' +
           esc(e.verification) +
           '" data-ocn-edge="' +
           esc(e.id) +
           '" data-ocn-edge-label="' +
-          esc(e.label) +
+          esc(labelText) +
+          '" data-ocn-edge-type="' +
+          esc(e.type) +
           '">' +
           '<path d="' +
           d +
           '" fill="none" stroke-dasharray="' +
           strokeDash(e.verification) +
           '"></path>' +
-          '<text class="ocn-edge-label" x="' +
-          (mx + (a.x === b.x ? 10 : 0)) +
-          '" y="' +
-          (my - 10) +
-          '" text-anchor="middle">' +
-          esc(e.shortLabel || SHORT_EDGE[e.type] || "") +
-          "</text></g>"
+          renderEdgeLabelChip(labelText, place) +
+          "</g>"
         );
       })
       .join("");
@@ -941,14 +1078,22 @@
       })
       .join("");
 
-    var legend = (graph.legend || [])
+    var legendItems = (graph.legend || []).length
+      ? graph.legend
+      : [
+          { key: "verified", label: "Verified relationship" },
+          { key: "proposed", label: "Proposed relationship" },
+          { key: "historical", label: "Historical relationship" },
+          { key: "unresolved", label: "Unresolved" },
+        ];
+    var legend = legendItems
       .map(function (item) {
         return (
-          '<span class="ocn-legend__item ocn-legend__item--' +
+          '<li class="ocn-legend__item ocn-legend__item--' +
           esc(item.key) +
-          '"><i></i>' +
+          '"><i aria-hidden="true"></i><span>' +
           esc(item.label) +
-          "</span>"
+          "</span></li>"
         );
       })
       .join("");
@@ -981,8 +1126,16 @@
         esc(graph.groupResearchStatus.message) +
         "</div>";
     }
+    var aboutStructure =
+      '<details class="ocn-about-structure" data-ocn-about-structure="1">' +
+      "<summary>About This Structure</summary>" +
+      '<div class="ocn-about-structure__body">' +
+      "<p>Ownership relationships appear above the hotel. Hotel management and brand affiliation appear below and are not ownership claims.</p>" +
+      "<p><strong>Verified</strong> means the relationship is confirmed in the current ownership record. <strong>Proposed</strong> means the relationship is indicated but not yet fully certified — Proposed is never promoted to Verified by the graph layout.</p>" +
+      "<p>Connector labels describe relationship type only. Open a node for entity details, evidence, and related contacts.</p>" +
+      "</div></details>";
     return (
-      '<div class="ocn" data-ocn="1" data-ocn-default="' +
+      '<div class="ocn" data-ocn="1" data-ocn-label-layout="v2" data-ocn-default="' +
       (graph.meta && graph.meta.defaultView ? "1" : "0") +
       '">' +
       '<div class="ocn-toolbar">' +
@@ -1003,10 +1156,9 @@
       groupChips +
       "</div>" +
       researchBanner +
-      '<div class="ocn-legend" aria-label="Relationship legend">' +
+      '<ul class="ocn-legend" aria-label="Relationship legend">' +
       legend +
-      '<span class="ocn-legend__note">Ownership above · Operations &amp; Brand below · Short edge tags; full meaning in detail</span>' +
-      "</div>" +
+      "</ul>" +
       '<div class="ocn-stage">' +
       '<svg class="ocn-svg" viewBox="0 0 ' +
       L.width +
@@ -1021,6 +1173,7 @@
       '<button type="button" class="ocn-detail__close" data-ocn-detail-close aria-label="Close detail">&times;</button>' +
       '<div class="ocn-detail__body"></div>' +
       "</aside></div>" +
+      aboutStructure +
       (exp.portfolioHidden
         ? '<p class="ocn-bound-note" role="status">' +
           esc(String(exp.portfolioHidden)) +

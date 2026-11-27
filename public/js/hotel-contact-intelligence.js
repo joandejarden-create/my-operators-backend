@@ -24,6 +24,14 @@
     findBoth: "Find Contact Details",
   };
 
+  /* Match GDI gdi-commercial-list-table-v1 contact-column icons exactly. */
+  var ICON_EMAIL =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  var ICON_PHONE =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>';
+  var ICON_LINKEDIN =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.05c.53-1 1.82-2.05 3.75-2.05 4.01 0 4.75 2.64 4.75 6.07V23h-4v-5.9c0-1.41-.03-3.22-1.96-3.22-1.96 0-2.26 1.53-2.26 3.12V23h-4V8.5z"/></svg>';
+
   /** Purpose sections — mirrored from contact-purpose-sections-v1 (client cannot import ESM). */
   var PURPOSE_SECTIONS = [
     {
@@ -820,6 +828,71 @@
     return out;
   }
 
+  function telHrefForPhone(phone) {
+    var raw = String(phone || "").trim();
+    if (!raw) return "";
+    var keepPlus = raw.charAt(0) === "+";
+    var digits = raw.replace(/[^\d]/g, "");
+    if (!digits) return "";
+    return "tel:" + (keepPlus ? "+" : "") + digits;
+  }
+
+  /**
+   * CONTACT column — match GDI contactDetailsCellHtml exactly:
+   * Email / Phone / LinkedIn stacked rows with icons + available or Not Available.
+   * Never falls back to employer website or organizational switchboard.
+   */
+  function renderVerifiedChannelSummary(p) {
+    var emails = personEmails(p);
+    var phones = personPhones(p);
+    var li = linkedInUrl(p);
+    var email = emails.length ? channelValue(emails[0]) : "";
+    var phone = phones.length ? channelValue(phones[0]) : "";
+    var emailLine = email
+      ? '<a class="gdi-list-contact-link" href="mailto:' + esc(email) + '">' + esc(email) + "</a>"
+      : '<span class="gdi-list-contact-missing">Email Not Available</span>';
+    var phoneLine = phone
+      ? '<a class="gdi-list-contact-link" href="' +
+        esc(telHrefForPhone(phone)) +
+        '">' +
+        esc(phone) +
+        "</a>"
+      : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
+    var linkedinLine = li
+      ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
+        esc(li) +
+        '" target="_blank" rel="noopener noreferrer" title="Open LinkedIn profile" aria-label="Open LinkedIn profile for ' +
+        esc(p.name || "contact") +
+        '">' +
+        '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+        ICON_LINKEDIN +
+        "</span>" +
+        '<span class="gdi-list-linkedin-label">LinkedIn Profile</span></a>'
+      : '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+        ICON_LINKEDIN +
+        "</span>" +
+        '<span class="gdi-list-contact-missing">LinkedIn Not Available</span>';
+    return (
+      '<div class="gdi-list-contact-details">' +
+      '<div class="gdi-list-contact-line">' +
+      '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+      ICON_EMAIL +
+      "</span>" +
+      emailLine +
+      "</div>" +
+      '<div class="gdi-list-contact-line">' +
+      '<span class="gdi-list-contact-icon" aria-hidden="true">' +
+      ICON_PHONE +
+      "</span>" +
+      phoneLine +
+      "</div>" +
+      '<div class="gdi-list-contact-line gdi-list-contact-linkedin">' +
+      linkedinLine +
+      "</div>" +
+      "</div>"
+    );
+  }
+
   function renderDirectoryRowCells(p, hotelId, capability, vm) {
     var emails = personEmails(p);
     var phones = personPhones(p);
@@ -828,28 +901,14 @@
     var detailsId =
       "hci-dir-" +
       String(p.personId || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, "_");
-    var emailHtml = emails.length
-      ? renderCompactChannel(emails[0], "email")
-      : missingChannelHtml("Email");
-    var phoneHtml = phones.length
-      ? renderCompactChannel(phones[0], "phone")
-      : missingChannelHtml("Telephone");
-    var liHtml = li
-      ? '<a class="hci-action-link hex-rms-ext-link" href="' +
-        esc(li) +
-        '" target="_blank" rel="noopener">LinkedIn</a>'
-      : missingChannelHtml("LinkedIn");
     var qualify = showResponsibilityQualification(p)
       ? '<div class="hci-dir-qualify">' + esc(humanResponsibility(p)) + "</div>"
       : "";
+    // Details only in the table; Find Contact Details stays drawer-only.
     var actions =
       '<button type="button" class="hci-btn hci-btn--ghost hci-dir-details-btn" data-hci-toggle="' +
       detailsId +
       '" aria-expanded="false">Details</button>';
-    var enrich = resolveEnrichMeta(p, capability);
-    if (enrich.label && enrich.enabled) {
-      actions += renderEnrichAction(p, hotelId, capability, { inline: true });
-    }
     var detailOrgRoutes = orgRoutes
       .map(function (c) {
         return (
@@ -861,47 +920,83 @@
         );
       })
       .join("");
+    var enrichBlock = "";
+    var enrich = resolveEnrichMeta(p, capability);
+    if (enrich.label) {
+      enrichBlock = renderEnrichAction(p, hotelId, capability, { inline: false });
+    }
+    var authorityNote =
+      p.propertyAuthorityVerified === false || p.propertyAuthority === "unverified"
+        ? '<p class="hci-muted">Property-level authority for this contact is not yet verified.</p>'
+        : "";
     var detailsHtml =
       '<div class="hci-dir-details-panel" id="' +
       detailsId +
       '" hidden>' +
       '<div class="hci-dir-details">' +
+      "<div><strong>Name</strong> " +
+      esc(p.name || "—") +
+      "</div>" +
+      "<div><strong>Title</strong> " +
+      esc(p.title || "—") +
+      "</div>" +
+      "<div><strong>Organization</strong> " +
+      esc(p.organization || p.organizationName || "—") +
+      "</div>" +
+      "<div><strong>Function / Relationship</strong> " +
+      esc(relationshipLabel(p)) +
+      "</div>" +
       qualify +
-      "<div><strong>Hotel responsibility</strong> " +
+      "<div><strong>Hotel relationship</strong> " +
       esc(humanResponsibility(p)) +
       "</div>" +
       (present(customerWhyRelevant(p))
         ? "<div><strong>Relevance</strong> " + esc(customerWhyRelevant(p)) + "</div>"
         : "") +
+      (emails.length
+        ? "<div><strong>Email</strong> " + renderCompactChannel(emails[0], "email") + "</div>"
+        : "") +
+      (phones.length
+        ? "<div><strong>Telephone</strong> " + renderCompactChannel(phones[0], "phone") + "</div>"
+        : "") +
+      (li
+        ? "<div><strong>LinkedIn</strong> <a class=\"hci-action-link hex-rms-ext-link\" href=\"" +
+          esc(li) +
+          '" target="_blank" rel="noopener">Profile</a></div>'
+        : "") +
       detailOrgRoutes +
+      enrichBlock +
+      authorityNote +
       (present(p.lastVerified)
         ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
         : "") +
       '<p class="hci-muted">Organization websites and switchboards are company routes, not personal inboxes. On-demand lookup results stay in this session and are not saved.</p>' +
       "</div></div>";
     return {
-      name: p.name || "",
-      title: p.title || "",
+      contact: (p.name || "") + " " + (p.title || ""),
       organization: p.organization || p.organizationName || "",
       relationship: relationshipLabel(p),
-      email: emails.length ? channelValue(emails[0]) : "",
-      telephone: phones.length ? channelValue(phones[0]) : "",
-      linkedin: li || "",
-      actions: "",
+      channels:
+        (emails.length ? channelValue(emails[0]) : "") +
+        " " +
+        (phones.length ? channelValue(phones[0]) : "") +
+        " " +
+        (li || ""),
+      details: "",
       _rowClass: "hci-dir-row",
       _cells: {
-        name:
-          '<div class="hci-dir-name">' +
+        contact:
+          '<div class="hci-dir-contact-stack">' +
+          '<div class="hci-dir-contact-stack__name">' +
           esc(p.name || "—") +
           "</div>" +
-          qualify,
-        title: esc(p.title || "—"),
+          '<div class="hci-dir-contact-stack__title">' +
+          esc(p.title || "—") +
+          "</div></div>",
         organization: esc(p.organization || p.organizationName || "—"),
         relationship: esc(relationshipLabel(p)),
-        email: emailHtml,
-        telephone: phoneHtml,
-        linkedin: liHtml,
-        actions: actions,
+        channels: renderVerifiedChannelSummary(p),
+        details: actions,
       },
       _detailsHtml: detailsHtml,
       _person: p,
@@ -912,14 +1007,11 @@
     var hotelId = vm.hotelId || "";
     var people = directoryPeopleForFilter(vm, purposeId);
     var columns = [
-      { key: "name", label: "Contact Name", sortable: true },
-      { key: "title", label: "Title", sortable: true },
+      { key: "contact", label: "Contact", sortable: true },
       { key: "organization", label: "Organization", sortable: true },
-      { key: "relationship", label: "Relationship / Function", sortable: true },
-      { key: "email", label: "Email", sortable: true },
-      { key: "telephone", label: "Telephone", sortable: true },
-      { key: "linkedin", label: "LinkedIn", sortable: false },
-      { key: "actions", label: "Details / Actions", sortable: false },
+      { key: "relationship", label: "Function / Relationship", sortable: true },
+      { key: "channels", label: "Contact Details", sortable: false },
+      { key: "details", label: "Details", sortable: false },
     ];
     var rows = people.map(function (p) {
       return renderDirectoryRowCells(p, hotelId, vmCapability, vm);
@@ -930,9 +1022,9 @@
       tableHtml = api.renderMarkup({
         columns: columns,
         rows: rows,
-        tableClass: "hci-directory-table",
+        tableClass: "hci-directory-table hci-directory-table--5col",
         emptyMessage: "No contacts match this business purpose yet.",
-        defaultSortKey: "name",
+        defaultSortKey: "contact",
         defaultSortDir: "asc",
       });
     } else {
@@ -945,8 +1037,12 @@
         return row._detailsHtml || "";
       })
       .join("");
+    var about =
+      global.HeAboutThisAnalysis && typeof global.HeAboutThisAnalysis.defaultContactNote === "function"
+        ? global.HeAboutThisAnalysis.defaultContactNote()
+        : "";
     return (
-      '<section class="hci-section hci-section--directory" data-hci-directory="v3">' +
+      '<section class="hci-section hci-section--directory" data-hci-directory="v3" data-hci-columns="5">' +
       '<div class="hci-directory-meta hci-muted">' +
       people.length +
       " contact" +
@@ -955,7 +1051,9 @@
       tableHtml +
       '<div class="hci-dir-details-host">' +
       detailsPanels +
-      "</div></section>"
+      "</div>" +
+      about +
+      "</section>"
     );
   }
 

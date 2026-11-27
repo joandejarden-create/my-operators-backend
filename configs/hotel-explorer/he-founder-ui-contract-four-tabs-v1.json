@@ -1,0 +1,212 @@
+{
+  "version": "he-founder-ui-contract-four-tabs-v1",
+  "title": "Hotel Explorer founder-approved four-tab UI contract",
+  "hotelIdDefault": "recLuxvwwxID7U2B8",
+  "hotelNameDefault": "Bethesda Marriott",
+  "fullHeE2eValidated": "NO",
+  "sourcePrs": {
+    "contactIntelligence": { "pr": 645, "branch": "feat/he-contact-column-gdi-parity-v1" },
+    "ownershipGraph": { "pr": 637, "branch": "feat/he-ownership-graph-label-cleanup-v1" },
+    "organizationPortfolio": { "pr": 650, "branch": "feat/he-org-portfolio-ui-cleanup-v1" },
+    "executiveOwnershipNarrative": { "pr": 648, "branch": "feat/he-executive-ownership-summary-cleanup-v1" },
+    "customerPresentation": { "pr": 635, "branch": "feat/he-customer-presentation-cleanup-v1" },
+    "submarketSnapshot": { "source": "stash@{3} / feat/he-submarket-snapshot-ui-cleanup-v1" }
+  },
+  "rootCauseSummary": {
+    "primary": "Founder-approved recoveries remained OPEN/unmerged on GitHub while localhost:8080 (ws-gdi) served origin/main asset hashes, so the UI silently showed the older main implementations.",
+    "notPrimary": [
+      "Browser cache alone",
+      "CSS specificity alone without missing approved commits",
+      "Feature-flag selection for these four tabs"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "HE_CONTACT_CX_REGRESSION",
+      "tab": "Contact Intelligence",
+      "component": "public/js/hotel-contact-intelligence.js + public/css/hotel-contact-intelligence.css + public/css/he-customer-presentation-v1.css",
+      "approvedBehavior": "Five-column directory: CONTACT | ORGANIZATION | FUNCTION / RELATIONSHIP | CONTACT DETAILS | DETAILS. CONTACT DETAILS uses GDI three-line Email/Phone/LinkedIn with Not Available fallbacks. Business Purpose filter retained. Relationship qualifications in Details. No Recommended First Contact hierarchy.",
+      "requiredLabels": [
+        "Contact",
+        "Organization",
+        "Function / Relationship",
+        "Contact Details",
+        "Details",
+        "Email Not Available",
+        "Phone Not Available",
+        "LinkedIn Not Available"
+      ],
+      "prohibitedLegacyLabels": [
+        "Recommended First Contact",
+        "label: \"Email\"",
+        "label: \"Telephone\"",
+        "label: \"LinkedIn\""
+      ],
+      "layoutRequirements": [
+        "data-hci-columns=\"5\"",
+        "hci-directory-table--5col",
+        "hci-dir-contact-stack name/title separation",
+        "16px left padding on first column",
+        "gdi-list-contact-details three stacked lines"
+      ],
+      "canonicalDataMappings": [
+        "Bethesda five verified contacts retained",
+        "Marriott employees must not inherit Mullen organization contact routes"
+      ],
+      "browserAcceptanceChecks": [
+        "No overlapping text",
+        "No clipped Details buttons",
+        "Responsive column sizing with horizontal scroll when needed"
+      ],
+      "staticMarkers": {
+        "mustInclude": [
+          "data-hci-columns=\"5\"",
+          "hci-directory-table--5col",
+          "gdi-list-contact-details",
+          "Email Not Available",
+          "Phone Not Available",
+          "LinkedIn Not Available",
+          "Function / Relationship",
+          "Contact Details"
+        ],
+        "mustExclude": [
+          "Recommended First Contact"
+        ]
+      }
+    },
+    {
+      "id": "HE_OWNERSHIP_GRAPH_REGRESSION",
+      "tab": "Ownership Intelligence",
+      "component": "public/js/he-ownership-control-network-v1.js + public/css/hotel-explorer.css (OCN block)",
+      "approvedBehavior": "Readable Ownership & Control Network with clearance between relationship labels and connectors, expanded legend, and balanced node spacing. Bethesda classifications unchanged.",
+      "requiredLabels": [
+        "Economic",
+        "Legal",
+        "Managed",
+        "Brand"
+      ],
+      "prohibitedLegacyLabels": [],
+      "layoutRequirements": [
+        "ocn-edge-label-bg behind relationship labels",
+        "ocn-legend gap 12px 28px",
+        "ocn-about-structure present",
+        "svg min-height >= 520px"
+      ],
+      "canonicalDataMappings": [
+        "Marbeth Acquisition — Verified Legal Property Company",
+        "Mullen Real Estate Capital — Proposed Economic Sponsor",
+        "Marriott International — Verified Operator",
+        "Marriott Hotels — Verified Brand",
+        "Do not promote Mullen to verified economic owner"
+      ],
+      "browserAcceptanceChecks": [
+        "Economic/Legal labels do not overlap connectors",
+        "Managed/Brand labels clear of node borders",
+        "Legend not compressed",
+        "Viewport responsive"
+      ],
+      "staticMarkers": {
+        "mustInclude": [
+          "ocn-edge-label-bg",
+          "gap: 12px 28px",
+          "ocn-about-structure"
+        ],
+        "mustExclude": []
+      }
+    },
+    {
+      "id": "HE_PORTFOLIO_LAYOUT_REGRESSION",
+      "tab": "Organization & Portfolio",
+      "component": "public/js/hotel-intelligence-workspace.js + public/css/hotel-intelligence-workspace.css + public/css/hotel-explorer.css",
+      "approvedBehavior": "Owned/Controlled Hotels and Who Manages These Hotels share padding and styling. Key People reuse Contact Intelligence records. Strategic Context is customer-facing. 407 guestrooms displayed correctly.",
+      "requiredLabels": [
+        "Ownership Relationship",
+        "Economic Sponsor",
+        "About This Strategic Context"
+      ],
+      "prohibitedLegacyLabels": [
+        "No Named Individuals Verified",
+        "Surfe enrichment stays on Contact Intelligence",
+        "shared contact intelligence model",
+        "Executive assessment synthesized from verified and appropriately qualified proposed intelligence"
+      ],
+      "layoutRequirements": [
+        "hiw-table--portfolio padding 14px 16px",
+        "hiw-table--portfolio min-width 1180px",
+        "hiw-table--portfolio-manage matches first table styling",
+        "horizontal scrolling when necessary"
+      ],
+      "canonicalDataMappings": [
+        "Key People mounts from /api/contact-intelligence/hotels/",
+        "Economic Sponsor labeling for proposed economic ownership"
+      ],
+      "browserAcceptanceChecks": [
+        "No Market/Rooms overlap",
+        "No Ownership Relationship/Status overlap",
+        "Headers and values aligned"
+      ],
+      "staticMarkers": {
+        "mustInclude": [
+          "hiw-table--portfolio",
+          "hiw-table--portfolio-manage",
+          "mountOrgKeyPeopleFromContactIntelligence",
+          "padding: 14px 16px"
+        ],
+        "mustExclude": [
+          "Surfe enrichment stays on Contact Intelligence",
+          "shared contact intelligence model"
+        ]
+      }
+    },
+    {
+      "id": "HE_SUBMARKET_PRESENTATION_REGRESSION",
+      "tab": "Submarket Snapshot",
+      "component": "public/js/hotel-detail-panel.js + public/js/he-about-this-analysis-v1.js + public/css/hotel-detail-panel.css + public/css/he-customer-presentation-v1.css",
+      "approvedBehavior": "Six tables retained. No Verified Hotels/Guestrooms/Market Coverage KPI cards or HPC cohort essays above tables. Single Market Coverage footnote below tables. Readable first column without ellipsis when wrapping is feasible.",
+      "requiredLabels": [
+        "Market Coverage: Figures reflect hotels currently verified within Dealality's market intelligence database and may not represent the entire market. Room totals exclude properties without verified room counts."
+      ],
+      "prohibitedLegacyLabels": [
+        "Verified Hotels",
+        "Verified Guestrooms",
+        "he-market-coverage__card",
+        "hdp-submarket-cohorts",
+        "Coverage cohorts (HPC only",
+        "Additional research may expand"
+      ],
+      "layoutRequirements": [
+        "data-he-submarket-coverage-footnote",
+        "he-methodology-footnote",
+        "wider first column with wrapping",
+        "ALL CAPS column headers",
+        "responsive horizontal scrolling"
+      ],
+      "canonicalDataMappings": [
+        "Preserve cohort calculation safeguards internally",
+        "Do not use prohibited legacy Hotel Census as a data source"
+      ],
+      "browserAcceptanceChecks": [
+        "No KPI cards above tables",
+        "Footnote after tables",
+        "Full hotel/company names readable"
+      ],
+      "staticMarkers": {
+        "mustInclude": [
+          "submarketCoverageFootnoteHtml",
+          "data-he-submarket-coverage-footnote",
+          "he-methodology-footnote"
+        ],
+        "mustExclude": [
+          "he-market-coverage__card",
+          "Verified Hotels",
+          "Verified Guestrooms",
+          "hdp-submarket-cohorts"
+        ]
+      }
+    }
+  ],
+  "aggregateGates": [
+    "HE_FOUNDER_UI_CONTRACT",
+    "HE_CANONICAL_BROWSER_PARITY"
+  ]
+}

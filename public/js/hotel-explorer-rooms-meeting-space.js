@@ -27,13 +27,14 @@
       (inventory.sourceOfTruth === "HOTEL_PROPERTY_CENSUS" || inventory.persisted === true);
     if (s === "VERIFIED" || s === "VERIFIED_FACT") return "Verified";
     if (s === "BRAND_MATERIALS_REFERENCE") {
-      return fromHpc
-        ? "Brand materials reference · HPC persisted"
-        : "Brand reference · staged / not yet HPC-persisted";
+      if (window.HeCustomerPresentationFormat && typeof window.HeCustomerPresentationFormat.customerPersistenceLabel === "function") {
+        return window.HeCustomerPresentationFormat.customerPersistenceLabel(inventory);
+      }
+      return fromHpc ? "Verified property record" : "Brand reference";
     }
     if (s === "MARKETING_FIGURE") return "Marketing figure · distinct from capacity chart";
     if (s === "NOT_YET_VERIFIED" || !s) return "Not yet verified";
-    if (s === "PROPOSED" || s === "PROPOSED_STAGED") return "Proposed · not persisted";
+    if (s === "PROPOSED" || s === "PROPOSED_STAGED") return "Under review";
     return s.replace(/_/g, " ");
   }
 

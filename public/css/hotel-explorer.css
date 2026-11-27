@@ -923,8 +923,30 @@ button.hex-action {
   font-variant-numeric: tabular-nums;
 }
 .hex-root .hiw-table--portfolio.dl-table thead th,
-.hex-root .hiw-table--portfolio.ada-table thead th {
+.hex-root .hiw-table--portfolio.ada-table thead th,
+.hex-root .hiw-table--portfolio-manage.dl-table thead th,
+.hex-root .hiw-table--portfolio-manage.ada-table thead th {
   background: var(--hex-surface-table, #0d152c) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em;
+  white-space: normal !important;
+  padding: 14px 16px !important;
+}
+.hex-root .hiw-table--portfolio.dl-table tbody td,
+.hex-root .hiw-table--portfolio.ada-table tbody td,
+.hex-root .hiw-table--portfolio-manage.dl-table tbody td,
+.hex-root .hiw-table--portfolio-manage.ada-table tbody td {
+  padding: 14px 16px !important;
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.hex-root .hiw-table--portfolio.dl-table tbody td.dl-td--num,
+.hex-root .hiw-table--portfolio.dl-table tbody td.hiw-td--num,
+.hex-root .hiw-table--portfolio-manage.dl-table tbody td.dl-td--num,
+.hex-root .hiw-table--portfolio-manage.dl-table tbody td.hiw-td--num {
+  white-space: nowrap !important;
+  text-align: right;
 }
 .hex-main {
   max-width: none;
@@ -1143,11 +1165,8 @@ button.hex-action {
   line-height: 1.5;
   text-transform: none;
 }
-.hex-radar-host .hdp-overview__label {
-  color: var(--muted);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+-transform: none;
+  letter-spacing: 0.01em;
   font-weight: 600;
 }
 .hex-drawer {
@@ -1598,7 +1617,7 @@ button.hex-action {
 }
 /* Column headers = Brand Explorer standards / mini-table (ALL CAPS) — never letter-split */
 .hex-root .hiw-table thead th {
-  padding: 8px 10px;
+  padding: 14px 16px;
   background: transparent;
   color: var(--muted, #aeb9e1);
   font-size: 0.65rem;
@@ -1613,12 +1632,7 @@ button.hex-action {
   overflow-wrap: normal;
   word-break: normal;
   hyphens: none;
-}
-.hex-root .hiw-table thead th:first-child {
-  padding-left: 0;
-}
-.hex-root .hiw-table thead th:last-child {
-  padding-right: 0;
+  box-sizing: border-box;
 }
 .hex-root .hiw-table th:first-child {
   font-weight: 600;
@@ -1638,12 +1652,7 @@ button.hex-action {
   overflow-wrap: break-word;
   word-break: normal;
   text-transform: none;
-}
-.hex-root .hiw-table tbody td:first-child {
-  padding-left: 0;
-}
-.hex-root .hiw-table tbody td:last-child {
-  padding-right: 0;
+  box-sizing: border-box;
 }
 .hex-root .hiw-table tbody tr:last-child td {
   border-bottom: none;
@@ -1661,13 +1670,22 @@ button.hex-action {
 
 /* Preserve people / portfolio / relationships min-widths inside explorer (scroll rather than crush) */
 .hex-root .hiw-table--people {
-  min-width: 960px !important;
+  min-width: 1240px !important;
 }
 .hex-root .hiw-table--portfolio {
-  min-width: 920px !important;
+  min-width: 1180px !important;
+}
+.hex-root .hiw-table--portfolio-manage {
+  min-width: 980px !important;
 }
 .hex-root .hiw-table--relationships {
   min-width: 860px !important;
+}
+.hex-root .hiw-table .dl-td--num,
+.hex-root .hiw-table td.hiw-td--num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .hex-root .hiw-table--sources {
   min-width: 1100px !important;
@@ -2539,9 +2557,55 @@ button.hex-action {
 /* Nested table inside a section: table surface only — no extra translucent fill */
 .hex-root .hiw-section .dl-table-wrap,
 .hex-root .hiw-section .ada-table-shell,
-.hex-root .hiw-section .hex-op-group {
+.hex-root .hiw-section .hex-op-group,
+.hex-root .hiw-section .hiw-table-wrap {
   background: var(--hex-surface-table);
   border-color: var(--hex-surface-border-table);
+}
+
+/* Organization & Portfolio — shared horizontal grid for all major sections */
+.hex-root .hex-owner-portfolio > .hiw-section {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+.hex-root .hex-owner-portfolio .hiw-table-wrap,
+.hex-root .hex-owner-portfolio .dl-table-wrap,
+.hex-root .hex-owner-portfolio .hex-op-groups,
+.hex-root .hex-owner-portfolio .hiw-strategic,
+.hex-root .hex-owner-portfolio [data-hex-key-people-host] {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+.hex-root .hex-owner-portfolio .hex-op-group__head {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.hex-root .hex-owner-portfolio .hex-op-group__body {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.hex-root .hex-owner-portfolio .hiw-status {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+.hex-root .hex-owner-portfolio .hiw-section-footnote {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted, #aeb9e1);
+}
+.hex-root .hex-owner-portfolio .hiw-strategic__method {
+  margin-top: 12px;
 }
 
 /* Ownership & Control Network (interactive hierarchical SVG) */
@@ -2634,23 +2698,32 @@ button.hex-action {
   color: #94a3b8;
 }
 .hex-root .ocn-legend {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 10px 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 14px;
+  gap: 12px 28px;
   align-items: center;
-  font-size: 11px;
-  color: var(--neutral--400);
+  font-size: 12px;
+  line-height: 1.4;
+  color: #cbd5e1;
+  border: 0.6px solid var(--hex-surface-border);
+  border-radius: 10px;
+  background: rgba(8, 15, 37, 0.35);
 }
 .hex-root .ocn-legend__item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  min-height: 20px;
 }
 .hex-root .ocn-legend__item i {
-  width: 18px;
+  width: 22px;
   height: 0;
   border-top: 2px solid #94a3b8;
   display: inline-block;
+  flex: 0 0 auto;
 }
 .hex-root .ocn-legend__item--verified i {
   border-top-style: solid;
@@ -2671,6 +2744,43 @@ button.hex-action {
 .hex-root .ocn-legend__note {
   opacity: 0.85;
 }
+.hex-root .ocn-about-structure {
+  margin: 10px 0 4px;
+  border: 0.6px solid var(--hex-surface-border);
+  border-radius: 10px;
+  background: rgba(8, 15, 37, 0.28);
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.hex-root .ocn-about-structure > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+.hex-root .ocn-about-structure > summary::-webkit-details-marker {
+  display: none;
+}
+.hex-root .ocn-about-structure > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  color: #94a3b8;
+}
+.hex-root .ocn-about-structure[open] > summary::before {
+  content: "▾";
+}
+.hex-root .ocn-about-structure__body {
+  padding: 0 12px 12px;
+}
+.hex-root .ocn-about-structure__body p {
+  margin: 0 0 8px;
+}
+.hex-root .ocn-about-structure__body p:last-child {
+  margin-bottom: 0;
+}
 .hex-root .ocn-stage {
   position: relative;
   border: 0.6px solid var(--hex-surface-border);
@@ -2681,7 +2791,8 @@ button.hex-action {
 }
 .hex-root .ocn-svg {
   width: 100%;
-  height: 520px;
+  height: min(640px, 72vh);
+  min-height: 520px;
   display: block;
   cursor: grab;
   touch-action: none;
@@ -2715,12 +2826,33 @@ button.hex-action {
   stroke-width: 3;
   stroke: #e2e8f0;
 }
+.hex-root .ocn-edge-label-host {
+  pointer-events: none;
+}
+.hex-root .ocn-edge-label-bg {
+  fill: var(--hex-surface-canvas, #080f25);
+  stroke: transparent;
+}
 .hex-root .ocn-edge-label {
-  fill: #94a3b8;
+  fill: #e2e8f0;
   font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-anchor: middle;
+  dominant-baseline: middle;
   pointer-events: none;
+}
+.hex-root .ocn-edge--verified .ocn-edge-label {
+  fill: #7dd3fc;
+}
+.hex-root .ocn-edge--proposed .ocn-edge-label {
+  fill: #fcd34d;
+}
+.hex-root .ocn-edge--historical .ocn-edge-label {
+  fill: #cbd5e1;
+}
+.hex-root .ocn-edge--unresolved .ocn-edge-label {
+  fill: #94a3b8;
 }
 .hex-root .ocn-node rect {
   fill: var(--hex-surface-section);

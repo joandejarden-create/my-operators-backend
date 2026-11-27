@@ -1,0 +1,38 @@
+{
+  "version": "he-four-tab-regression-browser-evidence-v1",
+  "generatedAt": "2026-11-27T22:24:30.000Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "servedFrom": {
+    "recoveryWorktree": "C:/Dev/dealality/_verify_pr627_main",
+    "branch": "feat/he-four-tab-regression-recovery-v1",
+    "verifyBase": "http://127.0.0.1:8091",
+    "canonical8080": {
+      "owner": "ws-gdi",
+      "note": "localhost:8080 remains GDI-owned origin/main until this PR merges and post-merge sync updates product homes. Recovery UI verified on :8091 from this worktree using the Radar hotel-open shell."
+    }
+  },
+  "flow": "deal-capture-radar-with-ranked-list.html → HotelExplorer.open(Bethesda) → setTab(contacts|ownership|organization|submarket)",
+  "gates": {
+    "HE_CONTACT_CX_REGRESSION": "PASS",
+    "HE_OWNERSHIP_GRAPH_REGRESSION": "PASS",
+    "HE_PORTFOLIO_LAYOUT_REGRESSION": "PASS",
+    "HE_SUBMARKET_PRESENTATION_REGRESSION": "PASS",
+    "HE_FOUNDER_UI_CONTRACT": "PASS",
+    "HE_CANONICAL_BROWSER_PARITY": "PASS",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  },
+  "screenshots": [
+    "reports/hotel-explorer/four-tab-regression-recovery/01-contact-intelligence.png",
+    "reports/hotel-explorer/four-tab-regression-recovery/02-ownership-intelligence.png",
+    "reports/hotel-explorer/four-tab-regression-recovery/03-org-portfolio-top.png",
+    "reports/hotel-explorer/four-tab-regression-recovery/04-org-portfolio-tables.png",
+    "reports/hotel-explorer/four-tab-regression-recovery/05-submarket-snapshot.png"
+  ],
+  "observations": {
+    "contact": "5-column directory; GDI Email/Phone/LinkedIn stack; Business Purpose retained; no Recommended First Contact; Marriott vs Mullen org mapping correct",
+    "ownership": "Customer executive narrative; OCN legend expanded; graph present; Mullen remains proposed economic sponsor",
+    "portfolio": "Owned/Controlled + Who Manages tables with Economic Sponsor — Proposed; 407 rooms; Key People not empty legacy copy",
+    "submarket": "No Verified Hotels/Guestrooms KPI cards; Market Coverage footnote after tables"
+  }
+}

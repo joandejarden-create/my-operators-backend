@@ -855,7 +855,7 @@
 
 .hdp-footprint-table th,
 .hdp-footprint-table td {
-  padding: 7px 10px;
+  padding: 10px 12px;
   border-bottom: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   text-align: right;
   vertical-align: middle;
@@ -870,7 +870,8 @@
   color: var(--runbook-heading, #e8ecf4);
   font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   text-align: center;
 }
 
@@ -883,10 +884,13 @@
   font-weight: 600;
   color: var(--hdp-text, #e8ecf4);
   background: var(--hex-surface-table, var(--runbook-surface, #0d152c));
-  max-width: 180px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 220px;
+  max-width: 360px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .hdp-footprint-table tbody td {
@@ -1228,9 +1232,9 @@
 .hdp-overview__label {
   color: var(--hdp-text-body);
   font-weight: 600;
-  text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: 0.03em;
+  text-transform: none;
+  font-size: 11px;
+  letter-spacing: 0.01em;
 }
 
 .hdp-overview__value {
