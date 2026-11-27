@@ -300,7 +300,8 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(!ws.includes("Frequently praised"));
   assert.ok(ws.includes("mountGuestSentiment"));
   assert.ok(/id:\s*"sentiment"/.test(ws));
-  const tabs = ws.match(/var TABS = \[[\s\S]*?\];/);
+  assert.ok(ws.includes("ALL_TABS") || ws.includes("isGuestSentimentEnabled"));
+  const tabs = ws.match(/var ALL_TABS = \[[\s\S]*?\];/) || ws.match(/var TABS = \[[\s\S]*?\];/);
   assert.ok(tabs);
   assert.ok(/Guest Sentiment/.test(tabs[0]));
   assert.ok(!/Brand \/ Operator/.test(tabs[0]));
@@ -312,14 +313,18 @@ const KGPV = "recUNycnMwOVFX0hc";
 {
   const hex = read("public/js/hotel-explorer.js");
   assert.ok(hex.includes("mountGuestSentiment"));
+  assert.ok(hex.includes("ALL_TABS"));
+  assert.ok(hex.includes("isGuestSentimentEnabled"));
 }
 
 {
   const server = read("server.js");
   assert.ok(server.includes("/api/hotel-explorer/hotels/:hotelId/guest-sentiment"));
+  assert.ok(server.includes("/api/hotel-explorer/feature-flags"));
   const api = read("api/hotel-explorer-guest-sentiment.js");
   assert.ok(api.includes("X-Dealality-Write"));
   assert.ok(api.includes("X-Dealality-Paid-Providers"));
+  assert.ok(api.includes("DISABLED_BY_FOUNDER") || api.includes("buildGuestSentimentDisabledByFounderResponse"));
   assert.ok(api.includes("executiveInsights"));
   assert.ok(api.includes("categoryPerformance"));
   assert.ok(api.includes("reviewThemes"));

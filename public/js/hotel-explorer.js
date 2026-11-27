@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var TABS = [
+  var ALL_TABS = [
     { id: "hotel", label: "Hotel<br>Overview", shortLabel: "Overview" },
     { id: "rooms", label: "Guest Rooms &amp;<br>Meeting Space", shortLabel: "Rooms" },
     { id: "ownership", label: "Ownership<br>Intelligence", shortLabel: "Ownership" },
@@ -20,7 +20,25 @@
     { id: "sources", label: "Sources &amp;<br>Evidence", shortLabel: "Sources" },
   ];
 
-  /** Legacy Brand / Operator deep links → Guest Sentiment (HE-QL-038). */
+  function guestSentimentFlag() {
+    return window.HeGuestSentimentFeatureFlag || null;
+  }
+
+  function isGuestSentimentEnabled() {
+    var f = guestSentimentFlag();
+    return !!(f && typeof f.isEnabled === "function" && f.isEnabled());
+  }
+
+  /** Active customer tabs (11 when Guest Sentiment is founder-disabled). */
+  var TABS = (function () {
+    var f = guestSentimentFlag();
+    if (f && typeof f.filterActiveTabs === "function") return f.filterActiveTabs(ALL_TABS);
+    return ALL_TABS.filter(function (t) {
+      return t.id !== "sentiment";
+    });
+  })();
+
+  /** Legacy Brand / Operator deep links → Guest Sentiment (HE-QL-038) when enabled. */
   var TAB_ALIASES = {
     brand: "sentiment",
     "brand-operator": "sentiment",
@@ -89,11 +107,28 @@
   function normalizeHexTab(tabId) {
     var raw = String(tabId || "").trim();
     if (!raw) return "hotel";
-    if (TAB_ALIASES[raw]) return TAB_ALIASES[raw];
-    if (TABS.some(function (t) {
-      return t.id === raw;
-    }))
+    var f = guestSentimentFlag();
+    if (f && typeof f.normalizeTabOrFallback === "function") {
+      raw = f.normalizeTabOrFallback(TAB_ALIASES[raw] || raw, "hotel");
+    } else if (!isGuestSentimentEnabled() && (raw === "sentiment" || TAB_ALIASES[raw] === "sentiment")) {
+      return "hotel";
+    } else if (TAB_ALIASES[raw]) {
+      raw = TAB_ALIASES[raw];
+    }
+    if (
+      TABS.some(function (t) {
+        return t.id === raw;
+      })
+    )
       return raw;
+    if (
+      ALL_TABS.some(function (t) {
+        return t.id === raw;
+      })
+    ) {
+      // Preserved-but-disabled tab id — fall back safely.
+      return "hotel";
+    }
     return "hotel";
   }
 
@@ -755,11 +790,18 @@
           (state.tab === "sentiment" || state.tab === "brand") &&
           window.HotelIntelligenceWorkspace
         ) {
-          if (typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function") {
-            window.HotelIntelligenceWorkspace.mountHotelNewsArticles();
-          }
-          if (typeof window.HotelIntelligenceWorkspace.mountGuestSentiment === "function") {
-            window.HotelIntelligenceWorkspace.mountGuestSentiment();
+          if (!isGuestSentimentEnabled()) {
+            hiHost.innerHTML =
+              (guestSentimentFlag() && guestSentimentFlag().unavailableHtml
+                ? guestSentimentFlag().unavailableHtml()
+                : '<p class="hex-card">Guest Sentiment is temporarily unavailable.</p>');
+          } else {
+            if (typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function") {
+              window.HotelIntelligenceWorkspace.mountHotelNewsArticles();
+            }
+            if (typeof window.HotelIntelligenceWorkspace.mountGuestSentiment === "function") {
+              window.HotelIntelligenceWorkspace.mountGuestSentiment();
+            }
           }
         }
         if (

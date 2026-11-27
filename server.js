@@ -90,6 +90,7 @@ import {
 } from "./api/hotel-explorer-founder-preview.js";
 import { getHotelExplorerNewsArticles } from "./api/hotel-explorer-news-articles.js";
 import { getHotelExplorerGuestSentiment } from "./api/hotel-explorer-guest-sentiment.js";
+import { getHeGuestSentimentFeatureState } from "./lib/hotel-intelligence/guest-sentiment/he-guest-sentiment-feature-flag-v1.js";
 import { getHotelExplorerSubmarketSnapshot } from "./api/hotel-explorer-submarket-snapshot.js";
 import {
   getHotelExplorerDemandDrivers,
@@ -1032,10 +1033,22 @@ app.get(
   getHotelExplorerNewsArticles
 );
 // Hotel Explorer — guest sentiment (GET-only; staged / rights-gated; no paid providers)
+// Founder flag HE_GUEST_SENTIMENT_ENABLED=false → DISABLED_BY_FOUNDER (no restricted payloads).
 app.get(
   "/api/hotel-explorer/hotels/:hotelId/guest-sentiment",
   getHotelExplorerGuestSentiment
 );
+app.get("/api/hotel-explorer/feature-flags", (req, res) => {
+  res.setHeader("X-Dealality-Write", "forbidden");
+  res.setHeader("X-Dealality-Paid-Providers", "forbidden");
+  res.setHeader("Cache-Control", "no-store");
+  const state = getHeGuestSentimentFeatureState();
+  res.json({
+    success: true,
+    ...state,
+    HE_GUEST_SENTIMENT_ENABLED: state.enabled,
+  });
+});
 // Hotel Explorer — Submarket Snapshot from canonical HPC (GET-only; Scout is supporting only)
 app.get(
   "/api/hotel-explorer/hotels/:hotelId/submarket-snapshot",
