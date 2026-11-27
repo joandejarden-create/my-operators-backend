@@ -773,7 +773,10 @@
       setTabRenderSource("CANONICAL_HI");
       if (state.tab === "contacts" && window.HotelContactIntelligence) {
         hiHost.innerHTML = window.HotelContactIntelligence.renderLoading();
-        window.HotelContactIntelligence.mount(hiHost, recordId(state.hotel));
+        window.HotelContactIntelligence.mount(
+          hiHost,
+          recordId(state.hotel) || state.requestedHotelId || ""
+        );
       } else if (state.tab === "rooms" && window.HotelExplorerRoomsMeetingSpace) {
         setTabRenderSource("ROOMS_MEETING");
         if (typeof window.HotelExplorerRoomsMeetingSpace.mount === "function") {
@@ -1500,6 +1503,12 @@
   function open(hotel, opts) {
     opts = opts || {};
     if (!hotel) return;
+    // Allow open("rec…") / deep-link string ids — Contact Intelligence mount needs recordId().
+    if (typeof hotel === "string") {
+      var sid = String(hotel).trim();
+      if (!sid) return;
+      hotel = { id: sid, recordId: sid };
+    }
     var generation = ++state.openGeneration;
     var requestedId = opts.requestedHotelId || recordId(hotel);
     state.requestedHotelId = requestedId;
