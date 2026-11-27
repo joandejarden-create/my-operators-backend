@@ -1857,18 +1857,21 @@
         value: MARKET_SCOPE.ALL,
         shortLabel: "All",
         fullLabel: "All Opportunities",
+        btnClass: "gdi-market-scope__btn--all",
         count: counts.ALL != null ? counts.ALL : counts.all,
       },
       {
         value: MARKET_SCOPE.HOTEL,
         shortLabel: "Hotel",
         fullLabel: "Hotel Opportunities",
+        btnClass: "gdi-market-scope__btn--hotel",
         count: counts.HOTEL != null ? counts.HOTEL : counts.hotel,
       },
       {
         value: MARKET_SCOPE.COMPETITIVE,
         shortLabel: "Competitive",
         fullLabel: "Competitive Market Intelligence",
+        btnClass: "gdi-market-scope__btn--competitive",
         count:
           counts.COMPETITIVE != null
             ? counts.COMPETITIVE
@@ -1884,10 +1887,11 @@
           var selected = active === o.value;
           var countText =
             o.count == null || o.count === "" ? "" : " (" + o.count + ")";
-          // Show full Market Scope labels (incl. Competitive Market Intelligence).
-          var label = o.fullLabel + countText;
+          // Visible labels: All / Hotel / Competitive + counts (never truncate Competitive).
+          var label = o.shortLabel + countText;
           return (
-            '<button type="button" class="gdi-market-scope__btn' +
+            '<button type="button" class="gdi-market-scope__btn ' +
+            esc(o.btnClass || "") +
             (selected ? " is-active" : "") +
             '" role="radio" aria-checked="' +
             (selected ? "true" : "false") +
@@ -1898,8 +1902,9 @@
             '" aria-label="' +
             esc(o.fullLabel + (countText || "")) +
             '">' +
+            '<span class="gdi-market-scope__btn-text">' +
             esc(label) +
-            "</button>"
+            "</span></button>"
           );
         })
         .join("") +

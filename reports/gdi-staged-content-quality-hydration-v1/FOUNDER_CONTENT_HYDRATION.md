@@ -2,7 +2,7 @@
 
 **Contract:** `gdi-wyndham-content-hydration-rematerialize-v1`
 **Mode:** APPLY
-**Publication version:** gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_c456c74e
+**Publication version:** gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_84288a6e
 **Count:** 26
 
 ## Gate
