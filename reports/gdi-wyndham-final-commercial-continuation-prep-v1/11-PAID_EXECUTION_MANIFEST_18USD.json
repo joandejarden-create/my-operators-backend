@@ -1,0 +1,203 @@
+{
+  "version": "gdi-wyndham-final-commercial-continuation-18usd-manifest-v1",
+  "preparedAt": "2026-11-27",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "hotelName": "Wyndham San Diego Bayside",
+  "proposedAuthorizationId": "FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127",
+  "authorizationStatus": "PROPOSED_AWAITING_FOUNDER_GO",
+  "permissionToSpend": false,
+  "aggregateHardCeilingUsd": 18.0,
+  "expectedSpendUsd": 12.5,
+  "priorUnusedUsd790": {
+    "amount": 7.9,
+    "carriedForward": false,
+    "rule": "NO_CARRYOVER"
+  },
+  "separateFiveUsdAuth": {
+    "allowed": false,
+    "note": "WHO/HOW USD 5.00 is Checkpoint A inside the USD 18.00 ceiling — no additional authorization"
+  },
+  "lockedBaseline": {
+    "path": "reports/gdi-wyndham-final-commercial-continuation-prep-v1/10-LOCKED_26_COMMERCIAL_BASELINE.json",
+    "totalProposedFqo": 26,
+    "writeSetApplied": false
+  },
+  "prCapability": {
+    "pr": 613,
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/613",
+    "headAtPrep": "a83c55f6eeead4f2c64b8e9f125dced133918959",
+    "note": "Founder note cited d153ecdba… — superseded by live-adapter commit a83c55f6e on same PR",
+    "mergeRequiredBeforePaid": true,
+    "postMergeSyncRequired": true
+  },
+  "liveAdapter": {
+    "module": "lib/group-demand-intelligence/research/exa-agent/gdi-exa-who-how-live-adapter-v1.js",
+    "hotelSpecific": false,
+    "parallelEngine": false,
+    "reuses": [
+      "gdi-who-how-agent-contract-v1",
+      "gdi-exa-agent-deep-job-store-v1",
+      "exa-agent-provider-adapter-v1",
+      "gdi-authorized-paid-budget-ledger-v1"
+    ],
+    "zeroUsdTests": "npm run test:gdi-exa-who-how-live-adapter-v1",
+    "v3CliLiveDefault": "FAIL_CLOSED"
+  },
+  "governance": {
+    "NO_AIRTABLE_APPLY": true,
+    "NO_STAGED_ACTIVATE": true,
+    "NO_CURRENT_PUBLISH": true,
+    "NO_FINDYMAIL": true,
+    "NO_SURFE_AUTO": true,
+    "NO_CARRYOVER": true,
+    "NO_REDISCOVERY_161": true,
+    "bethesdaFreeze": "ON",
+    "clean11Freeze": "ON",
+    "budgetExhaustion": "PARTIAL_NEVER_FALSE_COMPLETE"
+  },
+  "checkpoints": {
+    "A_WHO_HOW": {
+      "order": 1,
+      "name": "WHO/HOW Agent Checkpoint",
+      "stage": "WHO_HOW_RESOLUTION",
+      "maxSpendUsd": 5.0,
+      "includedInAggregateCeiling": true,
+      "scope": {
+        "maxUniqueOpportunities": 25,
+        "source": "reports/gdi-wyndham-final-commercial-completion-v1/06-WHO_HOW_TOP30_RECOVERY.json",
+        "manifestSeed": "reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json",
+        "authorizationIdOverride": "FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127",
+        "noStage1": true,
+        "noUnnecessaryStage2": true
+      },
+      "validate": [
+        "verifiedLodgingDecisionMakers",
+        "verifiedBuyerInfluencers",
+        "twoAlternativeEntryPointsWhenNoDirectBuyer",
+        "independentVerificationEachAlternative",
+        "opportunitySpecificWhyWeAreShowingThisContact",
+        "recommendedHotelSalesApproach",
+        "correctContactRole",
+        "noUnsupportedBuyingAuthority",
+        "noFabricatedContactChannels"
+      ],
+      "minimumRecoveryTarget": {
+        "recoveredBuyerOrNamedEntryPoint": 10,
+        "of": 25,
+        "doNotRelaxVerification": true
+      },
+      "releaseRemainingBudget": "ONLY_AFTER_CHECKPOINT_A_REPORT_AND_FOUNDER_ACCEPTANCE",
+      "stopIf": [
+        "adapterFailure",
+        "evidenceQualityFailure",
+        "costControlFailure",
+        "commercialRelevanceFailure",
+        "recoveryBelowTargetWithoutFounderDirection"
+      ]
+    },
+    "B_FINAL_COMMERCIAL_CONTINUATION": {
+      "order": 2,
+      "name": "Final Commercial Continuation",
+      "requires": ["CHECKPOINT_A_PASS", "FOUNDER_ACCEPTANCE_OF_CHECKPOINT_A"],
+      "remainingBudgetUsd": "aggregateCeiling minus Checkpoint A actual spend",
+      "priorityOrder": [
+        {
+          "step": 1,
+          "id": "PLP_RECOVERY",
+          "note": "Rewritten evidence-gated referral queries"
+        },
+        {
+          "step": 2,
+          "id": "COMPETITIVE_OVERFLOW_CAD",
+          "note": "15 association/event HOLDs"
+        },
+        {
+          "step": 3,
+          "id": "LEISURE_LIVE_MODULES",
+          "note": "Six applicable live leisure modules"
+        },
+        {
+          "step": 4,
+          "id": "DEEP_NEW_LEISURE_ONLY",
+          "note": "Deduped deep research on genuinely new leisure discoveries"
+        },
+        {
+          "step": 5,
+          "id": "PUBLIC_CONTACT_DISCOVERY",
+          "note": "Stage 4 public-source professional contact; no Findymail; no Surfe auto"
+        },
+        {
+          "step": 6,
+          "id": "STRICT_FQO_REASSESSMENT",
+          "note": "All six FQO gates preserved; measure vs locked 26"
+        }
+      ],
+      "estimatesUsd": {
+        "plp": 1.1,
+        "competitiveCad": 1.5,
+        "leisureDiscovery": 3.0,
+        "leisureDeep": 3.0,
+        "publicContact": 0.0,
+        "buffer": 1.4,
+        "note": "WHO/HOW charged under Checkpoint A (max 5.00); expected aggregate ~12.50"
+      }
+    }
+  },
+  "commercialQualityGates": [
+    "credibleFutureDemand",
+    "wyndhamSpecificHotelFit",
+    "realisticCommercialPursuitPathway",
+    "verifiedNamedDecisionMakerInfluencerOrEntryPoint",
+    "personSpecificOutreachRoute",
+    "clearRecommendedHotelSalesAction",
+    "sixFqoGatesPreserved",
+    "namedContactDoesNotCompensateWeakDemandOrFit",
+    "noArtificialQualifiedCountIncrease"
+  ],
+  "beforeAfterReportingRequired": [
+    "existingOpportunitiesPreserved",
+    "existingHoldUpgraded",
+    "existingContinuationUpgraded",
+    "newlyDiscoveredAndQualified",
+    "directBuyersRecovered",
+    "buyerInfluencersRecovered",
+    "twoVerifiedAlternativeEntryPoints",
+    "oneVerifiedAlternativeEntryPoint",
+    "personSpecificOutreachChannels",
+    "remainingContactResearchRequired",
+    "remainingUnresolved",
+    "incrementalFqoByMechanism",
+    "estimatedIncrementalRoomNightsWhereEvidenced",
+    "actualSpendByStageAndProvider",
+    "costPerRecoveredOpportunity",
+    "costPerIncrementalFqo",
+    "avoidedDuplicateResearchSpend",
+    "partGItemsComplete",
+    "noDoubleCountMultiStageBenefits"
+  ],
+  "executionCommandsAfterGo": {
+    "checkpointA": [
+      "cd C:\\Dev\\dealality\\ws-gdi",
+      "$env:GDI_EXA_AGENT_LIVE='1'",
+      "node -e \"/* authorized Checkpoint A runner after founder GO — use executeWhoHowTranche against top-25 with authorizationId FOUNDER_GO_WYNDHAM_FINAL_COMMERCIAL_CONTINUATION_18USD_20261127, hardCeilingUsd 5, mode Live */\""
+    ],
+    "dryRunOnlyUntilGo": [
+      ".\\scripts\\gdi\\Invoke-GdiWhoHow.ps1 -HotelId recnPB3Q02NO8Ma1o -ContinuationOnly -Mode DryRun",
+      "npm run test:gdi-exa-who-how-live-adapter-v1"
+    ]
+  },
+  "integratedValidationAfterExecution": {
+    "url": "http://localhost:8080",
+    "standaloneFixturesInsufficient": true,
+    "verify": [
+      "Primary Lodging Decision-Maker",
+      "Alternative Entry Point 1",
+      "Alternative Entry Point 2",
+      "Opportunity-specific contact rationale",
+      "Buyer vs non-buyer distinction",
+      "Contact Research Required",
+      "Unresolved WHO/HOW",
+      "Surfe explicit-click only"
+    ]
+  }
+}
