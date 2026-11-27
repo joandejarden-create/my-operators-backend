@@ -134,8 +134,9 @@ Full weekly-change scheduler wiring remains on existing GDI weekly infrastructur
 ## 10. Cost and provider authorization controls
 
 - DryRun default everywhere  
-- Live requires `-AuthorizePaidResearch` **and** Mode=Live  
-- This V3 CLI still refuses Live spend (fail-closed) until paid Exa WHO/HOW adapter tranche  
+- Live requires founder auth id + `-AuthorizePaidResearch` / `authorizeExaAgentLive` **and** `GDI_EXA_AGENT_LIVE=1` **and** Mode=Live  
+- Product-wide adapter: `gdi-exa-who-how-live-adapter-v1.js` (job store reuse, hard ceiling, DryRun default)  
+- V3 stage CLI remains fail-closed for accidental Live; authorized tranche uses the live adapter after founder GO  
 - Stage budget metrics slots ready (discovery / deep / who-how / contact / enrichment)  
 - Budget exhaustion → PARTIAL (existing COMMERCIAL_FULL_E2E semantics)  
 
@@ -159,7 +160,8 @@ npm run test:gdi-canonical-full-e2e-v3-v1
 | Field | Value |
 |---|---|
 | PR | [#613](https://github.com/joandejarden-create/my-operators-backend/pull/613) **OPEN** |
-| Head SHA | `82191ddc5b7b920210a125ee5fb1cd145f67f896` |
+| Head SHA (prior push) | `d153ecdba4ca63de859fcc26f165bddfa663bd28` |
+| Note | Founder note cited outdated `df1da264a…` — corrected here to actual GitHub head above; subsequent live-adapter commit will advance HEAD |
 | Expected merge | Integration Controller remote merge only |
 | Local branch | `feat/gdi-canonical-full-e2e-v3-who-how` |
 | Base | `main` |
@@ -167,21 +169,26 @@ npm run test:gdi-canonical-full-e2e-v3-v1
 
 GDI chat does **not** merge.
 
+**CI gate (as of live-adapter prep):** gitleaks false-positive on `verifiedLinkedIn` field fixed via code rename + narrow `.gitleaks.toml` allowlist. Other returned workflows were SUCCESS; merge blocked until latest gitleaks is green after this push.
+
 **Status vocabulary:** `AWAITING_INTEGRATION_CONTROLLER`
 
 ---
 
 ## 13. Recommended initial Wyndham WHO/HOW paid tranche (after merge)
 
-**Proposed auth:** `FOUNDER_GO_WYNDHAM_WHO_HOW_V3_TRANCHE_<DATE>`
+**Proposed auth:** `FOUNDER_GO_WYNDHAM_WHO_HOW_V3_TRANCHE_20261127` (**proposed only**)
 
 | Item | Guidance |
 |---|---|
-| Scope | Top 25 WHO/HOW continuation from prior $0 plan (associations/gov/sports) |
+| Scope | Top 25 WHO/HOW continuation from `06-WHO_HOW_TOP30_RECOVERY.json` |
 | Mode | Stage 3 only — **no** rediscovery of 161 |
-| Ceiling | **$5.00** hard (≈25–40 Agent WHO/HOW calls @ $0.10) |
+| Ceiling | **$5.00** hard (≈25 medium Agent WHO/HOW calls @ $0.10) |
+| Manifest | `reports/gdi-wyndham-who-how-v3-tranche-20261127/01-TRANCHE_MANIFEST.json` |
+| Adapter | `lib/.../gdi-exa-who-how-live-adapter-v1.js` (product-wide; DryRun default) |
+| $0 tests | `npm run test:gdi-exa-who-how-live-adapter-v1` |
 | Then | Stage 4 public contact DryRun; Findymail only under separate auth |
-| Stop | Ceiling / settled-job reuse / no FQO-gate relaxation |
+| Stop | Ceiling / settled-job reuse / no FQO-gate relaxation / no paid without founder GO |
 | Success | ≥10 of 25 recover buyer or ≥1 entry point; drawer shows correct labels |
 
 Combine with prior Final Commercial Continuation ($18) only if founder prefers a single umbrella auth — otherwise keep WHO/HOW tranche separate and small for first live proof.
@@ -190,6 +197,8 @@ Combine with prior Final Commercial Continuation ($18) only if founder prefers a
 
 ## Status
 
-**IMPLEMENTATION READY — AWAITING_INTEGRATION_CONTROLLER** (after PR open)
+**LIVE ADAPTER + TRANCHE PREP ON PR — AWAITING_INTEGRATION_CONTROLLER**
 
-Dirty worktree preserved (unrelated paths not committed).
+- Do **not** merge from GDI chat.
+- Do **not** execute paid WHO/HOW until IC merge + post-merge sync + explicit founder GO on `FOUNDER_GO_WYNDHAM_WHO_HOW_V3_TRANCHE_20261127`.
+- Dirty worktree preserved (unrelated paths not committed).

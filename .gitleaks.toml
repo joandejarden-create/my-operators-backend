@@ -133,6 +133,9 @@ regexes = [
   '''(?i)const bannedKeys = \["email", "phone", "mobile", "linkedinUrl", "linkedInUrl", "providerPersonId", "emails", "phones"\];''',
   # Boolean gate / comment text next to public LinkedIn URL field — not a LinkedIn OAuth client secret (PR #463).
   '''linkedinUrl:\s*linkedinVerified''',
+  # WHO/HOW person schema field for a public LinkedIn profile URL — not an OAuth client secret (PR #613).
+  '''verifiedLinkedIn:\s*(?:liUrl|verifiedLinkedIn|null)''',
+  '''verifiedLinkedIn:\s*liUrl\s*\|\|\s*null''',
   # Profile-match status field name (linkedInStatus / linkedInMatchStatus) — not a LinkedIn OAuth client id (PR #484).
   '''(?i)linkedIn(?:Match)?Status''',
   '''(?i)liProfileMatchStatus''',
