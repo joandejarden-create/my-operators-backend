@@ -165,17 +165,32 @@
 
   function demandTypeLabel(o, UI) {
     var lab = "";
-    if (UI && typeof UI.segmentDisplayLabel === "function") {
+    // Prefer baked publication filter labels (same taxonomy as Opportunity Type filter).
+    lab =
+      text(o.opportunityTypeFilterLabel) ||
+      text(o.segmentDisplayLabel) ||
+      text(o.opportunityTypeLabel) ||
+      "";
+    if (!lab && UI && typeof UI.segmentDisplayLabel === "function") {
       try {
         lab = text(UI.segmentDisplayLabel(o));
       } catch (e) {
         lab = "";
       }
     }
+    if (!lab && UI && typeof UI.classifyOpportunityTypeFilter === "function") {
+      try {
+        var cat = UI.classifyOpportunityTypeFilter(o);
+        if (cat && UI.OPPORTUNITY_TYPE_FILTER_LABELS) {
+          lab = text(UI.OPPORTUNITY_TYPE_FILTER_LABELS[cat]);
+        }
+      } catch (e2) {
+        lab = "";
+      }
+    }
     if (!lab) {
       lab =
         text(o.segmentLabel) ||
-        text(o.opportunityTypeLabel) ||
         text(o.segment) ||
         text(o.demandSegment) ||
         "—";

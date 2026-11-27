@@ -2066,7 +2066,13 @@
       if (looksLikeOrganizedConferenceOrShow(o)) {
         return "ASSOCIATION_CONFERENCE_GROUP";
       }
-      if (hasCredibleScalingExpansionTrigger(o)) {
+      // Honor publication-baked SCALING_COMPANY (and evidence-backed scaling
+      // claims). Do not drop to Association/Other merely because the live
+      // expansion-trigger heuristic is sparse after content hydration.
+      if (
+        baked === "SCALING_COMPANY" ||
+        hasCredibleScalingExpansionTrigger(o)
+      ) {
         return "SCALING_COMPANY";
       }
     }
@@ -10957,6 +10963,7 @@
     competitiveStatusPillHtml: competitiveStatusPillHtml,
     competitiveVerificationStatusDrawerHtml: competitiveVerificationStatusDrawerHtml,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
+    OPPORTUNITY_TYPE_FILTER_LABELS: OPPORTUNITY_TYPE_FILTER_LABELS,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
     countByMarketScope: countByMarketScope,
     matchesMarketScopeFilter: matchesMarketScopeFilter,

@@ -46,11 +46,23 @@ Not additional research stages:
 4. Persist via approved durable publication-package architecture  
 5. Generate/update the **complete** STAGED package (not incremental-only)  
 6. Validate STAGED package integrity  
-7. Refresh local inventory mirror where applicable  
-8. Verify accessibility on port 8080  
-9. Produce execution closeout  
+7. **Content Hydration & Presentation Validation** (permanent gate — not a sixth research stage)  
+8. Refresh local inventory mirror where applicable  
+9. Verify accessibility on port 8080  
+10. Produce execution closeout  
 
 Airtable GDO production apply remains separately gated unless explicitly authorized. STAGED package store progression is mandatory for operational E2E completion.
+
+### Content Hydration & Presentation Validation (permanent)
+
+An opportunity cannot be STAGED-certified merely because every field is non-empty. Customer-facing titles, demand classification, commercial narrative, WHO/HOW contact presentation, and List/Tiles/Drawer consistency must pass `gdi-content-hydration-presentation-gate-v1` before STAGED certification.
+
+- Module: `lib/group-demand-intelligence/presentation/gdi-content-hydration-presentation-gate-v1.js`  
+- Evidence-backed titles: `gdi-evidence-backed-commercial-title-v1.js`  
+- Validate: `.\scripts\gdi\Invoke-GdiContentHydrationValidate.ps1` · `npm run test:gdi-content-hydration-presentation-gate-v1`  
+- Hotel audit (DryRun): `npm run report:gdi-content-hydration-audit-v1 -- --hotelId <rec…>`  
+
+Do not fabricate room nights, contacts, or buying authority to pass the gate. Optional unavailable fields may remain empty when unsupported.
 
 ## STAGED rules
 
@@ -80,8 +92,11 @@ Authorized founder/admin session on `http://localhost:8080` — normal GDI app, 
 # Live Full E2E (requires paid-research auth when spending; auto-stages qualified results)
 .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch
 
-# Validate V3 fixtures + hotel DryRun + lifecycle gates + :8080 STAGED visibility
+# Validate V3 fixtures + hotel DryRun + lifecycle gates + content hydration + :8080 STAGED visibility
 .\scripts\gdi\Invoke-GdiValidateFullE2E.ps1 -HotelId <rec...>
+
+# Content hydration / presentation gate only
+.\scripts\gdi\Invoke-GdiContentHydrationValidate.ps1 -HotelId <rec...> -RequirePort8080
 
 # Explicit CURRENT promotion (requires exact founder auth + package version; DryRun default)
 .\scripts\gdi\Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -PublicationVersion <ver> -Mode DryRun
@@ -97,15 +112,16 @@ Reject GDI Full E2E COMPLETE unless:
 2. Commercial qualification passed  
 3. Durable STAGED persistence verified  
 4. Complete STAGED package generated; opportunity IDs reconciled  
-5. Founder-visible inventory verified on port 8080  
-6. CURRENT unchanged unless explicitly approved for that version  
-7. Previously accepted application functionality preserved  
+5. Content hydration & presentation gate passed (titles, taxonomy, mandatory commercial fields, WHO/HOW consistency)  
+6. Founder-visible inventory verified on port 8080  
+7. CURRENT unchanged unless explicitly approved for that version  
+8. Previously accepted application functionality preserved  
 
-Feature-branch tests alone are insufficient.
+Feature-branch tests alone are insufficient. Opportunity count alone is not commercial certification.
 
 ## Related
 
 - [GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md](./GDI_CANONICAL_E2E_TO_STAGED_LIFECYCLE_V1.md)  
 - Module: `lib/group-demand-intelligence/publication-package/gdi-canonical-e2e-to-staged-lifecycle-v1.js`  
-- Gates: `npm run test:gdi-canonical-e2e-to-staged-lifecycle-v1` · `npm run test:gdi-cumulative-integrated-staging-non-regression-v1`  
-- Audit: `node scripts/gdi-product-wide-hotel-readiness-audit-v1.mjs`
+- Gates: `npm run test:gdi-canonical-e2e-to-staged-lifecycle-v1` · `npm run test:gdi-cumulative-integrated-staging-non-regression-v1` · `npm run test:gdi-content-hydration-presentation-gate-v1`  
+- Audit: `node scripts/gdi-product-wide-hotel-readiness-audit-v1.mjs` · `npm run report:gdi-content-hydration-audit-v1`
