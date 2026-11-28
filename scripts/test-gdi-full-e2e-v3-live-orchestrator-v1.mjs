@@ -207,16 +207,308 @@ try {
   assert.equal(planning.surfe, false);
 
   // ---- Reuse semantics: missing artifacts HOLD ----------------------------
-  const disc = runDiscoveryStageLive(HOTEL, { outDir: tmp("f") });
+  const disc = await runDiscoveryStageLive(HOTEL, { outDir: tmp("f") });
   assert.equal(disc.outcome, "HOLD");
   assert.equal(disc.mode, "Live");
   assert.equal(disc.paid, false);
+  assert.equal(disc.paidDiscoveryInvoked, false);
   assert.equal(disc.reuseExistingIntelligence, true);
-  assert.equal(disc.reason, "DISCOVERY_ARTIFACTS_MISSING");
-  const deep = runDeepResearchStageLive(HOTEL, { outDir: tmp("f") });
+  assert.equal(disc.reason, "DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED");
+  const deep = await runDeepResearchStageLive(HOTEL, { outDir: tmp("f") });
   assert.equal(deep.outcome, "HOLD");
   assert.equal(deep.paid, false);
-  assert.equal(deep.reason, "DEEP_RESEARCH_ARTIFACTS_MISSING");
+  assert.equal(deep.reason, "DEEP_RESEARCH_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED");
+
+  // ---- NEW HOTEL FULL E2E: paid discovery / deep routing (mock adapter only) --
+  // Never spends: provider keys are unset and the canonical chain is injected.
+  const chainCalls = [];
+  const readinessCalls = [];
+  const mkAdapter = ({ liveReady = true, blockers = [] } = {}) => ({
+    assessCanonicalLiveReadiness: (o) => {
+      readinessCalls.push(o);
+      return { liveReady, blockers };
+    },
+    executeOriginalFullE2eResearchChain: async (o) => {
+      chainCalls.push(o);
+      return {
+        discovery: {
+          cells: [
+            { segmentId: "corporate_group_travel" },
+            { segmentId: "preferred_lodging_partnerships" },
+          ],
+          extracted: 2,
+        },
+        processed: [
+          {
+            opportunityId: "opp_paid_1",
+            segmentId: "corporate_group_travel",
+            organizationName: "Example Org",
+          },
+        ],
+        paidSpendUsd: 1.25,
+        coverageStatus: "PARTIAL",
+      };
+    },
+  });
+  const paidAuth = {
+    mode: "Live",
+    authorizePaidResearch: true,
+    authorizePaidDiscovery: true,
+    authorizationId: "AUTH_NEW_HOTEL",
+    hardCeilingUsd: 7,
+  };
+
+  // Missing + paid discovery NOT authorized -> HOLD, adapter never touched.
+  const adapterNoSpend = mkAdapter();
+  const notAuth = await runDiscoveryStageLive(HOTEL, {
+    outDir: tmp("n0"),
+    mode: "Live",
+    authorizePaidResearch: true,
+    canonicalDiscoveryAdapter: adapterNoSpend,
+  });
+  assert.equal(notAuth.outcome, "HOLD");
+  assert.equal(notAuth.reason, "DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED");
+  assert.equal(notAuth.paid, false);
+  assert.equal(notAuth.paidDiscoveryInvoked, false);
+  assert.equal(notAuth.routing, "HOLD_PAID_NOT_AUTHORIZED");
+  // Paid discovery flag alone (no paid research / not Live) never spends either.
+  for (const partial of [
+    { mode: "Live", authorizePaidDiscovery: true },
+    { authorizePaidDiscovery: true, authorizePaidResearch: true },
+  ]) {
+    const r = await runDiscoveryStageLive(HOTEL, {
+      outDir: tmp("n0b"),
+      ...partial,
+      authorizationId: "AUTH_X",
+      hardCeilingUsd: 5,
+      canonicalDiscoveryAdapter: adapterNoSpend,
+    });
+    assert.equal(r.reason, "DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED");
+    assert.equal(r.paidDiscoveryInvoked, false);
+  }
+  assert.equal(chainCalls.length, 0, "unauthorized never invokes the canonical chain");
+  assert.equal(readinessCalls.length, 0);
+
+  // Forced EXISTING_HOTEL_CONTINUATION forbids paid discovery even when authorized.
+  const contForced = await runDiscoveryStageLive(HOTEL, {
+    ...paidAuth,
+    outDir: tmp("n1"),
+    operationalMode: "EXISTING_HOTEL_CONTINUATION",
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  assert.equal(contForced.reason, "DISCOVERY_ARTIFACTS_MISSING_CONTINUATION_MODE");
+  assert.equal(contForced.paidDiscoveryInvoked, false);
+  assert.equal(chainCalls.length, 0);
+
+  // Authorized but fail-closed: prerequisites / env gates missing -> HOLD, no spend.
+  const gateBlocked = await runDiscoveryStageLive(HOTEL, {
+    ...paidAuth,
+    outDir: tmp("n2"),
+    canonicalDiscoveryAdapter: mkAdapter({
+      liveReady: false,
+      blockers: [{ code: "EXA_API_KEY_ABSENT" }, { code: "GDI_EXA_AGENT_LIVE_ENV_REQUIRED" }],
+    }),
+  });
+  assert.equal(gateBlocked.outcome, "HOLD");
+  assert.equal(gateBlocked.reason, "PAID_DISCOVERY_PREREQUISITES_BLOCKED");
+  assert.equal(gateBlocked.blocked, true);
+  assert.equal(gateBlocked.paidDiscoveryInvoked, false);
+  assert.equal(gateBlocked.paid, false);
+  assert.deepEqual(
+    gateBlocked.blockers.map((b) => b.code),
+    ["EXA_API_KEY_ABSENT", "GDI_EXA_AGENT_LIVE_ENV_REQUIRED"],
+  );
+  const noIds = await runDiscoveryStageLive(HOTEL, {
+    mode: "Live",
+    authorizePaidResearch: true,
+    authorizePaidDiscovery: true,
+    outDir: tmp("n3"),
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  assert.equal(noIds.reason, "PAID_DISCOVERY_PREREQUISITES_BLOCKED");
+  assert.ok(noIds.blockers.some((b) => b.code === "AUTHORIZATION_ID_REQUIRED_FOR_PAID_DISCOVERY"));
+  assert.ok(noIds.blockers.some((b) => b.code === "HARD_CEILING_REQUIRED_FOR_PAID_DISCOVERY"));
+  // Real canonical readiness gate (no injection): provider env unset -> blocked, $0.
+  const realGate = await runDiscoveryStageLive(HOTEL, { ...paidAuth, outDir: tmp("n4") });
+  assert.equal(realGate.reason, "PAID_DISCOVERY_PREREQUISITES_BLOCKED");
+  assert.ok(realGate.blockers.some((b) => b.code === "EXA_API_KEY_ABSENT"));
+  assert.ok(realGate.blockers.some((b) => b.code === "GDI_EXA_AGENT_LIVE_ENV_REQUIRED"));
+  assert.equal(realGate.paidDiscoveryInvoked, false);
+  assert.equal(chainCalls.length, 0, "blocked paid discovery never invokes the chain");
+
+  // Authorized + missing + mock canonical chain -> chain invoked once; shared by deep.
+  const sharedRun = {};
+  const paidDisc = await runDiscoveryStageLive(HOTEL, {
+    ...paidAuth,
+    outDir: tmp("n5"),
+    paidChainRun: sharedRun,
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  assert.equal(chainCalls.length, 1, "canonical chain invoked exactly once");
+  assert.equal(paidDisc.outcome, "PASS");
+  assert.equal(paidDisc.paid, true);
+  assert.equal(paidDisc.paidDiscoveryInvoked, true);
+  assert.equal(paidDisc.reuseExistingIntelligence, false);
+  assert.equal(paidDisc.routing, "PAID_CANONICAL_CHAIN");
+  assert.equal(paidDisc.reason, null);
+  assert.equal(paidDisc.plpAssessed, true);
+  const chainOpts = chainCalls[0];
+  assert.deepEqual(chainOpts.hotelIds, [HOTEL]);
+  assert.equal(chainOpts.authorizePaidDiscovery, true);
+  assert.equal(chainOpts.authorizePaidResearch, true);
+  assert.equal(chainOpts.authorizationId, "AUTH_NEW_HOTEL");
+  assert.equal(chainOpts.budgetCeilingUsd, 7);
+  assert.equal(chainOpts.allowHistoricalReplay, false);
+  assert.equal(chainOpts.fixtureMode, false);
+  assert.equal(chainOpts.useFixtureProvider, false);
+  assert.equal(chainOpts.dryRun, false);
+  assert.equal(chainOpts.enableApifyOrchestration, false);
+  assert.equal(readinessCalls.at(-1).authorizationId, "AUTH_NEW_HOTEL");
+  assert.equal(readinessCalls.at(-1).budgetCeilingUsd, 7);
+  assert.ok(fs.existsSync(path.join(tmp("n5"), "fourteen-segment-discovery-matrix.json")));
+  const paidDeep = await runDeepResearchStageLive(HOTEL, {
+    ...paidAuth,
+    outDir: tmp("n5"),
+    paidChainRun: sharedRun,
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  assert.equal(chainCalls.length, 1, "deep stage shares the discovery chain run (no double spend)");
+  assert.equal(paidDeep.outcome, "PASS");
+  assert.equal(paidDeep.paid, true);
+  assert.equal(paidDeep.paidDiscoveryInvoked, true);
+  assert.equal(paidDeep.reason, null);
+  assert.ok(fs.existsSync(path.join(tmp("n5"), "dossiers", "opp_paid_1.json")));
+
+  // Artifacts present + paid authorized -> reuse path unchanged (no spend).
+  const reuseMatrix = tmp("reuse-matrix.json");
+  fs.writeFileSync(
+    reuseMatrix,
+    JSON.stringify({ cells: [{ segmentId: "preferred_lodging_partnerships" }] }),
+  );
+  const reuseDossiers = tmp("reuse-dossiers");
+  fs.mkdirSync(reuseDossiers, { recursive: true });
+  fs.writeFileSync(path.join(reuseDossiers, "d1.json"), "{}");
+  const callsBeforeReuse = chainCalls.length;
+  const reusedDisc = await runDiscoveryStageLive(HOTEL, {
+    ...paidAuth,
+    outDir: tmp("n6"),
+    discoveryMatrixPath: reuseMatrix,
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  const reusedDeep = await runDeepResearchStageLive(HOTEL, {
+    ...paidAuth,
+    outDir: tmp("n6"),
+    queueDossierDir: reuseDossiers,
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  for (const r of [reusedDisc, reusedDeep]) {
+    assert.equal(r.outcome, "PASS");
+    assert.equal(r.paid, false);
+    assert.equal(r.paidDiscoveryInvoked, false);
+    assert.equal(r.reuseExistingIntelligence, true);
+    assert.equal(r.routing, "REUSED_EXISTING_ARTIFACTS");
+    assert.equal(r.reason, null);
+  }
+  assert.equal(reusedDisc.plpAssessed, true);
+  assert.equal(chainCalls.length, callsBeforeReuse, "reuse path never invokes the chain");
+
+  // Full Live run: NEW HOTEL FULL E2E summary fields (mock chain; $0).
+  const newHotelOpps = [
+    {
+      id: "opp_paid_1",
+      opportunityId: "opp_paid_1",
+      organizationName: "Example Org",
+      title: "Example group demand",
+      segmentId: "corporate_group_travel",
+    },
+  ];
+  const newHotelBase = {
+    hotelId: HOTEL,
+    mode: "Live",
+    authorizePaidResearch: true,
+    authorizePaidDiscovery: true,
+    authorizationId: "AUTH_NEW_HOTEL",
+    hardCeilingUsd: 7,
+    skipWhoHow: true,
+    skipStagedProgression: true,
+    opportunities: newHotelOpps,
+    contactStageOpts: { fixture: true },
+  };
+  const callsBeforeNew = chainCalls.length;
+  const newHotel = await runFullE2eV3Live({
+    ...newHotelBase,
+    outDir: tmp("n7"),
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  const nh = newHotel.summary;
+  assert.equal(chainCalls.length, callsBeforeNew + 1, "one chain run for discovery + deep");
+  assert.equal(nh.operationalMode, "NEW_HOTEL_FULL_E2E");
+  assert.equal(nh.operationalModeSource, "derived");
+  assert.equal(nh.paidDiscoveryInvoked, true);
+  assert.equal(nh.paid, true);
+  assert.equal(nh.paidBreakdown.discovery, true);
+  assert.equal(nh.paidBreakdown.deep, true);
+  assert.equal(nh.discoveryDeepSpentUsd, 1.25);
+  assert.equal(nh.reuseExistingIntelligence, false);
+  assert.equal(nh.discoveryOutcome.outcome, "PASS");
+  assert.equal(nh.discoveryOutcome.routing, "PAID_CANONICAL_CHAIN");
+  assert.equal(nh.deepOutcome.outcome, "PASS");
+  assert.equal(nh.plpAssessed, true);
+  assert.equal(nh.stageInventory.discovery.paid, true);
+  assert.equal(nh.stageInventory.discovery.mode, "PAID_CANONICAL_CHAIN");
+  assert.equal(nh.stagedProgression.activated, false);
+  assert.equal(nh.stagedProgression.currentUnchanged, true);
+
+  // RESUME: prior Live PASS reports reused; chain never re-invoked.
+  const callsBeforeResume = chainCalls.length;
+  const resumed = await runFullE2eV3Live({
+    ...newHotelBase,
+    outDir: tmp("n7"),
+    resume: true,
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  assert.equal(chainCalls.length, callsBeforeResume, "resume does not re-spend");
+  assert.equal(resumed.summary.operationalMode, "RESUME");
+  assert.equal(resumed.summary.paidDiscoveryInvoked, false);
+  assert.equal(resumed.stageReports.discovery.resumed, true);
+
+  // Authorized run, no paid-discovery flag: HOLD + EXISTING_HOTEL_CONTINUATION label.
+  const callsBeforeHold = chainCalls.length;
+  const heldRun = await runFullE2eV3Live({
+    ...newHotelBase,
+    authorizePaidDiscovery: undefined,
+    outDir: tmp("n8"),
+    canonicalDiscoveryAdapter: mkAdapter(),
+  });
+  assert.equal(chainCalls.length, callsBeforeHold);
+  assert.equal(heldRun.summary.operationalMode, "EXISTING_HOTEL_CONTINUATION");
+  assert.equal(heldRun.summary.paidDiscoveryInvoked, false);
+  assert.equal(heldRun.summary.paid, false);
+  assert.equal(heldRun.summary.missingArtifactsPaidNotAuthorized, true);
+  assert.equal(
+    heldRun.summary.discoveryOutcome.reason,
+    "DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED",
+  );
+  assert.equal(
+    heldRun.summary.deepOutcome.reason,
+    "DEEP_RESEARCH_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED",
+  );
+
+  // Explicit override is recorded; invalid override fails closed before side effects.
+  const explicitMode = await runFullE2eV3Live({
+    ...newHotelBase,
+    authorizePaidDiscovery: undefined,
+    operationalMode: "NEW_HOTEL_FULL_E2E",
+    outDir: tmp("n9"),
+  });
+  assert.equal(explicitMode.summary.operationalMode, "NEW_HOTEL_FULL_E2E");
+  assert.equal(explicitMode.summary.operationalModeSource, "explicit");
+  await rejectsWithCode(
+    () => runFullE2eV3Live({ ...newHotelBase, operationalMode: "BOGUS", outDir: tmp("n10") }),
+    "INVALID_OPERATIONAL_MODE",
+    "invalid operationalMode",
+  );
+  assert.equal(fs.existsSync(tmp("n10")), false, "mode validated before side effects");
 
   // ---- Live happy path (mock adapter + mock persistence; STAGED skipped) ---
   const manifestPath = tmp("manifest.json");
@@ -569,6 +861,25 @@ try {
   ]);
   assert.equal(cliDiscovery.status, 0);
   assert.match(cliDiscovery.stdout, /"outcome": "HOLD"/);
+  assert.match(cliDiscovery.stdout, /DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED/);
+
+  // NEW HOTEL Live discovery via CLI fails closed (exit 4) without provider env gates.
+  const cliPaidNoEnv = runCli([
+    "--stage", "DISCOVERY", "--hotel-id", HOTEL, "--mode", "Live",
+    "--authorize-paid-research", "--authorize-paid-discovery",
+    "--authorization-id", "AUTH_CLI", "--hard-ceiling-usd", "5", "--out-dir", tmp("n11"),
+  ]);
+  assert.equal(cliPaidNoEnv.status, 4, `paid discovery without env gates: ${cliPaidNoEnv.stderr}`);
+  assert.match(cliPaidNoEnv.stdout, /PAID_DISCOVERY_PREREQUISITES_BLOCKED/);
+  assert.match(cliPaidNoEnv.stdout, /"paidDiscoveryInvoked": false/);
+
+  const cliBadMode = runCli([
+    "--stage", "FULL", "--hotel-id", HOTEL, "--mode", "Live",
+    "--authorize-paid-research", "--operational-mode", "BOGUS", "--skip-who-how",
+    "--out-dir", tmp("n12"),
+  ]);
+  assert.equal(cliBadMode.status, 2, "invalid --operational-mode fails closed");
+  assert.match(cliBadMode.stderr, /INVALID_OPERATIONAL_MODE/);
 
   const cliValidate = runCli(["--stage", "VALIDATE", "--hotel-id", HOTEL, "--mode", "Live", "--out-dir", tmp("o")]);
   assert.equal(cliValidate.status, 1, "validation-only on empty dir: not ok, not exit 3");

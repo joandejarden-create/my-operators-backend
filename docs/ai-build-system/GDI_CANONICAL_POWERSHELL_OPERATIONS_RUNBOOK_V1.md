@@ -32,8 +32,8 @@ Live = `-Mode Live -AuthorizePaidResearch`. Live reuses existing adapters; there
 
 | Stage | Live behavior | Spend |
 |---|---|---|
-| 1 Discovery | Reuses existing discovery artifacts (Node `--discovery-matrix <path>` or `<outDir>/fourteen-segment-discovery-matrix.json`). Missing → **HOLD**. | none |
-| 2 Deep research | Reuses settled queue dossiers (`<outDir>/dossiers`). Missing → **HOLD**. | none |
+| 1 Discovery | Artifacts present (Node `--discovery-matrix <path>` or `<outDir>/fourteen-segment-discovery-matrix.json`) → **reuse** (EXISTING HOTEL CONTINUATION). Missing **and** `-AuthorizePaidDiscovery` + `-AuthorizePaidResearch` (+ `-AuthorizationId`, `-HardCeilingUsd`) → the **canonical chain** runs (NEW HOTEL FULL E2E). Missing, not authorized → **HOLD** `DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED`. | reuse: none; NEW HOTEL: Exa, ≤ ceiling |
+| 2 Deep research | Settled queue dossiers (`<outDir>/dossiers`) present → **reuse**. Missing and paid authorized → same canonical chain run as Stage 1 (one run per orchestrator invocation; never double-spent). Missing, not authorized → **HOLD** `DEEP_RESEARCH_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED`. | reuse: none; NEW HOTEL: shared with Stage 1 |
 | 3 WHO/HOW | Existing Exa adapter (Checkpoint A pattern). **Requires** `-AuthorizationId`, `-HardCeilingUsd > 0`, `-Manifest` unless `-SkipWhoHow`; also `GDI_EXA_AGENT_LIVE=1`. | Exa, ≤ ceiling |
 | 4 Contact | Public-first. Findymail only with `-AuthorizeFindymail` (+ `FINDYMAIL_API_KEY`). Surfe never. | Findymail credits only when authorized |
 | 5 Qualification | Strict FQO + entry-point reachability. | none |
@@ -42,7 +42,43 @@ Live = `-Mode Live -AuthorizePaidResearch`. Live reuses existing adapters; there
 
 Fail-closed exit codes from the Node CLI: `2` = missing/invalid authorization parameters (nothing executed); `4` = provider authorization refused (e.g. missing `FINDYMAIL_API_KEY`, `GDI_EXA_AGENT_LIVE` not set); `1` = stage failure or invalid STAGED inventory. Exit 3 is no longer used.
 
-`paid` in `00-ORCHESTRATOR_SUMMARY.json` is true only when WHO/HOW or Findymail actually spent.
+`paid` in `00-ORCHESTRATOR_SUMMARY.json` is true only when discovery/deep (canonical chain), WHO/HOW or Findymail actually spent. A paid-discovery run that fail-closes (env gate / missing prerequisites) exits `4` and reports `PAID_DISCOVERY_PREREQUISITES_BLOCKED` with `blockers[]` — no spend.
+
+## Operational modes (which command to run)
+
+`00-ORCHESTRATOR_SUMMARY.json` reports `operationalMode` (`NEW_HOTEL_FULL_E2E` | `EXISTING_HOTEL_CONTINUATION` | `RESUME`), `paidDiscoveryInvoked`, `discoveryOutcome` and `deepOutcome` (outcome + reason + routing). Mode is derived from real routing (explicit `-OperationalMode` / `--operational-mode` overrides the label; `EXISTING_HOTEL_CONTINUATION` additionally **forbids** paid discovery even when authorized).
+
+| Mode | When | Command shape | Discovery/Deep | Spend |
+|---|---|---|---|---|
+| **NEW HOTEL FULL E2E** | Hotel has no discovery/deep artifacts | `Invoke-GdiFullE2E.ps1 -Mode Live -AuthorizePaidResearch -AuthorizePaidDiscovery -AuthorizationId … -HardCeilingUsd … [-Manifest …]` | Canonical chain (`executeOriginalFullE2eResearchChain`) runs discovery + deep once; artifacts materialized into `<outDir>` | Exa discovery + deep, ledger-bounded by `-HardCeilingUsd`/`-AuthorizationId`; then WHO/HOW/Findymail only if separately authorized |
+| **EXISTING HOTEL CONTINUATION** | Artifacts already exist (e.g. contact-only, WHO/HOW tranche, re-qualification) | `Invoke-GdiFullE2E.ps1 -Mode Live -AuthorizePaidResearch [-SkipDiscovery -SkipDeep] …` (no `-AuthorizePaidDiscovery`) | Reuse; missing → HOLD `…_MISSING_PAID_NOT_AUTHORIZED` | none for Stages 1–2 |
+| **RESUME** | Interrupted/previous Live run in the same `-OutDir` | add `-Resume` to either command above | Prior Live PASS stage reports reused; DryRun reports never reused | none for resumed stages |
+| **WEEKLY refresh** | Delta intelligence on an existing hotel | `npm run gdi:weekly-refresh -- --hotel-id <rec…> [--dry-run]` (separate script; live needs `SERPAPI_KEY`) | Frozen/weekly discovery, not the V3 orchestrator | SerpApi only when live |
+
+NEW HOTEL prerequisites (all fail closed, nothing runs if any is missing): `-Mode Live`, `-AuthorizePaidResearch` **and** `-AuthorizePaidDiscovery`, `-AuthorizationId`, `-HardCeilingUsd > 0`, `EXA_API_KEY` (or `EXA_KEY`), and `GDI_EXA_AGENT_LIVE=1` (canonical `assessCanonicalLiveReadiness` gate). The canonical fourteen-segment discovery is Exa-backed; `SERPAPI_KEY` is not required here (it is only required by the Weekly live path). `allowHistoricalReplay` is forced `false`; fixture/dry-run flags are forced `false` on this path.
+
+```powershell
+# NEW HOTEL FULL E2E (founder-authorized; discovery + deep + WHO/HOW + contact + qualification + STAGED):
+$env:GDI_EXA_AGENT_LIVE = '1'   # EXA_API_KEY must already be set in the environment
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live `
+  -AuthorizePaidResearch -AuthorizePaidDiscovery `
+  -AuthorizationId '<FOUNDER_GO_…>' -HardCeilingUsd <n> `
+  -Manifest 'reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json'   # or -SkipWhoHow until a tranche exists
+
+# EXISTING HOTEL CONTINUATION (reuse artifacts; no discovery/deep spend):
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch `
+  -SkipDiscovery -SkipDeep -ContinuationOnly -AuthorizationId '<FOUNDER_GO_…>' -HardCeilingUsd <n> -Manifest '<path>'
+
+# RESUME an interrupted Live run (same -OutDir):
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -AuthorizePaidDiscovery `
+  -AuthorizationId '<FOUNDER_GO_…>' -HardCeilingUsd <n> -Manifest '<path>' -Resume
+
+# Single-stage Node form (same gating; exit 4 if env gates/prerequisites are missing):
+node scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs --stage DISCOVERY --hotel-id <rec...> --mode Live `
+  --authorize-paid-research --authorize-paid-discovery --authorization-id <FOUNDER_GO_…> --hard-ceiling-usd <n>
+```
+
+Note: a stand-alone `--stage DEEP` with missing dossiers re-enters the canonical chain; completed discovery cells are resumed from the durable discovery state/budget ledger (same `-AuthorizationId`) rather than re-billed.
 
 ## Exact commands
 
@@ -82,7 +118,8 @@ These flags are accepted by `Invoke-GdiFullE2E.ps1` (→ `_GdiV3Common.ps1`) and
 | PowerShell | Node CLI | Effect |
 |---|---|---|
 | `-AllowHistoricalReplay` | `--allow-historical-replay` | Replay a historical discovery matrix; default-enables Leisure/CAD assess at $0 |
-| `-AuthorizePaidDiscovery` | `--authorize-paid-discovery` | Default-enables the Leisure/CAD spine; the orchestrator still **reuses** discovery artifacts (no paid discovery is invented) |
+| `-AuthorizePaidDiscovery` | `--authorize-paid-discovery` | **Required for NEW HOTEL FULL E2E**: with `-AuthorizePaidResearch`, missing discovery/deep artifacts trigger the canonical chain (needs auth id + ceiling + Exa env gates). Artifacts present → reused. Also default-enables the Leisure/CAD spine |
+| `-OperationalMode <NEW_HOTEL_FULL_E2E\|EXISTING_HOTEL_CONTINUATION\|RESUME>` | `--operational-mode <…>` | Optional label/override; `EXISTING_HOTEL_CONTINUATION` forbids paid discovery even when authorized |
 | `-EnableLeisure` / `-NoLeisure` | `--enable-leisure` / `--no-leisure` | Force the Leisure standard stage on/off (`mock_live`, $0) |
 | `-EnableCad` / `-NoCad` | `--enable-cad` / `--no-cad` | Force the CAD standard stage on/off (classification only) |
 | `-AuthorizeFindymail` (+ `-FindymailDryRun`) | `--authorize-findymail` (+ `--findymail-dry-run`) | Live Stage 4 Findymail (`FINDYMAIL_API_KEY`); `-FindymailDryRun` plans eligibility with no spend |
@@ -107,7 +144,7 @@ pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -Autho
   -AuthorizeFindymailPersist -AuthorizeAirtableProductionWrites
 ```
 
-Notes: Surfe is never invoked. The Findymail credit cap is a stage default (`creditHardCap` = 40); there is currently **no CLI flag** to set a lower cap (e.g. 15) — enforce via the usage ledger or add a flag before relying on a smaller authorization. Live Stage 1/2 **HOLD** when no discovery/deep artifacts exist in `-OutDir`; a truly fresh hotel needs artifacts first.
+Notes: Surfe is never invoked. The Findymail credit cap is a stage default (`creditHardCap` = 40); there is currently **no CLI flag** to set a lower cap (e.g. 15) — enforce via the usage ledger or add a flag before relying on a smaller authorization. Live Stage 1/2 **HOLD** (`…_MISSING_PAID_NOT_AUTHORIZED`) when no discovery/deep artifacts exist in `-OutDir` and `-AuthorizePaidDiscovery` is not supplied; a fresh hotel uses the NEW HOTEL FULL E2E command in "Operational modes" above.
 
 ### Individual stages
 
@@ -119,7 +156,7 @@ pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode Dry
 pwsh -File scripts/gdi/Invoke-GdiQualification.ps1 -HotelId <rec...> -Mode DryRun
 ```
 
-Live single stages (reuse semantics; no paid discovery):
+Live single stages (reuse semantics; paid discovery only via the Node CLI flags in "Operational modes"):
 
 ```powershell
 pwsh -File scripts/gdi/Invoke-GdiDiscovery.ps1     -HotelId <rec...> -Mode Live -AuthorizePaidResearch

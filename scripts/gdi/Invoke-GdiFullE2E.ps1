@@ -18,8 +18,11 @@
   Default DryRun. Does not create a parallel research engine.
 
   Live (-Mode Live -AuthorizePaidResearch) is hotel-agnostic:
-    * Discovery / Deep research reuse existing artifacts (never invent paid discovery;
-      missing artifacts → HOLD).
+    * Discovery / Deep research: artifacts present → reused (EXISTING_HOTEL_CONTINUATION, no spend).
+      Artifacts MISSING + -AuthorizePaidDiscovery + -AuthorizePaidResearch (+ -AuthorizationId,
+      -HardCeilingUsd, EXA_API_KEY, GDI_EXA_AGENT_LIVE=1) → canonical chain runs (NEW_HOTEL_FULL_E2E).
+      Missing without -AuthorizePaidDiscovery → HOLD DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED.
+      -OperationalMode optionally labels/overrides (EXISTING_HOTEL_CONTINUATION forbids paid discovery).
     * WHO/HOW uses the existing Exa adapter and requires hotel-specific
       -AuthorizationId, -HardCeilingUsd (> 0) and -Manifest unless -SkipWhoHow.
       No Wyndham (or any hotel) default is permitted. Also needs GDI_EXA_AGENT_LIVE=1.
@@ -86,6 +89,8 @@ param(
   [switch]$ApplyResearchPersistence,
 
   [switch]$AuthorizePaidDiscovery,
+  [ValidateSet('', 'NEW_HOTEL_FULL_E2E', 'EXISTING_HOTEL_CONTINUATION', 'RESUME')]
+  [string]$OperationalMode = '',
   [switch]$AllowHistoricalReplay,
   [switch]$EnableLeisure,
   [switch]$NoLeisure,
@@ -134,7 +139,8 @@ Invoke-GdiV3NodeStage -Stage 'FULL' -HotelId $HotelId -Mode $Mode `
   -AuthorizeResearchPersistence:$AuthorizeResearchPersistence `
   -ExactWriteSetAuthorization $ExactWriteSetAuthorization `
   -ApplyResearchPersistence:$ApplyResearchPersistence `
-  -AuthorizePaidDiscovery:$AuthorizePaidDiscovery -AllowHistoricalReplay:$AllowHistoricalReplay `
+  -AuthorizePaidDiscovery:$AuthorizePaidDiscovery -OperationalMode $OperationalMode `
+  -AllowHistoricalReplay:$AllowHistoricalReplay `
   -EnableLeisure:$EnableLeisure -NoLeisure:$NoLeisure -EnableCad:$EnableCad -NoCad:$NoCad `
   -PersistFindymailResults:$PersistFindymailResults `
   -AuthorizeFindymailPersist:$AuthorizeFindymailPersist `

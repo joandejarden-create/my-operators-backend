@@ -1,6 +1,6 @@
 {
   "contract": "gdi-fresh-hotel-certification-proposal-v1",
-  "generatedAt": "2026-11-28T00:35:14.419Z",
+  "generatedAt": "2026-11-28T01:22:29.321Z",
   "banner": "PROPOSED LIMITS — NOT AUTHORIZATION TO SPEND",
   "authorized": false,
   "hotel": {
@@ -60,33 +60,33 @@
   "mechanisms": [
     {
       "id": "DEMAND_DISCOVERY",
-      "detail": "Fourteen-segment discovery (Munich / Arabellapark / Bogenhausen territory; German primary, English control). Live reuses existing artifacts — none exist for this hotel.",
-      "spend": "none under this GO"
+      "detail": "Fourteen-segment discovery via canonical chain when artifacts missing + -AuthorizePaidDiscovery (NEW HOTEL FULL E2E). Artifacts present → reuse.",
+      "spend": "Exa discovery, ≤ shared ceiling"
     },
     {
       "id": "CAD / PLP",
       "detail": "CAD classification + PLP embedded in discovery; classification only.",
-      "spend": "$0"
+      "spend": "included in discovery"
     },
     {
       "id": "LEISURE (LDI)",
-      "detail": "Standard stage, mock_live only ($0). Low weight for an urban meetings/congress hotel; enabled so the unified path is exercised.",
-      "spend": "$0"
+      "detail": "Standard stage on Live spine when enabled; mock_live only ($0) unless separately authorized.",
+      "spend": "$0 mock"
     },
     {
       "id": "OPPORTUNITY_DEEP_RESEARCH",
-      "detail": "Reuses settled queue dossiers; missing → HOLD.",
-      "spend": "none"
+      "detail": "Same paid-discovery authorization triggers canonical deep when dossiers missing (shared chain run with discovery — no double spend).",
+      "spend": "included in discovery/deep spend"
     },
     {
       "id": "WHO_HOW_RESOLUTION",
       "detail": "Existing Exa agent adapter, Checkpoint A pattern; requires authorization id + ceiling + manifest + GDI_EXA_AGENT_LIVE=1.",
-      "spend": "Exa ≤ $25 hard ceiling"
+      "spend": "Exa ≤ $25 hard ceiling (shared)"
     },
     {
       "id": "PROFESSIONAL_CONTACT_RESEARCH",
       "detail": "Public-first named-contact channels; Findymail only when authorized (FINDYMAIL_API_KEY).",
-      "spend": "Findymail ≤ 15 credits (see enforcement note)"
+      "spend": "Findymail ≤ 15 credits via -FindymailCreditHardCap 15"
     },
     {
       "id": "COMMERCIAL_QUALIFICATION",
@@ -109,7 +109,7 @@
   "limits": {
     "exaUsdCeiling": 25,
     "findymailCredits": 15,
-    "serpApi": "NOT covered — discovery artifacts must be supplied (see prerequisites)",
+    "serpApi": "Not required for Exa-backed canonical discovery/deep; weekly live path separately requires SerpApi",
     "surfe": "FORBIDDEN",
     "current": "UNCHANGED (never promoted)",
     "staged": "Activation only if explicitly included in the founder GO; otherwise -NoActivateStagedPointer"
@@ -119,10 +119,11 @@
     "ifSeparatelyAuthorized": "Group Demand Opportunities upsert for hotelId recFaxTEFF9ILHWC9 only (idempotent, dry-run first via -PlanResearchPersistence), exact write-set text required, GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1. No schema changes, no other hotels, no CURRENT."
   },
   "prerequisitesAndRisks": [
-    "BLOCKING: Live Stage 1/2 reuse existing discovery + deep-research artifacts. None exist for this hotel, so Live would HOLD at Stage 1 until a discovery matrix exists in -OutDir (fourteen-segment-discovery-matrix.json). Producing it uses SerpApi via the original research chain and is NOT covered by the Exa/Findymail limits — needs a separate founder decision.",
+    "NEW HOTEL FULL E2E: missing discovery/deep artifacts + -AuthorizePaidDiscovery + -AuthorizePaidResearch + -AuthorizationId + -HardCeilingUsd + EXA_API_KEY + GDI_EXA_AGENT_LIVE=1 → canonical chain runs automatically. Without -AuthorizePaidDiscovery, Stages 1–2 HOLD with …_MISSING_PAID_NOT_AUTHORIZED.",
+    "Shared Exa ceiling covers discovery + deep + WHO/HOW; budget exhaustion ≠ COMPLETE.",
     "A tranche manifest (01-TRANCHE_MANIFEST.json) must be authored for this hotel; no Wyndham manifest may be reused.",
-    "Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15); Stage 4 shared budget stops enrichment at CREDIT_HARD_CAP_REACHED.",
-    "Flag names above follow the Live orchestrator CLI at the time of writing; re-run the pre-live gate before GO."
+    "Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15).",
+    "Re-run the pre-live gate before GO. This proposal is NOT spend authorization."
   ],
   "authorizationToken": {
     "proposed": "FOUNDER_GO_GDI_LIVE_E2E_WESTIN_MUNICH_20261128",
@@ -135,7 +136,7 @@
       "npm run gdi:weekly-refresh -- --hotel-id recFaxTEFF9ILHWC9 --dry-run"
     ],
     "dryRun": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode DryRun",
-    "liveFull": "$env:GDI_EXA_AGENT_LIVE = '1'          # Exa WHO/HOW spend gate (set only after founder GO)\n# $env:FINDYMAIL_API_KEY must already be present in the session (never echo it)\npwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode Live -AuthorizePaidResearch `\n  -AuthorizationId 'FOUNDER_GO_GDI_LIVE_E2E_WESTIN_MUNICH_20261128' -HardCeilingUsd 25 `\n  -Manifest 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128/01-TRANCHE_MANIFEST.json' -OutDir 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128' `\n  -AuthorizeFindymail -AllowHistoricalReplay -EnableLeisure -EnableCad -NoActivateStagedPointer\n# -NoActivateStagedPointer: drop only if the founder authorizes STAGED activation in the same GO"
+    "liveFull": "$env:GDI_EXA_AGENT_LIVE = '1'          # Exa spend gate (set only after founder GO)\n# $env:FINDYMAIL_API_KEY must already be present in the session (never echo it)\npwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode Live `\n  -AuthorizePaidResearch -AuthorizePaidDiscovery `\n  -AuthorizationId 'FOUNDER_GO_GDI_LIVE_E2E_WESTIN_MUNICH_20261128' -HardCeilingUsd 25 `\n  -Manifest 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128/01-TRANCHE_MANIFEST.json' -OutDir 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128' `\n  -AuthorizeFindymail -FindymailCreditHardCap 15 -EnableLeisure -EnableCad -NoActivateStagedPointer\n# -NoActivateStagedPointer: drop only if the founder authorizes STAGED activation in the same GO\n# Do NOT pass -AllowHistoricalReplay for a genuine new-hotel paid run"
   },
   "paths": {
     "outDir": "reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128",
