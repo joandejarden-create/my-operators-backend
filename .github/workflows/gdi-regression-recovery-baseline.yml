@@ -33,6 +33,9 @@ on:
       - "lib/group-demand-intelligence/customer-consistency/**"
       - "scripts/test-gdi-customer-facing-opportunity-title-contract-v1.mjs"
       - "scripts/test-gdi-surfe-on-demand-contact-reveal-v1.mjs"
+      - "scripts/test-shared-missing-channel-enrichment-global-v3.mjs"
+      - "lib/shared-contact-intelligence/**"
+      - "lib/surfe/**"
       - "scripts/test-gdi-guided-report-tour-v1.mjs"
       - "scripts/test-gdi-market-scope-toggle-v1.mjs"
       - "scripts/test-gdi-opportunity-card-quality-v1.mjs"
@@ -53,6 +56,8 @@ on:
     paths:
       - "public/js/group-demand-intelligence/**"
       - "lib/group-demand-intelligence/**"
+      - "lib/shared-contact-intelligence/**"
+      - "lib/surfe/**"
       - "scripts/test-gdi-regression-recovery-v1.mjs"
       - "scripts/test-gdi-opportunity-type-classification-v1.mjs"
       - "scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
@@ -65,6 +70,7 @@ on:
       - "scripts/test-gdi-primary-secondary-contact-uniqueness-v1.mjs"
       - "scripts/test-gdi-full-e2e-contact-architecture-call-graph-v1.mjs"
       - "scripts/test-gdi-best-suggested-contact-restore-v1.mjs"
+      - "scripts/test-shared-missing-channel-enrichment-global-v3.mjs"
       - ".github/workflows/gdi-regression-recovery-baseline.yml"
 
 jobs:
@@ -103,6 +109,9 @@ jobs:
 
       - name: Surfe on-demand contact lookup (PR #231)
         run: npm run test:gdi-surfe-on-demand-contact-reveal-v1
+
+      - name: Shared Surfe missing-channel enrichment GLOBAL V3 (HE+GDI)
+        run: npm run test:shared-missing-channel-enrichment-global-v3
 
       - name: Guided report tour
         run: npm run test:gdi-guided-report-tour-v1

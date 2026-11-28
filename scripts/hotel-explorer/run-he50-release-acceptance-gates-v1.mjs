@@ -57,6 +57,10 @@ const contactTests = [
   "test:he-contact-intelligence-cx-v2",
   "test:he-contact-intelligence-directory-ux-v1",
   "test:he-loading-ux-toast-v1",
+  // Shared Surfe + dynamic missing-channel (HE/GDI permanent; mock/prior-evidence only)
+  "test:he-surfe-contact-parity-v1",
+  "test:he-contact-dynamic-enrich-v3",
+  "test:shared-missing-channel-enrichment-global-v3",
 ].map(runNpm);
 
 const contactOk = contactTests.every((t) => t.ok);
