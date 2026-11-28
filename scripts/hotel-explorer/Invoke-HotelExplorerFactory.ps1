@@ -155,6 +155,11 @@ if ($ConsistencyModes -contains $Mode) {
   if ($LASTEXITCODE -ne 0) {
     throw "HE Organization & Portfolio padding gates FAILED for $HotelId (mode=$Mode)"
   }
+  Write-Host "[HE Factory] Organization & Portfolio final regression gates"
+  & npm run test:he-org-portfolio-final-regression-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Organization & Portfolio final regression gates FAILED for $HotelId (mode=$Mode)"
+  }
 
   Write-Host "[HE Factory] Executive Ownership Summary narrative gates"
   & npm run test:he-executive-ownership-narrative-v1
