@@ -59,8 +59,12 @@ async function main() {
     authorizeFindymail: flag("authorize-findymail"),
     /** Default dry-run even when authorized unless --findymail-live. */
     findymailDryRun: !flag("findymail-live"),
+    /** Paid Findymail phone — separate gate; Surfe never auto. */
+    authorizeFindymailPhone: flag("authorize-findymail-phone"),
+    findymailPhoneDryRun: !flag("findymail-phone-live"),
     airtableWriteAuthorized: flag("airtable-write-authorized"),
     findymailCreditHardCap: Number(arg("findymail-credit-hard-cap") || 15),
+    findymailPhoneCreditHardCap: Number(arg("findymail-phone-credit-hard-cap") || 50),
   };
 
   const result = opts.batchFile

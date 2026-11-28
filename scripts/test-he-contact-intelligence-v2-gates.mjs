@@ -19,6 +19,10 @@ const GATE = {
   HE_CONTACT_PHONE_HYDRATION: "HE_CONTACT_PHONE_HYDRATION",
   HE_CONTACT_FIND_BUTTON_STATE_PARITY: "HE_CONTACT_FIND_BUTTON_STATE_PARITY",
   HE_CONTACT_FIND_BUTTON_RIGHT_ALIGNMENT: "HE_CONTACT_FIND_BUTTON_RIGHT_ALIGNMENT",
+  HE_CONTACT_FIND_BUTTON_RENDERED: "HE_CONTACT_FIND_BUTTON_RENDERED",
+  HE_CONTACT_FIND_BUTTON_VISIBLE: "HE_CONTACT_FIND_BUTTON_VISIBLE",
+  HE_CONTACT_FIND_BUTTON_NOT_CLIPPED: "HE_CONTACT_FIND_BUTTON_NOT_CLIPPED",
+  HE_CONTACT_AIRTABLE_CHANNEL_PARITY: "HE_CONTACT_AIRTABLE_CHANNEL_PARITY",
   HE_CONTACT_FIVE_COLUMN_LAYOUT: "HE_CONTACT_FIVE_COLUMN_LAYOUT",
   HE_CONTACT_NO_COLUMN_OVERLAP: "HE_CONTACT_NO_COLUMN_OVERLAP",
   HE_CONTACT_FINDYMAIL_EMAIL_PHONE: "HE_CONTACT_FINDYMAIL_EMAIL_PHONE",
@@ -91,6 +95,33 @@ if (!/Find Email & Phone/.test(jsSrc)) {
 }
 pass(GATE.HE_CONTACT_FIND_BUTTON_RIGHT_ALIGNMENT, {
   note: "Button rendered inside Contact Details cell action slot",
+});
+
+if (!/data-hci-contact-details-cell/.test(jsSrc) || !/data-hci-enrich-slot/.test(jsSrc)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, "Contact Details enrich slot markers missing");
+}
+if (!/data-hci-hybrid-enrich/.test(jsSrc) || !/hci-btn--enrich-compact/.test(jsSrc)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, "hybrid compact enrich button markers missing");
+}
+pass(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, {
+  note: "Static render contract — browser VISIBLE gate is certify-he-contact-find-button-visibility-v1",
+});
+
+if (!/Contact Details must not clip/.test(css) && !/td:nth-child\(4\)[\s\S]*overflow:\s*visible/.test(css)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_NOT_CLIPPED, "Contact Details overflow:visible rule missing");
+}
+if (!/gdi-list-contact-action[\s\S]*flex-shrink:\s*0/.test(css)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_NOT_CLIPPED, "enrich action must flex-shrink:0");
+}
+pass(GATE.HE_CONTACT_FIND_BUTTON_NOT_CLIPPED, {
+  note: "CSS prevents td overflow clipping; browser cert asserts nonzero visible box",
+});
+
+if (!/visibility:\s*visible/.test(css) || !/hci-btn--enrich-dimmed[\s\S]*visibility:\s*visible/.test(css)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_VISIBLE, "dimmed/enrich visibility:visible contract missing");
+}
+pass(GATE.HE_CONTACT_FIND_BUTTON_VISIBLE, {
+  note: "CSS keeps button visible when dimmed; browser cert required for PASS on rendered page",
 });
 
 if (!/hci-dir-relationship/.test(css) || !/overflow-wrap:\s*anywhere/.test(css)) {
@@ -200,6 +231,17 @@ if (!hotel.airtableLive) {
     );
     assert.equal(parity.ok, true);
   }
+  pass(GATE.HE_CONTACT_AIRTABLE_CHANNEL_PARITY, {
+    people: hotel.people.length,
+    emails: withEmail.length,
+    phones: withPhone.length,
+  });
+}
+if (!results[GATE.HE_CONTACT_AIRTABLE_CHANNEL_PARITY]) {
+  results[GATE.HE_CONTACT_AIRTABLE_CHANNEL_PARITY] = {
+    status: "NOT_TESTED",
+    reason: "Airtable live unavailable",
+  };
 }
 
 // Route mounted

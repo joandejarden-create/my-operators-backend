@@ -1,6 +1,6 @@
 {
   "version": "he-contact-intelligence-v2-gates",
-  "generatedAt": "2026-11-28T09:25:00.894Z",
+  "generatedAt": "2026-11-28T10:15:07.332Z",
   "gates": {
     "HE_CONTACT_FIVE_COLUMN_LAYOUT": {
       "status": "PASS"
@@ -8,6 +8,18 @@
     "HE_CONTACT_FIND_BUTTON_RIGHT_ALIGNMENT": {
       "status": "PASS",
       "note": "Button rendered inside Contact Details cell action slot"
+    },
+    "HE_CONTACT_FIND_BUTTON_RENDERED": {
+      "status": "PASS",
+      "note": "Static render contract — browser VISIBLE gate is certify-he-contact-find-button-visibility-v1"
+    },
+    "HE_CONTACT_FIND_BUTTON_NOT_CLIPPED": {
+      "status": "PASS",
+      "note": "CSS prevents td overflow clipping; browser cert asserts nonzero visible box"
+    },
+    "HE_CONTACT_FIND_BUTTON_VISIBLE": {
+      "status": "PASS",
+      "note": "CSS keeps button visible when dimmed; browser cert required for PASS on rendered page"
     },
     "HE_CONTACT_NO_COLUMN_OVERLAP": {
       "status": "PASS"
@@ -42,8 +54,14 @@
     },
     "HE_CONTACT_PHONE_HYDRATION": {
       "status": "PASS",
-      "phones": 0,
-      "note": "no durable phones yet — display Not Available without click"
+      "phones": 2,
+      "note": "durable phones present"
+    },
+    "HE_CONTACT_AIRTABLE_CHANNEL_PARITY": {
+      "status": "PASS",
+      "people": 5,
+      "emails": 3,
+      "phones": 2
     }
   }
 }

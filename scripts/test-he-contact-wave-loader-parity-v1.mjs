@@ -50,8 +50,8 @@ assert.doesNotMatch(
 
 const radar = read("public/deal-capture-radar-with-ranked-list.html");
 const preview = read("public/hotel-explorer-preview.html");
-assert.match(radar, /hotel-contact-intelligence\.css\?v=18/);
-assert.match(preview, /hotel-contact-intelligence\.css\?v=18/);
+assert.match(radar, /hotel-contact-intelligence\.css\?v=19/);
+assert.match(preview, /hotel-contact-intelligence\.css\?v=19/);
 assert.match(radar, /\.loading:not\(\.dealality-wave-loader\)/);
 
 const sandbox = { console, window: {}, globalThis: null };
