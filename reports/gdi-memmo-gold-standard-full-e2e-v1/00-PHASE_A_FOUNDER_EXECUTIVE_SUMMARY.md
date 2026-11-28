@@ -1,10 +1,10 @@
 # Memmo Príncipe Real — Gold Standard Full E2E — Phase A
 
-**Status:** `PARTIAL — PHASE_A_READY — PERMANENT_GATES_LANDED — AWAITING_FOUNDER_AUTHORIZATION_CHECKPOINT`  
+**Status:** `PARTIAL — PHASE_C_AUTH_CHECKPOINT — PR705_MERGED — PAID_LIVE_AWAITING_FOUNDER_GO`  
 **Date:** 2026-11-28  
 **Hotel:** Memmo Príncipe Real · `rec1t35e3sPerzxYu` · Lisbon · Design Hotels  
-**Workspace:** `C:\Dev\dealality\ws-gdi` · branch `feat/gdi-memmo-gold-standard-full-e2e-v1`  
-**origin/main / :8080 serving SHA:** `b71bd02d8969abf30cb07870012b16442706e256` (includes HE Contact Intel V3.1 #704)  
+**Workspace:** `C:\Dev\dealality\ws-gdi` · home `ws/gdi` synced after PR #705  
+**origin/main:** `2429e4ff71f3b89d55f56092b84156b1ace8d580` (gold-standard gates #705)  
 **Prior incomplete certification SHA:** `6f47e1f80` — **superseded**; not current  
 **UI freeze:** honored  
 

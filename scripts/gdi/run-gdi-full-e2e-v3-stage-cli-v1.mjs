@@ -88,6 +88,7 @@ Options:
   --enable-leisure | --no-leisure   (Live FULL: force Leisure standard stage on/off; $0 mock_live only)
   --enable-cad | --no-cad           (Live FULL: force CAD standard stage on/off; classification only)
   --findymail-credit-hard-cap <n>  (Live Stage 4 shared Findymail credit ceiling; default 40)
+  --authorize-material-improvement-restage  (Live FULL: restage retained inventory when contacts/timing improve without net-new FQO)
   --persist-findymail-results (Live FULL: Findymail -> Airtable persist plan; needs --authorize-findymail AND
                                separate auth: --authorize-research-persistence + --exact-write-set-authorization,
                                OR --authorize-findymail-persist + --authorize-airtable-production-writes)
@@ -197,6 +198,11 @@ function liveFullOptions(hotelId, outDir) {
       const n = Number(raw);
       return Number.isFinite(n) && n > 0 ? n : undefined;
     })(),
+    authorizeMaterialImprovementRestage: flag(
+      "--authorize-material-improvement-restage",
+    )
+      ? true
+      : undefined,
     planResearchPersistence: flag("--plan-research-persistence"),
     authorizeResearchPersistence: flag("--authorize-research-persistence"),
     exactWriteSetAuthorization: arg("--exact-write-set-authorization"),

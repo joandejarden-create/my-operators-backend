@@ -103,6 +103,7 @@ param(
   [switch]$AuthorizeAirtableProductionWrites,
   [switch]$ApplyFindymailPersist,
   [double]$FindymailCreditHardCap = 0,
+  [switch]$AuthorizeMaterialImprovementRestage,
 
   [switch]$SkipDiscovery,
   [switch]$SkipDeep,
@@ -148,6 +149,7 @@ Invoke-GdiV3NodeStage -Stage 'FULL' -HotelId $HotelId -Mode $Mode `
   -AuthorizeAirtableProductionWrites:$AuthorizeAirtableProductionWrites `
   -ApplyFindymailPersist:$ApplyFindymailPersist `
   -FindymailCreditHardCap $FindymailCreditHardCap `
+  -AuthorizeMaterialImprovementRestage:$AuthorizeMaterialImprovementRestage `
   -SkipDiscovery:$SkipDiscovery -SkipDeep:$SkipDeep -SkipWhoHow:$SkipWhoHow `
   -SkipContact:$SkipContact -SkipQualification:$SkipQualification `
   -SkipStagedProgression:$SkipStagedProgression `
