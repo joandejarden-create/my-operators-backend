@@ -34,7 +34,8 @@
       -EnableLeisure / -EnableCad; opt out with -NoLeisure / -NoCad) Live FULL also invokes the
       canonical Leisure + CAD standard stages ($0 assess/classify; reports 01b/01c), marks PLP
       assessed from the preferred_lodging_partnerships cells of the reused discovery matrix, and
-      writes 07-research-receipt.json. Orchestrator never invents paid discovery.
+      writes 07-research-receipt.json. Paid discovery runs only when -AuthorizePaidDiscovery is
+      explicitly passed with Live paid-research auth (canonical Exa chain; never SerpApi here).
     * Findymail persist: -PersistFindymailResults (needs -AuthorizeFindymail) plus SEPARATE auth:
       (-AuthorizeResearchPersistence + -ExactWriteSetAuthorization) OR
       (-AuthorizeFindymailPersist + -AuthorizeAirtableProductionWrites). Dry-run plan by default;
