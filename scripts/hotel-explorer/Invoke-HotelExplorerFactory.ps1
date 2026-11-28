@@ -144,6 +144,12 @@ if ($ConsistencyModes -contains $Mode) {
     throw "HE Organization & Portfolio UI cleanup gates FAILED for $HotelId (mode=$Mode)"
   }
 
+  Write-Host "[HE Factory] Organization & Portfolio heading padding + PROFILE LinkedIn gates"
+  & npm run test:he-org-portfolio-heading-profile-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Organization & Portfolio heading/profile gates FAILED for $HotelId (mode=$Mode)"
+  }
+
   Write-Host "[HE Factory] Executive Ownership Summary narrative gates"
   & npm run test:he-executive-ownership-narrative-v1
   if ($LASTEXITCODE -ne 0) {
