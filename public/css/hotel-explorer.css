@@ -3501,33 +3501,41 @@ button.hex-action {
   min-height: 0 !important;
   max-height: none;
 }
-/* Compact toast chrome — HE dark tokens, not oversized pure-black card */
+/*
+ * Compact toast chrome — canonical Dealality black toast (shared design system).
+ * Do NOT remap to HE elevated navy; that created a competing loader look vs GDI/ADP/BE.
+ * Contract: DEALALITY_SHARED_LOADING_COMPONENT_V1 / dealality-wave-loader.css --toast
+ */
 .hex-root .dealality-wave-loader--toast,
 .hex-root .dealality-wave-loader--compact {
-  background: var(--hdp-bg-elevated, #212c4d);
-  border: 1px solid var(--hdp-border, #37446b);
-  border-radius: 8px;
-  box-shadow: none;
-  backdrop-filter: none;
-  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  padding: 12px 16px;
   min-width: 0;
-  max-width: min(100%, 220px);
+  max-width: min(100%, 320px);
+  width: auto;
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 .hex-root .dealality-wave-loader--sm .wave-container,
 .hex-root .loading.dealality-wave-loader--sm .wave-container {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 .hex-root .dealality-wave-loader--sm .loading-text-main,
 .hex-root .dealality-wave-loader--toast .loading-text-main {
   font-size: 12px;
   letter-spacing: 0.01em;
-  font-weight: 600;
-  color: var(--hdp-text, #ffffff);
+  font-weight: 500;
+  color: #fff;
 }
 .hex-root .dealality-wave-loader--toast .loading-content,
 .hex-root .dealality-wave-loader--compact .loading-content {
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 0;
 }
 .hex-root .he-loading-wave-host {

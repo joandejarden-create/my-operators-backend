@@ -10897,28 +10897,56 @@
   var DEFAULT_PAGE_LOADING_MESSAGE = "Loading Group Demand Intelligence\u2026";
   var DETAIL_LOADING_MESSAGE = "Loading opportunity\u2026";
 
-  /** Shared wave-orb markup (same primitives as page .bdd-toast.aiv-loading-toast). */
+  /**
+   * Shared wave-orb markup — DealalityWaveLoader / SharedLoadingUx primitives only.
+   * Do not invent a second wave animation system.
+   */
   function loadingWaveOrbHtml() {
+    var shared = root.DealalitySharedLoadingUx || null;
+    if (shared && typeof shared.pageToastInnerHtml === "function") {
+      var inner = shared.pageToastInnerHtml(DETAIL_LOADING_MESSAGE);
+      var orbMatch = String(inner).match(
+        /<div class="toast-wave-container"[\s\S]*?<\/div><\/div>/
+      );
+      if (orbMatch) return orbMatch[0];
+    }
+    var waveApi = root.DealalityWaveLoader || null;
+    var particles =
+      waveApi && typeof waveApi.waveParticlesHtml === "function"
+        ? waveApi.waveParticlesHtml()
+        : '<div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>';
     return (
       '<div class="toast-wave-container" aria-hidden="true">' +
       '<div class="wave-container">' +
       '<div class="wave wave-1"></div>' +
       '<div class="wave wave-2"></div>' +
       '<div class="wave wave-3"></div>' +
-      '<div class="wave-particles">' +
-      '<div class="particle"></div>' +
-      '<div class="particle"></div>' +
-      '<div class="particle"></div>' +
-      '<div class="particle"></div>' +
-      "</div></div></div>"
+      particles +
+      "</div></div>"
     );
   }
 
   /**
-   * Inline drawer loader — same wave orb / typography as page toast, static in drawer body.
-   * Do not use the full-page fixed toast inside the drawer.
+   * Inline drawer loader — canonical Dealality black toast (shared design system).
+   * Prefer DealalityWaveLoader.toastHtml; fall back to bdd-toast chrome with shared orb.
    */
   function detailLoadingHtml() {
+    var shared = root.DealalitySharedLoadingUx || null;
+    var waveApi = root.DealalityWaveLoader || null;
+    if (shared && typeof shared.toastHtml === "function") {
+      return (
+        '<div class="gdi-detail-loading" data-dealality-shared-loader="1">' +
+        shared.toastHtml(DETAIL_LOADING_MESSAGE) +
+        "</div>"
+      );
+    }
+    if (waveApi && typeof waveApi.toastHtml === "function") {
+      return (
+        '<div class="gdi-detail-loading" data-dealality-shared-loader="1">' +
+        waveApi.toastHtml(DETAIL_LOADING_MESSAGE) +
+        "</div>"
+      );
+    }
     return (
       '<div class="gdi-detail-loading bdd-toast aiv-loading-toast show" role="status" aria-live="polite" aria-busy="true">' +
       loadingWaveOrbHtml() +
@@ -10960,6 +10988,12 @@
    */
   function setLoadingToast(el, on, message) {
     if (!el) return;
+    var shared = root.DealalitySharedLoadingUx || null;
+    // Prefer shared lifecycle helper when available (same wave chrome; message-only variance).
+    if (shared && typeof shared.setPageToastBusy === "function" && on === false) {
+      shared.setPageToastBusy(el, false);
+      return;
+    }
     var msgEl =
       (el.id ? document.getElementById(el.id + "Message") : null) ||
       el.querySelector(".toast-message");
