@@ -1,0 +1,30 @@
+{
+  "durableStores": [
+    {
+      "store": "Airtable — Group Demand Opportunities (GDO)",
+      "role": "SYSTEM_OF_RECORD for opportunity identity + embedded commercial / contact payload",
+      "readBy": "listOpportunitiesForHotel (lib/group-demand-intelligence/airtable-opportunity-store.js)",
+      "survivesRestart": true
+    },
+    {
+      "store": "Airtable — GDI Hotel Research Opportunities (tblbkDj0vhQLfrssV)",
+      "role": "Raw research inventory (researchPayloadJson); separate from customer GDO",
+      "readBy": "gdi-hotel-research-inventory-store-v1",
+      "survivesRestart": true,
+      "note": "Not read by this cert; membership/drawer-model recovery depends on it plus the publication builder."
+    },
+    {
+      "store": "Findymail usage ledger (data/group-demand-intelligence/findymail-usage-ledger-v1.jsonl)",
+      "role": "Provider spend + per-person disposition evidence (NOT_FOUND vs found) used for channel evidence recovery",
+      "readBy": "readFindymailUsageLedger → applyEvidenceRecoveryToOpportunities",
+      "survivesRestart": true,
+      "note": "Local repo file — must be tracked/backed-up; email values are only recoverable when persisted into GDO/package (piiPersisted)."
+    },
+    {
+      "store": "Immutable publication packages (bundled-publication-packages/<hotel>/<version>)",
+      "role": "OUTPUT of the publication builder (STAGED/CURRENT pointers). Never an input to reconstruction.",
+      "readBy": "createGdiPublicationPackageStore (comparison baseline only)",
+      "survivesRestart": true
+    }
+  ]
+}

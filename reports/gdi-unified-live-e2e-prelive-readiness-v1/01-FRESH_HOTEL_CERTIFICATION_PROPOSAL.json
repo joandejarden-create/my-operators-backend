@@ -1,0 +1,144 @@
+{
+  "contract": "gdi-fresh-hotel-certification-proposal-v1",
+  "generatedAt": "2026-11-28T00:35:14.419Z",
+  "banner": "PROPOSED LIMITS — NOT AUTHORIZATION TO SPEND",
+  "authorized": false,
+  "hotel": {
+    "name": "The Westin Grand München",
+    "hotelId": "recFaxTEFF9ILHWC9",
+    "city": "Munich",
+    "country": "Germany",
+    "demandTerritory": "Munich / Arabellapark / Bogenhausen",
+    "adpPropertyId": "adp_westin_grand_munchen",
+    "rooms": 627,
+    "meetingRooms": 21,
+    "meetingSpaceSqM": 2810,
+    "largestBallroomSqM": 1053,
+    "classification": "urban_meetings_congress_business",
+    "primaryLocale": "de"
+  },
+  "selection": {
+    "rule": "Real HPC census id with hotel demand config, NOT Wyndham, no STAGED/CURRENT pointer and no bundled publication package; non-US market proves hotel-agnostic path.",
+    "stagedState": "NONE",
+    "currentState": "NONE",
+    "localPilotOpportunityBag": {
+      "count": 26,
+      "byPriority": {
+        "WATCHLIST": 21,
+        "DISQUALIFIED": 5
+      },
+      "withEmail": 0
+    },
+    "rejectedCandidates": [],
+    "avoidedForPriorCompletion": [
+      {
+        "hotelId": "recnPB3Q02NO8Ma1o",
+        "reason": "Wyndham San Diego Bayside — STAGED 26 (certified baseline)"
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "reason": "Bethesda Marriott — full package + CURRENT"
+      },
+      {
+        "hotelId": "recH9h3McgMNFQEla",
+        "reason": "Radisson Blu Toronto Downtown — full package + CURRENT"
+      },
+      {
+        "hotelId": "recrPQcZg7SFARRb2",
+        "reason": "YOTEL Geneva Lake — full package + CURRENT"
+      },
+      {
+        "hotelId": "rec1t35e3sPerzxYu",
+        "reason": "Memmo Príncipe Real — prior paid Design Hotels pilot (STAGED 11); less probative as a fresh proof"
+      }
+    ]
+  },
+  "marketContext": {
+    "summary": "Munich urban meetings / congress / corporate demand (Arabellapark business district, Messe München adjacency, DACH corporate programs). 627 rooms, 21 meeting rooms, 2,810 sqm, 1,053 sqm ballroom. ADP intelligence already exists for this property (adp_westin_grand_munchen) — cross-reference only, no duplication.",
+    "localeNote": "German-primary discovery with English control; first non-US/non-Anglophone Live proof."
+  },
+  "mechanisms": [
+    {
+      "id": "DEMAND_DISCOVERY",
+      "detail": "Fourteen-segment discovery (Munich / Arabellapark / Bogenhausen territory; German primary, English control). Live reuses existing artifacts — none exist for this hotel.",
+      "spend": "none under this GO"
+    },
+    {
+      "id": "CAD / PLP",
+      "detail": "CAD classification + PLP embedded in discovery; classification only.",
+      "spend": "$0"
+    },
+    {
+      "id": "LEISURE (LDI)",
+      "detail": "Standard stage, mock_live only ($0). Low weight for an urban meetings/congress hotel; enabled so the unified path is exercised.",
+      "spend": "$0"
+    },
+    {
+      "id": "OPPORTUNITY_DEEP_RESEARCH",
+      "detail": "Reuses settled queue dossiers; missing → HOLD.",
+      "spend": "none"
+    },
+    {
+      "id": "WHO_HOW_RESOLUTION",
+      "detail": "Existing Exa agent adapter, Checkpoint A pattern; requires authorization id + ceiling + manifest + GDI_EXA_AGENT_LIVE=1.",
+      "spend": "Exa ≤ $25 hard ceiling"
+    },
+    {
+      "id": "PROFESSIONAL_CONTACT_RESEARCH",
+      "detail": "Public-first named-contact channels; Findymail only when authorized (FINDYMAIL_API_KEY).",
+      "spend": "Findymail ≤ 15 credits (see enforcement note)"
+    },
+    {
+      "id": "COMMERCIAL_QUALIFICATION",
+      "detail": "Strict FQO + entry-point reachability + buying-authority annotation (in memory).",
+      "spend": "none"
+    },
+    {
+      "id": "STAGED progression",
+      "detail": "Package build + validation; STAGED activation only if founder includes it in the GO. CURRENT never changes.",
+      "spend": "none"
+    }
+  ],
+  "expectedScope": {
+    "note": "Planning estimates, not quotes. Nothing is authorized or auto-spent.",
+    "startingPoint": "26 pre-existing local pilot opportunities ({\"WATCHLIST\":21,\"DISQUALIFIED\":5}), 0 with email — not customer-published, no STAGED.",
+    "targetQualifiedInventory": "≈ 15–30 qualified commercial opportunities (strict FQO; may be fewer — budget exhaustion ≠ COMPLETE)",
+    "whoHowTargets": "Top-ranked opportunities only, bounded by the $25 Exa ceiling",
+    "contactTargets": "Named buyer/entry contacts for qualified opportunities; Findymail only for eligible full-name + domain candidates"
+  },
+  "limits": {
+    "exaUsdCeiling": 25,
+    "findymailCredits": 15,
+    "serpApi": "NOT covered — discovery artifacts must be supplied (see prerequisites)",
+    "surfe": "FORBIDDEN",
+    "current": "UNCHANGED (never promoted)",
+    "staged": "Activation only if explicitly included in the founder GO; otherwise -NoActivateStagedPointer"
+  },
+  "airtableWriteScope": {
+    "default": "NONE — -AuthorizePaidResearch never unlocks Airtable writes.",
+    "ifSeparatelyAuthorized": "Group Demand Opportunities upsert for hotelId recFaxTEFF9ILHWC9 only (idempotent, dry-run first via -PlanResearchPersistence), exact write-set text required, GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1. No schema changes, no other hotels, no CURRENT."
+  },
+  "prerequisitesAndRisks": [
+    "BLOCKING: Live Stage 1/2 reuse existing discovery + deep-research artifacts. None exist for this hotel, so Live would HOLD at Stage 1 until a discovery matrix exists in -OutDir (fourteen-segment-discovery-matrix.json). Producing it uses SerpApi via the original research chain and is NOT covered by the Exa/Findymail limits — needs a separate founder decision.",
+    "A tranche manifest (01-TRANCHE_MANIFEST.json) must be authored for this hotel; no Wyndham manifest may be reused.",
+    "Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15); Stage 4 shared budget stops enrichment at CREDIT_HARD_CAP_REACHED.",
+    "Flag names above follow the Live orchestrator CLI at the time of writing; re-run the pre-live gate before GO."
+  ],
+  "authorizationToken": {
+    "proposed": "FOUNDER_GO_GDI_LIVE_E2E_WESTIN_MUNICH_20261128",
+    "note": "Proposed identifier only. It authorizes nothing until the founder issues it in writing."
+  },
+  "commands": {
+    "preflight": [
+      "npm run gdi:unified-live-e2e-prelive-readiness-v1",
+      "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode DryRun",
+      "npm run gdi:weekly-refresh -- --hotel-id recFaxTEFF9ILHWC9 --dry-run"
+    ],
+    "dryRun": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode DryRun",
+    "liveFull": "$env:GDI_EXA_AGENT_LIVE = '1'          # Exa WHO/HOW spend gate (set only after founder GO)\n# $env:FINDYMAIL_API_KEY must already be present in the session (never echo it)\npwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode Live -AuthorizePaidResearch `\n  -AuthorizationId 'FOUNDER_GO_GDI_LIVE_E2E_WESTIN_MUNICH_20261128' -HardCeilingUsd 25 `\n  -Manifest 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128/01-TRANCHE_MANIFEST.json' -OutDir 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128' `\n  -AuthorizeFindymail -AllowHistoricalReplay -EnableLeisure -EnableCad -NoActivateStagedPointer\n# -NoActivateStagedPointer: drop only if the founder authorizes STAGED activation in the same GO"
+  },
+  "paths": {
+    "outDir": "reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128",
+    "manifest": "reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128/01-TRANCHE_MANIFEST.json"
+  }
+}

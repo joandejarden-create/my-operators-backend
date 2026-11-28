@@ -356,6 +356,7 @@ const gates = {
       /marbeth/i.test(String(propCo || ""))
   ),
   HE_UNIFIED_THEME_CONSISTENCY: gate(themeCssExists && cacheBustOk),
+  HE_GLOBAL_BACKGROUND_CONSISTENCY: null, // filled after browser/static gate below
   HE_HEADER_ACTIONS_HYDRATED: gate(headerActionsHydrated),
   HE_CANONICAL_AIRTABLE_READBACK: gate(
     persistence.rooms.canonicalPersisted &&
@@ -409,6 +410,54 @@ gates.HE_FOUNDER_UI_CONTRACT =
 if (!skipBrowser) {
   gates.HE_CANONICAL_BROWSER_PARITY =
     founderReport?.gates?.HE_CANONICAL_BROWSER_PARITY || "FAIL";
+}
+
+// Permanent global background consistency (static always; browser when enabled).
+const bgGateArgs = skipBrowser
+  ? ["run", "test:he-global-background-consistency-v1"]
+  : ["run", "test:he-global-background-consistency-v1", "--", "--require-browser"];
+const bgGateRun = spawnSync("npm", bgGateArgs, {
+  cwd: ROOT,
+  encoding: "utf8",
+  shell: true,
+  env: { ...process.env, DEALALITY_LOCAL_ADMIN_BASE: BASE },
+});
+let bgGateReport = null;
+try {
+  bgGateReport = JSON.parse(
+    fs.readFileSync(
+      path.join(ROOT, "reports/hotel-explorer/HE-GLOBAL-BACKGROUND-CONSISTENCY-V1.json"),
+      "utf8"
+    )
+  );
+} catch {
+  bgGateReport = null;
+}
+if (skipBrowser) {
+  gates.HE_GLOBAL_BACKGROUND_CONSISTENCY =
+    bgGateRun.status === 0 || bgGateRun.status === 2
+      ? bgGateReport?.static?.forbiddenActiveBgCleared
+        ? "STATIC_PASS"
+        : "FAIL"
+      : "FAIL";
+} else {
+  gates.HE_GLOBAL_BACKGROUND_CONSISTENCY =
+    bgGateReport?.gates?.HE_GLOBAL_BACKGROUND_CONSISTENCY ||
+    (bgGateRun.status === 0 ? "PASS" : "FAIL");
+  if (bgGateReport?.gates?.HE_ELEVEN_TAB_THEME_PARITY) {
+    gates.HE_ELEVEN_TAB_THEME_PARITY = bgGateReport.gates.HE_ELEVEN_TAB_THEME_PARITY;
+  }
+  if (bgGateReport?.gates?.HE_NO_UNINTENDED_BACKGROUND_SEAMS) {
+    gates.HE_NO_UNINTENDED_BACKGROUND_SEAMS =
+      bgGateReport.gates.HE_NO_UNINTENDED_BACKGROUND_SEAMS;
+  }
+  if (bgGateReport?.gates?.HE_SCROLL_VISUAL_STABILITY) {
+    gates.HE_SCROLL_VISUAL_STABILITY = bgGateReport.gates.HE_SCROLL_VISUAL_STABILITY;
+  }
+  if (bgGateReport?.gates?.HE_CANONICAL_BROWSER_VALIDATED) {
+    gates.HE_CANONICAL_BROWSER_VALIDATED =
+      bgGateReport.gates.HE_CANONICAL_BROWSER_VALIDATED;
+  }
 }
 
 const ok =

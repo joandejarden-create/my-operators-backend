@@ -1,0 +1,89 @@
+{
+  "version": "gdi-close-e2e-airtable-field-audit-v1",
+  "generatedAt": "2026-11-28T00:06:50.299Z",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "comparisonTargetStagedVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61",
+  "reconstructionSource": "AIRTABLE_GDO_listOpportunitiesForHotel + evidence recovery + authority annotation (isolated)",
+  "usedStagedAsReconstructionInput": false,
+  "packageOverwrite": false,
+  "stagedPointerUnchanged": true,
+  "airtableOpportunityCount": 97,
+  "stagedOpportunityCount": 26,
+  "stagedIdsPresentInAirtable": 26,
+  "stagedIdsMissingInAirtable": 0,
+  "missingInAirtable": [],
+  "fieldParity": {
+    "namePass": 26,
+    "emailPass": 26,
+    "phonePass": 26,
+    "linkedinPass": 26,
+    "titlePass": 26,
+    "authorityAnnotatedInAirtable": 0,
+    "authorityAnnotatedInStaged": 0
+  },
+  "gaps": {
+    "emailMismatches": [],
+    "phoneMismatches": [],
+    "linkedinMismatches": [],
+    "missingAuthorityInAirtable": 26,
+    "missingAuthorityInStaged": 26
+  },
+  "annotatedGate": {
+    "ok": false,
+    "failures": [
+      "EMAIL_RESEARCH_INCOMPLETE",
+      "TELEPHONE_RESEARCH_INCOMPLETE",
+      "LINKEDIN_RESEARCH_INCOMPLETE",
+      "FINDYMAIL_ELIGIBLE_GAPS_REMAIN",
+      "ALTERNATIVE_ENTRY_RESEARCH_INCOMPLETE"
+    ],
+    "scorecard": {
+      "opportunityCount": 26,
+      "uniqueCommercialContacts": 40,
+      "personLedgerRows": 54,
+      "fullProfessionalIdentityCoverage": 39,
+      "abbreviatedOrIncompleteIdentity": 1,
+      "verifiedTitleCoverage": 40,
+      "emailVerifiedCoverage": 29,
+      "telephoneVerifiedCoverage": 7,
+      "linkedinVerifiedCoverage": 28,
+      "contactsWithAllThreeChannels": 0,
+      "contactsWithEmailOrTelephone": 30,
+      "contactsWithUsableOutreach": 34,
+      "emailNotYetResearched": 1,
+      "telephoneNotYetResearched": 14,
+      "linkedinNotYetResearched": 12,
+      "findymailEligibleRemaining": 1,
+      "opportunitiesRequiringAlternativeResearch": 26,
+      "alternativeResearchPresent": 14,
+      "opportunitiesWithVerifiedDirectBuyer": 0,
+      "opportunitiesMissingAuthorityAnnotation": 0,
+      "opportunitiesWithAlternativeContacts": 14
+    }
+  },
+  "isolatedReconstructionPath": "reports/gdi-close-e2e-cert-gaps-v1/_isolated_reconstruction/recnPB3Q02NO8Ma1o",
+  "durableStores": [
+    {
+      "role": "STRUCTURED_COMMERCIAL_AND_CONTACT_SOT",
+      "store": "Airtable GDO (appa2cE7FTRmIbB32)"
+    },
+    {
+      "role": "FINDYMAIL_USAGE_LEDGER",
+      "store": "data/group-demand-intelligence/findymail-usage-ledger-v1.jsonl"
+    },
+    {
+      "role": "PUBLICATION_PACKAGE",
+      "store": "bundled-publication-packages STAGED/CURRENT pointers"
+    },
+    {
+      "role": "RESEARCH_RECEIPT_INPUTS",
+      "store": "research inventory / execution observability artifacts"
+    }
+  ],
+  "status": "FIELD_LEVEL_ID_CONTACT_PARITY_PASS_AUTHORITY_PERSISTENCE_OUTSTANDING",
+  "founderAuthRequiredFor": [
+    "Airtable persistence of buyingAuthorityStatus + contactChannelResearch flags",
+    "Isolated→STAGED rematerialization after persistence read-back",
+    "Findymail 1 credit (Gutierrez) + Exa LinkedIn/phone/alt-entry budget (see 03-CONSOLIDATED_INCREMENTAL_RESEARCH_BUDGET_REQUEST.json)"
+  ]
+}
