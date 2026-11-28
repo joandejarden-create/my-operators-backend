@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dealality – App</title>
-    <link rel="stylesheet" href="/app.css?v=gdi-sidebar-inventory-toggle-v1">
+    <link rel="stylesheet" href="/app.css?v=responsive-batches-a-c-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -119,6 +119,13 @@
         </aside>
 
         <main class="main-content">
+            <header class="shell-topbar shell-topbar--mobile" aria-label="Mobile application chrome">
+                <button type="button" class="shell-mobile-nav-toggle" id="mobileNavToggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open navigation menu">Menu</button>
+                <div class="shell-topbar-title-group">
+                    <h1 class="shell-topbar-title" id="shellPageTitle">Dealality</h1>
+                    <p class="shell-topbar-subtitle" id="shellPageSubtitle"></p>
+                </div>
+            </header>
             <div id="frameContainer" class="frame-container"></div>
             <footer class="app-shell-footer" role="contentinfo">
                 <span id="appShellCopyrightYear"></span> Copyright © Dealality
@@ -134,6 +141,6 @@
     <script src="/js/dealality-app-shell-auth.js"></script>
     <script src="/js/dealality-ui-labels.js"></script>
     <script src="/js/dealality-stakeholder-nav.js?v=brand-ai-owner-nav-v1"></script>
-    <script src="/app.js?v=gdi-sidebar-inventory-toggle-v1" defer></script>
+    <script src="/app.js?v=responsive-batches-a-c-v1" defer></script>
 </body>
 </html>

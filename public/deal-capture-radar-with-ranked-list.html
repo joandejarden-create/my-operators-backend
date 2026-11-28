@@ -150,7 +150,8 @@
             flex-direction: column;
             gap: 6px;
             min-width: 0;
-            overflow: hidden;
+            /* RD-001: do not clip filter labels/values; allow wrap at compact desktop */
+            overflow: visible;
         }
         .control-group.radar-tabs-wrap {
             min-width: 0;
@@ -175,6 +176,11 @@
             min-width: 0;
             max-width: 100%;
             box-sizing: border-box;
+        }
+        .control-select {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .control-input:focus, .control-select:focus {
@@ -1603,6 +1609,14 @@
             }
         }
 
+        /* RD-001 — compact desktop/laptop: give filter columns room; avoid dense truncation */
+        @media (max-width: 1400px) {
+            .controls-panel {
+                grid-template-columns: auto minmax(160px, 1.1fr) repeat(5, minmax(130px, 1fr)) auto auto;
+                gap: 10px;
+            }
+        }
+
         @media (max-width: 1024px) {
             .main-content {
                 flex-direction: column;
@@ -1614,7 +1628,7 @@
             }
             
             .controls-panel {
-                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
 
@@ -1629,6 +1643,11 @@
         @media (max-width: 768px) {
             .controls-panel {
                 grid-template-columns: 1fr;
+            }
+
+            /* RD-002 — phone: prefer More filter drawer over clipped native selects */
+            .controls-panel > .control-group:not(.radar-tabs-wrap):not(.radar-search-wrap):not(.radar-filters-btn-wrap):not(.filter-group-reset) {
+                display: none;
             }
             
             .header-top {
@@ -2732,5 +2751,30 @@
     <script src="/js/radar-territory.js?v=13"></script>
     <script src="brand-presence-mapping.js?v=radar-hpc-app-shell-auth-1"></script>
     <script src="/embed-chrome.js" defer></script>
+    <script>
+    /* RD-001 — keep full select labels accessible beyond truncated closed state */
+    (function () {
+        function syncSelectTitle(sel) {
+            if (!sel || !sel.options || sel.selectedIndex < 0) return;
+            var opt = sel.options[sel.selectedIndex];
+            var full = (opt && (opt.textContent || opt.label || opt.value)) || '';
+            sel.setAttribute('title', full);
+            sel.setAttribute('aria-label', (sel.id || 'Filter') + ': ' + full);
+        }
+        function wire() {
+            document.querySelectorAll('.controls-panel select.control-select').forEach(function (sel) {
+                syncSelectTitle(sel);
+                sel.addEventListener('change', function () { syncSelectTitle(sel); });
+            });
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+        else wire();
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.matches && e.target.matches('.controls-panel select.control-select')) {
+                syncSelectTitle(e.target);
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
