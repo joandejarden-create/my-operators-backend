@@ -10,10 +10,11 @@
 |---|---|---|
 | #696 | MERGED | Contact Intelligence V2 visibility / hybrid baseline preserved |
 | #697 | MERGED | Bethesda phone E2E / Findymail durable phones preserved |
-| #699 | OPEN · CI green · MERGEABLE | Surfe `linkedinUrl` + landline/mobile session parity |
-| #700 | OPEN · stacks on #699 | Dynamic missing-channel V3 + global cert (this tip) |
+| #699 | MERGED (`098bb459a`) | Surfe `linkedinUrl` + landline/mobile session parity |
+| #700 | MERGED (`ab751fc18`) | Dynamic missing-channel V3 (shared HE+GDI) |
+| Follow-up cert tip | OPEN after #700 | `cert(contact): global Surfe dynamic enrichment validation` — Findymail≠Surfe messaging + `GLOBAL_SURFE_ENRICHMENT_VALIDATED` evidence |
 
-Merge order: **#699 → #700** (Integration Controller). Product chats do not merge.
+IC owns merge of the certification follow-up PR. Product chats do not merge.
 
 ## Golden root cause (Meinrad Lang III · Bethesda Marriott)
 
