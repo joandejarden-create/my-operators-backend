@@ -232,13 +232,19 @@
   }
 
   function bindDetailToggles(host) {
-    if (!host) return;
+    // paint() remounts this tab several times; stack click handlers would toggle
+    // an even number of times and look like a dead Details control.
+    if (!host || host._hexRmsDetailBound) return;
+    host._hexRmsDetailBound = true;
     host.addEventListener("click", function (ev) {
-      var btn = ev.target.closest && ev.target.closest("[data-hex-rms-toggle]");
-      if (!btn) return;
+      var target = ev.target;
+      if (target && target.nodeType !== 1) target = target.parentElement;
+      var btn = target && target.closest && target.closest("[data-hex-rms-toggle]");
+      if (!btn || !host.contains(btn)) return;
       var id = btn.getAttribute("data-hex-rms-toggle");
-      var el = document.getElementById(id);
-      if (!el) return;
+      var el = id ? document.getElementById(id) : null;
+      if (!el || !host.contains(el)) return;
+      ev.preventDefault();
       var open = el.hasAttribute("hidden");
       if (open) el.removeAttribute("hidden");
       else el.setAttribute("hidden", "");
@@ -285,17 +291,17 @@
       '<section class="hiw-section"><h3 class="hiw-section__h">Guestroom Overview</h3>' +
       '<div class="hex-rms-metrics">' +
       metricCard(
-        "Total guestrooms",
+        "Total Guestrooms",
         fmt(gr.totalGuestrooms && gr.totalGuestrooms.value),
         statusLabel(gr.totalGuestrooms && gr.totalGuestrooms.verificationStatus, inv)
       ) +
       metricCard(
-        "Single-bed rooms",
+        "Single-Bed Rooms",
         fmt(gr.singleBedRooms && gr.singleBedRooms.value),
         statusLabel(gr.singleBedRooms && gr.singleBedRooms.verificationStatus, inv)
       ) +
       metricCard(
-        "Double-bed rooms",
+        "Double-Bed Rooms",
         fmt(gr.doubleBedRooms && gr.doubleBedRooms.value),
         statusLabel(gr.doubleBedRooms && gr.doubleBedRooms.verificationStatus, inv)
       ) +
@@ -313,19 +319,19 @@
       '<section class="hiw-section"><h3 class="hiw-section__h">Meeting &amp; Event Overview</h3>' +
       '<div class="hex-rms-metrics">' +
       metricCard(
-        "Total meeting space",
+        "Total Meeting Space",
         sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value != null
           ? formatAreaSqFt(sum.totalMeetingSpaceSqFt.value)
           : "—",
         statusLabel(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.verificationStatus, inv)
       ) +
       metricCard(
-        "Meeting rooms (published)",
+        "Meeting Rooms (Published)",
         fmt(sum.meetingRoomCount && sum.meetingRoomCount.value),
         statusLabel(sum.meetingRoomCount && sum.meetingRoomCount.verificationStatus, inv)
       ) +
       metricCard(
-        "Largest room",
+        "Largest Room",
         largest.name
           ? largest.name +
               (largest.areaSqFt != null ? " · " + formatAreaSqFt(largest.areaSqFt) : "")
@@ -333,7 +339,7 @@
         statusLabel(largest.verificationStatus, inv)
       ) +
       metricCard(
-        "Marketing private-space figure",
+        "Marketing Private-Space Figure",
         sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.value != null
           ? formatAreaSqFt(sum.privateSpaceMarketingSqFt.value)
           : "—",
