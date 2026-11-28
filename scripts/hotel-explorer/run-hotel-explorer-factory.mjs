@@ -55,6 +55,12 @@ async function main() {
     resume: flag("resume"),
     skipBrowser: !flag("browser"),
     batchFile: arg("batch-file", "batchFile"),
+    /** Paid Findymail Stage 4 — off unless explicitly authorized. */
+    authorizeFindymail: flag("authorize-findymail"),
+    /** Default dry-run even when authorized unless --findymail-live. */
+    findymailDryRun: !flag("findymail-live"),
+    airtableWriteAuthorized: flag("airtable-write-authorized"),
+    findymailCreditHardCap: Number(arg("findymail-credit-hard-cap") || 15),
   };
 
   const result = opts.batchFile

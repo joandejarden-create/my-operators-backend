@@ -1,0 +1,363 @@
+{
+  "version": "he-bethesda-contact-channel-audit-v1",
+  "generatedAt": "2026-11-28T07:41:25.674Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "paidCallsMade": false,
+  "gdiAuthorization": {
+    "trancheStatus": "PROPOSED_NOT_AUTHORIZED",
+    "authorizeFindymail": true,
+    "airtableWriteAuthorized": false,
+    "authorizationId": "FOUNDER_GO_GDI_TWO_HOTEL_BETHESDA_LIVE_20261128",
+    "note": "PROPOSED_NOT_AUTHORIZED means founder GO draft exists but Live execution was not released."
+  },
+  "graph": {
+    "ok": true,
+    "orgCount": 4,
+    "orgContactCount": 8,
+    "organizations": [
+      {
+        "airtableId": "recDiikzBADNjrbYy",
+        "orgId": "dle_AB777232B52D20517AEA755EBD",
+        "legalName": "Mullen Real Estate Capital",
+        "tradingName": "Mullen Real Estate Capital"
+      },
+      {
+        "airtableId": "recStGNNlkZIMgmwK",
+        "orgId": "dle_06GZ7YFM8G8EFXWTPYM43ZDVW0",
+        "legalName": "Marriott International, Inc.",
+        "tradingName": "Marriott International"
+      },
+      {
+        "airtableId": "rec7leMwBKSFGo33m",
+        "orgId": "dle_06GZE1Q8QW6B33XGQKN5A73PHE",
+        "legalName": "Mullen Hospitality Management",
+        "tradingName": "Mullen Hospitality Management"
+      },
+      {
+        "airtableId": "recgDSGXM5x3LZbiz",
+        "orgId": "dle_06GZE1Q5G4GH9NZK598NNXT95J",
+        "legalName": "Marbeth Acquisition LLC",
+        "tradingName": "Marbeth Acquisition"
+      }
+    ]
+  },
+  "ledgers": {
+    "ic": {
+      "exists": true,
+      "path": "C:/Dev/dealality/my-operators-backend/data/group-demand-intelligence/findymail-usage-ledger-v1.jsonl",
+      "total": 29,
+      "hitCount": 0,
+      "rows": [],
+      "allCreditsDebited": 19,
+      "allEmailFoundRows": 19
+    },
+    "gdi": {
+      "exists": true,
+      "path": "C:/Dev/dealality/ws-gdi/data/group-demand-intelligence/findymail-usage-ledger-v1.jsonl",
+      "total": 39,
+      "hitCount": 0,
+      "rows": [],
+      "allCreditsDebited": 27,
+      "allEmailFoundRows": 27
+    }
+  },
+  "findymailAudit": {
+    "version": "he-contact-enrichment-gates-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "findymailKey": {
+      "present": true,
+      "env_var": "FINDYMAIL_API_KEY",
+      "len": 48
+    },
+    "ledgerHotelRowCount": 0,
+    "ledgerCreditsDebited": 0,
+    "findymailInvokedForHotel": false,
+    "people": [
+      {
+        "name": "Jeff Mullen",
+        "organization": "Mullen Real Estate Capital",
+        "employerDomain": "mullencap.com",
+        "personKey": "jeff mullen|mullen real estate capital",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Katherine Button",
+        "organization": "Mullen Real Estate Capital",
+        "employerDomain": "mullencap.com",
+        "personKey": "katherine button|mullen real estate capital",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Patrick Reece",
+        "organization": "Mullen Real Estate Capital",
+        "employerDomain": "mullencap.com",
+        "personKey": "patrick reece|mullen real estate capital",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Meinrad Lang III",
+        "organization": "Marriott International",
+        "employerDomain": "marriott.com",
+        "personKey": "meinrad lang iii|marriott international",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Jenny Pyne",
+        "organization": "Marriott International",
+        "employerDomain": "marriott.com",
+        "personKey": "jenny pyne|marriott international",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      }
+    ]
+  },
+  "priorRecoveryReport": {
+    "generatedAt": "2026-11-28T02:11:36.784Z",
+    "findymailInvoked": false,
+    "ledgerHotelRowCount": 0,
+    "founderAnswers": {
+      "findymailCalledPreviousE2E": false,
+      "whyNot": "Latest Bethesda Full E2E was DryRun (findymail:false) and Live tranche remains PROPOSED_NOT_AUTHORIZED; HE factory had no AuthorizeFindymail wiring; ledger has 0 Bethesda rows.",
+      "integrationOperational": true,
+      "eligibleContacts": [
+        "Jeff Mullen",
+        "Katherine Button",
+        "Patrick Reece",
+        "Meinrad Lang III",
+        "Jenny Pyne"
+      ],
+      "verifiedEmailsRecovered": [],
+      "verifiedPhonesRecovered": [],
+      "legallyEligibleForAirtablePersistence": [],
+      "independentlyReadBack": [],
+      "nowVisibleInCustomerUi": [],
+      "remainingUnresolved": "Founder Live authorization + Airtable write-set for permitted Findymail results; then Stage 4 execute + persist + read-back + UI prove.",
+      "enrichmentCostUsdOrCredits": 0
+    }
+  },
+  "people": [
+    {
+      "name": "Jeff Mullen",
+      "hiOrgContactFound": true,
+      "matchCount": 2,
+      "airtable": {
+        "airtableId": "recCmiDOrJoI6kYrM",
+        "personId": "dle_06GZE1QEZWGPH6C9QSHJ2CTH1B",
+        "displayName": "Jeff Mullen",
+        "organizationId": "dle_AB777232B52D20517AEA755EBD",
+        "title": "President and CEO",
+        "verificationState": "Validated",
+        "publicationState": "INTERNAL_ONLY",
+        "notes": "Public LinkedIn (not persisted as HI Contact Channel — allowlist quarantine): https://www.linkedin.com/in/jeffmmullen/ | No Surfe personal email/phone persisted. | Org fallback: info@mullencap.com (evidence only).",
+        "channelCount": 0,
+        "emails": [],
+        "phones": [],
+        "linkedins": [
+          "https://www.linkedin.com/in/jeffmmullen/"
+        ],
+        "rawChannels": []
+      },
+      "findymailLedgerHits": [],
+      "existingEmail": null,
+      "existingPhone": null,
+      "existingLinkedIn": "https://www.linkedin.com/in/jeffmmullen/",
+      "emailChannelCount": 0,
+      "phoneChannelCount": 0
+    },
+    {
+      "name": "Katherine Button",
+      "hiOrgContactFound": true,
+      "matchCount": 2,
+      "airtable": {
+        "airtableId": "recNzfommzJEvCUEP",
+        "personId": "dle_06GZE1QGHR0D2RRKEG84GNM7TE",
+        "displayName": "Katherine Button",
+        "organizationId": "dle_AB777232B52D20517AEA755EBD",
+        "title": "VP, Asset Management and Investments",
+        "verificationState": "Validated",
+        "publicationState": "INTERNAL_ONLY",
+        "notes": "Public LinkedIn (not persisted as HI Contact Channel — allowlist quarantine): https://www.linkedin.com/in/katherine-button/ | No Surfe personal email/phone persisted. | Org fallback: info@mullencap.com (evidence only).",
+        "channelCount": 0,
+        "emails": [],
+        "phones": [],
+        "linkedins": [
+          "https://www.linkedin.com/in/katherine-button/"
+        ],
+        "rawChannels": []
+      },
+      "findymailLedgerHits": [],
+      "existingEmail": null,
+      "existingPhone": null,
+      "existingLinkedIn": "https://www.linkedin.com/in/katherine-button/",
+      "emailChannelCount": 0,
+      "phoneChannelCount": 0
+    },
+    {
+      "name": "Patrick Reece",
+      "hiOrgContactFound": true,
+      "matchCount": 2,
+      "airtable": {
+        "airtableId": "recS1DM14uYO2bUwS",
+        "personId": "dlp_3388F73743B3AB08874E47BB4E",
+        "displayName": "Patrick Reece",
+        "organizationId": "dle_AB777232B52D20517AEA755EBD",
+        "title": "Director, Asset Management",
+        "verificationState": "Evidence Collected",
+        "publicationState": "INTERNAL_ONLY",
+        "notes": "{\"he50_pilot_hotel\":\"recLuxvwwxID7U2B8\",\"propertyResponsibility\":\"UNKNOWN\",\"verificationStates\":{\"PERSON_IDENTITY_VERIFIED\":true,\"CURRENT_ROLE_VERIFIED\":false,\"ORGANIZATION_AFFILIATION_VERIFIED\":true,\"HOTEL_ORGANIZATION_RELATIONSHIP_VERIFIED\":false,\"PERSON_PROPERTY_RESPONSIBILITY_VERIFIED\":false,\"PUBLIC_CONTACT_CHANNEL_VERIFIED\":false},\"sources\":[\"https://mullencap.com/about/\",\"https://www.linkedin.com/in/patrick-reece-375b8937/\"],\"lastVerified\":\"2026-11-20\"}",
+        "channelCount": 0,
+        "emails": [],
+        "phones": [],
+        "linkedins": [
+          "https://www.linkedin.com/in/patrick-reece-375b8937/"
+        ],
+        "rawChannels": []
+      },
+      "findymailLedgerHits": [],
+      "existingEmail": null,
+      "existingPhone": null,
+      "existingLinkedIn": "https://www.linkedin.com/in/patrick-reece-375b8937/",
+      "emailChannelCount": 0,
+      "phoneChannelCount": 0
+    },
+    {
+      "name": "Meinrad Lang III",
+      "hiOrgContactFound": true,
+      "matchCount": 1,
+      "airtable": {
+        "airtableId": "recfx0E3oYVBdXjkJ",
+        "personId": "dle_06H1TN755CY1NZS0Q7G026PKSC",
+        "displayName": "Meinrad Lang III",
+        "organizationId": "dle_06GZ7YFM8G8EFXWTPYM43ZDVW0",
+        "title": "General Manager",
+        "verificationState": "Validated",
+        "publicationState": "INTERNAL_ONLY",
+        "notes": "Public LinkedIn (not persisted as HI Contact Channel — allowlist quarantine): https://www.linkedin.com/in/meinradlang | No Surfe personal email/phone persisted; no inferred email patterns. | Property org alternatives: +1 301-897-9400 · https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/ | Sources: https://www.linkedin.com/in/meinradlang ; https://www.linkedin.com/posts/mark-gaber-5b4b9a_marriottinternational-leadership-hospitality-activity-7333202978599821313-EbG1 | he50-beth-property-leadership-pcd-persist-v1",
+        "channelCount": 0,
+        "emails": [],
+        "phones": [],
+        "linkedins": [
+          "https://www.linkedin.com/in/meinradlang"
+        ],
+        "rawChannels": []
+      },
+      "findymailLedgerHits": [],
+      "existingEmail": null,
+      "existingPhone": null,
+      "existingLinkedIn": "https://www.linkedin.com/in/meinradlang",
+      "emailChannelCount": 0,
+      "phoneChannelCount": 0
+    },
+    {
+      "name": "Jenny Pyne",
+      "hiOrgContactFound": true,
+      "matchCount": 1,
+      "airtable": {
+        "airtableId": "recktMaD8KuMDPkDM",
+        "personId": "dle_06H1TN7738KV6TQ9BE8Q4D6F4B",
+        "displayName": "Jenny Pyne",
+        "organizationId": "dle_06GZ7YFM8G8EFXWTPYM43ZDVW0",
+        "title": "Director of Sales / Area Sales Leader",
+        "verificationState": "Validated",
+        "publicationState": "INTERNAL_ONLY",
+        "notes": "Public LinkedIn (not persisted as HI Contact Channel — allowlist quarantine): https://www.linkedin.com/in/jenny-pyne-9b50976 | No Surfe personal email/phone persisted; no inferred email patterns. | Property org alternatives: +1 301-897-9400 · https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/ | Sources: https://bethesdamagazine.com/2026/10/21/bethesda-marriott-october-2026/ ; https://www.linkedin.com/in/jenny-pyne-9b50976 | he50-beth-property-leadership-pcd-persist-v1",
+        "channelCount": 0,
+        "emails": [],
+        "phones": [],
+        "linkedins": [
+          "https://www.linkedin.com/in/jenny-pyne-9b50976"
+        ],
+        "rawChannels": []
+      },
+      "findymailLedgerHits": [],
+      "existingEmail": null,
+      "existingPhone": null,
+      "existingLinkedIn": "https://www.linkedin.com/in/jenny-pyne-9b50976",
+      "emailChannelCount": 0,
+      "phoneChannelCount": 0
+    }
+  ],
+  "contactabilityBefore": {
+    "version": "he-contactability-metrics-v1",
+    "namedContactCount": 5,
+    "verifiedNamedContacts": 5,
+    "verifiedNamedContactCoverage": 5,
+    "verifiedBusinessEmails": 0,
+    "verifiedDirectEmailCount": 0,
+    "verifiedDirectTelephones": 0,
+    "verifiedDirectPhoneCount": 0,
+    "verifiedLinkedInProfiles": 5,
+    "verifiedLinkedInCount": 5,
+    "directlyContactableProfessionals": 0,
+    "verifiedDirectContactabilityRate": 0,
+    "directContactabilityStatus": "MEASURED",
+    "relevantDecisionMakerCoverage": 5,
+    "alternativeEntryPointCoverage": 0,
+    "unresolvedContactChannels": 5,
+    "directChannelsUnresolved": 5,
+    "identificationComplete": true,
+    "contactabilityComplete": false
+  },
+  "factoryFields": {
+    "VerifiedPeople": 5,
+    "VerifiedDirectEmails": 0,
+    "VerifiedDirectTelephones": 0,
+    "VerifiedLinkedInProfiles": 5,
+    "OrganizationEntryPoints": 0,
+    "DirectChannelsUnresolved": 5,
+    "DirectContactabilityRate": 0,
+    "DirectContactabilityStatus": "MEASURED",
+    "FindymailLookups": "NOT_RUN",
+    "FindymailCost": 0,
+    "SurfeUserInitiatedLookups": "N/A_UNATTENDED",
+    "CanonicalContactPersistence": "NOT_ASSESSED",
+    "ContactApiHydration": "NOT_ASSESSED",
+    "ContactUiRendering": "NOT_ASSESSED"
+  },
+  "contactIntelligenceApi": {
+    "ok": false,
+    "status": null,
+    "error": "fetch failed",
+    "peopleCount": null,
+    "peoplePreview": []
+  },
+  "rootCauses": [
+    {
+      "code": "FINDYMAIL_NEVER_EXECUTED_FOR_BETHESDA",
+      "detail": "No Bethesda/person rows in Findymail usage ledger; GDI tranche remains PROPOSED_NOT_AUTHORIZED / Airtable write unauthorized."
+    },
+    {
+      "code": "NO_DIRECT_EMAIL_CHANNELS_IN_HI_AIRTABLE",
+      "detail": "HI Org Contact records for the five people have no durable email Contact Channel rows (or only LinkedIn/notes)."
+    },
+    {
+      "code": "NO_DIRECT_PHONE_CHANNELS_IN_HI_AIRTABLE",
+      "detail": "HI Org Contact records for the five people have no durable phone Contact Channel rows."
+    }
+  ]
+}

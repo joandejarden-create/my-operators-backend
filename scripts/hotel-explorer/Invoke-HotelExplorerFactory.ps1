@@ -184,6 +184,12 @@ if ($ConsistencyModes -contains $Mode) {
     throw "HE Contactability E2E field emit FAILED for $HotelId (mode=$Mode)"
   }
 
+  Write-Host "[HE Factory] Contact channel E2E gates (identity ≠ contactability)"
+  & npm run test:he-contact-channel-e2e-gates-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Contact channel E2E gates FAILED for $HotelId (mode=$Mode)"
+  }
+
   Write-Host "[HE Factory] Executive Ownership Summary narrative gates"
   & npm run test:he-executive-ownership-narrative-v1
   if ($LASTEXITCODE -ne 0) {
