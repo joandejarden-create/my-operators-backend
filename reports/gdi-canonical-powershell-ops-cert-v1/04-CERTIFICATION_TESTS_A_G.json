@@ -1,0 +1,145 @@
+{
+  "A": {
+    "id": "A_WYNDHAM_EXISTING_INTELLIGENCE_REPLAY",
+    "paidResearch": false,
+    "stagedVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61",
+    "opportunityCount": 26,
+    "contactScorecard": {
+      "opportunityCount": 26,
+      "uniqueCommercialContacts": 40,
+      "personLedgerRows": 54,
+      "fullProfessionalIdentityCoverage": 39,
+      "abbreviatedOrIncompleteIdentity": 1,
+      "verifiedTitleCoverage": 40,
+      "emailVerifiedCoverage": 29,
+      "telephoneVerifiedCoverage": 7,
+      "linkedinVerifiedCoverage": 28,
+      "contactsWithAllThreeChannels": 0,
+      "contactsWithEmailOrTelephone": 30,
+      "contactsWithUsableOutreach": 34,
+      "emailNotYetResearched": 4,
+      "telephoneNotYetResearched": 14,
+      "linkedinNotYetResearched": 12,
+      "findymailEligibleRemaining": 1,
+      "opportunitiesRequiringAlternativeResearch": 0,
+      "alternativeResearchPresent": 14,
+      "opportunitiesWithVerifiedDirectBuyer": 0,
+      "opportunitiesMissingAuthorityAnnotation": 26,
+      "opportunitiesWithAlternativeContacts": 14
+    },
+    "fullE2eDryRunNode": {
+      "ok": true,
+      "status": 0,
+      "tail": "SS\"\n      },\n      {\n        \"stageId\": \"WHO_HOW_RESOLUTION\",\n        \"outcome\": \"PASS\"\n      },\n      {\n        \"stageId\": \"PROFESSIONAL_CONTACT_RESEARCH\",\n        \"outcome\": \"PARTIAL\"\n      },\n      {\n        \"stageId\": \"COMMERCIAL_QUALIFICATION\",\n        \"outcome\": \"PASS\"\n      }\n    ],\n    \"passCount\": 4,\n    \"totalStages\": 5,\n    \"complete\": false,\n    \"partial\": true,\n    \"failed\": false\n  },\n  \"outDir\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-v3\\\\recnPB3Q02NO8Ma1o\"\n}\n"
+    },
+    "fullE2eDryRunPowerShell": {
+      "ok": true,
+      "status": 0,
+      "shell": "powershell",
+      "error": null,
+      "tail": "SS\"\n      },\n      {\n        \"stageId\": \"WHO_HOW_RESOLUTION\",\n        \"outcome\": \"PASS\"\n      },\n      {\n        \"stageId\": \"PROFESSIONAL_CONTACT_RESEARCH\",\n        \"outcome\": \"PARTIAL\"\n      },\n      {\n        \"stageId\": \"COMMERCIAL_QUALIFICATION\",\n        \"outcome\": \"PASS\"\n      }\n    ],\n    \"passCount\": 4,\n    \"totalStages\": 5,\n    \"complete\": false,\n    \"partial\": true,\n    \"failed\": false\n  },\n  \"outDir\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-v3\\\\recnPB3Q02NO8Ma1o\"\n}\n"
+    },
+    "stagedProbe": {
+      "ok": true,
+      "stdout": "{\n  \"ok\": true,\n  \"hotelId\": \"recnPB3Q02NO8Ma1o\",\n  \"stagedVersion\": \"gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61\",\n  \"stagedCount\": 26,\n  \"currentVersion\": null\n}\n"
+    },
+    "status": "DRYRUN_VALIDATED"
+  },
+  "B": {
+    "id": "B_SECOND_HOTEL_PORTABILITY",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "stagedVersion": "gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1",
+    "discoveryDryRun": {
+      "ok": true,
+      "status": 0
+    },
+    "fullE2eDryRun": {
+      "ok": true,
+      "status": 0
+    },
+    "discoveryPowerShell": {
+      "ok": true,
+      "status": 0,
+      "shell": "powershell",
+      "error": null
+    },
+    "stagedProbe": {
+      "ok": true,
+      "stdout": "{\n  \"ok\": true,\n  \"hotelId\": \"recLuxvwwxID7U2B8\",\n  \"stagedVersion\": \"gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1\",\n  \"stagedCount\": 68,\n  \"currentVersion\": \"gdi_pub_recLuxvwwxID7U2B8_20261113_local_master_v2\"\n}\n"
+    },
+    "wyndhamAssumptionsDetected": false,
+    "frozenInventoryUnmodified": true,
+    "status": "DRYRUN_VALIDATED"
+  },
+  "C": {
+    "id": "C_INTERRUPTED_EXECUTION_AND_RESUME",
+    "first": {
+      "ok": true,
+      "status": 0
+    },
+    "second": {
+      "ok": true,
+      "status": 0
+    },
+    "duplicateExpenditure": false,
+    "note": "DryRun resume accepted twice without paid providers; Live settled-job reuse remains LIVE_EXECUTION_VALIDATED evidence from prior Wyndham paid runs, not re-proven here.",
+    "status": "DRYRUN_VALIDATED"
+  },
+  "D": {
+    "id": "D_CONTACT_ONLY_CONTINUATION",
+    "contactDryRunNode": {
+      "ok": true,
+      "status": 0
+    },
+    "contactDryRunPowerShell": {
+      "ok": true,
+      "status": 0,
+      "shell": "powershell",
+      "error": null
+    },
+    "liveContactPlanningOk": true,
+    "liveContactWithoutPaidAuthFailsClosed": true,
+    "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (requires FINDYMAIL_API_KEY; use -FindymailDryRun to plan with no spend)",
+    "surfeAuto": false,
+    "status": "DRYRUN_VALIDATED"
+  },
+  "E": {
+    "id": "E_CLEAN_DURABLE_RECONSTRUCTION",
+    "priorStatus": {
+      "classification": "PARTIAL_RECONSTRUCTION_NOT_EXECUTED",
+      "reason": "Clean Airtable-only reconstruction requires full GDO commercial field coverage + contact provenance; cert run verified Airtable contact row presence (missing=0) but did not regenerate a replacement STAGED package.",
+      "airtableContactRowsPresent": 26,
+      "airtableMissing": 0,
+      "didNotOverwriteExistingPackage": true
+    },
+    "executedThisCycle": false,
+    "status": "PARTIAL",
+    "outstanding": "Clean Airtable-only reconstruction still requires full GDO commercial field coverage; not executed as package overwrite."
+  },
+  "F": {
+    "id": "F_WEEKLY_REFRESH",
+    "helpOk": true,
+    "dryProbe": {
+      "ok": true,
+      "status": 0,
+      "tail": "DRY_RUN\",\"hotelId\":\"recLuxvwwxID7U2B8\",\"runId\":\"gdi_weekly_bethesda_20261128\",\"discoverySource\":\"FROZEN_DISCOVERY:data/group-demand-intelligence/evals/bethesda-weekly-discovery-20260921.json\",\"serpApiCalls\":0,\"report\":\"reports/gdi-weekly-refresh/recLuxvwwxID7U2B8/00-WEEKLY_REFRESH_DRY_RUN.json\",\"counts\":{\"NEW\":0,\"UPDATED\":8,\"REACTIVATED\":0,\"UNCHANGED\":78,\"CLOSED_DOWNGRADED\":0,\"NOT_IN_CURRENT\":1}}\n"
+    },
+    "status": "DRYRUN_VALIDATED"
+  },
+  "G": {
+    "id": "G_AUTHORIZATION_AND_FAILURE_HANDLING",
+    "powerShellHost": "powershell",
+    "liveWithoutAuthorizePaidResearchFails": true,
+    "liveFullFailsClosedWithoutWhoHowAuthParams": true,
+    "checkpointARequiresHotelSpecificAuth": true,
+    "checkpointAPowerShell": {
+      "ok": false,
+      "status": 1,
+      "error": null,
+      "tail": "point A requires -AuthorizationId (founder-authorized ...\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Checkpoint A re...t is permitted.:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Checkpoint A requires -AuthorizationId (founder-authorized per hotel/run). No hotel-spec \r\n   ific default is permitted.\r\n \r\n"
+    },
+    "helperFailClosed": true,
+    "silentCompleteForbidden": true,
+    "status": "DRYRUN_VALIDATED"
+  }
+}

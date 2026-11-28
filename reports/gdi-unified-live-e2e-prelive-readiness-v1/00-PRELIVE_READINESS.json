@@ -1,0 +1,278 @@
+{
+  "contract": "gdi-unified-live-e2e-prelive-readiness-v1",
+  "generatedAt": "2026-11-28T00:35:14.420Z",
+  "status": "READY",
+  "verdict": "PRE_LIVE_READY — awaiting founder Live GO (NOT operationally certified)",
+  "operationallyCertified": false,
+  "notClaimed": [
+    "GDI_UNIFIED_LIVE_E2E_OPERATIONALLY_CERTIFIED",
+    "DryRun == Live certification",
+    "pre-live READY == operational certification"
+  ],
+  "guarantees": {
+    "paidSpend": 0,
+    "surfeUsed": false,
+    "uiChanges": false,
+    "stagedOverwrite": false,
+    "currentChanged": false,
+    "airtableWrites": 0,
+    "providerKeysStrippedFromChildren": [
+      "SERPAPI_KEY",
+      "SERPAPI_API_KEY",
+      "EXA_API_KEY",
+      "FINDYMAIL_API_KEY",
+      "SURFE_API_KEY",
+      "PDL_API_KEY",
+      "GDI_EXA_AGENT_LIVE",
+      "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES"
+    ]
+  },
+  "checks": [
+    {
+      "id": "live_cli_fail_closed",
+      "label": "Live CLI fails closed without authorization",
+      "ms": 880,
+      "pass": true,
+      "detail": {
+        "liveWithoutAuthorizePaidResearchExit": 2,
+        "livePaidWithoutWhoHowParamsExit": 2,
+        "expected": "non-zero (no auth) and exit 2 (missing WHO/HOW authorization params)"
+      }
+    },
+    {
+      "id": "live_skip_who_how_summary",
+      "label": "Live (SkipWhoHow, historical replay) produces summary structure without spend",
+      "ms": 527,
+      "pass": true,
+      "detail": {
+        "exitCode": 0,
+        "summaryStructurePresent": true,
+        "paid": false,
+        "completeness": {
+          "version": "gdi-canonical-full-e2e-v3-stages-v1",
+          "hotelId": "recnPB3Q02NO8Ma1o",
+          "rows": [
+            {
+              "stageId": "DEMAND_DISCOVERY",
+              "outcome": "HOLD"
+            },
+            {
+              "stageId": "OPPORTUNITY_DEEP_RESEARCH",
+              "outcome": "HOLD"
+            },
+            {
+              "stageId": "WHO_HOW_RESOLUTION",
+              "outcome": "NOT_STARTED"
+            },
+            {
+              "stageId": "PROFESSIONAL_CONTACT_RESEARCH",
+              "outcome": "HOLD"
+            },
+            {
+              "stageId": "COMMERCIAL_QUALIFICATION",
+              "outcome": "HOLD"
+            }
+          ],
+          "passCount": 0,
+          "totalStages": 5,
+          "complete": false,
+          "partial": true,
+          "failed": false
+        },
+        "stagedProgression": {
+          "ok": true,
+          "activated": false,
+          "publicationVersion": null,
+          "opportunityCount": null,
+          "currentUnchanged": true,
+          "reason": "SKIP_STAGED_PROGRESSION"
+        },
+        "pointersAndLedgerUnchanged": true,
+        "note": "Isolated out-dir, provider keys stripped, staged progression skipped. HOLD stages are expected (no artifacts in temp dir)."
+      }
+    },
+    {
+      "id": "findymail_planning",
+      "label": "Findymail planning path (no spend, ledger unchanged)",
+      "ms": 451,
+      "pass": true,
+      "detail": {
+        "exitCode": 0,
+        "ledgerUnchanged": true
+      }
+    },
+    {
+      "id": "weekly_dry_run",
+      "label": "Weekly refresh DryRun (no SerpApi)",
+      "ms": 696,
+      "pass": true,
+      "detail": {
+        "exitCode": 0,
+        "command": "npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run",
+        "provenOn": "recLuxvwwxID7U2B8",
+        "discoverySource": "FROZEN_DISCOVERY:data/group-demand-intelligence/evals/bethesda-weekly-discovery-20260921.json",
+        "serpApiCalls": 0,
+        "counts": {
+          "NEW": 0,
+          "UPDATED": 8,
+          "REACTIVATED": 0,
+          "UNCHANGED": 78,
+          "CLOSED_DOWNGRADED": 0,
+          "NOT_IN_CURRENT": 1
+        }
+      }
+    },
+    {
+      "id": "reconstruction_cert",
+      "label": "Clean Airtable reconstruction cert executes (PASS or PARTIAL)",
+      "ms": 1592,
+      "pass": true,
+      "detail": {
+        "exitCode": 0,
+        "certStatus": "PARTIAL",
+        "corrections": [
+          "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
+          "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
+          "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE"
+        ],
+        "note": "PARTIAL is a known limitation (founder-authorized Airtable persistence corrections), not a pre-live blocker."
+      },
+      "knownLimitation": [
+        "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
+        "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
+        "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE"
+      ]
+    },
+    {
+      "id": "runbook",
+      "label": "Runbook exists with required commands/statements",
+      "ms": 0,
+      "pass": true,
+      "detail": {
+        "runbook": "docs/ai-build-system/GDI_CANONICAL_POWERSHELL_OPERATIONS_RUNBOOK_V1.md",
+        "missing": []
+      }
+    },
+    {
+      "id": "template_freeze",
+      "label": "Canonical template freeze files unchanged",
+      "pass": true,
+      "detail": {
+        "files": [
+          {
+            "file": "public/group-demand-intelligence.html",
+            "present": true,
+            "sha256": "d718fcbf907ef924aedff5a0b223baaaac2807ac1a39644a6bc630091efe3b3a"
+          },
+          {
+            "file": "public/css/group-demand-intelligence.css",
+            "present": true,
+            "sha256": "8aa47542b6c4d031c838f64dde08167eac0dd8fa4b7376a0eb7a7911efb65be4"
+          },
+          {
+            "file": "public/js/group-demand-intelligence/dealality-gdi-ui.js",
+            "present": true,
+            "sha256": "f1954d97e66a0ce5bd02ea73385c1bbcd7c5ffad5c849906693d96a9ff695545"
+          },
+          {
+            "file": "public/js/group-demand-intelligence/executive-summary-tab.js",
+            "present": true,
+            "sha256": "f226c9e4642ca94535bc849e4d286b1d0f3c6932e3c564a70aa554e6af71350a"
+          },
+          {
+            "file": "public/js/group-demand-intelligence/gdi-commercial-list-table-v1.js",
+            "present": true,
+            "sha256": "75f8ffcb3de02be647069431aa61eaf1d227edb7ac721b33b0d88d1a8f2718a1"
+          }
+        ],
+        "gitAvailable": true,
+        "modifiedVsHead": [],
+        "missingSubstrings": [],
+        "missingSelectors": []
+      }
+    },
+    {
+      "id": "staged_wyndham_26",
+      "label": "Wyndham STAGED inventory = 26",
+      "ms": 6,
+      "pass": true,
+      "detail": {
+        "hotelId": "recnPB3Q02NO8Ma1o",
+        "pointer": true,
+        "version": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61",
+        "count": 26,
+        "expectedCount": 26
+      }
+    },
+    {
+      "id": "second_hotel_dry_run",
+      "label": "Second hotel DryRun path exists",
+      "ms": 984,
+      "pass": true,
+      "detail": {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "fullDryRunExit": 0,
+        "discoveryDryRunExit": 0,
+        "stagedPointer": true
+      }
+    },
+    {
+      "id": "fresh_hotel_selected",
+      "label": "Fresh hotel candidate selected (no STAGED/CURRENT, not Wyndham)",
+      "pass": true,
+      "detail": {
+        "hotelId": "recFaxTEFF9ILHWC9",
+        "name": "The Westin Grand München"
+      }
+    },
+    {
+      "id": "fresh_hotel_dry_run",
+      "label": "Fresh hotel DryRun path executes",
+      "ms": 486,
+      "pass": true,
+      "detail": {
+        "hotelId": "recFaxTEFF9ILHWC9",
+        "exitCode": 0
+      }
+    },
+    {
+      "id": "no_mutation",
+      "label": "STAGED/CURRENT pointers + Findymail ledger unchanged by the gate",
+      "pass": true,
+      "detail": {
+        "before": {
+          "findymailLedger": "0032f5994cf866c36d4aaf1c026ef8acbe285d0ff3699fcc0a920b2152338788",
+          "recnPB3Q02NO8Ma1o:STAGED": "9a9175544be85452879cfa84ae66a4547026dbd5a6bf855c9d129ea15bbe4b9c",
+          "recnPB3Q02NO8Ma1o:CURRENT": null,
+          "recLuxvwwxID7U2B8:STAGED": "c411884b9f17e2739050e635b2e6ce0616e84a10bcbecb1237db6a209b5f0574",
+          "recLuxvwwxID7U2B8:CURRENT": "db4eb0ca7d3e5b08ed160293f085b06260096347e7720f26c4dca6ca4606ce9c"
+        },
+        "after": {
+          "findymailLedger": "0032f5994cf866c36d4aaf1c026ef8acbe285d0ff3699fcc0a920b2152338788",
+          "recnPB3Q02NO8Ma1o:STAGED": "9a9175544be85452879cfa84ae66a4547026dbd5a6bf855c9d129ea15bbe4b9c",
+          "recnPB3Q02NO8Ma1o:CURRENT": null,
+          "recLuxvwwxID7U2B8:STAGED": "c411884b9f17e2739050e635b2e6ce0616e84a10bcbecb1237db6a209b5f0574",
+          "recLuxvwwxID7U2B8:CURRENT": "db4eb0ca7d3e5b08ed160293f085b06260096347e7720f26c4dca6ca4606ce9c"
+        }
+      }
+    }
+  ],
+  "outstanding": [],
+  "knownLimitations": [
+    "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
+    "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
+    "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE"
+  ],
+  "conditionsOnFounderGo": [
+    "FINDYMAIL_CREDIT_HARD_CAP_CLI_READY — pass -FindymailCreditHardCap 15 on founder Live GO (default remains 40 if omitted)",
+    "FRESH_HOTEL_DISCOVERY_ARTIFACTS_REQUIRED — Live Stage 1 reuses artifacts; none exist for the recommended hotel (separate founder decision; SerpApi not covered by Exa/Findymail limits)",
+    "FOUNDER_LIVE_GO_REQUIRED — no authorization issued; pre-live READY ≠ operational certification"
+  ],
+  "recommendedFreshHotel": {
+    "hotelId": "recFaxTEFF9ILHWC9",
+    "name": "The Westin Grand München",
+    "proposal": "reports/gdi-unified-live-e2e-prelive-readiness-v1/01-FRESH_HOTEL_CERTIFICATION_PROPOSAL.md"
+  },
+  "weeklyRefreshCommand": "npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run"
+}

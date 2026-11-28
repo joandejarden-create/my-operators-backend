@@ -1,17 +1,37 @@
 #!/usr/bin/env node
 /**
  * Shared CLI for GDI Full E2E V3 stage runners + orchestrator.
- * Default Mode=DryRun. Never embeds API keys.
+ * Default Mode=DryRun. Never embeds API keys. Hotel-agnostic (no hotel-specific
+ * authorization ids, manifests, or paths).
+ *
+ * Live (--mode Live --authorize-paid-research):
+ *   FULL            -> runFullE2eV3Live
+ *   WHO_HOW         -> existing Exa adapter (needs --authorization-id,
+ *                      --hard-ceiling-usd, --manifest)
+ *   CONTACT         -> Live contact stage (Findymail only with --authorize-findymail)
+ *   DISCOVERY/DEEP  -> reuse existing artifacts (no paid discovery)
+ *   QUALIFICATION   -> strict FQO on prior Live opportunities
+ *   VALIDATE        -> read-only validation (no activate, no paid)
+ *
+ * Exit codes: 0 ok · 1 stage failure / invalid STAGED inventory · 2 usage or
+ * missing authorization params (fail closed) · 4 provider authorization refused
+ * (env gate / missing provider key).
  */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import {
   runFullE2eV3DryRun,
+  runFullE2eV3Live,
+  validateFullE2eV3LiveArtifacts,
   runDiscoveryStageDry,
   runDeepResearchStageDry,
+  runDiscoveryStageLive,
+  runDeepResearchStageLive,
   runWhoHowStageDry,
+  runWhoHowStageLive,
   runContactResearchStageDry,
+  runContactResearchStageLive,
   runQualificationStageDry,
 } from "../../lib/group-demand-intelligence/workflow/gdi-full-e2e-v3-orchestrator-v1.js";
 import { GDI_E2E_V3_STAGE } from "../../lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-v3-stages-v1.js";
@@ -39,50 +59,335 @@ Options:
   --out-dir <path>
   --opportunity-id <id>
   --continuation-only
-  --fixtures <path-to-who-how-scenarios.json>
-  --authorize-paid-research   (Live only; still refused unless Mode=Live)
-  --authorize-findymail       (Stage 4 permanent component; Live Findymail uses gold-standard cert script)
+  --fixtures <path-to-who-how-scenarios.json>   (DryRun only)
+  --opportunities-file <path>                   (Live contact/qualification input)
+  --discovery-matrix <path>                     (Live discovery artifact reuse)
+  --queue-dossier-dir <path>                    (Live deep-research artifact reuse)
+  --authorize-paid-research   (required with --mode Live; refused otherwise)
+  --authorize-findymail       (Live Stage 4 Findymail; needs FINDYMAIL_API_KEY)
+  --findymail-dry-run         (plan Findymail eligibility only; no spend)
+  --authorization-id <id>     (Live WHO/HOW; founder-authorized per hotel/run)
+  --hard-ceiling-usd <n>      (Live WHO/HOW hard budget ceiling, > 0)
+  --manifest <path>           (Live WHO/HOW tranche manifest)
+  --skip-discovery --skip-deep --skip-who-how --skip-contact --skip-qualification
+  --skip-staged-progression
+  --activate-staged-pointer | --no-activate-staged-pointer   (Live FULL; default activate STAGED)
+  --authorize-paid-discovery  (Live FULL: default-enables Leisure/CAD spine; orchestrator still reuses
+                               discovery artifacts - no paid discovery is invented)
+  --allow-historical-replay   (Live FULL: replay historical matrix; default-enables Leisure/CAD assess at $0)
+  --enable-leisure | --no-leisure   (Live FULL: force Leisure standard stage on/off; $0 mock_live only)
+  --enable-cad | --no-cad           (Live FULL: force CAD standard stage on/off; classification only)
+  --findymail-credit-hard-cap <n>  (Live Stage 4 shared Findymail credit ceiling; default 40)
+  --persist-findymail-results (Live FULL: Findymail -> Airtable persist plan; needs --authorize-findymail AND
+                               separate auth: --authorize-research-persistence + --exact-write-set-authorization,
+                               OR --authorize-findymail-persist + --authorize-airtable-production-writes)
+  --authorize-findymail-persist --authorize-airtable-production-writes
+  --apply-findymail-persist   (also needs env GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES=1)
+  --plan-research-persistence                   (Airtable inventory dry-run plan)
+  --authorize-research-persistence
+  --exact-write-set-authorization <text>
+  --apply-research-persistence                  (needs both authorizations + env gate)
   --resume
 `);
 }
 
+function normalizeStage(raw) {
+  const s = String(raw || "FULL").toUpperCase();
+  if (s === "FULL" || s === "VALIDATE") return s;
+  if (s === GDI_E2E_V3_STAGE.DEMAND_DISCOVERY || s === "DISCOVERY") return "DISCOVERY";
+  if (s === GDI_E2E_V3_STAGE.OPPORTUNITY_DEEP_RESEARCH || s === "DEEP") return "DEEP";
+  if (
+    s === GDI_E2E_V3_STAGE.WHO_HOW_RESOLUTION ||
+    s === "WHOHOW" ||
+    s === "WHO_HOW"
+  ) {
+    return "WHO_HOW";
+  }
+  if (s === GDI_E2E_V3_STAGE.PROFESSIONAL_CONTACT_RESEARCH || s === "CONTACT") {
+    return "CONTACT";
+  }
+  if (s === GDI_E2E_V3_STAGE.COMMERCIAL_QUALIFICATION || s === "QUALIFICATION") {
+    return "QUALIFICATION";
+  }
+  return null;
+}
+
+function readJson(p) {
+  try {
+    return JSON.parse(fs.readFileSync(p, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+/** Live opportunity inputs: explicit file → prior Live contact → prior Live WHO/HOW. */
+function loadLiveOpportunities(outDir, hotelId) {
+  const oppId = arg("--opportunity-id");
+  let opps = [];
+  const file = arg("--opportunities-file");
+  if (file) {
+    const raw = readJson(path.resolve(file));
+    opps = Array.isArray(raw) ? raw : raw?.opportunities || [];
+  } else {
+    for (const name of ["04-contact-research.json", "03-who-how.json"]) {
+      const rep = readJson(path.join(outDir, name));
+      if (rep?.mode === "Live" && Array.isArray(rep.results)) {
+        opps = rep.results.map((r) => r.opportunity).filter(Boolean);
+        if (opps.length) break;
+      }
+    }
+  }
+  if (oppId) {
+    opps = opps.filter(
+      (o) => (o.opportunityId || o.id || o.candidateId) === oppId,
+    );
+  }
+  return opps.map((o) => ({ ...o, hotelId: o.hotelId || hotelId }));
+}
+
+function liveFullOptions(hotelId, outDir) {
+  const ceiling = arg("--hard-ceiling-usd");
+  return {
+    hotelId,
+    mode: "Live",
+    outDir,
+    authorizePaidResearch: true,
+    authorizeFindymail: flag("--authorize-findymail"),
+    allowFindymail: flag("--authorize-findymail"),
+    findymailDryRun: flag("--findymail-dry-run"),
+    authorizationId: arg("--authorization-id"),
+    hardCeilingUsd: ceiling == null ? undefined : Number(ceiling),
+    whoHowManifestPath: arg("--manifest"),
+    opportunityId: arg("--opportunity-id"),
+    continuationOnly: flag("--continuation-only"),
+    resume: flag("--resume"),
+    skipDiscovery: flag("--skip-discovery"),
+    skipDeep: flag("--skip-deep"),
+    skipWhoHow: flag("--skip-who-how"),
+    skipContact: flag("--skip-contact"),
+    skipQualification: flag("--skip-qualification"),
+    skipStagedProgression: flag("--skip-staged-progression"),
+    activateStagedPointer: flag("--no-activate-staged-pointer")
+      ? false
+      : flag("--activate-staged-pointer")
+        ? true
+        : undefined,
+    authorizePaidDiscovery: flag("--authorize-paid-discovery") ? true : undefined,
+    allowHistoricalReplay: flag("--allow-historical-replay") ? true : undefined,
+    enableLeisure: flag("--no-leisure") ? false : flag("--enable-leisure") ? true : undefined,
+    enableCad: flag("--no-cad") ? false : flag("--enable-cad") ? true : undefined,
+    persistFindymailResults: flag("--persist-findymail-results"),
+    authorizeFindymailPersist: flag("--authorize-findymail-persist"),
+    authorizeAirtableProductionWrites: flag("--authorize-airtable-production-writes"),
+    applyFindymailPersist: flag("--apply-findymail-persist"),
+    findymailCreditHardCap: (() => {
+      const raw = arg("--findymail-credit-hard-cap");
+      if (raw == null) return undefined;
+      const n = Number(raw);
+      return Number.isFinite(n) && n > 0 ? n : undefined;
+    })(),
+    planResearchPersistence: flag("--plan-research-persistence"),
+    authorizeResearchPersistence: flag("--authorize-research-persistence"),
+    exactWriteSetAuthorization: arg("--exact-write-set-authorization"),
+    applyResearchPersistence: flag("--apply-research-persistence"),
+    discoveryMatrixPath: arg("--discovery-matrix") || undefined,
+    queueDossierDir: arg("--queue-dossier-dir") || undefined,
+    opportunities: arg("--opportunities-file")
+      ? loadLiveOpportunities(outDir, hotelId)
+      : undefined,
+  };
+}
+
+const PARAM_ERROR_CODES =
+  /^(HOTEL_ID_REQUIRED|LIVE_REQUIRES_|LIVE_WHO_HOW_REQUIRES_|LIVE_WHO_HOW_MANIFEST|SURFE_FORBIDDEN|FINDYMAIL_REQUIRES_|FINDYMAIL_PERSIST_|RESEARCH_PERSISTENCE_APPLY_)/;
+const PROVIDER_REFUSAL_CODES =
+  /^(LIVE_WHO_HOW_AUTHORIZATION_REFUSED|MISSING_FINDYMAIL_API_KEY)$/;
+
+function exitForLiveError(err) {
+  const code = String(err?.code || "");
+  if (PARAM_ERROR_CODES.test(code)) {
+    console.error(`Live fail-closed (${code}): ${err.message}`);
+    process.exit(2);
+  }
+  if (PROVIDER_REFUSAL_CODES.test(code)) {
+    console.error(`Live provider authorization refused (${code}): ${err.message}`);
+    process.exit(4);
+  }
+  throw err;
+}
+
+async function runLive({ stage, hotelId, outDir }) {
+  try {
+    if (stage === "FULL") {
+      const result = await runFullE2eV3Live(liveFullOptions(hotelId, outDir));
+      const s = result.summary;
+      console.log(
+        JSON.stringify(
+          {
+            ok: true,
+            stage,
+            mode: "Live",
+            hotelId,
+            paid: s.paid,
+            paidBreakdown: s.paidBreakdown,
+            plpAssessed: s.plpAssessed,
+            researchSpine: s.researchSpine,
+            stageInventory: s.stageInventory,
+            findymailPersist: s.findymailPersist,
+            researchReceipt: s.researchReceipt,
+            completeness: s.completeness,
+            stagedProgression: s.stagedProgression,
+            stagedInventoryValidation: s.stagedInventoryValidation,
+            researchPersistence: s.researchPersistence,
+            outDir: s.outDir,
+          },
+          null,
+          2,
+        ),
+      );
+      process.exit(
+        s.completeness.failed ||
+          s.stagedInventoryValidation.ok === false ||
+          s.researchSpine?.failed === true
+          ? 1
+          : 0,
+      );
+    }
+
+    if (
+      flag("--plan-research-persistence") ||
+      flag("--authorize-research-persistence") ||
+      flag("--apply-research-persistence") ||
+      flag("--persist-findymail-results") ||
+      flag("--apply-findymail-persist")
+    ) {
+      console.error(
+        "Research persistence flags are supported only with --stage FULL (Airtable writes are never unlocked by a single stage or by --authorize-paid-research).",
+      );
+      process.exit(2);
+    }
+
+    let report;
+    if (stage === "DISCOVERY") {
+      report = runDiscoveryStageLive(hotelId, {
+        outDir,
+        discoveryMatrixPath: arg("--discovery-matrix") || undefined,
+      });
+    } else if (stage === "DEEP") {
+      report = runDeepResearchStageLive(hotelId, {
+        outDir,
+        queueDossierDir: arg("--queue-dossier-dir") || undefined,
+      });
+    } else if (stage === "WHO_HOW") {
+      if (
+        !arg("--authorization-id") ||
+        !(Number(arg("--hard-ceiling-usd")) > 0) ||
+        !arg("--manifest")
+      ) {
+        console.error(
+          "Live WHO/HOW requires --authorization-id, --hard-ceiling-usd (> 0) and --manifest (hotel-specific; no defaults). Alternatively use Invoke-GdiWhoHow.ps1 (Checkpoint A).",
+        );
+        process.exit(2);
+      }
+      report = await runWhoHowStageLive(hotelId, {
+        outDir,
+        authorizePaidResearch: true,
+        authorizationId: arg("--authorization-id"),
+        hardCeilingUsd: Number(arg("--hard-ceiling-usd")),
+        whoHowManifestPath: arg("--manifest"),
+        opportunityId: arg("--opportunity-id"),
+        continuationOnly: flag("--continuation-only"),
+      });
+    } else if (stage === "CONTACT") {
+      report = await runContactResearchStageLive(
+        loadLiveOpportunities(outDir, hotelId),
+        {
+          hotelId,
+          authorizePaidResearch: true,
+          authorizeFindymail: flag("--authorize-findymail"),
+          allowFindymail: flag("--authorize-findymail"),
+          findymailDryRun: flag("--findymail-dry-run"),
+        },
+      );
+    } else if (stage === "QUALIFICATION") {
+      const qual = runQualificationStageDry(loadLiveOpportunities(outDir, hotelId), {});
+      report = { ...qual, mode: "Live", paid: false };
+    } else {
+      usage();
+      process.exit(2);
+    }
+
+    const outFile = path.join(outDir, `stage-${stage.toLowerCase()}-live.json`);
+    fs.writeFileSync(outFile, JSON.stringify(report, null, 2));
+    console.log(
+      JSON.stringify(
+        {
+          ok: true,
+          stage,
+          mode: "Live",
+          outFile,
+          outcome: report.outcome,
+          paid: report.paid === true,
+        },
+        null,
+        2,
+      ),
+    );
+    process.exit(0);
+  } catch (err) {
+    exitForLiveError(err);
+  }
+}
+
 async function main() {
-  const stage = String(arg("--stage", "FULL")).toUpperCase();
+  const stage = normalizeStage(arg("--stage", "FULL"));
   const hotelId = arg("--hotel-id");
   const mode = arg("--mode", "DryRun");
-  if (!hotelId) {
+  if (!hotelId || !stage) {
     usage();
     process.exit(2);
   }
-  if (mode === "Live" && !flag("--authorize-paid-research")) {
+  if (mode !== "DryRun" && mode !== "Live") {
+    console.error("--mode must be DryRun or Live");
+    process.exit(2);
+  }
+  // VALIDATE is read-only and never needs paid authorization, even with --mode Live.
+  const validateOnly = stage === "VALIDATE";
+  if (mode === "Live" && !validateOnly && !flag("--authorize-paid-research")) {
     console.error("Live mode requires --authorize-paid-research");
+    process.exit(2);
+  }
+  if (
+    mode !== "Live" &&
+    (flag("--authorize-paid-discovery") ||
+      flag("--persist-findymail-results") ||
+      flag("--apply-findymail-persist"))
+  ) {
+    console.error(
+      "--authorize-paid-discovery / --persist-findymail-results / --apply-findymail-persist require --mode Live",
+    );
     process.exit(2);
   }
   if (flag("--authorize-paid-research") && mode !== "Live") {
     console.error("--authorize-paid-research requires --mode Live");
     process.exit(2);
   }
-  // WHO/HOW Live must use the canonical Checkpoint A runner (no ad-hoc bypass).
-  if (mode === "Live") {
-    if (
-      stage === GDI_E2E_V3_STAGE.WHO_HOW_RESOLUTION ||
-      stage === "WHOHOW" ||
-      stage === "WHO_HOW"
-    ) {
-      console.error(
-        "Live WHO/HOW must use Invoke-GdiWhoHow.ps1 Checkpoint A path (run-gdi-who-how-checkpoint-a-v1.mjs) with --authorization-id and --hard-ceiling-usd — not this generic stage CLI.",
-      );
-      process.exit(3);
-    }
-    console.error(
-      "Live paid execution for this stage is not enabled in the generic V3 CLI — use the stage-specific authorized runner.",
-    );
-    process.exit(3);
-  }
 
   const outDir =
     arg("--out-dir") ||
     path.join(root, "reports/gdi-canonical-full-e2e-v3", hotelId);
+
+  if (mode === "Live") {
+    if (validateOnly) {
+      const v = validateFullE2eV3LiveArtifacts({ hotelId, outDir });
+      console.log(JSON.stringify(v, null, 2));
+      process.exit(v.ok ? 0 : 1);
+    }
+    fs.mkdirSync(outDir, { recursive: true });
+    await runLive({ stage, hotelId, outDir });
+    return;
+  }
+
   fs.mkdirSync(outDir, { recursive: true });
 
   const fixturesPath =
@@ -139,26 +444,16 @@ async function main() {
   }
 
   let report;
-  if (stage === GDI_E2E_V3_STAGE.DEMAND_DISCOVERY || stage === "DISCOVERY") {
+  if (stage === "DISCOVERY") {
     report = runDiscoveryStageDry(hotelId, {});
-  } else if (
-    stage === GDI_E2E_V3_STAGE.OPPORTUNITY_DEEP_RESEARCH ||
-    stage === "DEEP"
-  ) {
+  } else if (stage === "DEEP") {
     report = runDeepResearchStageDry(hotelId, {});
-  } else if (
-    stage === GDI_E2E_V3_STAGE.WHO_HOW_RESOLUTION ||
-    stage === "WHOHOW" ||
-    stage === "WHO_HOW"
-  ) {
+  } else if (stage === "WHO_HOW") {
     report = runWhoHowStageDry(hotelId, {
       whoHowFixtures,
       continuationOnly: flag("--continuation-only"),
     });
-  } else if (
-    stage === GDI_E2E_V3_STAGE.PROFESSIONAL_CONTACT_RESEARCH ||
-    stage === "CONTACT"
-  ) {
+  } else if (stage === "CONTACT") {
     const who = runWhoHowStageDry(hotelId, { whoHowFixtures });
     report = await runContactResearchStageDry(
       (who.results || []).map((r) => r.opportunity),
@@ -171,12 +466,9 @@ async function main() {
     if (flag("--authorize-findymail")) {
       report.findymailPermanentComponent = true;
       report.findymailNote =
-        "DryRun plans Findymail eligibility; Live enrichment: node scripts/gdi-canonical-full-e2e-gold-standard-certification-v1.mjs --findymail-live";
+        "DryRun plans Findymail eligibility only; Live enrichment: --mode Live --authorize-paid-research --authorize-findymail (FINDYMAIL_API_KEY required)";
     }
-  } else if (
-    stage === GDI_E2E_V3_STAGE.COMMERCIAL_QUALIFICATION ||
-    stage === "QUALIFICATION"
-  ) {
+  } else if (stage === "QUALIFICATION") {
     const who = runWhoHowStageDry(hotelId, { whoHowFixtures });
     const contact = await runContactResearchStageDry(
       (who.results || []).map((r) => r.opportunity),
@@ -191,7 +483,7 @@ async function main() {
     process.exit(2);
   }
 
-  const outFile = path.join(outDir, `stage-${stage.toLowerCase()}.json`);
+  const outFile = path.join(outDir, `stage-${String(arg("--stage", stage)).toLowerCase()}.json`);
   fs.writeFileSync(outFile, JSON.stringify(report, null, 2));
   console.log(JSON.stringify({ ok: true, stage, outFile, outcome: report.outcome }, null, 2));
   process.exit(0);

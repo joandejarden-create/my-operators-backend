@@ -1,0 +1,333 @@
+{
+  "version": "gdi-close-e2e-cert-gaps-v1",
+  "status": "REQUEST_ONLY_NOT_AUTHORIZED",
+  "autoSpend": false,
+  "founderAuthorizationRequired": true,
+  "surfeIncluded": false,
+  "assumptions": {
+    "exaSearchUsd": 0.005,
+    "linkedinSearchesPerPersonLow": 1,
+    "linkedinSearchesPerPersonHigh": 2,
+    "phoneSearchesPerPersonLow": 1,
+    "phoneSearchesPerPersonHigh": 3,
+    "altEntrySearchesPerOpportunityLow": 2,
+    "altEntrySearchesPerOpportunityHigh": 4,
+    "findymailFindCreditsWhenFound": 1,
+    "findymailFindCreditsWhenNotFound": 0,
+    "note": "Planning estimates, not quotes. Nothing is authorized or auto-spent by this script."
+  },
+  "lineItems": [
+    {
+      "id": "LINKEDIN_PUBLIC_SEARCH_EXA",
+      "provider": "EXA",
+      "uniquePeople": 12,
+      "searchesLow": 12,
+      "searchesHigh": 24,
+      "estimatedUsdLow": 0.06,
+      "estimatedUsdHigh": 0.12,
+      "method": "Individual-profile public search by verified full name + organization; verified-only; no guessing."
+    },
+    {
+      "id": "TELEPHONE_PUBLIC_SEARCH_EXA",
+      "provider": "EXA",
+      "uniquePeople": 14,
+      "searchesLow": 14,
+      "searchesHigh": 42,
+      "estimatedUsdLow": 0.07,
+      "estimatedUsdHigh": 0.21,
+      "method": "Official-page / directory public search for person-direct telephone; organization main lines are not person phones."
+    },
+    {
+      "id": "ALTERNATIVE_ENTRY_RESEARCH_EXA",
+      "provider": "EXA",
+      "opportunities": 12,
+      "opportunityIds": [
+        "gdi_lmc_2f01609319f56f89",
+        "gdi_lmc_b8ba887bff4dfc2e",
+        "gdi_opp_prospect_mv8p5ddc_75804200",
+        "gdi_opp_prospect_mv8p5dde_1a0faf00",
+        "gdi_opp_prospect_mv8p5dde_f892ef70",
+        "gdi_opp_prospect_mv8p5ddg_f7b6d183",
+        "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+        "gdi_opp_prospect_mv8p5ddh_b4fad256",
+        "gdi_opp_prospect_mv8p5ddj_c848701a",
+        "gdi_opp_prospect_mv8p5ddj_cf54ecae",
+        "gdi_sc_a7618f7bcd1270a7",
+        "gdi_wyndham_live_associatio_a790d46ad631"
+      ],
+      "searchesLow": 24,
+      "searchesHigh": 48,
+      "estimatedUsdLow": 0.12,
+      "estimatedUsdHigh": 0.24,
+      "method": "Named alternative / secondary entry points for opportunities whose primary buying authority is not verified. Required by gate once annotation sets requiresAlternativeEntryPoints."
+    },
+    {
+      "id": "EMAIL_FINDYMAIL_NEWLY_ELIGIBLE",
+      "provider": "FINDYMAIL",
+      "uniquePeople": 1,
+      "people": [
+        {
+          "personKey": "alejandra (alex) gutierrez, phd|grifols",
+          "fullName": "Alejandra (Alex) Gutierrez, PhD",
+          "providerQueryName": "Alejandra Gutierrez",
+          "estimatedFinderCredits": 1,
+          "creditsIfNotFound": 0,
+          "autoSpend": false
+        }
+      ],
+      "creditsMax": 1,
+      "creditsMin": 0,
+      "note": "Credit-based; 0 credits when not found. Eligible only after identity normalization fix. Not auto-spent."
+    }
+  ],
+  "totals": {
+    "exaSearchesLow": 50,
+    "exaSearchesHigh": 114,
+    "exaEstimatedUsdLow": 0.25,
+    "exaEstimatedUsdHigh": 0.57,
+    "findymailCreditsMax": 1
+  },
+  "remainingNotYetByChannel": {
+    "email": 1,
+    "telephone": 14,
+    "linkedin": 12
+  },
+  "perPerson": [
+    {
+      "personKey": "kathryn newstead|downtown san diego partnership",
+      "fullName": "Kathryn Newstead",
+      "organization": "Downtown San Diego Partnership",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "brooke wheeler|boma san diego",
+      "fullName": "Brooke Wheeler",
+      "organization": "BOMA San Diego",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "kristine coan|american society of cataract and refractive surgery (ascrs)",
+      "fullName": "Kristine Coan",
+      "organization": "American Society of Cataract and Refractive Surgery (ASCRS)",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "rebekah bell|sol-ark",
+      "fullName": "Rebekah Bell",
+      "organization": "Sol-Ark",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "brittany jolly|esri",
+      "fullName": "Brittany Jolly",
+      "organization": "Esri",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "madeline foresman|american society of naval engineers",
+      "fullName": "Madeline Foresman",
+      "organization": "American Society of Naval Engineers",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "ann marie levra|american association of neurological surgeons",
+      "fullName": "Ann Marie Levra",
+      "organization": "American Association of Neurological Surgeons",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "kim wang|american chemical society",
+      "fullName": "Kim Wang",
+      "organization": "American Chemical Society",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "olivia day|phacilitate — part of clarion events limited",
+      "fullName": "Olivia Day",
+      "organization": "Phacilitate — Part of Clarion Events Limited",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "shelby wiggs|spargo, inc.",
+      "fullName": "Shelby Wiggs",
+      "organization": "SPARGO, Inc.",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "stephanie pursglove|eset north america",
+      "fullName": "Stephanie Pursglove",
+      "organization": "ESET North America",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "judy susser|acg san diego",
+      "fullName": "Judy Susser",
+      "organization": "ACG San Diego",
+      "identityFullyVerified": true,
+      "channels": [
+        "LINKEDIN_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "martine sanders|turner construction company",
+      "fullName": "Martine Sanders",
+      "organization": "Turner Construction Company",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "kam sidhu|bora biologics",
+      "fullName": "Kam Sidhu",
+      "organization": "Bora Biologics",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "allison satterfield|cirsium biosciences",
+      "fullName": "Allison Satterfield",
+      "organization": "Cirsium Biosciences",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "jimmy draper|ohla usa",
+      "fullName": "Jimmy Draper",
+      "organization": "OHLA USA",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "jordyn lanthier|seasats",
+      "fullName": "Jordyn Lanthier",
+      "organization": "Seasats",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "jasper villanueva|edan diagnostics, inc.",
+      "fullName": "Jasper Villanueva",
+      "organization": "EDAN Diagnostics, Inc.",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "margaret guntner|bora biologics",
+      "fullName": "Margaret Guntner",
+      "organization": "Bora Biologics",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "sebastian biagioni|saronic technologies",
+      "fullName": "Sebastian Biagioni",
+      "organization": "Saronic Technologies",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "jarrod smith|hensel phelps construction co.",
+      "fullName": "Jarrod Smith",
+      "organization": "Hensel Phelps Construction Co.",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "jackson mitz|modern railway systems",
+      "fullName": "Jackson Mitz",
+      "organization": "Modern Railway Systems",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "rachel maus|athletic brewing company",
+      "fullName": "Rachel Maus",
+      "organization": "Athletic Brewing Company",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "alejandra (alex) gutierrez, phd|grifols",
+      "fullName": "Alejandra (Alex) Gutierrez, PhD",
+      "organization": "Grifols",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH",
+        "EMAIL_FINDYMAIL_FIND_FROM_NAME"
+      ]
+    },
+    {
+      "personKey": "eric hounchell|firestorm",
+      "fullName": "Eric Hounchell",
+      "organization": "Firestorm",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    },
+    {
+      "personKey": "steve fry|flatirondragados",
+      "fullName": "Steve Fry",
+      "organization": "FlatironDragados",
+      "identityFullyVerified": true,
+      "channels": [
+        "TELEPHONE_EXA_PUBLIC_SEARCH"
+      ]
+    }
+  ],
+  "opportunityCountConsidered": 26
+}
