@@ -4,12 +4,15 @@
 
 .DESCRIPTION
   Runs after identity/role research. Public-first for email / phone / LinkedIn.
-  Enforces GDI_CONTACT_RESEARCH_BEST_EFFORT_V1: every applicable channel for
-  primary and alternative contacts must be researched (finding one channel does
-  not terminate the others). Findymail is a permanent Stage 4 component for
-  unresolved professional email gaps when -AuthorizeFindymail is supplied with
-  Live + paid authorization (FINDYMAIL_API_KEY required; fails closed otherwise).
-  Surfe is never auto-invoked from Full E2E (explicit-click only).
+  Enforces GDI_CONTACT_RESEARCH_BEST_EFFORT_V1 + DEALALITY_DYNAMIC_CONTACT_ENRICHMENT_V3:
+  every applicable channel for primary and alternative contacts must be researched
+  independently (finding email does not terminate telephone/LinkedIn research).
+  Shared missing-channel planner selects Findymail email and/or LinkedIn phone
+  only for genuine gaps. Findymail is a permanent Stage 4 component when
+  -AuthorizeFindymail is supplied with Live + paid authorization
+  (FINDYMAIL_API_KEY required; fails closed otherwise). Cumulative Findymail
+  hard-cap is enforced across primary/alternative contacts. Surfe is never
+  auto-invoked from Full E2E (explicit-click only; session-only when used).
 
   Live reads opportunities from -OpportunitiesFile, else from a prior Live
   04-contact-research / 03-who-how report in -OutDir. Use -FindymailDryRun to plan
