@@ -47,6 +47,7 @@ function Invoke-GdiV3NodeStage {
     [switch]$AuthorizeAirtableProductionWrites,
     [switch]$ApplyFindymailPersist,
     [double]$FindymailCreditHardCap = 0,
+    [switch]$AuthorizeMaterialImprovementRestage,
     # Stage control
     [switch]$SkipDiscovery,
     [switch]$SkipDeep,
@@ -140,6 +141,7 @@ function Invoke-GdiV3NodeStage {
   if ($AuthorizeAirtableProductionWrites) { $nodeArgs += '--authorize-airtable-production-writes' }
   if ($ApplyFindymailPersist) { $nodeArgs += '--apply-findymail-persist' }
   if ($FindymailCreditHardCap -gt 0) { $nodeArgs += @('--findymail-credit-hard-cap', ([string][int]$FindymailCreditHardCap)) }
+  if ($AuthorizeMaterialImprovementRestage) { $nodeArgs += '--authorize-material-improvement-restage' }
   if ($SkipDiscovery) { $nodeArgs += '--skip-discovery' }
   if ($SkipDeep) { $nodeArgs += '--skip-deep' }
   if ($SkipWhoHow) { $nodeArgs += '--skip-who-how' }
