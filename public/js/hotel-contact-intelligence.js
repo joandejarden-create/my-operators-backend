@@ -585,11 +585,21 @@
     return '<p class="hci-muted">' + esc(label) + "</p>";
   }
 
-  /** Shared Dealality black-wave toast — never inject into table rows. */
+  /** Shared Dealality black-wave toast — body host only; never inside table rows. */
   function ensureEnrichToastHost() {
-    if (_enrichToastHost && document.body.contains(_enrichToastHost)) return _enrichToastHost;
+    if (_enrichToastHost && document.body.contains(_enrichToastHost)) {
+      if (_enrichToastHost.closest("table, .hci-root tr, [data-hci-contact-details-cell]")) {
+        document.body.appendChild(_enrichToastHost);
+      }
+      return _enrichToastHost;
+    }
     var existing = document.getElementById("hci-enrich-loading-toast");
     if (existing) {
+      if (existing.closest("table, .hci-root tr, [data-hci-contact-details-cell]")) {
+        document.body.appendChild(existing);
+      } else if (existing.parentElement !== document.body) {
+        document.body.appendChild(existing);
+      }
       _enrichToastHost = existing;
       return existing;
     }
@@ -604,14 +614,14 @@
     var markup = "";
     if (window.HeLoadingUx && typeof window.HeLoadingUx.toastHtml === "function") {
       markup = window.HeLoadingUx.toastHtml("Finding Contact Details…", {
-        subText: "Hybrid enrichment",
+        subText: "Contact lookup",
       });
     } else if (
       window.DealalitySharedLoadingUx &&
       typeof window.DealalitySharedLoadingUx.toastHtml === "function"
     ) {
       markup = window.DealalitySharedLoadingUx.toastHtml("Finding Contact Details…", {
-        subText: "Hybrid enrichment",
+        subText: "Contact lookup",
       });
     } else {
       markup =
