@@ -2591,7 +2591,9 @@ button.hex-action {
   border-color: var(--hex-surface-border-table);
 }
 
-/* Organization & Portfolio — shared horizontal grid for all major sections */
+/* Organization & Portfolio — shared horizontal grid for all major sections.
+ * Sections keep L/R padding at 0 so tables can use cell-level 16px insets
+ * without double padding. Non-table content is inset explicitly below. */
 .hex-root .hex-owner-portfolio > .hiw-section {
   margin-left: 0;
   margin-right: 0;
@@ -2601,32 +2603,81 @@ button.hex-action {
   width: 100%;
   box-sizing: border-box;
 }
-/* Section headings inset 16px to align with table/content cells (not flush to card edge) */
+/* Headings, ledes, facts, prose — 16px horizontal (align with table cell text) */
 .hex-root .hex-owner-portfolio > .hiw-section > .hiw-section__h,
-.hex-root .hex-owner-portfolio > .hiw-section > .hiw-section__head {
+.hex-root .hex-owner-portfolio > .hiw-section > .hiw-section__head,
+.hex-root .hex-owner-portfolio > .hiw-section > .hiw-muted,
+.hex-root .hex-owner-portfolio > .hiw-section > .hiw-prose,
+.hex-root .hex-owner-portfolio > .hiw-section > .hex-facts,
+.hex-root .hex-owner-portfolio > .hiw-section > .hiw-gap-box,
+.hex-root .hex-owner-portfolio > .hiw-section > .hex-portfolio-scope {
   padding-left: 16px;
   padding-right: 16px;
-  padding-top: 2px;
   box-sizing: border-box;
+}
+.hex-root .hex-owner-portfolio > .hiw-section > .hiw-section__h,
+.hex-root .hex-owner-portfolio > .hiw-section > .hiw-section__head {
+  padding-top: 2px;
+}
+/* Strategic Context body — same 16px inset; balanced vertical rhythm between blocks */
+.hex-root .hex-owner-portfolio .hiw-strategic {
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+  gap: 16px;
+}
+.hex-root .hex-owner-portfolio .hiw-strategic__lede {
+  margin: 0 0 4px;
+}
+.hex-root .hex-owner-portfolio .hiw-strategic__block h4 {
+  margin: 0 0 6px;
+}
+.hex-root .hex-owner-portfolio .hiw-strategic__block .hiw-prose {
+  margin: 0;
 }
 .hex-root .hex-owner-portfolio .hiw-table-wrap,
 .hex-root .hex-owner-portfolio .dl-table-wrap,
 .hex-root .hex-owner-portfolio .hex-op-groups,
-.hex-root .hex-owner-portfolio .hiw-strategic,
 .hex-root .hex-owner-portfolio [data-hex-key-people-host] {
   width: 100%;
   max-width: 100%;
   margin-left: 0;
   margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+/* Key People nested groups: zero card L/R so table cell 16px matches subsection titles
+ * (avoids prior snap-sub 16px + cell 16px double inset). Do not re-pad the host. */
+.hex-root .hex-owner-portfolio .hiw-snap-sub {
+  padding-left: 0;
+  padding-right: 0;
+}
+.hex-root .hex-owner-portfolio .hiw-snap-sub__title,
+.hex-root .hex-owner-portfolio .hiw-snap-sub > .hiw-section__head {
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+/* Footnote / CI link aligns with the 16px content column. */
+.hex-root .hex-owner-portfolio .hiw-section-footnote {
+  margin: 10px 16px 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted, #aeb9e1);
   box-sizing: border-box;
 }
 .hex-root .hex-owner-portfolio .hex-op-group__head {
   padding-left: 16px;
   padding-right: 16px;
 }
+/* Accordion body: 0 horizontal — table cell padding supplies the 16px inset
+ * (avoids prior 8px body + 16px cell double offset vs group titles). */
 .hex-root .hex-owner-portfolio .hex-op-group__body {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 0;
+  padding-right: 0;
 }
 .hex-root .hex-owner-portfolio .hiw-status {
   max-width: 100%;
@@ -2634,14 +2685,8 @@ button.hex-action {
   text-overflow: ellipsis;
   vertical-align: middle;
 }
-.hex-root .hex-owner-portfolio .hiw-section-footnote {
-  margin: 10px 0 0;
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--muted, #aeb9e1);
-}
 .hex-root .hex-owner-portfolio .hiw-strategic__method {
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 /* Ownership & Control Network (interactive hierarchical SVG) */
