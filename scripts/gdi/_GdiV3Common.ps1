@@ -34,6 +34,8 @@ function Invoke-GdiV3NodeStage {
     [switch]$ApplyResearchPersistence,
     # Unified Live FULL research spine (Leisure / CAD; $0 assess only) + PLP via discovery matrix
     [switch]$AuthorizePaidDiscovery,
+    [ValidateSet('', 'NEW_HOTEL_FULL_E2E', 'EXISTING_HOTEL_CONTINUATION', 'RESUME')]
+    [string]$OperationalMode = '',
     [switch]$AllowHistoricalReplay,
     [switch]$EnableLeisure,
     [switch]$NoLeisure,
@@ -127,6 +129,7 @@ function Invoke-GdiV3NodeStage {
   if ($ExactWriteSetAuthorization) { $nodeArgs += @('--exact-write-set-authorization', $ExactWriteSetAuthorization) }
   if ($ApplyResearchPersistence) { $nodeArgs += '--apply-research-persistence' }
   if ($AuthorizePaidDiscovery) { $nodeArgs += '--authorize-paid-discovery' }
+  if ($OperationalMode) { $nodeArgs += @('--operational-mode', $OperationalMode) }
   if ($AllowHistoricalReplay) { $nodeArgs += '--allow-historical-replay' }
   if ($EnableLeisure) { $nodeArgs += '--enable-leisure' }
   if ($NoLeisure) { $nodeArgs += '--no-leisure' }

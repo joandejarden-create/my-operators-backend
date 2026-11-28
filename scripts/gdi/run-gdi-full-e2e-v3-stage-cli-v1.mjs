@@ -9,7 +9,10 @@
  *   WHO_HOW         -> existing Exa adapter (needs --authorization-id,
  *                      --hard-ceiling-usd, --manifest)
  *   CONTACT         -> Live contact stage (Findymail only with --authorize-findymail)
- *   DISCOVERY/DEEP  -> reuse existing artifacts (no paid discovery)
+ *   DISCOVERY/DEEP  -> reuse existing artifacts; when MISSING and BOTH
+ *                      --authorize-paid-discovery + --authorize-paid-research
+ *                      (+ --authorization-id, --hard-ceiling-usd) are given, invoke
+ *                      the canonical chain (NEW HOTEL FULL E2E). Otherwise HOLD.
  *   QUALIFICATION   -> strict FQO on prior Live opportunities
  *   VALIDATE        -> read-only validation (no activate, no paid)
  *
@@ -72,8 +75,15 @@ Options:
   --skip-discovery --skip-deep --skip-who-how --skip-contact --skip-qualification
   --skip-staged-progression
   --activate-staged-pointer | --no-activate-staged-pointer   (Live FULL; default activate STAGED)
-  --authorize-paid-discovery  (Live FULL: default-enables Leisure/CAD spine; orchestrator still reuses
-                               discovery artifacts - no paid discovery is invented)
+  --authorize-paid-discovery  (Live: REQUIRED for a NEW HOTEL FULL E2E. With --authorize-paid-research, when
+                               discovery/deep artifacts are missing the canonical chain runs (Exa spend,
+                               bounded by --hard-ceiling-usd; needs --authorization-id, EXA_API_KEY and
+                               GDI_EXA_AGENT_LIVE=1). Artifacts present -> reused, no spend. Not authorized ->
+                               HOLD DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED. Also default-enables
+                               the Leisure/CAD spine.)
+  --operational-mode <NEW_HOTEL_FULL_E2E|EXISTING_HOTEL_CONTINUATION|RESUME>
+                              (optional override/label. EXISTING_HOTEL_CONTINUATION forbids paid discovery
+                               even when authorized; default is derived from routing + --resume)
   --allow-historical-replay   (Live FULL: replay historical matrix; default-enables Leisure/CAD assess at $0)
   --enable-leisure | --no-leisure   (Live FULL: force Leisure standard stage on/off; $0 mock_live only)
   --enable-cad | --no-cad           (Live FULL: force CAD standard stage on/off; classification only)
@@ -173,6 +183,7 @@ function liveFullOptions(hotelId, outDir) {
         ? true
         : undefined,
     authorizePaidDiscovery: flag("--authorize-paid-discovery") ? true : undefined,
+    operationalMode: arg("--operational-mode") || undefined,
     allowHistoricalReplay: flag("--allow-historical-replay") ? true : undefined,
     enableLeisure: flag("--no-leisure") ? false : flag("--enable-leisure") ? true : undefined,
     enableCad: flag("--no-cad") ? false : flag("--enable-cad") ? true : undefined,
@@ -198,8 +209,25 @@ function liveFullOptions(hotelId, outDir) {
   };
 }
 
+/** Single-stage Live DISCOVERY / DEEP options (paid path needs explicit flags). */
+function liveDiscoveryStageOptions(hotelId, outDir) {
+  const ceiling = arg("--hard-ceiling-usd");
+  return {
+    hotelId,
+    outDir,
+    mode: "Live",
+    authorizePaidResearch: true,
+    authorizePaidDiscovery: flag("--authorize-paid-discovery") ? true : undefined,
+    authorizationId: arg("--authorization-id"),
+    hardCeilingUsd: ceiling == null ? undefined : Number(ceiling),
+    operationalMode: arg("--operational-mode") || undefined,
+    discoveryMatrixPath: arg("--discovery-matrix") || undefined,
+    queueDossierDir: arg("--queue-dossier-dir") || undefined,
+  };
+}
+
 const PARAM_ERROR_CODES =
-  /^(HOTEL_ID_REQUIRED|LIVE_REQUIRES_|LIVE_WHO_HOW_REQUIRES_|LIVE_WHO_HOW_MANIFEST|SURFE_FORBIDDEN|FINDYMAIL_REQUIRES_|FINDYMAIL_PERSIST_|RESEARCH_PERSISTENCE_APPLY_)/;
+  /^(HOTEL_ID_REQUIRED|INVALID_OPERATIONAL_MODE|LIVE_REQUIRES_|LIVE_WHO_HOW_REQUIRES_|LIVE_WHO_HOW_MANIFEST|SURFE_FORBIDDEN|FINDYMAIL_REQUIRES_|FINDYMAIL_PERSIST_|RESEARCH_PERSISTENCE_APPLY_)/;
 const PROVIDER_REFUSAL_CODES =
   /^(LIVE_WHO_HOW_AUTHORIZATION_REFUSED|MISSING_FINDYMAIL_API_KEY)$/;
 
@@ -228,6 +256,10 @@ async function runLive({ stage, hotelId, outDir }) {
             stage,
             mode: "Live",
             hotelId,
+            operationalMode: s.operationalMode,
+            paidDiscoveryInvoked: s.paidDiscoveryInvoked,
+            discoveryOutcome: s.discoveryOutcome,
+            deepOutcome: s.deepOutcome,
             paid: s.paid,
             paidBreakdown: s.paidBreakdown,
             plpAssessed: s.plpAssessed,
@@ -245,6 +277,18 @@ async function runLive({ stage, hotelId, outDir }) {
           2,
         ),
       );
+      // Authorized paid discovery that fail-closed (env gate / prerequisites) is a
+      // provider-authorization refusal, not a silent HOLD.
+      if (
+        [s.discoveryOutcome?.reason, s.deepOutcome?.reason].some((r) =>
+          /^PAID_DISCOVERY_(PREREQUISITES_BLOCKED|CHAIN_BLOCKED)$/.test(String(r || "")),
+        )
+      ) {
+        console.error(
+          `Live paid discovery fail-closed (${s.discoveryOutcome?.reason || s.deepOutcome?.reason}); see ${path.join(outDir, "01-discovery.json")}`,
+        );
+        process.exit(4);
+      }
       process.exit(
         s.completeness.failed ||
           s.stagedInventoryValidation.ok === false ||
@@ -269,15 +313,9 @@ async function runLive({ stage, hotelId, outDir }) {
 
     let report;
     if (stage === "DISCOVERY") {
-      report = runDiscoveryStageLive(hotelId, {
-        outDir,
-        discoveryMatrixPath: arg("--discovery-matrix") || undefined,
-      });
+      report = await runDiscoveryStageLive(hotelId, liveDiscoveryStageOptions(hotelId, outDir));
     } else if (stage === "DEEP") {
-      report = runDeepResearchStageLive(hotelId, {
-        outDir,
-        queueDossierDir: arg("--queue-dossier-dir") || undefined,
-      });
+      report = await runDeepResearchStageLive(hotelId, liveDiscoveryStageOptions(hotelId, outDir));
     } else if (stage === "WHO_HOW") {
       if (
         !arg("--authorization-id") ||
@@ -328,11 +366,18 @@ async function runLive({ stage, hotelId, outDir }) {
           outFile,
           outcome: report.outcome,
           paid: report.paid === true,
+          paidDiscoveryInvoked: report.paidDiscoveryInvoked === true,
+          reason: report.reason || null,
+          routing: report.routing || null,
         },
         null,
         2,
       ),
     );
+    if (/^PAID_DISCOVERY_(PREREQUISITES_BLOCKED|CHAIN_BLOCKED)$/.test(String(report.reason || ""))) {
+      console.error(`Live paid discovery fail-closed (${report.reason})`);
+      process.exit(4);
+    }
     process.exit(0);
   } catch (err) {
     exitForLiveError(err);

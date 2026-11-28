@@ -21,12 +21,12 @@
 
 | Mechanism | Behavior | Spend |
 |---|---|---|
-| DEMAND_DISCOVERY | Fourteen-segment discovery (Munich / Arabellapark / Bogenhausen territory; German primary, English control). Live reuses existing artifacts — none exist for this hotel. | none under this GO |
-| CAD / PLP | CAD classification + PLP embedded in discovery; classification only. | $0 |
-| LEISURE (LDI) | Standard stage, mock_live only ($0). Low weight for an urban meetings/congress hotel; enabled so the unified path is exercised. | $0 |
-| OPPORTUNITY_DEEP_RESEARCH | Reuses settled queue dossiers; missing → HOLD. | none |
-| WHO_HOW_RESOLUTION | Existing Exa agent adapter, Checkpoint A pattern; requires authorization id + ceiling + manifest + GDI_EXA_AGENT_LIVE=1. | Exa ≤ $25 hard ceiling |
-| PROFESSIONAL_CONTACT_RESEARCH | Public-first named-contact channels; Findymail only when authorized (FINDYMAIL_API_KEY). | Findymail ≤ 15 credits (see enforcement note) |
+| DEMAND_DISCOVERY | Fourteen-segment discovery via canonical chain when artifacts missing + -AuthorizePaidDiscovery (NEW HOTEL FULL E2E). Artifacts present → reuse. | Exa discovery, ≤ shared ceiling |
+| CAD / PLP | CAD classification + PLP embedded in discovery; classification only. | included in discovery |
+| LEISURE (LDI) | Standard stage on Live spine when enabled; mock_live only ($0) unless separately authorized. | $0 mock |
+| OPPORTUNITY_DEEP_RESEARCH | Same paid-discovery authorization triggers canonical deep when dossiers missing (shared chain run with discovery — no double spend). | included in discovery/deep spend |
+| WHO_HOW_RESOLUTION | Existing Exa agent adapter, Checkpoint A pattern; requires authorization id + ceiling + manifest + GDI_EXA_AGENT_LIVE=1. | Exa ≤ $25 hard ceiling (shared) |
+| PROFESSIONAL_CONTACT_RESEARCH | Public-first named-contact channels; Findymail only when authorized (FINDYMAIL_API_KEY). | Findymail ≤ 15 credits via -FindymailCreditHardCap 15 |
 | COMMERCIAL_QUALIFICATION | Strict FQO + entry-point reachability + buying-authority annotation (in memory). | none |
 | STAGED progression | Package build + validation; STAGED activation only if founder includes it in the GO. CURRENT never changes. | none |
 
@@ -41,9 +41,8 @@
 
 | Item | Limit |
 |---|---|
-| Exa (WHO/HOW) | **$25 hard ceiling** |
-| Findymail | **15 credits** |
-| SerpApi | not covered by this GO (see prerequisites) |
+| Exa (discovery + deep + WHO/HOW) | **$25 hard ceiling** |
+| Findymail | **15 credits** (`-FindymailCreditHardCap 15`) |
 | Surfe | **FORBIDDEN** |
 | CURRENT | never changed |
 | STAGED | activation only if explicitly authorized; otherwise `-NoActivateStagedPointer` |
@@ -55,10 +54,11 @@
 
 ## Prerequisites and risks
 
-- BLOCKING: Live Stage 1/2 reuse existing discovery + deep-research artifacts. None exist for this hotel, so Live would HOLD at Stage 1 until a discovery matrix exists in -OutDir (fourteen-segment-discovery-matrix.json). Producing it uses SerpApi via the original research chain and is NOT covered by the Exa/Findymail limits — needs a separate founder decision.
+- NEW HOTEL FULL E2E: missing discovery/deep artifacts + -AuthorizePaidDiscovery + -AuthorizePaidResearch + -AuthorizationId + -HardCeilingUsd + EXA_API_KEY + GDI_EXA_AGENT_LIVE=1 → canonical chain runs automatically. Without -AuthorizePaidDiscovery, Stages 1–2 HOLD with …_MISSING_PAID_NOT_AUTHORIZED.
+- Shared Exa ceiling covers discovery + deep + WHO/HOW; budget exhaustion ≠ COMPLETE.
 - A tranche manifest (01-TRANCHE_MANIFEST.json) must be authored for this hotel; no Wyndham manifest may be reused.
-- Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15); Stage 4 shared budget stops enrichment at CREDIT_HARD_CAP_REACHED.
-- Flag names above follow the Live orchestrator CLI at the time of writing; re-run the pre-live gate before GO.
+- Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15).
+- Re-run the pre-live gate before GO. This proposal is NOT spend authorization.
 
 ## Commands
 
@@ -70,16 +70,18 @@ pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode Dr
 npm run gdi:weekly-refresh -- --hotel-id recFaxTEFF9ILHWC9 --dry-run
 ```
 
-Live FULL (founder GO required — do not run before authorization):
+Live FULL — NEW HOTEL (founder GO required — do not run before authorization):
 
 ```powershell
-$env:GDI_EXA_AGENT_LIVE = '1'          # Exa WHO/HOW spend gate (set only after founder GO)
+$env:GDI_EXA_AGENT_LIVE = '1'          # Exa spend gate (set only after founder GO)
 # $env:FINDYMAIL_API_KEY must already be present in the session (never echo it)
-pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode Live -AuthorizePaidResearch `
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId recFaxTEFF9ILHWC9 -Mode Live `
+  -AuthorizePaidResearch -AuthorizePaidDiscovery `
   -AuthorizationId 'FOUNDER_GO_GDI_LIVE_E2E_WESTIN_MUNICH_20261128' -HardCeilingUsd 25 `
   -Manifest 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128/01-TRANCHE_MANIFEST.json' -OutDir 'reports/gdi-fresh-hotel-live-e2e-recFaxTEFF9ILHWC9-20261128' `
-  -AuthorizeFindymail -AllowHistoricalReplay -EnableLeisure -EnableCad -NoActivateStagedPointer
+  -AuthorizeFindymail -FindymailCreditHardCap 15 -EnableLeisure -EnableCad -NoActivateStagedPointer
 # -NoActivateStagedPointer: drop only if the founder authorizes STAGED activation in the same GO
+# Do NOT pass -AllowHistoricalReplay for a genuine new-hotel paid run
 ```
 
 ## Proposed authorization token

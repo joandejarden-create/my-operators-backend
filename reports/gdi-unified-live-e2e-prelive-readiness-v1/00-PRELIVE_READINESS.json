@@ -1,6 +1,6 @@
 {
   "contract": "gdi-unified-live-e2e-prelive-readiness-v1",
-  "generatedAt": "2026-11-28T00:35:14.420Z",
+  "generatedAt": "2026-11-28T01:22:29.322Z",
   "status": "READY",
   "verdict": "PRE_LIVE_READY — awaiting founder Live GO (NOT operationally certified)",
   "operationallyCertified": false,
@@ -32,7 +32,7 @@
     {
       "id": "live_cli_fail_closed",
       "label": "Live CLI fails closed without authorization",
-      "ms": 880,
+      "ms": 899,
       "pass": true,
       "detail": {
         "liveWithoutAuthorizePaidResearchExit": 2,
@@ -43,7 +43,7 @@
     {
       "id": "live_skip_who_how_summary",
       "label": "Live (SkipWhoHow, historical replay) produces summary structure without spend",
-      "ms": 527,
+      "ms": 530,
       "pass": true,
       "detail": {
         "exitCode": 0,
@@ -93,9 +93,39 @@
       }
     },
     {
+      "id": "new_hotel_routing",
+      "label": "NEW HOTEL routing: canonical research on authorizePaidDiscovery, HOLD without it, fail-closed params",
+      "ms": 921,
+      "pass": true,
+      "detail": {
+        "wiring": {
+          "invokesCanonicalEntry": true,
+          "newHotelMode": true,
+          "continuationMode": true,
+          "resumeMode": true,
+          "holdReason": true,
+          "paidDiscoveryFlag": true
+        },
+        "cliFlags": {
+          "authorizePaidDiscovery": true,
+          "findymailCreditHardCap": true,
+          "operationalMode": true
+        },
+        "psFlags": {
+          "authorizePaidDiscovery": true,
+          "findymailCreditHardCap": true,
+          "operationalMode": true
+        },
+        "missingArtifactsNoAuthExit": 0,
+        "missingArtifactsNoAuthReason": "DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED",
+        "paidDiscoveryWithoutCeilingExit": 2,
+        "note": "NEW HOTEL Live FULL needs -AuthorizePaidDiscovery -AuthorizePaidResearch -AuthorizationId -HardCeilingUsd (+ GDI_EXA_AGENT_LIVE=1). Probes run with keys stripped; no canonical research executed."
+      }
+    },
+    {
       "id": "findymail_planning",
       "label": "Findymail planning path (no spend, ledger unchanged)",
-      "ms": 451,
+      "ms": 450,
       "pass": true,
       "detail": {
         "exitCode": 0,
@@ -105,7 +135,7 @@
     {
       "id": "weekly_dry_run",
       "label": "Weekly refresh DryRun (no SerpApi)",
-      "ms": 696,
+      "ms": 716,
       "pass": true,
       "detail": {
         "exitCode": 0,
@@ -126,22 +156,18 @@
     {
       "id": "reconstruction_cert",
       "label": "Clean Airtable reconstruction cert executes (PASS or PARTIAL)",
-      "ms": 1592,
+      "ms": 1747,
       "pass": true,
       "detail": {
         "exitCode": 0,
         "certStatus": "PARTIAL",
         "corrections": [
-          "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
-          "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
-          "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE"
+          "INVENTORY_MEMBERSHIP_NOT_PERSISTED"
         ],
         "note": "PARTIAL is a known limitation (founder-authorized Airtable persistence corrections), not a pre-live blocker."
       },
       "knownLimitation": [
-        "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
-        "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
-        "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE"
+        "INVENTORY_MEMBERSHIP_NOT_PERSISTED"
       ]
     },
     {
@@ -195,12 +221,12 @@
     {
       "id": "staged_wyndham_26",
       "label": "Wyndham STAGED inventory = 26",
-      "ms": 6,
+      "ms": 7,
       "pass": true,
       "detail": {
         "hotelId": "recnPB3Q02NO8Ma1o",
         "pointer": true,
-        "version": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61",
+        "version": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261128_b3e83a27",
         "count": 26,
         "expectedCount": 26
       }
@@ -208,7 +234,7 @@
     {
       "id": "second_hotel_dry_run",
       "label": "Second hotel DryRun path exists",
-      "ms": 984,
+      "ms": 1121,
       "pass": true,
       "detail": {
         "hotelId": "recLuxvwwxID7U2B8",
@@ -229,7 +255,7 @@
     {
       "id": "fresh_hotel_dry_run",
       "label": "Fresh hotel DryRun path executes",
-      "ms": 486,
+      "ms": 493,
       "pass": true,
       "detail": {
         "hotelId": "recFaxTEFF9ILHWC9",
@@ -242,15 +268,15 @@
       "pass": true,
       "detail": {
         "before": {
-          "findymailLedger": "0032f5994cf866c36d4aaf1c026ef8acbe285d0ff3699fcc0a920b2152338788",
-          "recnPB3Q02NO8Ma1o:STAGED": "9a9175544be85452879cfa84ae66a4547026dbd5a6bf855c9d129ea15bbe4b9c",
+          "findymailLedger": "4b27fa7ea65effd7f6c18c81cc6ae75663a2942cd86f8fa0b9a6ada3b502f9dc",
+          "recnPB3Q02NO8Ma1o:STAGED": "c69dcf47126dc12755e59089c5ceda1378b9c2b2bf63040739564328d30ac47d",
           "recnPB3Q02NO8Ma1o:CURRENT": null,
           "recLuxvwwxID7U2B8:STAGED": "c411884b9f17e2739050e635b2e6ce0616e84a10bcbecb1237db6a209b5f0574",
           "recLuxvwwxID7U2B8:CURRENT": "db4eb0ca7d3e5b08ed160293f085b06260096347e7720f26c4dca6ca4606ce9c"
         },
         "after": {
-          "findymailLedger": "0032f5994cf866c36d4aaf1c026ef8acbe285d0ff3699fcc0a920b2152338788",
-          "recnPB3Q02NO8Ma1o:STAGED": "9a9175544be85452879cfa84ae66a4547026dbd5a6bf855c9d129ea15bbe4b9c",
+          "findymailLedger": "4b27fa7ea65effd7f6c18c81cc6ae75663a2942cd86f8fa0b9a6ada3b502f9dc",
+          "recnPB3Q02NO8Ma1o:STAGED": "c69dcf47126dc12755e59089c5ceda1378b9c2b2bf63040739564328d30ac47d",
           "recnPB3Q02NO8Ma1o:CURRENT": null,
           "recLuxvwwxID7U2B8:STAGED": "c411884b9f17e2739050e635b2e6ce0616e84a10bcbecb1237db6a209b5f0574",
           "recLuxvwwxID7U2B8:CURRENT": "db4eb0ca7d3e5b08ed160293f085b06260096347e7720f26c4dca6ca4606ce9c"
@@ -260,13 +286,11 @@
   ],
   "outstanding": [],
   "knownLimitations": [
-    "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
-    "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
-    "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE"
+    "INVENTORY_MEMBERSHIP_NOT_PERSISTED"
   ],
   "conditionsOnFounderGo": [
-    "FINDYMAIL_CREDIT_HARD_CAP_CLI_READY — pass -FindymailCreditHardCap 15 on founder Live GO (default remains 40 if omitted)",
-    "FRESH_HOTEL_DISCOVERY_ARTIFACTS_REQUIRED — Live Stage 1 reuses artifacts; none exist for the recommended hotel (separate founder decision; SerpApi not covered by Exa/Findymail limits)",
+    "FINDYMAIL_CREDIT_HARD_CAP — pass -FindymailCreditHardCap 15 on founder Live GO (default remains 40 if omitted)",
+    "NEW_HOTEL_REQUIRES_AUTHORIZE_PAID_DISCOVERY — Live FULL for hotels without discovery/deep artifacts must include -AuthorizePaidDiscovery + -AuthorizePaidResearch + -AuthorizationId + -HardCeilingUsd + GDI_EXA_AGENT_LIVE=1",
     "FOUNDER_LIVE_GO_REQUIRED — no authorization issued; pre-live READY ≠ operational certification"
   ],
   "recommendedFreshHotel": {

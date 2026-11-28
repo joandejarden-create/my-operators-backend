@@ -231,9 +231,119 @@ function checkRunbook() {
     [/gdi:unified-live-e2e-prelive-readiness-v1/, "pre-live gate command"],
     [/DryRun ≠ Live certification/, "DryRun ≠ Live statement"],
     [/pre-live READY ≠ operational certification/i, "READY ≠ certification statement"],
+    [/AuthorizePaidDiscovery/, "NEW HOTEL AuthorizePaidDiscovery"],
+    [/NEW HOTEL FULL E2E/, "NEW HOTEL FULL E2E operational mode"],
+    [/EXISTING HOTEL CONTINUATION/, "EXISTING HOTEL CONTINUATION mode"],
+    [/DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED/, "paid-not-authorized HOLD reason"],
   ];
   const missing = required.filter(([re]) => !re.test(body)).map(([, l]) => l);
   return { pass: missing.length === 0, detail: { runbook: RUNBOOK, missing } };
+}
+
+/**
+ * Prove NEW HOTEL Live routes to the canonical chain when authorized, and HOLDs
+ * when unpaid — without spending providers (keys stripped via cleanEnv()).
+ */
+function checkNewHotelRouting(tmp) {
+  const orchPath = path.join(ROOT, "lib/group-demand-intelligence/workflow/gdi-full-e2e-v3-orchestrator-v1.js");
+  const orchBody = fs.readFileSync(orchPath, "utf8");
+  const wiring = {
+    invokesCanonicalEntry: /executeOriginalFullE2eResearchChain/.test(orchBody),
+    newHotelMode: /NEW_HOTEL_FULL_E2E/.test(orchBody),
+    continuationMode: /EXISTING_HOTEL_CONTINUATION/.test(orchBody),
+    resumeMode: /RESUME/.test(orchBody),
+    holdReason: /DISCOVERY_ARTIFACTS_MISSING_PAID_NOT_AUTHORIZED/.test(orchBody),
+    paidDiscoveryFlag: /authorizePaidDiscovery/.test(orchBody),
+  };
+  const cliBody = fs.readFileSync(path.join(ROOT, CLI), "utf8");
+  const psBody = fs.readFileSync(path.join(ROOT, "scripts/gdi/Invoke-GdiFullE2E.ps1"), "utf8");
+  const cliFlags = {
+    authorizePaidDiscovery: /authorize-paid-discovery/.test(cliBody),
+    findymailCreditHardCap: /findymail-credit-hard-cap/.test(cliBody),
+    operationalMode: /operational-mode/.test(cliBody),
+  };
+  const psFlags = {
+    authorizePaidDiscovery: /AuthorizePaidDiscovery/.test(psBody),
+    findymailCreditHardCap: /FindymailCreditHardCap/.test(psBody),
+    operationalMode: /OperationalMode/.test(psBody),
+  };
+
+  const outNoAuth = path.join(tmp, "new-hotel-no-auth");
+  const noAuth = runNode(
+    CLI,
+    [
+      "--stage",
+      "DEMAND_DISCOVERY",
+      "--hotel-id",
+      "recFaxTEFF9ILHWC9",
+      "--mode",
+      "Live",
+      "--authorize-paid-research",
+      "--skip-who-how",
+      "--skip-staged-progression",
+      "--no-activate-staged-pointer",
+      "--out-dir",
+      outNoAuth,
+    ],
+    { timeoutMs: 120000 },
+  );
+  const disc =
+    readJson(path.join(outNoAuth, "stage-discovery-live.json")) ||
+    readJson(path.join(outNoAuth, "01-discovery.json")) ||
+    readJson(path.join(outNoAuth, "00-ORCHESTRATOR_SUMMARY.json"));
+  let holdReason =
+    disc?.reason ||
+    disc?.discoveryOutcome?.reason ||
+    disc?.stages?.discovery?.reason ||
+    null;
+  if (!holdReason && noAuth.stdout) {
+    try {
+      const parsed = JSON.parse(String(noAuth.stdout).trim().split(/\r?\n/).filter(Boolean).pop());
+      holdReason = parsed?.reason || null;
+    } catch {
+      /* ignore */
+    }
+  }
+  const holdOk = String(holdReason || "").includes("PAID_NOT_AUTHORIZED");
+
+  const paidNoCeiling = runNode(
+    CLI,
+    [
+      "--stage",
+      "FULL",
+      "--hotel-id",
+      "recFaxTEFF9ILHWC9",
+      "--mode",
+      "Live",
+      "--authorize-paid-research",
+      "--authorize-paid-discovery",
+      "--authorization-id",
+      "PRELIVE_PROBE_NOT_A_GO",
+      "--out-dir",
+      path.join(tmp, "new-hotel-paid-no-ceiling"),
+    ],
+    { timeoutMs: 60000 },
+  );
+
+  const pass =
+    Object.values(wiring).every(Boolean) &&
+    Object.values(cliFlags).every(Boolean) &&
+    Object.values(psFlags).every(Boolean) &&
+    holdOk &&
+    paidNoCeiling.status === 2;
+
+  return {
+    pass,
+    detail: {
+      wiring,
+      cliFlags,
+      psFlags,
+      missingArtifactsNoAuthExit: noAuth.status,
+      missingArtifactsNoAuthReason: holdReason,
+      paidDiscoveryWithoutCeilingExit: paidNoCeiling.status,
+      note: "NEW HOTEL Live FULL needs -AuthorizePaidDiscovery -AuthorizePaidResearch -AuthorizationId -HardCeilingUsd (+ GDI_EXA_AGENT_LIVE=1). Probes run with keys stripped; no canonical research executed.",
+    },
+  };
 }
 
 function checkTemplateFreeze() {
@@ -325,13 +435,15 @@ export function buildProposal(sel, { date = isoCompact() } = {}) {
   const cap = cfg.capabilityProfile || {};
   const territory = cfg.demandTerritory || {};
   const command = [
-    "$env:GDI_EXA_AGENT_LIVE = '1'          # Exa WHO/HOW spend gate (set only after founder GO)",
+    "$env:GDI_EXA_AGENT_LIVE = '1'          # Exa spend gate (set only after founder GO)",
     "# $env:FINDYMAIL_API_KEY must already be present in the session (never echo it)",
-    `pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId ${hotelId} -Mode Live -AuthorizePaidResearch \``,
+    `pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId ${hotelId} -Mode Live \``,
+    "  -AuthorizePaidResearch -AuthorizePaidDiscovery `",
     `  -AuthorizationId '${authToken}' -HardCeilingUsd 25 \``,
     `  -Manifest '${manifest}' -OutDir '${outDir}' \``,
-    "  -AuthorizeFindymail -AllowHistoricalReplay -EnableLeisure -EnableCad -NoActivateStagedPointer",
+    "  -AuthorizeFindymail -FindymailCreditHardCap 15 -EnableLeisure -EnableCad -NoActivateStagedPointer",
     "# -NoActivateStagedPointer: drop only if the founder authorizes STAGED activation in the same GO",
+    "# Do NOT pass -AllowHistoricalReplay for a genuine new-hotel paid run",
   ].join("\n");
   const dryRunCommand = `pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId ${hotelId} -Mode DryRun`;
   const preflight = [
@@ -341,12 +453,12 @@ export function buildProposal(sel, { date = isoCompact() } = {}) {
   ];
 
   const mechanisms = [
-    { id: "DEMAND_DISCOVERY", detail: "Fourteen-segment discovery (Munich / Arabellapark / Bogenhausen territory; German primary, English control). Live reuses existing artifacts — none exist for this hotel.", spend: "none under this GO" },
-    { id: "CAD / PLP", detail: "CAD classification + PLP embedded in discovery; classification only.", spend: "$0" },
-    { id: "LEISURE (LDI)", detail: "Standard stage, mock_live only ($0). Low weight for an urban meetings/congress hotel; enabled so the unified path is exercised.", spend: "$0" },
-    { id: "OPPORTUNITY_DEEP_RESEARCH", detail: "Reuses settled queue dossiers; missing → HOLD.", spend: "none" },
-    { id: "WHO_HOW_RESOLUTION", detail: "Existing Exa agent adapter, Checkpoint A pattern; requires authorization id + ceiling + manifest + GDI_EXA_AGENT_LIVE=1.", spend: "Exa ≤ $25 hard ceiling" },
-    { id: "PROFESSIONAL_CONTACT_RESEARCH", detail: "Public-first named-contact channels; Findymail only when authorized (FINDYMAIL_API_KEY).", spend: "Findymail ≤ 15 credits (see enforcement note)" },
+    { id: "DEMAND_DISCOVERY", detail: "Fourteen-segment discovery via canonical chain when artifacts missing + -AuthorizePaidDiscovery (NEW HOTEL FULL E2E). Artifacts present → reuse.", spend: "Exa discovery, ≤ shared ceiling" },
+    { id: "CAD / PLP", detail: "CAD classification + PLP embedded in discovery; classification only.", spend: "included in discovery" },
+    { id: "LEISURE (LDI)", detail: "Standard stage on Live spine when enabled; mock_live only ($0) unless separately authorized.", spend: "$0 mock" },
+    { id: "OPPORTUNITY_DEEP_RESEARCH", detail: "Same paid-discovery authorization triggers canonical deep when dossiers missing (shared chain run with discovery — no double spend).", spend: "included in discovery/deep spend" },
+    { id: "WHO_HOW_RESOLUTION", detail: "Existing Exa agent adapter, Checkpoint A pattern; requires authorization id + ceiling + manifest + GDI_EXA_AGENT_LIVE=1.", spend: "Exa ≤ $25 hard ceiling (shared)" },
+    { id: "PROFESSIONAL_CONTACT_RESEARCH", detail: "Public-first named-contact channels; Findymail only when authorized (FINDYMAIL_API_KEY).", spend: "Findymail ≤ 15 credits via -FindymailCreditHardCap 15" },
     { id: "COMMERCIAL_QUALIFICATION", detail: "Strict FQO + entry-point reachability + buying-authority annotation (in memory).", spend: "none" },
     { id: "STAGED progression", detail: "Package build + validation; STAGED activation only if founder includes it in the GO. CURRENT never changes.", spend: "none" },
   ];
@@ -400,7 +512,7 @@ export function buildProposal(sel, { date = isoCompact() } = {}) {
     limits: {
       exaUsdCeiling: 25,
       findymailCredits: 15,
-      serpApi: "NOT covered — discovery artifacts must be supplied (see prerequisites)",
+      serpApi: "Not required for Exa-backed canonical discovery/deep; weekly live path separately requires SerpApi",
       surfe: "FORBIDDEN",
       current: "UNCHANGED (never promoted)",
       staged: "Activation only if explicitly included in the founder GO; otherwise -NoActivateStagedPointer",
@@ -410,10 +522,11 @@ export function buildProposal(sel, { date = isoCompact() } = {}) {
       ifSeparatelyAuthorized: `Group Demand Opportunities upsert for hotelId ${hotelId} only (idempotent, dry-run first via -PlanResearchPersistence), exact write-set text required, GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1. No schema changes, no other hotels, no CURRENT.`,
     },
     prerequisitesAndRisks: [
-      "BLOCKING: Live Stage 1/2 reuse existing discovery + deep-research artifacts. None exist for this hotel, so Live would HOLD at Stage 1 until a discovery matrix exists in -OutDir (fourteen-segment-discovery-matrix.json). Producing it uses SerpApi via the original research chain and is NOT covered by the Exa/Findymail limits — needs a separate founder decision.",
+      "NEW HOTEL FULL E2E: missing discovery/deep artifacts + -AuthorizePaidDiscovery + -AuthorizePaidResearch + -AuthorizationId + -HardCeilingUsd + EXA_API_KEY + GDI_EXA_AGENT_LIVE=1 → canonical chain runs automatically. Without -AuthorizePaidDiscovery, Stages 1–2 HOLD with …_MISSING_PAID_NOT_AUTHORIZED.",
+      "Shared Exa ceiling covers discovery + deep + WHO/HOW; budget exhaustion ≠ COMPLETE.",
       "A tranche manifest (01-TRANCHE_MANIFEST.json) must be authored for this hotel; no Wyndham manifest may be reused.",
-      "Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15); Stage 4 shared budget stops enrichment at CREDIT_HARD_CAP_REACHED.",
-      "Flag names above follow the Live orchestrator CLI at the time of writing; re-run the pre-live gate before GO.",
+      "Findymail credit hard cap: pass -FindymailCreditHardCap 15 (--findymail-credit-hard-cap 15).",
+      "Re-run the pre-live gate before GO. This proposal is NOT spend authorization.",
     ],
     authorizationToken: {
       proposed: authToken,
@@ -460,9 +573,8 @@ export function buildProposal(sel, { date = isoCompact() } = {}) {
     "",
     "| Item | Limit |",
     "|---|---|",
-    "| Exa (WHO/HOW) | **$25 hard ceiling** |",
-    "| Findymail | **15 credits** |",
-    "| SerpApi | not covered by this GO (see prerequisites) |",
+    "| Exa (discovery + deep + WHO/HOW) | **$25 hard ceiling** |",
+    "| Findymail | **15 credits** (`-FindymailCreditHardCap 15`) |",
     "| Surfe | **FORBIDDEN** |",
     "| CURRENT | never changed |",
     "| STAGED | activation only if explicitly authorized; otherwise `-NoActivateStagedPointer` |",
@@ -484,7 +596,7 @@ export function buildProposal(sel, { date = isoCompact() } = {}) {
     ...preflight,
     "```",
     "",
-    "Live FULL (founder GO required — do not run before authorization):",
+    "Live FULL — NEW HOTEL (founder GO required — do not run before authorization):",
     "",
     "```powershell",
     command,
@@ -534,6 +646,7 @@ async function main() {
   try {
     checks.push(check("live_cli_fail_closed", "Live CLI fails closed without authorization", () => checkLiveFailClosed(tmp)));
     checks.push(check("live_skip_who_how_summary", "Live (SkipWhoHow, historical replay) produces summary structure without spend", () => checkLiveSkipWhoHowSummary(tmp)));
+    checks.push(check("new_hotel_routing", "NEW HOTEL routing: canonical research on authorizePaidDiscovery, HOLD without it, fail-closed params", () => checkNewHotelRouting(tmp)));
     checks.push(check("findymail_planning", "Findymail planning path (no spend, ledger unchanged)", () => checkFindymailPlanning(tmp)));
     checks.push(check("weekly_dry_run", "Weekly refresh DryRun (no SerpApi)", () => checkWeeklyDryRun(tmp)));
     const recon = check("reconstruction_cert", "Clean Airtable reconstruction cert executes (PASS or PARTIAL)", () => checkReconstructionCert(skipAirtable));
@@ -573,8 +686,8 @@ async function main() {
     });
 
     const extraOutstanding = [
-      "FINDYMAIL_CREDIT_HARD_CAP_CLI_READY — pass -FindymailCreditHardCap 15 on founder Live GO (default remains 40 if omitted)",
-      "FRESH_HOTEL_DISCOVERY_ARTIFACTS_REQUIRED — Live Stage 1 reuses artifacts; none exist for the recommended hotel (separate founder decision; SerpApi not covered by Exa/Findymail limits)",
+      "FINDYMAIL_CREDIT_HARD_CAP — pass -FindymailCreditHardCap 15 on founder Live GO (default remains 40 if omitted)",
+      "NEW_HOTEL_REQUIRES_AUTHORIZE_PAID_DISCOVERY — Live FULL for hotels without discovery/deep artifacts must include -AuthorizePaidDiscovery + -AuthorizePaidResearch + -AuthorizationId + -HardCeilingUsd + GDI_EXA_AGENT_LIVE=1",
       "FOUNDER_LIVE_GO_REQUIRED — no authorization issued; pre-live READY ≠ operational certification",
     ];
     const knownLimitations = recon.knownLimitation || [];
