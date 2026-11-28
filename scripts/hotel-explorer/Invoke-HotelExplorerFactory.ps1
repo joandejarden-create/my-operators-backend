@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
   Hotel Explorer Intelligence Factory V1.1 + permanent cross-tab consistency gates.
 
@@ -33,6 +33,8 @@
     HE_OWNERSHIP_GRAPH_REGRESSION
     HE_PORTFOLIO_LAYOUT_REGRESSION
     HE_SUBMARKET_PRESENTATION_REGRESSION
+    HE_CONTACTABILITY_METRIC_GENERATED
+    HE_FINDYMAIL_EXECUTION_AUDITED
     HE_FOUNDER_UI_CONTRACT
     HE_CANONICAL_BROWSER_PARITY (NOT_TESTED when -SkipBrowser)
     HE_LOADING_COMPONENT_CONSISTENT
@@ -159,6 +161,27 @@ if ($ConsistencyModes -contains $Mode) {
   & npm run test:he-org-portfolio-final-regression-v1
   if ($LASTEXITCODE -ne 0) {
     throw "HE Organization & Portfolio final regression gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+
+  Write-Host "[HE Factory] Contactability Metrics V1 gates"
+  & npm run test:he-contactability-metrics-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Contactability Metrics V1 FAILED for $HotelId (mode=$Mode)"
+  }
+
+  if (Test-Path ".\scripts\test-he-contact-enrichment-gates-v1.mjs") {
+    Write-Host "[HE Factory] Contact enrichment gates (Findymail audit; Surfe never auto)"
+    & npm run test:he-contact-enrichment-gates-v1
+    if ($LASTEXITCODE -ne 0) {
+      throw "HE Contact enrichment gates FAILED for $HotelId (mode=$Mode)"
+    }
+  }
+
+  Write-Host "[HE Factory] Contactability E2E fields"
+  & node .\scripts\hotel-explorer\emit-he-contactability-e2e-fields-v1.mjs --hotelId=$HotelId
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Contactability E2E field emit FAILED for $HotelId (mode=$Mode)"
   }
 
   Write-Host "[HE Factory] Executive Ownership Summary narrative gates"
