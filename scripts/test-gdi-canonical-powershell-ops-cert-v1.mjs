@@ -55,6 +55,51 @@ const cli = fs.readFileSync(
   path.join(ROOT, "scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs"),
   "utf8",
 );
-assert.match(cli, /Live paid execution for this stage is not enabled/);
+assert.doesNotMatch(
+  cli,
+  /Live paid execution for this stage is not enabled/,
+  "generic V3 CLI must no longer blanket-refuse Live",
+);
+assert.doesNotMatch(cli, /process\.exit\(3\)/);
+assert.match(cli, /runFullE2eV3Live/);
+for (const flagName of [
+  "--authorization-id",
+  "--hard-ceiling-usd",
+  "--manifest",
+  "--plan-research-persistence",
+  "--authorize-research-persistence",
+  "--exact-write-set-authorization",
+  "--apply-research-persistence",
+  "--skip-discovery",
+  "--skip-deep",
+  "--skip-who-how",
+  "--skip-contact",
+  "--skip-qualification",
+  "--skip-staged-progression",
+  "--activate-staged-pointer",
+  "--no-activate-staged-pointer",
+]) {
+  assert.ok(cli.includes(flagName), `CLI parses ${flagName}`);
+}
+
+for (const param of [
+  "AuthorizationId",
+  "HardCeilingUsd",
+  "Manifest",
+  "PlanResearchPersistence",
+  "AuthorizeResearchPersistence",
+  "ExactWriteSetAuthorization",
+  "ApplyResearchPersistence",
+  "SkipWhoHow",
+  "SkipStagedProgression",
+]) {
+  assert.match(common, new RegExp(`\\$${param}\\b`), `common helper accepts ${param}`);
+  assert.match(full, new RegExp(`-${param}\\b`), `Full E2E forwards ${param}`);
+}
+assert.doesNotMatch(
+  full,
+  /refuses Live|remains refused/i,
+  "Full E2E notes must not claim Live is refused",
+);
 
 console.log("OK test:gdi-canonical-powershell-ops-cert-v1");

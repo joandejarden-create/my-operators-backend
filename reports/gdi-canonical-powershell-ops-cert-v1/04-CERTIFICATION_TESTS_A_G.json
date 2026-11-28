@@ -20,7 +20,7 @@
       "emailNotYetResearched": 4,
       "telephoneNotYetResearched": 14,
       "linkedinNotYetResearched": 12,
-      "findymailEligibleRemaining": 0,
+      "findymailEligibleRemaining": 1,
       "opportunitiesRequiringAlternativeResearch": 0,
       "alternativeResearchPresent": 14,
       "opportunitiesWithVerifiedDirectBuyer": 0,
@@ -97,8 +97,9 @@
       "shell": "powershell",
       "error": null
     },
-    "liveGenericCliRefused": true,
-    "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (generic V3 CLI still refuses Live — use authorized Findymail Stage 4 path / gold-standard when hotel-agnostic Live closes)",
+    "liveContactPlanningOk": true,
+    "liveContactWithoutPaidAuthFailsClosed": true,
+    "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (requires FINDYMAIL_API_KEY; use -FindymailDryRun to plan with no spend)",
     "surfeAuto": false,
     "status": "DRYRUN_VALIDATED"
   },
@@ -129,7 +130,7 @@
     "id": "G_AUTHORIZATION_AND_FAILURE_HANDLING",
     "powerShellHost": "powershell",
     "liveWithoutAuthorizePaidResearchFails": true,
-    "liveGenericCliRefusesPaid": true,
+    "liveFullFailsClosedWithoutWhoHowAuthParams": true,
     "checkpointARequiresHotelSpecificAuth": true,
     "checkpointAPowerShell": {
       "ok": false,

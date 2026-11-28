@@ -17,10 +17,30 @@ function Invoke-GdiV3NodeStage {
     [string]$OpportunityId = '',
     [string]$OutDir = '',
     [string]$Fixtures = '',
+    [string]$OpportunitiesFile = '',
     [switch]$ContinuationOnly,
     [switch]$Resume,
     [switch]$AuthorizePaidResearch,
     [switch]$AuthorizeFindymail,
+    [switch]$FindymailDryRun,
+    # Live WHO/HOW (hotel-specific; never defaulted)
+    [string]$AuthorizationId = '',
+    [double]$HardCeilingUsd = 0,
+    [string]$Manifest = '',
+    # Airtable research persistence (separate from paid research authorization)
+    [switch]$PlanResearchPersistence,
+    [switch]$AuthorizeResearchPersistence,
+    [string]$ExactWriteSetAuthorization = '',
+    [switch]$ApplyResearchPersistence,
+    # Stage control
+    [switch]$SkipDiscovery,
+    [switch]$SkipDeep,
+    [switch]$SkipWhoHow,
+    [switch]$SkipContact,
+    [switch]$SkipQualification,
+    [switch]$SkipStagedProgression,
+    [switch]$ActivateStagedPointer,
+    [switch]$NoActivateStagedPointer,
     [string]$RepoPath = ''
   )
 
@@ -28,11 +48,22 @@ function Invoke-GdiV3NodeStage {
   $resolvedRepo = Get-GdiRepoRoot -RepoPath $RepoPath
   Set-Location $resolvedRepo
 
-  if ($Mode -eq 'Live' -and -not $AuthorizePaidResearch) {
+  # VALIDATE is read-only and does not need paid authorization.
+  $isValidate = ($Stage -eq 'VALIDATE')
+  if ($Mode -eq 'Live' -and -not $AuthorizePaidResearch -and -not $isValidate) {
     throw 'Live mode requires -AuthorizePaidResearch.'
   }
   if ($AuthorizePaidResearch -and $Mode -ne 'Live') {
     throw '-AuthorizePaidResearch requires -Mode Live.'
+  }
+  if ($ActivateStagedPointer -and $NoActivateStagedPointer) {
+    throw '-ActivateStagedPointer and -NoActivateStagedPointer are mutually exclusive.'
+  }
+  if ($Mode -ne 'Live' -and ($PlanResearchPersistence -or $AuthorizeResearchPersistence -or $ApplyResearchPersistence)) {
+    throw 'Research persistence flags require -Mode Live (Airtable writes are never unlocked by DryRun or by -AuthorizePaidResearch alone).'
+  }
+  if ($ApplyResearchPersistence -and (-not $AuthorizeResearchPersistence -or -not $ExactWriteSetAuthorization)) {
+    throw '-ApplyResearchPersistence requires -AuthorizeResearchPersistence and -ExactWriteSetAuthorization.'
   }
 
   $cli = Join-Path $resolvedRepo 'scripts\gdi\run-gdi-full-e2e-v3-stage-cli-v1.mjs'
@@ -49,10 +80,28 @@ function Invoke-GdiV3NodeStage {
   if ($OutDir) { $nodeArgs += @('--out-dir', $OutDir) }
   if ($OpportunityId) { $nodeArgs += @('--opportunity-id', $OpportunityId) }
   if ($Fixtures) { $nodeArgs += @('--fixtures', $Fixtures) }
+  if ($OpportunitiesFile) { $nodeArgs += @('--opportunities-file', $OpportunitiesFile) }
   if ($ContinuationOnly) { $nodeArgs += '--continuation-only' }
   if ($Resume) { $nodeArgs += '--resume' }
   if ($AuthorizePaidResearch) { $nodeArgs += '--authorize-paid-research' }
   if ($AuthorizeFindymail) { $nodeArgs += '--authorize-findymail' }
+  if ($FindymailDryRun) { $nodeArgs += '--findymail-dry-run' }
+  # Hotel-agnostic: values are forwarded only when supplied; no Wyndham defaults.
+  if ($AuthorizationId) { $nodeArgs += @('--authorization-id', $AuthorizationId) }
+  if ($HardCeilingUsd -gt 0) { $nodeArgs += @('--hard-ceiling-usd', ([string]$HardCeilingUsd)) }
+  if ($Manifest) { $nodeArgs += @('--manifest', $Manifest) }
+  if ($PlanResearchPersistence) { $nodeArgs += '--plan-research-persistence' }
+  if ($AuthorizeResearchPersistence) { $nodeArgs += '--authorize-research-persistence' }
+  if ($ExactWriteSetAuthorization) { $nodeArgs += @('--exact-write-set-authorization', $ExactWriteSetAuthorization) }
+  if ($ApplyResearchPersistence) { $nodeArgs += '--apply-research-persistence' }
+  if ($SkipDiscovery) { $nodeArgs += '--skip-discovery' }
+  if ($SkipDeep) { $nodeArgs += '--skip-deep' }
+  if ($SkipWhoHow) { $nodeArgs += '--skip-who-how' }
+  if ($SkipContact) { $nodeArgs += '--skip-contact' }
+  if ($SkipQualification) { $nodeArgs += '--skip-qualification' }
+  if ($SkipStagedProgression) { $nodeArgs += '--skip-staged-progression' }
+  if ($ActivateStagedPointer) { $nodeArgs += '--activate-staged-pointer' }
+  if ($NoActivateStagedPointer) { $nodeArgs += '--no-activate-staged-pointer' }
 
   & node @nodeArgs
   if ($LASTEXITCODE -ne 0) {

@@ -1,10 +1,10 @@
 {
   "contract": "gdi-canonical-powershell-ops-cert-v1",
-  "at": "2026-11-27T23:49:32.662Z",
+  "at": "2026-11-28T00:07:31.271Z",
   "certificationStatus": "PARTIAL",
   "founderStatusLine": "PARTIAL — INTEGRATED_ON_8080 — AWAITING_FOUNDER_REVIEW",
   "notClaimed": "GDI_CANONICAL_POWERSHELL_SUITE_OPERATIONALLY_CERTIFIED",
-  "reasonNotOperationallyCertified": "DryRun/fixture path certified for canonical runners; unified Live Full E2E + hotel-agnostic Findymail Live + clean reconstruction remain open.",
+  "reasonNotOperationallyCertified": "DryRun/fixture path certified for canonical runners; Live orchestrator is wired and fail-closed tested, but an authorized-spend hotel-agnostic Live Full E2E run + Findymail Live + clean reconstruction remain unproven.",
   "template": {
     "version": "gdi-canonical-hotel-template-v1",
     "productWide": true,
@@ -292,7 +292,7 @@
     ]
   },
   "runnerMatrix": {
-    "at": "2026-11-27T23:49:19.388Z",
+    "at": "2026-11-28T00:07:18.456Z",
     "hotelAgnosticCheckpointADefaults": true,
     "runners": [
       {
@@ -556,11 +556,11 @@
       "COMMERCIAL_QUALIFICATION",
       "STAGED progression (Live activate; DryRun package validate)"
     ],
-    "incorporatedViaIndependentRunnersNotUnifiedLive": "CAD/PLP/LDI have module/test/opt-in evidence; Discovery DryRun reuses artifacts. Unified Live Full E2E via generic CLI is REFUSED (exit 3).",
+    "incorporatedViaIndependentRunnersNotUnifiedLive": "CAD/PLP/LDI have module/test/opt-in evidence; Discovery DryRun reuses artifacts. Unified Live Full E2E (runFullE2eV3Live) is wired hotel-agnostically: Discovery/Deep reuse artifacts, WHO/HOW via the Exa adapter (needs per-hotel auth id + ceiling + manifest), Findymail only when authorized; fails closed otherwise.",
     "findymail": "Permanent Stage 4 component; Live requires AuthorizeFindymail + paid auth; Surfe never auto",
     "airtable": "Persistence adapters + cert scripts exist; routine authorized E2E auto-persist path still PARTIAL for hotel-agnostic Live",
     "gaps": [
-      "UNIFIED_V3_LIVE_ORCHESTRATOR_GAP",
+      "UNIFIED_V3_LIVE_NOT_YET_PROVEN_WITH_AUTHORIZED_SPEND",
       "CLEAN_AIRTABLE_ONLY_RECONSTRUCTION_PARTIAL",
       "FINDYMAIL_LIVE_HOTEL_AGNOSTIC_PATH_PARTIAL",
       "CHECKPOINT_A_REQUIRES_PER_HOTEL_MANIFEST_AND_AUTH"
@@ -588,7 +588,7 @@
         "emailNotYetResearched": 4,
         "telephoneNotYetResearched": 14,
         "linkedinNotYetResearched": 12,
-        "findymailEligibleRemaining": 0,
+        "findymailEligibleRemaining": 1,
         "opportunitiesRequiringAlternativeResearch": 0,
         "alternativeResearchPresent": 14,
         "opportunitiesWithVerifiedDirectBuyer": 0,
@@ -665,8 +665,9 @@
         "shell": "powershell",
         "error": null
       },
-      "liveGenericCliRefused": true,
-      "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (generic V3 CLI still refuses Live — use authorized Findymail Stage 4 path / gold-standard when hotel-agnostic Live closes)",
+      "liveContactPlanningOk": true,
+      "liveContactWithoutPaidAuthFailsClosed": true,
+      "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (requires FINDYMAIL_API_KEY; use -FindymailDryRun to plan with no spend)",
       "surfeAuto": false,
       "status": "DRYRUN_VALIDATED"
     },
@@ -697,7 +698,7 @@
       "id": "G_AUTHORIZATION_AND_FAILURE_HANDLING",
       "powerShellHost": "powershell",
       "liveWithoutAuthorizePaidResearchFails": true,
-      "liveGenericCliRefusesPaid": true,
+      "liveFullFailsClosedWithoutWhoHowAuthParams": true,
       "checkpointARequiresHotelSpecificAuth": true,
       "checkpointAPowerShell": {
         "ok": false,
@@ -718,6 +719,8 @@
     "whoHowCheckpointAPreflight": "pwsh -File scripts/gdi/Invoke-GdiWhoHow.ps1 -HotelId <rec...> -Mode DryRun -AuthorizationId <FOUNDER_GO_…> -HardCeilingUsd 5 -Manifest reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json -ContinuationOnly -Resume -PreflightOnly",
     "contactOnly": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode DryRun",
     "contactFindymailLive": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -AuthorizeFindymail",
+    "fullE2eLive": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -AuthorizationId <FOUNDER_GO_…> -HardCeilingUsd <n> -Manifest reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json",
+    "contactOnlyLiveContinuation": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -SkipWhoHow -ContinuationOnly -Resume [-AuthorizeFindymail]",
     "qualificationOnly": "pwsh -File scripts/gdi/Invoke-GdiQualification.ps1 -HotelId <rec...> -Mode DryRun",
     "resume": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode DryRun -Resume",
     "validate": "pwsh -File scripts/gdi/Invoke-GdiValidateFullE2E.ps1 -HotelId <rec...> -RequirePort8080",
@@ -728,15 +731,17 @@
     "thisCert": "node scripts/gdi-canonical-powershell-ops-cert-v1.mjs"
   },
   "outstanding": [
-    "UNIFIED_V3_LIVE_ORCHESTRATOR_GAP — generic stage CLI refuses Live paid (exit 3)",
-    "FINDYMAIL_LIVE_HOTEL_AGNOSTIC_PATH_PARTIAL — Live Findymail still partially tied to Wyndham gold-standard hydrate helpers",
-    "CLEAN_AIRTABLE_ONLY_RECONSTRUCTION_PARTIAL",
+    "UNIFIED_V3_LIVE_WIRING_CLOSED — runFullE2eV3Live + CLI Live path fail-closed tested; AUTHORIZED_SPEND_LIVE_PROOF still required for operational certification",
+    "FINDYMAIL_LIVE_HOTEL_AGNOSTIC_PATH_PARTIAL — Live Findymail wired through Stage 4 (key + authorization required); not yet exercised with credits this cycle",
+    "CONTACT_CHANNEL_GAPS_REMAIN — email NOT_YET=1 (Gutierrez Findymail-eligible), telephone=14, LinkedIn=12; see reports/gdi-close-e2e-cert-gaps-v1/",
+    "BUYING_AUTHORITY_ANNOTATED_IN_MEMORY — Airtable persistence + STAGED rematerialize outstanding",
+    "CLEAN_AIRTABLE_FIELD_PARITY_PASS_AUTHORITY_PERSISTENCE_OUTSTANDING",
     "WEEKLY_REFRESH_LIVE_NOT_RE_EXECUTED_THIS_CYCLE",
     "NO_FRESH_LIVE_HOTEL_RUN_THIS_CYCLE — propose scope+budget before Live certification"
   ],
   "proposedLiveCertBudget": {
     "required": true,
-    "purpose": "One hotel-agnostic Live Full E2E path proof after Live orchestrator gap close (or staged Live WHO/HOW + Contact Findymail on a non-Wyndham hotel)",
+    "purpose": "One hotel-agnostic Live Full E2E path proof via runFullE2eV3Live (or staged Live WHO/HOW + Contact Findymail on a non-Wyndham hotel)",
     "suggestedCeilingUsd": 25,
     "findymailCreditsHardCap": 15,
     "surfe": "FORBIDDEN_AUTO",

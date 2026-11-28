@@ -52,6 +52,7 @@ Invoke-NodeTest 'scripts\test-gdi-content-hydration-presentation-gate-v1.mjs'
 Invoke-NodeTest 'scripts\test-gdi-canonical-hotel-template-v1.mjs'
 Invoke-NodeTest 'scripts\test-gdi-contact-research-best-effort-v1.mjs'
 Invoke-NodeTest 'scripts\test-gdi-canonical-powershell-ops-cert-v1.mjs'
+Invoke-NodeTest 'scripts\test-gdi-full-e2e-v3-live-orchestrator-v1.mjs'
 
 if ($HotelId) {
   Write-Host "Validating hotel DryRun artifacts for $HotelId…"

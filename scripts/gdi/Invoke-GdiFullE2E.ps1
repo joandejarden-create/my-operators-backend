@@ -16,19 +16,37 @@
   orchestrator — founder approval is a separate gate.
 
   Default DryRun. Does not create a parallel research engine.
-  DryRun and research budget controls remain enforced.
+
+  Live (-Mode Live -AuthorizePaidResearch) is hotel-agnostic:
+    * Discovery / Deep research reuse existing artifacts (never invent paid discovery;
+      missing artifacts → HOLD).
+    * WHO/HOW uses the existing Exa adapter and requires hotel-specific
+      -AuthorizationId, -HardCeilingUsd (> 0) and -Manifest unless -SkipWhoHow.
+      No Wyndham (or any hotel) default is permitted. Also needs GDI_EXA_AGENT_LIVE=1.
+    * Contact is public-first; Findymail only with -AuthorizeFindymail (+ FINDYMAIL_API_KEY).
+    * Airtable research persistence is separate: -PlanResearchPersistence (dry-run) or
+      -AuthorizeResearchPersistence -ExactWriteSetAuthorization <text> -ApplyResearchPersistence.
+      -AuthorizePaidResearch alone never unlocks Airtable writes.
+    * Surfe is never invoked. CURRENT is never published.
+
+.PARAMETER SkipWhoHow
+  Skip Stage 3 (e.g. contact-only continuation). Combine with -ContinuationOnly / -Resume
+  to reuse a prior Live WHO/HOW report, or -OpportunitiesFile to supply opportunities.
 
 .EXAMPLE
-  .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode DryRun
+  .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode DryRun
 
 .EXAMPLE
-  .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId recnPB3Q02NO8Ma1o -Mode Live -AuthorizePaidResearch
+  .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch `
+    -AuthorizationId '<FOUNDER_GO_...>' -HardCeilingUsd 5 -Manifest 'reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json'
+
+.EXAMPLE
+  .\scripts\gdi\Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch `
+    -SkipWhoHow -ContinuationOnly -Resume -AuthorizeFindymail
 
 .NOTES
-  Generic V3 Live paid execution remains refused by the stage CLI until the
-  hotel-agnostic Live orchestrator gap is closed. Use stage-specific authorized
-  runners (WHO/HOW Checkpoint A, Contact + Findymail) for paid Live stages.
-  Surfe is never invoked from Full E2E.
+  Live is enabled when authorized. Missing authorization parameters fail closed (exit 2);
+  provider authorization refusals (env gate / missing key) exit 4.
 #>
 [CmdletBinding()]
 param(
@@ -41,10 +59,32 @@ param(
 
   [string]$OutDir = '',
   [string]$Fixtures = '',
+  [string]$OpportunitiesFile = '',
+  [string]$OpportunityId = '',
   [switch]$ContinuationOnly,
   [switch]$Resume,
   [switch]$AuthorizePaidResearch,
   [switch]$AuthorizeFindymail,
+  [switch]$FindymailDryRun,
+
+  [string]$AuthorizationId = '',
+  [double]$HardCeilingUsd = 0,
+  [string]$Manifest = '',
+
+  [switch]$PlanResearchPersistence,
+  [switch]$AuthorizeResearchPersistence,
+  [string]$ExactWriteSetAuthorization = '',
+  [switch]$ApplyResearchPersistence,
+
+  [switch]$SkipDiscovery,
+  [switch]$SkipDeep,
+  [switch]$SkipWhoHow,
+  [switch]$SkipContact,
+  [switch]$SkipQualification,
+  [switch]$SkipStagedProgression,
+  [switch]$ActivateStagedPointer,
+  [switch]$NoActivateStagedPointer,
+
   [string]$RepoPath = ''
 )
 
@@ -63,6 +103,17 @@ Write-Host "GDI Full E2E lifecycle: FULL_E2E → STAGED → FOUNDER_APPROVAL →
 Write-Host "Mode=$Mode HotelId=$HotelId (STAGED progression mandatory; CURRENT never auto-published)"
 
 Invoke-GdiV3NodeStage -Stage 'FULL' -HotelId $HotelId -Mode $Mode `
-  -OutDir $OutDir -Fixtures $Fixtures -ContinuationOnly:$ContinuationOnly `
+  -OutDir $OutDir -Fixtures $Fixtures -OpportunitiesFile $OpportunitiesFile `
+  -OpportunityId $OpportunityId -ContinuationOnly:$ContinuationOnly `
   -Resume:$Resume -AuthorizePaidResearch:$AuthorizePaidResearch `
-  -AuthorizeFindymail:$AuthorizeFindymail -RepoPath $RepoPath
+  -AuthorizeFindymail:$AuthorizeFindymail -FindymailDryRun:$FindymailDryRun `
+  -AuthorizationId $AuthorizationId -HardCeilingUsd $HardCeilingUsd -Manifest $Manifest `
+  -PlanResearchPersistence:$PlanResearchPersistence `
+  -AuthorizeResearchPersistence:$AuthorizeResearchPersistence `
+  -ExactWriteSetAuthorization $ExactWriteSetAuthorization `
+  -ApplyResearchPersistence:$ApplyResearchPersistence `
+  -SkipDiscovery:$SkipDiscovery -SkipDeep:$SkipDeep -SkipWhoHow:$SkipWhoHow `
+  -SkipContact:$SkipContact -SkipQualification:$SkipQualification `
+  -SkipStagedProgression:$SkipStagedProgression `
+  -ActivateStagedPointer:$ActivateStagedPointer -NoActivateStagedPointer:$NoActivateStagedPointer `
+  -RepoPath $RepoPath
