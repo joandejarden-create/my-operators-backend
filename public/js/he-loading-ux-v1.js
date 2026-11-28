@@ -1,15 +1,22 @@
 /**
  * Hotel Explorer — shared loading UX adapter (HE-QL-028).
- * Reuses canonical DealalityWaveLoader toast / wave / compact variants.
+ * Reuses canonical DealalityWaveLoader toast / wave / compact variants
+ * via DealalitySharedLoadingUx when present.
  * Never invents a parallel spinner system.
  *
  * Modes:
  *   toast  — short subsection fetches (centered compact toast)
  *   wave   — sustained section loads (inline centered wave card)
  *   inline — action-local (Surfe, OCN expand, button refresh)
+ *
+ * Contract: DEALALITY_SHARED_LOADING_COMPONENT_V1
  */
 (function (global) {
   "use strict";
+
+  function shared() {
+    return global.DealalitySharedLoadingUx || null;
+  }
 
   function api() {
     return global.DealalityWaveLoader || null;
@@ -26,6 +33,12 @@
   /** Compact centered toast — default for short HE async fetches. */
   function toastHtml(mainText, opts) {
     opts = opts || {};
+    var sharedUx = shared();
+    if (sharedUx && typeof sharedUx.toastHtml === "function") {
+      return sharedUx.toastHtml(mainText || "Loading…", Object.assign({}, opts, {
+        hostClass: opts.hostClass || "dealality-loading-toast-host he-loading-toast-host",
+      }));
+    }
     var loader = api();
     var text = mainText || "Loading…";
     if (loader && typeof loader.toastHtml === "function") {
