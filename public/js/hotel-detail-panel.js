@@ -356,6 +356,21 @@
     return String(value);
   }
 
+  function formatPropertyFactsValue(text) {
+    var s = String(text == null ? "" : text).trim();
+    if (!s) return s;
+    // Proper Case for descriptive fragments only — preserve names, numbers, acronyms.
+    s = s.replace(/\bsq\.?\s*ft\.?\b/gi, "Sq. Ft.");
+    s = s.replace(/\b(\d[\d,]*)\s+rooms\b/gi, "$1 Rooms");
+    s = s.replace(/\blargest:\s*/gi, "Largest: ");
+    s = s.replace(/\(\s*brand\s+parent\s*\)/gi, "(Brand Parent)");
+    s = s.replace(/\(\s*major(?:\s+renovation)?\s*\)/gi, function (m) {
+      return /renovation/i.test(m) ? "(Major Renovation)" : "(Major)";
+    });
+    s = s.replace(/\bmilestone\b/gi, "Milestone");
+    return s;
+  }
+
   function formatParentCompanyDisplay(value, hotel) {
     if (value == null || value === "" || value === "Unknown") return "No Parent Company (Blank)";
     var semantic =
@@ -364,7 +379,7 @@
       hotel.fieldProvenance.parentCompany &&
       hotel.fieldProvenance.parentCompany.semantic;
     if (semantic === "brand_parent_company") {
-      return String(value) + " (brand parent)";
+      return formatPropertyFactsValue(String(value) + " (brand parent)");
     }
     return String(value);
   }
@@ -878,8 +893,8 @@
       var simpleSq = meetingValue.match(/^\s*([\d,]+(?:\.\d+)?)\s*(sq\.?\s*ft\.?)?\s*$/i);
       if (simpleSq && fmt && typeof fmt.formatSqFt === "function") {
         meetingValue = fmt.formatSqFt(Number(String(simpleSq[1]).replace(/,/g, "")));
-      } else if (/sq\s*ft/i.test(meetingValue) && !/Sq\.\s*Ft\./.test(meetingValue)) {
-        meetingValue = meetingValue.replace(/sq\.?\s*ft\.?/gi, "Sq. Ft.");
+      } else {
+        meetingValue = formatPropertyFactsValue(meetingValue);
       }
     }
 
