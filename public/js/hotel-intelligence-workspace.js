@@ -871,6 +871,48 @@
     };
   }
 
+  function resolveCustomerSupportsLabel(citation) {
+    var api =
+      typeof window !== "undefined" && window.HeCustomerSupportsLabel
+        ? window.HeCustomerSupportsLabel
+        : null;
+    if (api && typeof api.customerSupportsLabel === "function") {
+      return api.customerSupportsLabel(citation);
+    }
+    // Fallback if browser adapter not loaded — still scrub technical register claims.
+    var raw = citation && (citation.source_claim || citation.claim || citation.proves || citation.supports);
+    var text = String(raw || "Property Research Evidence");
+    if (
+      /\brec[a-zA-Z0-9]{10,}\b/i.test(text) ||
+      /\bHI\s*graph\b/i.test(text) ||
+      /\bownership edges?\b/i.test(text) ||
+      /supporting documents for rec/i.test(text)
+    ) {
+      var code = String((citation && citation.supports) || "").trim();
+      if (code === "ownership") return "Organizational Relationships";
+      if (code === "history") return "Ownership & Transaction History";
+      if (code === "operator") return "Hotel Management";
+      if (code === "brand" || code === "brand_census") return "Brand Affiliation";
+      if (code === "contact_research") return "Hotel Leadership";
+      if (code === "guest_sentiment") return "Guest Reputation";
+      return "Property Research Evidence";
+    }
+    return text;
+  }
+
+  function isGuestSentimentOnlyCitationLocal(citation) {
+    var api =
+      typeof window !== "undefined" && window.HeCustomerSupportsLabel
+        ? window.HeCustomerSupportsLabel
+        : null;
+    if (api && typeof api.isGuestSentimentOnlyCitation === "function") {
+      return api.isGuestSentimentOnlyCitation(citation);
+    }
+    var supports = String((citation && citation.supports) || "").toLowerCase();
+    var category = String((citation && citation.category) || "").toLowerCase();
+    return supports === "guest_sentiment" || category === "sentiment";
+  }
+
   function buildCitations(hotel, ownership) {
     var list = [];
     var deepSources =
@@ -880,7 +922,37 @@
     var ev = ownership && ownership.report && ownership.report.evidence;
     var sources = deepSources.length ? deepSources : (ev && ev.sources) || [];
     var defaultSupports = deepSources.length ? "ownership" : "operator";
+    var registerClaim =
+      (ev && ev.claim) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.evidence &&
+        ownership.report.evidence.claim) ||
+      "";
+    var registerProves =
+      (ev && ev.what_it_proves) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.evidence &&
+        ownership.report.evidence.what_it_proves) ||
+      "";
+    var registerDoesNot =
+      (ev && ev.what_it_does_not_prove) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.evidence &&
+        ownership.report.evidence.what_it_does_not_prove) ||
+      "";
     sources.forEach(function (s) {
+      // Prefer per-source claim / claims over the shared register-level claim,
+      // which historically leaked "supporting documents for rec…" / HI graph copy.
+      var perSourceClaim =
+        (Array.isArray(s.claims) && s.claims.length ? s.claims.join(" | ") : "") ||
+        s.claim ||
+        s.source_claim ||
+        s.fieldName ||
+        "";
+      var perSourceProves = s.proves || s.what_it_proves || perSourceClaim || "";
       list.push(
         enrichCitation({
           title: s.title || s.provider || "Source",
@@ -892,31 +964,19 @@
           accessed_at: s.accessed_at || s.retrieved_at || null,
           observed_date: s.observed_date || null,
           excerpt: s.evidence_excerpt || s.note || "",
-          claim:
-            (ev && ev.claim) ||
-            (ownership &&
-              ownership.report &&
-              ownership.report.evidence &&
-              ownership.report.evidence.claim) ||
-            "",
+          claim: perSourceClaim || registerClaim,
+          source_claim: perSourceClaim,
+          claims: Array.isArray(s.claims) ? s.claims.slice() : perSourceClaim ? [perSourceClaim] : [],
+          fieldName: s.fieldName || s.field_name || null,
           relationship:
+            s.relationship ||
             (ev && ev.relationship) ||
             (ownership &&
               ownership.report &&
               ownership.report.evidence &&
               ownership.report.evidence.relationship),
-          proves:
-            (ev && ev.what_it_proves) ||
-            (ownership &&
-              ownership.report &&
-              ownership.report.evidence &&
-              ownership.report.evidence.what_it_proves),
-          does_not:
-            (ev && ev.what_it_does_not_prove) ||
-            (ownership &&
-              ownership.report &&
-              ownership.report.evidence &&
-              ownership.report.evidence.what_it_does_not_prove),
+          proves: perSourceProves || registerProves,
+          does_not: s.does_not || s.what_it_does_not_prove || registerDoesNot,
           supports: s.supports || defaultSupports,
           source_type: sourceTypeLabel(s.provider || s.title),
           verification_status: s.verification_status || null,
@@ -938,6 +998,8 @@
           (hotel && hotel.name ? hotel.name + ": " : "") +
           "Affiliation / brand field and Management Company as stored in Hotel Census.",
         claim: "Census identity fields for brand affiliation and management company",
+        source_claim: "brand affiliation and management company",
+        claims: ["brand:affiliation", "operator:management company"],
         proves:
           "Documents how Dealality currently stores trading name, affiliation, and management company for this hotel.",
         does_not:
@@ -949,9 +1011,18 @@
       })
     );
     list = mergeMarketAlertsCitationsLocal(list, state.marketAlertsCitations || []);
-    list = mergeMarketAlertsCitationsLocal(list, state.guestSentimentCitations || []);
+    // Guest Sentiment–only sources stay out of the customer list when that tab is disabled.
+    if (isGuestSentimentEnabled()) {
+      list = mergeMarketAlertsCitationsLocal(list, state.guestSentimentCitations || []);
+    }
     list = mergeMarketAlertsCitationsLocal(list, state.contactCitations || []);
-    return dedupeCitations(list.map(enrichCitation));
+    list = dedupeCitations(list.map(enrichCitation));
+    if (!isGuestSentimentEnabled()) {
+      list = list.filter(function (s) {
+        return !isGuestSentimentOnlyCitationLocal(s);
+      });
+    }
+    return list;
   }
 
   function applyContactEvidenceCitations(evidenceList) {
@@ -2561,6 +2632,54 @@
     };
   }
 
+  function personLinkedInFromRaw(raw) {
+    if (!raw || typeof raw !== "object") return "";
+    var direct = String(
+      raw.linkedinUrl ||
+        raw.linkedin_url ||
+        raw.professional_profile_url ||
+        (raw.professional_profile && raw.professional_profile.url) ||
+        ""
+    ).trim();
+    if (/^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(direct)) {
+      return direct;
+    }
+    if (Array.isArray(raw.profileUrls)) {
+      for (var i = 0; i < raw.profileUrls.length; i++) {
+        var pr = raw.profileUrls[i];
+        var u = pr && pr.url ? String(pr.url).trim() : "";
+        if (/^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(u)) return u;
+      }
+    }
+    if (Array.isArray(raw.channels)) {
+      for (var c = 0; c < raw.channels.length; c++) {
+        var ch = raw.channels[c];
+        if (!ch) continue;
+        var kind = String(ch.kind || ch.type || "");
+        var val = String(ch.value || ch.url || "").trim();
+        if (
+          (/linkedin/i.test(kind) || /linkedin\.com\/in\//i.test(val)) &&
+          /^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(val)
+        ) {
+          return val;
+        }
+      }
+    }
+    return "";
+  }
+
+  function enrichOrgKeyPeopleRowProfile(row, raw) {
+    if (!row || !raw) return;
+    if (personProfessionalProfile(row).verified) return;
+    var li = personLinkedInFromRaw(raw);
+    if (!li) return;
+    row.linkedinUrl = li;
+    row.professional_profile_url = li;
+    row.professional_profile_verified = true;
+    row.professional_profile = { type: "LINKEDIN", url: li, verified: true };
+    row.profileUrls = [{ type: "LINKEDIN", url: li, verified: true }];
+  }
+
   function normalizeOrgKeyPeopleRows(people) {
     var rows = [];
     var seen = {};
@@ -2569,8 +2688,11 @@
       var name = String(raw.display_name || raw.name || "").trim();
       if (!name) return;
       var key = name.toLowerCase();
-      if (seen[key]) return;
-      seen[key] = true;
+      if (seen[key]) {
+        // Seed rows often lack LinkedIn; enrich from later Contact Intelligence rows.
+        enrichOrgKeyPeopleRowProfile(seen[key], raw);
+        return;
+      }
       var relevance = String(
         raw.whyRelevant ||
           raw.strategic_relevance ||
@@ -2607,7 +2729,8 @@
       ).trim();
       if (/VERIFIED|HIGH/i.test(verification)) verification = "Verified identity";
       else if (/PROPOSED|STAGED|MEDIUM/i.test(verification)) verification = "Proposed";
-      rows.push({
+      var linkedin = personLinkedInFromRaw(raw);
+      var row = {
         name: name,
         title: String(raw.title || raw.role || "").trim() || "—",
         organization: String(raw.organization || raw.organizationName || "").trim() || "—",
@@ -2617,16 +2740,24 @@
         verificationStatus: verification || "Proposed",
         confidence: raw.confidence,
         professional_profile: raw.professional_profile,
-        professional_profile_url: raw.professional_profile_url || raw.linkedinUrl,
-        professional_profile_verified: raw.professional_profile_verified,
-        linkedinUrl: raw.linkedinUrl,
-        profileUrls: raw.profileUrls,
+        professional_profile_url: raw.professional_profile_url || raw.linkedinUrl || linkedin || null,
+        professional_profile_verified:
+          raw.professional_profile_verified === true || Boolean(linkedin),
+        linkedinUrl: raw.linkedinUrl || linkedin || null,
+        profileUrls:
+          raw.profileUrls ||
+          (linkedin ? [{ type: "LINKEDIN", url: linkedin, verified: true }] : null),
         decision_authority_category:
           raw.decision_authority_category || raw.role_group || raw.contactClass || raw.category,
         category: raw.role_group || raw.contactClass || raw.category,
         strategic_relevance: relevance,
         relationship_to_hotel: relevance,
-      });
+      };
+      if (linkedin && !personProfessionalProfile(row).verified) {
+        enrichOrgKeyPeopleRowProfile(row, { linkedinUrl: linkedin });
+      }
+      seen[key] = row;
+      rows.push(row);
     });
     return rows;
   }
@@ -2859,6 +2990,9 @@
     return (pkgPeople || [])
       .map(function (p) {
         if (!p || typeof p !== "object") return null;
+        // Same canonical person LinkedIn as Contact Intelligence UI:
+        // PERSON_LINKEDIN channel value (linkedin.com/in/…), never company pages.
+        var linkedin = personLinkedInFromRaw(p);
         return {
           name: p.display_name || p.name || "",
           title: p.title || p.role || "",
@@ -2882,9 +3016,15 @@
             /VERIFIED|HIGH/i.test(String(p.verification_status || p.identityVerification || ""))
               ? "Verified"
               : "Directory",
-          linkedinUrl: p.linkedin_url || p.linkedinUrl || null,
-          professional_profile_url: p.linkedin_url || p.linkedinUrl || null,
-          professional_profile_verified: Boolean(p.linkedin_url || p.linkedinUrl),
+          linkedinUrl: linkedin || null,
+          professional_profile_url: linkedin || null,
+          professional_profile_verified: Boolean(linkedin),
+          professional_profile: linkedin
+            ? { type: "LINKEDIN", url: linkedin, verified: true }
+            : null,
+          profileUrls: linkedin
+            ? [{ type: "LINKEDIN", url: linkedin, verified: true }]
+            : [],
           decision_authority_category:
             p.role_group || p.contactClass || p.property_relevance || "contacts",
           category: p.property_relevance || "contacts",
@@ -3047,12 +3187,75 @@
     );
   }
 
+  /**
+   * DATE column: publication + verified/accessed in one cell.
+   * Sort priority (documented): publication_date > verified_at > accessed_at.
+   */
+  function resolveCustomerSourceDateCell(citation) {
+    var dates = normalizeCitationDates(citation);
+    var api = typeof window !== "undefined" ? window.HeCustomerSourceDate : null;
+    if (api && typeof api.formatCustomerSourceDateCell === "function") {
+      return api.formatCustomerSourceDateCell(dates);
+    }
+    var pub = formatSourceDate(dates.publication_date);
+    var acc = formatSourceDate(dates.verified_at || dates.accessed_at);
+    var lines = [];
+    if (pub && pub !== "—") lines.push("Published: " + pub);
+    if (acc && acc !== "—") lines.push("Accessed: " + acc);
+    if (!lines.length) lines = ["—"];
+    return {
+      lines: lines,
+      text: lines.join("\n"),
+      sortValue: dates.publication_date || dates.verified_at || dates.accessed_at || null,
+      publication_date: dates.publication_date,
+      accessed_date: dates.verified_at || dates.accessed_at || null,
+    };
+  }
+
+  function compareSourceRowsByDate(a, b) {
+    var api = typeof window !== "undefined" ? window.HeCustomerSourceDate : null;
+    var datesA = normalizeCitationDates(a.s);
+    var datesB = normalizeCitationDates(b.s);
+    if (api && typeof api.compareCitationDates === "function") {
+      var cmp = api.compareCitationDates(datesA, datesB, "desc");
+      if (cmp !== 0) return cmp;
+      return a.n - b.n;
+    }
+    var sa = String(datesA.publication_date || datesA.verified_at || datesA.accessed_at || "");
+    var sb = String(datesB.publication_date || datesB.verified_at || datesB.accessed_at || "");
+    if (!sa && !sb) return a.n - b.n;
+    if (!sa) return 1;
+    if (!sb) return -1;
+    if (sa === sb) return a.n - b.n;
+    return sa < sb ? 1 : -1;
+  }
+
+  function sourceDateCellHtml(citation) {
+    var cell = resolveCustomerSourceDateCell(citation);
+    var body = (cell.lines || ["—"])
+      .map(function (line) {
+        return esc(line);
+      })
+      .join("<br>");
+    var sortAttr = cell.sortValue
+      ? ' data-date-sort="' + esc(String(cell.sortValue)) + '"'
+      : ' data-date-sort=""';
+    return (
+      '<td class="hiw-source-date"' +
+      sortAttr +
+      ' data-publication-date="' +
+      esc(cell.publication_date || "") +
+      '" data-accessed-date="' +
+      esc(cell.accessed_date || "") +
+      '">' +
+      body +
+      "</td>"
+    );
+  }
+
   function sourceTableRow(s, n, opts) {
     opts = opts || {};
-    var dates = normalizeCitationDates(s);
-    var pub = formatSourceDate(dates.publication_date);
-    var verified = formatSourceDate(dates.verified_at || dates.accessed_at);
-    var claim = s.claim || s.proves || s.supports || "—";
+    var claim = resolveCustomerSupportsLabel(s);
     if (String(claim).length > 120) claim = String(claim).slice(0, 117) + "…";
     var catLabel =
       (SOURCE_CATEGORY_DEFS.find(function (c) {
@@ -3085,12 +3288,7 @@
       "<td>" +
       esc(catLabel) +
       "</td>" +
-      "<td>" +
-      esc(pub) +
-      "</td>" +
-      "<td>" +
-      esc(verified) +
-      "</td>" +
+      sourceDateCellHtml(s) +
       "<td>" +
       esc(claim) +
       "</td>" +
@@ -3114,8 +3312,7 @@
       th("Source title") +
       th("Publisher") +
       th("Category") +
-      th("Published") +
-      th("Verified / accessed") +
+      th("Date") +
       th("Supports") +
       th("Status") +
       th("Link") +
@@ -3133,9 +3330,7 @@
       .map(function (s, i) {
         return { s: s, n: opts.indexOffset != null ? opts.indexOffset + i + 1 : i + 1 };
       })
-      .sort(function (a, b) {
-        return a.n - b.n;
-      });
+      .sort(compareSourceRowsByDate);
     var rows = entries
       .map(function (row) {
         return sourceTableRow(row.s, row.n, { focusN: opts.focusN });
@@ -3201,7 +3396,8 @@
       );
     }
 
-    var rows = filtered
+    var ordered = filtered.slice().sort(compareSourceRowsByDate);
+    var rows = ordered
       .map(function (row) {
         return sourceTableRow(row.s, row.n, { focusN: state.sourceFocusN });
       })
@@ -3213,7 +3409,7 @@
       sectionHeadHtml(
         "Hotel source register",
         '<span class="hiw-prose hiw-prose--quiet">' +
-          filtered.length +
+          ordered.length +
           (filter === "all" ? " sources" : " in filter") +
           "</span>"
       ) +
@@ -5113,7 +5309,7 @@
         : "") +
       (cite.excerpt ? "<p>" + esc(cite.excerpt) + "</p>" : "") +
       "<p><strong>Supports</strong> — " +
-      esc(cite.proves || "") +
+      esc(resolveCustomerSupportsLabel(cite)) +
       "</p>" +
       '<p class="hiw-prove-not"><strong>Does not establish</strong> — ' +
       esc(cite.does_not || "") +

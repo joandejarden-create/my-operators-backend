@@ -85,8 +85,11 @@
 
   function readPersistedBrowse() {
     try {
-      var v = sessionStorage.getItem(STORAGE_PREFIX + "viewMode");
-      if (v === "list" || v === "tiles") state.viewMode = v;
+      // Tiles is the permanent product-wide default for Group & Demand Opportunities.
+      // Do not restore List/Tiles from sessionStorage — reload always returns to Tiles.
+      // Users may still switch to List during the session; that choice is not persisted.
+      state.viewMode = "tiles";
+      sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
       var s = sessionStorage.getItem(STORAGE_PREFIX + "sortKey");
       if (s) {
         state.sortKey =
@@ -103,7 +106,8 @@
 
   function persistBrowse() {
     try {
-      sessionStorage.setItem(STORAGE_PREFIX + "viewMode", state.viewMode);
+      // Never persist viewMode — Tiles remains the reload default product-wide.
+      sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
       sessionStorage.setItem(STORAGE_PREFIX + "sortKey", state.sortKey);
       sessionStorage.setItem(STORAGE_PREFIX + "sortDir", String(state.sortDir));
     } catch (e) {

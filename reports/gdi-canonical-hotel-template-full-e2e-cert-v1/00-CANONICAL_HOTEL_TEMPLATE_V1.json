@@ -1,0 +1,76 @@
+{
+  "version": "gdi-canonical-hotel-template-v1",
+  "productWide": true,
+  "hotelSpecificUiForbidden": true,
+  "tabs": [
+    {
+      "id": "executive-summary",
+      "label": "Executive Summary",
+      "requiredSections": [
+        "Commercial Snapshot",
+        "Executive Commercial Assessment",
+        "Demand Composition",
+        "Commercial Demand Outlook",
+        "Dealality Research Receipt",
+        "Research Productivity",
+        "Priority Commercial Opportunities",
+        "Commercial Outcomes"
+      ]
+    },
+    {
+      "id": "opportunities",
+      "label": "Group & Demand Opportunities",
+      "requiredSurfaces": [
+        "List View",
+        "Tiles View",
+        "Columns configuration",
+        "Contact Details presentation",
+        "Actions SVGs",
+        "Opportunity drawers",
+        "Filters",
+        "Compact Market Scope"
+      ]
+    },
+    {
+      "id": "commercial-priorities",
+      "label": "Commercial Priorities",
+      "requiredSurfaces": [
+        "Commercial Priorities"
+      ]
+    }
+  ],
+  "freeze": {
+    "htmlShell": "public/group-demand-intelligence.html",
+    "css": "public/css/group-demand-intelligence.css",
+    "ui": "public/js/group-demand-intelligence/dealality-gdi-ui.js",
+    "executiveSummary": "public/js/group-demand-intelligence/executive-summary-tab.js",
+    "listTable": "public/js/group-demand-intelligence/gdi-commercial-list-table-v1.js",
+    "requiredCssSelectors": [
+      ".gdi-es-receipt",
+      ".gdi-es-methodology",
+      ".gdi-es-funnel",
+      ".gdi-market-scope",
+      ".gdi-list-actions",
+      ".gdi-page"
+    ],
+    "requiredJsSubstrings": [
+      "Dealality Research Receipt",
+      "How Research Hours Are Estimated",
+      "How to Read This Report",
+      "resolveTileContactPreviewBlock",
+      "Opportunity of the Week"
+    ],
+    "excludedFromThisContract": [
+      "Portfolio Demand Intelligence redesign"
+    ],
+    "sharedContracts": [
+      "gdi-executive-summary-v2",
+      "gdi-research-productivity-v1",
+      "gdi-customer-publication-package-v1",
+      "gdi-commercial-list-table-v1"
+    ]
+  },
+  "contextualGuides": true,
+  "waveLoading": true,
+  "note": "Preserve accepted integrated UI exactly. Correct data/research/persistence only."
+}

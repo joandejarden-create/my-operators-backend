@@ -32,6 +32,116 @@
   align-items: center;
 }
 
+/*
+ * Contact Intelligence loader — exact Dealality wave toast chrome.
+ * Reference: public/css/dealality-wave-loader.css (.dealality-wave-loader--toast)
+ * and DealalityWaveLoader.toastHtml / HeLoadingUx.sectionHtml("Loading Contacts…").
+ *
+ * HE shell CSS remaps toast/compact to elevated navy (#212c4d). That reads as a
+ * blue-gray chip with a static-looking yellow orb. Contact Intelligence must keep
+ * the canonical compact black box + animated wave. Scoped to .hci-root only.
+ * Also neutralize Radar map `.loading { height: 200px }` if it leaks in.
+ */
+.hex-root .hci-root .dealality-wave-loader.loading,
+.hex-root .hci-root .loading.dealality-wave-loader,
+.hex-root .hci-root .dealality-wave-loader--toast,
+.hex-root .hci-root .dealality-wave-loader--compact,
+.hex-root .hci-section.he-async-loading .dealality-wave-loader {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  z-index: auto;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none;
+  width: auto;
+  max-width: min(100%, 320px);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* Canonical Dealality toast surface — not HE elevated navy */
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+}
+
+.hex-root .hci-root .dealality-wave-loader--toast .loading-content,
+.hex-root .hci-root .dealality-wave-loader--compact .loading-content,
+.hex-root .hci-section.he-async-loading .dealality-wave-loader .loading-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.hex-root .hci-root .dealality-wave-loader--sm .wave-container,
+.hex-root .hci-section.he-async-loading .dealality-wave-loader .wave-container {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  background: var(--neutral--700, #212c4d);
+  border-radius: 50%;
+  border: 2px solid var(--neutral--600, #37446b);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hex-root .hci-root .dealality-wave-loader .wave,
+.hex-root .hci-section.he-async-loading .dealality-wave-loader .wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.hex-root .hci-root .dealality-wave-loader .wave-1 {
+  height: 40%;
+  background: linear-gradient(45deg, #d69e2e, #f4d03f);
+  animation: bl-wave-1 2s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.hex-root .hci-root .dealality-wave-loader .wave-2 {
+  height: 60%;
+  background: linear-gradient(45deg, #b8860b, #d69e2e);
+  animation: bl-wave-2 2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.hex-root .hci-root .dealality-wave-loader .wave-3 {
+  height: 80%;
+  background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+  animation: bl-wave-3 2s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.hex-root .hci-root .dealality-wave-loader .particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #d69e2e;
+  border-radius: 50%;
+  animation: bl-particle-float 3s ease-in-out infinite;
+  box-shadow: 0 0 4px #d69e2e;
+}
+
+.hex-root .hci-root .dealality-wave-loader--toast .loading-text-main,
+.hex-root .hci-section.he-async-loading .dealality-wave-loader .loading-text-main {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin-bottom: 0;
+}
+
 .hci-empty {
   padding: 28px 16px;
   color: var(--hci-muted);
@@ -79,7 +189,7 @@
 }
 
 .hci-quality__item {
-  background: rgba(8, 15, 37, 0.55);
+  background: var(--he-section, #101935);
   border: 1px solid var(--hci-border);
   border-radius: 10px;
   padding: 8px 10px;
@@ -114,7 +224,7 @@
 }
 
 .hci-ownership-summary {
-  background: rgba(8, 15, 37, 0.45);
+  background: var(--he-table, #0d152c);
   border: 1px solid var(--hci-border);
   border-radius: 14px;
   padding: 14px 16px;
@@ -193,7 +303,7 @@
 }
 
 .hci-org-card {
-  background: rgba(8, 15, 37, 0.5);
+  background: var(--he-section, #101935);
   border: 1px solid var(--hci-border);
   border-radius: 14px;
   padding: 14px;
@@ -444,14 +554,14 @@ a.hci-channel__value {
   box-sizing: border-box;
   margin-left: 0;
   margin-right: 0;
-  background: var(--hex-surface-section, rgba(8, 15, 37, 0.5));
+  background: var(--hex-surface-section, var(--he-section, #101935));
   border: 1px solid var(--hci-border);
   border-radius: 12px;
   padding: 14px 16px;
 }
 
 .hci-person {
-  background: var(--hex-surface-section, rgba(8, 15, 37, 0.5));
+  background: var(--hex-surface-section, var(--he-section, #101935));
   border: 1px solid var(--hci-border);
   border-radius: 12px;
   padding: 14px 16px;
