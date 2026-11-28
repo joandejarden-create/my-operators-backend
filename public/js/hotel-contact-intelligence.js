@@ -604,14 +604,14 @@
     var markup = "";
     if (window.HeLoadingUx && typeof window.HeLoadingUx.toastHtml === "function") {
       markup = window.HeLoadingUx.toastHtml("Finding Contact Details…", {
-        subText: "Hybrid enrichment",
+        subText: "Surfe · Session Only",
       });
     } else if (
       window.DealalitySharedLoadingUx &&
       typeof window.DealalitySharedLoadingUx.toastHtml === "function"
     ) {
       markup = window.DealalitySharedLoadingUx.toastHtml("Finding Contact Details…", {
-        subText: "Hybrid enrichment",
+        subText: "Surfe · Session Only",
       });
     } else {
       markup =
@@ -803,7 +803,7 @@
       '">' +
       '<button type="button" class="' +
       btnClass +
-      '" data-hci-enrich="1" data-hci-hybrid-enrich="1" data-person-id="' +
+      '" data-hci-enrich="1" data-hci-one-click-surfe="1" data-person-id="' +
       esc(p.personId || "") +
       '" data-hotel-id="' +
       esc(hotelId || "") +
@@ -1489,10 +1489,10 @@
           "Contact enrichment API route is unavailable on this server. Restart the integrated main tip and retry.";
       } else if (err === "surfe_no_result") {
         msg =
-          "Surfe did not return additional professional contact details for this lookup. This is separate from any earlier Findymail result.";
+          "Surfe did not return additional professional contact details for this lookup.";
       } else if (err === "no_result" || err === "findymail_no_result") {
         msg =
-          "Findymail did not return durable channels. You can try Surfe (session only) if offered.";
+          "No additional professional contact details were found for this lookup.";
       } else {
         msg =
           (payload && payload.userMessage) ||
@@ -1592,23 +1592,24 @@
       cell.outerHTML = renderVerifiedChannelSummary(seed, hotelId, vmCapability);
       var liveBtn = findEnrichButton(personId, hotelId);
       var liveSlot = findEnrichSlot(liveBtn);
+      // Session Surfe results are ephemeral — durable completeness stays Airtable-gated.
       if (liveBtn) {
-        liveBtn.disabled = true;
-        setEnrichButtonLabel(liveBtn, "complete");
-        liveBtn.classList.add("hci-btn--enrich-dimmed");
+        var durableComplete = liveBtn.getAttribute("data-dimmed-complete") === "1";
+        if (durableComplete) {
+          liveBtn.disabled = true;
+          setEnrichButtonLabel(liveBtn, "complete");
+          liveBtn.classList.add("hci-btn--enrich-dimmed");
+        } else {
+          liveBtn.disabled = false;
+          setEnrichButtonLabel(liveBtn, "idle");
+          liveBtn.classList.remove("hci-btn--enrich-dimmed");
+        }
       }
       if (liveSlot) {
-        liveSlot.hidden = false;
-        liveSlot.removeAttribute("hidden");
+        liveSlot.hidden = true;
+        liveSlot.setAttribute("hidden", "");
         liveSlot.setAttribute("data-person-id", personId);
-        liveSlot.innerHTML =
-          '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED" data-surfe-session="1" data-persist="forbidden">' +
-          '<div class="hci-note">' +
-          esc(
-            (payload.providerAttribution || "Surfe · Session Only") +
-              " · not persisted to Airtable",
-          ) +
-          "</div></div>";
+        liveSlot.innerHTML = "";
       }
       return;
     }
@@ -1685,57 +1686,18 @@
     );
   }
 
-  function paintSurfeFallbackOffer(slot, body, personId) {
-    if (!slot) return;
-    var rem =
-      (body.missingChannelState && body.missingChannelState.requestChannel) ||
-      (body.surfeIncludeSuggested &&
-      body.surfeIncludeSuggested.email &&
-      body.surfeIncludeSuggested.mobile
-        ? "both"
-        : body.surfeIncludeSuggested && body.surfeIncludeSuggested.email
-          ? "email"
-          : body.surfeIncludeSuggested && body.surfeIncludeSuggested.mobile
-            ? "phone"
-            : "both");
-    slot.hidden = false;
-    slot.removeAttribute("hidden");
-    slot.setAttribute("data-person-id", personId || "");
-    slot.innerHTML =
-      '<div class="hci-note">' +
-      esc(
-        body.message ||
-          body.userMessage ||
-          "No durable channels found yet. Try Surfe for a session-only lookup.",
-      ) +
-      "</div>" +
-      '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
-      esc(personId || "") +
-      '" data-enrich-channel="' +
-      esc(rem) +
-      '">Try Surfe (session only)</button>';
+  function paintSurfeFallbackOffer() {
+    // CONTACT INTELLIGENCE V4 — customer UI no longer offers Try Surfe.
+    // Find Email & Phone calls /reveal (Surfe) in one click.
+    return;
   }
 
   function bindEnrich(root) {
     if (!root) return;
     root.addEventListener("click", function (ev) {
-      var surfeBtn = ev.target.closest("[data-hci-surfe-fallback]");
-      if (surfeBtn && !surfeBtn.disabled) {
+      // Ignore legacy Try Surfe nodes if any residual markup appears.
+      if (ev.target.closest("[data-hci-surfe-fallback]")) {
         ev.preventDefault();
-        var parent = surfeBtn.closest("[data-hci-enrich-slot], .hci-enrich");
-        var mainBtn =
-          (parent && parent.querySelector("[data-hci-enrich]")) ||
-          root.querySelector(
-            '[data-hci-enrich][data-person-id="' +
-              esc(surfeBtn.getAttribute("data-person-id") || "") +
-              '"]'
-          );
-        if (mainBtn) {
-          var surfeChannel = surfeBtn.getAttribute("data-enrich-channel");
-          if (surfeChannel) mainBtn.setAttribute("data-enrich-channel", surfeChannel);
-          mainBtn.setAttribute("data-force-surfe", "1");
-          mainBtn.click();
-        }
         return;
       }
       var btn = ev.target.closest("[data-hci-enrich]");
@@ -1748,15 +1710,10 @@
       if (_inflightReveal[key]) return;
       var slot = findEnrichSlot(btn);
       var card = btn.closest(".hci-person, .hci-dir-row, tr");
-      var forceSurfe = btn.getAttribute("data-force-surfe") === "1";
-      btn.removeAttribute("data-force-surfe");
       btn.disabled = true;
       btn.setAttribute("aria-busy", "true");
       setEnrichButtonLabel(btn, "finding");
-      // Toast outside the table — do not inject loaders into the row/result slot.
-      showEnrichToast(
-        forceSurfe ? "Finding Contact Details…" : "Finding Contact Details…",
-      );
+      showEnrichToast("Finding Contact Details…");
       if (slot) {
         slot.hidden = true;
         slot.setAttribute("hidden", "");
@@ -1764,13 +1721,14 @@
       }
       if (card) card.setAttribute("data-enriching", "1");
       _inflightReveal[key] = true;
-      var useHybrid = btn.getAttribute("data-hci-hybrid-enrich") === "1" && !forceSurfe;
+
+      // V4: one-click Surfe only — never Findymail / enrich-hybrid on customer click.
       var url =
         "/api/contact-intelligence/hotels/" +
         encodeURIComponent(hotelId) +
         "/people/" +
         encodeURIComponent(personId) +
-        (useHybrid ? "/enrich-hybrid" : "/reveal");
+        "/reveal";
       fetch(url, {
         method: "POST",
         credentials: "same-origin",
@@ -1783,7 +1741,7 @@
           companyDomain: btn.getAttribute("data-company-domain") || "",
           channel: btn.getAttribute("data-enrich-channel") || "both",
           persist: false,
-          allowPaidFindymail: true,
+          allowPaidFindymail: false,
         }),
       })
         .then(function (r) {
@@ -1809,79 +1767,58 @@
         .then(function (pack) {
           var body = pack.body || { ok: false, error: "http_" + pack.status };
           if (body && body.person && !body.person.personId) body.person.personId = personId;
+          if (body && body.missingChannelState && btn && btn.isConnected) {
+            btn.setAttribute(
+              "data-enrich-channel",
+              body.missingChannelState.requestChannel || "both",
+            );
+            btn.setAttribute(
+              "data-needs-email",
+              body.missingChannelState.needsEmail ? "1" : "0",
+            );
+            btn.setAttribute(
+              "data-needs-phone",
+              body.missingChannelState.needsPhone ? "1" : "0",
+            );
+          }
 
-          // Durable Findymail / Airtable email|phone only — LinkedIn-only channels must NOT
-          // replace the cell (that previously detached the Try Surfe offer).
-          if (useHybrid && body && body.ok && (body.email || body.phone)) {
-            var liveBtn = applyHybridRowUpdate(btn, body) || findEnrichButton(personId, hotelId);
-            btn = liveBtn || btn;
-            slot = findEnrichSlot(btn);
-            if (body.missingChannelState && btn && btn.isConnected) {
-              btn.setAttribute(
-                "data-enrich-channel",
-                body.missingChannelState.requestChannel || "both",
-              );
-              btn.setAttribute(
-                "data-needs-email",
-                body.missingChannelState.needsEmail ? "1" : "0",
-              );
-              btn.setAttribute(
-                "data-needs-phone",
-                body.missingChannelState.needsPhone ? "1" : "0",
-              );
-            }
-            if (body.surfeFallbackAvailable) {
-              paintSurfeFallbackOffer(slot, body, personId);
-              if (btn && btn.isConnected) {
+          btn = findEnrichButton(personId, hotelId) || btn;
+          slot = findEnrichSlot(btn) || slot;
+          paintEnrichResult(slot, body, btn);
+
+          var hasSession =
+            body &&
+            body.ok &&
+            !body.pending &&
+            (body.person || body.cached) &&
+            ((body.person && body.person.email) ||
+              (body.person && body.person.phone) ||
+              body.email ||
+              body.phone);
+          if (hasSession) {
+            // Durable completeness remains Airtable-driven — keep button available
+            // when durable channels are still missing (session results do not dim).
+            if (btn && btn.isConnected) {
+              var durableComplete = btn.getAttribute("data-dimmed-complete") === "1";
+              if (durableComplete) {
+                setEnrichButtonLabel(btn, "complete");
+                btn.disabled = true;
+                btn.classList.add("hci-btn--enrich-dimmed");
+              } else {
                 btn.disabled = false;
                 setEnrichButtonLabel(btn, "idle");
-              }
-            } else if (btn && btn.isConnected) {
-              btn.disabled = true;
-              setEnrichButtonLabel(btn, "idle");
-              btn.classList.add("hci-btn--enrich-dimmed");
-              if (slot) {
-                slot.hidden = false;
-                slot.removeAttribute("hidden");
-                slot.innerHTML =
-                  '<div class="hci-note">' +
-                  esc(body.message || "Canonical channels updated from Airtable.") +
-                  "</div>";
               }
             }
             return;
           }
-
-          if (useHybrid && body && body.surfeFallbackAvailable && !body.email && !body.phone) {
-            // Table may re-render during long Findymail waits — always re-resolve live nodes.
-            btn = findEnrichButton(personId, hotelId) || btn;
-            slot = findEnrichSlot(btn);
-            if (!slot && btn) {
-              var wrap = btn.closest("[data-hci-enrich-slot]");
-              if (wrap) {
-                slot = document.createElement("div");
-                slot.className = "hci-enrich__result hci-enrich__result--cell";
-                wrap.appendChild(slot);
-              }
-            }
-            paintSurfeFallbackOffer(slot, body, personId);
+          if (body && body.ok && body.pending) {
             if (btn && btn.isConnected) {
               btn.disabled = false;
               setEnrichButtonLabel(btn, "idle");
             }
             return;
           }
-
-          btn = findEnrichButton(personId, hotelId) || btn;
-          slot = findEnrichSlot(btn) || slot;
-          paintEnrichResult(slot, body, btn);
-          if (body && body.ok && !body.pending && (body.person || body.cached)) {
-            if (btn && btn.isConnected) {
-              setEnrichButtonLabel(btn, "complete");
-              btn.disabled = true;
-            }
-            return;
-          }
+          // No result / error — leave available for intentional retry.
           if (btn && btn.isConnected) {
             btn.disabled = false;
             setEnrichButtonLabel(btn, "idle");
@@ -2028,6 +1965,8 @@
   }
 
   function loadHpcPropertyFallback(hotelId) {
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) return Promise.resolve(null);
     return fetch(
       "/api/golden-demo/ownership/hotel/" + encodeURIComponent(hotelId),
       { credentials: "same-origin" }
@@ -2293,6 +2232,8 @@
   }
 
   function loadViewModel(hotelId) {
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) return Promise.resolve(null);
     var showcase = SHOWCASE_PATHS[hotelId];
     var tries = [];
     if (showcase) tries.push(showcase);
@@ -2371,6 +2312,13 @@
   function mount(host, hotelId, opts) {
     if (!host) return Promise.resolve();
     opts = opts || {};
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) {
+      host.innerHTML = renderEmpty(
+        "Hotel identity could not be resolved. Open a property from Opportunity Radar or use a link with a canonical hotel id.",
+      );
+      return Promise.resolve();
+    }
     // Surfe session results must not survive hotel remount / reload.
     _sessionSurfeByPerson = Object.create(null);
     host.innerHTML = renderLoading();
