@@ -949,6 +949,12 @@ a.hci-channel__value {
   padding: 10px 12px;
   overflow: hidden;
 }
+/* Contact Details must not clip the Find Email & Phone control */
+.hci-root .hci-directory-table--5col td:nth-child(4),
+.hci-root .hci-directory-table--5col td[data-col="contact-details"] {
+  overflow: visible;
+  vertical-align: middle;
+}
 
 .hci-root .hci-directory-table th {
   white-space: nowrap;
@@ -980,6 +986,7 @@ a.hci-channel__value {
   gap: 12px;
   min-width: 0;
   width: 100%;
+  overflow: visible;
 }
 .hci-root .gdi-list-contact-channels {
   display: flex;
@@ -987,15 +994,28 @@ a.hci-channel__value {
   gap: 4px;
   min-width: 0;
   flex: 1 1 auto;
+  overflow: hidden; /* long emails ellipsis — never cover the button */
 }
 .hci-root .gdi-list-contact-action {
   flex: 0 0 auto;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
   gap: 6px;
-  max-width: 150px;
+  min-width: 132px;
+  max-width: 160px;
+  overflow: visible;
+  visibility: visible;
+  opacity: 1;
+}
+.hci-root .gdi-list-contact-action .hci-enrich,
+.hci-root .gdi-list-contact-action .hci-btn--enrich {
+  display: inline-flex;
+  visibility: visible;
+  opacity: 1;
+  position: static;
 }
 .hci-root .gdi-list-contact-line {
   display: flex;
@@ -1045,11 +1065,16 @@ a.hci-channel__value {
   white-space: nowrap;
   border-radius: 6px;
   max-width: 148px;
+  min-height: 28px;
+  visibility: visible;
 }
 .hci-root .hci-btn--enrich-dimmed,
 .hci-root .hci-btn--enrich.is-disabled {
   opacity: 0.45;
   cursor: not-allowed;
+  /* Dimmed must remain visible — never display:none */
+  visibility: visible;
+  display: inline-flex;
 }
 .hci-root .hci-enrich--inline-cell {
   margin: 0;
