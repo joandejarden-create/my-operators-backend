@@ -1,0 +1,84 @@
+{
+  "contract": "gdi-exa-agent-quality-recovery-v1",
+  "description": "Title alone cannot establish DIRECT_BUYER. Pattern-based fixtures (no hard-coded production people in classifier).",
+  "cases": [
+    {
+      "id": "lodging_accommodation_contact",
+      "person": {
+        "name": "Alex Lodging",
+        "title": "Accommodation contact, official travel agency",
+        "currentOrganization": "Example Meetings Org",
+        "sourceUrl": "https://example-meetings.org/accommodation",
+        "relevanceEvidence": "Accommodation contact for official travel agency lodging"
+      },
+      "organizationName": "Example Meetings Org",
+      "expectType": "DIRECT_BUYER",
+      "whoEligible": true
+    },
+    {
+      "id": "loc_chair_viable",
+      "person": {
+        "name": "Blake Organizer",
+        "title": "Chair, Local Organizing Committee",
+        "currentOrganization": "Example Congress Institute",
+        "sourceUrl": "https://example-congress.org/committee",
+        "relevanceEvidence": "Chair of Local Organizing Committee"
+      },
+      "organizationName": "Example Congress Institute",
+      "expectType": "VIABLE_ALTERNATIVE",
+      "whoEligible": true
+    },
+    {
+      "id": "president_not_direct",
+      "person": {
+        "name": "Casey Exemplar",
+        "title": "President",
+        "currentOrganization": "Example Association",
+        "sourceUrl": "https://example-association.org/leadership",
+        "relevanceEvidence": "President of Example Association"
+      },
+      "organizationName": "Example Association",
+      "expectType": "VIABLE_ALTERNATIVE",
+      "whoEligible": true
+    },
+    {
+      "id": "manager_without_pathway",
+      "person": {
+        "name": "Dana Example",
+        "title": "Manager",
+        "currentOrganization": "Example Conveners",
+        "sourceUrl": "https://example-conveners.org/the-team/",
+        "relevanceEvidence": "Manager on team page"
+      },
+      "organizationName": "Example Conveners",
+      "expectType": "RELEVANT_ORGANIZATIONAL_CONTACT",
+      "whoEligible": false
+    },
+    {
+      "id": "wrong_employer",
+      "person": {
+        "name": "Evan Outsider",
+        "title": "Events Manager",
+        "currentOrganization": "Unrelated Corp",
+        "sourceUrl": "https://unrelated.example/evan",
+        "relevanceEvidence": "Events Manager"
+      },
+      "organizationName": "Example Association",
+      "expectType": "REJECTED",
+      "whoEligible": false
+    },
+    {
+      "id": "junk_name_android",
+      "person": {
+        "name": "Android Once",
+        "title": "Partner",
+        "currentOrganization": "Example Org",
+        "sourceUrl": "https://example.org/team",
+        "relevanceEvidence": "Partner"
+      },
+      "organizationName": "Example Org",
+      "expectType": "REJECTED",
+      "whoEligible": false
+    }
+  ]
+}

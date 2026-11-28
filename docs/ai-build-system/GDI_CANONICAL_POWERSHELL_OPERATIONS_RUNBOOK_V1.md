@@ -337,6 +337,26 @@ pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -Publicati
 | Contact gaps remain | Contact DryRun → best-effort ledger → founder-authorized Findymail/Exa gap continuation |
 | `pwsh` not found on Windows | Use `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/gdi/…` |
 
+## Outstanding integrations (2026-11-28 consolidation)
+
+Integrated into the canonical path (no competing engines; DryRun / fail-closed default; no paid spend from this section alone):
+
+| Capability | Module / gate | Notes |
+|---|---|---|
+| Contact enrichment usage ledger | `gdi-contact-enrichment-airtable-schema-v1` + Findymail channel contract v1.1 | Additive to Surfe usage ledger (Surfe table unchanged) |
+| Person identity collision | `gdi-person-identity-collision-v1` + durable contact store | Name+org alone never auto-merges |
+| Authorized LDI + viability | `gdi-leisure-authorized-live-v1` + `gdi-commercial-viability-precheck-v1` | Live LDI needs `GDI_LDI_LIVE=1` + founder auth; viability writes `02b-commercial-viability-precheck.json` |
+| Exa Agent quality recovery | person-name + buyer classification gates | Titles alone ≠ direct buyer; permanent `$0` CI |
+| Inventory membership | `gdi-inventory-membership-persistence-v1` | Durable ledger + schema auth request before GDO field writes |
+
+```powershell
+npm run test:gdi-contact-enrichment-airtable-schema-v1
+npm run test:gdi-person-identity-collision-v1
+npm run test:gdi-leisure-authorized-live-v1
+npm run test:gdi-exa-agent-quality-recovery-v1
+npm run test:gdi-inventory-membership-persistence-v1
+```
+
 ## Two-hotel Live certification (Memmo + Bethesda) — pre-live
 
 **Prep package:** `reports/gdi-two-hotel-live-cert-prep-v1/00-FOUNDER_PRELIVE_PACKAGE.md`  

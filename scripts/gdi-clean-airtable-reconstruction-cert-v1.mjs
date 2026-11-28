@@ -35,6 +35,13 @@ import {
 import { annotateHotelOpportunitySet } from "../lib/group-demand-intelligence/workflow/gdi-buying-authority-annotation-v1.js";
 import { applyEvidenceRecoveryToOpportunities } from "../lib/group-demand-intelligence/workflow/gdi-contact-channel-evidence-recovery-v1.js";
 import { readFindymailUsageLedger } from "../lib/group-demand-intelligence/providers/gdi-findymail-client-v1.js";
+import {
+  deriveMembershipFromPublications,
+  evaluateMembershipPersistenceReadiness,
+  filterRowsByStagedMembership,
+  loadDurableMembershipLedger,
+  GDI_INVENTORY_MEMBERSHIP_PERSISTENCE_V1,
+} from "../lib/group-demand-intelligence/persistence/gdi-inventory-membership-persistence-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const GDI_CLEAN_AIRTABLE_RECONSTRUCTION_CERT_V1 =
@@ -251,15 +258,62 @@ function tally(rows, key) {
  * Pure comparison: Airtable-sourced opportunities → in-memory enriched
  * reconstruction → parity vs STAGED opportunities.
  */
-export function buildReconstruction({ airtableOpps, stagedOpps, findymailLedger = [], hotelId }) {
+export function buildReconstruction({
+  airtableOpps,
+  stagedOpps,
+  findymailLedger = [],
+  hotelId,
+  currentOpps = [],
+  membershipLedger: membershipLedgerIn = null,
+}) {
   const stagedById = new Map(stagedOpps.map((o) => [o.id || o.opportunityId, o]));
   const rawAirtableById = new Map(airtableOpps.map((o) => [o.id || o.opportunityId, o]));
 
+  const durableMembership =
+    membershipLedgerIn ||
+    (hotelId ? loadDurableMembershipLedger(hotelId, ROOT) : null);
+  const derivedMembership = deriveMembershipFromPublications({
+    hotelId,
+    stagedPackage: {
+      publicationVersion: stagedOpps?.[0]?.publicationVersion || null,
+      inventoryIds: stagedOpps.map((o) => o.id || o.opportunityId),
+      opportunities: stagedOpps,
+    },
+    currentPackage: currentOpps?.length
+      ? {
+          inventoryIds: currentOpps.map((o) => o.id || o.opportunityId),
+          opportunities: currentOpps,
+        }
+      : null,
+    researchOpportunities: airtableOpps,
+  });
+  const membershipLedger = durableMembership || derivedMembership;
+  const membershipPersistence = evaluateMembershipPersistenceReadiness({
+    membershipLedger,
+    airtableRows: airtableOpps,
+    stagedPackage: {
+      inventoryIds: stagedOpps.map((o) => o.id || o.opportunityId),
+      opportunities: stagedOpps,
+    },
+  });
+
   // Reconstruction candidate set = customer-visible, non-test Airtable rows.
-  // (STAGED is deliberately NOT consulted for membership.)
-  const candidates = airtableOpps.filter(
+  // STAGED is deliberately NOT used as membership SoT — extras prove
+  // INVENTORY_MEMBERSHIP_NOT_PERSISTED until Airtable/durable membership exists.
+  // Only a durable membership ledger (or Airtable-embedded membership) may filter.
+  let candidates = airtableOpps.filter(
     (o) => o.customerVisible !== false && o.isTestData !== true,
   );
+  if (durableMembership?.rows?.length) {
+    const filtered = filterRowsByStagedMembership(
+      candidates,
+      durableMembership,
+    );
+    const stagedCovered = stagedOpps.every((o) =>
+      filtered.some((f) => (f.id || f.opportunityId) === (o.id || o.opportunityId)),
+    );
+    if (stagedCovered && filtered.length) candidates = filtered;
+  }
   const recovered = applyEvidenceRecoveryToOpportunities(candidates, {
     findymailLedger,
     normalizeIdentity: true,
@@ -351,6 +405,12 @@ export function buildReconstruction({ airtableOpps, stagedOpps, findymailLedger 
     stagedKeysAbsentFromAirtable,
     recoveryReport: recovered.report,
     annotationReport: { ...annotated.report, rows: undefined },
+    membershipPersistence,
+    membershipLedgerSummary: {
+      schema: membershipLedger?.schema || null,
+      counts: membershipLedger?.counts || null,
+      durableLoaded: Boolean(durableMembership),
+    },
     scorecards: {
       staged: ledgerStaged.scorecard,
       reconstructedIntersection: ledgerRec.scorecard,
@@ -379,8 +439,14 @@ export function evaluateReconstruction(rec, { liveAirtableRead }) {
       code: "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
       count: rec.ids.extraBeyondStaged.length,
       correction:
-        "Airtable holds more customer-visible rows than the STAGED inventory and no persisted field distinguishes them (no STAGED/CURRENT membership, qualification gate or inventory-population field on GDO). Persist per-opportunity publication membership (e.g. stagedPublicationVersion + inventoryPopulationPrimary) when STAGED is activated.",
+        "Airtable holds more customer-visible rows than the STAGED inventory and no persisted field distinguishes them. Persist hotel-scoped membership via gdi-inventory-membership-persistence-v1 (durable ledger + founder-authorized GDO write / schema fields).",
+      contract: GDI_INVENTORY_MEMBERSHIP_PERSISTENCE_V1,
     });
+  }
+  for (const cMem of rec.membershipPersistence?.corrections || []) {
+    if (!corrections.some((x) => x.code === cMem.code)) {
+      corrections.push({ ...cMem, contract: GDI_INVENTORY_MEMBERSHIP_PERSISTENCE_V1 });
+    }
   }
   for (const [field, label] of [
     ["email", "EMAIL"],
