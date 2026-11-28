@@ -8,6 +8,20 @@
  *   node scripts/gdi-weekly-refresh.mjs --hotel=recLuxvwwxID7U2B8 --apply-stage
  *   node scripts/gdi-weekly-refresh.mjs --hotel=recLuxvwwxID7U2B8 --max-queries=20 --skip-parallel
  *
+ * Runbook form (DryRun — never calls SerpApi, never writes data/ or STAGED):
+ *   npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run
+ *
+ * Flags:
+ *   --hotel-id <rec…> | --hotel-id=<rec…> | --hotel=<rec…|bethesda>   (hotel identity)
+ *   --dry-run | --dryRun        no provider calls; delta from existing/frozen discovery;
+ *                               reports under reports/gdi-weekly-refresh/<hotelId>/
+ *   --report-dir <path>         override DryRun report directory (tests)
+ *   --run-date <YYYYMMDD>       override the run date (default: today, ISO-derived)
+ *   --help
+ *
+ * Live (non-dry-run) discovery requires SERPAPI_KEY (or SERPAPI_API_KEY); otherwise
+ * the run fails closed: BLOCKED — SERPAPI_KEY required for live weekly discovery.
+ *
  * Does not live-promote Airtable. Staging writes local hotel bag annotations when --apply-stage.
  */
 import "../load-env.js";
@@ -36,16 +50,62 @@ import { loadOpportunities, saveOpportunities } from "../lib/group-demand-intell
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const RUN_DATE = "20260921";
+/** Legacy baseline date (existing Bethesda weekly artifacts). Default run date is now ISO "today". */
+const LEGACY_RUN_DATE = "20260921";
+let RUN_DATE = LEGACY_RUN_DATE;
 const STACK_SHA = "7312754ea8823bb4f5c28491f0096805030a0ffd";
+const EXIT_BLOCKED = 2;
 
+/** Supports `--name=value` and `--name value`. */
 function arg(name, fallback = null) {
   const prefix = `--${name}=`;
   const hit = process.argv.find((a) => a.startsWith(prefix));
-  return hit ? hit.slice(prefix.length) : fallback;
+  if (hit) return hit.slice(prefix.length);
+  const i = process.argv.indexOf(`--${name}`);
+  if (i >= 0 && i + 1 < process.argv.length && !process.argv[i + 1].startsWith("--")) {
+    return process.argv[i + 1];
+  }
+  return fallback;
 }
 function flag(name) {
   return process.argv.includes(`--${name}`);
+}
+
+function isoCompactToday(now = new Date()) {
+  return now.toISOString().slice(0, 10).replace(/-/g, "");
+}
+
+function serpApiConfigured() {
+  // Test guard: forces the fail-closed branch regardless of ambient credentials (no spend in tests).
+  if (process.env.GDI_WEEKLY_REFRESH_FORCE_NO_SERPAPI === "1") return false;
+  return Boolean(
+    String(process.env.SERPAPI_KEY || process.env.SERPAPI_API_KEY || "").trim()
+  );
+}
+
+function usage() {
+  console.error(
+    [
+      "Usage: node scripts/gdi-weekly-refresh.mjs --hotel-id <rec...> [--dry-run]",
+      "  --hotel-id <rec…> | --hotel=<rec…|bethesda>   hotel identity",
+      "  --dry-run | --dryRun                           no SerpApi; reports under reports/gdi-weekly-refresh/",
+      "  --skip-discovery                               reuse frozen discovery",
+      "  --apply-stage                                  (live only) write staged annotations",
+    ].join("\n")
+  );
+}
+
+/** Latest frozen weekly discovery for a hotel slug (date-agnostic). */
+function findLatestFrozenDiscovery(slug) {
+  const dir = path.join(ROOT, "data/group-demand-intelligence/evals");
+  if (!fs.existsSync(dir)) return null;
+  const re = new RegExp(`^${slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-weekly-discovery-(\\d{8})\\.json$`);
+  const hits = fs
+    .readdirSync(dir)
+    .map((f) => ({ f, m: f.match(re) }))
+    .filter((x) => x.m)
+    .sort((a, b) => b.m[1].localeCompare(a.m[1]));
+  return hits.length ? path.join(dir, hits[0].f) : null;
 }
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
@@ -136,7 +196,7 @@ async function runDiscovery(hotel, args) {
   return pipe;
 }
 
-function mainSyncBaseline(hotel, runId) {
+function mainSyncBaseline(hotel, runId, { dryRun = false, reportDir = null } = {}) {
   const bag = loadOpportunities(hotel.hotelId);
   const opps = bag.opportunities || [];
   const baseline = {
@@ -150,20 +210,37 @@ function mainSyncBaseline(hotel, runId) {
     sourceRunId: bag.runId || null,
     opportunities: opps.map(snapshotBaselineOpportunity),
   };
-  const p = path.join(
-    ROOT,
-    `data/group-demand-intelligence/evals/${hotel.slug}-weekly-baseline-${RUN_DATE}.json`
-  );
+  const p = dryRun
+    ? path.join(reportDir, "01-baseline.json")
+    : path.join(
+        ROOT,
+        `data/group-demand-intelligence/evals/${hotel.slug}-weekly-baseline-${RUN_DATE}.json`
+      );
   writeJson(p, baseline);
   return { baseline, bag, path: p };
 }
 
 async function main() {
-  const hotel = resolveHotel(arg("hotel", "recLuxvwwxID7U2B8"));
+  if (flag("help") || flag("h")) {
+    usage();
+    return;
+  }
+  const dryRun = flag("dry-run") || flag("dryRun") || arg("dry-run") === "true";
+  const hotelArg = arg("hotel-id") || arg("hotel", "recLuxvwwxID7U2B8");
+  RUN_DATE = String(arg("run-date") || isoCompactToday());
+  if (!/^\d{8}$/.test(RUN_DATE)) {
+    console.error(`BLOCKED — invalid --run-date ${RUN_DATE} (expected YYYYMMDD)`);
+    process.exit(EXIT_BLOCKED);
+  }
+  const hotel = resolveHotel(hotelArg);
   const runId = `gdi_weekly_${hotel.slug}_${RUN_DATE}`;
   const nowIso = new Date().toISOString();
   const startedAt = nowIso;
+  const reportDir = dryRun
+    ? path.resolve(arg("report-dir") || path.join(ROOT, "reports/gdi-weekly-refresh", hotel.hotelId))
+    : null;
   const args = {
+    dryRun,
     skipDiscovery: flag("skip-discovery"),
     force: flag("force"),
     applyStage: flag("apply-stage"),
@@ -173,25 +250,60 @@ async function main() {
     runWho: flag("run-who"),
   };
 
-  console.error(`[weekly] hotel=${hotel.hotelId} runId=${runId}`);
+  console.error(
+    `[weekly] hotel=${hotel.hotelId} runId=${runId} mode=${dryRun ? "DRY_RUN" : "LIVE"}`
+  );
 
-  const { baseline, bag } = mainSyncBaseline(hotel, runId);
-  console.error(`[weekly] baseline frozen: ${baseline.priorCanonicalCount} opportunities`);
+  if (dryRun && args.applyStage) {
+    console.error("BLOCKED — --apply-stage cannot be combined with --dry-run (DryRun never mutates hotel data).");
+    process.exit(EXIT_BLOCKED);
+  }
 
   const discoveryPath = path.join(
     ROOT,
     `data/group-demand-intelligence/evals/${hotel.slug}-weekly-discovery-${RUN_DATE}.json`
   );
+  const frozenPath = fs.existsSync(discoveryPath)
+    ? discoveryPath
+    : findLatestFrozenDiscovery(hotel.slug);
+  const willReuseFrozen =
+    dryRun || (args.skipDiscovery && Boolean(frozenPath) && !args.force);
+
+  // Fail closed before any write when live discovery would be required but cannot run.
+  if (!willReuseFrozen && !serpApiConfigured()) {
+    console.error("BLOCKED — SERPAPI_KEY required for live weekly discovery");
+    process.exit(EXIT_BLOCKED);
+  }
+
+  const { baseline, bag } = mainSyncBaseline(hotel, runId, { dryRun, reportDir });
+  console.error(`[weekly] baseline frozen: ${baseline.priorCanonicalCount} opportunities`);
+
   let discoveryFreeze;
-  if (args.skipDiscovery && fs.existsSync(discoveryPath) && !args.force) {
-    discoveryFreeze = readJson(discoveryPath);
-    console.error(`[weekly] reusing frozen discovery ${discoveryPath}`);
+  let discoverySource = "LIVE_NATIVE_DISCOVERY";
+  if (willReuseFrozen) {
+    if (frozenPath) {
+      discoveryFreeze = readJson(frozenPath);
+      discoverySource = `FROZEN_DISCOVERY:${path.relative(ROOT, frozenPath).replace(/\\/g, "/")}`;
+      console.error(`[weekly] reusing frozen discovery ${frozenPath}`);
+    } else {
+      discoveryFreeze = {
+        hotelId: hotel.hotelId,
+        candidateCount: 0,
+        trueActionableCount: 0,
+        candidates: [],
+        trueActionableIds: [],
+      };
+      discoverySource = "NONE_DRY_RUN_EXISTING_BAG_ONLY";
+      console.error(
+        "[weekly] no frozen discovery found — DryRun delta uses existing hotel bag only (SerpApi never called)"
+      );
+    }
   } else {
     console.error(`[weekly] running native discovery maxQueries=${args.maxQueries}`);
     const pipe = await runDiscovery(hotel, args);
     const seed = pipe.seedCandidates || [];
     const hygiene = applyDiscoveryHygieneV3(hotel.hotelId, seed, {
-      nowDate: "2026-09-21",
+      nowDate: nowIso.slice(0, 10),
       subjectHotel: { hotelId: hotel.hotelId, name: hotel.name },
     });
     discoveryFreeze = {
@@ -270,10 +382,12 @@ async function main() {
     ],
   });
 
-  const deltaPath = path.join(
-    ROOT,
-    `data/group-demand-intelligence/evals/${hotel.slug}-weekly-delta-${RUN_DATE}.json`
-  );
+  const deltaPath = dryRun
+    ? path.join(reportDir, "02-weekly-delta.json")
+    : path.join(
+        ROOT,
+        `data/group-demand-intelligence/evals/${hotel.slug}-weekly-delta-${RUN_DATE}.json`
+      );
   writeJson(deltaPath, {
     validationMarker: `gdi_weekly_delta_${hotel.slug}_${RUN_DATE}`,
     version: WEEKLY_DELTA_VERSION,
@@ -320,6 +434,20 @@ async function main() {
     counts: delta.counts,
     headerSummary: summary,
     appliedStage: false,
+    mode: dryRun ? "DRY_RUN" : "LIVE",
+    dryRun,
+    discoverySource,
+    guarantees: dryRun
+      ? {
+          serpApiCalls: 0,
+          providerCalls: 0,
+          surfeCalls: 0,
+          airtableWrites: 0,
+          stagedOverwrite: false,
+          currentChanged: false,
+          dataDirectoryWrites: 0,
+        }
+      : undefined,
     who: {
       runWho: args.runWho,
       newWho: 0,
@@ -360,12 +488,28 @@ async function main() {
   const dupNew = newIds.filter((id, i) => newIds.indexOf(id) !== i);
   refresh.integrity.duplicateOpportunitiesCreated = dupNew.length;
 
-  const refreshPath = path.join(
-    ROOT,
-    `data/group-demand-intelligence/evals/${hotel.slug}-weekly-refresh-${RUN_DATE}.json`
-  );
+  const refreshPath = dryRun
+    ? path.join(reportDir, "00-WEEKLY_REFRESH_DRY_RUN.json")
+    : path.join(
+        ROOT,
+        `data/group-demand-intelligence/evals/${hotel.slug}-weekly-refresh-${RUN_DATE}.json`
+      );
 
-  if (args.applyStage) {
+  if (dryRun) {
+    writeJson(path.join(reportDir, "03-staged-preview.opportunities.json"), {
+      hotelId: hotel.hotelId,
+      runId,
+      note: "DryRun preview only — never written to data/ or publication packages.",
+      opportunities: stagedOpps,
+      headerSummary: summary,
+    });
+    refresh.artifacts = {
+      reportDir: path.relative(ROOT, reportDir).replace(/\\/g, "/"),
+      baseline: "01-baseline.json",
+      delta: "02-weekly-delta.json",
+      stagedPreview: "03-staged-preview.opportunities.json",
+    };
+  } else if (args.applyStage) {
     const backupDir = path.join(
       ROOT,
       `data/group-demand-intelligence/hotels/${hotel.hotelId}/weekly-runs/${runId}`
@@ -409,6 +553,8 @@ async function main() {
     JSON.stringify(
       {
         runId,
+        mode: refresh.mode,
+        discoverySource,
         prior: baseline.priorCanonicalCount,
         candidates: discoveryFreeze.candidateCount,
         trueActionable: discoveryFreeze.trueActionableCount,
@@ -420,6 +566,20 @@ async function main() {
       2
     )
   );
+  if (dryRun) {
+    console.log(
+      JSON.stringify({
+        ok: true,
+        mode: "DRY_RUN",
+        hotelId: hotel.hotelId,
+        runId,
+        discoverySource,
+        serpApiCalls: 0,
+        report: path.relative(ROOT, refreshPath).replace(/\\/g, "/"),
+        counts: delta.counts,
+      })
+    );
+  }
 }
 
 main().catch((err) => {

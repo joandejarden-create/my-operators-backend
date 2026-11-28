@@ -1,0 +1,28 @@
+{
+  "status": "PARTIAL",
+  "corrections": [
+    {
+      "code": "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
+      "count": 40,
+      "correction": "Airtable holds more customer-visible rows than the STAGED inventory and no persisted field distinguishes them (no STAGED/CURRENT membership, qualification gate or inventory-population field on GDO). Persist per-opportunity publication membership (e.g. stagedPublicationVersion + inventoryPopulationPrimary) when STAGED is activated."
+    },
+    {
+      "code": "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
+      "stagedPresent": 0,
+      "airtableRawPresent": 0,
+      "reconstructedInMemoryPresent": 26,
+      "correction": "Authority is recomputed in memory but is persisted in neither Airtable GDO nor the STAGED package. Persist primaryContact.buyingAuthorityStatus + opportunity.buyingAuthorityAnnotation to GDO (founder-authorized write) and rematerialize STAGED through the publication builder."
+    },
+    {
+      "code": "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE",
+      "fields": [
+        {
+          "field": "recommendedNextStep",
+          "stagedOnly": 0,
+          "mismatch": 1
+        }
+      ],
+      "correction": "These commercial/presentation fields exist in STAGED but are absent or different in Airtable. Persist them in the GDO payload (or regenerate via the publication builder from the research inventory)."
+    }
+  ]
+}

@@ -32,6 +32,19 @@ function Invoke-GdiV3NodeStage {
     [switch]$AuthorizeResearchPersistence,
     [string]$ExactWriteSetAuthorization = '',
     [switch]$ApplyResearchPersistence,
+    # Unified Live FULL research spine (Leisure / CAD; $0 assess only) + PLP via discovery matrix
+    [switch]$AuthorizePaidDiscovery,
+    [switch]$AllowHistoricalReplay,
+    [switch]$EnableLeisure,
+    [switch]$NoLeisure,
+    [switch]$EnableCad,
+    [switch]$NoCad,
+    # Findymail -> Airtable persistence (separate from paid research authorization)
+    [switch]$PersistFindymailResults,
+    [switch]$AuthorizeFindymailPersist,
+    [switch]$AuthorizeAirtableProductionWrites,
+    [switch]$ApplyFindymailPersist,
+    [double]$FindymailCreditHardCap = 0,
     # Stage control
     [switch]$SkipDiscovery,
     [switch]$SkipDeep,
@@ -66,6 +79,25 @@ function Invoke-GdiV3NodeStage {
     throw '-ApplyResearchPersistence requires -AuthorizeResearchPersistence and -ExactWriteSetAuthorization.'
   }
 
+  if ($EnableLeisure -and $NoLeisure) { throw '-EnableLeisure and -NoLeisure are mutually exclusive.' }
+  if ($EnableCad -and $NoCad) { throw '-EnableCad and -NoCad are mutually exclusive.' }
+  if ($Mode -ne 'Live' -and ($AuthorizePaidDiscovery -or $PersistFindymailResults -or $ApplyFindymailPersist)) {
+    throw '-AuthorizePaidDiscovery / -PersistFindymailResults / -ApplyFindymailPersist require -Mode Live.'
+  }
+  if ($PersistFindymailResults -and -not $AuthorizeFindymail) {
+    throw '-PersistFindymailResults requires -AuthorizeFindymail.'
+  }
+  if ($ApplyFindymailPersist -and -not $PersistFindymailResults) {
+    throw '-ApplyFindymailPersist requires -PersistFindymailResults.'
+  }
+  if ($PersistFindymailResults) {
+    $viaResearchPersistence = ($AuthorizeResearchPersistence -and $ExactWriteSetAuthorization)
+    $viaDedicated = ($AuthorizeFindymailPersist -and $AuthorizeAirtableProductionWrites)
+    if (-not ($viaResearchPersistence -or $viaDedicated)) {
+      throw '-PersistFindymailResults requires (-AuthorizeResearchPersistence + -ExactWriteSetAuthorization) OR (-AuthorizeFindymailPersist + -AuthorizeAirtableProductionWrites). -AuthorizePaidResearch / -AuthorizeFindymail never unlock Airtable writes.'
+    }
+  }
+
   $cli = Join-Path $resolvedRepo 'scripts\gdi\run-gdi-full-e2e-v3-stage-cli-v1.mjs'
   if (-not (Test-Path -LiteralPath $cli)) {
     throw "Missing V3 CLI: $cli"
@@ -94,6 +126,17 @@ function Invoke-GdiV3NodeStage {
   if ($AuthorizeResearchPersistence) { $nodeArgs += '--authorize-research-persistence' }
   if ($ExactWriteSetAuthorization) { $nodeArgs += @('--exact-write-set-authorization', $ExactWriteSetAuthorization) }
   if ($ApplyResearchPersistence) { $nodeArgs += '--apply-research-persistence' }
+  if ($AuthorizePaidDiscovery) { $nodeArgs += '--authorize-paid-discovery' }
+  if ($AllowHistoricalReplay) { $nodeArgs += '--allow-historical-replay' }
+  if ($EnableLeisure) { $nodeArgs += '--enable-leisure' }
+  if ($NoLeisure) { $nodeArgs += '--no-leisure' }
+  if ($EnableCad) { $nodeArgs += '--enable-cad' }
+  if ($NoCad) { $nodeArgs += '--no-cad' }
+  if ($PersistFindymailResults) { $nodeArgs += '--persist-findymail-results' }
+  if ($AuthorizeFindymailPersist) { $nodeArgs += '--authorize-findymail-persist' }
+  if ($AuthorizeAirtableProductionWrites) { $nodeArgs += '--authorize-airtable-production-writes' }
+  if ($ApplyFindymailPersist) { $nodeArgs += '--apply-findymail-persist' }
+  if ($FindymailCreditHardCap -gt 0) { $nodeArgs += @('--findymail-credit-hard-cap', ([string][int]$FindymailCreditHardCap)) }
   if ($SkipDiscovery) { $nodeArgs += '--skip-discovery' }
   if ($SkipDeep) { $nodeArgs += '--skip-deep' }
   if ($SkipWhoHow) { $nodeArgs += '--skip-who-how' }
