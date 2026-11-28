@@ -2028,6 +2028,8 @@
   }
 
   function loadHpcPropertyFallback(hotelId) {
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) return Promise.resolve(null);
     return fetch(
       "/api/golden-demo/ownership/hotel/" + encodeURIComponent(hotelId),
       { credentials: "same-origin" }
@@ -2293,6 +2295,8 @@
   }
 
   function loadViewModel(hotelId) {
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) return Promise.resolve(null);
     var showcase = SHOWCASE_PATHS[hotelId];
     var tries = [];
     if (showcase) tries.push(showcase);
@@ -2371,6 +2375,13 @@
   function mount(host, hotelId, opts) {
     if (!host) return Promise.resolve();
     opts = opts || {};
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) {
+      host.innerHTML = renderEmpty(
+        "Hotel identity could not be resolved. Open a property from Opportunity Radar or use a link with a canonical hotel id.",
+      );
+      return Promise.resolve();
+    }
     // Surfe session results must not survive hotel remount / reload.
     _sessionSurfeByPerson = Object.create(null);
     host.innerHTML = renderLoading();

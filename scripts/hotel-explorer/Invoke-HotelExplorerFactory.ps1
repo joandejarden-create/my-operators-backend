@@ -44,7 +44,15 @@
     HE_UNIFIED_THEME_CONSISTENCY
     HE_CANONICAL_AIRTABLE_READBACK
     HE_AUTHENTICATED_LIVE_RENDERING (NOT_TESTED when -SkipBrowser)
-    FULL_HE_E2E_VALIDATED (remains NO until eight-hotel browser program passes)
+    HE_CANONICAL_HOTEL_ID_VALIDATED
+    HE_IDENTITY_PROPAGATION_VALIDATED
+    HE_API_HOTEL_ID_PARITY
+    HE_API_RESPONSE_HOTEL_PARITY
+    HE_RENDERED_HOTEL_IDENTITY_VALIDATED
+    HE_CROSS_HOTEL_CACHE_ISOLATION
+    HE_NO_BLANK_HOTEL_REQUESTS
+    HE_ALL_TABS_IDENTITY_VALIDATED
+    FULL_HE_E2E_VALIDATED (remains NO until eight-hotel browser program passes; identity FAIL keeps Full E2E NO)
 
   Browser policy: -SkipBrowser forces browser checks to NOT_TESTED (never PASS).
 
@@ -169,6 +177,14 @@ if ($ConsistencyModes -contains $Mode) {
   & node @acceptArgs
   if ($LASTEXITCODE -ne 0) {
     throw "HE 5.0 release acceptance gates FAILED for $HotelId (mode=$Mode)"
+  }
+
+  Write-Host "[HE Factory] Identity Integrity Gate V1 (canonical HPC → APIs → render)"
+  $identityArgs = @(".\scripts\hotel-explorer\test-he-identity-integrity-gate-v1.mjs")
+  if (-not $SkipBrowser) { $identityArgs += "--browser" }
+  & node @identityArgs
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Identity Integrity Gate V1 FAILED for $HotelId (mode=$Mode) — FULL_HE_E2E_VALIDATED stays NO"
   }
 
   Write-Host "[HE Factory] Organization & Portfolio UI cleanup gates"
