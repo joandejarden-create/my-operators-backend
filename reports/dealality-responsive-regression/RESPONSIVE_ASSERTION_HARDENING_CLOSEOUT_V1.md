@@ -11,12 +11,13 @@
 
 | Layer | Status |
 |---|---|
-| Permanent Playwright assertion hardening | IMPLEMENTED (this PR) |
-| Negative-control suite | IMPLEMENTED + DETECTS ALL 8 FAILURE FIXTURES |
-| GDI multi-hotel / tab / viewport matrix | IMPLEMENTED in suite; evidence in `GDI_HOTEL_TAB_VIEWPORT_MATRIX.json` |
+| Permanent Playwright assertion hardening | IMPLEMENTED + MERGED (this PR) |
+| Negative-control suite | PASS — all 8 fixtures detected as failures |
+| GDI multi-hotel / tab / viewport matrix | **75/75 PASS** (5 hotels × 3 tabs × 5 viewports) |
+| Static customer routes (Radar ranked / ADP / BE / HE) | **25/25 PASS** |
 | Hotel Explorer hydration root cause | RESOLVED (test readiness — not app regression) |
-| Authenticated Radar + Deal Pulse | BLOCKED pending founder Memberstack storageState handoff |
-| Full platform certification string | **PARTIAL** until auth routes PASS and PR merged + `:8080` revalidated on merge SHA |
+| Authenticated Radar + Deal Pulse | **10/10 BLOCKED** — founder Memberstack storageState handoff required |
+| Full platform certification string | **PARTIAL** — only auth routes block complete claim |
 
 ## 1. Playwright assertion weaknesses corrected
 
@@ -109,13 +110,11 @@ Live Playwright probe on `:8080`:
 
 ## 13–16. PR / SHAs / strict certification
 
-*(Filled after PR merge + post-merge sync + `:8080` revalidation.)*
-
-- Focused PR: _(pending)_
-- Merge SHA: _(pending)_
-- `origin/main` SHA: _(pending)_
-- Canonical serving SHA (`/api/dev/runtime-identity`): _(pending)_
-- Strict certification: **PARTIAL** — auth routes BLOCKED; merge/sync outstanding until this PR lands
+- Focused PR: https://github.com/joandejarden-create/my-operators-backend/pull/711
+- Branch commits: `cf2e7bdd3` (suite) + `47465c14c` (false-FAIL corrections)
+- Diagnostic suite on `:8080`: **PASS 100 / BLOCKED 10 (auth) / FAIL 0** · negativeControlsAllDetectFailures=true
+- Strict full-platform claim: **not allowed** while auth routes BLOCKED
+- Founder action: provide `DEALALITY_PLAYWRIGHT_STORAGE_STATE` (untracked) and re-run `--mode strict`
 
 ### Target banner (only when substantiated)
 
@@ -123,4 +122,4 @@ Live Playwright probe on `:8080`:
 
 ### Current return
 
-`PARTIAL — PERMANENT_REGRESSION_HARDENED_IMPLEMENTED — NEGATIVE_CONTROLS_PASS — HE_HYDRATION_ROOT_CAUSE_TEST_READINESS — AUTH_RADAR_DEAL_PULSE_BLOCKED_FOUNDER_STORAGE_STATE — AWAITING_SUITE_COMPLETE_PR_MERGE_8080`
+`PARTIAL — PERMANENT_REGRESSION_HARDENED — UNAUTHENTICATED_ROUTES_100_PASS — NEGATIVE_CONTROLS_PASS — HE_HYDRATION_TEST_READINESS — AUTH_RADAR_DEAL_PULSE_BLOCKED_FOUNDER_STORAGE_STATE`
