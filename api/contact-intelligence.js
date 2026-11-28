@@ -582,38 +582,50 @@ export async function postContactIntelligencePersonReveal(req, res) {
       });
     }
 
-    // Prefer existing Contact Intelligence package channels (no credit spend).
+    // Airtable-first missing-channel recheck (V3). Only skip Surfe when BOTH
+    // email and phone are already durable — never short-circuit on a single channel.
+    let missingChannelState = null;
     try {
-      const existing = serviceForRequest(req).hotelGet({
-        hotel_id: hotelId,
-        audience: "internal",
-      });
-      if (existing?.ok && existing.package) {
-        const people = existing.package.people || existing.package.persons || [];
-        const match =
-          people.find((p) => String(p.personId || p.person_id || "") === personId) ||
-          people.find(
-            (p) =>
-              String(p.name || p.display_name || "")
-                .trim()
-                .toLowerCase() === personName.toLowerCase()
-          );
-        const emails = (match && (match.emailContacts || match.emails)) || [];
-        const phones = (match && (match.phoneContacts || match.phones)) || [];
-        const has =
-          emails.some((c) => c && (c.value || c.email)) ||
-          phones.some((c) => c && (c.value || c.phone));
-        if (has) {
+      const { resolveCanonicalPersonChannels } = await import(
+        "../lib/shared-contact-intelligence/index.js"
+      );
+      const { computeMissingContactChannels } = await import(
+        "../lib/shared-contact-intelligence/missing-channel-enrichment-v3.js"
+      );
+      const resolved = await resolveCanonicalPersonChannels(
+        {
+          canonicalPersonId: personId,
+          displayName: personName,
+          organizationName: organization,
+          hotelId,
+        },
+        { hotelId },
+      );
+      if (resolved?.ok && resolved.person) {
+        missingChannelState = computeMissingContactChannels(resolved.person);
+        if (!missingChannelState.needsEmail && !missingChannelState.needsPhone) {
           return res.json({
             ok: true,
             cached: true,
             surfeCalls: 0,
             estimatedCostUsd: 0,
             provider: null,
-            channels: { emails, phones },
-            existing: { personId, personName: match?.name || personName },
+            missingChannelState,
+            channels: {
+              emails: resolved.person.email
+                ? [{ value: resolved.person.email }]
+                : [],
+              phones: resolved.person.phone
+                ? [{ value: resolved.person.phone }]
+                : [],
+            },
+            existing: {
+              personId,
+              personName: resolved.person.displayName || personName,
+            },
             persistence: "NOT_WRITTEN",
             review_required: false,
+            message: "Verified email and phone already on file — no Surfe credit used.",
           });
         }
       }
@@ -709,18 +721,26 @@ export async function postContactIntelligencePersonReveal(req, res) {
         });
       }
 
-      const channel = String(body.channel || "both").toLowerCase();
-      // Explicit HE Find Email & Phone click: request email + mobile for session display.
-      // Opt out with HE_SURFE_REQUEST_MOBILE=false (email + free landlines only).
-      // Market Alerts bulk paths still honor SURFE_INCLUDE_MOBILE separately.
+      // V3: request only missing channels from Airtable recheck (body.channel is a hint).
+      const { surfeIncludeFromMissingState } = await import(
+        "../lib/shared-contact-intelligence/missing-channel-enrichment-v3.js"
+      );
+      if (!missingChannelState) {
+        const hint = String(body.channel || "both").toLowerCase();
+        const needsEmail = hint !== "phone";
+        const needsPhone = hint !== "email";
+        missingChannelState = {
+          needsEmail,
+          needsPhone,
+          requestChannel: needsEmail && needsPhone ? "both" : needsEmail ? "email" : "phone",
+          surfeInclude: { email: needsEmail, mobile: needsPhone },
+          source: "body_channel_hint",
+        };
+      }
       const heMobileOptOut =
         String(process.env.HE_SURFE_REQUEST_MOBILE || "").toLowerCase() === "false";
-      const wantMobile =
-        !heMobileOptOut &&
-        (limits.includeMobile === true ||
-          channel === "phone" ||
-          channel === "both" ||
-          String(process.env.HE_SURFE_REQUEST_MOBILE || "").toLowerCase() === "true");
+      const surfeInclude = surfeIncludeFromMissingState(missingChannelState);
+      if (heMobileOptOut) surfeInclude.mobile = false;
       const provider = createSurfeContactProvider({
         pollOnEnrich: true,
         maxPollWaitMs: Number(process.env.HE_SURFE_POLL_MS || 60000),
@@ -735,9 +755,9 @@ export async function postContactIntelligencePersonReveal(req, res) {
             companyDomain,
           },
         ],
-        includeEmail: channel !== "phone",
-        includeMobile: wantMobile,
-        includeLinkedIn: true,
+        includeEmail: surfeInclude.email === true,
+        includeMobile: surfeInclude.mobile === true,
+        includeLinkedIn: surfeInclude.linkedInUrl !== false,
       });
       if (!enrichRes?.ok) {
         const errCode = enrichRes?.error || "surfe_enrich_failed";
@@ -755,6 +775,10 @@ export async function postContactIntelligencePersonReveal(req, res) {
           persistence: "NOT_WRITTEN",
         });
       }
+      const requestedInclude = {
+        email: surfeInclude.email === true,
+        mobile: surfeInclude.mobile === true,
+      };
       if (enrichRes.pending) {
         return res.json({
           ok: true,
@@ -770,6 +794,8 @@ export async function postContactIntelligencePersonReveal(req, res) {
           error: "surfe_pending",
           userMessage:
             "Surfe enrichment is still in progress. Wait a moment and try again — this is not a no-result.",
+          missingChannelState,
+          requestedInclude,
           persistence: "NOT_WRITTEN",
           review_required: false,
         });
@@ -796,6 +822,8 @@ export async function postContactIntelligencePersonReveal(req, res) {
           person: null,
           error: "surfe_no_result",
           userMessage: "No additional professional contact details found.",
+          missingChannelState,
+          requestedInclude,
           persistence: "NOT_WRITTEN",
           review_required: false,
         });
@@ -810,6 +838,8 @@ export async function postContactIntelligencePersonReveal(req, res) {
         providerAttribution: "Surfe · Session Only",
         verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
         person,
+        missingChannelState,
+        requestedInclude,
         persistence: "NOT_WRITTEN",
         review_required: true,
         note: "Session-only Surfe result. Never written to Airtable from this action.",

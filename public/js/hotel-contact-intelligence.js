@@ -402,6 +402,7 @@
     var hasOrg = present(p.organization) || present(p.organizationName);
     var hasEmail = personEmails(p).length > 0;
     var hasPhone = personPhones(p).length > 0;
+    var hasLinkedIn = Boolean(linkedInUrl(p));
     var action = p.enrichAction || {};
     var providerReady =
       capability &&
@@ -409,33 +410,55 @@
         capability.mockEnabled === true ||
         capability.findymailEnabled === true ||
         capability.hybridEnrichEnabled === true);
+    // Approved customer label stays constant; contextual title describes missing channel.
     var label = FIND_LABEL;
+    var contextualDescription = null;
     var missing = [];
     var channel = "both";
     if (!hasEmail) missing.push("professional_email");
     if (!hasPhone) missing.push("direct_business_phone");
-    if (!hasEmail && hasPhone) channel = "email";
-    else if (hasEmail && !hasPhone) channel = "phone";
-    else if (hasEmail && hasPhone) channel = "complete";
+    if (!hasEmail && hasPhone) {
+      channel = "email";
+      contextualDescription = "Find Missing Email";
+    } else if (hasEmail && !hasPhone) {
+      channel = "phone";
+      contextualDescription = "Find Missing Phone";
+    } else if (hasEmail && hasPhone) {
+      channel = "complete";
+    } else {
+      contextualDescription = FIND_LABEL;
+    }
 
     // Button always visible. Dimmed only when both email + phone already on file.
     if (hasEmail && hasPhone) {
       return {
         label: label,
+        contextualDescription: null,
         enabled: false,
         dimmedComplete: true,
         channel: channel,
         missing: [],
+        hasVerifiedEmail: true,
+        hasVerifiedPhone: true,
+        hasVerifiedLinkedIn: hasLinkedIn,
+        needsEmail: false,
+        needsPhone: false,
         reason: "Verified email and phone already on file.",
       };
     }
     if (!hasName || !hasOrg) {
       return {
         label: label,
+        contextualDescription: contextualDescription,
         enabled: false,
         dimmedComplete: false,
         channel: null,
         missing: missing,
+        hasVerifiedEmail: hasEmail,
+        hasVerifiedPhone: hasPhone,
+        hasVerifiedLinkedIn: hasLinkedIn,
+        needsEmail: !hasEmail,
+        needsPhone: !hasPhone,
         reason: "Enrichment needs a full name and organization.",
         providerUnavailable: false,
       };
@@ -445,12 +468,19 @@
       (providerReady && action.enabled !== false);
     return {
       label: label,
+      contextualDescription: contextualDescription,
       enabled: enabled,
       dimmedComplete: false,
       channel: channel,
       missing: missing,
+      hasVerifiedEmail: hasEmail,
+      hasVerifiedPhone: hasPhone,
+      hasVerifiedLinkedIn: hasLinkedIn,
+      needsEmail: !hasEmail,
+      needsPhone: !hasPhone,
       providerUnavailable: !providerReady,
       reason:
+        contextualDescription ||
         (capability && capability.userReason) ||
         action.reason ||
         (!providerReady
@@ -591,7 +621,7 @@
     var li = linkedInUrl(p);
     var compact = opts.compact === true;
     var disabled = !meta.enabled;
-    var title = meta.reason || "";
+    var title = meta.contextualDescription || meta.reason || "";
     var btnClass =
       "hci-btn hci-btn--enrich" +
       (compact ? " hci-btn--enrich-compact" : "") +
@@ -621,10 +651,16 @@
       esc(meta.channel || "both") +
       '" data-enrich-label="' +
       esc(meta.label || FIND_LABEL) +
+      '" data-needs-email="' +
+      (meta.needsEmail ? "1" : "0") +
+      '" data-needs-phone="' +
+      (meta.needsPhone ? "1" : "0") +
       '" data-dimmed-complete="' +
       (meta.dimmedComplete ? "1" : "0") +
       '" title="' +
       esc(title) +
+      '" aria-label="' +
+      esc(title || meta.label || FIND_LABEL) +
       '"' +
       (disabled ? " disabled aria-disabled=\"true\"" : "") +
       ">" +
@@ -1453,6 +1489,8 @@
               '"]'
           );
         if (mainBtn) {
+          var surfeChannel = surfeBtn.getAttribute("data-enrich-channel");
+          if (surfeChannel) mainBtn.setAttribute("data-enrich-channel", surfeChannel);
           mainBtn.setAttribute("data-force-surfe", "1");
           mainBtn.click();
         }
@@ -1516,6 +1554,29 @@
           if (body && body.person && !body.person.personId) body.person.personId = personId;
           if (useHybrid && body && body.ok && (body.email || body.phone || body.channels)) {
             applyHybridRowUpdate(btn, body);
+            var rem =
+              (body.missingChannelState && body.missingChannelState.requestChannel) ||
+              (body.surfeIncludeSuggested && body.surfeIncludeSuggested.email && body.surfeIncludeSuggested.mobile
+                ? "both"
+                : body.surfeIncludeSuggested && body.surfeIncludeSuggested.email
+                  ? "email"
+                  : body.surfeIncludeSuggested && body.surfeIncludeSuggested.mobile
+                    ? "phone"
+                    : "both");
+            if (body.missingChannelState) {
+              btn.setAttribute(
+                "data-enrich-channel",
+                body.missingChannelState.requestChannel || rem
+              );
+              btn.setAttribute(
+                "data-needs-email",
+                body.missingChannelState.needsEmail ? "1" : "0"
+              );
+              btn.setAttribute(
+                "data-needs-phone",
+                body.missingChannelState.needsPhone ? "1" : "0"
+              );
+            }
             if (slot) {
               slot.hidden = false;
               slot.innerHTML =
@@ -1525,12 +1586,21 @@
                 (body.surfeFallbackAvailable
                   ? '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
                     esc(personId) +
+                    '" data-enrich-channel="' +
+                    esc(rem) +
                     '">Try Surfe (session only)</button>'
                   : "");
+            }
+            if (!body.surfeFallbackAvailable) {
+              btn.disabled = true;
+              btn.textContent = btn.getAttribute("data-enrich-label") || FIND_LABEL;
+              btn.classList.add("hci-btn--enrich-dimmed");
             }
             return;
           }
           if (useHybrid && body && body.surfeFallbackAvailable && !body.email && !body.phone) {
+            var remBoth =
+              (body.missingChannelState && body.missingChannelState.requestChannel) || "both";
             if (slot) {
               slot.hidden = false;
               slot.innerHTML =
@@ -1539,6 +1609,8 @@
                 "</div>" +
                 '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
                 esc(personId) +
+                '" data-enrich-channel="' +
+                esc(remBoth) +
                 '">Try Surfe (session only)</button>';
             }
             btn.disabled = false;

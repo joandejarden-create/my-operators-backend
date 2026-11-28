@@ -335,3 +335,14 @@ regexes = [
   # Includes PR #555 discoveryRecordId and CM persist inventoryRecId.
   '''^(?:discoveryRecordId|inventoryRecId)$''',
 ]
+
+# JS boolean helpers adjacent to "LinkedIn" identifiers are not LinkedIn OAuth client IDs.
+[[rules]]
+id = "linkedin-client-id"
+
+[rules.allowlist]
+description = "PR #700 false positive: fromChannelsLi local binding next to hasVerifiedLinkedIn (not an OAuth client id)"
+regexTarget = "secret"
+regexes = [
+  '''^fromChannelsLi$''',
+]

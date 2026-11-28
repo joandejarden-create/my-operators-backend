@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-28T10:58:45.674Z",
+  "version": "missing-channel-enrichment-v3",
+  "scope": "GLOBAL_HE_AND_GDI",
+  "gates": {
+    "CONTACT_SHARED_MISSING_CHANNEL_MODULE": {
+      "status": "PASS",
+      "version": "missing-channel-enrichment-v3"
+    },
+    "CONTACT_HE_GDI_SURFE_INCLUDE_PARITY": {
+      "status": "PASS",
+      "channels": [
+        "email",
+        "phone",
+        "both",
+        "none"
+      ]
+    },
+    "CONTACT_GLOBAL_CHANNEL_MATRIX": {
+      "status": "PASS",
+      "rows": 8
+    },
+    "CONTACT_VERIFIED_LINKEDIN_IDENTITY_INPUT": {
+      "status": "PASS",
+      "field": "linkedinUrl"
+    },
+    "CONTACT_ASYNC_PARTIAL_AND_SKIP": {
+      "status": "PASS",
+      "skipComplete": true,
+      "missEphemeral": true
+    },
+    "CONTACT_NO_PRODUCTION_PII_HARDCODES": {
+      "status": "PASS",
+      "scanned": [
+        "shared",
+        "gdi-provider",
+        "he-api"
+      ]
+    },
+    "CONTACT_MULTI_MARKET_REPRESENTATIVE": {
+      "status": "PASS",
+      "markets": [
+        "north_america_a",
+        "latam_b",
+        "europe_c"
+      ],
+      "hotels": 3,
+      "people": 8
+    }
+  },
+  "matrixSummary": {
+    "markets": 3,
+    "hotels": 3,
+    "people": 8,
+    "byRequestChannel": {
+      "none": 1,
+      "phone": 2,
+      "email": 2,
+      "both": 3
+    }
+  }
+}
