@@ -1,0 +1,59 @@
+{
+  "at": "2026-11-28T10:58:45.607Z",
+  "version": "missing-channel-enrichment-v3",
+  "gates": {
+    "CONTACT_DYNAMIC_MISSING_CHANNEL_DETECTION": {
+      "status": "PASS",
+      "version": "missing-channel-enrichment-v3",
+      "cases": [
+        "both_present",
+        "email_missing",
+        "phone_missing",
+        "both_missing",
+        "li_not_substitute"
+      ]
+    },
+    "CONTACT_SURFE_PHONE_ONLY_REQUEST": {
+      "status": "PASS",
+      "include": {
+        "email": false,
+        "mobile": true,
+        "linkedInUrl": true
+      }
+    },
+    "CONTACT_SURFE_EMAIL_ONLY_REQUEST": {
+      "status": "PASS",
+      "include": {
+        "email": true,
+        "mobile": false,
+        "linkedInUrl": true
+      }
+    },
+    "CONTACT_SURFE_BOTH_CHANNEL_REQUEST": {
+      "status": "PASS",
+      "include": {
+        "email": true,
+        "mobile": true,
+        "linkedInUrl": true
+      }
+    },
+    "CONTACT_NO_DUPLICATE_PROVIDER_CREDITS": {
+      "status": "PASS",
+      "phoneOnlySkipsEmail": true,
+      "emailOnlySkipsMobile": true
+    },
+    "CONTACT_BACKEND_AIRTABLE_RECHECK": {
+      "status": "PASS",
+      "api": true,
+      "hybrid": true
+    },
+    "CONTACT_PARTIAL_RESULT_HANDLING": {
+      "status": "PASS",
+      "pendingDistinct": true
+    },
+    "CONTACT_SURFE_SESSION_ONLY": {
+      "status": "PASS",
+      "persistForbidden": true
+    }
+  }
+}
