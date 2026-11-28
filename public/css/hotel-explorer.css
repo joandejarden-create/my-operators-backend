@@ -1438,12 +1438,7 @@ button.hex-action {
 .hex-root .hiw-source-row.is-source-focus td {
   background: rgba(108, 114, 255, 0.16);
 }
-.hex-root .hiw-table--sources td:nth-child(5),
-.hex-root .hiw-table--sources th:nth-child(5),
-.hex-root .hiw-table--sources td:nth-child(6),
-.hex-root .hiw-table--sources th:nth-child(6) {
-  white-space: nowrap;
-}
+/* DATE may wrap Published/Accessed lines; SUPPORTS must wrap — never nowrap both. */
 
 /* Insight / finding titles — title case, slightly quieter than section */
 .hex-root .hiw-insight__title,
@@ -1687,20 +1682,38 @@ button.hex-action {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+/*
+ * Sources & Evidence — 8-column model after DATE consolidation:
+ * # | Source title | Publisher | Category | Date | Supports | Status | Link
+ * Fixed layout + nowrap on Date/Supports caused visible cell overlap.
+ */
 .hex-root .hiw-table--sources {
-  min-width: 1100px !important;
+  min-width: 1180px !important;
+  width: 100%;
+}
+.hex-root .hiw-table--sources th,
+.hex-root .hiw-table--sources td {
+  vertical-align: top;
+  padding: 12px 14px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
+  overflow: hidden;
 }
 .hex-root .hiw-table--sources td:first-child,
 .hex-root .hiw-table--sources th:first-child {
   width: 3% !important;
-  min-width: 2.25rem !important;
+  min-width: 2.5rem !important;
   color: var(--muted);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .hex-root .hiw-table--sources td:nth-child(2),
 .hex-root .hiw-table--sources th:nth-child(2) {
-  width: 22% !important;
+  width: 20% !important;
+  min-width: 160px;
   color: var(--neutral--100);
   font-weight: 650;
 }
@@ -1710,31 +1723,46 @@ button.hex-action {
 }
 .hex-root .hiw-table--sources td:nth-child(3),
 .hex-root .hiw-table--sources th:nth-child(3) {
-  width: 12% !important;
+  width: 11% !important;
+  min-width: 110px;
 }
 .hex-root .hiw-table--sources td:nth-child(4),
 .hex-root .hiw-table--sources th:nth-child(4) {
-  width: 12% !important;
+  width: 11% !important;
+  min-width: 110px;
 }
+/* Date — Published / Accessed labels; wrap lines when needed */
 .hex-root .hiw-table--sources td:nth-child(5),
 .hex-root .hiw-table--sources th:nth-child(5),
+.hex-root .hiw-table--sources td.hiw-source-date {
+  width: 12% !important;
+  min-width: 132px !important;
+  white-space: normal;
+  line-height: 1.35;
+}
+/* Supports — customer labels must wrap, never spill into Status */
 .hex-root .hiw-table--sources td:nth-child(6),
 .hex-root .hiw-table--sources th:nth-child(6) {
-  width: 9% !important;
-  white-space: nowrap;
+  width: 20% !important;
+  min-width: 160px !important;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.35;
 }
 .hex-root .hiw-table--sources td:nth-child(7),
 .hex-root .hiw-table--sources th:nth-child(7) {
-  width: 16% !important;
+  width: 11% !important;
+  min-width: 108px !important;
+  white-space: normal;
 }
 .hex-root .hiw-table--sources td:nth-child(8),
-.hex-root .hiw-table--sources th:nth-child(8) {
-  width: 8% !important;
-}
+.hex-root .hiw-table--sources th:nth-child(8),
 .hex-root .hiw-table--sources td:last-child,
 .hex-root .hiw-table--sources th:last-child {
-  width: 9% !important;
+  width: 12% !important;
+  min-width: 128px !important;
   white-space: nowrap;
+  overflow: visible;
 }
 .hex-root .hiw-table--sources .hiw-linkish {
   color: #8fc3ff;
