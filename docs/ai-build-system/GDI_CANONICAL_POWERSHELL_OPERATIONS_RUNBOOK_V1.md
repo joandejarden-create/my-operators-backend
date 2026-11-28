@@ -401,12 +401,49 @@ npm run gdi:weekly-refresh -- --hotel-id recLuxvwwxID7U2B8 --dry-run
 
 **Do not initiate paid execution** until consolidated founder GO. Pre-live verdict: `GDI_TWO_HOTEL_LIVE_CERTIFICATION_READY — INTEGRATED_ON_8080 — AWAITING_FOUNDER_GO`.
 
+## Gold Standard Full E2E certification gates (permanent)
+
+**Module:** `lib/group-demand-intelligence/workflow/gdi-full-e2e-gold-standard-certification-gates-v1.js`  
+**Gate test:** `npm run test:gdi-full-e2e-gold-standard-certification-gates-v1`
+
+Fail-closed rules (cannot claim `FULL_E2E_VALIDATED` / Memmo gold standard while any remain):
+
+| Rule | Enforcement |
+|---|---|
+| Competitive set missing | `runCanonicalCadOptInStage({ requireCompetitiveSet: true })` → `BLOCKED_NO_COMPETITIVE_SET`; classify-only ≠ Live CAD |
+| LDI mock_live / MOCK_PROVIDER | `classifyLdiCertification` → FAIL for Live LDI gate |
+| Findymail hard-cap | `sumFindymailCreditsDebitedForHotel` + `assertFindymailHotelHardCapAllowsDebit` across **all** authorization IDs / resume / recovery |
+| Contact improvements without new FQO | `assessMaterialInventoryImprovementRestage` — may restage retained inventory only with explicit auth |
+| Executive Summary | Must auto-generate from latest inventory (see `Invoke-GdiExecutiveSummary.ps1`); stale STAGED ES alone ≠ complete |
+
+### Memmo Gold Standard — exact command shape (after founder GO items)
+
+```powershell
+# From C:\Dev\dealality\ws-gdi — AFTER competitive set + budget + schema + STAGED auth
+$env:GDI_EXA_AGENT_LIVE = '1'
+$env:GDI_LDI_LIVE = '1'   # required for Live LDI spend path
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/gdi/Invoke-GdiFullE2E.ps1 `
+  -HotelId rec1t35e3sPerzxYu -Mode Live `
+  -AuthorizePaidResearch -AuthorizePaidDiscovery -AuthorizeFindymail `
+  -EnableLeisure -EnableCad `
+  -AuthorizationId '<FOUNDER_GO_MEMMO_GOLD_STANDARD_…>' `
+  -HardCeilingUsd <reconciled_remaining> -FindymailCreditHardCap <new_or_remaining> `
+  -Manifest 'reports/gdi-memmo-gold-standard-full-e2e-v1/auth/01-TRANCHE_MANIFEST.json' `
+  -OutDir 'reports/gdi-memmo-gold-standard-full-e2e-v1/live' `
+  -ActivateStagedPointer
+# Then: Invoke-GdiExecutiveSummary.ps1 -HotelId rec1t35e3sPerzxYu -Mode generate -Preview staged
+# Then: Invoke-GdiValidateFullE2E.ps1 -HotelId rec1t35e3sPerzxYu -RequirePort8080
+```
+
+Do **not** treat prior Memmo `mock_live` LDI or classify-only CAD as Live COMPLETE.
+
 ## Certification
 
 ```powershell
 node scripts/gdi-canonical-powershell-ops-cert-v1.mjs
 npm run test:gdi-canonical-powershell-ops-cert-v1
 node scripts/test-gdi-full-e2e-v3-live-orchestrator-v1.mjs
+npm run test:gdi-full-e2e-gold-standard-certification-gates-v1
 npm run test:gdi-weekly-refresh-dry-run-v1
 npm run gdi:clean-airtable-reconstruction-cert-v1
 npm run gdi:unified-live-e2e-prelive-readiness-v1
