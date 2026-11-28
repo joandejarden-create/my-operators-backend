@@ -165,6 +165,7 @@ import {
   getContactIntelligenceEnrichmentCapability,
   getCanonicalHotelContacts,
   getCanonicalPersonChannels,
+  postContactIntelligenceHybridEnrich,
 } from "./api/contact-intelligence.js";
 
 import {
@@ -1179,6 +1180,13 @@ app.post(
   memberstackAuth,
   requireDealalityUser,
   postContactIntelligenceHotelRefresh
+);
+// Hybrid Findymail durable enrich (Surfe never auto). User-initiated only.
+app.post(
+  "/api/contact-intelligence/hotels/:hotelId/people/:personId/enrich-hybrid",
+  memberstackAuth,
+  requireDealalityUser,
+  postContactIntelligenceHybridEnrich
 );
 // User-initiated Surfe reveal for HE Contact Intelligence (ephemeral; never on GET).
 app.post(

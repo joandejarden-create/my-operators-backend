@@ -119,6 +119,9 @@ function buildMockSurfePerson({ personName, organization, jobTitle, linkedinUrl,
 export async function getContactIntelligenceEnrichmentCapability(req, res) {
   try {
     const flags = contactEnrichmentFlags();
+    const findymailEnabled = Boolean(
+      process.env.FINDYMAIL_API_KEY && String(process.env.FINDYMAIL_API_KEY).trim(),
+    );
     return res.json({
       success: true,
       surfeEnabled: flags.surfeEnabled,
@@ -126,6 +129,8 @@ export async function getContactIntelligenceEnrichmentCapability(req, res) {
       enrichmentEnabled: flags.enrichmentEnabled,
       dryRunProvider: flags.dryRunProvider,
       mockEnabled: flags.mockEnabled,
+      findymailEnabled,
+      hybridEnrichEnabled: findymailEnabled || flags.surfeEnabled || flags.mockEnabled,
       autoEnrichOnLoad: false,
       persistOnReveal: false,
       reason: flags.reason,
@@ -506,6 +511,47 @@ export async function postContactIntelligenceResearchCaseReview(req, res) {
 }
 
 const _heRevealInflight = new Map();
+
+/**
+ * User-initiated hybrid enrich: Airtable recheck → Findymail durable → Surfe offer only.
+ * Never auto-invokes Surfe. Surfe remains /reveal (session-only).
+ */
+export async function postContactIntelligenceHybridEnrich(req, res) {
+  try {
+    const hotelId = String(req.params.hotelId || "").trim();
+    const personId = String(req.params.personId || "").trim();
+    if (!hotelId || !personId) {
+      return sendError(res, 400, "hotel_and_person_required");
+    }
+    const body = req.body || {};
+    const { runHybridContactEnrich } = await import(
+      "../lib/hotel-intelligence/contact-intelligence/he-contact-hybrid-enrich-v1.js"
+    );
+    const result = await runHybridContactEnrich({
+      hotelId,
+      personId,
+      personName: body.personName || body.person_name,
+      organization: body.organization,
+      linkedinUrl: body.linkedinUrl || body.linkedin_url,
+      companyDomain: body.companyDomain || body.company_domain,
+      allowPaidFindymail: body.allowPaidFindymail !== false,
+      dryRun: body.dryRun === true,
+      authorizationId: body.authorizationId,
+    });
+    if (!result.ok) {
+      return res.status(result.error === "PERSON_NOT_FOUND" ? 404 : 503).json({
+        success: false,
+        ...result,
+      });
+    }
+    return res.json({ success: true, ...result });
+  } catch (err) {
+    console.error("[contact-intelligence] enrich-hybrid", err);
+    return sendError(res, 500, "hybrid_enrich_failed", {
+      message: String(err?.message || err).slice(0, 200),
+    });
+  }
+}
 
 /**
  * User-initiated Surfe contact reveal for Hotel Explorer Contact Intelligence.

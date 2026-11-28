@@ -188,6 +188,12 @@ if ($ConsistencyModes -contains $Mode) {
     throw "Shared Canonical Contact validator FAILED for $HotelId (mode=$Mode)"
   }
 
+  Write-Host "[HE Factory] Contact Intelligence V2 gates (layout + hybrid Findymail/Surfe)"
+  & npm run test:he-contact-intelligence-v2
+  if ($LASTEXITCODE -ne 0) {
+    throw "HE Contact Intelligence V2 gates FAILED for $HotelId (mode=$Mode)"
+  }
+
   Write-Host "[HE Factory] Contactability E2E fields"
   & node .\scripts\hotel-explorer\emit-he-contactability-e2e-fields-v1.mjs --hotelId=$HotelId
   if ($LASTEXITCODE -ne 0) {
