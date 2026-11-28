@@ -568,13 +568,27 @@
       phoneRaw && !isSwitchboardOrDepartmentPhone(contact, o) ? phoneRaw : "";
     var linkedinUrl = resolveLinkedInUrl(contact, o);
     var emailDisplay = email || "Email Not Available";
-    var phoneDisplay = phoneOk || "Phone Not Available";
-    var telHref = "";
+    var phoneFmt = null;
     if (phoneOk) {
-      var keepPlus = phoneOk.trim().charAt(0) === "+";
-      var digits = phoneOk.replace(/[^\d]/g, "");
-      telHref = "tel:" + (keepPlus ? "+" : "") + digits;
+      var phoneApi = global.DealalitySharedPhoneFormattingV1;
+      if (phoneApi && typeof phoneApi.formatDealalityPhone === "function") {
+        phoneFmt = phoneApi.formatDealalityPhone(phoneOk);
+      } else {
+        var keepPlus = phoneOk.trim().charAt(0) === "+";
+        var digits = phoneOk.replace(/[^\d]/g, "");
+        phoneFmt = {
+          displayValue: phoneOk,
+          telHref: digits
+            ? "tel:" + (keepPlus ? "+" : "") + digits
+            : "",
+        };
+      }
     }
+    var phoneDisplay = phoneOk
+      ? (phoneFmt && phoneFmt.displayValue) || phoneOk
+      : "Phone Not Available";
+    var telHref =
+      phoneOk && phoneFmt && phoneFmt.telHref ? phoneFmt.telHref : "";
     return {
       email: email,
       phone: phoneOk,
@@ -941,11 +955,15 @@
         "</a>"
       : '<span class="gdi-list-contact-missing">' + esc(d.emailDisplay) + "</span>";
     var phoneLine = d.phone
-      ? '<a class="gdi-list-contact-link" href="' +
-        esc(d.telHref) +
-        '">' +
-        esc(d.phone) +
-        "</a>"
+      ? d.telHref
+        ? '<a class="gdi-list-contact-link" href="' +
+          esc(d.telHref) +
+          '">' +
+          esc(d.phoneDisplay) +
+          "</a>"
+        : '<span class="gdi-list-contact-link">' +
+          esc(d.phoneDisplay) +
+          "</span>"
       : '<span class="gdi-list-contact-missing">' + esc(d.phoneDisplay) + "</span>";
     var linkedinLine = d.linkedinUrl
       ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +

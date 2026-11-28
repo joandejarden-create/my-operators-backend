@@ -90,6 +90,56 @@
       .replace(/"/g, "&quot;");
   }
 
+  /**
+   * DEALALITY_SHARED_INTERNATIONAL_PHONE_FORMATTING_V1 — presentation only.
+   * Prefer shared util when loaded; never mutate stored channel values.
+   */
+  function formatPhonePresentation(phone) {
+    var raw = String(phone == null ? "" : phone);
+    var trimmed = raw.trim();
+    if (!trimmed) {
+      return { displayValue: "", telHref: "", originalRaw: raw };
+    }
+    var api = global.DealalitySharedPhoneFormattingV1;
+    if (api && typeof api.formatDealalityPhone === "function") {
+      var r = api.formatDealalityPhone(trimmed);
+      return {
+        displayValue: r.displayValue || trimmed,
+        telHref: r.telHref || "",
+        originalRaw: r.originalRaw != null ? r.originalRaw : raw,
+      };
+    }
+    var keepPlus = trimmed.charAt(0) === "+";
+    var digits = trimmed.replace(/[^\d]/g, "");
+    return {
+      displayValue: trimmed,
+      telHref: digits ? "tel:" + (keepPlus ? "+" : "") + digits : "",
+      originalRaw: raw,
+    };
+  }
+
+  function telHrefForPhone(phone) {
+    return formatPhonePresentation(phone).telHref;
+  }
+
+  function phoneAnchorHtml(phone, className) {
+    var p = formatPhonePresentation(phone);
+    if (!p.displayValue) return "";
+    var cls = className || "hci-action-link";
+    if (p.telHref) {
+      return (
+        '<a class="' +
+        cls +
+        '" href="' +
+        esc(p.telHref) +
+        '">' +
+        esc(p.displayValue) +
+        "</a>"
+      );
+    }
+    return "<span>" + esc(p.displayValue) + "</span>";
+  }
+
   function present(v) {
     if (v == null) return false;
     var s = String(v).trim();
@@ -538,14 +588,13 @@
   function renderCompactChannel(ch, kind) {
     var val = channelValue(ch);
     if (!val) return "";
+    if (kind === "phone") return phoneAnchorHtml(val);
     var href =
       kind === "email"
         ? "mailto:" + val
-        : kind === "phone"
-          ? "tel:" + val.replace(/\s+/g, "")
-          : /^https?:/i.test(val)
-            ? val
-            : "";
+        : /^https?:/i.test(val)
+          ? val
+          : "";
     return (
       '<a class="hci-action-link" href="' +
       esc(href || "#") +
@@ -587,11 +636,16 @@
       );
     }
     if (phones.length) {
-      parts.push(
-        '<a class="hci-btn hci-btn--primary" href="tel:' +
-          esc(String(channelValue(phones[0])).replace(/\s+/g, "")) +
-          '">Call</a>'
-      );
+      var callPhone = formatPhonePresentation(channelValue(phones[0]));
+      if (callPhone.telHref) {
+        parts.push(
+          '<a class="hci-btn hci-btn--primary" href="' +
+            esc(callPhone.telHref) +
+            '" title="' +
+            esc(callPhone.displayValue) +
+            '">Call</a>'
+        );
+      }
     }
     if (li) {
       parts.push(
@@ -744,13 +798,7 @@
                 esc(session.email) +
                 "</a> "
               : "") +
-            (session.phone
-              ? '<a class="hci-action-link" href="tel:' +
-                esc(String(session.phone).replace(/\s+/g, "")) +
-                '">' +
-                esc(session.phone) +
-                "</a>"
-              : "") +
+            (session.phone ? phoneAnchorHtml(session.phone) : "") +
             ' <span class="hci-muted">· not saved</span></div>'
           : "") +
         "</div>";
@@ -917,15 +965,6 @@
     return out;
   }
 
-  function telHrefForPhone(phone) {
-    var raw = String(phone || "").trim();
-    if (!raw) return "";
-    var keepPlus = raw.charAt(0) === "+";
-    var digits = raw.replace(/[^\d]/g, "");
-    if (!digits) return "";
-    return "tel:" + (keepPlus ? "+" : "") + digits;
-  }
-
   /**
    * CONTACT DETAILS cell — channels stacked left; Find Email & Phone button right.
    * Never falls back to employer website or organizational switchboard.
@@ -940,11 +979,7 @@
       ? '<a class="gdi-list-contact-link" href="mailto:' + esc(email) + '">' + esc(email) + "</a>"
       : '<span class="gdi-list-contact-missing">Email Not Available</span>';
     var phoneLine = phone
-      ? '<a class="gdi-list-contact-link" href="' +
-        esc(telHrefForPhone(phone)) +
-        '">' +
-        esc(phone) +
-        "</a>"
+      ? phoneAnchorHtml(phone, "gdi-list-contact-link")
       : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
     var linkedinLine = li
       ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
@@ -1221,11 +1256,7 @@
                   esc(r.value) +
                   "</a>"
                 : r.kind === "phone"
-                  ? '<a class="hci-action-link" href="tel:' +
-                    esc(String(r.value).replace(/\s+/g, "")) +
-                    '">' +
-                    esc(r.value) +
-                    "</a>"
+                  ? phoneAnchorHtml(r.value)
                   : esc(r.value);
           return (
             "<li><span class=\"hci-org-channel-list__label\">" +
@@ -1368,17 +1399,9 @@
           : "") +
         (phones.length
           ? "<div><strong>Phone</strong> " +
-            phones
-              .map(function (ph) {
-                return (
-                  '<a class="hci-action-link" href="tel:' +
-                  esc(String(ph).replace(/\s+/g, "")) +
-                  '">' +
-                  esc(ph) +
-                  "</a>"
-                );
-              })
-              .join(", ") +
+            phones.map(function (ph) {
+              return phoneAnchorHtml(ph);
+            }).join(", ") +
             "</div>"
           : "") +
         "</div>";
@@ -1432,11 +1455,8 @@
         : "") +
       (phone
         ? '<div class="hci-channel-row"><span class="hci-channel-label">Surfe session phone</span> ' +
-          '<a class="hci-action-link" href="' +
-          esc(telHrefForPhone(phone)) +
-          '">' +
-          esc(phone) +
-          "</a></div>"
+          phoneAnchorHtml(phone) +
+          "</div>"
         : "") +
       '<p class="hci-muted">Surfe · Session Only. Results are ephemeral — never saved as public research, never written to Airtable from this action, and disappear after reload. Canonical saved channels are unchanged.</p>' +
       "</div>";
@@ -1720,11 +1740,7 @@
     var source =
       (contacts && contacts.property_fallback_source) || "Hotel Property Census";
     var phoneHtml = phone
-      ? '<a class="hci-action-link" href="tel:' +
-        esc(String(phone).replace(/\s+/g, "")) +
-        '">' +
-        esc(phone) +
-        "</a>"
+      ? phoneAnchorHtml(phone)
       : '<span class="hci-muted">Not published</span>';
     var websiteHtml = website
       ? '<a class="hci-action-link hex-rms-ext-link" href="' +
