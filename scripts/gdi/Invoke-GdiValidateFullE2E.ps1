@@ -98,4 +98,15 @@ if ($LASTEXITCODE -ne 0) {
   throw 'Dealality shared loader contract FAILED for GDI'
 }
 
+Write-Host 'Shared Canonical Contact Intelligence V1 (same validator as Hotel Explorer)…'
+& npm run test:shared-canonical-contact-intelligence-v1
+if ($LASTEXITCODE -ne 0) {
+  throw 'Shared Canonical Contact Intelligence V1 unit gates FAILED for GDI'
+}
+$sharedHotelId = if ($HotelId) { $HotelId } else { 'recLuxvwwxID7U2B8' }
+& node .\scripts\shared-contact-intelligence\run-shared-canonical-contact-validator-v1.mjs --hotelId=$sharedHotelId
+if ($LASTEXITCODE -ne 0) {
+  throw "Shared Canonical Contact validator FAILED for $sharedHotelId"
+}
+
 Write-Host 'GDI Full E2E validation PASS — STAGED completion standard enforced'

@@ -178,6 +178,16 @@ if ($ConsistencyModes -contains $Mode) {
     }
   }
 
+  Write-Host "[HE Factory] Shared Canonical Contact Intelligence V1 (same validator as GDI)"
+  & npm run test:shared-canonical-contact-intelligence-v1
+  if ($LASTEXITCODE -ne 0) {
+    throw "Shared Canonical Contact Intelligence V1 unit gates FAILED for $HotelId (mode=$Mode)"
+  }
+  & node .\scripts\shared-contact-intelligence\run-shared-canonical-contact-validator-v1.mjs --hotelId=$HotelId
+  if ($LASTEXITCODE -ne 0) {
+    throw "Shared Canonical Contact validator FAILED for $HotelId (mode=$Mode)"
+  }
+
   Write-Host "[HE Factory] Contactability E2E fields"
   & node .\scripts\hotel-explorer\emit-he-contactability-e2e-fields-v1.mjs --hotelId=$HotelId
   if ($LASTEXITCODE -ne 0) {
