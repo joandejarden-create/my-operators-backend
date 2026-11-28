@@ -75,6 +75,40 @@ node scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs --stage FULL --hotel-id <r
   --authorize-paid-research --authorization-id <FOUNDER_GO_…> --hard-ceiling-usd <n> --manifest <path>
 ```
 
+#### Live FULL — unified flags (Leisure / CAD / historical replay / Findymail persistence)
+
+These flags are accepted by `Invoke-GdiFullE2E.ps1` (→ `_GdiV3Common.ps1`) and the Node CLI; names below match the CLI usage at the time of writing (`node scripts/gdi/run-gdi-full-e2e-v3-stage-cli-v1.mjs --help` is authoritative — if the Live orchestrator changes a name, the CLI wins and this section must be updated).
+
+| PowerShell | Node CLI | Effect |
+|---|---|---|
+| `-AllowHistoricalReplay` | `--allow-historical-replay` | Replay a historical discovery matrix; default-enables Leisure/CAD assess at $0 |
+| `-AuthorizePaidDiscovery` | `--authorize-paid-discovery` | Default-enables the Leisure/CAD spine; the orchestrator still **reuses** discovery artifacts (no paid discovery is invented) |
+| `-EnableLeisure` / `-NoLeisure` | `--enable-leisure` / `--no-leisure` | Force the Leisure standard stage on/off (`mock_live`, $0) |
+| `-EnableCad` / `-NoCad` | `--enable-cad` / `--no-cad` | Force the CAD standard stage on/off (classification only) |
+| `-AuthorizeFindymail` (+ `-FindymailDryRun`) | `--authorize-findymail` (+ `--findymail-dry-run`) | Live Stage 4 Findymail (`FINDYMAIL_API_KEY`); `-FindymailDryRun` plans eligibility with no spend |
+| `-FindymailCreditHardCap <n>` | `--findymail-credit-hard-cap <n>` | Shared Stage 4 Findymail credit ceiling for the run (default 40 if omitted; use `15` for proposed Live GO) |
+| `-PersistFindymailResults` | `--persist-findymail-results` | Findymail → Airtable **persist plan**; needs `-AuthorizeFindymail` **and** either (`-AuthorizeResearchPersistence` + `-ExactWriteSetAuthorization`) or (`-AuthorizeFindymailPersist` + `-AuthorizeAirtableProductionWrites`) |
+| `-ApplyFindymailPersist` | `--apply-findymail-persist` | Applies the plan; also needs env `GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES=1` |
+
+```powershell
+# $0 unified spine check on a hotel with existing artifacts (no WHO/HOW spend, STAGED untouched):
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -SkipWhoHow `
+  -AllowHistoricalReplay -EnableLeisure -EnableCad -NoActivateStagedPointer -OutDir <isolated-dir>
+
+# Founder-authorized Live FULL (hotel-specific auth id + ceiling + manifest; Findymail optional):
+$env:GDI_EXA_AGENT_LIVE = '1'
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch `
+  -AuthorizationId '<FOUNDER_GO_…>' -HardCeilingUsd <n> -Manifest 'reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json' `
+  -AuthorizeFindymail -AllowHistoricalReplay -EnableLeisure -EnableCad
+
+# Findymail persistence PLAN (no Airtable write — omit -ApplyFindymailPersist; apply is a separate founder authorization):
+pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -SkipWhoHow `
+  -ContinuationOnly -Resume -AuthorizeFindymail -FindymailDryRun -PersistFindymailResults `
+  -AuthorizeFindymailPersist -AuthorizeAirtableProductionWrites
+```
+
+Notes: Surfe is never invoked. The Findymail credit cap is a stage default (`creditHardCap` = 40); there is currently **no CLI flag** to set a lower cap (e.g. 15) — enforce via the usage ledger or add a flag before relying on a smaller authorization. Live Stage 1/2 **HOLD** when no discovery/deep artifacts exist in `-OutDir`; a truly fresh hotel needs artifacts first.
+
 ### Individual stages
 
 ```powershell
@@ -150,10 +184,18 @@ Settled Exa jobs are reused by the adapter job store (no duplicate spend for the
 ### Weekly refresh
 
 ```powershell
+# DryRun (proven; no SerpApi, no provider calls, no data/ writes, STAGED/CURRENT untouched):
 npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run
 ```
 
-Live weekly refresh = rerun the Live Full E2E command above with the hotel's current manifest and a fresh founder authorization id; budget and Airtable persistence stay separately authorized.
+Implementation: `scripts/gdi-weekly-refresh.mjs`. Accepts `--hotel-id <rec…>` / `--hotel-id=<rec…>` and the legacy `--hotel=<rec…|bethesda>`, plus `--dry-run` / `--dryRun`.
+
+- **DryRun** never calls SerpApi and does not require `SERPAPI_KEY`. The weekly delta is computed from the hotel's existing opportunity bag and the latest frozen weekly discovery (if any; otherwise existing-bag-only is reported as `NONE_DRY_RUN_EXISTING_BAG_ONLY`). Reports go to `reports/gdi-weekly-refresh/<hotelId>/` (`00-WEEKLY_REFRESH_DRY_RUN.json`, `01-baseline.json`, `02-weekly-delta.json`, `03-staged-preview.opportunities.json`). `--dry-run` combined with `--apply-stage` is refused (exit 2).
+- **Live weekly discovery** (no `--dry-run`, no reusable frozen discovery) requires `SERPAPI_KEY`; without it the run fails closed with exit 2 and `BLOCKED — SERPAPI_KEY required for live weekly discovery`. `--skip-discovery` reuses a frozen discovery without a key.
+- Run ids use the ISO run date (`gdi_weekly_<slug>_YYYYMMDD`); `--run-date YYYYMMDD` overrides (the legacy `20260921` Bethesda baselines are preserved and are reused as frozen discovery).
+- Regression: `npm run test:gdi-weekly-refresh-dry-run-v1`.
+
+A full Live weekly refresh of intelligence (new paid research) = rerun the Live Full E2E command above with the hotel's current manifest and a fresh founder authorization id; budget and Airtable persistence stay separately authorized.
 
 ### Airtable recovery / research persistence (separate authorization)
 
@@ -171,6 +213,33 @@ pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -Autho
 ```
 
 `-AuthorizePaidResearch` alone never unlocks Airtable writes; persistence flags are accepted only on Full E2E (single-stage Live refuses them, exit 2). Recovery from Airtable-only state remains PARTIAL (see Certification).
+
+### Clean Airtable reconstruction certification (read-only)
+
+```powershell
+npm run gdi:clean-airtable-reconstruction-cert-v1
+# optional: -- --hotel-id <rec...> --report-dir <dir>      (default hotel: Wyndham recnPB3Q02NO8Ma1o)
+npm run test:gdi-clean-airtable-reconstruction-cert-v1     # offline regression
+```
+
+- **Source** = Airtable Group Demand Opportunities via `listOpportunitiesForHotel` (never STAGED). **Comparison baseline** = the hotel's current STAGED package (read-only; pointer/package hashes verified unchanged).
+- Builds an isolated reconstruction package under `reports/gdi-clean-airtable-reconstruction-cert-v1/_isolated/` (never inside a publication-package root) with in-memory channel-evidence recovery + buying-authority annotation.
+- Reports field-level parity (ids, names, titles, emails, phones, LinkedIn, authority presence, commercial fields), the durable stores (Airtable GDO as SoT, Findymail usage ledger, immutable publication packages, Airtable research inventory) and `PASS` / `PARTIAL` / `BLOCKED` with the exact missing persistence corrections (`05-MISSING_PERSISTENCE_CORRECTIONS.json`).
+- Reads Airtable only; no writes, no provider calls, no spend. A fixture source (`--airtable-fixture`) can never certify PASS.
+- Current expected result is **PARTIAL** until inventory membership and buying-authority annotation are persisted (founder-authorized Airtable write).
+
+### Pre-live operational readiness gate (non-mutating)
+
+```powershell
+npm run gdi:unified-live-e2e-prelive-readiness-v1     # full gate; writes reports/gdi-unified-live-e2e-prelive-readiness-v1/
+npm run test:gdi-unified-live-e2e-prelive-readiness-v1  # fast logic/wiring regression
+```
+
+Checks (DryRun / fail-closed / planning only; provider keys stripped from child processes; isolated temp out-dirs): Live fail-closed without authorization · Live SkipWhoHow + historical replay summary structure · Findymail planning · weekly DryRun · reconstruction cert executes · runbook · template freeze (git-clean + required substrings) · Wyndham STAGED = 26 · second-hotel and fresh-hotel DryRun paths · STAGED/CURRENT/ledger bytes unchanged.
+
+Output: `00-PRELIVE_READINESS.json` (exit 0 only when `READY`; otherwise `PARTIAL` with `outstanding`) and `01-FRESH_HOTEL_CERTIFICATION_PROPOSAL.md|json` (**PROPOSED LIMITS — NOT AUTHORIZATION TO SPEND**).
+
+**Pre-live READY ≠ operational certification.** READY means the Live path is wired, fails closed, and is safe to attempt; operational certification still requires one founder-authorized, spend-bearing Live run on a non-Wyndham hotel.
 
 ### STAGED regeneration
 
@@ -236,6 +305,11 @@ pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -Publicati
 node scripts/gdi-canonical-powershell-ops-cert-v1.mjs
 npm run test:gdi-canonical-powershell-ops-cert-v1
 node scripts/test-gdi-full-e2e-v3-live-orchestrator-v1.mjs
+npm run test:gdi-weekly-refresh-dry-run-v1
+npm run gdi:clean-airtable-reconstruction-cert-v1
+npm run gdi:unified-live-e2e-prelive-readiness-v1
 ```
+
+**DryRun ≠ Live certification.** DryRun, fixture and planning runs prove wiring only. **Pre-live READY ≠ operational certification** — the suite stays `PARTIAL` until a founder-authorized Live run on a non-Wyndham hotel completes.
 
 Operational certification still requires one demonstrated authorized-spend, hotel-agnostic Live Full E2E run (non-Wyndham) — wiring and fail-closed behavior are tested without spend; DryRun alone does not certify.

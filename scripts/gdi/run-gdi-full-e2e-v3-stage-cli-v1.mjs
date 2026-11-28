@@ -72,6 +72,17 @@ Options:
   --skip-discovery --skip-deep --skip-who-how --skip-contact --skip-qualification
   --skip-staged-progression
   --activate-staged-pointer | --no-activate-staged-pointer   (Live FULL; default activate STAGED)
+  --authorize-paid-discovery  (Live FULL: default-enables Leisure/CAD spine; orchestrator still reuses
+                               discovery artifacts - no paid discovery is invented)
+  --allow-historical-replay   (Live FULL: replay historical matrix; default-enables Leisure/CAD assess at $0)
+  --enable-leisure | --no-leisure   (Live FULL: force Leisure standard stage on/off; $0 mock_live only)
+  --enable-cad | --no-cad           (Live FULL: force CAD standard stage on/off; classification only)
+  --findymail-credit-hard-cap <n>  (Live Stage 4 shared Findymail credit ceiling; default 40)
+  --persist-findymail-results (Live FULL: Findymail -> Airtable persist plan; needs --authorize-findymail AND
+                               separate auth: --authorize-research-persistence + --exact-write-set-authorization,
+                               OR --authorize-findymail-persist + --authorize-airtable-production-writes)
+  --authorize-findymail-persist --authorize-airtable-production-writes
+  --apply-findymail-persist   (also needs env GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES=1)
   --plan-research-persistence                   (Airtable inventory dry-run plan)
   --authorize-research-persistence
   --exact-write-set-authorization <text>
@@ -161,6 +172,20 @@ function liveFullOptions(hotelId, outDir) {
       : flag("--activate-staged-pointer")
         ? true
         : undefined,
+    authorizePaidDiscovery: flag("--authorize-paid-discovery") ? true : undefined,
+    allowHistoricalReplay: flag("--allow-historical-replay") ? true : undefined,
+    enableLeisure: flag("--no-leisure") ? false : flag("--enable-leisure") ? true : undefined,
+    enableCad: flag("--no-cad") ? false : flag("--enable-cad") ? true : undefined,
+    persistFindymailResults: flag("--persist-findymail-results"),
+    authorizeFindymailPersist: flag("--authorize-findymail-persist"),
+    authorizeAirtableProductionWrites: flag("--authorize-airtable-production-writes"),
+    applyFindymailPersist: flag("--apply-findymail-persist"),
+    findymailCreditHardCap: (() => {
+      const raw = arg("--findymail-credit-hard-cap");
+      if (raw == null) return undefined;
+      const n = Number(raw);
+      return Number.isFinite(n) && n > 0 ? n : undefined;
+    })(),
     planResearchPersistence: flag("--plan-research-persistence"),
     authorizeResearchPersistence: flag("--authorize-research-persistence"),
     exactWriteSetAuthorization: arg("--exact-write-set-authorization"),
@@ -174,7 +199,7 @@ function liveFullOptions(hotelId, outDir) {
 }
 
 const PARAM_ERROR_CODES =
-  /^(HOTEL_ID_REQUIRED|LIVE_REQUIRES_|LIVE_WHO_HOW_REQUIRES_|LIVE_WHO_HOW_MANIFEST|SURFE_FORBIDDEN|FINDYMAIL_REQUIRES_|RESEARCH_PERSISTENCE_APPLY_)/;
+  /^(HOTEL_ID_REQUIRED|LIVE_REQUIRES_|LIVE_WHO_HOW_REQUIRES_|LIVE_WHO_HOW_MANIFEST|SURFE_FORBIDDEN|FINDYMAIL_REQUIRES_|FINDYMAIL_PERSIST_|RESEARCH_PERSISTENCE_APPLY_)/;
 const PROVIDER_REFUSAL_CODES =
   /^(LIVE_WHO_HOW_AUTHORIZATION_REFUSED|MISSING_FINDYMAIL_API_KEY)$/;
 
@@ -205,6 +230,11 @@ async function runLive({ stage, hotelId, outDir }) {
             hotelId,
             paid: s.paid,
             paidBreakdown: s.paidBreakdown,
+            plpAssessed: s.plpAssessed,
+            researchSpine: s.researchSpine,
+            stageInventory: s.stageInventory,
+            findymailPersist: s.findymailPersist,
+            researchReceipt: s.researchReceipt,
             completeness: s.completeness,
             stagedProgression: s.stagedProgression,
             stagedInventoryValidation: s.stagedInventoryValidation,
@@ -216,14 +246,20 @@ async function runLive({ stage, hotelId, outDir }) {
         ),
       );
       process.exit(
-        s.completeness.failed || s.stagedInventoryValidation.ok === false ? 1 : 0,
+        s.completeness.failed ||
+          s.stagedInventoryValidation.ok === false ||
+          s.researchSpine?.failed === true
+          ? 1
+          : 0,
       );
     }
 
     if (
       flag("--plan-research-persistence") ||
       flag("--authorize-research-persistence") ||
-      flag("--apply-research-persistence")
+      flag("--apply-research-persistence") ||
+      flag("--persist-findymail-results") ||
+      flag("--apply-findymail-persist")
     ) {
       console.error(
         "Research persistence flags are supported only with --stage FULL (Airtable writes are never unlocked by a single stage or by --authorize-paid-research).",
@@ -319,6 +355,17 @@ async function main() {
   const validateOnly = stage === "VALIDATE";
   if (mode === "Live" && !validateOnly && !flag("--authorize-paid-research")) {
     console.error("Live mode requires --authorize-paid-research");
+    process.exit(2);
+  }
+  if (
+    mode !== "Live" &&
+    (flag("--authorize-paid-discovery") ||
+      flag("--persist-findymail-results") ||
+      flag("--apply-findymail-persist"))
+  ) {
+    console.error(
+      "--authorize-paid-discovery / --persist-findymail-results / --apply-findymail-persist require --mode Live",
+    );
     process.exit(2);
   }
   if (flag("--authorize-paid-research") && mode !== "Live") {

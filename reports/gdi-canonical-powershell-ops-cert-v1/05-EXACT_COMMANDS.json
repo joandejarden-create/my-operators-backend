@@ -14,6 +14,8 @@
   "contentHydration": "pwsh -File scripts/gdi/Invoke-GdiContentHydrationValidate.ps1 -HotelId <rec...> -RequirePort8080",
   "executiveSummary": "pwsh -File scripts/gdi/Invoke-GdiExecutiveSummary.ps1 -HotelId <rec...> -Mode validate",
   "weeklyRefresh": "npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run",
+  "cleanAirtableReconstructionCert": "npm run gdi:clean-airtable-reconstruction-cert-v1",
+  "preLiveReadinessGate": "npm run gdi:unified-live-e2e-prelive-readiness-v1",
   "promoteCurrentDry": "pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -PublicationVersion <ver> -Mode DryRun",
   "thisCert": "node scripts/gdi-canonical-powershell-ops-cert-v1.mjs"
 }
