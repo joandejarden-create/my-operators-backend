@@ -161,11 +161,72 @@
     return Math.round(num).toLocaleString("en-US");
   }
 
+  function isCanonicalHpcId(value) {
+    return typeof value === "string" && /^rec[A-Za-z0-9]{10,}$/.test(value.trim());
+  }
+
+  /**
+   * Canonical HPC identity from any hotel seed (object or bare rec… string).
+   * Never invents a hotel from market/demo defaults.
+   */
   function recordId(hotel) {
-    if (typeof hotel === "string" && /^rec[A-Za-z0-9]{10,}$/.test(hotel.trim())) {
-      return hotel.trim();
+    if (isCanonicalHpcId(hotel)) return String(hotel).trim();
+    if (!hotel || typeof hotel !== "object") return "";
+    var candidates = [
+      hotel.id,
+      hotel.recordId,
+      hotel.airtable_record_id,
+      hotel.airtableRecordId,
+      hotel.hpcId,
+      hotel.hpc_id,
+      hotel.hotel_id,
+      hotel.hotelId,
+    ];
+    for (var i = 0; i < candidates.length; i++) {
+      if (isCanonicalHpcId(candidates[i])) return String(candidates[i]).trim();
     }
-    return (hotel && (hotel.id || hotel.recordId || hotel.airtable_record_id)) || "";
+    for (var j = 0; j < candidates.length; j++) {
+      var v = candidates[j] == null ? "" : String(candidates[j]).trim();
+      if (v) return v;
+    }
+    return "";
+  }
+
+  /**
+   * Coerce open() inputs so state.hotel is always a plain object with id/recordId.
+   * Bare strings must not reach mergeHotelState as primitives (Object.assign on a
+   * string copies character indexes and blanks identity).
+   */
+  function normalizeHotelInput(hotel, opts) {
+    opts = opts || {};
+    var requested =
+      (opts.requestedHotelId && String(opts.requestedHotelId).trim()) ||
+      recordId(hotel) ||
+      "";
+    if (!requested) {
+      return {
+        ok: false,
+        error: "HOTEL_IDENTITY_UNRESOLVED",
+        hotel: null,
+        requestedHotelId: "",
+      };
+    }
+    var base =
+      hotel && typeof hotel === "object" && !Array.isArray(hotel)
+        ? Object.assign({}, hotel)
+        : {};
+    base.id = requested;
+    base.recordId = requested;
+    if (!base.airtable_record_id) base.airtable_record_id = requested;
+    if (!base.name && typeof hotel === "string") {
+      base.name = "Hotel " + requested;
+    }
+    return {
+      ok: true,
+      error: null,
+      hotel: base,
+      requestedHotelId: requested,
+    };
   }
 
   function snapshotRadar() {
@@ -1510,9 +1571,41 @@
 
   function open(hotel, opts) {
     opts = opts || {};
-    if (!hotel) return;
+    if (!hotel && !(opts && opts.requestedHotelId)) return;
     var generation = ++state.openGeneration;
-    var requestedId = opts.requestedHotelId || recordId(hotel);
+    var normalized = normalizeHotelInput(hotel, opts);
+    if (!normalized.ok) {
+      console.error("[HotelExplorer] HOTEL_IDENTITY_UNRESOLVED", {
+        hotel: hotel,
+        opts: opts,
+      });
+      state.open = true;
+      state.hotel = null;
+      state.requestedHotelId = "";
+      state.ownership = null;
+      state.org = null;
+      var errRoot = ensureRoot();
+      errRoot.classList.add("is-open");
+      errRoot.setAttribute("data-hex-requested-hotel", "");
+      errRoot.setAttribute("data-hex-rendered-hotel", "");
+      errRoot.setAttribute("data-hex-identity-error", "1");
+      setShellExplorerOpen(true);
+      var hiHost =
+        errRoot.querySelector("[data-hex-hi-host]") ||
+        errRoot.querySelector(".hex-hi-host") ||
+        errRoot.querySelector("#hex-hi-host");
+      if (hiHost) {
+        hiHost.hidden = false;
+        hiHost.innerHTML =
+          '<div class="hex-card hex-identity-error" role="alert">' +
+          "<strong>Hotel identity could not be resolved.</strong> " +
+          "Open a property from Opportunity Radar or use a link that includes a canonical hotel id." +
+          "</div>";
+      }
+      return;
+    }
+    var requestedId = normalized.requestedHotelId;
+    hotel = normalized.hotel;
     state.requestedHotelId = requestedId;
 
     // Drop prior hotel surface before hydrating the requested property.
@@ -1552,6 +1645,26 @@
     fetchOwnership(hotel).then(function (ownership) {
       if (!state.open || generation !== state.openGeneration) return;
       if (recordId(state.hotel) && recordId(state.hotel) !== recordId(hotel)) return;
+      // Identity Integrity Gate: ignore ownership payloads that belong to another hotel
+      // (stale / out-of-order responses after rapid property switching).
+      if (ownership && typeof ownership === "object") {
+        var ownedId =
+          (ownership.hotel &&
+            (ownership.hotel.id ||
+              ownership.hotel.recordId ||
+              ownership.hotel.airtable_record_id)) ||
+          ownership.hotel_id ||
+          ownership.hotelId ||
+          "";
+        if (ownedId && requestedId && String(ownedId) !== String(requestedId)) {
+          console.warn("[HotelExplorer] STALE_OWNERSHIP_IDENTITY_DROPPED", {
+            requestedId: requestedId,
+            ownedId: ownedId,
+            generation: generation,
+          });
+          return;
+        }
+      }
       state.ownership = ownership;
       var hi = (ownership && ownership.hotel) || {};
       var sharedVm = (ownership && ownership.sharedHotelView) || {};

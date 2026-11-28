@@ -1,0 +1,479 @@
+{
+  "at": "2026-11-28T12:47:13.207Z",
+  "version": "he-identity-integrity-gate-v1",
+  "base": "http://127.0.0.1:8080",
+  "browser": true,
+  "primary": {
+    "name": "Bethesda Marriott",
+    "hpcId": "recLuxvwwxID7U2B8"
+  },
+  "secondary": {
+    "name": "AC Hotel Newtown Square",
+    "hpcId": "recF7DQBPDW5aUDoC"
+  },
+  "factoryWired": true,
+  "livePrimary": [
+    {
+      "url": "http://127.0.0.1:8080/api/contact-intelligence/hotels/recLuxvwwxID7U2B8?audience=internal",
+      "status": 200,
+      "requestParity": true,
+      "bodyHotel": "recLuxvwwxID7U2B8",
+      "responseOk": true
+    },
+    {
+      "url": "http://127.0.0.1:8080/api/golden-demo/ownership/hotel/recLuxvwwxID7U2B8",
+      "status": 200,
+      "requestParity": true,
+      "bodyHotel": "recLuxvwwxID7U2B8",
+      "responseOk": true
+    }
+  ],
+  "gates": {
+    "HE_CANONICAL_HOTEL_ID_VALIDATED": {
+      "status": "PASS",
+      "note": "normalizeHotelInput + canonical HPC regex present"
+    },
+    "HE_API_HOTEL_ID_PARITY": {
+      "status": "PASS",
+      "livePrimary": [
+        {
+          "url": "http://127.0.0.1:8080/api/contact-intelligence/hotels/recLuxvwwxID7U2B8?audience=internal",
+          "status": 200,
+          "requestParity": true,
+          "bodyHotel": "recLuxvwwxID7U2B8",
+          "responseOk": true
+        },
+        {
+          "url": "http://127.0.0.1:8080/api/golden-demo/ownership/hotel/recLuxvwwxID7U2B8",
+          "status": 200,
+          "requestParity": true,
+          "bodyHotel": "recLuxvwwxID7U2B8",
+          "responseOk": true
+        }
+      ]
+    },
+    "HE_API_RESPONSE_HOTEL_PARITY": {
+      "status": "PASS",
+      "livePrimary": [
+        {
+          "url": "http://127.0.0.1:8080/api/contact-intelligence/hotels/recLuxvwwxID7U2B8?audience=internal",
+          "status": 200,
+          "requestParity": true,
+          "bodyHotel": "recLuxvwwxID7U2B8",
+          "responseOk": true
+        },
+        {
+          "url": "http://127.0.0.1:8080/api/golden-demo/ownership/hotel/recLuxvwwxID7U2B8",
+          "status": 200,
+          "requestParity": true,
+          "bodyHotel": "recLuxvwwxID7U2B8",
+          "responseOk": true
+        }
+      ]
+    },
+    "HE_IDENTITY_PROPAGATION_VALIDATED": {
+      "status": "PASS",
+      "bareStringOpenSafe": true
+    },
+    "HE_NO_BLANK_HOTEL_REQUESTS": {
+      "status": "PASS",
+      "blankHits": 0,
+      "bareStringBlank": 0
+    },
+    "HE_RENDERED_HOTEL_IDENTITY_VALIDATED": {
+      "status": "PASS",
+      "tabMatrix": [
+        {
+          "tab": "hotel",
+          "label": "Hotel Overview",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "rooms",
+          "label": "Guest Rooms & Meeting Space",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "ownership",
+          "label": "Ownership Intelligence",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "contacts",
+          "label": "Contact Intelligence",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 4,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "organization",
+          "label": "Organization & Portfolio",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "relationships",
+          "label": "Relationships & Structure",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "submarket",
+          "label": "Submarket Snapshot",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "area",
+          "label": "Area Hotels",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "demand",
+          "label": "Demand Drivers",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "access",
+          "label": "Access & Connectivity",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        },
+        {
+          "tab": "sources",
+          "label": "Sources & Evidence",
+          "identityResolution": "PASS",
+          "apiRequestIdentity": "PASS",
+          "renderedIdentity": "PASS",
+          "hotelUrls": 1,
+          "emptyHotelUrls": 0,
+          "wrongHotelUrls": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    "HE_ALL_TABS_IDENTITY_VALIDATED": {
+      "status": "PASS",
+      "pass": 11,
+      "total": 11
+    },
+    "HE_CROSS_HOTEL_CACHE_ISOLATION": {
+      "status": "PASS",
+      "switchLog": [
+        {
+          "label": "bethesda",
+          "hid": "recLuxvwwxID7U2B8",
+          "requested": "recLuxvwwxID7U2B8",
+          "rendered": "recLuxvwwxID7U2B8",
+          "urls": 2,
+          "mismatch": 0,
+          "blank": 0,
+          "ok": true
+        },
+        {
+          "label": "ac_newtown",
+          "hid": "recF7DQBPDW5aUDoC",
+          "requested": "recF7DQBPDW5aUDoC",
+          "rendered": "recF7DQBPDW5aUDoC",
+          "urls": 9,
+          "mismatch": 0,
+          "blank": 0,
+          "ok": true
+        },
+        {
+          "label": "bethesda_return",
+          "hid": "recLuxvwwxID7U2B8",
+          "requested": "recLuxvwwxID7U2B8",
+          "rendered": "recLuxvwwxID7U2B8",
+          "urls": 2,
+          "mismatch": 0,
+          "blank": 0,
+          "ok": true
+        }
+      ],
+      "raceOk": true
+    }
+  },
+  "summary": {
+    "gates": {
+      "HE_CANONICAL_HOTEL_ID_VALIDATED": "PASS",
+      "HE_IDENTITY_PROPAGATION_VALIDATED": "PASS",
+      "HE_API_HOTEL_ID_PARITY": "PASS",
+      "HE_API_RESPONSE_HOTEL_PARITY": "PASS",
+      "HE_RENDERED_HOTEL_IDENTITY_VALIDATED": "PASS",
+      "HE_CROSS_HOTEL_CACHE_ISOLATION": "PASS",
+      "HE_NO_BLANK_HOTEL_REQUESTS": "PASS",
+      "HE_ALL_TABS_IDENTITY_VALIDATED": "PASS"
+    },
+    "anyFail": false,
+    "anyNotTested": false,
+    "FULL_HE_E2E_VALIDATED_BLOCKED_BY_IDENTITY": false
+  },
+  "browserResult": {
+    "tabMatrix": [
+      {
+        "tab": "hotel",
+        "label": "Hotel Overview",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "rooms",
+        "label": "Guest Rooms & Meeting Space",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "ownership",
+        "label": "Ownership Intelligence",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "contacts",
+        "label": "Contact Intelligence",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 4,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "organization",
+        "label": "Organization & Portfolio",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "relationships",
+        "label": "Relationships & Structure",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "submarket",
+        "label": "Submarket Snapshot",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "area",
+        "label": "Area Hotels",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "demand",
+        "label": "Demand Drivers",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "access",
+        "label": "Access & Connectivity",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      },
+      {
+        "tab": "sources",
+        "label": "Sources & Evidence",
+        "identityResolution": "PASS",
+        "apiRequestIdentity": "PASS",
+        "renderedIdentity": "PASS",
+        "hotelUrls": 1,
+        "emptyHotelUrls": 0,
+        "wrongHotelUrls": 0,
+        "status": "PASS"
+      }
+    ],
+    "switchLog": [
+      {
+        "label": "bethesda",
+        "hid": "recLuxvwwxID7U2B8",
+        "requested": "recLuxvwwxID7U2B8",
+        "rendered": "recLuxvwwxID7U2B8",
+        "urls": 2,
+        "mismatch": 0,
+        "blank": 0,
+        "ok": true
+      },
+      {
+        "label": "ac_newtown",
+        "hid": "recF7DQBPDW5aUDoC",
+        "requested": "recF7DQBPDW5aUDoC",
+        "rendered": "recF7DQBPDW5aUDoC",
+        "urls": 9,
+        "mismatch": 0,
+        "blank": 0,
+        "ok": true
+      },
+      {
+        "label": "bethesda_return",
+        "hid": "recLuxvwwxID7U2B8",
+        "requested": "recLuxvwwxID7U2B8",
+        "rendered": "recLuxvwwxID7U2B8",
+        "urls": 2,
+        "mismatch": 0,
+        "blank": 0,
+        "ok": true
+      }
+    ],
+    "raceOk": true,
+    "blankHits": [],
+    "bareBlank": [],
+    "he50": [
+      {
+        "pilotKey": "bethesda_marriott",
+        "hpcId": "recLuxvwwxID7U2B8",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "ac_hotel_newtown_square",
+        "hpcId": "recF7DQBPDW5aUDoC",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "carton_house_fairmont",
+        "hpcId": "recYf7HZWmCdWPaSd",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "hgi_newtown_square_radnor",
+        "hpcId": "recgaBAwa24wsl3xF",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "secrets_papagayo",
+        "hpcId": "recFQ0WvGLbfK5Gpa",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "secrets_st_lucia",
+        "hpcId": "recwZJuMcx6kA7f7I",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "secrets_cap_cana",
+        "hpcId": "recd7XAM6tLjzQhaI",
+        "ok": true,
+        "blank": 0
+      },
+      {
+        "pilotKey": "jw_marriott_costa_elena",
+        "hpcId": "recq9KWr8UE7z2549",
+        "ok": true,
+        "blank": 0
+      }
+    ],
+    "he50Pass": true,
+    "noBlank": true
+  },
+  "rootCauseBlankIds": "HotelExplorer.open(bareString) previously passed a string into mergeHotelState/Object.assign, blanking id and emitting /hotels/? and /ownership/hotel/."
+}
