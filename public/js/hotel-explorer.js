@@ -162,6 +162,9 @@
   }
 
   function recordId(hotel) {
+    if (typeof hotel === "string" && /^rec[A-Za-z0-9]{10,}$/.test(hotel.trim())) {
+      return hotel.trim();
+    }
     return (hotel && (hotel.id || hotel.recordId || hotel.airtable_record_id)) || "";
   }
 
