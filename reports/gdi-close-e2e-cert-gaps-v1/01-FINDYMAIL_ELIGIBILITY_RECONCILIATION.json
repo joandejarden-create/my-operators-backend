@@ -1,0 +1,158 @@
+{
+  "version": "gdi-close-e2e-cert-gaps-v1",
+  "question": "Why was Findymail eligibleRemaining=0 while 4 unique people had email NOT_YET_RESEARCHED?",
+  "answer": "Eligibility (assessFindymailEmailEligibility) and the certification gate's NOT_YET count measure different things. Eligibility excludes people already present in the Findymail usage ledger (ALREADY_IN_LEDGER) and people whose display name failed the full-name check (IDENTITY_INCOMPLETE). The gate counts a channel NOT_YET until package contactChannelResearch carries a researched flag. Three people were already researched via Findymail (ledger) but never hydrated onto the package; one person ('Alejandra (Alex) Gutierrez, PhD') was blocked by looksLikeFullPersonName rejecting parentheses/comma credentials, so she was never queried.",
+  "eligibleRemainingBeforeWithLegacyIdentityRule": 0,
+  "eligibleRemainingBeforeWithFixedIdentityRule": 1,
+  "eligibleRemainingAfter": 1,
+  "emailNotYetBefore": 4,
+  "emailNotYetAfter": 1,
+  "findymailReasonCountsBefore": {
+    "EMAIL_ALREADY_PRESENT": 29,
+    "ALREADY_IN_LEDGER": 9,
+    "IDENTITY_INCOMPLETE": 1,
+    "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL": 1
+  },
+  "findymailReasonCountsAfter": {
+    "EMAIL_ALREADY_PRESENT": 29,
+    "ALREADY_IN_LEDGER": 9,
+    "IDENTITY_INCOMPLETE": 1,
+    "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL": 1
+  },
+  "people": [
+    {
+      "personKey": "jasper villanueva|edan diagnostics, inc.",
+      "fullName": "Jasper Villanueva",
+      "organization": "EDAN Diagnostics, Inc.",
+      "roleSlots": [
+        "SECONDARY",
+        "ALTERNATIVE_ENTRY_1"
+      ],
+      "opportunityIds": [
+        "disc_5b183538390f"
+      ],
+      "findymailReasonBeforeCode": "ALREADY_IN_LEDGER",
+      "legacyIdentityRulePassed": true,
+      "currentIdentityRulePassed": true,
+      "nameNormalization": null,
+      "ledgerRows": [
+        {
+          "at": "2026-11-27T22:47:35.643Z",
+          "operation": "FIND_FROM_NAME",
+          "resultDisposition": "NOT_FOUND",
+          "emailFound": false,
+          "creditsDebited": 0,
+          "piiPersisted": false
+        }
+      ],
+      "emailStatusAfterRecovery": "RESEARCH_COMPLETED_NOT_FOUND",
+      "emailStillNotYetAfterRecovery": false,
+      "findymailEligibleAfter": false,
+      "findymailReasonAfter": "ALREADY_IN_LEDGER",
+      "explanation": "Findymail already queried this person (ALREADY_IN_LEDGER), so it is correctly not re-eligible; the ledger result had never been hydrated onto package contactChannelResearch, leaving the channel NOT_YET_RESEARCHED."
+    },
+    {
+      "personKey": "jackson mitz|modern railway systems",
+      "fullName": "Jackson Mitz",
+      "organization": "Modern Railway Systems",
+      "roleSlots": [
+        "SECONDARY",
+        "ALTERNATIVE_ENTRY_1"
+      ],
+      "opportunityIds": [
+        "disc_f9f06522dd52"
+      ],
+      "findymailReasonBeforeCode": "ALREADY_IN_LEDGER",
+      "legacyIdentityRulePassed": true,
+      "currentIdentityRulePassed": true,
+      "nameNormalization": null,
+      "ledgerRows": [
+        {
+          "at": "2026-11-27T22:47:41.997Z",
+          "operation": "FIND_FROM_NAME",
+          "resultDisposition": "NOT_FOUND",
+          "emailFound": false,
+          "creditsDebited": 0,
+          "piiPersisted": false
+        }
+      ],
+      "emailStatusAfterRecovery": "RESEARCH_COMPLETED_NOT_FOUND",
+      "emailStillNotYetAfterRecovery": false,
+      "findymailEligibleAfter": false,
+      "findymailReasonAfter": "ALREADY_IN_LEDGER",
+      "explanation": "Findymail already queried this person (ALREADY_IN_LEDGER), so it is correctly not re-eligible; the ledger result had never been hydrated onto package contactChannelResearch, leaving the channel NOT_YET_RESEARCHED."
+    },
+    {
+      "personKey": "rachel maus|athletic brewing company",
+      "fullName": "Rachel Maus",
+      "organization": "Athletic Brewing Company",
+      "roleSlots": [
+        "SECONDARY",
+        "ALTERNATIVE_ENTRY_1"
+      ],
+      "opportunityIds": [
+        "disc_2e67ee5dc429"
+      ],
+      "findymailReasonBeforeCode": "ALREADY_IN_LEDGER",
+      "legacyIdentityRulePassed": true,
+      "currentIdentityRulePassed": true,
+      "nameNormalization": null,
+      "ledgerRows": [
+        {
+          "at": "2026-11-27T22:47:46.422Z",
+          "operation": "FIND_FROM_NAME",
+          "resultDisposition": "NOT_FOUND",
+          "emailFound": false,
+          "creditsDebited": 0,
+          "piiPersisted": false
+        }
+      ],
+      "emailStatusAfterRecovery": "RESEARCH_COMPLETED_NOT_FOUND",
+      "emailStillNotYetAfterRecovery": false,
+      "findymailEligibleAfter": false,
+      "findymailReasonAfter": "ALREADY_IN_LEDGER",
+      "explanation": "Findymail already queried this person (ALREADY_IN_LEDGER), so it is correctly not re-eligible; the ledger result had never been hydrated onto package contactChannelResearch, leaving the channel NOT_YET_RESEARCHED."
+    },
+    {
+      "personKey": "alejandra (alex) gutierrez, phd|grifols",
+      "fullName": "Alejandra (Alex) Gutierrez, PhD",
+      "organization": "Grifols",
+      "roleSlots": [
+        "SECONDARY",
+        "ALTERNATIVE_ENTRY_1"
+      ],
+      "opportunityIds": [
+        "disc_67a7c2b44502"
+      ],
+      "findymailReasonBeforeCode": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+      "legacyIdentityRulePassed": false,
+      "currentIdentityRulePassed": true,
+      "nameNormalization": {
+        "original": "Alejandra (Alex) Gutierrez, PhD",
+        "normalized": "Alejandra Gutierrez",
+        "changed": true,
+        "stripped": [
+          "(Alex)",
+          "PhD"
+        ]
+      },
+      "ledgerRows": [],
+      "emailStatusAfterRecovery": "NOT_YET_RESEARCHED",
+      "emailStillNotYetAfterRecovery": true,
+      "findymailEligibleAfter": true,
+      "findymailReasonAfter": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+      "explanation": "No ledger evidence; eligibility determined by current rules."
+    }
+  ],
+  "newlyEligibleAfterIdentityFix": [
+    {
+      "personKey": "alejandra (alex) gutierrez, phd|grifols",
+      "fullName": "Alejandra (Alex) Gutierrez, PhD",
+      "providerQueryName": "Alejandra Gutierrez",
+      "estimatedFinderCredits": 1,
+      "creditsIfNotFound": 0,
+      "autoSpend": false
+    }
+  ],
+  "opportunitiesExamined": 26
+}

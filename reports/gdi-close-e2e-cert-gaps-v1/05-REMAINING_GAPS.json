@@ -1,0 +1,49 @@
+{
+  "version": "gdi-close-e2e-cert-gaps-v1",
+  "gateOkAfter": false,
+  "failuresAfter": [
+    {
+      "failure": "EMAIL_RESEARCH_INCOMPLETE",
+      "requiredAction": "Authorize Findymail for newly eligible person(s) (see 03 report), or accept research-completed-not-found."
+    },
+    {
+      "failure": "TELEPHONE_RESEARCH_INCOMPLETE",
+      "requiredAction": "Authorize Exa public telephone search (03 report line TELEPHONE_PUBLIC_SEARCH_EXA)."
+    },
+    {
+      "failure": "LINKEDIN_RESEARCH_INCOMPLETE",
+      "requiredAction": "Authorize Exa individual-profile LinkedIn public search (03 report line LINKEDIN_PUBLIC_SEARCH_EXA)."
+    },
+    {
+      "failure": "FINDYMAIL_ELIGIBLE_GAPS_REMAIN",
+      "requiredAction": "Newly eligible Findymail people remain; authorize or decline spend explicitly."
+    },
+    {
+      "failure": "ALTERNATIVE_ENTRY_RESEARCH_INCOMPLETE",
+      "requiredAction": "Primary buying authority is unverified for these opportunities and no named alternative entry point exists; research required (03 report line ALTERNATIVE_ENTRY_RESEARCH_EXA)."
+    }
+  ],
+  "counts": {
+    "emailNotYet": 1,
+    "telephoneNotYet": 14,
+    "linkedinNotYet": 12,
+    "findymailEligibleRemaining": 1,
+    "opportunitiesRequiringAlternativeResearch": 26,
+    "alternativeResearchPresent": 14,
+    "opportunitiesMissingAuthorityAnnotation": 0
+  },
+  "notes": [
+    "Verified direct lodging decision-makers: 0 — no package primary carries explicit WHO/HOW VERIFIED_DIRECT_BUYER plus lodging-authority verification; titles alone are never upgraded.",
+    "Annotation + recovery are in-memory; the STAGED package was not modified. A package rematerialization (new version) under separate authorization is required for the app to reflect these flags.",
+    "Channel research that remains NOT_YET requires authorized provider spend (see 03 report). Nothing was spent.",
+    "Recovered researched flags for 28 unique people from existing evidence (no values invented)."
+  ],
+  "budgetRequestRef": "03-CONSOLIDATED_INCREMENTAL_RESEARCH_BUDGET_REQUEST.json",
+  "budgetTotals": {
+    "exaSearchesLow": 50,
+    "exaSearchesHigh": 114,
+    "exaEstimatedUsdLow": 0.25,
+    "exaEstimatedUsdHigh": 0.57,
+    "findymailCreditsMax": 1
+  }
+}
