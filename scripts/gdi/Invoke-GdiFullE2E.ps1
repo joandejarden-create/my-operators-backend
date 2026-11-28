@@ -27,6 +27,15 @@
     * Airtable research persistence is separate: -PlanResearchPersistence (dry-run) or
       -AuthorizeResearchPersistence -ExactWriteSetAuthorization <text> -ApplyResearchPersistence.
       -AuthorizePaidResearch alone never unlocks Airtable writes.
+    * Unified spine: with -AllowHistoricalReplay and/or -AuthorizePaidDiscovery (or explicit
+      -EnableLeisure / -EnableCad; opt out with -NoLeisure / -NoCad) Live FULL also invokes the
+      canonical Leisure + CAD standard stages ($0 assess/classify; reports 01b/01c), marks PLP
+      assessed from the preferred_lodging_partnerships cells of the reused discovery matrix, and
+      writes 07-research-receipt.json. Orchestrator never invents paid discovery.
+    * Findymail persist: -PersistFindymailResults (needs -AuthorizeFindymail) plus SEPARATE auth:
+      (-AuthorizeResearchPersistence + -ExactWriteSetAuthorization) OR
+      (-AuthorizeFindymailPersist + -AuthorizeAirtableProductionWrites). Dry-run plan by default;
+      -ApplyFindymailPersist also needs env GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES=1.
     * Surfe is never invoked. CURRENT is never published.
 
 .PARAMETER SkipWhoHow
@@ -76,6 +85,19 @@ param(
   [string]$ExactWriteSetAuthorization = '',
   [switch]$ApplyResearchPersistence,
 
+  [switch]$AuthorizePaidDiscovery,
+  [switch]$AllowHistoricalReplay,
+  [switch]$EnableLeisure,
+  [switch]$NoLeisure,
+  [switch]$EnableCad,
+  [switch]$NoCad,
+
+  [switch]$PersistFindymailResults,
+  [switch]$AuthorizeFindymailPersist,
+  [switch]$AuthorizeAirtableProductionWrites,
+  [switch]$ApplyFindymailPersist,
+  [double]$FindymailCreditHardCap = 0,
+
   [switch]$SkipDiscovery,
   [switch]$SkipDeep,
   [switch]$SkipWhoHow,
@@ -112,6 +134,13 @@ Invoke-GdiV3NodeStage -Stage 'FULL' -HotelId $HotelId -Mode $Mode `
   -AuthorizeResearchPersistence:$AuthorizeResearchPersistence `
   -ExactWriteSetAuthorization $ExactWriteSetAuthorization `
   -ApplyResearchPersistence:$ApplyResearchPersistence `
+  -AuthorizePaidDiscovery:$AuthorizePaidDiscovery -AllowHistoricalReplay:$AllowHistoricalReplay `
+  -EnableLeisure:$EnableLeisure -NoLeisure:$NoLeisure -EnableCad:$EnableCad -NoCad:$NoCad `
+  -PersistFindymailResults:$PersistFindymailResults `
+  -AuthorizeFindymailPersist:$AuthorizeFindymailPersist `
+  -AuthorizeAirtableProductionWrites:$AuthorizeAirtableProductionWrites `
+  -ApplyFindymailPersist:$ApplyFindymailPersist `
+  -FindymailCreditHardCap $FindymailCreditHardCap `
   -SkipDiscovery:$SkipDiscovery -SkipDeep:$SkipDeep -SkipWhoHow:$SkipWhoHow `
   -SkipContact:$SkipContact -SkipQualification:$SkipQualification `
   -SkipStagedProgression:$SkipStagedProgression `

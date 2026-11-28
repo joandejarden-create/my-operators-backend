@@ -149,6 +149,8 @@ function inventoryRunners() {
     relatedNpm: [
       "gdi:canonical-full-e2e",
       "gdi:weekly-refresh",
+      "gdi:clean-airtable-reconstruction-cert-v1",
+      "gdi:unified-live-e2e-prelive-readiness-v1",
       "gdi:weekly-discovery-run",
       "gdi:leisure-demand-intelligence-v1",
       "gdi:airtable-presentation-persistence-v1",
@@ -582,6 +584,10 @@ function exactCommands() {
       "pwsh -File scripts/gdi/Invoke-GdiExecutiveSummary.ps1 -HotelId <rec...> -Mode validate",
     weeklyRefresh:
       "npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run",
+    cleanAirtableReconstructionCert:
+      "npm run gdi:clean-airtable-reconstruction-cert-v1",
+    preLiveReadinessGate:
+      "npm run gdi:unified-live-e2e-prelive-readiness-v1",
     promoteCurrentDry:
       "pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -PublicationVersion <ver> -Mode DryRun",
     thisCert: "node scripts/gdi-canonical-powershell-ops-cert-v1.mjs",
@@ -622,9 +628,10 @@ async function main() {
     "FINDYMAIL_LIVE_HOTEL_AGNOSTIC_PATH_PARTIAL — Live Findymail wired through Stage 4 (key + authorization required); not yet exercised with credits this cycle",
     "CONTACT_CHANNEL_GAPS_REMAIN — email NOT_YET=1 (Gutierrez Findymail-eligible), telephone=14, LinkedIn=12; see reports/gdi-close-e2e-cert-gaps-v1/",
     "BUYING_AUTHORITY_ANNOTATED_IN_MEMORY — Airtable persistence + STAGED rematerialize outstanding",
-    "CLEAN_AIRTABLE_FIELD_PARITY_PASS_AUTHORITY_PERSISTENCE_OUTSTANDING",
-    "WEEKLY_REFRESH_LIVE_NOT_RE_EXECUTED_THIS_CYCLE",
-    "NO_FRESH_LIVE_HOTEL_RUN_THIS_CYCLE — propose scope+budget before Live certification",
+    "CLEAN_AIRTABLE_RECONSTRUCTION_PARTIAL — npm run gdi:clean-airtable-reconstruction-cert-v1: ids/contacts/commercial fields recoverable from Airtable GDO; inventory membership + buying-authority annotation NOT persisted (founder-authorized Airtable write + STAGED rematerialize outstanding)",
+    "WEEKLY_REFRESH_DRYRUN_FIXED — `npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run` runs with no SERPAPI_KEY and no SerpApi calls (proven by test:gdi-weekly-refresh-dry-run-v1); LIVE weekly discovery not re-executed (needs SERPAPI_KEY + authorization)",
+    "PRELIVE_READINESS_GATE_AVAILABLE — npm run gdi:unified-live-e2e-prelive-readiness-v1 (non-mutating); pre-live READY ≠ operational certification — suite stays PARTIAL until founder Live GO",
+    "NO_FRESH_LIVE_HOTEL_RUN_THIS_CYCLE — see reports/gdi-unified-live-e2e-prelive-readiness-v1/01-FRESH_HOTEL_CERTIFICATION_PROPOSAL.md (PROPOSED LIMITS — NOT AUTHORIZATION TO SPEND)",
   ];
   if (!inv.hotelAgnosticCheckpointADefaults) {
     outstanding.unshift("CHECKPOINT_A_WYNDHAM_DEFAULTS_STILL_PRESENT");

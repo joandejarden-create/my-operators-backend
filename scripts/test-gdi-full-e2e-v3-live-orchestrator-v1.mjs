@@ -34,6 +34,11 @@ const HOTEL = "recTestLiveGapNotAHotel";
 // Never allow a real provider key into this test process.
 delete process.env.FINDYMAIL_API_KEY;
 delete process.env.GDI_EXA_AGENT_LIVE;
+delete process.env.EXA_API_KEY;
+delete process.env.EXA_KEY;
+delete process.env.SERPAPI_API_KEY;
+delete process.env.SERPAPI_KEY;
+delete process.env.GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES;
 
 const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "gdi-v3-live-"));
 const tmp = (name) => path.join(tmpRoot, name);
@@ -54,7 +59,15 @@ function runCli(args, env = {}) {
     cwd: ROOT,
     encoding: "utf8",
     timeout: 120000,
-    env: { ...process.env, FINDYMAIL_API_KEY: "", GDI_EXA_AGENT_LIVE: "", ...env },
+    env: {
+      ...process.env,
+      FINDYMAIL_API_KEY: "",
+      GDI_EXA_AGENT_LIVE: "",
+      EXA_API_KEY: "",
+      SERPAPI_API_KEY: "",
+      GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES: "",
+      ...env,
+    },
   });
 }
 
@@ -302,6 +315,214 @@ try {
   assert.equal(v.paid, false);
   assert.equal(v.activated, false);
 
+  // ---- Unified Live spine: Leisure / CAD / PLP / Receipt / Findymail persist ----
+  // $0: provider keys unset; leisure is mock_live/assess-only, CAD is classification.
+  const matrixFile = tmp("matrix.json");
+  fs.writeFileSync(
+    matrixFile,
+    JSON.stringify({
+      cells: [
+        { segmentId: "corporate_group_travel" },
+        { segmentId: "preferred_lodging_partnerships" },
+      ],
+    }),
+  );
+  const spineOpps = [
+    {
+      id: "opp_spine_1",
+      opportunityId: "opp_spine_1",
+      organizationName: "Example Org",
+      title: "Example group demand",
+      segmentId: "corporate_group_travel",
+    },
+  ];
+  const spineBase = {
+    ...base,
+    skipWhoHow: true,
+    skipStagedProgression: true,
+    opportunities: spineOpps,
+    discoveryMatrixPath: matrixFile,
+    contactStageOpts: { fixture: true },
+  };
+
+  // Default (no replay/paid-discovery flag): spine NOT enabled; nothing invented.
+  const noSpine = await runFullE2eV3Live({ ...spineBase, outDir: tmp("s0") });
+  assert.equal(noSpine.summary.researchSpine.leisureEnabled, false);
+  assert.equal(noSpine.summary.researchSpine.cadEnabled, false);
+  assert.equal(noSpine.summary.stageInventory.leisure.status, "NOT_ENABLED");
+  assert.equal(noSpine.summary.stageInventory.cad.status, "NOT_ENABLED");
+  assert.equal(fs.existsSync(path.join(tmp("s0"), "01b-leisure-opt-in.json")), false);
+  assert.equal(fs.existsSync(path.join(tmp("s0"), "01c-cad-opt-in.json")), false);
+  // PLP is read from the reused discovery matrix regardless of the spine.
+  assert.equal(noSpine.summary.plpAssessed, true);
+  assert.equal(noSpine.stageReports.discovery.metrics.plpCellCount, 1);
+
+  // Historical replay: Leisure + CAD assess/classify, receipt written, no spend.
+  const spine = await runFullE2eV3Live({
+    ...spineBase,
+    allowHistoricalReplay: true,
+    outDir: tmp("s1"),
+  });
+  const s1 = spine.summary;
+  assert.equal(s1.researchSpine.defaultOn, true);
+  assert.equal(s1.researchSpine.failed, false);
+  assert.equal(s1.paid, false, "spine must not spend");
+  assert.equal(s1.paidBreakdown.leisure, false);
+  assert.equal(s1.paidBreakdown.cad, false);
+  assert.equal(s1.paidBreakdown.discovery, false);
+  assert.equal(s1.paidDiscoveryInvoked, false);
+  assert.equal(s1.plpAssessed, true);
+  for (const k of [
+    "discovery", "leisure", "cad", "plpAssessed", "deep", "whoHow", "contact",
+    "findymail", "qualification", "staged", "persistence", "researchReceipt",
+  ]) {
+    assert.ok(k in s1.stageInventory, `stageInventory.${k}`);
+  }
+  for (const k of [
+    "discovery", "leisure", "cad", "plp", "deep", "whoHow", "contact",
+    "findymail", "qualification", "staged", "persistence", "researchReceipt",
+  ]) {
+    assert.ok(k in s1.paidBreakdown, `paidBreakdown.${k}`);
+  }
+  assert.equal(s1.stageInventory.leisure.executed, true);
+  assert.equal(s1.stageInventory.cad.executed, true);
+  assert.equal(s1.stageInventory.cad.paid, false);
+  const leisureReport = JSON.parse(
+    fs.readFileSync(path.join(tmp("s1"), "01b-leisure-opt-in.json"), "utf8"),
+  );
+  assert.ok(leisureReport.status, "leisure report has status");
+  assert.equal(Number(leisureReport.spentUsd || 0), 0);
+  assert.equal(Number(leisureReport.paidCalls || 0), 0);
+  const cadReport = JSON.parse(
+    fs.readFileSync(path.join(tmp("s1"), "01c-cad-opt-in.json"), "utf8"),
+  );
+  assert.equal(cadReport.status, "CLASSIFIED");
+  assert.equal(cadReport.classifiedCount, 1);
+  assert.equal(cadReport.fqoAutoPromoted, false);
+  assert.equal(cadReport.persistenceAuthorized, false);
+  const receiptFile = path.join(tmp("s1"), "07-research-receipt.json");
+  assert.ok(fs.existsSync(receiptFile), "07-research-receipt.json written");
+  const receiptReport = JSON.parse(fs.readFileSync(receiptFile, "utf8"));
+  assert.ok(receiptReport.receipt?.contractId, "canonical receipt contract id");
+  assert.equal(receiptReport.currentUnchanged, true);
+  assert.equal(receiptReport.runStageMetrics.plpAssessed, true);
+  assert.ok(s1.researchReceipt.path.endsWith("07-research-receipt.json"));
+
+  // Explicit disable wins over the default-on spine.
+  const noLeisure = await runFullE2eV3Live({
+    ...spineBase,
+    allowHistoricalReplay: true,
+    enableLeisure: false,
+    outDir: tmp("s2"),
+  });
+  assert.equal(noLeisure.summary.stageInventory.leisure.status, "NOT_ENABLED");
+  assert.equal(noLeisure.summary.stageInventory.cad.executed, true);
+  assert.equal(fs.existsSync(path.join(tmp("s2"), "01b-leisure-opt-in.json")), false);
+
+  // Explicit enable works without replay flags; stage failure is surfaced (not silent).
+  const forced = await runFullE2eV3Live({
+    ...spineBase,
+    enableCad: true,
+    enableLeisure: true,
+    leisureStageRunner: async () => {
+      throw new Error("injected leisure failure");
+    },
+    outDir: tmp("s3"),
+  });
+  assert.equal(forced.summary.researchSpine.failed, true);
+  assert.equal(forced.stageReports.leisure.status, "APPLICABLE_EXECUTION_FAILED");
+  assert.match(forced.stageReports.leisure.error, /injected leisure failure/);
+  assert.equal(forced.stageReports.cad.status, "CLASSIFIED");
+
+  // ---- Findymail persist: default false, separate authorization only ------
+  let contactSeenPersist = null;
+  const findymailBase = {
+    ...spineBase,
+    authorizeFindymail: true,
+    findymailDryRun: true,
+  };
+  const noPersist = await runFullE2eV3Live({ ...findymailBase, outDir: tmp("p0") });
+  contactSeenPersist = noPersist.stageReports.contact.persistFindymailResults;
+  assert.equal(contactSeenPersist, false, "persistFindymailResults defaults false");
+  assert.deepEqual(noPersist.summary.findymailPersist, { requested: false, applied: false });
+  assert.equal(noPersist.summary.stageInventory.findymail.persist.status, "NOT_REQUESTED");
+
+  await rejectsWithCode(
+    () => runFullE2eV3Live({ ...findymailBase, persistFindymailResults: true, outDir: tmp("p1") }),
+    "FINDYMAIL_PERSIST_REQUIRES_AUTH",
+    "paid research + findymail auth alone must not unlock persistence",
+  );
+  assert.equal(fs.existsSync(tmp("p1")), false, "persist auth validated before side effects");
+  await rejectsWithCode(
+    () =>
+      runFullE2eV3Live({
+        ...base,
+        skipWhoHow: true,
+        persistFindymailResults: true,
+        authorizeFindymailPersist: true,
+        authorizeAirtableProductionWrites: true,
+        outDir: tmp("p2"),
+      }),
+    "FINDYMAIL_PERSIST_REQUIRES_FINDYMAIL",
+    "persist requires authorizeFindymail",
+  );
+  await rejectsWithCode(
+    () =>
+      runFullE2eV3Live({
+        ...findymailBase,
+        persistFindymailResults: true,
+        authorizeFindymailPersist: true,
+        outDir: tmp("p3"),
+      }),
+    "FINDYMAIL_PERSIST_REQUIRES_AUTH",
+    "dedicated persist auth needs Airtable production writes flag too",
+  );
+  await rejectsWithCode(
+    () => runFullE2eV3Live({ ...findymailBase, applyFindymailPersist: true, outDir: tmp("p4") }),
+    "FINDYMAIL_PERSIST_APPLY_REQUIRES_PERSIST",
+    "apply without persist",
+  );
+  delete process.env.GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES;
+  await rejectsWithCode(
+    () =>
+      runFullE2eV3Live({
+        ...findymailBase,
+        persistFindymailResults: true,
+        applyFindymailPersist: true,
+        authorizeFindymailPersist: true,
+        authorizeAirtableProductionWrites: true,
+        outDir: tmp("p5"),
+      }),
+    "FINDYMAIL_PERSIST_PRODUCTION_ENV_GATE_REQUIRED",
+    "apply needs production env gate",
+  );
+
+  let persistCall = null;
+  const persisted = await runFullE2eV3Live({
+    ...findymailBase,
+    persistFindymailResults: true,
+    authorizeFindymailPersist: true,
+    authorizeAirtableProductionWrites: true,
+    findymailPersistFn: async (patches, o) => {
+      persistCall = { patches, o };
+      return { dryRun: true, wouldWrite: 0, rows: [] };
+    },
+    outDir: tmp("p6"),
+  });
+  assert.ok(persistCall, "Findymail persist step invoked with separate auth");
+  assert.equal(persistCall.o.apply, false, "persist is dry-run unless apply requested");
+  assert.equal(persistCall.o.dryRun, true);
+  assert.equal(persistCall.o.hotelId, HOTEL);
+  assert.equal(persisted.stageReports.contact.persistFindymailResults, true);
+  assert.equal(persisted.summary.findymailPersist.dryRun, true);
+  assert.equal(persisted.summary.findymailPersist.applied, false);
+  assert.equal(persisted.summary.paid, false, "no Findymail spend in dry planning");
+  assert.ok(fs.existsSync(path.join(tmp("p6"), "04b-findymail-persist.json")));
+
+  // STAGED / CURRENT pointers untouched by this test hotel.
+  assert.equal(spine.summary.stagedProgression.activated, false);
+  assert.equal(spine.summary.stagedProgression.currentUnchanged, true);
+
   // ---- DryRun still works --------------------------------------------------
   const dry = await runFullE2eV3DryRun({
     hotelId: HOTEL,
@@ -355,6 +576,87 @@ try {
 
   const cliDry = runCli(["--stage", "FULL", "--hotel-id", HOTEL, "--mode", "DryRun", "--out-dir", tmp("p")]);
   assert.equal(cliDry.status, 0, `CLI DryRun FULL: ${cliDry.stderr}`);
+
+  // New unified flags
+  const cliPersistDry = runCli([
+    "--stage", "FULL", "--hotel-id", HOTEL, "--mode", "DryRun",
+    "--persist-findymail-results", "--out-dir", tmp("q"),
+  ]);
+  assert.equal(cliPersistDry.status, 2, "persist flag requires Live");
+
+  const cliPersistNoAuth = runCli([
+    "--stage", "FULL", "--hotel-id", HOTEL, "--mode", "Live",
+    "--authorize-paid-research", "--skip-who-how", "--authorize-findymail",
+    "--findymail-dry-run", "--persist-findymail-results", "--out-dir", tmp("r"),
+  ]);
+  assert.equal(cliPersistNoAuth.status, 2, "persist without separate auth fails closed");
+  assert.match(cliPersistNoAuth.stderr, /FINDYMAIL_PERSIST_REQUIRES_AUTH/);
+
+  const cliSpine = runCli([
+    "--stage", "FULL", "--hotel-id", HOTEL, "--mode", "Live",
+    "--authorize-paid-research", "--skip-who-how", "--skip-staged-progression",
+    "--allow-historical-replay", "--enable-leisure", "--enable-cad",
+    "--discovery-matrix", matrixFile, "--out-dir", tmp("t"),
+  ]);
+  assert.equal(cliSpine.status, 0, `CLI Live spine: ${cliSpine.stderr}`);
+  assert.match(cliSpine.stdout, /"leisureEnabled": true/);
+  assert.match(cliSpine.stdout, /"cadEnabled": true/);
+  assert.ok(fs.existsSync(path.join(tmp("t"), "01b-leisure-opt-in.json")));
+  assert.ok(fs.existsSync(path.join(tmp("t"), "01c-cad-opt-in.json")));
+  assert.ok(fs.existsSync(path.join(tmp("t"), "07-research-receipt.json")));
+
+  // Hotel-agnostic Findymail persist helper (dry-run default; no provider calls)
+  const PERSIST_CLI = path.join(ROOT, "scripts/gdi/run-gdi-findymail-airtable-persist-v1.mjs");
+  const runPersistCli = (args) =>
+    spawnSync("node", [PERSIST_CLI, ...args], {
+      cwd: ROOT,
+      encoding: "utf8",
+      timeout: 120000,
+      env: {
+        ...process.env,
+        FINDYMAIL_API_KEY: "",
+        GDI_FINDYMAIL_PERSIST_PRODUCTION_WRITES: "",
+      },
+    });
+  assert.equal(runPersistCli([]).status, 2, "persist helper requires --hotel-id");
+  const oppFile = tmp("findymail-opps.json");
+  fs.writeFileSync(
+    oppFile,
+    JSON.stringify({
+      opportunities: [
+        {
+          id: "opp_fm_1",
+          primaryContact: {
+            name: "Pat Example",
+            email: "pat@example.org",
+            channels: [{ source: "FINDYMAIL", value: "pat@example.org" }],
+          },
+        },
+        { id: "opp_fm_2", primaryContact: { name: "No Channel" } },
+      ],
+    }),
+  );
+  const persistDry = runPersistCli([
+    "--hotel-id", HOTEL, "--opportunities-file", oppFile, "--out-dir", tmp("u"),
+  ]);
+  assert.equal(persistDry.status, 0, `persist helper dry-run: ${persistDry.stderr}`);
+  assert.match(persistDry.stdout, /"dryRun": true/);
+  assert.match(persistDry.stdout, /"candidateCount": 1/);
+  assert.match(persistDry.stdout, /NO_FINDYMAIL_CHANNEL/);
+  const persistApplyNoAuth = runPersistCli([
+    "--hotel-id", HOTEL, "--opportunities-file", oppFile, "--apply",
+    "--out-dir", tmp("v"),
+  ]);
+  assert.equal(persistApplyNoAuth.status, 2, "apply without auth fails closed");
+  const persistApplyNoEnv = runPersistCli([
+    "--hotel-id", HOTEL, "--opportunities-file", oppFile, "--apply",
+    "--authorize-findymail-persist", "--authorize-airtable-production-writes",
+    "--out-dir", tmp("w"),
+  ]);
+  assert.equal(persistApplyNoEnv.status, 2, "apply without env gate fails closed");
+  assert.match(persistApplyNoEnv.stderr, /ENV_GATE/);
+  const persistSrc = fs.readFileSync(PERSIST_CLI, "utf8");
+  assert.doesNotMatch(persistSrc, /wyndham|recnPB3Q02NO8Ma1o/i, "persist helper has no hotel defaults");
 
   const cliSrc = fs.readFileSync(CLI, "utf8");
   assert.doesNotMatch(cliSrc, /process\.exit\(3\)/, "CLI must not blanket-exit 3 on Live");

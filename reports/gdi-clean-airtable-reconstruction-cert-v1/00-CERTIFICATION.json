@@ -1,0 +1,309 @@
+{
+  "contract": "gdi-clean-airtable-reconstruction-cert-v1",
+  "generatedAt": "2026-11-28T00:35:11.260Z",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "reconstructionSource": "AIRTABLE_GDO_listOpportunitiesForHotel",
+  "usedStagedAsSource": false,
+  "stagedIsComparisonBaselineOnly": true,
+  "guarantees": {
+    "airtableWrites": 0,
+    "providerCalls": 0,
+    "creditsSpent": 0,
+    "surfeUsed": false,
+    "uiChanges": false,
+    "stagedOverwrite": false,
+    "currentChanged": false
+  },
+  "durableStores": [
+    {
+      "store": "Airtable — Group Demand Opportunities (GDO)",
+      "role": "SYSTEM_OF_RECORD for opportunity identity + embedded commercial / contact payload",
+      "readBy": "listOpportunitiesForHotel (lib/group-demand-intelligence/airtable-opportunity-store.js)",
+      "survivesRestart": true
+    },
+    {
+      "store": "Airtable — GDI Hotel Research Opportunities (tblbkDj0vhQLfrssV)",
+      "role": "Raw research inventory (researchPayloadJson); separate from customer GDO",
+      "readBy": "gdi-hotel-research-inventory-store-v1",
+      "survivesRestart": true,
+      "note": "Not read by this cert; membership/drawer-model recovery depends on it plus the publication builder."
+    },
+    {
+      "store": "Findymail usage ledger (data/group-demand-intelligence/findymail-usage-ledger-v1.jsonl)",
+      "role": "Provider spend + per-person disposition evidence (NOT_FOUND vs found) used for channel evidence recovery",
+      "readBy": "readFindymailUsageLedger → applyEvidenceRecoveryToOpportunities",
+      "survivesRestart": true,
+      "note": "Local repo file — must be tracked/backed-up; email values are only recoverable when persisted into GDO/package (piiPersisted)."
+    },
+    {
+      "store": "Immutable publication packages (bundled-publication-packages/<hotel>/<version>)",
+      "role": "OUTPUT of the publication builder (STAGED/CURRENT pointers). Never an input to reconstruction.",
+      "readBy": "createGdiPublicationPackageStore (comparison baseline only)",
+      "survivesRestart": true
+    }
+  ],
+  "status": "PARTIAL",
+  "sourceKind": "AIRTABLE_GDO_listOpportunitiesForHotel",
+  "liveAirtableRead": true,
+  "comparisonBaseline": {
+    "kind": "CURRENT_STAGED_PACKAGE",
+    "publicationVersion": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261127_59997e61",
+    "opportunityCount": 26,
+    "stagedPointerSha256": "9a9175544be85452879cfa84ae66a4547026dbd5a6bf855c9d129ea15bbe4b9c",
+    "currentPointerPresent": false,
+    "pointersAndPackageUnchanged": true
+  },
+  "airtable": {
+    "gdoRowCount": 97,
+    "reconstructionCandidateCount": 66,
+    "candidateRule": "customerVisible !== false && isTestData !== true (STAGED not consulted)"
+  },
+  "isolatedPackage": {
+    "file": "reports/gdi-clean-airtable-reconstruction-cert-v1/_isolated/recnPB3Q02NO8Ma1o/airtable_reconstruction_20261128/package.json",
+    "publicationVersion": "airtable_reconstruction_20261128",
+    "contentFingerprintSha256": "162efd73b04e550e2c48cbec9247a3d2e1811f3b671817e7c2eb9cae23e8a817"
+  },
+  "idParity": {
+    "stagedIdsPresentInAirtable": 26,
+    "stagedIdsMissingInAirtable": 0,
+    "reconstructedCandidatesBeyondStaged": 40,
+    "canRecoverStagedMembershipFromAirtableAlone": false
+  },
+  "contactParity": {
+    "idParity": {
+      "stagedCount": 26,
+      "presentInAirtable": 26,
+      "missingInAirtable": 0,
+      "presentInReconstruction": 26
+    },
+    "name": {
+      "MATCH": 26
+    },
+    "title": {
+      "MATCH": 26
+    },
+    "email": {
+      "MATCH": 19,
+      "BOTH_EMPTY": 7
+    },
+    "phone": {
+      "MATCH": 7,
+      "BOTH_EMPTY": 19
+    },
+    "linkedin": {
+      "BOTH_EMPTY": 12,
+      "MATCH": 14
+    },
+    "authority": {
+      "stagedPresent": 0,
+      "airtableRawPresent": 0,
+      "reconstructedInMemoryPresent": 26,
+      "statusMatchesStaged": 0,
+      "compared": 26
+    }
+  },
+  "commercialParity": {
+    "title": {
+      "MATCH": 26
+    },
+    "displayTitle": {
+      "MATCH": 26
+    },
+    "organizationName": {
+      "MATCH": 26
+    },
+    "priority": {
+      "MATCH": 26
+    },
+    "opportunityType": {
+      "MATCH": 11,
+      "BOTH_EMPTY": 15
+    },
+    "roomDemandStatus": {
+      "MATCH": 11,
+      "BOTH_EMPTY": 15
+    },
+    "summaryWhat": {
+      "MATCH": 26
+    },
+    "whyThisHotel": {
+      "MATCH": 26
+    },
+    "recommendedAction": {
+      "MATCH": 25,
+      "BOTH_EMPTY": 1
+    },
+    "recommendedNextStep": {
+      "MATCH": 24,
+      "BOTH_EMPTY": 1,
+      "MISMATCH": 1
+    },
+    "eventDateDisplay": {
+      "MATCH": 26
+    },
+    "eventStartDate": {
+      "BOTH_EMPTY": 18,
+      "MATCH": 8
+    },
+    "eventEndDate": {
+      "BOTH_EMPTY": 18,
+      "MATCH": 8
+    },
+    "potentialHotelBusiness": {
+      "MATCH": 26
+    },
+    "salesActionKey": {
+      "MATCH": 26
+    },
+    "sources": {
+      "MATCH": 25,
+      "BOTH_EMPTY": 1
+    }
+  },
+  "scorecards": {
+    "staged": {
+      "opportunityCount": 26,
+      "uniqueCommercialContacts": 40,
+      "personLedgerRows": 54,
+      "fullProfessionalIdentityCoverage": 39,
+      "abbreviatedOrIncompleteIdentity": 1,
+      "verifiedTitleCoverage": 40,
+      "emailVerifiedCoverage": 29,
+      "telephoneVerifiedCoverage": 7,
+      "linkedinVerifiedCoverage": 28,
+      "contactsWithAllThreeChannels": 0,
+      "contactsWithEmailOrTelephone": 30,
+      "contactsWithUsableOutreach": 34,
+      "emailNotYetResearched": 4,
+      "telephoneNotYetResearched": 14,
+      "linkedinNotYetResearched": 12,
+      "findymailEligibleRemaining": 1,
+      "opportunitiesRequiringAlternativeResearch": 0,
+      "alternativeResearchPresent": 14,
+      "opportunitiesWithVerifiedDirectBuyer": 0,
+      "opportunitiesMissingAuthorityAnnotation": 26,
+      "opportunitiesWithAlternativeContacts": 14
+    },
+    "reconstructedIntersection": {
+      "opportunityCount": 26,
+      "uniqueCommercialContacts": 40,
+      "personLedgerRows": 54,
+      "fullProfessionalIdentityCoverage": 39,
+      "abbreviatedOrIncompleteIdentity": 1,
+      "verifiedTitleCoverage": 40,
+      "emailVerifiedCoverage": 29,
+      "telephoneVerifiedCoverage": 7,
+      "linkedinVerifiedCoverage": 28,
+      "contactsWithAllThreeChannels": 0,
+      "contactsWithEmailOrTelephone": 30,
+      "contactsWithUsableOutreach": 34,
+      "emailNotYetResearched": 1,
+      "telephoneNotYetResearched": 14,
+      "linkedinNotYetResearched": 12,
+      "findymailEligibleRemaining": 1,
+      "opportunitiesRequiringAlternativeResearch": 26,
+      "alternativeResearchPresent": 14,
+      "opportunitiesWithVerifiedDirectBuyer": 0,
+      "opportunitiesMissingAuthorityAnnotation": 0,
+      "opportunitiesWithAlternativeContacts": 14
+    },
+    "stagedGate": {
+      "version": "gdi-contact-research-best-effort-v1",
+      "ok": false,
+      "failures": [
+        "EMAIL_RESEARCH_INCOMPLETE",
+        "TELEPHONE_RESEARCH_INCOMPLETE",
+        "LINKEDIN_RESEARCH_INCOMPLETE",
+        "FINDYMAIL_ELIGIBLE_GAPS_REMAIN",
+        "BUYING_AUTHORITY_ANNOTATION_INCOMPLETE"
+      ],
+      "scorecard": {
+        "opportunityCount": 26,
+        "uniqueCommercialContacts": 40,
+        "personLedgerRows": 54,
+        "fullProfessionalIdentityCoverage": 39,
+        "abbreviatedOrIncompleteIdentity": 1,
+        "verifiedTitleCoverage": 40,
+        "emailVerifiedCoverage": 29,
+        "telephoneVerifiedCoverage": 7,
+        "linkedinVerifiedCoverage": 28,
+        "contactsWithAllThreeChannels": 0,
+        "contactsWithEmailOrTelephone": 30,
+        "contactsWithUsableOutreach": 34,
+        "emailNotYetResearched": 4,
+        "telephoneNotYetResearched": 14,
+        "linkedinNotYetResearched": 12,
+        "findymailEligibleRemaining": 1,
+        "opportunitiesRequiringAlternativeResearch": 0,
+        "alternativeResearchPresent": 14,
+        "opportunitiesWithVerifiedDirectBuyer": 0,
+        "opportunitiesMissingAuthorityAnnotation": 26,
+        "opportunitiesWithAlternativeContacts": 14
+      },
+      "note": "Gate requires research completion per channel, not that every contact has all three channels."
+    },
+    "reconstructedGate": {
+      "version": "gdi-contact-research-best-effort-v1",
+      "ok": false,
+      "failures": [
+        "EMAIL_RESEARCH_INCOMPLETE",
+        "TELEPHONE_RESEARCH_INCOMPLETE",
+        "LINKEDIN_RESEARCH_INCOMPLETE",
+        "FINDYMAIL_ELIGIBLE_GAPS_REMAIN",
+        "ALTERNATIVE_ENTRY_RESEARCH_INCOMPLETE",
+        "ABBREVIATED_IDENTITY_MISCLASSIFIED_AS_VERIFIED"
+      ],
+      "scorecard": {
+        "opportunityCount": 26,
+        "uniqueCommercialContacts": 40,
+        "personLedgerRows": 54,
+        "fullProfessionalIdentityCoverage": 39,
+        "abbreviatedOrIncompleteIdentity": 1,
+        "verifiedTitleCoverage": 40,
+        "emailVerifiedCoverage": 29,
+        "telephoneVerifiedCoverage": 7,
+        "linkedinVerifiedCoverage": 28,
+        "contactsWithAllThreeChannels": 0,
+        "contactsWithEmailOrTelephone": 30,
+        "contactsWithUsableOutreach": 34,
+        "emailNotYetResearched": 1,
+        "telephoneNotYetResearched": 14,
+        "linkedinNotYetResearched": 12,
+        "findymailEligibleRemaining": 1,
+        "opportunitiesRequiringAlternativeResearch": 26,
+        "alternativeResearchPresent": 14,
+        "opportunitiesWithVerifiedDirectBuyer": 0,
+        "opportunitiesMissingAuthorityAnnotation": 0,
+        "opportunitiesWithAlternativeContacts": 14
+      },
+      "note": "Gate requires research completion per channel, not that every contact has all three channels."
+    }
+  },
+  "stagedKeysAbsentFromAirtable": [],
+  "missingPersistenceCorrections": [
+    {
+      "code": "INVENTORY_MEMBERSHIP_NOT_PERSISTED",
+      "count": 40,
+      "correction": "Airtable holds more customer-visible rows than the STAGED inventory and no persisted field distinguishes them (no STAGED/CURRENT membership, qualification gate or inventory-population field on GDO). Persist per-opportunity publication membership (e.g. stagedPublicationVersion + inventoryPopulationPrimary) when STAGED is activated."
+    },
+    {
+      "code": "BUYING_AUTHORITY_ANNOTATION_NOT_PERSISTED_IN_AIRTABLE",
+      "stagedPresent": 0,
+      "airtableRawPresent": 0,
+      "reconstructedInMemoryPresent": 26,
+      "correction": "Authority is recomputed in memory but is persisted in neither Airtable GDO nor the STAGED package. Persist primaryContact.buyingAuthorityStatus + opportunity.buyingAuthorityAnnotation to GDO (founder-authorized write) and rematerialize STAGED through the publication builder."
+    },
+    {
+      "code": "COMMERCIAL_FIELDS_NOT_FULLY_RECOVERABLE_FROM_AIRTABLE",
+      "fields": [
+        {
+          "field": "recommendedNextStep",
+          "stagedOnly": 0,
+          "mismatch": 1
+        }
+      ],
+      "correction": "These commercial/presentation fields exist in STAGED but are absent or different in Airtable. Persist them in the GDO payload (or regenerate via the publication builder from the research inventory)."
+    }
+  ],
+  "notClaimed": "Full publication package regeneration, drawer models and :8080 parity are not claimed; this certifies Airtable GDO recoverability only."
+}
