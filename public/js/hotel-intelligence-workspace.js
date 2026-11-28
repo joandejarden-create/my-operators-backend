@@ -3118,11 +3118,74 @@
     );
   }
 
+  /**
+   * DATE column: publication + verified/accessed in one cell.
+   * Sort priority (documented): publication_date > verified_at > accessed_at.
+   */
+  function resolveCustomerSourceDateCell(citation) {
+    var dates = normalizeCitationDates(citation);
+    var api = typeof window !== "undefined" ? window.HeCustomerSourceDate : null;
+    if (api && typeof api.formatCustomerSourceDateCell === "function") {
+      return api.formatCustomerSourceDateCell(dates);
+    }
+    var pub = formatSourceDate(dates.publication_date);
+    var acc = formatSourceDate(dates.verified_at || dates.accessed_at);
+    var lines = [];
+    if (pub && pub !== "—") lines.push("Published: " + pub);
+    if (acc && acc !== "—") lines.push("Accessed: " + acc);
+    if (!lines.length) lines = ["—"];
+    return {
+      lines: lines,
+      text: lines.join("\n"),
+      sortValue: dates.publication_date || dates.verified_at || dates.accessed_at || null,
+      publication_date: dates.publication_date,
+      accessed_date: dates.verified_at || dates.accessed_at || null,
+    };
+  }
+
+  function compareSourceRowsByDate(a, b) {
+    var api = typeof window !== "undefined" ? window.HeCustomerSourceDate : null;
+    var datesA = normalizeCitationDates(a.s);
+    var datesB = normalizeCitationDates(b.s);
+    if (api && typeof api.compareCitationDates === "function") {
+      var cmp = api.compareCitationDates(datesA, datesB, "desc");
+      if (cmp !== 0) return cmp;
+      return a.n - b.n;
+    }
+    var sa = String(datesA.publication_date || datesA.verified_at || datesA.accessed_at || "");
+    var sb = String(datesB.publication_date || datesB.verified_at || datesB.accessed_at || "");
+    if (!sa && !sb) return a.n - b.n;
+    if (!sa) return 1;
+    if (!sb) return -1;
+    if (sa === sb) return a.n - b.n;
+    return sa < sb ? 1 : -1;
+  }
+
+  function sourceDateCellHtml(citation) {
+    var cell = resolveCustomerSourceDateCell(citation);
+    var body = (cell.lines || ["—"])
+      .map(function (line) {
+        return esc(line);
+      })
+      .join("<br>");
+    var sortAttr = cell.sortValue
+      ? ' data-date-sort="' + esc(String(cell.sortValue)) + '"'
+      : ' data-date-sort=""';
+    return (
+      '<td class="hiw-source-date"' +
+      sortAttr +
+      ' data-publication-date="' +
+      esc(cell.publication_date || "") +
+      '" data-accessed-date="' +
+      esc(cell.accessed_date || "") +
+      '">' +
+      body +
+      "</td>"
+    );
+  }
+
   function sourceTableRow(s, n, opts) {
     opts = opts || {};
-    var dates = normalizeCitationDates(s);
-    var pub = formatSourceDate(dates.publication_date);
-    var verified = formatSourceDate(dates.verified_at || dates.accessed_at);
     var claim = resolveCustomerSupportsLabel(s);
     if (String(claim).length > 120) claim = String(claim).slice(0, 117) + "…";
     var catLabel =
@@ -3156,12 +3219,7 @@
       "<td>" +
       esc(catLabel) +
       "</td>" +
-      "<td>" +
-      esc(pub) +
-      "</td>" +
-      "<td>" +
-      esc(verified) +
-      "</td>" +
+      sourceDateCellHtml(s) +
       "<td>" +
       esc(claim) +
       "</td>" +
@@ -3185,8 +3243,7 @@
       th("Source title") +
       th("Publisher") +
       th("Category") +
-      th("Published") +
-      th("Verified / accessed") +
+      th("Date") +
       th("Supports") +
       th("Status") +
       th("Link") +
@@ -3204,9 +3261,7 @@
       .map(function (s, i) {
         return { s: s, n: opts.indexOffset != null ? opts.indexOffset + i + 1 : i + 1 };
       })
-      .sort(function (a, b) {
-        return a.n - b.n;
-      });
+      .sort(compareSourceRowsByDate);
     var rows = entries
       .map(function (row) {
         return sourceTableRow(row.s, row.n, { focusN: opts.focusN });
@@ -3272,7 +3327,8 @@
       );
     }
 
-    var rows = filtered
+    var ordered = filtered.slice().sort(compareSourceRowsByDate);
+    var rows = ordered
       .map(function (row) {
         return sourceTableRow(row.s, row.n, { focusN: state.sourceFocusN });
       })
@@ -3284,7 +3340,7 @@
       sectionHeadHtml(
         "Hotel source register",
         '<span class="hiw-prose hiw-prose--quiet">' +
-          filtered.length +
+          ordered.length +
           (filter === "all" ? " sources" : " in filter") +
           "</span>"
       ) +
