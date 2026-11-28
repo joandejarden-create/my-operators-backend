@@ -100,8 +100,8 @@ pass(GATE.HE_CONTACT_FIND_BUTTON_RIGHT_ALIGNMENT, {
 if (!/data-hci-contact-details-cell/.test(jsSrc) || !/data-hci-enrich-slot/.test(jsSrc)) {
   fail(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, "Contact Details enrich slot markers missing");
 }
-if (!/data-hci-hybrid-enrich/.test(jsSrc) || !/hci-btn--enrich-compact/.test(jsSrc)) {
-  fail(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, "hybrid compact enrich button markers missing");
+if (!/data-hci-one-click-surfe/.test(jsSrc) || !/hci-btn--enrich-compact/.test(jsSrc)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, "one-click Surfe compact enrich button markers missing");
 }
 pass(GATE.HE_CONTACT_FIND_BUTTON_RENDERED, {
   note: "Static render contract — browser VISIBLE gate is certify-he-contact-find-button-visibility-v1",
@@ -136,14 +136,14 @@ pass(GATE.HE_CONTACT_NO_COLUMN_OVERLAP);
 if (!/dimmedComplete:\s*true/.test(jsSrc)) {
   fail(GATE.HE_CONTACT_FIND_BUTTON_STATE_PARITY, "dimmedComplete when both present missing");
 }
-if (!/data-hci-hybrid-enrich/.test(jsSrc)) {
-  fail(GATE.HE_CONTACT_FIND_BUTTON_STATE_PARITY, "hybrid enrich marker missing");
+if (!/data-hci-one-click-surfe/.test(jsSrc)) {
+  fail(GATE.HE_CONTACT_FIND_BUTTON_STATE_PARITY, "one-click Surfe enrich marker missing");
 }
 pass(GATE.HE_CONTACT_FIND_BUTTON_STATE_PARITY);
 
-// Surfe explicit / no persistence
-if (!/surfeFallbackAvailable/.test(hybridSrc)) {
-  fail(GATE.HE_CONTACT_SURFE_EXPLICIT_CLICK_ONLY, "surfe fallback flag missing");
+// Surfe explicit / no persistence — customer click uses /reveal only (V4)
+if (!/"\/reveal"/.test(jsSrc) || !/allowPaidFindymail:\s*false/.test(jsSrc)) {
+  fail(GATE.HE_CONTACT_SURFE_EXPLICIT_CLICK_ONLY, "customer one-click Surfe /reveal contract missing");
 }
 if (!/autoInvoke:\s*false/.test(hybridSrc)) {
   fail(GATE.HE_CONTACT_SURFE_EXPLICIT_CLICK_ONLY, "autoInvoke must be false");

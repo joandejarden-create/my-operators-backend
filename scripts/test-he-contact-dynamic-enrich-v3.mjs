@@ -178,10 +178,13 @@ assert.match(hybridSrc, /computeMissingContactChannels/);
 pass(GATES.CONTACT_BACKEND_AIRTABLE_RECHECK, { api: true, hybrid: true });
 
 assert.match(hybridSrc, /Partial durable channels/);
-assert.match(jsSrc, /surfeFallbackAvailable/);
+// V4 customer UI: one-click /reveal (Surfe). Try Surfe fallback markup removed.
+assert.match(jsSrc, /data-hci-one-click-surfe/);
+assert.match(jsSrc, /"\/reveal"/);
+assert.doesNotMatch(jsSrc, /data-hci-hybrid-enrich="1"/);
 assert.match(jsSrc, /missingChannelState/);
 assert.match(apiSrc, /surfe_pending/);
-pass(GATES.CONTACT_PARTIAL_RESULT_HANDLING, { pendingDistinct: true });
+pass(GATES.CONTACT_PARTIAL_RESULT_HANDLING, { pendingDistinct: true, oneClickSurfe: true });
 
 assert.match(apiSrc, /persist_forbidden|persist === true/);
 assert.match(apiSrc, /NOT_WRITTEN/);
