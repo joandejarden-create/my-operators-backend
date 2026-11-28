@@ -1,8 +1,14 @@
 /**
- * Canonical My Deals wave loader markup.
+ * Canonical Dealality wave loader markup.
+ * Shared design-system SoT for GDI · ADP · Brand Explorer · Hotel Explorer.
+ * Contract: DEALALITY_SHARED_LOADING_COMPONENT_V1
+ * Presentation: Animated Dealality Wave + Compact Black Rounded Container + message.
+ * Do not invent a second wave animation or competing toast system.
  */
 (function () {
   'use strict';
+
+  var CONTRACT = 'DEALALITY_SHARED_LOADING_COMPONENT_V1';
 
   function escapeHtml(text) {
     if (text == null || text === '') return '';
@@ -125,6 +131,7 @@
   }
 
   window.DealalityWaveLoader = {
+    CONTRACT: CONTRACT,
     html: html,
     compactHtml: compactHtml,
     toastHtml: toastHtml,

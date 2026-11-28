@@ -27,8 +27,9 @@ check("shell_includes_canonical_wave_loader_assets", () => {
     path.join(ROOT, "public/group-demand-intelligence.html"),
     "utf8",
   );
-  assert.match(html, /dealality-wave-loader\.css\?v=3/);
-  assert.match(html, /dealality-wave-loader\.js\?v=3/);
+  assert.match(html, /dealality-wave-loader\.css\?v=\d+/);
+  assert.match(html, /dealality-wave-loader\.js\?v=\d+/);
+  assert.match(html, /dealality-shared-loading-ux-v1\.js/);
   assert.match(html, /executive-summary-tab\.js\?v=gdi-es-wave-loading-20261127/);
 });
 

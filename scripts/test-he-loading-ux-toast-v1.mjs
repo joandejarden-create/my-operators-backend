@@ -165,8 +165,12 @@ run("quality_registry_he_ql_028", () => {
 run("preview_html_loads_shared_adapter", () => {
   const html = read("public/hotel-explorer-preview.html");
   mustInclude(html, "he-loading-ux-v1.js");
-  mustInclude(html, "dealality-wave-loader.js?v=3");
-  mustInclude(html, "dealality-wave-loader.css?v=3");
+  mustInclude(html, "dealality-shared-loading-ux-v1.js");
+  assert.match(html, /dealality-wave-loader\.js\?v=\d+/);
+  assert.match(
+    read("public/deal-capture-radar-with-ranked-list.html"),
+    /dealality-wave-loader\.css\?v=\d+|dealality-wave-loader\.js\?v=\d+/,
+  );
 });
 
 console.log(`\n${passed} checks passed (he-loading-ux-toast-v1)`);

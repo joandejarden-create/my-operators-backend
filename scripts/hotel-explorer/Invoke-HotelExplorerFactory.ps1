@@ -177,6 +177,12 @@ if ($ConsistencyModes -contains $Mode) {
 
   $founderArgs = @(".\scripts\hotel-explorer\audit-he-founder-ui-contract-v1.mjs")
   if ($SkipBrowser) { $founderArgs += "--skip-browser" } else { $founderArgs += "--browser" }
+  Write-Host "[HE Factory] Dealality shared loading component contract (HE)"
+  & npm run test:dealality-shared-loader-contract-v1 -- --product he
+  if ($LASTEXITCODE -ne 0) {
+    throw "Dealality shared loader contract FAILED for $HotelId (mode=$Mode)"
+  }
+
   Write-Host "[HE Factory] founder UI contract → $($founderArgs -join ' ')"
   & node @founderArgs
   if ($LASTEXITCODE -ne 0) {

@@ -1,0 +1,61 @@
+{
+  "contract": "DEALALITY_SHARED_LOADING_COMPONENT_V1",
+  "version": "1.0.0",
+  "canonical": {
+    "markup": "public/js/dealality-wave-loader.js",
+    "styles": "public/css/dealality-wave-loader.css",
+    "sharedUx": "public/js/dealality-shared-loading-ux-v1.js",
+    "heAdapter": "public/js/he-loading-ux-v1.js",
+    "approvedPresentation": "Animated Dealality Wave + Compact Black Rounded Container + Contextual Loading Message"
+  },
+  "visual": {
+    "toastBackground": "rgba(0, 0, 0, 0.9)",
+    "toastBorder": "1px solid rgba(255, 255, 255, 0.15)",
+    "toastRadiusPx": 12,
+    "toastPadding": "12px 16px",
+    "toastMaxWidthPx": 320,
+    "waveKeyframes": ["bl-wave-1", "bl-wave-2", "bl-wave-3", "bl-particle-float"],
+    "waveTiming": "2s ease-in-out infinite",
+    "typographyMain": { "fontSizePx": 12, "fontWeight": 500, "color": "#fff" }
+  },
+  "lifecycle": {
+    "showOnlyWhenAsyncPending": true,
+    "hideOnReadyEmptyError": true,
+    "noLoaderOnCachedTabSwitch": true,
+    "noIndefiniteLoading": true,
+    "preferSectionToastOverFullscreen": true
+  },
+  "messages": {
+    "gdi.page": "Loading Group Demand Intelligence…",
+    "gdi.opportunity": "Loading opportunity…",
+    "gdi.executiveSummary": "Loading Executive Summary…",
+    "gdi.portfolio": "Loading Portfolio Demand Intelligence…",
+    "gdi.commercialPriorities": "Loading Hotel Commercial Priorities…",
+    "adp.page": "Loading AI Demand Intelligence…",
+    "be.brands": "Loading Brands…",
+    "be.brand": "Loading Brand…",
+    "be.brandProfile": "Loading Brand Profile…",
+    "be.brandIntelligence": "Loading Brand Intelligence…",
+    "he.contacts": "Loading Contacts…",
+    "he.ownership": "Loading ownership intelligence…",
+    "he.ownershipNetwork": "Loading ownership network…",
+    "he.hotelNews": "Loading hotel news…",
+    "he.portfolio": "Loading Portfolio…",
+    "he.hotelDetails": "Loading Hotel Details…"
+  },
+  "products": ["gdi", "adp", "be", "he"],
+  "gates": [
+    "DEALALITY_SHARED_LOADER_PARITY",
+    "DEALALITY_WAVE_ANIMATION_VALIDATED",
+    "DEALALITY_BLACK_TOAST_STYLE_VALIDATED",
+    "DEALALITY_LOADING_LIFECYCLE_VALIDATED",
+    "DEALALITY_NO_DUPLICATE_LOADER_IMPLEMENTATIONS",
+    "DEALALITY_NO_UNNECESSARY_LOADING"
+  ],
+  "forbidden": {
+    "secondWaveAnimationSystem": true,
+    "heElevatedNavyToastRemap": true,
+    "loaderOnCachedImmediateRender": true,
+    "arbitraryImportantOverridesAsPrimaryFix": true
+  }
+}

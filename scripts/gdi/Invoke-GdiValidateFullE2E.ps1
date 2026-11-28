@@ -92,4 +92,10 @@ if ($RequirePort8080 -or $HotelId) {
   }
 }
 
+Write-Host 'Validating Dealality shared loading component contract (GDI)…'
+& npm run test:dealality-shared-loader-contract-v1 -- --product gdi
+if ($LASTEXITCODE -ne 0) {
+  throw 'Dealality shared loader contract FAILED for GDI'
+}
+
 Write-Host 'GDI Full E2E validation PASS — STAGED completion standard enforced'
