@@ -413,8 +413,8 @@ Fail-closed rules (cannot claim `FULL_E2E_VALIDATED` / Memmo gold standard while
 | Competitive set missing | `runCanonicalCadOptInStage({ requireCompetitiveSet: true })` → `BLOCKED_NO_COMPETITIVE_SET`; classify-only ≠ Live CAD |
 | LDI mock_live / MOCK_PROVIDER | `classifyLdiCertification` → FAIL for Live LDI gate |
 | Findymail hard-cap | `sumFindymailCreditsDebitedForHotel` + `assertFindymailHotelHardCapAllowsDebit` across **all** authorization IDs / resume / recovery |
-| Contact improvements without new FQO | `assessMaterialInventoryImprovementRestage` — may restage retained inventory only with explicit auth |
-| Executive Summary | Must auto-generate from latest inventory (see `Invoke-GdiExecutiveSummary.ps1`); stale STAGED ES alone ≠ complete |
+| Contact improvements without new FQO | `assessMaterialInventoryImprovementRestage` + `-AuthorizeMaterialImprovementRestage` — restage retained inventory without requiring net-new FQO |
+| Executive Summary | Full E2E auto-writes `08-executive-summary.json` from this run's inventory (founder preview / STAGED); stale prior STAGED ES alone ≠ complete |
 
 ### Memmo Gold Standard — exact command shape (after founder GO items)
 
@@ -426,12 +426,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/gdi/Invoke-GdiFullE2
   -HotelId rec1t35e3sPerzxYu -Mode Live `
   -AuthorizePaidResearch -AuthorizePaidDiscovery -AuthorizeFindymail `
   -EnableLeisure -EnableCad `
+  -AuthorizeMaterialImprovementRestage `
   -AuthorizationId '<FOUNDER_GO_MEMMO_GOLD_STANDARD_…>' `
   -HardCeilingUsd <reconciled_remaining> -FindymailCreditHardCap <new_or_remaining> `
   -Manifest 'reports/gdi-memmo-gold-standard-full-e2e-v1/auth/01-TRANCHE_MANIFEST.json' `
   -OutDir 'reports/gdi-memmo-gold-standard-full-e2e-v1/live' `
   -ActivateStagedPointer
-# Then: Invoke-GdiExecutiveSummary.ps1 -HotelId rec1t35e3sPerzxYu -Mode generate -Preview staged
+# Full E2E auto-generates 07-research-receipt.json + 08-executive-summary.json
+# Optional parity: Invoke-GdiExecutiveSummary.ps1 -HotelId rec1t35e3sPerzxYu -Mode generate -Preview staged
 # Then: Invoke-GdiValidateFullE2E.ps1 -HotelId rec1t35e3sPerzxYu -RequirePort8080
 ```
 
