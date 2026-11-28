@@ -1,0 +1,238 @@
+{
+  "at": "2026-11-28T11:38:18.389Z",
+  "base": "http://127.0.0.1:8080",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "liveSurfe": false,
+  "stages": [
+    {
+      "id": "navigate",
+      "status": "START",
+      "at": "2026-11-28T11:37:54.166Z"
+    },
+    {
+      "id": "contacts_loaded",
+      "status": "OK",
+      "at": "2026-11-28T11:37:56.849Z"
+    },
+    {
+      "id": "button_click_ready",
+      "status": "OK",
+      "at": "2026-11-28T11:37:56.862Z",
+      "text": "Find Email& Phone",
+      "disabled": false,
+      "linkedinUrl": "https://www.linkedin.com/in/meinradlang/",
+      "channel": "both",
+      "personId": "dle_06H1TN755CY1NZS0Q7G026PKSC",
+      "personName": "Meinrad Lang III"
+    },
+    {
+      "id": "hybrid_api_request",
+      "status": "HIT",
+      "at": "2026-11-28T11:37:57.135Z",
+      "linkedinUrl": "https://www.linkedin.com/in/meinradlang/",
+      "channel": "both"
+    },
+    {
+      "id": "button_click",
+      "status": "OK",
+      "at": "2026-11-28T11:37:57.136Z"
+    },
+    {
+      "id": "loading_ui",
+      "status": "TOAST_OK",
+      "at": "2026-11-28T11:37:57.947Z",
+      "inRow": false,
+      "toastHosts": [
+        {
+          "text": "Loading Contacts…",
+          "inTable": false
+        },
+        {
+          "text": "Loading Contacts…",
+          "inTable": false
+        },
+        {
+          "text": "Finding Contact Details…Hybrid enrichment",
+          "inTable": false
+        },
+        {
+          "text": "Finding Contact Details…Hybrid enrichment",
+          "inTable": false
+        }
+      ]
+    },
+    {
+      "id": "hybrid_api_response",
+      "status": "OK",
+      "at": "2026-11-28T11:38:15.033Z",
+      "email": false,
+      "phone": false,
+      "surfeFallbackAvailable": true,
+      "message": "Findymail returned no durable channels (Findymail NOT_FOUND / miss). This is not a Surfe result — Surfe fallback is avai"
+    },
+    {
+      "id": "surfe_fallback_offer",
+      "status": "AVAILABLE",
+      "at": "2026-11-28T11:38:15.033Z"
+    },
+    {
+      "id": "after_hybrid_ui",
+      "status": "SURFE_OFFERED",
+      "at": "2026-11-28T11:38:15.700Z",
+      "text": "Meinrad Lang III General Manager Marriott International Property Leadership — General Manager Email Not Available Phone Not Available LinkedIn Profile Find Email & Phone Findymail returned no durable channels (Findymail NOT_FOUND / miss). This is not a Surfe result — Surfe fallback is available (session only). Try Surfe (session only) Details",
+      "hasTrySurfe": true,
+      "trySurfeText": "Try Surfe (session only)",
+      "resultHidden": false,
+      "resultHtml": "<div class=\"hci-note\">Findymail returned no durable channels (Findymail NOT_FOUND / miss). This is not a Surfe result — Surfe fallback is available (session only).</div><button type=\"button\" class=\"hci-btn hci-btn--ghost hci-btn--surfe-fallback\" data-hci-surfe-fallback=\"1\" data-person-id=\"dle_06H1TN755CY1NZS0Q7G026PKSC\" data-enrich-channel=\"both\">Try Surfe (session only)</button>",
+      "emailVisible": false,
+      "phoneVisible": false
+    },
+    {
+      "id": "surfe_api_request",
+      "status": "HIT",
+      "at": "2026-11-28T11:38:15.757Z",
+      "linkedinUrl": "https://www.linkedin.com/in/meinradlang/",
+      "channel": "both"
+    },
+    {
+      "id": "surfe_api_response",
+      "status": "MOCK_SUCCESS",
+      "at": "2026-11-28T11:38:15.757Z",
+      "email": true,
+      "phone": true
+    },
+    {
+      "id": "surfe_fallback_click",
+      "status": "OK",
+      "at": "2026-11-28T11:38:15.758Z"
+    },
+    {
+      "id": "frontend_rendering",
+      "status": "PASS",
+      "at": "2026-11-28T11:38:18.389Z",
+      "text": "Meinrad Lang III General Manager Marriott International Property Leadership — General Manager mock.meinrad@example.hotel Surfe · Session Only +1 (301) 555-0111 Surfe · Session Only LinkedIn Profile Lookup complete Surfe · Session Only · not persisted to Airtable Details",
+      "hasSessionLabel": true,
+      "sessionNode": true,
+      "resultHtml": "<div class=\"hci-enrich-result\" data-verification=\"PROVIDER_RETURNED_UNREVIEWED\" data-surfe-session=\"1\" data-persist=\"forbidden\"><div class=\"hci-note\">Surfe · Session Only · not persisted to Airtable</div></div>",
+      "resultHidden": false,
+      "channelStackText": "mock.meinrad@example.hotel Surfe · Session Only +1 (301) 555-0111 Surfe · Session Only LinkedIn Profile",
+      "mockEmailVisible": true,
+      "emailNotAvailable": false,
+      "phoneNotAvailable": false
+    }
+  ],
+  "network": [
+    {
+      "type": "request",
+      "url": "http://127.0.0.1:8080/api/contact-intelligence/hotels/recLuxvwwxID7U2B8/people/dle_06H1TN755CY1NZS0Q7G026PKSC/enrich-hybrid",
+      "isHybrid": true,
+      "isReveal": false,
+      "linkedinUrl": "https://www.linkedin.com/in/meinradlang/",
+      "channel": "both",
+      "personName": "Meinrad Lang III"
+    },
+    {
+      "type": "response",
+      "status": 200,
+      "isHybrid": true,
+      "ok": true,
+      "error": null,
+      "email": false,
+      "phone": false,
+      "surfeFallbackAvailable": true,
+      "message": "Findymail returned no durable channels (Findymail NOT_FOUND / miss). This is not a Surfe result — Surfe fallback is available (session only).",
+      "missingChannelState": {
+        "version": "missing-channel-enrichment-v3",
+        "hasVerifiedEmail": false,
+        "hasVerifiedPhone": false,
+        "hasVerifiedLinkedIn": true,
+        "needsEmail": true,
+        "needsPhone": true,
+        "requestChannel": "both",
+        "enrichAction": "both",
+        "surfeInclude": {
+          "email": true,
+          "mobile": true
+        },
+        "buttonEnabled": true,
+        "dimmedComplete": false,
+        "approvedButtonLabel": "Find Email & Phone",
+        "contextualDescription": "Find Email & Phone",
+        "linkedInIsIdentityOnly": true
+      },
+      "requestedInclude": null
+    },
+    {
+      "type": "request",
+      "url": "http://127.0.0.1:8080/api/contact-intelligence/hotels/recLuxvwwxID7U2B8/people/dle_06H1TN755CY1NZS0Q7G026PKSC/reveal",
+      "isHybrid": false,
+      "isReveal": true,
+      "linkedinUrl": "https://www.linkedin.com/in/meinradlang/",
+      "channel": "both",
+      "personName": "Meinrad Lang III"
+    },
+    {
+      "type": "mocked_reveal",
+      "body": {
+        "ok": true,
+        "cached": false,
+        "pending": false,
+        "surfeCalls": 0,
+        "mock": true,
+        "provider": "surfe_mock",
+        "providerAttribution": "Surfe · Session Only",
+        "verificationStatus": "PROVIDER_RETURNED_UNREVIEWED",
+        "person": {
+          "personId": null,
+          "email": "mock.meinrad@example.hotel",
+          "phone": "+13015550111",
+          "emails": [
+            {
+              "email": "mock.meinrad@example.hotel",
+              "value": "mock.meinrad@example.hotel"
+            }
+          ],
+          "phones": [
+            {
+              "phone": "+13015550111",
+              "value": "+13015550111"
+            }
+          ]
+        },
+        "missingChannelState": {
+          "needsEmail": true,
+          "needsPhone": true,
+          "requestChannel": "both"
+        },
+        "requestedInclude": {
+          "email": true,
+          "mobile": true
+        },
+        "persistence": "NOT_WRITTEN",
+        "note": "Diagnostic mock Surfe success — no credits."
+      }
+    },
+    {
+      "type": "response",
+      "status": 200,
+      "isHybrid": false,
+      "ok": true,
+      "error": null,
+      "email": true,
+      "phone": true,
+      "pending": false,
+      "persistence": "NOT_WRITTEN",
+      "message": "",
+      "missingChannelState": {
+        "needsEmail": true,
+        "needsPhone": true,
+        "requestChannel": "both"
+      },
+      "requestedInclude": {
+        "email": true,
+        "mobile": true
+      }
+    }
+  ],
+  "firstFail": null
+}

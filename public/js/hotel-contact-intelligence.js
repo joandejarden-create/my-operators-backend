@@ -12,6 +12,9 @@
   };
 
   var FIND_LABEL = "Find Email & Phone";
+  var FIND_LABEL_HTML =
+    '<span class="hci-enrich-btn__line">Find Email</span>' +
+    '<span class="hci-enrich-btn__line">&amp; Phone</span>';
   var LABELS = {
     directEmail: "Direct Business Email",
     directPhone: "Direct Business Phone",
@@ -23,6 +26,7 @@
     findPhone: "Find Email & Phone",
     findBoth: "Find Email & Phone",
   };
+  var _enrichToastHost = null;
 
   /* Match GDI gdi-commercial-list-table-v1 contact-column icons exactly. */
   var ICON_EMAIL =
@@ -581,6 +585,118 @@
     return '<p class="hci-muted">' + esc(label) + "</p>";
   }
 
+  /** Shared Dealality black-wave toast — never inject into table rows. */
+  function ensureEnrichToastHost() {
+    if (_enrichToastHost && document.body.contains(_enrichToastHost)) return _enrichToastHost;
+    var existing = document.getElementById("hci-enrich-loading-toast");
+    if (existing) {
+      _enrichToastHost = existing;
+      return existing;
+    }
+    var host = document.createElement("div");
+    host.id = "hci-enrich-loading-toast";
+    host.className =
+      "dealality-loading-toast-host he-loading-toast-host hci-enrich-loading-toast";
+    host.setAttribute("role", "status");
+    host.setAttribute("aria-live", "polite");
+    host.hidden = true;
+    host.style.display = "none";
+    var markup = "";
+    if (window.HeLoadingUx && typeof window.HeLoadingUx.toastHtml === "function") {
+      markup = window.HeLoadingUx.toastHtml("Finding Contact Details…", {
+        subText: "Hybrid enrichment",
+      });
+    } else if (
+      window.DealalitySharedLoadingUx &&
+      typeof window.DealalitySharedLoadingUx.toastHtml === "function"
+    ) {
+      markup = window.DealalitySharedLoadingUx.toastHtml("Finding Contact Details…", {
+        subText: "Hybrid enrichment",
+      });
+    } else {
+      markup =
+        '<div class="dealality-wave-loader dealality-wave-loader--inline dealality-wave-loader--compact dealality-wave-loader--toast">' +
+        '<div class="loading-text-main">Finding Contact Details…</div></div>';
+    }
+    host.innerHTML = markup;
+    document.body.appendChild(host);
+    _enrichToastHost = host;
+    return host;
+  }
+
+  function showEnrichToast(message) {
+    var host = ensureEnrichToastHost();
+    var msg =
+      host.querySelector("[data-dealality-loading-message], .loading-text-main, .toast-message") ||
+      null;
+    if (msg) msg.textContent = message || "Finding Contact Details…";
+    if (
+      window.DealalitySharedLoadingUx &&
+      typeof window.DealalitySharedLoadingUx.setPageToastBusy === "function"
+    ) {
+      window.DealalitySharedLoadingUx.setPageToastBusy(
+        host,
+        true,
+        message || "Finding Contact Details…",
+      );
+      return;
+    }
+    host.hidden = false;
+    host.style.display = "flex";
+    host.classList.add("show");
+    host.setAttribute("aria-busy", "true");
+  }
+
+  function hideEnrichToast() {
+    var host = _enrichToastHost || document.getElementById("hci-enrich-loading-toast");
+    if (!host) return;
+    if (
+      window.DealalitySharedLoadingUx &&
+      typeof window.DealalitySharedLoadingUx.setPageToastBusy === "function"
+    ) {
+      window.DealalitySharedLoadingUx.setPageToastBusy(host, false);
+      return;
+    }
+    host.classList.remove("show");
+    host.hidden = true;
+    host.style.display = "none";
+    host.setAttribute("aria-busy", "false");
+  }
+
+  function setEnrichButtonLabel(btn, mode) {
+    if (!btn) return;
+    if (mode === "finding") {
+      btn.innerHTML = '<span class="hci-enrich-btn__busy">Finding…</span>';
+      return;
+    }
+    if (mode === "complete") {
+      btn.textContent = "Lookup complete";
+      return;
+    }
+    btn.innerHTML = FIND_LABEL_HTML;
+    btn.setAttribute("data-enrich-label", FIND_LABEL);
+  }
+
+  function findEnrichSlot(btn) {
+    if (!btn || !btn.isConnected) return null;
+    var wrap = btn.closest("[data-hci-enrich-slot]");
+    if (wrap) return wrap.querySelector(".hci-enrich__result");
+    return btn.parentElement
+      ? btn.parentElement.querySelector(".hci-enrich__result")
+      : null;
+  }
+
+  function findEnrichButton(personId, hotelId) {
+    var sel =
+      '[data-hci-enrich][data-person-id="' +
+      String(personId || "").replace(/"/g, '\\"') +
+      '"]';
+    if (hotelId) {
+      sel += '[data-hotel-id="' + String(hotelId || "").replace(/"/g, '\\"') + '"]';
+    }
+    return document.querySelector(sel);
+  }
+
   function channelValue(ch) {
     return String((ch && (ch.value || ch.email || ch.phone)) || "").trim();
   }
@@ -677,7 +793,7 @@
     var disabled = !meta.enabled;
     var title = meta.contextualDescription || meta.reason || "";
     var btnClass =
-      "hci-btn hci-btn--enrich" +
+      "hci-btn hci-btn--enrich hci-btn--enrich-two-line" +
       (compact ? " hci-btn--enrich-compact" : "") +
       (meta.dimmedComplete ? " hci-btn--enrich-dimmed" : "") +
       (disabled ? " is-disabled" : "");
@@ -718,7 +834,7 @@
       '"' +
       (disabled ? " disabled aria-disabled=\"true\"" : "") +
       ">" +
-      esc(meta.label || FIND_LABEL) +
+      FIND_LABEL_HTML +
       "</button>" +
       (compact
         ? ""
@@ -973,14 +1089,26 @@
     var emails = personEmails(p);
     var phones = personPhones(p);
     var li = linkedInUrl(p);
+    var session = _sessionSurfeByPerson[p.personId || ""] || null;
     var email = emails.length ? channelValue(emails[0]) : "";
     var phone = phones.length ? channelValue(phones[0]) : "";
+    var sessionEmail = !email && session && session.email ? session.email : "";
+    var sessionPhone = !phone && session && session.phone ? session.phone : "";
     var emailLine = email
       ? '<a class="gdi-list-contact-link" href="mailto:' + esc(email) + '">' + esc(email) + "</a>"
-      : '<span class="gdi-list-contact-missing">Email Not Available</span>';
+      : sessionEmail
+        ? '<a class="gdi-list-contact-link gdi-list-contact-link--session" href="mailto:' +
+          esc(sessionEmail) +
+          '" title="Surfe · Session Only">' +
+          esc(sessionEmail) +
+          '</a><span class="gdi-list-session-tag">Surfe · Session Only</span>'
+        : '<span class="gdi-list-contact-missing">Email Not Available</span>';
     var phoneLine = phone
       ? phoneAnchorHtml(phone, "gdi-list-contact-link")
-      : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
+      : sessionPhone
+        ? phoneAnchorHtml(sessionPhone, "gdi-list-contact-link gdi-list-contact-link--session") +
+          '<span class="gdi-list-session-tag">Surfe · Session Only</span>'
+        : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
     var linkedinLine = li
       ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
         esc(li) +
@@ -1324,8 +1452,10 @@
     );
   }
 
-  function paintEnrichResult(slot, payload) {
+  function paintEnrichResult(slot, payload, btn) {
+    if (!slot && btn) slot = findEnrichSlot(btn);
     if (!slot) return;
+    slot.hidden = false;
     slot.removeAttribute("hidden");
     if (payload && payload.pending) {
       slot.innerHTML =
@@ -1354,6 +1484,9 @@
         msg =
           (payload && payload.userMessage) ||
           "Surfe authorization failed for this environment.";
+      } else if (err === "API route not found" || /route not found/i.test(err)) {
+        msg =
+          "Contact enrichment API route is unavailable on this server. Restart the integrated main tip and retry.";
       } else if (err === "surfe_no_result") {
         msg =
           "Surfe did not return additional professional contact details for this lookup. This is separate from any earlier Findymail result.";
@@ -1420,10 +1553,14 @@
       null;
     if (!email && !phone) {
       slot.innerHTML =
-        '<div class="hci-note hci-note--unresolved">No additional professional contact details found.</div>';
+        '<div class="hci-note hci-note--unresolved">Surfe did not return additional professional contact details for this lookup.</div>';
       return;
     }
-    var personId = person.personId || slot.getAttribute("data-person-id") || "";
+    var personId =
+      person.personId ||
+      (btn && btn.getAttribute("data-person-id")) ||
+      slot.getAttribute("data-person-id") ||
+      "";
     if (personId) {
       _sessionSurfeByPerson[personId] = {
         email: email || null,
@@ -1431,6 +1568,49 @@
         at: Date.now(),
         mock: payload.mock === true,
       };
+    }
+    // Refresh Contact Details channel stack so session values are visible left of the button.
+    var cell =
+      (btn && btn.closest("[data-hci-contact-details-cell]")) ||
+      (slot && slot.closest("[data-hci-contact-details-cell]"));
+    if (cell && personId) {
+      var seed = {
+        personId: personId,
+        name: (btn && btn.getAttribute("data-person-name")) || person.personName || "",
+        organization:
+          (btn && btn.getAttribute("data-organization")) || person.companyName || "",
+        title: (btn && btn.getAttribute("data-job-title")) || person.jobTitle || "",
+        linkedinUrl:
+          (btn && btn.getAttribute("data-linkedin-url")) || person.linkedinUrl || "",
+        organizationDomain: (btn && btn.getAttribute("data-company-domain")) || "",
+        email: null,
+        phone: null,
+        emails: [],
+        phones: [],
+      };
+      var hotelId = (btn && btn.getAttribute("data-hotel-id")) || "";
+      cell.outerHTML = renderVerifiedChannelSummary(seed, hotelId, vmCapability);
+      var liveBtn = findEnrichButton(personId, hotelId);
+      var liveSlot = findEnrichSlot(liveBtn);
+      if (liveBtn) {
+        liveBtn.disabled = true;
+        setEnrichButtonLabel(liveBtn, "complete");
+        liveBtn.classList.add("hci-btn--enrich-dimmed");
+      }
+      if (liveSlot) {
+        liveSlot.hidden = false;
+        liveSlot.removeAttribute("hidden");
+        liveSlot.setAttribute("data-person-id", personId);
+        liveSlot.innerHTML =
+          '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED" data-surfe-session="1" data-persist="forbidden">' +
+          '<div class="hci-note">' +
+          esc(
+            (payload.providerAttribution || "Surfe · Session Only") +
+              " · not persisted to Airtable",
+          ) +
+          "</div></div>";
+      }
+      return;
     }
     var attribution =
       payload.mock === true
@@ -1463,8 +1643,8 @@
   }
 
   function applyHybridRowUpdate(btn, body) {
-    var cell = btn.closest("[data-hci-contact-details-cell]");
-    if (!cell || !body || !body.channels) return false;
+    var cell = btn && btn.closest("[data-hci-contact-details-cell]");
+    if (!cell || !body || !(body.email || body.phone)) return null;
     var person = {
       personId: btn.getAttribute("data-person-id") || "",
       name: btn.getAttribute("data-person-name") || "",
@@ -1494,8 +1674,46 @@
       });
     }
     var hotelId = btn.getAttribute("data-hotel-id") || "";
-    cell.outerHTML = renderVerifiedChannelSummary(person, hotelId, vmCapability);
-    return true;
+    var parent = cell.parentElement;
+    var nextHtml = renderVerifiedChannelSummary(person, hotelId, vmCapability);
+    cell.outerHTML = nextHtml;
+    if (!parent) return null;
+    return parent.querySelector(
+      '[data-hci-contact-details-cell] [data-hci-enrich][data-person-id="' +
+        String(person.personId).replace(/"/g, '\\"') +
+        '"]',
+    );
+  }
+
+  function paintSurfeFallbackOffer(slot, body, personId) {
+    if (!slot) return;
+    var rem =
+      (body.missingChannelState && body.missingChannelState.requestChannel) ||
+      (body.surfeIncludeSuggested &&
+      body.surfeIncludeSuggested.email &&
+      body.surfeIncludeSuggested.mobile
+        ? "both"
+        : body.surfeIncludeSuggested && body.surfeIncludeSuggested.email
+          ? "email"
+          : body.surfeIncludeSuggested && body.surfeIncludeSuggested.mobile
+            ? "phone"
+            : "both");
+    slot.hidden = false;
+    slot.removeAttribute("hidden");
+    slot.setAttribute("data-person-id", personId || "");
+    slot.innerHTML =
+      '<div class="hci-note">' +
+      esc(
+        body.message ||
+          body.userMessage ||
+          "No durable channels found yet. Try Surfe for a session-only lookup.",
+      ) +
+      "</div>" +
+      '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
+      esc(personId || "") +
+      '" data-enrich-channel="' +
+      esc(rem) +
+      '">Try Surfe (session only)</button>';
   }
 
   function bindEnrich(root) {
@@ -1528,20 +1746,21 @@
       var organization = btn.getAttribute("data-organization") || "";
       var key = hotelId + "::" + personId;
       if (_inflightReveal[key]) return;
-      var slot =
-        (btn.closest("[data-hci-enrich-slot]") &&
-          btn.closest("[data-hci-enrich-slot]").querySelector(".hci-enrich__result")) ||
-        (btn.parentElement && btn.parentElement.querySelector(".hci-enrich__result"));
+      var slot = findEnrichSlot(btn);
       var card = btn.closest(".hci-person, .hci-dir-row, tr");
       var forceSurfe = btn.getAttribute("data-force-surfe") === "1";
       btn.removeAttribute("data-force-surfe");
       btn.disabled = true;
       btn.setAttribute("aria-busy", "true");
-      btn.textContent = "Finding…";
+      setEnrichButtonLabel(btn, "finding");
+      // Toast outside the table — do not inject loaders into the row/result slot.
+      showEnrichToast(
+        forceSurfe ? "Finding Contact Details…" : "Finding Contact Details…",
+      );
       if (slot) {
-        slot.hidden = false;
-        slot.setAttribute("data-hci-wave-loading", "1");
-        slot.innerHTML = waveHtml("Finding Contact Details…", "Hybrid enrichment");
+        slot.hidden = true;
+        slot.setAttribute("hidden", "");
+        slot.innerHTML = "";
       }
       if (card) card.setAttribute("data-enriching", "1");
       _inflightReveal[key] = true;
@@ -1568,104 +1787,130 @@
         }),
       })
         .then(function (r) {
-          return r.json().then(function (j) {
-            return { status: r.status, body: j };
-          });
+          return r.json().then(
+            function (j) {
+              return { status: r.status, body: j };
+            },
+            function () {
+              return {
+                status: r.status,
+                body: {
+                  ok: false,
+                  error: r.status === 404 ? "API route not found" : "http_" + r.status,
+                  userMessage:
+                    r.status === 404
+                      ? "Contact enrichment API route is unavailable on this server."
+                      : "Lookup could not be completed. Try again.",
+                },
+              };
+            },
+          );
         })
         .then(function (pack) {
           var body = pack.body || { ok: false, error: "http_" + pack.status };
-          if (slot) slot.setAttribute("data-person-id", personId);
           if (body && body.person && !body.person.personId) body.person.personId = personId;
-          if (useHybrid && body && body.ok && (body.email || body.phone || body.channels)) {
-            applyHybridRowUpdate(btn, body);
-            var rem =
-              (body.missingChannelState && body.missingChannelState.requestChannel) ||
-              (body.surfeIncludeSuggested && body.surfeIncludeSuggested.email && body.surfeIncludeSuggested.mobile
-                ? "both"
-                : body.surfeIncludeSuggested && body.surfeIncludeSuggested.email
-                  ? "email"
-                  : body.surfeIncludeSuggested && body.surfeIncludeSuggested.mobile
-                    ? "phone"
-                    : "both");
-            if (body.missingChannelState) {
+
+          // Durable Findymail / Airtable email|phone only — LinkedIn-only channels must NOT
+          // replace the cell (that previously detached the Try Surfe offer).
+          if (useHybrid && body && body.ok && (body.email || body.phone)) {
+            var liveBtn = applyHybridRowUpdate(btn, body) || findEnrichButton(personId, hotelId);
+            btn = liveBtn || btn;
+            slot = findEnrichSlot(btn);
+            if (body.missingChannelState && btn && btn.isConnected) {
               btn.setAttribute(
                 "data-enrich-channel",
-                body.missingChannelState.requestChannel || rem
+                body.missingChannelState.requestChannel || "both",
               );
               btn.setAttribute(
                 "data-needs-email",
-                body.missingChannelState.needsEmail ? "1" : "0"
+                body.missingChannelState.needsEmail ? "1" : "0",
               );
               btn.setAttribute(
                 "data-needs-phone",
-                body.missingChannelState.needsPhone ? "1" : "0"
+                body.missingChannelState.needsPhone ? "1" : "0",
               );
             }
-            if (slot) {
-              slot.hidden = false;
-              slot.innerHTML =
-                '<div class="hci-note">' +
-                esc(body.message || "Canonical channels updated from Airtable.") +
-                "</div>" +
-                (body.surfeFallbackAvailable
-                  ? '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
-                    esc(personId) +
-                    '" data-enrich-channel="' +
-                    esc(rem) +
-                    '">Try Surfe (session only)</button>'
-                  : "");
-            }
-            if (!body.surfeFallbackAvailable) {
+            if (body.surfeFallbackAvailable) {
+              paintSurfeFallbackOffer(slot, body, personId);
+              if (btn && btn.isConnected) {
+                btn.disabled = false;
+                setEnrichButtonLabel(btn, "idle");
+              }
+            } else if (btn && btn.isConnected) {
               btn.disabled = true;
-              btn.textContent = btn.getAttribute("data-enrich-label") || FIND_LABEL;
+              setEnrichButtonLabel(btn, "idle");
               btn.classList.add("hci-btn--enrich-dimmed");
+              if (slot) {
+                slot.hidden = false;
+                slot.removeAttribute("hidden");
+                slot.innerHTML =
+                  '<div class="hci-note">' +
+                  esc(body.message || "Canonical channels updated from Airtable.") +
+                  "</div>";
+              }
             }
             return;
           }
+
           if (useHybrid && body && body.surfeFallbackAvailable && !body.email && !body.phone) {
-            var remBoth =
-              (body.missingChannelState && body.missingChannelState.requestChannel) || "both";
-            if (slot) {
-              slot.hidden = false;
-              slot.innerHTML =
-                '<div class="hci-note">' +
-                esc(body.message || body.userMessage || "No durable channels found yet.") +
-                "</div>" +
-                '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
-                esc(personId) +
-                '" data-enrich-channel="' +
-                esc(remBoth) +
-                '">Try Surfe (session only)</button>';
+            // Table may re-render during long Findymail waits — always re-resolve live nodes.
+            btn = findEnrichButton(personId, hotelId) || btn;
+            slot = findEnrichSlot(btn);
+            if (!slot && btn) {
+              var wrap = btn.closest("[data-hci-enrich-slot]");
+              if (wrap) {
+                slot = document.createElement("div");
+                slot.className = "hci-enrich__result hci-enrich__result--cell";
+                wrap.appendChild(slot);
+              }
             }
-            btn.disabled = false;
-            btn.textContent = btn.getAttribute("data-enrich-label") || FIND_LABEL;
+            paintSurfeFallbackOffer(slot, body, personId);
+            if (btn && btn.isConnected) {
+              btn.disabled = false;
+              setEnrichButtonLabel(btn, "idle");
+            }
             return;
           }
-          paintEnrichResult(slot, body);
-          var restoreLabel = btn.getAttribute("data-enrich-label") || FIND_LABEL;
+
+          btn = findEnrichButton(personId, hotelId) || btn;
+          slot = findEnrichSlot(btn) || slot;
+          paintEnrichResult(slot, body, btn);
           if (body && body.ok && !body.pending && (body.person || body.cached)) {
-            btn.textContent = "Lookup complete";
-            btn.disabled = true;
+            if (btn && btn.isConnected) {
+              setEnrichButtonLabel(btn, "complete");
+              btn.disabled = true;
+            }
             return;
           }
-          btn.disabled = false;
-          btn.textContent = restoreLabel;
+          if (btn && btn.isConnected) {
+            btn.disabled = false;
+            setEnrichButtonLabel(btn, "idle");
+          }
         })
         .catch(function (err) {
-          paintEnrichResult(slot, {
-            ok: false,
-            error: "network_error",
-            userMessage: "Lookup could not be completed. Try again.",
-            message: String((err && err.message) || err),
-          });
-          btn.disabled = false;
-          btn.textContent = btn.getAttribute("data-enrich-label") || FIND_LABEL;
+          btn = findEnrichButton(personId, hotelId) || btn;
+          slot = findEnrichSlot(btn) || slot;
+          paintEnrichResult(
+            slot,
+            {
+              ok: false,
+              error: "network_error",
+              userMessage: "Lookup could not be completed. Try again.",
+              message: String((err && err.message) || err),
+            },
+            btn,
+          );
+          if (btn && btn.isConnected) {
+            btn.disabled = false;
+            setEnrichButtonLabel(btn, "idle");
+          }
         })
         .finally(function () {
           delete _inflightReveal[key];
-          btn.removeAttribute("aria-busy");
-          if (slot) slot.removeAttribute("data-hci-wave-loading");
-          if (card) card.removeAttribute("data-enriching");
+          hideEnrichToast();
+          btn = findEnrichButton(personId, hotelId) || btn;
+          if (btn && btn.isConnected) btn.removeAttribute("aria-busy");
+          if (card && card.isConnected) card.removeAttribute("data-enriching");
         });
     });
   }

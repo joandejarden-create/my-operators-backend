@@ -994,7 +994,7 @@ a.hci-channel__value {
   gap: 4px;
   min-width: 0;
   flex: 1 1 auto;
-  overflow: hidden; /* long emails ellipsis — never cover the button */
+  overflow: visible; /* keep full email/phone readable; table scrolls horizontally if needed */
 }
 .hci-root .gdi-list-contact-action {
   flex: 0 0 auto;
@@ -1004,8 +1004,8 @@ a.hci-channel__value {
   align-items: flex-end;
   justify-content: center;
   gap: 6px;
-  min-width: 132px;
-  max-width: 160px;
+  min-width: 108px;
+  max-width: 128px;
   overflow: visible;
   visibility: visible;
   opacity: 1;
@@ -1034,9 +1034,9 @@ a.hci-channel__value {
 .hci-root .gdi-list-contact-link {
   color: #aab2ff;
   text-decoration: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
   min-width: 0;
   max-width: 100%;
 }
@@ -1047,6 +1047,13 @@ a.hci-channel__value {
 .hci-root .gdi-list-contact-missing {
   color: #8b95ad;
 }
+.hci-root .gdi-list-session-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 10px;
+  color: #9ad7c0;
+  white-space: nowrap;
+}
 .hci-root .gdi-list-linkedin {
   display: inline-flex;
   align-items: center;
@@ -1054,19 +1061,45 @@ a.hci-channel__value {
   min-width: 0;
 }
 .hci-root .gdi-list-linkedin-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
+.hci-root .hci-btn--enrich-two-line,
 .hci-root .hci-btn--enrich-compact {
-  padding: 5px 10px;
+  padding: 6px 10px;
   font-size: 11px;
-  line-height: 1.2;
-  white-space: nowrap;
+  line-height: 1.15;
+  white-space: normal;
   border-radius: 6px;
-  max-width: 148px;
-  min-height: 28px;
+  max-width: 118px;
+  min-height: 36px;
   visibility: visible;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1px;
+}
+.hci-root .hci-enrich-btn__line {
+  display: block;
+  line-height: 1.15;
+}
+.hci-root .hci-enrich-btn__busy {
+  display: block;
+  white-space: nowrap;
+}
+/* Enrichment loading toast lives on document.body — never inside the table */
+.hci-enrich-loading-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 10050;
+  pointer-events: none;
+}
+.hci-root tr[data-enriching="1"] {
+  /* Busy state without geometry shift */
+  outline: 1px solid rgba(154, 215, 192, 0.25);
 }
 .hci-root .hci-btn--enrich-dimmed,
 .hci-root .hci-btn--enrich.is-disabled {
