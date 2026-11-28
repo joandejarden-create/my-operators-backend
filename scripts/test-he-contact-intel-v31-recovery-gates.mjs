@@ -29,8 +29,8 @@ const GATES = {
     !/slot\.innerHTML = waveHtml\("Finding Contact Details/.test(js),
   HE_SURFE_SESSION_RESULT_DISPLAY:
     /_sessionSurfeByPerson/.test(js) &&
-    /Available for this session/.test(js) &&
-    /gdi-list-session-tag/.test(js + css) &&
+    /Results stay in this session only and are not saved to Dealality records/.test(js) &&
+    /gdi-contact-cta-note/.test(js + css) &&
     /paintSurfeFallbackOffer/.test(js),
   HE_SURFE_NO_AIRTABLE_PERSISTENCE:
     /persist:\s*false/.test(js) &&

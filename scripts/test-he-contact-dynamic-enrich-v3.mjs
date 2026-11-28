@@ -188,7 +188,7 @@ pass(GATES.CONTACT_PARTIAL_RESULT_HANDLING, { pendingDistinct: true });
 assert.match(apiSrc, /persist_forbidden|persist === true/);
 assert.match(apiSrc, /NOT_WRITTEN/);
 assert.match(apiSrc, /Surfe · Session Only/);
-assert.match(jsSrc, /Available for this session|data-surfe-session/);
+assert.match(jsSrc, /Results stay in this session only and are not saved to Dealality records|data-surfe-session/);
 assert.match(missingSrc, /sessionOnly/);
 assert.doesNotMatch(apiSrc, /meinrad\.lang@marriott\.com/i);
 pass(GATES.CONTACT_SURFE_SESSION_ONLY, { persistForbidden: true });

@@ -85,6 +85,7 @@
   var _inflightReveal = Object.create(null);
   /** Session-only Surfe results — never written into person channel arrays. */
   var _sessionSurfeByPerson = Object.create(null);
+  var _sessionSurfeHotelId = "";
 
   function esc(v) {
     return String(v == null ? "" : v)
@@ -115,8 +116,22 @@
     }
     var keepPlus = trimmed.charAt(0) === "+";
     var digits = trimmed.replace(/[^\d]/g, "");
+    var displayValue = trimmed;
+    // Lightweight NANP fallback when shared formatter script is unavailable.
+    if (digits.length === 11 && digits.charAt(0) === "1") {
+      displayValue =
+        "+1 (" +
+        digits.slice(1, 4) +
+        ") " +
+        digits.slice(4, 7) +
+        "-" +
+        digits.slice(7);
+    } else if (digits.length === 10) {
+      displayValue =
+        "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+    }
     return {
-      displayValue: trimmed,
+      displayValue: displayValue,
       telHref: digits ? "tel:" + (keepPlus ? "+" : "") + digits : "",
       originalRaw: raw,
     };
@@ -675,7 +690,9 @@
     btn.setAttribute("data-enrich-label", FIND_LABEL);
   }
 
-  var SESSION_HINT = "Available for this session";
+  /** GDI drawer customer session-only note (under Find Email & Phone). */
+  var SESSION_NOTE =
+    "Results stay in this session only and are not saved to Dealality records.";
 
   function showCustomerToastFeedback(message) {
     showEnrichToast(message || "Contact Details Found");
@@ -797,12 +814,15 @@
     var meta = resolveEnrichMeta(p, capability);
     var li = linkedInUrl(p);
     var compact = opts.compact === true;
-    var disabled = !meta.enabled;
-    var title = meta.contextualDescription || meta.reason || "";
+    var sessionCached = Boolean(_sessionSurfeByPerson[p.personId || ""]);
+    var disabled = !meta.enabled || sessionCached;
+    var title = sessionCached
+      ? SESSION_NOTE
+      : meta.contextualDescription || meta.reason || "";
     var btnClass =
       "hci-btn hci-btn--enrich hci-btn--enrich-two-line" +
       (compact ? " hci-btn--enrich-compact" : "") +
-      (meta.dimmedComplete ? " hci-btn--enrich-dimmed" : "") +
+      (meta.dimmedComplete || sessionCached ? " hci-btn--enrich-dimmed" : "") +
       (disabled ? " is-disabled" : "");
     return (
       '<div class="hci-enrich' +
@@ -834,6 +854,7 @@
       (meta.needsPhone ? "1" : "0") +
       '" data-dimmed-complete="' +
       (meta.dimmedComplete ? "1" : "0") +
+      (sessionCached ? ' data-session-lookup="1"' : "") +
       '" title="' +
       esc(title) +
       '" aria-label="' +
@@ -912,20 +933,18 @@
           })
           .join("") +
         (session
-          ? '<div class="hci-channel-row hci-channel-row--session" data-surfe-session="1">' +
-            '<span class="hci-channel-label">' +
-            esc(SESSION_HINT) +
-            "</span> " +
+          ? '<div class="hci-channel-row hci-channel-row--session" data-surfe-session="1" data-persist="forbidden">' +
             (session.email
               ? '<a class="hci-action-link" href="mailto:' +
                 esc(session.email) +
-                '" title="' +
-                esc(SESSION_HINT) +
                 '">' +
                 esc(session.email) +
                 "</a> "
               : "") +
             (session.phone ? phoneAnchorHtml(session.phone) : "") +
+            '<p class="gdi-muted gdi-contact-cta-note">' +
+            esc(SESSION_NOTE) +
+            "</p>" +
             "</div>"
           : "") +
         "</div>";
@@ -1110,25 +1129,25 @@
       : sessionEmail
         ? '<a class="gdi-list-contact-link gdi-list-contact-link--session" href="mailto:' +
           esc(sessionEmail) +
-          '" data-surfe-session="1" data-persist="forbidden" title="' +
-          esc(SESSION_HINT) +
-          '">' +
+          '" data-surfe-session="1" data-persist="forbidden">' +
           esc(sessionEmail) +
-          '</a><span class="gdi-list-session-tag" title="' +
-          esc(SESSION_HINT) +
-          '">' +
-          esc(SESSION_HINT) +
-          "</span>"
+          "</a>"
         : '<span class="gdi-list-contact-missing">Email Not Available</span>';
     var phoneLine = phone
       ? phoneAnchorHtml(phone, "gdi-list-contact-link")
       : sessionPhone
-        ? phoneAnchorHtml(sessionPhone, "gdi-list-contact-link gdi-list-contact-link--session") +
-          '<span class="gdi-list-session-tag" data-surfe-session="1" data-persist="forbidden" title="' +
-          esc(SESSION_HINT) +
-          '">' +
-          esc(SESSION_HINT) +
-          "</span>"
+        ? (function () {
+            var html = phoneAnchorHtml(
+              sessionPhone,
+              "gdi-list-contact-link gdi-list-contact-link--session",
+            );
+            return html
+              ? html.replace(
+                  "<a ",
+                  '<a data-surfe-session="1" data-persist="forbidden" ',
+                )
+              : "";
+          })()
         : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
     var linkedinLine = li
       ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
@@ -1165,11 +1184,18 @@
     var enrichBtn = renderEnrichAction(p, hotelId || "", capability || vmCapability, {
       compact: true,
     });
+    var hasSessionChannels = Boolean(sessionEmail || sessionPhone);
+    var sessionNoteHtml = hasSessionChannels
+      ? '<p class="gdi-muted gdi-contact-cta-note" data-hci-session-note="1" data-surfe-session="1" data-persist="forbidden">' +
+        esc(SESSION_NOTE) +
+        "</p>"
+      : "";
     return (
       '<div class="gdi-list-contact-details gdi-list-contact-details--with-action" data-hci-contact-details-cell="1">' +
       channelStack +
       '<div class="gdi-list-contact-action" data-hci-enrich-slot="1">' +
       enrichBtn +
+      sessionNoteHtml +
       '<div class="hci-enrich__result hci-enrich__result--cell" hidden></div>' +
       "</div></div>"
     );
@@ -1575,7 +1601,7 @@
           liveBtn.disabled = true;
           setEnrichButtonLabel(liveBtn, "idle");
           liveBtn.classList.add("hci-btn--enrich-dimmed");
-          liveBtn.setAttribute("title", SESSION_HINT);
+          liveBtn.setAttribute("title", SESSION_NOTE);
         }
       }
       if (liveSlot) {
@@ -1750,7 +1776,7 @@
               btn.disabled = true;
               setEnrichButtonLabel(btn, "idle");
               btn.classList.add("hci-btn--enrich-dimmed");
-              btn.setAttribute("title", SESSION_HINT);
+              btn.setAttribute("title", SESSION_NOTE);
             }
             return;
           }
@@ -2264,8 +2290,12 @@
       );
       return Promise.resolve();
     }
-    // Surfe session results must not survive hotel remount / reload.
-    _sessionSurfeByPerson = Object.create(null);
+    // Surfe session results must not survive hotel switches; keep them across
+    // soft remounts of the same hotel so the GDI session note stays visible.
+    if (_sessionSurfeHotelId && _sessionSurfeHotelId !== hotelId) {
+      _sessionSurfeByPerson = Object.create(null);
+    }
+    _sessionSurfeHotelId = hotelId;
     host.innerHTML = renderLoading();
     return Promise.all([loadViewModel(hotelId), loadEnrichmentCapability()])
       .then(function (pack) {
