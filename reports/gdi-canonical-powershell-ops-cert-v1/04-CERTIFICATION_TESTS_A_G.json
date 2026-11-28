@@ -20,7 +20,7 @@
       "emailNotYetResearched": 4,
       "telephoneNotYetResearched": 14,
       "linkedinNotYetResearched": 12,
-      "findymailEligibleRemaining": 0,
+      "findymailEligibleRemaining": 1,
       "opportunitiesRequiringAlternativeResearch": 0,
       "alternativeResearchPresent": 14,
       "opportunitiesWithVerifiedDirectBuyer": 0,
@@ -97,8 +97,9 @@
       "shell": "powershell",
       "error": null
     },
-    "liveGenericCliRefused": true,
-    "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (generic V3 CLI still refuses Live — use authorized Findymail Stage 4 path / gold-standard when hotel-agnostic Live closes)",
+    "liveContactPlanningOk": true,
+    "liveContactWithoutPaidAuthFailsClosed": true,
+    "findymailLivePath": "Invoke-GdiContactResearch.ps1 -Mode Live -AuthorizePaidResearch -AuthorizeFindymail (requires FINDYMAIL_API_KEY; use -FindymailDryRun to plan with no spend)",
     "surfeAuto": false,
     "status": "DRYRUN_VALIDATED"
   },
@@ -119,17 +120,17 @@
     "id": "F_WEEKLY_REFRESH",
     "helpOk": true,
     "dryProbe": {
-      "ok": false,
-      "status": 1,
-      "tail": "lity/ws-gdi/scripts/gdi-weekly-refresh.mjs:191:24)\n    at file:///C:/Dev/dealality/ws-gdi/scripts/gdi-weekly-refresh.mjs:425:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {\n  code: 'SERPAPI_KEY_required'\n}\n"
+      "ok": true,
+      "status": 0,
+      "tail": "DRY_RUN\",\"hotelId\":\"recLuxvwwxID7U2B8\",\"runId\":\"gdi_weekly_bethesda_20261128\",\"discoverySource\":\"FROZEN_DISCOVERY:data/group-demand-intelligence/evals/bethesda-weekly-discovery-20260921.json\",\"serpApiCalls\":0,\"report\":\"reports/gdi-weekly-refresh/recLuxvwwxID7U2B8/00-WEEKLY_REFRESH_DRY_RUN.json\",\"counts\":{\"NEW\":0,\"UPDATED\":8,\"REACTIVATED\":0,\"UNCHANGED\":78,\"CLOSED_DOWNGRADED\":0,\"NOT_IN_CURRENT\":1}}\n"
     },
-    "status": "IMPLEMENTED"
+    "status": "DRYRUN_VALIDATED"
   },
   "G": {
     "id": "G_AUTHORIZATION_AND_FAILURE_HANDLING",
     "powerShellHost": "powershell",
     "liveWithoutAuthorizePaidResearchFails": true,
-    "liveGenericCliRefusesPaid": true,
+    "liveFullFailsClosedWithoutWhoHowAuthParams": true,
     "checkpointARequiresHotelSpecificAuth": true,
     "checkpointAPowerShell": {
       "ok": false,

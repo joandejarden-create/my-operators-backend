@@ -6,12 +6,16 @@
   "whoHowCheckpointAPreflight": "pwsh -File scripts/gdi/Invoke-GdiWhoHow.ps1 -HotelId <rec...> -Mode DryRun -AuthorizationId <FOUNDER_GO_…> -HardCeilingUsd 5 -Manifest reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json -ContinuationOnly -Resume -PreflightOnly",
   "contactOnly": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode DryRun",
   "contactFindymailLive": "pwsh -File scripts/gdi/Invoke-GdiContactResearch.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -AuthorizeFindymail",
+  "fullE2eLive": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -AuthorizationId <FOUNDER_GO_…> -HardCeilingUsd <n> -Manifest reports/<hotel-tranche>/01-TRANCHE_MANIFEST.json",
+  "contactOnlyLiveContinuation": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode Live -AuthorizePaidResearch -SkipWhoHow -ContinuationOnly -Resume [-AuthorizeFindymail]",
   "qualificationOnly": "pwsh -File scripts/gdi/Invoke-GdiQualification.ps1 -HotelId <rec...> -Mode DryRun",
   "resume": "pwsh -File scripts/gdi/Invoke-GdiFullE2E.ps1 -HotelId <rec...> -Mode DryRun -Resume",
   "validate": "pwsh -File scripts/gdi/Invoke-GdiValidateFullE2E.ps1 -HotelId <rec...> -RequirePort8080",
   "contentHydration": "pwsh -File scripts/gdi/Invoke-GdiContentHydrationValidate.ps1 -HotelId <rec...> -RequirePort8080",
   "executiveSummary": "pwsh -File scripts/gdi/Invoke-GdiExecutiveSummary.ps1 -HotelId <rec...> -Mode validate",
   "weeklyRefresh": "npm run gdi:weekly-refresh -- --hotel-id <rec...> --dry-run",
+  "cleanAirtableReconstructionCert": "npm run gdi:clean-airtable-reconstruction-cert-v1",
+  "preLiveReadinessGate": "npm run gdi:unified-live-e2e-prelive-readiness-v1",
   "promoteCurrentDry": "pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -PublicationVersion <ver> -Mode DryRun",
   "thisCert": "node scripts/gdi-canonical-powershell-ops-cert-v1.mjs"
 }
