@@ -1,0 +1,226 @@
+{
+  "version": "he-contact-enrichment-gates-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "generatedAt": "2026-11-28T02:11:36.784Z",
+  "founderAnswers": {
+    "findymailCalledPreviousE2E": false,
+    "whyNot": "Latest Bethesda Full E2E was DryRun (findymail:false) and Live tranche remains PROPOSED_NOT_AUTHORIZED; HE factory had no AuthorizeFindymail wiring; ledger has 0 Bethesda rows.",
+    "integrationOperational": true,
+    "eligibleContacts": [
+      "Jeff Mullen",
+      "Katherine Button",
+      "Patrick Reece",
+      "Meinrad Lang III",
+      "Jenny Pyne"
+    ],
+    "verifiedEmailsRecovered": [],
+    "verifiedPhonesRecovered": [],
+    "legallyEligibleForAirtablePersistence": [],
+    "independentlyReadBack": [],
+    "nowVisibleInCustomerUi": [],
+    "remainingUnresolved": "Founder Live authorization + Airtable write-set for permitted Findymail results; then Stage 4 execute + persist + read-back + UI prove.",
+    "enrichmentCostUsdOrCredits": 0
+  },
+  "stageAudit": {
+    "namedPersonIdentification": "PASS",
+    "personEmployerVerification": "PASS",
+    "existingChannelRecovery": "PASS",
+    "findymailLookup": "SKIPPED",
+    "emailVerification": "SKIPPED",
+    "authorizedAirtablePersistence": "BLOCKED",
+    "independentAirtableReadback": "SKIPPED",
+    "contactIntelligenceUiHydration": "EXECUTED"
+  },
+  "findymailAudit": {
+    "version": "he-contact-enrichment-gates-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "findymailKey": {
+      "present": true,
+      "env_var": "FINDYMAIL_API_KEY",
+      "len": 48
+    },
+    "ledgerHotelRowCount": 0,
+    "ledgerCreditsDebited": 0,
+    "findymailInvokedForHotel": false,
+    "people": [
+      {
+        "name": "Jeff Mullen",
+        "organization": "Mullen Real Estate Capital",
+        "employerDomain": "mullencap.com",
+        "personKey": "jeff mullen|mullen real estate capital",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Katherine Button",
+        "organization": "Mullen Real Estate Capital",
+        "employerDomain": "mullencap.com",
+        "personKey": "katherine button|mullen real estate capital",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Patrick Reece",
+        "organization": "Mullen Real Estate Capital",
+        "employerDomain": "mullencap.com",
+        "personKey": "patrick reece|mullen real estate capital",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Meinrad Lang III",
+        "organization": "Marriott International",
+        "employerDomain": "marriott.com",
+        "personKey": "meinrad lang iii|marriott international",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      },
+      {
+        "name": "Jenny Pyne",
+        "organization": "Marriott International",
+        "employerDomain": "marriott.com",
+        "personKey": "jenny pyne|marriott international",
+        "eligible": true,
+        "eligibilityReason": "NAMED_PERSON_MISSING_PROFESSIONAL_EMAIL",
+        "priorFindymail": null,
+        "hasDurableDirectEmail": false,
+        "hasDurableDirectPhone": false,
+        "hasLinkedIn": true
+      }
+    ]
+  },
+  "gates": {
+    "HE_NAMED_CONTACTS_VERIFIED": "PASS",
+    "HE_EXISTING_CHANNELS_RECOVERED": "PASS",
+    "HE_FINDYMAIL_EXECUTION_AUDITED": "BLOCKED",
+    "HE_DIRECT_EMAIL_VERIFICATION": "SKIPPED",
+    "HE_CONTACT_CHANNEL_PERSISTENCE_VALIDATED": "BLOCKED",
+    "HE_CONTACT_CHANNEL_AIRTABLE_READBACK": "SKIPPED",
+    "HE_CONTACT_CHANNEL_UI_HYDRATION": "EXECUTED",
+    "HE_CONTACTABILITY_METRIC_GENERATED": "PASS"
+  },
+  "contactabilityBefore": {
+    "version": "he-contactability-metrics-v1",
+    "namedContactCount": 5,
+    "verifiedNamedContacts": 5,
+    "verifiedNamedContactCoverage": 5,
+    "verifiedBusinessEmails": 0,
+    "verifiedDirectEmailCount": 0,
+    "verifiedDirectTelephones": 0,
+    "verifiedDirectPhoneCount": 0,
+    "verifiedLinkedInProfiles": 5,
+    "verifiedLinkedInCount": 5,
+    "directlyContactableProfessionals": 0,
+    "verifiedDirectContactabilityRate": 0,
+    "directContactabilityStatus": "MEASURED",
+    "relevantDecisionMakerCoverage": 5,
+    "alternativeEntryPointCoverage": 0,
+    "unresolvedContactChannels": 5,
+    "directChannelsUnresolved": 5,
+    "identificationComplete": true,
+    "contactabilityComplete": false
+  },
+  "beforeAfter": [
+    {
+      "name": "Jeff Mullen",
+      "organization": "Mullen Real Estate Capital",
+      "employerDomain": "mullencap.com",
+      "emailBefore": null,
+      "emailAfter": null,
+      "phoneBefore": null,
+      "phoneAfter": null,
+      "linkedin": "https://www.linkedin.com/in/jeffmmullen/",
+      "findymailLookupStatus": "BLOCKED_NOT_AUTHORIZED",
+      "persistedToAirtable": false,
+      "visibleInRadarEmail": false,
+      "researchCostCredits": 0
+    },
+    {
+      "name": "Katherine Button",
+      "organization": "Mullen Real Estate Capital",
+      "employerDomain": "mullencap.com",
+      "emailBefore": null,
+      "emailAfter": null,
+      "phoneBefore": null,
+      "phoneAfter": null,
+      "linkedin": "https://www.linkedin.com/in/katherine-button/",
+      "findymailLookupStatus": "BLOCKED_NOT_AUTHORIZED",
+      "persistedToAirtable": false,
+      "visibleInRadarEmail": false,
+      "researchCostCredits": 0
+    },
+    {
+      "name": "Patrick Reece",
+      "organization": "Mullen Real Estate Capital",
+      "employerDomain": "mullencap.com",
+      "emailBefore": null,
+      "emailAfter": null,
+      "phoneBefore": null,
+      "phoneAfter": null,
+      "linkedin": "https://www.linkedin.com/in/patrick-reece-375b8937/",
+      "findymailLookupStatus": "BLOCKED_NOT_AUTHORIZED",
+      "persistedToAirtable": false,
+      "visibleInRadarEmail": false,
+      "researchCostCredits": 0
+    },
+    {
+      "name": "Meinrad Lang III",
+      "organization": "Marriott International",
+      "employerDomain": "marriott.com",
+      "emailBefore": null,
+      "emailAfter": null,
+      "phoneBefore": null,
+      "phoneAfter": null,
+      "linkedin": "https://www.linkedin.com/in/meinradlang/",
+      "findymailLookupStatus": "BLOCKED_NOT_AUTHORIZED",
+      "persistedToAirtable": false,
+      "visibleInRadarEmail": false,
+      "researchCostCredits": 0
+    },
+    {
+      "name": "Jenny Pyne",
+      "organization": "Marriott International",
+      "employerDomain": "marriott.com",
+      "emailBefore": null,
+      "emailAfter": null,
+      "phoneBefore": null,
+      "phoneAfter": null,
+      "linkedin": "https://www.linkedin.com/in/jenny-pyne-9b50976/",
+      "findymailLookupStatus": "BLOCKED_NOT_AUTHORIZED",
+      "persistedToAirtable": false,
+      "visibleInRadarEmail": false,
+      "researchCostCredits": 0
+    }
+  ],
+  "authorization": {
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "airtableWriteAuthorized": false,
+    "proposedAuthId": "FOUNDER_GO_GDI_TWO_HOTEL_BETHESDA_LIVE_20261128",
+    "findymailCreditHardCapProposed": 15,
+    "automaticSurfe": false
+  },
+  "sharedPipeline": {
+    "findymailEngine": "gdi-findymail-stage4-enrichment-v1",
+    "parallelHeEngine": false,
+    "surfeAutoInFactory": false,
+    "surfePolicy": "EXPLICIT_CLICK_SESSION_ONLY_NEVER_PERSIST"
+  },
+  "FULL_HE_E2E_VALIDATED": "NO"
+}
