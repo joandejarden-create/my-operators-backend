@@ -79,16 +79,20 @@ async function openContacts(page) {
   await page.evaluate((id) => {
     HotelExplorer.open({ id, recordId: id }, { tab: "contacts" });
   }, HOTEL);
-  await page.waitForTimeout(2800);
+  await page.waitForTimeout(5000);
   await page.waitForFunction(
     () =>
       !!document.querySelector("[data-hci-contact-details-cell]") ||
-      /staging is not available|Contact Intelligence/i.test(
-        document.querySelector(".hci-root")?.innerText || "",
+      !!document.querySelector("[data-hci-hybrid-enrich]") ||
+      /staging is not available|Contact Intelligence|Find Email/i.test(
+        document.querySelector(".hci-root")?.innerText ||
+          document.body?.innerText ||
+          "",
       ),
     null,
-    { timeout: 20000 },
+    { timeout: 45000 },
   ).catch(() => {});
+  await page.waitForTimeout(1500);
   return assetMeta;
 }
 

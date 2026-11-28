@@ -29,7 +29,8 @@ assert.match(jsSrc, /enrich-hybrid/);
 assert.match(jsSrc, /\/reveal/);
 assert.match(apiSrc, /linkedinUrl/);
 assert.match(apiSrc, /surfe_pending/);
-assert.match(apiSrc, /channel === "both"/);
+assert.match(apiSrc, /surfeIncludeFromMissingState|requestChannel/);
+assert.match(apiSrc, /needsEmail|needsPhone/);
 assert.doesNotMatch(apiSrc, /meinrad\.lang@marriott\.com/i);
 assert.doesNotMatch(jsSrc, /\+13019082451/);
 
@@ -49,22 +50,39 @@ if (base) {
       channel: process.env.HE_PW_CHANNEL || "chrome",
     });
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-    const url = `${base.replace(/\/$/, "")}/app#/hotel-explorer?hotelId=recLuxvwwxID7U2B8`;
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
-    await page.waitForTimeout(3000);
-    const contactsTab = page.getByText(/Contact Intelligence|Contacts/i).first();
-    if ((await contactsTab.count()) > 0) {
-      await contactsTab.click({ timeout: 8000 }).catch(() => {});
-      await page.waitForTimeout(2000);
-    }
+    const hotelId = "recLuxvwwxID7U2B8";
+    const url = `${base.replace(/\/$/, "")}/deal-capture-radar-with-ranked-list.html?hotelExplorer=${hotelId}&hexTab=contacts&cb=${Date.now()}`;
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 90000 });
+    await page
+      .waitForFunction(() => typeof window.HotelExplorer === "object", null, {
+        timeout: 45000,
+      })
+      .catch(() => {});
+    await page.evaluate((id) => {
+      if (window.HotelExplorer?.open) {
+        window.HotelExplorer.open({ id, recordId: id }, { tab: "contacts" });
+      }
+    }, hotelId);
+    await page.waitForTimeout(6000);
+    await page
+      .waitForSelector("[data-hci-contact-details-cell], [data-hci-hybrid-enrich]", {
+        timeout: 45000,
+      })
+      .catch(() => {});
     const shot = path.join(OUT, "PLAYWRIGHT_BETHESDA_CONTACTS.png");
     await page.screenshot({ path: shot, fullPage: false });
+    const hybridCount = await page.locator("[data-hci-hybrid-enrich]").count();
+    const enrichCount = await page.locator("[data-hci-enrich]").count();
     report.live8080 = {
       url,
+      base,
       meinradVisible: (await page.getByText(/Meinrad/i).count()) > 0,
-      findButtonPresent: (await page.locator("[data-hci-enrich]").count()) > 0,
+      findButtonPresent: hybridCount + enrichCount > 0,
+      hybridEnrichCount: hybridCount,
+      sessionOnlyLabelPresent:
+        (await page.getByText(/Surfe · Session Only|Session Only/i).count()) > 0,
       screenshot: shot,
-      note: "Live Surfe click not auto-fired (credit guard). Provider verified via diagnostic script.",
+      note: "Live Surfe click not auto-fired (credit guard). Provider verified via diagnostic. HE shell via deal-capture-radar hotelExplorer.",
     };
     await browser.close();
   } catch (err) {

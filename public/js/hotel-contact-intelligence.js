@@ -1323,8 +1323,12 @@
         msg =
           (payload && payload.userMessage) ||
           "Surfe authorization failed for this environment.";
-      } else if (err === "no_result" || err === "surfe_no_result") {
-        msg = "No additional professional contact details found.";
+      } else if (err === "surfe_no_result") {
+        msg =
+          "Surfe did not return additional professional contact details for this lookup. This is separate from any earlier Findymail result.";
+      } else if (err === "no_result" || err === "findymail_no_result") {
+        msg =
+          "Findymail did not return durable channels. You can try Surfe (session only) if offered.";
       } else {
         msg =
           (payload && payload.userMessage) ||
