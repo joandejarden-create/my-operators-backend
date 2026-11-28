@@ -72,7 +72,15 @@ param(
   [switch]$Resume,
   [string]$BatchFile,
   [switch]$Fixture,
-  [switch]$SkipBrowser
+  [switch]$SkipBrowser,
+  # Paid Findymail — disabled by default. Full/Refresh still require these explicit gates.
+  [switch]$AuthorizeFindymail,
+  [switch]$FindymailLive,
+  [switch]$AuthorizeFindymailPhone,
+  [switch]$FindymailPhoneLive,
+  [switch]$AirtableWriteAuthorized,
+  [int]$FindymailCreditHardCap = 15,
+  [int]$FindymailPhoneCreditHardCap = 50
 )
 
 $ErrorActionPreference = "Stop"
@@ -121,9 +129,32 @@ if (($Mode -ne "CrossTabValidate") -and (Test-Path $NodeRunner)) {
   } else {
     $argsList += "--browser"
   }
-  Write-Host "[HE Factory] V1.1 runner → Mode=$Mode HotelId=$HotelId Apply=$Apply"
+  if ($AuthorizeFindymail) { $argsList += "--authorize-findymail" }
+  if ($FindymailLive) { $argsList += "--findymail-live" }
+  if ($AuthorizeFindymailPhone) { $argsList += "--authorize-findymail-phone" }
+  if ($FindymailPhoneLive) { $argsList += "--findymail-phone-live" }
+  if ($AirtableWriteAuthorized) { $argsList += "--airtable-write-authorized" }
+  $argsList += @("--findymail-credit-hard-cap", "$FindymailCreditHardCap")
+  $argsList += @("--findymail-phone-credit-hard-cap", "$FindymailPhoneCreditHardCap")
+  Write-Host "[HE Factory] V1.1 runner → Mode=$Mode HotelId=$HotelId Apply=$Apply Findymail=$AuthorizeFindymail Phone=$AuthorizeFindymailPhone"
   & node @argsList
   if ($LASTEXITCODE -ne 0) { throw "Hotel Explorer factory mode $Mode failed" }
+
+  # Explicit paid phone stage (Bethesda / HE50) — never runs unless both authorize + live switches set.
+  if (($Mode -eq "Full" -or $Mode -eq "Refresh" -or $Mode -eq "Research") -and $AuthorizeFindymailPhone -and $HotelId -eq "recLuxvwwxID7U2B8") {
+    $phoneScript = Join-Path $RepoRoot "scripts\hotel-explorer\run-he50-bethesda-findymail-phone-live-v1.mjs"
+    if (Test-Path $phoneScript) {
+      $phoneArgs = @($phoneScript)
+      if ($FindymailPhoneLive -and $AirtableWriteAuthorized) {
+        Write-Host "[HE Factory] Findymail PHONE LIVE apply (HE50 ceiling enforced in script)"
+        $phoneArgs += "--apply"
+      } else {
+        Write-Host "[HE Factory] Findymail PHONE dry-run (paid disabled — pass -FindymailPhoneLive -AirtableWriteAuthorized)"
+      }
+      & node @phoneArgs
+      if ($LASTEXITCODE -ne 0) { throw "HE Findymail phone stage FAILED for $HotelId" }
+    }
+  }
 } elseif ($Mode -eq "Research" -or $Mode -eq "Apply") {
   if (-not (Test-Path $NodeRunner)) {
     Write-Warning "Full factory runner not present — cross-tab gates completed; Research/Apply require factory runner."
