@@ -1,0 +1,116 @@
+{
+  "contract": "gdi-outstanding-pr-main-integration-closeout-v1",
+  "generatedAt": "2026-11-28T02:10:00.000Z",
+  "rows": [
+    {
+      "item": "PR #578 Design Hotels local visibility",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/578",
+      "originalStatus": "OPEN / SUPERSEDED",
+      "finalStatus": "SUPERSEDED",
+      "mergeSha": null,
+      "functionalityIntegrated": "None — already on main via STAGED Design Hotels packages",
+      "remainingBlocker": null,
+      "founderAuthorizationRequired": false,
+      "effectOnTwoHotelCert": "None",
+      "auditFinding": "CLOSED"
+    },
+    {
+      "item": "PR #496 Integrated Staging V1",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/496",
+      "originalStatus": "OPEN / SUPERSEDED",
+      "finalStatus": "SUPERSEDED",
+      "mergeSha": null,
+      "functionalityIntegrated": "None — superseded by DEALALITY_INTEGRATED_DELIVERY_V1 + 8080 guard",
+      "remainingBlocker": null,
+      "founderAuthorizationRequired": false,
+      "effectOnTwoHotelCert": "None",
+      "auditFinding": "CLOSED"
+    },
+    {
+      "item": "PR #580 Usage ledger + HI channel fields",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/580",
+      "originalStatus": "READY_TO_MERGE_AFTER_REBASE",
+      "finalStatus": "MERGED_AND_VALIDATED",
+      "mergeSha": "PENDING_THIS_PR",
+      "functionalityIntegrated": "gdi-contact-enrichment-airtable-schema-v1; findymail channel contract v1.1; Surfe ledger coexistence",
+      "remainingBlocker": null,
+      "founderAuthorizationRequired": false,
+      "effectOnTwoHotelCert": "Improves persistence/provenance evidence",
+      "auditFinding": "MERGED_AND_VALIDATED"
+    },
+    {
+      "item": "PR #561 Person identity collision",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/561",
+      "originalStatus": "READY_TO_MERGE_AFTER_REBASE",
+      "finalStatus": "MERGED_AND_VALIDATED",
+      "mergeSha": "PENDING_THIS_PR",
+      "functionalityIntegrated": "gdi-person-identity-collision-v1 + durable store collision gate",
+      "remainingBlocker": null,
+      "founderAuthorizationRequired": false,
+      "effectOnTwoHotelCert": "Supports shared person reuse / anti-merge",
+      "auditFinding": "MERGED_AND_VALIDATED"
+    },
+    {
+      "item": "PR #620 Authorized LDI + viability",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/620",
+      "originalStatus": "NEEDS_REMEDIATION",
+      "finalStatus": "MERGED_AND_VALIDATED",
+      "mergeSha": "PENDING_THIS_PR",
+      "functionalityIntegrated": "gdi-leisure-authorized-live-v1; commercial viability precheck in Full E2E; leisure index export",
+      "remainingBlocker": "Paid LDI requires separate founder GO + GDI_LDI_LIVE",
+      "founderAuthorizationRequired": true,
+      "effectOnTwoHotelCert": "Enables Design Hotels LDI when authorized; DryRun/fixture ready now",
+      "auditFinding": "MERGED_AND_VALIDATED"
+    },
+    {
+      "item": "PR #589 Exa Agent quality recovery",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/589",
+      "originalStatus": "NEEDS_REMEDIATION",
+      "finalStatus": "MERGED_AND_VALIDATED",
+      "mergeSha": "PENDING_THIS_PR",
+      "functionalityIntegrated": "Hardened person-name + buyer classification; titles≠direct buyer; $0 CI fixtures",
+      "remainingBlocker": null,
+      "founderAuthorizationRequired": false,
+      "effectOnTwoHotelCert": "Improves contact quality before Findymail spend",
+      "auditFinding": "MERGED_AND_VALIDATED",
+      "classifierNote": "Buyer classification hardened; FQO inventory qualification contract not materially rewritten"
+    },
+    {
+      "item": "Inventory membership persistence",
+      "reference": "gdi-inventory-membership-persistence-v1 (new)",
+      "originalStatus": "INCOMPLETE_DEVELOPMENT",
+      "finalStatus": "PARTIAL",
+      "mergeSha": "PENDING_THIS_PR",
+      "functionalityIntegrated": "Durable membership ledger + dry-run Airtable plan + reconstruction hooks",
+      "remainingBlocker": "SCHEMA_AUTHORIZATION_REQUIRED + ExactWriteSetAuthorization for live GDO membership writes",
+      "founderAuthorizationRequired": true,
+      "effectOnTwoHotelCert": "Does not block Live start; blocks FULL_E2E_VALIDATED persistence COMPLETE",
+      "auditFinding": "PARTIAL"
+    },
+    {
+      "item": "PR #533 FullEnrich Surfe-miss UI",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/533",
+      "originalStatus": "FOUNDER_DECISION_REQUIRED",
+      "finalStatus": "DEFERRED",
+      "mergeSha": null,
+      "functionalityIntegrated": "None",
+      "remainingBlocker": "FullEnrich policy",
+      "founderAuthorizationRequired": true,
+      "effectOnTwoHotelCert": "None",
+      "auditFinding": "DEFERRED"
+    },
+    {
+      "item": "PR #645 HE Contact GDI parity",
+      "reference": "https://github.com/joandejarden-create/my-operators-backend/pull/645",
+      "originalStatus": "OPEN (audit omission)",
+      "finalStatus": "DEFERRED",
+      "mergeSha": null,
+      "functionalityIntegrated": "None under this GDI GO",
+      "remainingBlocker": "Separate HE stream authorization — shared contact presentation dependency only",
+      "founderAuthorizationRequired": true,
+      "effectOnTwoHotelCert": "Not required for GDI Full E2E cert",
+      "auditFinding": "DEFERRED",
+      "recommendedDisposition": "Route to Hotel Explorer / Integration Controller; do not merge via GDI product chat"
+    }
+  ]
+}

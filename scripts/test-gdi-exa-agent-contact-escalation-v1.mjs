@@ -440,7 +440,9 @@ await checkAsync("15_seniority_not_promoted_to_direct_buyer", async () => {
   assert.match(cls.reason, /SENIORITY_WITHOUT_LODGING/);
 });
 
-await checkAsync("16_homepage_only_cannot_finalize", async () => {
+await checkAsync("16_homepage_only_with_lodging_role_is_provenance_weak", async () => {
+  // Quality recovery (#589): homepage + evidenced lodging/meetings role may classify,
+  // but provenanceWeak remains true (STAGED cert may HOLD for deeper person URL).
   const v = verifyAndClassifyAgentCandidates(
     [
       {
@@ -454,8 +456,17 @@ await checkAsync("16_homepage_only_cannot_finalize", async () => {
     ],
     { organizationName: baseOpp.organizationName },
   );
-  assert.equal(v.accepted.length, 0);
-  assert.equal(v.rejected[0]?.reason, "HOMEPAGE_ONLY_PROVENANCE");
+  assert.equal(v.accepted.length, 1);
+  assert.equal(v.accepted[0]?.provenanceWeak, true);
+  assert.match(
+    String(
+      v.accepted[0]?.agentClassificationReason ||
+        v.accepted[0]?.classificationReason ||
+        v.accepted[0]?.reason ||
+        "",
+    ),
+    /LODGING|MEETINGS|BUYING/i,
+  );
 });
 
 await checkAsync("17_primary_secondary_identities_distinct", async () => {

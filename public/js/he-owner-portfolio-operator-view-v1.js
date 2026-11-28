@@ -462,6 +462,9 @@ function buildOwnerPortfolioOperatorView(ownedHotels = [], opts = {}) {
       ...hotel,
       operator_relationship_label: formatOperatorRelationshipLabel(resolved, hotel),
       ownership_relationship_label: formatOwnershipRelationshipLabel(hotel),
+      // Management verification is independent of ownership_evidence_label
+      management_evidence_label: resolved.verified ? "Verified" : "Proposed",
+      management_evidence_class: resolved.verified ? "VERIFIED" : "PROPOSED",
     });
   }
 
