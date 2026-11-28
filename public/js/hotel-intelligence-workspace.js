@@ -1987,7 +1987,15 @@
           (json && json.people) ||
           [];
         var fromCi = mapContactIntelligencePeople(pkgPeople);
-        var merged = normalizeOrgKeyPeopleRows(seed.concat(fromCi)).slice(0, 5);
+        // Enrich first, then prefer rows that carry person LinkedIn so PROFILE
+        // is not dropped when seed fills the first five slots without URLs.
+        var mergedAll = normalizeOrgKeyPeopleRows(seed.concat(fromCi));
+        mergedAll.sort(function (a, b) {
+          var ap = personProfessionalProfile(a).verified ? 1 : 0;
+          var bp = personProfessionalProfile(b).verified ? 1 : 0;
+          return bp - ap;
+        });
+        var merged = mergedAll.slice(0, 5);
         host.innerHTML = renderPeopleGrouped(merged, { contactsLink: contactsLink });
       })
       .catch(function () {
@@ -2610,19 +2618,12 @@
     var type = String(
       (nested && nested.type) || p.professional_profile_type || ""
     ).trim();
-    var verified =
-      nested && typeof nested.verified === "boolean"
-        ? nested.verified
-        : p.professional_profile_verified === true ||
-          (Array.isArray(p.profileUrls) &&
-            p.profileUrls.some(function (u) {
-              return u && u.verified !== false;
-            })) ||
-          Boolean(p.linkedinUrl);
-    // Only person-level LinkedIn /in/ profiles — never company pages or guesses
+    // Only person-level LinkedIn /in/ profiles — never company pages or guesses.
+    // Presence of a person /in/ URL (same as Contact Intelligence) is enough to
+    // show PROFILE; nested.verified===false must not hide a real person URL.
     var isPersonLinkedIn =
       /^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(url);
-    if (!url || !verified || !isPersonLinkedIn) {
+    if (!url || !isPersonLinkedIn) {
       return { type: "", url: "", verified: false };
     }
     return {
@@ -2634,6 +2635,9 @@
 
   function personLinkedInFromRaw(raw) {
     if (!raw || typeof raw !== "object") return "";
+    var personLi =
+      /^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i;
+    var companyLi = /linkedin\.com\/company\//i;
     var direct = String(
       raw.linkedinUrl ||
         raw.linkedin_url ||
@@ -2641,14 +2645,14 @@
         (raw.professional_profile && raw.professional_profile.url) ||
         ""
     ).trim();
-    if (/^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(direct)) {
+    if (personLi.test(direct) && !companyLi.test(direct)) {
       return direct;
     }
     if (Array.isArray(raw.profileUrls)) {
       for (var i = 0; i < raw.profileUrls.length; i++) {
         var pr = raw.profileUrls[i];
         var u = pr && pr.url ? String(pr.url).trim() : "";
-        if (/^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(u)) return u;
+        if (personLi.test(u) && !companyLi.test(u)) return u;
       }
     }
     if (Array.isArray(raw.channels)) {
@@ -2657,13 +2661,22 @@
         if (!ch) continue;
         var kind = String(ch.kind || ch.type || "");
         var val = String(ch.value || ch.url || "").trim();
+        // PERSON_LINKEDIN / LINKEDIN person channels only — never ORG_LINKEDIN company pages
+        if (/ORG_LINKEDIN|COMPANY_LINKEDIN/i.test(kind) || companyLi.test(val)) continue;
         if (
-          (/linkedin/i.test(kind) || /linkedin\.com\/in\//i.test(val)) &&
-          /^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(val)
+          (/PERSON_LINKEDIN|LINKEDIN/i.test(kind) || personLi.test(val)) &&
+          personLi.test(val)
         ) {
           return val;
         }
       }
+    }
+    // Same recovery as Contact Intelligence when channels are quarantined
+    if (raw.notes && personLi.test(String(raw.notes))) {
+      var m = String(raw.notes).match(
+        /https?:\/\/[^\s)]*linkedin\.com\/in\/[^\s)|]+/i
+      );
+      if (m) return m[0].replace(/[.,;]+$/, "");
     }
     return "";
   }
@@ -3690,13 +3703,16 @@
                         ? formatCount(h.rooms)
                         : "—";
                     var brand = h.brand_display || h.brand || "—";
+                    // Management Status is independent of ownership/economic-sponsor
+                    // evidence (e.g. Proposed Mullen sponsorship must not label Marriott).
+                    var mgmtLabel =
+                      h.operator_relationship_label ||
+                      (g.verified ? "Managed by " + opLabel : "Management company not verified");
                     var status =
-                      h.ownership_evidence_label ||
-                      (window.HeOwnerPortfolioOperatorView &&
-                        window.HeOwnerPortfolioOperatorView.classifyPortfolioHotel &&
-                        window.HeOwnerPortfolioOperatorView.classifyPortfolioHotel(h)
-                          .label) ||
-                      "Proposed";
+                      h.management_evidence_label ||
+                      (g.verified || /Managed by|Owner-operated/i.test(mgmtLabel)
+                        ? "Verified"
+                        : "Proposed");
                     return (
                       "<tr>" +
                       "<td>" +
@@ -3712,13 +3728,15 @@
                       esc(brand) +
                       "</td>" +
                       "<td>" +
-                      esc("Managed by " + opLabel) +
+                      esc(mgmtLabel) +
                       "</td>" +
                       "<td>" +
                       '<span class="hiw-status' +
                       (/verified/i.test(status)
                         ? " hiw-status--verified"
                         : " hiw-status--probable") +
+                      '" data-hex-mgmt-status="1" data-hex-ownership-status="' +
+                      esc(h.ownership_evidence_label || "") +
                       '">' +
                       esc(status) +
                       "</span>" +

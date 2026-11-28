@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Organization & Portfolio — heading inset + Key People PROFILE LinkedIn gates.
+ * Organization & Portfolio — Key People PROFILE LinkedIn + management status gates.
  * Wired into Invoke-HotelExplorerFactory.ps1 ConsistencyModes.
  */
 import assert from "node:assert/strict";
@@ -15,15 +15,25 @@ const read = (rel) => fs.readFileSync(path.join(ROOT, rel), "utf8");
 const hexCss = read("public/css/hotel-explorer.css");
 assert.match(
   hexCss,
-  /\.hex-root \.hex-owner-portfolio > \.hiw-section > \.hiw-section__h,\s*\n\.hex-root \.hex-owner-portfolio > \.hiw-section > \.hiw-section__head \{[\s\S]*?padding-left:\s*16px;[\s\S]*?padding-right:\s*16px;/
+  /\.hex-root \.hex-owner-portfolio > \.hiw-section \{[\s\S]*?\/\* inherit \.hex-root \.hiw-section padding/
 );
 
 const ws = read("public/js/hotel-intelligence-workspace.js");
 assert.match(ws, /function personLinkedInFromRaw\(/);
 assert.match(ws, /function enrichOrgKeyPeopleRowProfile\(/);
 assert.match(ws, /Seed rows often lack LinkedIn/);
-assert.match(ws, /PERSON_LINKEDIN channel value/);
+assert.match(ws, /PERSON_LINKEDIN/);
 assert.match(ws, /linkedin\\\.com\\\/in\\\//);
+assert.match(ws, /management_evidence_label/);
+assert.match(ws, /Management Status is independent of ownership/);
+assert.match(ws, /prefer rows that carry person LinkedIn/);
+assert.doesNotMatch(
+  ws.slice(ws.indexOf("Who Manages These Hotels?"), ws.indexOf("Who Manages These Hotels?") + 2500),
+  /ownership_evidence_label \|\|/
+);
+
+const opView = read("public/js/he-owner-portfolio-operator-view-v1.js");
+assert.match(opView, /management_evidence_label:\s*resolved\.verified/);
 
 const start = ws.indexOf("function personProfessionalProfile(");
 const mid = ws.indexOf("function collectOrgKeyPeople(");
@@ -65,6 +75,14 @@ assert.equal(
   sandbox.personLinkedInFromRaw(jeffCi),
   "https://www.linkedin.com/in/jeffmmullen/"
 );
+
+// nested.verified===false must not hide a real person LinkedIn URL
+const nestedFalse = {
+  name: "Jeff Mullen",
+  linkedinUrl: "https://www.linkedin.com/in/jeffmmullen/",
+  professional_profile: { type: "LINKEDIN", url: "https://www.linkedin.com/in/jeffmmullen/", verified: false },
+};
+assert.equal(sandbox.personProfessionalProfile(nestedFalse).verified, true);
 
 const mapped = sandbox.mapContactIntelligencePeople([jeffCi]);
 assert.equal(mapped.length, 1);
