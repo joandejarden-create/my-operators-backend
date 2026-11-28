@@ -1,0 +1,252 @@
+{
+  "at": "2026-11-28T11:09:56.291Z",
+  "version": "missing-channel-enrichment-v3",
+  "classification": "GLOBAL_SURFE_ENRICHMENT_VALIDATED",
+  "keyPresent": true,
+  "preserveNote": "No Airtable Surfe PII writes; dirty worktrees preserved; no production deploy.",
+  "mergedBaseline": {
+    "pr696": "MERGED",
+    "pr697": "MERGED"
+  },
+  "openIntegration": {
+    "pr699": "Surfe LinkedIn + session parity",
+    "pr700": "Dynamic missing-channel V3 (stacks on 699)"
+  },
+  "mockCombos": [
+    {
+      "expect": "none",
+      "got": "none",
+      "include": {
+        "email": false,
+        "mobile": false
+      },
+      "pass": true
+    },
+    {
+      "expect": "phone",
+      "got": "phone",
+      "include": {
+        "email": false,
+        "mobile": true
+      },
+      "pass": true
+    },
+    {
+      "expect": "email",
+      "got": "email",
+      "include": {
+        "email": true,
+        "mobile": false
+      },
+      "pass": true
+    },
+    {
+      "expect": "both",
+      "got": "both",
+      "include": {
+        "email": true,
+        "mobile": true
+      },
+      "pass": true
+    }
+  ],
+  "bethesda": {
+    "hotelId": "recLuxvwwxID7U2B8",
+    "ok": true,
+    "peopleCount": 5,
+    "sourceOfTruth": "HI_ORG_CONTACTS_PLUS_HI_CONTACT_CHANNELS",
+    "byRequestChannel": {
+      "phone": 1,
+      "none": 2,
+      "both": 2
+    },
+    "people": [
+      {
+        "displayName": "Jeff Mullen",
+        "canonicalPersonId": "dle_06GZE1QEZWGPH6C9QSHJ2CTH1B",
+        "emailPresent": true,
+        "phonePresent": false,
+        "linkedinPresent": true,
+        "linkedinUrlNormalized": "https://www.linkedin.com/in/jeffmmullen",
+        "requestField": "linkedinUrl",
+        "missingChannelState": {
+          "needsEmail": false,
+          "needsPhone": true,
+          "requestChannel": "phone",
+          "hasVerifiedLinkedIn": true
+        },
+        "surfeInclude": {
+          "email": false,
+          "mobile": true
+        },
+        "resolveSource": "durable_channels",
+        "wouldCallSurfe": true
+      },
+      {
+        "displayName": "Katherine Button",
+        "canonicalPersonId": "dle_06GZE1QGHR0D2RRKEG84GNM7TE",
+        "emailPresent": true,
+        "phonePresent": true,
+        "linkedinPresent": true,
+        "linkedinUrlNormalized": "https://www.linkedin.com/in/katherine-button",
+        "requestField": "linkedinUrl",
+        "missingChannelState": {
+          "needsEmail": false,
+          "needsPhone": false,
+          "requestChannel": "none",
+          "hasVerifiedLinkedIn": true
+        },
+        "surfeInclude": {
+          "email": false,
+          "mobile": false
+        },
+        "resolveSource": "durable_channels_complete",
+        "wouldCallSurfe": false
+      },
+      {
+        "displayName": "Patrick Reece",
+        "canonicalPersonId": "dle_06GZE1QJ2WMBR4NC4RDJ1ANAV1",
+        "emailPresent": true,
+        "phonePresent": true,
+        "linkedinPresent": true,
+        "linkedinUrlNormalized": "https://www.linkedin.com/in/patrick-reece-375b8937",
+        "requestField": "linkedinUrl",
+        "missingChannelState": {
+          "needsEmail": false,
+          "needsPhone": false,
+          "requestChannel": "none",
+          "hasVerifiedLinkedIn": true
+        },
+        "surfeInclude": {
+          "email": false,
+          "mobile": false
+        },
+        "resolveSource": "durable_channels_complete",
+        "wouldCallSurfe": false
+      },
+      {
+        "displayName": "Meinrad Lang III",
+        "canonicalPersonId": "dle_06H1TN755CY1NZS0Q7G026PKSC",
+        "emailPresent": false,
+        "phonePresent": false,
+        "linkedinPresent": true,
+        "linkedinUrlNormalized": "https://www.linkedin.com/in/meinradlang",
+        "requestField": "linkedinUrl",
+        "missingChannelState": {
+          "needsEmail": true,
+          "needsPhone": true,
+          "requestChannel": "both",
+          "hasVerifiedLinkedIn": true
+        },
+        "surfeInclude": {
+          "email": true,
+          "mobile": true
+        },
+        "resolveSource": "durable_channels",
+        "wouldCallSurfe": true
+      },
+      {
+        "displayName": "Jenny Pyne",
+        "canonicalPersonId": "dle_06H1TN7738KV6TQ9BE8Q4D6F4B",
+        "emailPresent": false,
+        "phonePresent": false,
+        "linkedinPresent": true,
+        "linkedinUrlNormalized": "https://www.linkedin.com/in/jenny-pyne-9b50976",
+        "requestField": "linkedinUrl",
+        "missingChannelState": {
+          "needsEmail": true,
+          "needsPhone": true,
+          "requestChannel": "both",
+          "hasVerifiedLinkedIn": true
+        },
+        "surfeInclude": {
+          "email": true,
+          "mobile": true
+        },
+        "resolveSource": "durable_channels",
+        "wouldCallSurfe": true
+      }
+    ]
+  },
+  "extraHotels": [
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "peopleCount": 0,
+      "byRequestChannel": {},
+      "error": null,
+      "note": "HI Org Contacts graph empty for this HPC — channel matrix covered via Bethesda + multi-market mock/representative gate"
+    },
+    {
+      "hotelId": "recCAGqkERSXgiku4",
+      "ok": true,
+      "peopleCount": 0,
+      "byRequestChannel": {},
+      "error": null,
+      "note": "HI Org Contacts graph empty for this HPC — channel matrix covered via Bethesda + multi-market mock/representative gate"
+    }
+  ],
+  "representativeCoverage": {
+    "bethesdaPeople": 5,
+    "multiMarketGate": "scripts/test-shared-missing-channel-enrichment-global-v3.mjs CONTACT_MULTI_MARKET_REPRESENTATIVE",
+    "note": "Other HE50 hotels currently have 0 HI org contacts; representative missing-channel combos certified via shared global gate + Bethesda five."
+  },
+  "meinradGolden": {
+    "canonicalPersonId": "dle_06H1TN755CY1NZS0Q7G026PKSC",
+    "requestChannel": "both",
+    "surfeInclude": {
+      "email": true,
+      "mobile": true
+    },
+    "linkedinUrlNormalized": "https://www.linkedin.com/in/meinradlang"
+  },
+  "liveSurfe": {
+    "status": "DEFERRED_TO_PRIOR_OR_CONFIRM",
+    "priorLiveStatus": "PARTIAL_OR_FULL_SUCCESS",
+    "priorEnrichmentId": "5b090384-c17e-4886-b916-eef78ffec3e4",
+    "priorCreditsConsumed": {
+      "email": 1,
+      "mobile": 1
+    },
+    "priorRequestedIncludeMobile": true,
+    "message": "Pass --confirm-live-spend to run one guarded Surfe enrich for the golden person."
+  },
+  "priorLiveDiagnostic": {
+    "at": "2026-11-28T10:31:52.834Z",
+    "status": "PARTIAL_OR_FULL_SUCCESS",
+    "enrichmentId": "5b090384-c17e-4886-b916-eef78ffec3e4",
+    "creditsConsumedEstimate": {
+      "email": 1,
+      "mobile": 1
+    },
+    "includeMobile": true,
+    "hasEmail": true,
+    "hasPhone": true
+  },
+  "providerRootCause": {
+    "incorrectIdentityInput": false,
+    "correctedLinkedInField": "linkedinUrl",
+    "incorrectRequestedChannelsHistorically": "HE previously defaulted include.mobile=false unless SURFE_INCLUDE_MOBILE; phone for golden person is in mobilePhones",
+    "apiVsExtension": "API returns email+mobile when linkedinUrl + include.mobile=true; landlines free but unused for this person",
+    "asyncHandling": "pollSurfePeopleEnrichment until COMPLETED",
+    "responseParsing": "normalizeSurfePerson now reads emails[], top-level email, mobilePhones, landlines",
+    "errorClassification": "pending ≠ no_result; Findymail miss ≠ Surfe miss",
+    "priorLiveOutcome": "PARTIAL_OR_FULL_SUCCESS"
+  },
+  "findymailVsSurfe": {
+    "distinctErrors": true,
+    "hybridMessageMentionsFindymailNotSurfe": true,
+    "uiSurfeNoResultDistinct": true,
+    "note": "Findymail miss must never be labeled as Surfe NOT_FOUND."
+  },
+  "heGdiParity": {
+    "sharedModule": "missing-channel-enrichment-v3",
+    "sharedPath": "lib/shared-contact-intelligence/missing-channel-enrichment-v3.js"
+  },
+  "creditsIndependence": {
+    "emailCreditsTrackedSeparately": true,
+    "mobileCreditsTrackedSeparately": true,
+    "phoneOnlySkipsEmailCredits": true,
+    "emailOnlySkipsMobileCredits": true
+  }
+}
