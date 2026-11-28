@@ -315,6 +315,68 @@
   }
 
   /**
+   * DEALALITY_SHARED_INTERNATIONAL_PHONE_FORMATTING_V1 — presentation only.
+   * Requires /vendor/libphonenumber-js.min.js + dealality-shared-international-phone-formatting-v1.js.
+   * Never mutates stored contact values.
+   */
+  function formatPhonePresentation(raw) {
+    var original = raw == null ? "" : String(raw);
+    var trimmed = original.trim();
+    if (!trimmed) {
+      return {
+        originalRaw: original,
+        displayValue: "",
+        telHref: "",
+        e164: null,
+        formattingOutcome: "EMPTY",
+      };
+    }
+    var api = root.DealalitySharedPhoneFormattingV1;
+    if (api && typeof api.formatDealalityPhone === "function") {
+      var r = api.formatDealalityPhone(trimmed);
+      return {
+        originalRaw: r.originalRaw != null ? r.originalRaw : original,
+        displayValue: r.displayValue || trimmed,
+        telHref: r.telHref || "",
+        e164: r.e164 || null,
+        formattingOutcome: r.formattingOutcome || "PRESERVED_ORIGINAL",
+      };
+    }
+    var keepPlus = trimmed.charAt(0) === "+";
+    var digits = trimmed.replace(/[^\d]/g, "");
+    return {
+      originalRaw: original,
+      displayValue: trimmed,
+      telHref: digits ? "tel:" + (keepPlus ? "+" : "") + digits : "",
+      e164: null,
+      formattingOutcome: "PRESERVED_ORIGINAL",
+    };
+  }
+
+  function phoneAnchorHtml(raw, className) {
+    var p = formatPhonePresentation(raw);
+    if (!p.displayValue) return "";
+    if (p.telHref) {
+      return (
+        "<a" +
+        (className ? ' class="' + className + '"' : "") +
+        ' href="' +
+        esc(p.telHref) +
+        '">' +
+        esc(p.displayValue) +
+        "</a>"
+      );
+    }
+    return (
+      "<span" +
+      (className ? ' class="' + className + '"' : "") +
+      ">" +
+      esc(p.displayValue) +
+      "</span>"
+    );
+  }
+
+  /**
    * Strip empty / malformed parentheticals like "(: )" or "( )" that leak from
    * incomplete organization/location templates. Preserve legitimate "(City)".
    */
@@ -4868,13 +4930,23 @@
     // Named person with a usable personal channel. Referral keeps the person
     // name and uses a short "Referral contact" role — never dump narratives.
     if (contactName && hasPersonChannel && !nameLooksLikeOrgEntity) {
+      var personPhoneFmt = personPhone
+        ? formatPhonePresentation(personPhone)
+        : null;
       return {
         kind: isReferral ? "referral" : "person",
         name: contactName,
         role: isReferral ? "Referral contact" : role,
         channelKind: personEmail ? "email" : "phone",
-        channelText: personEmail || personPhone,
-        channelHref: "",
+        channelText: personEmail
+          ? personEmail
+          : personPhoneFmt
+            ? personPhoneFmt.displayValue
+            : "",
+        channelHref:
+          !personEmail && personPhoneFmt && personPhoneFmt.telHref
+            ? personPhoneFmt.telHref
+            : "",
       };
     }
     // Named verified person without personal email/phone yet — still show
@@ -4911,13 +4983,14 @@
         };
       }
       if (personPhone || companyPhone) {
+        var orgPhoneFmtA = formatPhonePresentation(personPhone || companyPhone);
         return {
           kind: "organization",
           name: orgTileName === "Organization contact" ? contactName || orgTileName : orgTileName,
           role: "",
           channelKind: "phone",
-          channelText: personPhone || companyPhone,
-          channelHref: "",
+          channelText: orgPhoneFmtA.displayValue,
+          channelHref: orgPhoneFmtA.telHref || "",
         };
       }
     }
@@ -4933,13 +5006,14 @@
       };
     }
     if (companyPhone) {
+      var orgPhoneFmtB = formatPhonePresentation(companyPhone);
       return {
         kind: "organization",
         name: orgTileName,
         role: "",
         channelKind: "phone",
-        channelText: companyPhone,
-        channelHref: "",
+        channelText: orgPhoneFmtB.displayValue,
+        channelHref: orgPhoneFmtB.telHref || "",
       };
     }
     if (contactPath) {
@@ -6808,7 +6882,7 @@
     if (contact.phone) {
       lines.push(
         '<div class="gdi-contact-summary__field">' +
-          esc(contact.phone) +
+          phoneAnchorHtml(contact.phone) +
           (contact.phoneTypeLabel ? " · " + esc(contact.phoneTypeLabel) : "") +
           "</div>"
       );
@@ -7129,11 +7203,9 @@
           "</a></p>"
         : "") +
       (s.phone
-        ? "<p><strong>Direct phone (verified):</strong> <a href=\"tel:" +
-          esc(String(s.phone).replace(/[^\d+]/g, "")) +
-          '">' +
-          esc(s.phone) +
-          "</a></p>"
+        ? "<p><strong>Direct phone (verified):</strong> " +
+          phoneAnchorHtml(s.phone) +
+          "</p>"
         : "") +
       (s.organizationRoutingAlternative
         ? "<p><strong>" +
@@ -7145,11 +7217,7 @@
               '">' +
               esc(s.organizationRoutingAlternative) +
               "</a>"
-            : '<a href="tel:' +
-              esc(String(s.organizationRoutingAlternative).replace(/[^\d+]/g, "")) +
-              '">' +
-              esc(s.organizationRoutingAlternative) +
-              "</a>") +
+            : phoneAnchorHtml(s.organizationRoutingAlternative)) +
           "</p>"
         : "") +
       (s.companyPhone &&
@@ -7157,11 +7225,9 @@
         String(s.organizationRoutingAlternative).indexOf("@") >= 0)
         ? "<p><strong>Company office — ask for " +
           esc(s.name) +
-          ":</strong> <a href=\"tel:" +
-          esc(String(s.companyPhone).replace(/[^\d+]/g, "")) +
-          '">' +
-          esc(s.companyPhone) +
-          "</a></p>"
+          ":</strong> " +
+          phoneAnchorHtml(s.companyPhone) +
+          "</p>"
         : "") +
       profile +
       evidence +
@@ -7367,7 +7433,7 @@
           ? "<p><strong>" +
             esc(slot.companyPhoneLabel || "Organization phone") +
             ":</strong> " +
-            esc(slotCompanyPhone) +
+            phoneAnchorHtml(slotCompanyPhone) +
             "</p>"
           : "") +
         (slot.officialContactUrl && isSafeHttpUrl(slot.officialContactUrl)
@@ -7536,11 +7602,7 @@
               (slotPhoneExtensions.length ? "Office Phone" : "Direct Business Phone")
           ) +
           "</span> " +
-          '<a href="tel:' +
-          esc(String(slotPersonPhone).replace(/[^\d+]/g, "")) +
-          '">' +
-          esc(slotPersonPhone) +
-          "</a>" +
+          phoneAnchorHtml(slotPersonPhone) +
           (slotPhoneExtLabel
             ? '<br><span class="gdi-contact-field__ext">' +
               esc(slotPhoneExtLabel) +
@@ -7557,7 +7619,7 @@
         ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">' +
           esc(scrubCustomerFacingProse(slot.companyPhoneLabel || "Organization phone")) +
           "</span> " +
-          esc(slotCompanyPhone) +
+          phoneAnchorHtml(slotCompanyPhone) +
           "</p>"
         : "") +
       (slot.officialContactUrl &&
@@ -7709,10 +7771,17 @@
               '">Email</a>'
           );
         } else if (t.indexOf("PHONE") >= 0) {
+          var phoneBtn = formatPhonePresentation(v);
           parts.push(
-            '<a class="gdi-btn gdi-btn--secondary" href="tel:' +
-              esc(String(v).replace(/[^\d+]/g, "")) +
-              '">Phone</a>'
+            phoneBtn.telHref
+              ? '<a class="gdi-btn gdi-btn--secondary" href="' +
+                  esc(phoneBtn.telHref) +
+                  '" title="' +
+                  esc(phoneBtn.displayValue) +
+                  '">Phone</a>'
+              : '<span class="gdi-btn gdi-btn--secondary" title="' +
+                  esc(phoneBtn.displayValue || v) +
+                  '">Phone</span>'
           );
         } else if (t.indexOf("LINKEDIN") >= 0 && isSafeHttpUrl(v)) {
           parts.push(
@@ -8053,7 +8122,7 @@
             ? "<p><strong>" +
               esc(companyPhoneLbl) +
               ":</strong> " +
-              esc(companyPhoneFallback) +
+              phoneAnchorHtml(companyPhoneFallback) +
               "</p>"
             : "") +
           (pathLabel
@@ -8161,7 +8230,7 @@
     var personPhoneHtml =
       c.phone && markChannel(c.phone)
         ? "<p><strong>Person phone:</strong> " +
-          esc(c.phone) +
+          phoneAnchorHtml(c.phone) +
           (o.primaryContactPhoneTypeLabel || c.phoneTypeLabel || c.phoneType
             ? " (" +
               esc(
@@ -8178,7 +8247,7 @@
         ? "<p><strong>" +
           esc(companyPhoneLbl) +
           ":</strong> " +
-          esc(companyPhoneDrawer) +
+          phoneAnchorHtml(companyPhoneDrawer) +
           "</p>"
         : "";
     var pathHtml =
@@ -8199,7 +8268,9 @@
           "</strong> · " +
           esc(b.role || "") +
           (b.email ? " · " + esc(b.email) : "") +
-          (b.phone ? " · " + esc(b.phone) : "") +
+          (b.phone
+            ? " · " + formatPhonePresentation(b.phone).displayValue
+            : "") +
           "</li>"
         );
       })
