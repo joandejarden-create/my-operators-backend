@@ -145,17 +145,11 @@ export async function getContactIntelligenceHotel(req, res) {
     let result = serviceForRequest(req).hotelGet({ hotel_id: hotelId, audience });
     if (!result.ok) return sendError(res, 404, result.error || "hotel_contact_unavailable", result);
 
-    // Read-through HI graph overlay when seed/local package is sparse (no GET writes).
+    // Shared Canonical Contact Intelligence V1: prefer HI Org Contacts + Channels
+    // whenever the graph has relationships/contacts — not only when local package is sparse.
     const hiGraphReadDisabled =
       String(process.env.CONTACT_INTELLIGENCE_HI_GRAPH_READ || "").trim() === "0";
-    const peopleCount = Array.isArray(result.package?.people)
-      ? result.package.people.length
-      : 0;
-    const sparse =
-      peopleCount === 0 &&
-      (result.package?.refresh_status === "NEVER" ||
-        !result.owner_anchor?.owner_entity_id);
-    if (!hiGraphReadDisabled && sparse) {
+    if (!hiGraphReadDisabled) {
       try {
         const { readHiGraphForHotel } = await import(
           "../lib/hotel-intelligence/research-engine-v1/he-airtable-graph-reader-v1.js"
@@ -167,11 +161,21 @@ export async function getContactIntelligenceHotel(req, res) {
           includeContacts: true,
           includePortfolio: false,
         });
-        result = overlayHiGraphOnContactHotelGet(
-          result,
-          graph,
-          graph.orgContacts || [],
-        );
+        if (
+          graph?.ok &&
+          ((graph.orgContactCount || 0) > 0 || (graph.relationshipCount || 0) > 0)
+        ) {
+          result = overlayHiGraphOnContactHotelGet(
+            result,
+            graph,
+            graph.orgContacts || [],
+          );
+          result.shared_canonical_contact_intelligence = {
+            version: "shared-canonical-contact-intelligence-v1",
+            sourceOfTruth: "HI_ORG_CONTACTS_PLUS_HI_CONTACT_CHANNELS",
+            applied: true,
+          };
+        }
       } catch (graphErr) {
         console.warn(
           "[contact-intelligence] hi-graph overlay skipped",
@@ -732,6 +736,95 @@ export async function postContactIntelligencePersonReveal(req, res) {
       message: String(err?.message || err).slice(0, 160),
       surfeCalls: 0,
     });
+  }
+}
+
+/**
+ * Shared Canonical Contact Intelligence V1 — hotel-scoped SoT read.
+ * Same resolver consumed by Hotel Explorer and GDI.
+ */
+export async function getCanonicalHotelContacts(req, res) {
+  try {
+    const hotelId = String(req.params.hotelId || "").trim();
+    if (!hotelId) return sendError(res, 400, "hotel_id_required");
+    const {
+      resolveCanonicalHotelContacts,
+      toHeContactDirectoryRow,
+      toGdiContactPresentation,
+      computeSharedContactability,
+    } = await import("../lib/shared-contact-intelligence/index.js");
+    const resolved = await resolveCanonicalHotelContacts(hotelId, {
+      updateIdentityMap: String(req.query.updateMap || "") === "1",
+    });
+    if (!resolved.ok) {
+      const status =
+        resolved.status === "BLOCKED" ? 503 : resolved.status === "NOT_TESTED" ? 503 : 404;
+      return res.status(status).json({
+        success: false,
+        error: resolved.reason || "canonical_contacts_unavailable",
+        ...resolved,
+      });
+    }
+    const contactability = computeSharedContactability(resolved.people, { hotelId });
+    return res.json({
+      success: true,
+      version: "shared-canonical-contact-intelligence-v1",
+      hotelId,
+      sourceOfTruth: resolved.sourceOfTruth,
+      airtableLive: resolved.airtableLive,
+      people: resolved.people,
+      heDirectory: resolved.people.map(toHeContactDirectoryRow),
+      gdiPresentation: resolved.people.map(toGdiContactPresentation),
+      contactability,
+      duplicatePersonRowsCollapsed: resolved.duplicatePersonRowsCollapsed || 0,
+    });
+  } catch (err) {
+    console.error("[contact-intelligence] canonical-hotel", err);
+    return sendError(res, 500, "canonical_hotel_contacts_failed");
+  }
+}
+
+/**
+ * Shared Canonical Contact Intelligence V1 — person-scoped SoT read.
+ */
+export async function getCanonicalPersonChannels(req, res) {
+  try {
+    const personId = String(req.params.personId || "").trim();
+    const hotelId = String(req.query.hotelId || req.params.hotelId || "").trim();
+    if (!personId) return sendError(res, 400, "person_id_required");
+    const {
+      resolveCanonicalPersonChannels,
+      toHeContactDirectoryRow,
+      toGdiContactPresentation,
+    } = await import("../lib/shared-contact-intelligence/index.js");
+    const resolved = await resolveCanonicalPersonChannels(
+      {
+        canonicalPersonId: personId,
+        hotelId: hotelId || undefined,
+        displayName: req.query.name || undefined,
+      },
+      { hotelId: hotelId || undefined },
+    );
+    if (!resolved.ok) {
+      const status = resolved.status === "BLOCKED" ? 503 : 404;
+      return res.status(status).json({
+        success: false,
+        error: resolved.reason || resolved.status || "canonical_person_unavailable",
+        ...resolved,
+      });
+    }
+    return res.json({
+      success: true,
+      version: "shared-canonical-contact-intelligence-v1",
+      person: resolved.person,
+      heRow: toHeContactDirectoryRow(resolved.person),
+      gdiPresentation: toGdiContactPresentation(resolved.person),
+      identity: resolved.identity,
+      airtableLive: resolved.airtableLive,
+    });
+  } catch (err) {
+    console.error("[contact-intelligence] canonical-person", err);
+    return sendError(res, 500, "canonical_person_channels_failed");
   }
 }
 

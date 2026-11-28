@@ -163,6 +163,8 @@ import {
   postContactIntelligenceHotelRefresh,
   postContactIntelligencePersonReveal,
   getContactIntelligenceEnrichmentCapability,
+  getCanonicalHotelContacts,
+  getCanonicalPersonChannels,
 } from "./api/contact-intelligence.js";
 
 import {
@@ -1162,6 +1164,14 @@ app.get(
 app.get("/api/contact-intelligence/slice/ten", getContactIntelligenceSliceTen);
 app.get("/api/contact-intelligence/benchmark/100", getContactIntelligenceBenchmark100);
 app.get("/api/contact-intelligence/hotels/:hotelId", getContactIntelligenceHotel);
+app.get(
+  "/api/contact-intelligence/canonical/hotels/:hotelId",
+  getCanonicalHotelContacts,
+);
+app.get(
+  "/api/contact-intelligence/canonical/people/:personId",
+  getCanonicalPersonChannels,
+);
 app.get("/api/contact-intelligence/owners/:ownerId", getContactIntelligenceOwner);
 app.get("/api/contact-intelligence/live-slice/ten", getContactIntelligenceLiveSliceTen);
 app.post(
