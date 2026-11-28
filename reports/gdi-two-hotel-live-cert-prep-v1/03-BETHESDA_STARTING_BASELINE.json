@@ -1,0 +1,63 @@
+{
+  "contract": "gdi-two-hotel-live-cert-prep-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "reconciledAt": "2026-11-28",
+  "servingCommit": "91989efb16b766dda9c5291f1e6a9647aa97baf6",
+  "publication": {
+    "staged": {
+      "opportunityCount": 68,
+      "publicationVersion": "gdi_hotel_wide_fqo_recLuxvwwxID7U2B8_20261125_quality_v1"
+    },
+    "current": {
+      "opportunityCount": 67,
+      "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_local_master_v2",
+      "preserveThroughoutAssignment": true
+    },
+    "localBagNote": "Weekly DryRun priorCanonicalCount=86 differs from STAGED 68 and CURRENT 67; reconcile to publication layers; do not reset"
+  },
+  "contactBaselineStaged": {
+    "named": 68,
+    "titled": 68,
+    "email": 45,
+    "phone": 38,
+    "linkedin": 0,
+    "uniqueNamesApprox": 61,
+    "alternativeContactsInApiPayload": 0
+  },
+  "researchLayers": {
+    "originalDiscoveryCorpus": "Reuse existing; EXISTING_HOTEL_CONTINUATION",
+    "additiveDiscovery": "Via weekly / incremental continuation when authorized",
+    "deepCommercialResearch": "Reuse settled dossiers where present",
+    "whoHow": "Present on STAGED inventory; refresh only where commercially justified",
+    "findymailHistory": "Reuse settled person-level results; do not re-bill",
+    "competitiveAccountDiscovery": "Canonical CAD classify on Live spine ($0 unless separately authorized)",
+    "plp": "Assess from preferred_lodging_partnerships discovery cells",
+    "leisureDemandIntelligence": "Canonical Leisure assess on Live spine",
+    "airtablePersistence": "PARTIAL inventory membership known limitation",
+    "weeklyChangeHistory": "DryRun delta available; Live weekly needs SERPAPI_KEY if not frozen"
+  },
+  "weeklyDryRun": {
+    "serpApiCalls": 0,
+    "counts": {
+      "NEW": 0,
+      "UPDATED": 8,
+      "REACTIVATED": 0,
+      "UNCHANGED": 78,
+      "CLOSED_DOWNGRADED": 0,
+      "NOT_IN_CURRENT": 1
+    },
+    "discoverySource": "FROZEN_DISCOVERY:data/group-demand-intelligence/evals/bethesda-weekly-discovery-20260921.json"
+  },
+  "certificationMustDemonstrate": [
+    "existing_intelligence_reuse",
+    "incremental_demand_discovery",
+    "existing_opportunity_revalidation",
+    "contact_intelligence_improvement",
+    "additional_commercially_relevant_contact_discovery",
+    "deduplication",
+    "material_change_tracking",
+    "durable_persistence",
+    "complete_staged_regeneration"
+  ]
+}
