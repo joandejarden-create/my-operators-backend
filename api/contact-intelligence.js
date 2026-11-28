@@ -590,7 +590,7 @@ export async function postContactIntelligencePersonReveal(req, res) {
         "../lib/shared-contact-intelligence/index.js"
       );
       const { computeMissingContactChannels } = await import(
-        "../lib/hotel-intelligence/contact-intelligence/he-contact-missing-channel-v3.js"
+        "../lib/shared-contact-intelligence/missing-channel-enrichment-v3.js"
       );
       const resolved = await resolveCanonicalPersonChannels(
         {
@@ -723,7 +723,7 @@ export async function postContactIntelligencePersonReveal(req, res) {
 
       // V3: request only missing channels from Airtable recheck (body.channel is a hint).
       const { surfeIncludeFromMissingState } = await import(
-        "../lib/hotel-intelligence/contact-intelligence/he-contact-missing-channel-v3.js"
+        "../lib/shared-contact-intelligence/missing-channel-enrichment-v3.js"
       );
       if (!missingChannelState) {
         const hint = String(body.channel || "both").toLowerCase();

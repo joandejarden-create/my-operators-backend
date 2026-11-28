@@ -2,6 +2,8 @@
 
 **Date:** 2026-11-28  
 **Stacks on:** Surfe parity PR #699  
+**This PR:** https://github.com/joandejarden-create/my-operators-backend/pull/700  
+**HEAD:** `3a4022e69`  
 **Branch:** `fix/he-contact-dynamic-enrich-v3`
 
 ## Acceptance

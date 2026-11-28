@@ -11,7 +11,8 @@ import {
   surfeIncludeFromMissingState,
   isEligibleVerifiedChannel,
   HE_CONTACT_MISSING_CHANNEL_V3,
-} from "../lib/hotel-intelligence/contact-intelligence/he-contact-missing-channel-v3.js";
+  MISSING_CHANNEL_ENRICHMENT_V3,
+} from "../lib/shared-contact-intelligence/missing-channel-enrichment-v3.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -160,7 +161,7 @@ const jsSrc = fs.readFileSync(
 const missingSrc = fs.readFileSync(
   path.join(
     ROOT,
-    "lib/hotel-intelligence/contact-intelligence/he-contact-missing-channel-v3.js",
+    "lib/shared-contact-intelligence/missing-channel-enrichment-v3.js",
   ),
   "utf8",
 );
