@@ -331,10 +331,75 @@ pwsh -File scripts/gdi/Invoke-GdiPromoteCurrent.ps1 -HotelId <rec...> -Publicati
 |---|---|
 | Live exit 2 from Full E2E | Supply the missing parameter named in stderr (`-AuthorizationId`, `-HardCeilingUsd`, `-Manifest`) or pass `-SkipWhoHow` |
 | Live exit 4 | Provider authorization refused: set `GDI_EXA_AGENT_LIVE=1` (WHO/HOW) or `FINDYMAIL_API_KEY` (Findymail) — only with founder authorization |
-| Discovery / Deep HOLD in Live | Existing artifacts missing; supply `-OutDir` with artifacts or run the original discovery/queue runners (Live never invents paid discovery) |
+| Discovery / Deep HOLD in Live | Artifacts missing **and** `-AuthorizePaidDiscovery` not passed → HOLD. For NEW HOTEL: add `-AuthorizePaidDiscovery` + `-AuthorizePaidResearch` + `-AuthorizationId` + `-HardCeilingUsd` + `EXA_API_KEY` + `GDI_EXA_AGENT_LIVE=1` (Exa canonical chain; SerpApi not required). Or supply `-OutDir` with hotel-local artifacts for EXISTING continuation |
 | Checkpoint A missing auth | Pass hotel-specific `-AuthorizationId`, `-HardCeilingUsd`, `-Manifest` |
 | STAGED missing on :8080 | `Invoke-GdiValidateFullE2E.ps1 -RequirePort8080`; reclaim `:8080` via Integration if needed |
 | Contact gaps remain | Contact DryRun → best-effort ledger → founder-authorized Findymail/Exa gap continuation |
+| `pwsh` not found on Windows | Use `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/gdi/…` |
+
+## Outstanding integrations (2026-11-28 consolidation)
+
+Integrated into the canonical path (no competing engines; DryRun / fail-closed default; no paid spend from this section alone):
+
+| Capability | Module / gate | Notes |
+|---|---|---|
+| Contact enrichment usage ledger | `gdi-contact-enrichment-airtable-schema-v1` + Findymail channel contract v1.1 | Additive to Surfe usage ledger (Surfe table unchanged) |
+| Person identity collision | `gdi-person-identity-collision-v1` + durable contact store | Name+org alone never auto-merges |
+| Authorized LDI + viability | `gdi-leisure-authorized-live-v1` + `gdi-commercial-viability-precheck-v1` | Live LDI needs `GDI_LDI_LIVE=1` + founder auth; viability writes `02b-commercial-viability-precheck.json` |
+| Exa Agent quality recovery | person-name + buyer classification gates | Titles alone ≠ direct buyer; permanent `$0` CI |
+| Inventory membership | `gdi-inventory-membership-persistence-v1` | Durable ledger + schema auth request before GDO field writes |
+
+```powershell
+npm run test:gdi-contact-enrichment-airtable-schema-v1
+npm run test:gdi-person-identity-collision-v1
+npm run test:gdi-leisure-authorized-live-v1
+npm run test:gdi-exa-agent-quality-recovery-v1
+npm run test:gdi-inventory-membership-persistence-v1
+```
+
+## Two-hotel Live certification (Memmo + Bethesda) — pre-live
+
+**Prep package:** `reports/gdi-two-hotel-live-cert-prep-v1/00-FOUNDER_PRELIVE_PACKAGE.md`  
+**Tokens (proposed — inactive until founder GO):**
+
+| Run | Hotel | ID | Auth token | Mode | Exa | Findymail | SerpApi (Full E2E) |
+|---|---|---|---|---|---|---|---|
+| A | Memmo Príncipe Real | `rec1t35e3sPerzxYu` | `FOUNDER_GO_GDI_TWO_HOTEL_MEMMO_LIVE_20261128` | NEW_HOTEL_FULL_E2E (`-AuthorizePaidDiscovery`) | $25 | 15 | $0 |
+| B | Bethesda Marriott | `recLuxvwwxID7U2B8` | `FOUNDER_GO_GDI_TWO_HOTEL_BETHESDA_LIVE_20261128` | EXISTING_HOTEL_CONTINUATION | $15 | 15 | $0 |
+
+SerpApi applies only to **Live weekly** discovery (optional ≤ $5 if separately authorized). DryRun never spends. CURRENT prohibited. Surfe prohibited. Airtable writes need a separate exact write-set authorization.
+
+### Exact commands (after founder GO)
+
+```powershell
+# Run A — Memmo (missing hotel-local discovery/deep → AuthorizePaidDiscovery)
+$env:GDI_EXA_AGENT_LIVE = '1'
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/gdi/Invoke-GdiFullE2E.ps1 `
+  -HotelId rec1t35e3sPerzxYu -Mode Live `
+  -AuthorizePaidResearch -AuthorizePaidDiscovery -AuthorizeFindymail `
+  -AuthorizationId 'FOUNDER_GO_GDI_TWO_HOTEL_MEMMO_LIVE_20261128' `
+  -HardCeilingUsd 25 -FindymailCreditHardCap 15 `
+  -Manifest 'reports/gdi-two-hotel-live-cert-prep-v1/auth/memmo-01-TRANCHE_MANIFEST.json' `
+  -OutDir 'reports/gdi-two-hotel-live-cert-prep-v1/memmo-live'
+
+# Run B — Bethesda (reuse existing intelligence; no paid discovery)
+$env:GDI_EXA_AGENT_LIVE = '1'
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/gdi/Invoke-GdiFullE2E.ps1 `
+  -HotelId recLuxvwwxID7U2B8 -Mode Live `
+  -AuthorizePaidResearch -AuthorizeFindymail `
+  -OperationalMode EXISTING_HOTEL_CONTINUATION `
+  -AuthorizationId 'FOUNDER_GO_GDI_TWO_HOTEL_BETHESDA_LIVE_20261128' `
+  -HardCeilingUsd 15 -FindymailCreditHardCap 15 `
+  -Manifest 'reports/gdi-two-hotel-live-cert-prep-v1/auth/bethesda-01-TRANCHE_MANIFEST.json' `
+  -OutDir 'reports/gdi-two-hotel-live-cert-prep-v1/bethesda-live'
+
+# Bethesda weekly DryRun (proven; no SerpApi):
+npm run gdi:weekly-refresh -- --hotel-id recLuxvwwxID7U2B8 --dry-run
+```
+
+**Starting-inventory disclosure (binding):** Memmo STAGED 11 WHO/HOW with **zero** contact channels is not greenfield — reuse/reconcile; do not claim historical replay as fresh hotel certification. Bethesda STAGED 68 / CURRENT 67 must be preserved (CURRENT never published from these runners).
+
+**Do not initiate paid execution** until consolidated founder GO. Pre-live verdict: `GDI_TWO_HOTEL_LIVE_CERTIFICATION_READY — INTEGRATED_ON_8080 — AWAITING_FOUNDER_GO`.
 
 ## Certification
 
@@ -347,6 +412,6 @@ npm run gdi:clean-airtable-reconstruction-cert-v1
 npm run gdi:unified-live-e2e-prelive-readiness-v1
 ```
 
-**DryRun ≠ Live certification.** DryRun, fixture and planning runs prove wiring only. **Pre-live READY ≠ operational certification** — the suite stays `PARTIAL` until a founder-authorized Live run on a non-Wyndham hotel completes.
+**DryRun ≠ Live certification.** DryRun, fixture and planning runs prove wiring only. **Pre-live READY ≠ operational certification** — the suite stays `PARTIAL` until founder-authorized Live runs on the two certification hotels complete.
 
-Operational certification still requires one demonstrated authorized-spend, hotel-agnostic Live Full E2E run (non-Wyndham) — wiring and fail-closed behavior are tested without spend; DryRun alone does not certify.
+Operational certification for this track requires sequential authorized-spend Live Full E2E on Memmo then Bethesda (see two-hotel section) — wiring and fail-closed behavior are tested without spend; DryRun alone does not certify.

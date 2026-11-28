@@ -114,7 +114,9 @@ await check("CREATE + READ-BACK + DEDUPE in durable store", () => {
   });
   assert.equal(again.ok, true);
   assert.equal(again.created, false);
-  const people = store.listPeople().filter((p) => p.personIdentityKey === key);
+  const people = store.listPeople().filter(
+    (p) => p.groupingKey === key || p.personIdentityKey === key,
+  );
   assert.equal(people.length, 1, "no duplicate person");
   assert.deepEqual(people[0].associations.hotelIds.sort(), ["hotel_a", "hotel_b"]);
   assert.deepEqual(people[0].associations.opportunityIds.sort(), ["opp-a", "opp-b"]);

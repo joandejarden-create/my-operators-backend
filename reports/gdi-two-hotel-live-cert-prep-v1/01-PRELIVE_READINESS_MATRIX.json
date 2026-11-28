@@ -1,0 +1,34 @@
+{
+  "contract": "gdi-two-hotel-live-cert-prep-v1",
+  "generatedAt": "2026-11-28T01:50:00.000Z",
+  "servingCommit": "91989efb16b766dda9c5291f1e6a9647aa97baf6",
+  "verdict": "GDI_TWO_HOTEL_LIVE_CERTIFICATION_READY — INTEGRATED_ON_8080 — AWAITING_FOUNDER_GO",
+  "paidSpendUsd": 0,
+  "checks": [
+    { "id": "assignment_preflight", "result": "PASS", "classification": "IMPLEMENTED" },
+    { "id": "origin_main_synced", "result": "PASS", "sha": "91989efb16b766dda9c5291f1e6a9647aa97baf6" },
+    { "id": "canonical_8080", "result": "PASS", "code": "LIVE_AUTHORIZED_GDI_SERVER_SCRIPT" },
+    { "id": "wyndham_staged_tip", "result": "PASS", "version": "gdi_hotel_wide_fqo_recnPB3Q02NO8Ma1o_20261128_b3e83a27" },
+    { "id": "template_freeze", "result": "PASS", "classification": "IMPLEMENTED" },
+    { "id": "new_hotel_authorize_paid_discovery", "result": "PASS", "classification": "DRYRUN_VALIDATED", "note": "Prelive new_hotel_routing PASS; Live Memmo pending founder GO" },
+    { "id": "serpApi_not_required_for_full_e2e", "result": "PASS", "classification": "IMPLEMENTED" },
+    { "id": "memmo_dryrun_full_e2e", "result": "PARTIAL", "classification": "DRYRUN_VALIDATED", "contactStage": "PARTIAL" },
+    { "id": "bethesda_dryrun_full_e2e", "result": "PARTIAL", "classification": "DRYRUN_VALIDATED", "contactStage": "PARTIAL" },
+    { "id": "bethesda_weekly_dryrun", "result": "PASS", "serpApiCalls": 0, "classification": "DRYRUN_VALIDATED" },
+    { "id": "findymail_hotel_independent", "result": "PASS", "classification": "DRYRUN_VALIDATED" },
+    { "id": "airtable_clean_reconstruction", "result": "PARTIAL", "knownLimitation": ["INVENTORY_MEMBERSHIP_NOT_PERSISTED"] },
+    { "id": "list_drawer_contact_parity_live", "result": "PENDING_LIVE", "classification": "BLOCKED" },
+    { "id": "provider_keys_in_session", "result": "REQUIRED_AT_EXECUTE", "classification": "BLOCKED", "note": "ws-gdi has no .env; inject EXA_API_KEY + FINDYMAIL_API_KEY at Live session" },
+    { "id": "founder_live_go", "result": "AWAITING", "classification": "BLOCKED" }
+  ],
+  "outstandingBeforePaidExecution": [
+    "FOUNDER_GO tokens + ceilings",
+    "Session provider key injection",
+    "Separate Airtable write-set authorization when persisting"
+  ],
+  "notClaimed": [
+    "GDI_TWO_HOTEL_FULL_E2E_OPERATIONALLY_CERTIFIED",
+    "DryRun == Live certification",
+    "Wyndham discovery matrix reuse == Memmo Live discovery"
+  ]
+}

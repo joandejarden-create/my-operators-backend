@@ -1,0 +1,243 @@
+{
+  "contract": "gdi-contact-enrichment-airtable-schema-v1",
+  "mode": "dry-run",
+  "at": "2026-11-23T18:34:43.466Z",
+  "blocked": false,
+  "blockReasons": [],
+  "safety": {
+    "findymailApi": false,
+    "surfeApi": false,
+    "contactRecordWrites": false,
+    "syntheticUsageRecords": false,
+    "deletions": false,
+    "renames": false
+  },
+  "verification": {
+    "gdiBase": {
+      "baseId": "appa2cE7FTRmIbB32",
+      "tableCount": 36,
+      "referenceTable": {
+        "id": "tblDwW2jpbKBBtpko",
+        "name": "Hotel Event Spaces"
+      },
+      "groupDemandOpportunities": {
+        "id": "tblRuReslJMwsfRQj",
+        "name": "Group Demand Opportunities"
+      }
+    }
+  },
+  "usageEvents": {
+    "baseId": "appa2cE7FTRmIbB32",
+    "tableName": "GDI Contact Enrichment Usage Events",
+    "tableId": null,
+    "createdTable": false,
+    "wouldCreateTable": true,
+    "wouldCreateFields": [
+      "Lookup Event ID",
+      "Provider",
+      "Lookup Outcome",
+      "Credits Charged",
+      "Cost Estimate USD",
+      "Person Identity Hash",
+      "Hotel ID",
+      "Opportunity ID",
+      "Request Origin",
+      "Event At",
+      "Data Environment",
+      "Schema Version",
+      "Provider Request Reference",
+      "Notes"
+    ],
+    "createdFields": [],
+    "skippedExisting": [],
+    "errors": [],
+    "primaryField": "Lookup Event ID",
+    "preexistingUsageLikeTables": []
+  },
+  "hiContactChannels": {
+    "baseId": "appCCUsuGsE1ifoLk",
+    "tableName": "HI Contact Channels",
+    "tableId": "tblqC7C4ypy5Zojyw",
+    "wouldCreateFields": [
+      "Last Checked At",
+      "License / Retention Class",
+      "Retention Expires At",
+      "Provider Request ID"
+    ],
+    "createdFields": [],
+    "skippedExisting": [],
+    "errors": [],
+    "recordCountBefore": null,
+    "recordCountAfter": null,
+    "sampleRecordIdBefore": "rec0xK5IHmAmfF3IP",
+    "listOkBefore": true,
+    "sampleRecordIdAfter": "rec0xK5IHmAmfF3IP",
+    "listOkAfter": true,
+    "sampleRecordUnchanged": true
+  },
+  "readBack": {
+    "usageEvents": {
+      "ok": false,
+      "error": "TABLE_NOT_FOUND",
+      "tables": 36
+    },
+    "hiContactChannels": {
+      "ok": true,
+      "table": {
+        "id": "tblqC7C4ypy5Zojyw",
+        "name": "HI Contact Channels",
+        "primaryFieldId": "fldSPz6EXrA6FUO6E",
+        "fields": [
+          {
+            "id": "fldSPz6EXrA6FUO6E",
+            "name": "Channel ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldJSjLMuypHpVG3c",
+            "name": "Subject Type",
+            "type": "singleSelect",
+            "choices": [
+              "Person",
+              "Organization"
+            ]
+          },
+          {
+            "id": "fldZ5CEnhGHrfiAa2",
+            "name": "Subject ID",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldbRIbrPXdWpFgqb",
+            "name": "Channel Kind",
+            "type": "singleSelect",
+            "choices": [
+              "Email",
+              "Telephone",
+              "LinkedIn",
+              "Other"
+            ]
+          },
+          {
+            "id": "fldoA4I76BXpVBJtd",
+            "name": "Channel Value",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldEBOUkaSJy8S9S2",
+            "name": "Classification",
+            "type": "singleSelect",
+            "choices": [
+              "Public",
+              "Direct Personal",
+              "General / Switchboard",
+              "Inferred",
+              "Unknown"
+            ]
+          },
+          {
+            "id": "fldXnpHkQeqc7Ok7N",
+            "name": "Verification Status",
+            "type": "singleSelect",
+            "choices": [
+              "Unverified",
+              "Inferred",
+              "Public Listed",
+              "Verified Direct",
+              "Do Not Publish"
+            ]
+          },
+          {
+            "id": "fldL61phFziCI6XUC",
+            "name": "Source Name",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldQbe5yXDlPp6Gs9",
+            "name": "Source URL",
+            "type": "url"
+          },
+          {
+            "id": "fldtu6IgqNtipcm8k",
+            "name": "Observed At",
+            "type": "dateTime"
+          },
+          {
+            "id": "fldORmMEUuIMWqq3Z",
+            "name": "Provider",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldPd9JrAX0gEJVv4",
+            "name": "Usage Provenance",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldPeJFev159BWBjU",
+            "name": "Access / Publication Restriction",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldA0zXiCAym6ZaPX",
+            "name": "Dedupe Key",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldaBmnCJH3ZtKrk9",
+            "name": "Publication State",
+            "type": "singleSelect",
+            "choices": [
+              "INTERNAL_ONLY",
+              "STAGED",
+              "APPROVED_INTERNAL",
+              "CUSTOMER_BLOCKED",
+              "CUSTOMER_PUBLISHED"
+            ]
+          },
+          {
+            "id": "fldXS1JKcFh7CbJLj",
+            "name": "Schema Version",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldSnHlNk0Wgr97aj",
+            "name": "Notes",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld3xFDYQuG5D8Mhh",
+            "name": "Person",
+            "type": "multipleRecordLinks"
+          },
+          {
+            "id": "fldh3gvuor20IINRu",
+            "name": "Organization",
+            "type": "multipleRecordLinks"
+          }
+        ]
+      }
+    },
+    "hiEnrichmentFieldsPresent": {
+      "lastCheckedAt": {
+        "name": "Last Checked At",
+        "present": false,
+        "id": null
+      },
+      "licenseRetentionClass": {
+        "name": "License / Retention Class",
+        "present": false,
+        "id": null
+      },
+      "retentionExpiresAt": {
+        "name": "Retention Expires At",
+        "present": false,
+        "id": null
+      },
+      "providerRequestId": {
+        "name": "Provider Request ID",
+        "present": false,
+        "id": null
+      }
+    }
+  }
+}
