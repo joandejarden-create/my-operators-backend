@@ -29,7 +29,51 @@
         .sidebar-wrapper nav a, .sidebar-wrapper nav button { color: var(--neutral--400); text-decoration: none; padding: 10px 12px; border-radius: 6px; font-size: 14px; background: none; border: none; cursor: pointer; text-align: left; font-family: inherit; width: 100%; transition: all 0.2s; }
         .sidebar-wrapper nav a:hover, .sidebar-wrapper nav button:hover { background: var(--neutral--700); color: var(--neutral--100); }
         .sidebar-wrapper nav a.active, .sidebar-wrapper nav button.active { background: rgba(108,114,255,0.2); color: var(--neutral--100); border-left: 3px solid var(--accent--primary-1); padding-left: 9px; }
-        .main-content { flex: 1; padding: 24px; overflow-y: auto; }
+        .main-content { flex: 1; padding: 24px; overflow-y: auto; min-width: 0; }
+        .be-mobile-nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--neutral--600);
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .be-mobile-nav-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1190;
+        }
+        @media (max-width: 768px) {
+            .be-mobile-nav-toggle { display: inline-flex; }
+            .sidebar-wrapper {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 1200;
+                width: min(280px, 86vw);
+                min-width: 0;
+                transform: translateX(-105%);
+                transition: transform 0.2s ease;
+                overflow-y: auto;
+                box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+            }
+            .page-wrapper.shell-mobile-nav-open .sidebar-wrapper { transform: translateX(0); }
+            .page-wrapper.shell-mobile-nav-open .be-mobile-nav-backdrop { display: block; }
+            .filters-row { flex-direction: column; align-items: stretch; }
+            .filter-input, .filter-select { min-width: 0; width: 100%; }
+            .brands-grid { grid-template-columns: 1fr; }
+        }
         .breadcrumb { display: flex; gap: 8px; margin-bottom: 16px; font-size: 12px; color: var(--neutral--500); }
         .breadcrumb a { color: var(--neutral--400); }
         .breadcrumb a:hover { color: var(--neutral--100); }
@@ -104,8 +148,9 @@
 </head>
 <body>
     <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
-    <div class="page-wrapper">
-        <div class="sidebar-wrapper">
+    <div class="page-wrapper" id="bePageWrapper">
+        <div class="be-mobile-nav-backdrop" id="beMobileNavBackdrop" aria-hidden="true"></div>
+        <div class="sidebar-wrapper" id="beSidebar">
             <h2>Brand Explorer</h2>
             <nav>
                 <a href="#" class="nav-link active" data-view="directory">📂 Directory</a>
@@ -114,6 +159,7 @@
             </nav>
         </div>
         <div class="main-content">
+            <button type="button" class="be-mobile-nav-toggle" id="beMobileNavToggle" aria-expanded="false" aria-controls="beSidebar">Menu</button>
             <!-- Directory View -->
             <div id="viewDirectory" class="view-panel">
                 <div class="breadcrumb"><a href="/">Home</a><span>></span><a href="/brand-library">Browse brands</a><span>></span><span>Brand Explorer</span></div>
@@ -472,6 +518,26 @@
     document.getElementById('supportFilter').addEventListener('change', applyFilters);
 
     document.getElementById('fitModal').addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); });
+
+    /* BE-001 — recoverable mobile sidebar (directory / compare access) */
+    (function wireBeMobileNav() {
+        var wrap = document.getElementById('bePageWrapper');
+        var toggle = document.getElementById('beMobileNavToggle');
+        var backdrop = document.getElementById('beMobileNavBackdrop');
+        if (!wrap || !toggle) return;
+        function setOpen(open) {
+            wrap.classList.toggle('shell-mobile-nav-open', !!open);
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (backdrop) backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+        }
+        toggle.addEventListener('click', function () {
+            setOpen(!wrap.classList.contains('shell-mobile-nav-open'));
+        });
+        if (backdrop) backdrop.addEventListener('click', function () { setOpen(false); });
+        wrap.querySelectorAll('.sidebar-wrapper .nav-link').forEach(function (el) {
+            el.addEventListener('click', function () { setOpen(false); });
+        });
+    })();
 
     fetchBrands();
 })();

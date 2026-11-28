@@ -182,6 +182,14 @@ body.gdi-page.embed-mode .gdi-shell {
   gap: 2px 4px;
 }
 
+/* GDI-002 — sticky tab nav must not permanently steal filter hits */
+.gdi-page .gdi-section-nav.bdd-section-nav {
+  z-index: 20;
+  align-self: flex-start;
+  height: fit-content;
+  max-height: none;
+}
+
 /*
  * Compact left-aligned GDI tabs (pre-Executive Summary baseline).
  * Only additive change: Executive Summary uses the same constrained width
@@ -1642,8 +1650,13 @@ body.gdi-page.embed-mode .gdi-shell {
   margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+  /* GDI-001: pin so long sr-only strings do not expand page scrollWidth */
+  left: 0;
+  top: 0;
+  max-width: 1px;
 }
 
 @media (max-width: 500px) {
@@ -2100,6 +2113,9 @@ button.gdi-tile-pill.is-filter-active {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  /* GDI-002: keep filter band above sticky section-nav when both compete */
+  position: relative;
+  z-index: 5;
 }
 
 .gdi-browse-presets > .gdi-browse-preset,
@@ -2365,6 +2381,10 @@ button.gdi-tile-pill.is-filter-active {
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   flex-shrink: 0;
   white-space: nowrap;
+  /* GDI-002: enabled chips must receive pointer events above sticky chrome */
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
 }
 
 .gdi-page .chain-scale-legend-item:hover {
@@ -2561,6 +2581,53 @@ button.gdi-tile-pill.is-filter-active {
 @media (max-width: 768px) {
   .gdi-page .results-grid:not(.gdi-results-grid--list) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* GDI-001 — mobile property bar + toolbar containment (no page H-scroll) */
+  .gdi-page .gdi-property-bar .filter-group--grow,
+  .gdi-page .gdi-weekly-filter,
+  .gdi-page .gdi-opportunity-type-filter {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .gdi-page .gdi-property-bar__primary {
+    flex-wrap: wrap;
+  }
+
+  .gdi-page .gdi-market-scope {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--gdi-toolbar-control-height);
+    max-height: none;
+  }
+
+  .gdi-page .results-toolbar,
+  .gdi-page .results-toolbar-sort {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    margin-left: 0;
+  }
+
+  .gdi-page .sort-select {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .gdi-page .gdi-shell,
+  .gdi-page .dashboard-container,
+  .gdi-page .gdi-tab-panel,
+  .gdi-page .gdi-browse {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: visible;
   }
 }
 

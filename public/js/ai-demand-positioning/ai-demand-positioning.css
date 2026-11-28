@@ -362,13 +362,20 @@
 }
 
 @media (max-width: 960px) {
-  .adp-executive-read__grid {
-    grid-template-columns: 1fr;
+  /* ADP-001: beat hybrid + any competing grid rules so ES stacks on tablet/phone */
+  .adp-executive-read__grid,
+  .adp-executive-read--v3.adp-executive-read--v3-hybrid .adp-executive-read__grid,
+  .adp-executive-read--v3-hybrid .adp-executive-read__grid,
+  .aiv-theme-group.adp-executive-read--v3-hybrid .adp-executive-read__grid {
+    grid-template-columns: 1fr !important;
     align-items: start;
   }
-  .adp-executive-read__summaries {
+  .adp-executive-read__summaries,
+  .adp-executive-read--v3.adp-executive-read--v3-hybrid .adp-executive-read__summaries,
+  .adp-executive-read--v3-hybrid .adp-executive-read__summaries {
     order: 1;
     height: auto;
+    display: flex !important;
   }
   .adp-executive-read__main {
     order: 4;

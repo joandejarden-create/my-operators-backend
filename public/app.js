@@ -2398,7 +2398,8 @@
         }
         if (mobileNavToggle && sidebar) {
             mobileNavToggle.addEventListener('click', function () {
-                sidebar.classList.toggle('mobile-open');
+                var open = sidebar.classList.toggle('mobile-open');
+                mobileNavToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
             });
         }
     }

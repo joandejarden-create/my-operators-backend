@@ -1427,6 +1427,7 @@
         </div>
         <div class="dashboard-main-section">
             <div class="dashboard-container">
+                <button type="button" class="shell-mobile-nav-toggle be-mobile-nav-toggle" id="myDealsMobileNavToggle" aria-expanded="false" aria-controls="sidebarWrapper" style="display:none;margin-bottom:12px;padding:8px 12px;border-radius:6px;border:1px solid var(--neutral--600);background:var(--neutral--700);color:var(--neutral--100);font:inherit;font-size:13px;font-weight:600;cursor:pointer;">Menu</button>
                 <div class="intake-header">
                     <div class="intake-title-container">
                         <div>
@@ -2858,5 +2859,32 @@
     })();
     </script>
     <script src="/embed-chrome.js" defer></script>
+    <script>
+    /* SH-001 / shared nav — recoverable mobile sidebar for My Deals / Deal Pulse */
+    (function () {
+        var wrap = document.getElementById('pageWrapper');
+        var toggle = document.getElementById('myDealsMobileNavToggle');
+        if (!wrap || !toggle) return;
+        function syncVisibility() {
+            toggle.style.display = window.matchMedia('(max-width: 768px)').matches ? 'inline-flex' : 'none';
+            if (!window.matchMedia('(max-width: 768px)').matches) {
+                wrap.classList.remove('shell-mobile-nav-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        }
+        function setOpen(open) {
+            wrap.classList.toggle('shell-mobile-nav-open', !!open);
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        toggle.addEventListener('click', function () {
+            setOpen(!wrap.classList.contains('shell-mobile-nav-open'));
+        });
+        wrap.querySelectorAll('.sidebar-wrapper nav a').forEach(function (el) {
+            el.addEventListener('click', function () { setOpen(false); });
+        });
+        window.addEventListener('resize', syncVisibility);
+        syncVisibility();
+    })();
+    </script>
 </body>
 </html>
