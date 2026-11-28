@@ -6,7 +6,10 @@
  *   canvas  #080f25  → continuous Explorer content plane
  *   section #101935  → cards / chapter boxes
  *   elevated #212c4d → chips / hover surfaces
- *   table   #0d152c  → inventory / ada-table surface
+ *   table   #0d152c  → inventory / ada-table / zebra / inset rows
+ *
+ * Nested translucent rgba(8,15,37,α) fills are forbidden inside .hex-root —
+ * they composite into visible patches over section panels and Radar bleed-through.
  */
 
 .hex-root,
@@ -100,7 +103,10 @@
 .hex-root .hex-radar-host .hdp-tab-panels--embed .tab-panel.active,
 .hex-root .hiw-report.hex-rms,
 .hex-root .hiw-report,
-.hex-root .hex-hiw-host {
+.hex-root .hex-hiw-host,
+.hex-root .oi-report,
+.hex-root .hci-root,
+.hex-root .hci-report {
   background-color: var(--he-canvas, #080f25);
   background-image: none;
 }
@@ -111,7 +117,11 @@
 .hex-root .hex-hero,
 .hex-root .hci-card,
 .hex-root .oi-rel-card,
-.hex-root .hex-rms-metric {
+.hex-root .hex-rms-metric,
+.hex-root .hex-panel,
+.hex-root .hex-section-card,
+.hex-root .hdp-panel-card,
+.hex-root .hdp-section-card {
   background-color: var(--he-section, #101935);
   background-image: none;
 }
@@ -122,7 +132,13 @@
 .hex-root .ada-table,
 .hex-root .hiw-table,
 .hex-root .hiw-table--portfolio.dl-table thead th,
-.hex-root .hiw-table--portfolio.ada-table thead th {
+.hex-root .hiw-table--portfolio.ada-table thead th,
+.hex-root .hex-rms-table th,
+.hex-root .hex-rms-table td,
+.hex-root .ada-table th,
+.hex-root .ada-table td,
+.hex-root .dl-table--inventory th,
+.hex-root .dl-table--inventory td {
   background-color: var(--he-table, #0d152c);
 }
 
@@ -152,11 +168,11 @@
   border-color: var(--he-border, #37446b);
 }
 
-/* Contact / ownership elevated chips stay on elevated token, not random rgba navy */
+/* Contact / ownership cards: solid section (no translucent navy mud) */
 .hex-root .oi-rel-card,
 .hex-root .hci-person-card,
 .hex-root .hci-card {
-  background-color: rgba(16, 25, 53, 0.92);
+  background-color: var(--he-section, #101935);
   border-color: var(--he-border, #37446b);
 }
 
@@ -166,10 +182,83 @@
   background-color: var(--he-elevated, #212c4d);
 }
 
+/*
+ * Nested panel / list / KPI / chip surfaces — solid approved tokens only.
+ * Replaces rgba(8,15,37,α) fills that caused patches over section panels.
+ */
+.hex-root .hdp-overview__row:nth-child(even),
+.hex-root .hdp-context-list__item,
+.hex-root .hdp-competitive-chip,
+.hex-root .hdp-insight-card,
+.hex-root .he-about-this-analysis,
+.hex-root .hex-action,
+.hex-root .hiw-snap,
+.hex-root .hiw-kpi,
+.hex-root .ocn-legend,
+.hex-root .ocn-about-structure,
+.hex-root .hex-rms-row-detail {
+  background-color: var(--he-table, #0d152c);
+  background-image: none;
+}
+
+.hex-root .hiw-kpi,
+.hex-root .hiw-snap,
+.hex-root .hdp-competitive-chip,
+.hex-root .hdp-insight-card {
+  border-color: var(--he-border, #37446b);
+}
+
+/* OI / HCI nested translucent navy → solid table/section */
+.hex-root .oi-drawer,
+.hex-root .oi-evidence-drawer,
+.hex-root .oi-prove,
+.hex-root .oi-node,
+.hex-root .oi-chip,
+.hex-root .hci-drawer,
+.hex-root .hci-toolbar,
+.hex-root .hci-filter-bar,
+.hex-root .hci-empty,
+.hex-root .hci-loading {
+  background-color: var(--he-section, #101935);
+  background-image: none;
+}
+
+/* Research-center / dossier chrome when embedded in Explorer */
+.hex-root .hir-panel,
+.hex-root .hir-card,
+.hex-root .hir-section,
+.hex-root .hid-panel,
+.hex-root .hid-card {
+  background-color: var(--he-section, #101935);
+  background-image: none;
+}
+
+/* Demand / ADA tables inside Explorer stay on table token */
+.hex-root .ada-runbook,
+.hex-root .ada-table-wrap,
+.hex-root .runbook-surface {
+  background-color: var(--he-table, #0d152c);
+  background-image: none;
+}
+
+/* Standalone org-profile gradient must not paint inside Explorer hosts */
+.hex-root .ogp-page,
+.hex-root .ogp-shell {
+  background: var(--he-canvas, #080f25);
+  background-image: none;
+}
+
+.hex-root .ogp-hero {
+  background: var(--he-section, #101935);
+  background-image: none;
+}
+
 /* Loading / empty states must not flash a foreign blue */
 .hex-root .hiw-empty,
 .hex-root .hex-dossier-loading,
-.hex-root .hdp-loading {
+.hex-root .hdp-loading,
+.hex-root .hci-empty,
+.hex-root .oi-empty {
   background: transparent;
   color: var(--he-text-body, #aeb9e1);
 }
