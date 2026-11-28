@@ -1,4 +1,4 @@
-# DEALALITY_SHARED_INTERNATIONAL_PHONE_FORMATTING_V1
+﻿# DEALALITY_SHARED_INTERNATIONAL_PHONE_FORMATTING_V1
 
 Presentation-only international telephone formatting for Dealality products.
 
@@ -42,6 +42,8 @@ Presentation-only international telephone formatting for Dealality products.
 npm run test:dealality-shared-international-phone-formatting-v1
 npm run test:gdi-shared-international-phone-formatting-v1
 DEALALITY_PHONE_BROWSER=1 npm run test:gdi-shared-international-phone-formatting-v1
+npm run test:he-shared-international-phone-formatting-v1
+DEALALITY_PHONE_BROWSER=1 npm run test:he-shared-international-phone-formatting-v1
 ```
 
 ## Not authorized

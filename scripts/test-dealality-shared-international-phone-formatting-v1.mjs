@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * Permanent regression: DEALALITY_SHARED_INTERNATIONAL_PHONE_FORMATTING_V1
  */
@@ -50,6 +50,8 @@ check("DEALALITY_PHONE_COUNTRY_FORMAT_VALIDATED", () => {
     ["+351912345678", "+351 912 345 678"],
     ["+525512345678", "+52 55 1234 5678"],
     ["+18095550123", "+1 (809) 555-0123"], // DO NANP
+    ["+14165550100", "+1 (416) 555-0100"], // CA NANP
+    ["+15145550123", "+1 (514) 555-0123"], // CA Montreal
     ["+50622221234", "+506 2222 1234"],
     ["+5511987654321", "+55 11 98765 4321"],
     ["+41441234567", "+41 44 123 45 67"],
