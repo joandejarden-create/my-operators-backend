@@ -1260,6 +1260,16 @@
   function paintEnrichResult(slot, payload) {
     if (!slot) return;
     slot.removeAttribute("hidden");
+    if (payload && payload.pending) {
+      slot.innerHTML =
+        '<div class="hci-note">' +
+        esc(
+          (payload && payload.userMessage) ||
+            "Surfe enrichment is still in progress. Try again shortly — this is not a no-result."
+        ) +
+        "</div>";
+      return;
+    }
     if (!payload || payload.ok === false) {
       var err = String((payload && (payload.error || "")) || "");
       var msg;
@@ -1269,6 +1279,14 @@
           "Contact enrichment is not available in this environment.";
       } else if (err === "reveal_in_flight") {
         msg = "A lookup is already in progress for this person.";
+      } else if (err === "INSUFFICIENT_CREDITS") {
+        msg =
+          (payload && payload.userMessage) ||
+          "Surfe credits are insufficient for this lookup.";
+      } else if (err === "AUTH" || err === "FORBIDDEN") {
+        msg =
+          (payload && payload.userMessage) ||
+          "Surfe authorization failed for this environment.";
       } else if (err === "no_result" || err === "surfe_no_result") {
         msg = "No additional professional contact details found.";
       } else {
@@ -1353,9 +1371,9 @@
     }
     var attribution =
       payload.mock === true
-        ? "Mock Surfe provider (no-cost) · session-only · not persisted"
-        : (payload.providerAttribution || "Surfe on-demand") +
-          " · session-only · not persisted to Airtable";
+        ? "Mock Surfe provider (no-cost) · Surfe · Session Only · not persisted"
+        : (payload.providerAttribution || "Surfe · Session Only") +
+          " · not persisted to Airtable";
     slot.innerHTML =
       '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED" data-surfe-session="1" data-persist="forbidden">' +
       '<div class="hci-note">' +
@@ -1374,13 +1392,13 @@
         : "") +
       (phone
         ? '<div class="hci-channel-row"><span class="hci-channel-label">Surfe session phone</span> ' +
-          '<a class="hci-action-link" href="tel:' +
-          esc(String(phone).replace(/\s+/g, "")) +
+          '<a class="hci-action-link" href="' +
+          esc(telHrefForPhone(phone)) +
           '">' +
           esc(phone) +
           "</a></div>"
         : "") +
-      '<p class="hci-muted">Surfe results are ephemeral. They are never saved as public research, never written to Airtable from this action, and disappear after reload.</p>' +
+      '<p class="hci-muted">Surfe · Session Only. Results are ephemeral — never saved as public research, never written to Airtable from this action, and disappear after reload. Canonical saved channels are unchanged.</p>' +
       "</div>";
   }
 

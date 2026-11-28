@@ -709,7 +709,22 @@ export async function postContactIntelligencePersonReveal(req, res) {
         });
       }
 
-      const provider = createSurfeContactProvider({ pollOnEnrich: true });
+      const channel = String(body.channel || "both").toLowerCase();
+      // Explicit HE Find Email & Phone click: request email + mobile for session display.
+      // Opt out with HE_SURFE_REQUEST_MOBILE=false (email + free landlines only).
+      // Market Alerts bulk paths still honor SURFE_INCLUDE_MOBILE separately.
+      const heMobileOptOut =
+        String(process.env.HE_SURFE_REQUEST_MOBILE || "").toLowerCase() === "false";
+      const wantMobile =
+        !heMobileOptOut &&
+        (limits.includeMobile === true ||
+          channel === "phone" ||
+          channel === "both" ||
+          String(process.env.HE_SURFE_REQUEST_MOBILE || "").toLowerCase() === "true");
+      const provider = createSurfeContactProvider({
+        pollOnEnrich: true,
+        maxPollWaitMs: Number(process.env.HE_SURFE_POLL_MS || 60000),
+      });
       const enrichRes = await provider.enrichPeople({
         people: [
           {
@@ -720,17 +735,43 @@ export async function postContactIntelligencePersonReveal(req, res) {
             companyDomain,
           },
         ],
-        includeEmail: true,
-        includeMobile: limits.includeMobile === true,
+        includeEmail: channel !== "phone",
+        includeMobile: wantMobile,
         includeLinkedIn: true,
       });
       if (!enrichRes?.ok) {
-        return res.status(502).json({
+        const errCode = enrichRes?.error || "surfe_enrich_failed";
+        const authFail = /AUTH|FORBIDDEN|PAYMENT|INSUFFICIENT/i.test(String(errCode));
+        return res.status(authFail ? 502 : 502).json({
           ok: false,
-          error: enrichRes?.error || "surfe_enrich_failed",
-          userMessage: "Contact enrichment could not complete. Try again later.",
+          error: errCode,
+          userMessage:
+            errCode === "INSUFFICIENT_CREDITS"
+              ? "Surfe credits are insufficient for this lookup."
+              : errCode === "AUTH" || errCode === "FORBIDDEN"
+                ? "Surfe authorization failed for this environment."
+                : "Contact enrichment could not complete. Try again later.",
           surfeCalls: 1,
           persistence: "NOT_WRITTEN",
+        });
+      }
+      if (enrichRes.pending) {
+        return res.json({
+          ok: true,
+          cached: false,
+          pending: true,
+          enrichmentId: enrichRes.enrichmentId || null,
+          surfeCalls: 1,
+          estimatedCostUsd: enrichRes.estimatedCostUsd ?? null,
+          provider: "surfe",
+          providerAttribution: "Surfe · Session Only",
+          verificationStatus: "PROVIDER_PENDING",
+          person: null,
+          error: "surfe_pending",
+          userMessage:
+            "Surfe enrichment is still in progress. Wait a moment and try again — this is not a no-result.",
+          persistence: "NOT_WRITTEN",
+          review_required: false,
         });
       }
       const person = (enrichRes.people && enrichRes.people[0]) || null;
@@ -746,11 +787,11 @@ export async function postContactIntelligencePersonReveal(req, res) {
         return res.json({
           ok: true,
           cached: false,
-          pending: Boolean(enrichRes.pending),
+          pending: false,
           surfeCalls: 1,
           estimatedCostUsd: enrichRes.estimatedCostUsd ?? null,
           provider: "surfe",
-          providerAttribution: "Surfe on-demand (ephemeral)",
+          providerAttribution: "Surfe · Session Only",
           verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
           person: null,
           error: "surfe_no_result",
@@ -762,16 +803,16 @@ export async function postContactIntelligencePersonReveal(req, res) {
       return res.json({
         ok: true,
         cached: false,
-        pending: Boolean(enrichRes.pending),
+        pending: false,
         surfeCalls: 1,
         estimatedCostUsd: enrichRes.estimatedCostUsd ?? null,
         provider: "surfe",
-        providerAttribution: "Surfe on-demand (ephemeral)",
+        providerAttribution: "Surfe · Session Only",
         verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
         person,
         persistence: "NOT_WRITTEN",
         review_required: true,
-        note: "Review required before any canonical Airtable write.",
+        note: "Session-only Surfe result. Never written to Airtable from this action.",
       });
     } finally {
       _heRevealInflight.delete(inflightKey);
