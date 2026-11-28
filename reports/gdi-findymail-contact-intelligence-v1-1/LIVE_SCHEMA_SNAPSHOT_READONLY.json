@@ -1,0 +1,569 @@
+{
+    "tables":  [
+                   {
+                       "fields":  [
+                                      {
+                                          "name":  "Person ID",
+                                          "id":  "fldj4AXXDiyQyLN9y",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Display Name",
+                                          "id":  "fldYNbmZ4QoDIaMzm",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Organization ID",
+                                          "id":  "fldzP1msju44a1gel",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Title",
+                                          "id":  "fldRNfsXsmWQCZKmz",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Function / Role",
+                                          "id":  "fld1XB0ml1fBd0geM",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Hotel / Commercial Responsibility",
+                                          "id":  "fldWloQowN5paIPkT",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "name":  "Affiliation Verified?",
+                                          "id":  "fldabM0ffqXtYyCn4",
+                                          "type":  "checkbox"
+                                      },
+                                      {
+                                          "name":  "Role Currency",
+                                          "id":  "fldllQFxhtDcYSpsL",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "HIGH",
+                                                          "MEDIUM",
+                                                          "LOW",
+                                                          "UNVERIFIED"
+                                                      ],
+                                          "name":  "Confidence",
+                                          "id":  "fldrF6sFRyQxQdo0d",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Unverified",
+                                                          "Evidence Collected",
+                                                          "Validated",
+                                                          "Confirmed",
+                                                          "Disputed",
+                                                          "Superseded",
+                                                          "Needs Review"
+                                                      ],
+                                          "name":  "Verification State",
+                                          "id":  "fldWZdTpBQWXQJed6",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Person Dedupe Key",
+                                          "id":  "fldMhgpfKBGvDbsXe",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Affiliation Dedupe Key",
+                                          "id":  "fld3ve54vpT3s9xYO",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Evidence Refs",
+                                          "id":  "fldbEyeWaDCPhU3xI",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "INTERNAL_ONLY",
+                                                          "STAGED",
+                                                          "APPROVED_INTERNAL",
+                                                          "CUSTOMER_BLOCKED",
+                                                          "CUSTOMER_PUBLISHED"
+                                                      ],
+                                          "name":  "Publication State",
+                                          "id":  "fldZvtqWEUCHcbIi0",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Schema Version",
+                                          "id":  "fldlJZUQmidIoYfzd",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Notes",
+                                          "id":  "fldcenUSdFfr7iTrd",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbliXEfUOWk32AN9y",
+                                          "name":  "Organization",
+                                          "id":  "fld4Jd8fqrt5OSELo",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tblqC7C4ypy5Zojyw",
+                                          "name":  "HI Contact Channels",
+                                          "id":  "fldrEvcbCiAcqGNug",
+                                          "type":  "multipleRecordLinks"
+                                      }
+                                  ],
+                       "name":  "HI Org Contacts",
+                       "id":  "tbldJAj0nK1l39JZL",
+                       "fieldCount":  18,
+                       "present":  true
+                   },
+                   {
+                       "fields":  [
+                                      {
+                                          "name":  "Channel ID",
+                                          "id":  "fldSPz6EXrA6FUO6E",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Person",
+                                                          "Organization"
+                                                      ],
+                                          "name":  "Subject Type",
+                                          "id":  "fldJSjLMuypHpVG3c",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Subject ID",
+                                          "id":  "fldZ5CEnhGHrfiAa2",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Email",
+                                                          "Telephone",
+                                                          "LinkedIn",
+                                                          "Other"
+                                                      ],
+                                          "name":  "Channel Kind",
+                                          "id":  "fldbRIbrPXdWpFgqb",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Channel Value",
+                                          "id":  "fldoA4I76BXpVBJtd",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Public",
+                                                          "Direct Personal",
+                                                          "General / Switchboard",
+                                                          "Inferred",
+                                                          "Unknown"
+                                                      ],
+                                          "name":  "Classification",
+                                          "id":  "fldEBOUkaSJy8S9S2",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Unverified",
+                                                          "Inferred",
+                                                          "Public Listed",
+                                                          "Verified Direct",
+                                                          "Do Not Publish"
+                                                      ],
+                                          "name":  "Verification Status",
+                                          "id":  "fldXnpHkQeqc7Ok7N",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Source Name",
+                                          "id":  "fldL61phFziCI6XUC",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Source URL",
+                                          "id":  "fldQbe5yXDlPp6Gs9",
+                                          "type":  "url"
+                                      },
+                                      {
+                                          "name":  "Observed At",
+                                          "id":  "fldtu6IgqNtipcm8k",
+                                          "type":  "dateTime"
+                                      },
+                                      {
+                                          "name":  "Provider",
+                                          "id":  "fldORmMEUuIMWqq3Z",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Usage Provenance",
+                                          "id":  "fldPd9JrAX0gEJVv4",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "name":  "Access / Publication Restriction",
+                                          "id":  "fldPeJFev159BWBjU",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Dedupe Key",
+                                          "id":  "fldA0zXiCAym6ZaPX",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "INTERNAL_ONLY",
+                                                          "STAGED",
+                                                          "APPROVED_INTERNAL",
+                                                          "CUSTOMER_BLOCKED",
+                                                          "CUSTOMER_PUBLISHED"
+                                                      ],
+                                          "name":  "Publication State",
+                                          "id":  "fldaBmnCJH3ZtKrk9",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Schema Version",
+                                          "id":  "fldXS1JKcFh7CbJLj",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Notes",
+                                          "id":  "fldSnHlNk0Wgr97aj",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbldJAj0nK1l39JZL",
+                                          "name":  "Person",
+                                          "id":  "fld3xFDYQuG5D8Mhh",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbliXEfUOWk32AN9y",
+                                          "name":  "Organization",
+                                          "id":  "fldh3gvuor20IINRu",
+                                          "type":  "multipleRecordLinks"
+                                      }
+                                  ],
+                       "name":  "HI Contact Channels",
+                       "id":  "tblqC7C4ypy5Zojyw",
+                       "fieldCount":  19,
+                       "present":  true
+                   },
+                   {
+                       "fields":  [
+                                      {
+                                          "name":  "Organization ID",
+                                          "id":  "fldeqwSCxUgdgLXRT",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Legal Name",
+                                          "id":  "fld3ag3wyvgFqLVbn",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Trading Name",
+                                          "id":  "fldrhKTTAUJLv1vqA",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Legal Owner",
+                                                          "Economic Owner",
+                                                          "Investor",
+                                                          "Asset Manager",
+                                                          "Operator",
+                                                          "Franchisee",
+                                                          "Brand / Franchisor",
+                                                          "Parent Company",
+                                                          "Holding Company",
+                                                          "REIT",
+                                                          "Family Office",
+                                                          "Government",
+                                                          "Other",
+                                                          "Unknown"
+                                                      ],
+                                          "name":  "Organization Type",
+                                          "id":  "flddEj7pjU00Tv8YF",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Jurisdiction",
+                                          "id":  "fldxhjXm1p6bSDEWr",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Registry / Identifier",
+                                          "id":  "fldCv9ukY6b36XFCp",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Official Website",
+                                          "id":  "fldAAOtBG4ZFNirqH",
+                                          "type":  "url"
+                                      },
+                                      {
+                                          "name":  "Parent Organization ID",
+                                          "id":  "fldDc0TD1vKGNq0tQ",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Unverified",
+                                                          "Evidence Collected",
+                                                          "Validated",
+                                                          "Confirmed",
+                                                          "Disputed",
+                                                          "Superseded",
+                                                          "Needs Review"
+                                                      ],
+                                          "name":  "Verification State",
+                                          "id":  "fld8Sjnc2YC8i93eo",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "HIGH",
+                                                          "MEDIUM",
+                                                          "LOW",
+                                                          "UNVERIFIED"
+                                                      ],
+                                          "name":  "Confidence",
+                                          "id":  "fld0RtL16rWexiDHG",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Dedupe Key",
+                                          "id":  "fldZ4WuvgJ5f6dBQS",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Provenance Summary",
+                                          "id":  "fldpG7yQjgl1OZqtA",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "INTERNAL_ONLY",
+                                                          "STAGED",
+                                                          "APPROVED_INTERNAL",
+                                                          "CUSTOMER_BLOCKED",
+                                                          "CUSTOMER_PUBLISHED"
+                                                      ],
+                                          "name":  "Publication State",
+                                          "id":  "fldZ7HEBTID5ZuERt",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Evidence Refs",
+                                          "id":  "fldW4YKIydLpJjaig",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "name":  "Schema Version",
+                                          "id":  "fldgxNGIWwkhxCPZC",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Notes",
+                                          "id":  "fld7qiuV6O6cYubvI",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbliXEfUOWk32AN9y",
+                                          "name":  "Parent Organization",
+                                          "id":  "fld5AHlY2x2p5yw4u",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbliXEfUOWk32AN9y",
+                                          "name":  "From field: Parent Organization",
+                                          "id":  "fldvfaKvgSVkDyg67",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tblGiwN0foXXDESvZ",
+                                          "name":  "HI Hotel–Org Relationships",
+                                          "id":  "fldUXyZjKNpY2l4YO",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbldJAj0nK1l39JZL",
+                                          "name":  "HI Org Contacts",
+                                          "id":  "fldYXCZOYlNZpkHIn",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tblqC7C4ypy5Zojyw",
+                                          "name":  "HI Contact Channels",
+                                          "id":  "fldz0JAoNEafXVpxR",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tblGjTWNm8G4UOF1e",
+                                          "name":  "HI Discovery Findings",
+                                          "id":  "fldYMUxhZmfW6vrD9",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tblMjUCBtXF2o3r9u",
+                                          "name":  "HI Hotel Contracts",
+                                          "id":  "fldJ9hfgna0Sp9gHX",
+                                          "type":  "multipleRecordLinks"
+                                      }
+                                  ],
+                       "name":  "HI Organizations",
+                       "id":  "tbliXEfUOWk32AN9y",
+                       "fieldCount":  23,
+                       "present":  true
+                   },
+                   {
+                       "fields":  [
+                                      {
+                                          "name":  "Relationship ID",
+                                          "id":  "fld6mLDEcerkdx3WM",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "HPC Hotel ID",
+                                          "id":  "fldnHOr4S4AzQ1N0r",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Organization ID",
+                                          "id":  "fldeMNLm2VoaQG5ek",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Legal Owner",
+                                                          "Economic Owner",
+                                                          "Investor",
+                                                          "Asset Manager",
+                                                          "Operator",
+                                                          "Franchisee",
+                                                          "Brand",
+                                                          "Management Company",
+                                                          "Developer",
+                                                          "Lender",
+                                                          "Other"
+                                                      ],
+                                          "name":  "Relationship Type",
+                                          "id":  "fldDz92pxxw4vZfgS",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Current?",
+                                          "id":  "fld0DSlirmsBDPtay",
+                                          "type":  "checkbox"
+                                      },
+                                      {
+                                          "name":  "Effective From",
+                                          "id":  "fldnQQfl12cxixlmU",
+                                          "type":  "date"
+                                      },
+                                      {
+                                          "name":  "Effective To",
+                                          "id":  "fldhCpBd7aMZKnPLR",
+                                          "type":  "date"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "HIGH",
+                                                          "MEDIUM",
+                                                          "LOW",
+                                                          "UNVERIFIED"
+                                                      ],
+                                          "name":  "Confidence",
+                                          "id":  "fldtmQCIyzKIlrVEH",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "Unverified",
+                                                          "Evidence Collected",
+                                                          "Validated",
+                                                          "Confirmed",
+                                                          "Disputed",
+                                                          "Superseded",
+                                                          "Needs Review"
+                                                      ],
+                                          "name":  "Verification State",
+                                          "id":  "fldNrXXvknMkPqL40",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "None",
+                                                          "Held For Review",
+                                                          "Stronger Evidence Wins",
+                                                          "Superseded"
+                                                      ],
+                                          "name":  "Conflict Status",
+                                          "id":  "fldOQQK5qyK0Cf4NA",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Dedupe Key",
+                                          "id":  "flds04tHSWn2wsXos",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Evidence Refs",
+                                          "id":  "flduptXn3Mpdwk1DI",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "choices":  [
+                                                          "INTERNAL_ONLY",
+                                                          "STAGED",
+                                                          "APPROVED_INTERNAL",
+                                                          "CUSTOMER_BLOCKED",
+                                                          "CUSTOMER_PUBLISHED"
+                                                      ],
+                                          "name":  "Publication State",
+                                          "id":  "fldc9IznKKWsS1MnV",
+                                          "type":  "singleSelect"
+                                      },
+                                      {
+                                          "name":  "Schema Version",
+                                          "id":  "fld6shCJsvS5eeUE0",
+                                          "type":  "singleLineText"
+                                      },
+                                      {
+                                          "name":  "Notes",
+                                          "id":  "fldepv7LvWWNBzBpn",
+                                          "type":  "multilineText"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbliXEfUOWk32AN9y",
+                                          "name":  "Organization",
+                                          "id":  "fldkupFaxgSyemlhI",
+                                          "type":  "multipleRecordLinks"
+                                      },
+                                      {
+                                          "linkedTableId":  "tbl9aY5ijiuIzzWam",
+                                          "name":  "HPC Hotel",
+                                          "id":  "fldcpmADxtKNKDTDN",
+                                          "type":  "multipleRecordLinks"
+                                      }
+                                  ],
+                       "name":  "HI Hotel–Org Relationships",
+                       "id":  "tblGiwN0foXXDESvZ",
+                       "fieldCount":  17,
+                       "present":  true
+                   }
+               ],
+    "baseId":  "appCCUsuGsE1ifoLk",
+    "mode":  "read_only_meta",
+    "at":  "2026-11-23T17:39:37.7254339Z"
+}
