@@ -457,13 +457,11 @@
     var hasEmail = personEmails(p).length > 0;
     var hasPhone = personPhones(p).length > 0;
     var hasLinkedIn = Boolean(linkedInUrl(p));
-    var action = p.enrichAction || {};
-    var providerReady =
+    // Customer CTA is Surfe-only. Capability may warn after click; do not hide/disable
+    // the button solely because Findymail/hybrid flags exist or Surfe is misconfigured.
+    var surfeReady =
       capability &&
-      (capability.surfeEnabled === true ||
-        capability.mockEnabled === true ||
-        capability.findymailEnabled === true ||
-        capability.hybridEnrichEnabled === true);
+      (capability.surfeEnabled === true || capability.mockEnabled === true);
     // Approved customer label stays constant; contextual title describes missing channel.
     var label = FIND_LABEL;
     var contextualDescription = null;
@@ -483,7 +481,7 @@
       contextualDescription = FIND_LABEL;
     }
 
-    // Button always visible. Dimmed only when both email + phone already on file.
+    // Button always visible. Dimmed/disabled only when both email + phone already on file.
     if (hasEmail && hasPhone) {
       return {
         label: label,
@@ -513,17 +511,15 @@
         hasVerifiedLinkedIn: hasLinkedIn,
         needsEmail: !hasEmail,
         needsPhone: !hasPhone,
-        reason: "Enrichment needs a full name and organization.",
-        providerUnavailable: false,
+        reason: "Lookup needs a full name and organization.",
+        providerUnavailable: !surfeReady,
       };
     }
-    var enabled =
-      action.enabled === true ||
-      (providerReady && action.enabled !== false);
+    // Missing email and/or phone → active (founder CX). Session-cache may re-dim later.
     return {
       label: label,
       contextualDescription: contextualDescription,
-      enabled: enabled,
+      enabled: true,
       dimmedComplete: false,
       channel: channel,
       missing: missing,
@@ -532,14 +528,8 @@
       hasVerifiedLinkedIn: hasLinkedIn,
       needsEmail: !hasEmail,
       needsPhone: !hasPhone,
-      providerUnavailable: !providerReady,
-      reason:
-        contextualDescription ||
-        (capability && capability.userReason) ||
-        action.reason ||
-        (!providerReady
-          ? "Contact enrichment is not configured in this environment."
-          : null),
+      providerUnavailable: !surfeReady,
+      reason: contextualDescription || FIND_LABEL,
     };
   }
 
@@ -585,11 +575,22 @@
     return '<p class="hci-muted">' + esc(label) + "</p>";
   }
 
-  /** Shared Dealality black-wave toast — never inject into table rows. */
+  /** Shared Dealality black-wave toast — body host only; never inside table rows. */
   function ensureEnrichToastHost() {
-    if (_enrichToastHost && document.body.contains(_enrichToastHost)) return _enrichToastHost;
+    if (_enrichToastHost && document.body.contains(_enrichToastHost)) {
+      if (_enrichToastHost.closest("table, .hci-root tr, [data-hci-contact-details-cell]")) {
+        document.body.appendChild(_enrichToastHost);
+      }
+      return _enrichToastHost;
+    }
     var existing = document.getElementById("hci-enrich-loading-toast");
     if (existing) {
+      if (
+        existing.closest("table, .hci-root tr, [data-hci-contact-details-cell]") ||
+        existing.parentElement !== document.body
+      ) {
+        document.body.appendChild(existing);
+      }
       _enrichToastHost = existing;
       return existing;
     }
@@ -603,20 +604,20 @@
     host.style.display = "none";
     var markup = "";
     if (window.HeLoadingUx && typeof window.HeLoadingUx.toastHtml === "function") {
-      markup = window.HeLoadingUx.toastHtml("Finding Contact Details…", {
-        subText: "Hybrid enrichment",
+      markup = window.HeLoadingUx.toastHtml("Finding Contact Details...", {
+        subText: "Contact lookup",
       });
     } else if (
       window.DealalitySharedLoadingUx &&
       typeof window.DealalitySharedLoadingUx.toastHtml === "function"
     ) {
-      markup = window.DealalitySharedLoadingUx.toastHtml("Finding Contact Details…", {
-        subText: "Hybrid enrichment",
+      markup = window.DealalitySharedLoadingUx.toastHtml("Finding Contact Details...", {
+        subText: "Contact lookup",
       });
     } else {
       markup =
         '<div class="dealality-wave-loader dealality-wave-loader--inline dealality-wave-loader--compact dealality-wave-loader--toast">' +
-        '<div class="loading-text-main">Finding Contact Details…</div></div>';
+        '<div class="loading-text-main">Finding Contact Details...</div></div>';
     }
     host.innerHTML = markup;
     document.body.appendChild(host);
@@ -629,7 +630,7 @@
     var msg =
       host.querySelector("[data-dealality-loading-message], .loading-text-main, .toast-message") ||
       null;
-    if (msg) msg.textContent = message || "Finding Contact Details…";
+    if (msg) msg.textContent = message || "Finding Contact Details...";
     if (
       window.DealalitySharedLoadingUx &&
       typeof window.DealalitySharedLoadingUx.setPageToastBusy === "function"
@@ -637,7 +638,7 @@
       window.DealalitySharedLoadingUx.setPageToastBusy(
         host,
         true,
-        message || "Finding Contact Details…",
+        message || "Finding Contact Details...",
       );
       return;
     }
@@ -669,12 +670,18 @@
       btn.innerHTML = '<span class="hci-enrich-btn__busy">Finding…</span>';
       return;
     }
-    if (mode === "complete") {
-      btn.textContent = "Lookup complete";
-      return;
-    }
+    // Never show internal completion labels — keep the approved Find Email & Phone label.
     btn.innerHTML = FIND_LABEL_HTML;
     btn.setAttribute("data-enrich-label", FIND_LABEL);
+  }
+
+  var SESSION_HINT = "Available for this session";
+
+  function showCustomerToastFeedback(message) {
+    showEnrichToast(message || "Contact Details Found");
+    setTimeout(function () {
+      hideEnrichToast();
+    }, 1600);
   }
 
   function findEnrichSlot(btn) {
@@ -803,7 +810,7 @@
       '">' +
       '<button type="button" class="' +
       btnClass +
-      '" data-hci-enrich="1" data-hci-hybrid-enrich="1" data-person-id="' +
+      '" data-hci-enrich="1" data-hci-one-click-surfe="1" data-person-id="' +
       esc(p.personId || "") +
       '" data-hotel-id="' +
       esc(hotelId || "") +
@@ -906,16 +913,20 @@
           .join("") +
         (session
           ? '<div class="hci-channel-row hci-channel-row--session" data-surfe-session="1">' +
-            '<span class="hci-channel-label">Lookup result (session only)</span> ' +
+            '<span class="hci-channel-label">' +
+            esc(SESSION_HINT) +
+            "</span> " +
             (session.email
               ? '<a class="hci-action-link" href="mailto:' +
                 esc(session.email) +
+                '" title="' +
+                esc(SESSION_HINT) +
                 '">' +
                 esc(session.email) +
                 "</a> "
               : "") +
             (session.phone ? phoneAnchorHtml(session.phone) : "") +
-            ' <span class="hci-muted">· not saved</span></div>'
+            "</div>"
           : "") +
         "</div>";
     }
@@ -978,7 +989,7 @@
           esc(p.airtableId) +
           "</div>"
         : "") +
-      '<p class="hci-muted">Company websites and switchboards are organization routes, not personal inboxes. On-demand lookup results stay in this session and are not saved.</p>' +
+      '<p class="hci-muted">Company websites and switchboards are organization routes, not personal inboxes.</p>' +
       "</div></article>"
     );
   }
@@ -1099,15 +1110,25 @@
       : sessionEmail
         ? '<a class="gdi-list-contact-link gdi-list-contact-link--session" href="mailto:' +
           esc(sessionEmail) +
-          '" title="Surfe · Session Only">' +
+          '" data-surfe-session="1" data-persist="forbidden" title="' +
+          esc(SESSION_HINT) +
+          '">' +
           esc(sessionEmail) +
-          '</a><span class="gdi-list-session-tag">Surfe · Session Only</span>'
+          '</a><span class="gdi-list-session-tag" title="' +
+          esc(SESSION_HINT) +
+          '">' +
+          esc(SESSION_HINT) +
+          "</span>"
         : '<span class="gdi-list-contact-missing">Email Not Available</span>';
     var phoneLine = phone
       ? phoneAnchorHtml(phone, "gdi-list-contact-link")
       : sessionPhone
         ? phoneAnchorHtml(sessionPhone, "gdi-list-contact-link gdi-list-contact-link--session") +
-          '<span class="gdi-list-session-tag">Surfe · Session Only</span>'
+          '<span class="gdi-list-session-tag" data-surfe-session="1" data-persist="forbidden" title="' +
+          esc(SESSION_HINT) +
+          '">' +
+          esc(SESSION_HINT) +
+          "</span>"
         : '<span class="gdi-list-contact-missing">Phone Not Available</span>';
     var linkedinLine = li
       ? '<a class="gdi-list-contact-link gdi-list-linkedin" href="' +
@@ -1225,7 +1246,7 @@
       (present(p.lastVerified)
         ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
         : "") +
-      '<p class="hci-muted">Organization websites and switchboards are company routes, not personal inboxes. Findymail durable results save to Airtable. Surfe results stay in this session and are not saved.</p>' +
+      '<p class="hci-muted">Organization websites and switchboards are company routes, not personal inboxes.</p>' +
       "</div></div>";
     return {
       contact: (p.name || "") + " " + (p.title || ""),
@@ -1454,91 +1475,34 @@
 
   function paintEnrichResult(slot, payload, btn) {
     if (!slot && btn) slot = findEnrichSlot(btn);
-    if (!slot) return;
-    slot.hidden = false;
-    slot.removeAttribute("hidden");
+    // Customer UI: never inject verbose provider notes into the table row.
+    if (slot) {
+      slot.hidden = true;
+      slot.setAttribute("hidden", "");
+      slot.innerHTML = "";
+    }
     if (payload && payload.pending) {
-      slot.innerHTML =
-        '<div class="hci-note">' +
-        esc(
-          (payload && payload.userMessage) ||
-            "Surfe enrichment is still in progress. Try again shortly — this is not a no-result."
-        ) +
-        "</div>";
-      return;
+      showCustomerToastFeedback("Finding Contact Details...");
+      return { feedback: "pending" };
     }
     if (!payload || payload.ok === false) {
       var err = String((payload && (payload.error || "")) || "");
-      var msg;
-      if (err === "surfe_unavailable_for_hotel_explorer" || err === "enrichment_not_configured") {
-        msg =
-          (payload && payload.userMessage) ||
-          "Contact enrichment is not available in this environment.";
+      var feedback = "Unable to Complete Lookup. Please Try Again.";
+      if (
+        err === "surfe_no_result" ||
+        err === "no_result" ||
+        err === "findymail_no_result"
+      ) {
+        feedback = "No Additional Contact Details Available";
       } else if (err === "reveal_in_flight") {
-        msg = "A lookup is already in progress for this person.";
-      } else if (err === "INSUFFICIENT_CREDITS") {
-        msg =
-          (payload && payload.userMessage) ||
-          "Surfe credits are insufficient for this lookup.";
-      } else if (err === "AUTH" || err === "FORBIDDEN") {
-        msg =
-          (payload && payload.userMessage) ||
-          "Surfe authorization failed for this environment.";
-      } else if (err === "API route not found" || /route not found/i.test(err)) {
-        msg =
-          "Contact enrichment API route is unavailable on this server. Restart the integrated main tip and retry.";
-      } else if (err === "surfe_no_result") {
-        msg =
-          "Surfe did not return additional professional contact details for this lookup. This is separate from any earlier Findymail result.";
-      } else if (err === "no_result" || err === "findymail_no_result") {
-        msg =
-          "Findymail did not return durable channels. You can try Surfe (session only) if offered.";
-      } else {
-        msg =
-          (payload && payload.userMessage) ||
-          (payload && payload.message && !/CONTACT_ENRICHMENT|SURFE_API_KEY|stack/i.test(payload.message)
-            ? payload.message
-            : null) ||
-          "No additional professional contact details found.";
+        feedback = "Finding Contact Details...";
       }
-      slot.innerHTML = '<div class="hci-note hci-note--unresolved">' + esc(msg) + "</div>";
-      return;
+      showCustomerToastFeedback(feedback);
+      return { feedback: feedback, ok: false };
     }
     if (payload.cached) {
-      var ch = payload.channels || {};
-      var emails = (ch.emails || [])
-        .map(function (c) {
-          return c && (c.value || c.email);
-        })
-        .filter(Boolean);
-      var phones = (ch.phones || [])
-        .map(function (c) {
-          return c && (c.value || c.phone);
-        })
-        .filter(Boolean);
-      slot.innerHTML =
-        '<div class="hci-enrich-result">' +
-        '<div class="hci-note">Existing channels on file — no provider credit used.</div>' +
-        (emails.length
-          ? "<div><strong>Email</strong> " +
-            emails
-              .map(function (e) {
-                return (
-                  '<a class="hci-action-link" href="mailto:' + esc(e) + '">' + esc(e) + "</a>"
-                );
-              })
-              .join(", ") +
-            "</div>"
-          : "") +
-        (phones.length
-          ? "<div><strong>Phone</strong> " +
-            phones.map(function (ph) {
-              return phoneAnchorHtml(ph);
-            }).join(", ") +
-            "</div>"
-          : "") +
-        "</div>";
-      return;
+      showCustomerToastFeedback("Contact Details Found");
+      return { feedback: "cached", ok: true };
     }
     var person = payload.person || {};
     var email =
@@ -1552,14 +1516,13 @@
       (person.phones && person.phones[0] && (person.phones[0].phone || person.phones[0].value)) ||
       null;
     if (!email && !phone) {
-      slot.innerHTML =
-        '<div class="hci-note hci-note--unresolved">Surfe did not return additional professional contact details for this lookup.</div>';
-      return;
+      showCustomerToastFeedback("No Additional Contact Details Available");
+      return { feedback: "empty", ok: false };
     }
     var personId =
       person.personId ||
       (btn && btn.getAttribute("data-person-id")) ||
-      slot.getAttribute("data-person-id") ||
+      (slot && slot.getAttribute("data-person-id")) ||
       "";
     if (personId) {
       _sessionSurfeByPerson[personId] = {
@@ -1569,7 +1532,6 @@
         mock: payload.mock === true,
       };
     }
-    // Refresh Contact Details channel stack so session values are visible left of the button.
     var cell =
       (btn && btn.closest("[data-hci-contact-details-cell]")) ||
       (slot && slot.closest("[data-hci-contact-details-cell]"));
@@ -1589,57 +1551,44 @@
         phones: [],
       };
       var hotelId = (btn && btn.getAttribute("data-hotel-id")) || "";
+      // Preserve durable Airtable channels already shown in the cell when available.
+      var priorEmail = cell.querySelector('a[href^="mailto:"]:not(.gdi-list-contact-link--session)');
+      var priorPhone = cell.querySelector('a[href^="tel:"]:not(.gdi-list-contact-link--session)');
+      if (priorEmail && priorEmail.textContent) {
+        seed.emails = [{ value: priorEmail.textContent.trim(), kind: "email" }];
+      }
+      if (priorPhone && priorPhone.textContent) {
+        seed.phones = [{ value: priorPhone.getAttribute("href").replace(/^tel:/i, "") || priorPhone.textContent.trim(), kind: "phone" }];
+      }
       cell.outerHTML = renderVerifiedChannelSummary(seed, hotelId, vmCapability);
       var liveBtn = findEnrichButton(personId, hotelId);
       var liveSlot = findEnrichSlot(liveBtn);
       if (liveBtn) {
-        liveBtn.disabled = true;
-        setEnrichButtonLabel(liveBtn, "complete");
-        liveBtn.classList.add("hci-btn--enrich-dimmed");
+        var durableComplete = liveBtn.getAttribute("data-dimmed-complete") === "1";
+        // Session result: keep Find Email & Phone label; block duplicate credits this session.
+        liveBtn.setAttribute("data-session-lookup", "1");
+        if (durableComplete) {
+          liveBtn.disabled = true;
+          setEnrichButtonLabel(liveBtn, "idle");
+          liveBtn.classList.add("hci-btn--enrich-dimmed");
+        } else {
+          liveBtn.disabled = true;
+          setEnrichButtonLabel(liveBtn, "idle");
+          liveBtn.classList.add("hci-btn--enrich-dimmed");
+          liveBtn.setAttribute("title", SESSION_HINT);
+        }
       }
       if (liveSlot) {
-        liveSlot.hidden = false;
-        liveSlot.removeAttribute("hidden");
+        liveSlot.hidden = true;
+        liveSlot.setAttribute("hidden", "");
         liveSlot.setAttribute("data-person-id", personId);
-        liveSlot.innerHTML =
-          '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED" data-surfe-session="1" data-persist="forbidden">' +
-          '<div class="hci-note">' +
-          esc(
-            (payload.providerAttribution || "Surfe · Session Only") +
-              " · not persisted to Airtable",
-          ) +
-          "</div></div>";
+        liveSlot.innerHTML = "";
       }
-      return;
     }
-    var attribution =
-      payload.mock === true
-        ? "Mock Surfe provider (no-cost) · Surfe · Session Only · not persisted"
-        : (payload.providerAttribution || "Surfe · Session Only") +
-          " · not persisted to Airtable";
-    slot.innerHTML =
-      '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED" data-surfe-session="1" data-persist="forbidden">' +
-      '<div class="hci-note">' +
-      esc(attribution) +
-      (payload.surfeCalls != null
-        ? " · credits used: " + esc(String(payload.surfeCalls))
-        : "") +
-      "</div>" +
-      (email
-        ? '<div class="hci-channel-row"><span class="hci-channel-label">Surfe session email</span> ' +
-          '<a class="hci-action-link" href="mailto:' +
-          esc(email) +
-          '">' +
-          esc(email) +
-          "</a></div>"
-        : "") +
-      (phone
-        ? '<div class="hci-channel-row"><span class="hci-channel-label">Surfe session phone</span> ' +
-          phoneAnchorHtml(phone) +
-          "</div>"
-        : "") +
-      '<p class="hci-muted">Surfe · Session Only. Results are ephemeral — never saved as public research, never written to Airtable from this action, and disappear after reload. Canonical saved channels are unchanged.</p>' +
-      "</div>";
+    var both = Boolean(email && phone);
+    var feedback = both ? "Contact Details Found" : "Some Contact Details Found";
+    showCustomerToastFeedback(feedback);
+    return { feedback: feedback, ok: true, email: email, phone: phone };
   }
 
   function applyHybridRowUpdate(btn, body) {
@@ -1685,61 +1634,24 @@
     );
   }
 
-  function paintSurfeFallbackOffer(slot, body, personId) {
-    if (!slot) return;
-    var rem =
-      (body.missingChannelState && body.missingChannelState.requestChannel) ||
-      (body.surfeIncludeSuggested &&
-      body.surfeIncludeSuggested.email &&
-      body.surfeIncludeSuggested.mobile
-        ? "both"
-        : body.surfeIncludeSuggested && body.surfeIncludeSuggested.email
-          ? "email"
-          : body.surfeIncludeSuggested && body.surfeIncludeSuggested.mobile
-            ? "phone"
-            : "both");
-    slot.hidden = false;
-    slot.removeAttribute("hidden");
-    slot.setAttribute("data-person-id", personId || "");
-    slot.innerHTML =
-      '<div class="hci-note">' +
-      esc(
-        body.message ||
-          body.userMessage ||
-          "No durable channels found yet. Try Surfe for a session-only lookup.",
-      ) +
-      "</div>" +
-      '<button type="button" class="hci-btn hci-btn--ghost hci-btn--surfe-fallback" data-hci-surfe-fallback="1" data-person-id="' +
-      esc(personId || "") +
-      '" data-enrich-channel="' +
-      esc(rem) +
-      '">Try Surfe (session only)</button>';
+  function paintSurfeFallbackOffer() {
+    // CONTACT INTELLIGENCE V4 — customer UI no longer offers Try Surfe.
+    // Find Email & Phone calls /reveal (Surfe) in one click.
+    return;
   }
 
   function bindEnrich(root) {
     if (!root) return;
     root.addEventListener("click", function (ev) {
-      var surfeBtn = ev.target.closest("[data-hci-surfe-fallback]");
-      if (surfeBtn && !surfeBtn.disabled) {
+      // Ignore legacy Try Surfe nodes if any residual markup appears.
+      if (ev.target.closest("[data-hci-surfe-fallback]")) {
         ev.preventDefault();
-        var parent = surfeBtn.closest("[data-hci-enrich-slot], .hci-enrich");
-        var mainBtn =
-          (parent && parent.querySelector("[data-hci-enrich]")) ||
-          root.querySelector(
-            '[data-hci-enrich][data-person-id="' +
-              esc(surfeBtn.getAttribute("data-person-id") || "") +
-              '"]'
-          );
-        if (mainBtn) {
-          var surfeChannel = surfeBtn.getAttribute("data-enrich-channel");
-          if (surfeChannel) mainBtn.setAttribute("data-enrich-channel", surfeChannel);
-          mainBtn.setAttribute("data-force-surfe", "1");
-          mainBtn.click();
-        }
         return;
       }
       var btn = ev.target.closest("[data-hci-enrich]");
       if (!btn || btn.disabled) return;
+      // Session cache: prevent accidental duplicate credit spend after a successful lookup.
+      if (btn.getAttribute("data-session-lookup") === "1") return;
       var hotelId = btn.getAttribute("data-hotel-id") || "";
       var personId = btn.getAttribute("data-person-id") || "";
       var personName = btn.getAttribute("data-person-name") || "";
@@ -1748,15 +1660,11 @@
       if (_inflightReveal[key]) return;
       var slot = findEnrichSlot(btn);
       var card = btn.closest(".hci-person, .hci-dir-row, tr");
-      var forceSurfe = btn.getAttribute("data-force-surfe") === "1";
-      btn.removeAttribute("data-force-surfe");
+      var feedbackHandled = false;
       btn.disabled = true;
       btn.setAttribute("aria-busy", "true");
       setEnrichButtonLabel(btn, "finding");
-      // Toast outside the table — do not inject loaders into the row/result slot.
-      showEnrichToast(
-        forceSurfe ? "Finding Contact Details…" : "Finding Contact Details…",
-      );
+      showEnrichToast("Finding Contact Details...");
       if (slot) {
         slot.hidden = true;
         slot.setAttribute("hidden", "");
@@ -1764,13 +1672,14 @@
       }
       if (card) card.setAttribute("data-enriching", "1");
       _inflightReveal[key] = true;
-      var useHybrid = btn.getAttribute("data-hci-hybrid-enrich") === "1" && !forceSurfe;
+
+      // V4: one-click Surfe only — never Findymail / enrich-hybrid on customer click.
       var url =
         "/api/contact-intelligence/hotels/" +
         encodeURIComponent(hotelId) +
         "/people/" +
         encodeURIComponent(personId) +
-        (useHybrid ? "/enrich-hybrid" : "/reveal");
+        "/reveal";
       fetch(url, {
         method: "POST",
         credentials: "same-origin",
@@ -1783,7 +1692,7 @@
           companyDomain: btn.getAttribute("data-company-domain") || "",
           channel: btn.getAttribute("data-enrich-channel") || "both",
           persist: false,
-          allowPaidFindymail: true,
+          allowPaidFindymail: false,
         }),
       })
         .then(function (r) {
@@ -1797,10 +1706,7 @@
                 body: {
                   ok: false,
                   error: r.status === 404 ? "API route not found" : "http_" + r.status,
-                  userMessage:
-                    r.status === 404
-                      ? "Contact enrichment API route is unavailable on this server."
-                      : "Lookup could not be completed. Try again.",
+                  userMessage: "Unable to Complete Lookup. Please Try Again.",
                 },
               };
             },
@@ -1809,80 +1715,54 @@
         .then(function (pack) {
           var body = pack.body || { ok: false, error: "http_" + pack.status };
           if (body && body.person && !body.person.personId) body.person.personId = personId;
+          if (body && body.missingChannelState && btn && btn.isConnected) {
+            btn.setAttribute(
+              "data-enrich-channel",
+              body.missingChannelState.requestChannel || "both",
+            );
+            btn.setAttribute(
+              "data-needs-email",
+              body.missingChannelState.needsEmail ? "1" : "0",
+            );
+            btn.setAttribute(
+              "data-needs-phone",
+              body.missingChannelState.needsPhone ? "1" : "0",
+            );
+          }
 
-          // Durable Findymail / Airtable email|phone only — LinkedIn-only channels must NOT
-          // replace the cell (that previously detached the Try Surfe offer).
-          if (useHybrid && body && body.ok && (body.email || body.phone)) {
-            var liveBtn = applyHybridRowUpdate(btn, body) || findEnrichButton(personId, hotelId);
-            btn = liveBtn || btn;
-            slot = findEnrichSlot(btn);
-            if (body.missingChannelState && btn && btn.isConnected) {
-              btn.setAttribute(
-                "data-enrich-channel",
-                body.missingChannelState.requestChannel || "both",
-              );
-              btn.setAttribute(
-                "data-needs-email",
-                body.missingChannelState.needsEmail ? "1" : "0",
-              );
-              btn.setAttribute(
-                "data-needs-phone",
-                body.missingChannelState.needsPhone ? "1" : "0",
-              );
-            }
-            if (body.surfeFallbackAvailable) {
-              paintSurfeFallbackOffer(slot, body, personId);
-              if (btn && btn.isConnected) {
-                btn.disabled = false;
-                setEnrichButtonLabel(btn, "idle");
-              }
-            } else if (btn && btn.isConnected) {
+          btn = findEnrichButton(personId, hotelId) || btn;
+          slot = findEnrichSlot(btn) || slot;
+          var painted = paintEnrichResult(slot, body, btn) || {};
+          feedbackHandled = true;
+
+          var hasSession =
+            body &&
+            body.ok &&
+            !body.pending &&
+            (body.person || body.cached) &&
+            ((body.person && body.person.email) ||
+              (body.person && body.person.phone) ||
+              body.email ||
+              body.phone);
+          if (hasSession) {
+            if (btn && btn.isConnected) {
+              btn.setAttribute("data-session-lookup", "1");
               btn.disabled = true;
               setEnrichButtonLabel(btn, "idle");
               btn.classList.add("hci-btn--enrich-dimmed");
-              if (slot) {
-                slot.hidden = false;
-                slot.removeAttribute("hidden");
-                slot.innerHTML =
-                  '<div class="hci-note">' +
-                  esc(body.message || "Canonical channels updated from Airtable.") +
-                  "</div>";
-              }
+              btn.setAttribute("title", SESSION_HINT);
             }
             return;
           }
-
-          if (useHybrid && body && body.surfeFallbackAvailable && !body.email && !body.phone) {
-            // Table may re-render during long Findymail waits — always re-resolve live nodes.
-            btn = findEnrichButton(personId, hotelId) || btn;
-            slot = findEnrichSlot(btn);
-            if (!slot && btn) {
-              var wrap = btn.closest("[data-hci-enrich-slot]");
-              if (wrap) {
-                slot = document.createElement("div");
-                slot.className = "hci-enrich__result hci-enrich__result--cell";
-                wrap.appendChild(slot);
-              }
-            }
-            paintSurfeFallbackOffer(slot, body, personId);
+          if (body && body.ok && body.pending) {
             if (btn && btn.isConnected) {
               btn.disabled = false;
               setEnrichButtonLabel(btn, "idle");
             }
             return;
           }
-
-          btn = findEnrichButton(personId, hotelId) || btn;
-          slot = findEnrichSlot(btn) || slot;
-          paintEnrichResult(slot, body, btn);
-          if (body && body.ok && !body.pending && (body.person || body.cached)) {
-            if (btn && btn.isConnected) {
-              setEnrichButtonLabel(btn, "complete");
-              btn.disabled = true;
-            }
-            return;
-          }
-          if (btn && btn.isConnected) {
+          // No result / error — leave available for intentional retry.
+          if (btn && btn.isConnected && btn.getAttribute("data-session-lookup") !== "1") {
             btn.disabled = false;
             setEnrichButtonLabel(btn, "idle");
           }
@@ -1895,11 +1775,12 @@
             {
               ok: false,
               error: "network_error",
-              userMessage: "Lookup could not be completed. Try again.",
+              userMessage: "Unable to Complete Lookup. Please Try Again.",
               message: String((err && err.message) || err),
             },
             btn,
           );
+          feedbackHandled = true;
           if (btn && btn.isConnected) {
             btn.disabled = false;
             setEnrichButtonLabel(btn, "idle");
@@ -1907,7 +1788,8 @@
         })
         .finally(function () {
           delete _inflightReveal[key];
-          hideEnrichToast();
+          // Success/error feedback toast manages its own dismiss; only clear loading toast otherwise.
+          if (!feedbackHandled) hideEnrichToast();
           btn = findEnrichButton(personId, hotelId) || btn;
           if (btn && btn.isConnected) btn.removeAttribute("aria-busy");
           if (card && card.isConnected) card.removeAttribute("data-enriching");
@@ -2028,6 +1910,8 @@
   }
 
   function loadHpcPropertyFallback(hotelId) {
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) return Promise.resolve(null);
     return fetch(
       "/api/golden-demo/ownership/hotel/" + encodeURIComponent(hotelId),
       { credentials: "same-origin" }
@@ -2293,6 +2177,8 @@
   }
 
   function loadViewModel(hotelId) {
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) return Promise.resolve(null);
     var showcase = SHOWCASE_PATHS[hotelId];
     var tries = [];
     if (showcase) tries.push(showcase);
@@ -2371,6 +2257,13 @@
   function mount(host, hotelId, opts) {
     if (!host) return Promise.resolve();
     opts = opts || {};
+    hotelId = String(hotelId || "").trim();
+    if (!hotelId) {
+      host.innerHTML = renderEmpty(
+        "Hotel identity could not be resolved. Open a property from Opportunity Radar or use a link with a canonical hotel id.",
+      );
+      return Promise.resolve();
+    }
     // Surfe session results must not survive hotel remount / reload.
     _sessionSurfeByPerson = Object.create(null);
     host.innerHTML = renderLoading();

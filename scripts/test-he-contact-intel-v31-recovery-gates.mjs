@@ -29,7 +29,7 @@ const GATES = {
     !/slot\.innerHTML = waveHtml\("Finding Contact Details/.test(js),
   HE_SURFE_SESSION_RESULT_DISPLAY:
     /_sessionSurfeByPerson/.test(js) &&
-    /Surfe · Session Only/.test(js) &&
+    /Available for this session/.test(js) &&
     /gdi-list-session-tag/.test(js + css) &&
     /paintSurfeFallbackOffer/.test(js),
   HE_SURFE_NO_AIRTABLE_PERSISTENCE:
