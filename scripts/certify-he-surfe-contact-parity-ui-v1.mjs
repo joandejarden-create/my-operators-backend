@@ -20,7 +20,7 @@ const jsSrc = fs.readFileSync(
 );
 const apiSrc = fs.readFileSync(path.join(ROOT, "api/contact-intelligence.js"), "utf8");
 
-assert.match(jsSrc, /Available for this session|data-surfe-session/);
+assert.match(jsSrc, /Results stay in this session only and are not saved to Dealality records|data-surfe-session/);
 assert.match(jsSrc, /telHrefForPhone\(phone\)/);
 assert.match(jsSrc, /payload\.pending/);
 assert.match(jsSrc, /_inflightReveal/);
@@ -80,7 +80,7 @@ if (base) {
       findButtonPresent: hybridCount + enrichCount > 0,
       hybridEnrichCount: hybridCount,
       sessionOnlyLabelPresent:
-        (await page.getByText(/Available for this session|Session Only/i).count()) > 0,
+        (await page.getByText(/Results stay in this session only|session only/i).count()) > 0,
       screenshot: shot,
       note: "Live Surfe click not auto-fired (credit guard). Provider verified via diagnostic. HE shell via deal-capture-radar hotelExplorer.",
     };

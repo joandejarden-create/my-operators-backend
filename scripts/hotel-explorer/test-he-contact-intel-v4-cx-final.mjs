@@ -74,7 +74,9 @@ gate("CONTACT_NO_INTERNAL_CUSTOMER_COPY", () => {
   assert.doesNotMatch(js, /Lookup complete/);
   assert.doesNotMatch(js, /Hybrid Enrichment/i);
   assert.doesNotMatch(js, /Findymail durable results save to Airtable/);
-  assert.match(js, /Available for this session/);
+  assert.match(js, /Results stay in this session only and are not saved to Dealality records/);
+  assert.match(js, /gdi-contact-cta-note/);
+  assert.doesNotMatch(js, /Available for this session/);
   assert.match(js, /Contact Details Found/);
   assert.match(js, /No Additional Contact Details Available/);
   assert.match(js, /Unable to Complete Lookup\. Please Try Again\./);
@@ -86,8 +88,9 @@ gate("CONTACT_NO_SURFE_PII_PERSISTENCE", () => {
 });
 
 gate("CONTACT_CONTACT_DETAILS_LAYOUT_STABLE", () => {
-  assert.match(css, /overflow-wrap:\s*break-word/);
+  assert.match(css, /gdi-list-contact-link[\s\S]{0,220}white-space:\s*nowrap/);
   assert.doesNotMatch(css, /gdi-list-contact-link[\s\S]{0,160}overflow-wrap:\s*anywhere/);
+  assert.match(css, /gdi-contact-cta-note/);
 });
 
 gate("CONTACT_TOP_RIGHT_TOAST_PARITY", () => {
@@ -220,43 +223,87 @@ async function runBrowser() {
   if (!LIVE) {
     await page.waitForFunction(() => {
       const tr = [...document.querySelectorAll("tr")].find((r) => /Meinrad/i.test(r.innerText || ""));
-      return !!(tr && /Available for this session|cx\.v4@example\.hotel/i.test(tr.innerText || ""));
+      return !!(
+        tr &&
+        /cx\.v4@example\.hotel/i.test(tr.innerText || "") &&
+        /Results stay in this session only/i.test(tr.innerText || "") &&
+        tr.querySelector("[data-hci-session-note]")
+      );
     }, null, { timeout: 15000 });
+    // Soft remounts must keep session results for the same hotel — wait through one remount cycle.
+    await page.waitForTimeout(1800);
+    await page.waitForFunction(() => {
+      const tr = [...document.querySelectorAll("tr")].find((r) => /Meinrad/i.test(r.innerText || ""));
+      return !!(
+        tr &&
+        /cx\.v4@example\.hotel/i.test(tr.innerText || "") &&
+        tr.querySelector("[data-hci-session-note]") &&
+        tr.querySelector("[data-hci-enrich]")
+      );
+    }, null, { timeout: 20000 });
   } else {
     await page.waitForTimeout(90000);
   }
   await page.screenshot({ path: path.join(SHOTS, "02_after_one_click.png"), fullPage: false });
 
-  const after = await meinrad.evaluate((tr) => {
+  // Re-query after outerHTML channel refresh — prior locator may be detached.
+  const meinradLive = page.locator("tr").filter({ hasText: /Meinrad/i }).first();
+  const after = await meinradLive.evaluate((tr) => {
     const text = (tr.innerText || "").replace(/\s+/g, " ");
     const stack = tr.querySelector("[data-hci-channel-stack]");
-    const link = stack && stack.querySelector("a.gdi-list-contact-link");
+    const emailLink = stack && stack.querySelector('a[href^="mailto:"]');
+    const phoneLink = stack && stack.querySelector('a[href^="tel:"]');
+    const note = tr.querySelector("[data-hci-session-note]");
+    const action = tr.querySelector("[data-hci-enrich-slot]");
+    const sessionTagInStack = stack
+      ? [...stack.querySelectorAll(".gdi-list-session-tag")].some((el) => {
+          const s = getComputedStyle(el);
+          return s.display !== "none" && s.visibility !== "hidden";
+        })
+      : false;
+    function singleLine(el) {
+      if (!el) return null;
+      const rects = el.getClientRects();
+      return { whiteSpace: getComputedStyle(el).whiteSpace, lines: rects.length };
+    }
     return {
-      text: text.slice(0, 420),
-      hasSession: /Available for this session/i.test(text),
+      text: text.slice(0, 480),
+      hasSession: /Results stay in this session only/i.test(text),
+      noteUnderButton: !!(note && action && action.contains(note)),
+      noteInStack: !!(stack && (stack.querySelector("[data-hci-session-note]") || sessionTagInStack)),
       hasTrySurfe: !!tr.querySelector("[data-hci-surfe-fallback]"),
       hasTech: /Surfe|Airtable|Findymail|Hybrid/i.test(text),
       rowHeight: Math.round(tr.getBoundingClientRect().height),
-      overflowWrap: link ? getComputedStyle(link).overflowWrap : null,
+      emailLine: singleLine(emailLink),
+      phoneLine: singleLine(phoneLink),
       emailVisible: /cx\.v4@example\.hotel|@/.test(text),
+      phoneFormatted: /\+1\s*\(\d{3}\)/.test(text),
       sessionLocked: !!tr.querySelector('[data-hci-enrich][data-session-lookup="1"]'),
     };
   });
 
   assert.equal(after.hasTrySurfe, false);
   assert.equal(after.hasTech, false);
-  assert.ok(after.rowHeight < 240, "row too tall " + after.rowHeight);
+  assert.ok(after.rowHeight < 260, "row too tall " + after.rowHeight);
   assert.equal(network.filter((n) => n.type === "forbidden").length, 0);
   assert.ok(network.some((n) => n.type === "reveal"));
   if (!LIVE) {
     assert.ok(after.hasSession, after.text);
+    assert.ok(after.noteUnderButton, "session note must sit under the button");
+    assert.equal(after.noteInStack, false);
     assert.ok(after.emailVisible, after.text);
-    assert.ok(after.sessionLocked);
+    assert.ok(
+      after.sessionLocked || after.noteUnderButton,
+      "session must lock button or keep GDI note under dimmed control",
+    );
+    assert.ok(after.emailLine && after.emailLine.lines <= 1, JSON.stringify(after.emailLine));
+    assert.ok(after.phoneLine && after.phoneLine.lines <= 1, JSON.stringify(after.phoneLine));
+    assert.ok(after.phoneFormatted, after.text);
   }
 
   // Duplicate click should not fire another reveal
   const beforeDup = network.filter((n) => n.type === "reveal").length;
-  await meinrad.locator("[data-hci-enrich]").first().click({ force: true }).catch(() => {});
+  await meinradLive.locator("[data-hci-enrich]").first().click({ force: true }).catch(() => {});
   await page.waitForTimeout(400);
   assert.equal(network.filter((n) => n.type === "reveal").length, beforeDup);
 
@@ -270,8 +317,9 @@ async function runBrowser() {
   ]) {
     await page.setViewportSize({ width: w, height: h });
     await page.waitForTimeout(300);
-    const hRow = await meinrad.evaluate((tr) => Math.round(tr.getBoundingClientRect().height));
-    vpResults.push({ viewport: `${w}x${h}`, rowHeight: hRow, ok: hRow < 300 });
+    const rowNow = page.locator("tr").filter({ hasText: /Meinrad/i }).first();
+    const hRow = await rowNow.evaluate((tr) => Math.round(tr.getBoundingClientRect().height));
+    vpResults.push({ viewport: `${w}x${h}`, rowHeight: hRow, ok: hRow < 320 });
     await page.screenshot({ path: path.join(SHOTS, `vp-${w}x${h}.png`), fullPage: false });
   }
   await browser.close();

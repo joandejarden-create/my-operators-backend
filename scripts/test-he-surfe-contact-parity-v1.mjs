@@ -139,7 +139,7 @@ const jsSrc = fs.readFileSync(
   path.join(ROOT, "public/js/hotel-contact-intelligence.js"),
   "utf8"
 );
-assert.match(jsSrc, /Available for this session|data-surfe-session/);
+assert.match(jsSrc, /Results stay in this session only and are not saved to Dealality records|data-surfe-session/);
 assert.match(jsSrc, /telHrefForPhone/);
 assert.match(jsSrc, /_inflightReveal/);
 assert.match(jsSrc, /payload\.pending/);
