@@ -100,4 +100,14 @@ GDI shared reveal client retained (`GDI_SHARED_REVEAL_PARITY`).
 
 ## PR / merge / 8080
 
-Filled after PR open / IC merge. Pre-merge 8080 may serve overlayed assets from `ws-gdi` for local cert only — tip SHA must be re-verified post-merge.
+| Field | Value |
+|---|---|
+| PR | [#709](https://github.com/joandejarden-create/my-operators-backend/pull/709) |
+| Status | `OPEN` — `AWAITING_INTEGRATION_CONTROLLER` |
+| Head SHA | `ec65592d6` |
+| Base | `origin/main` `@ 2429e4ff7` |
+| Merge SHA | pending IC merge |
+| Live Surfe credits | **0** (mocked); live click **BLOCKED** |
+| Pre-merge 8080 | `ws-gdi` PID overlay of V4 JS/CSS for local cert — **not** merge tip until IC merges + sync |
+
+Post-merge required: IC merge → `dealality:post-merge-sync --stream he --pr 709` → verify 8080 serving SHA equals merge tip.
