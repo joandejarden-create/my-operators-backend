@@ -1034,8 +1034,9 @@ a.hci-channel__value {
 .hci-root .gdi-list-contact-link {
   color: #aab2ff;
   text-decoration: none;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  white-space: nowrap;
   white-space: normal;
   min-width: 0;
   max-width: 100%;
@@ -1088,14 +1089,42 @@ a.hci-channel__value {
   display: block;
   white-space: nowrap;
 }
-/* Enrichment loading toast lives on document.body — never inside the table */
+/* Enrichment loading toast — shared Dealality upper-right page toast (never in table rows) */
 .hci-enrich-loading-toast {
   position: fixed;
-  left: 50%;
-  bottom: 28px;
-  transform: translateX(-50%);
-  z-index: 10050;
+  top: 20px;
+  right: 20px;
+  left: auto;
+  bottom: auto;
+  z-index: 14050;
   pointer-events: none;
+  width: auto;
+  max-width: min(380px, calc(100vw - 32px));
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0;
+  /* Match .bdd-toast entrance/exit (deal-workspace-shell) */
+  transform: translateX(400px);
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  display: none;
+}
+.hci-enrich-loading-toast.show {
+  display: flex !important;
+  transform: translateX(0);
+  opacity: 1;
+}
+@media (max-width: 640px) {
+  .hci-enrich-loading-toast {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+    transform: translateY(-16px);
+  }
+  .hci-enrich-loading-toast.show {
+    transform: translateY(0);
+  }
 }
 .hci-root tr[data-enriching="1"] {
   /* Busy state without geometry shift */
@@ -1183,4 +1212,35 @@ a.hci-channel__value {
   .hci-root .hci-directory-table {
     min-width: 640px;
   }
+}
+
+/* CONTACT INTELLIGENCE V4 — readable session emails/phones (no vertical char wrap) */
+.hci-root .gdi-list-contact-channels,
+.hci-root [data-hci-channel-stack],
+.hci-channel-stack-readable-v4 {
+  min-width: 160px;
+  max-width: 100%;
+}
+.hci-root .gdi-list-contact-link,
+.hci-root .gdi-list-contact-line,
+.hci-root .hci-channel__value,
+.hci-root [data-hci-channel-stack] a,
+.hci-root [data-hci-channel-stack] .gdi-list-session-tag {
+  overflow-wrap: break-word;
+  word-break: normal;
+  white-space: normal;
+  writing-mode: horizontal-tb;
+  max-width: 100%;
+}
+.hci-root .hci-directory-table--5col td:nth-child(4),
+.hci-root .hci-directory-table--5col td[data-col="contact-details"] {
+  min-width: 300px;
+}
+.hci-root tr[data-enriching="1"] {
+  min-height: 0;
+}
+.hci-root .hci-dir-row,
+.hci-root .hci-directory-table tbody tr {
+  height: auto;
+  max-height: none;
 }
