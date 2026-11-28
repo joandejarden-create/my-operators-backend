@@ -223,10 +223,11 @@ async function waitForCustomerContent(page, route) {
   return { ok: true };
 }
 
-async function gdiInteractions(page, vp, hotel) {
+async function gdiInteractions(page, vp, hotel, tab = {}) {
   const out = {
     hotelId: hotel.id,
     hotelName: hotel.name,
+    tabId: tab.id || null,
     tilesDefault: null,
     listView: null,
     filterState: null,
@@ -235,30 +236,32 @@ async function gdiInteractions(page, vp, hotel) {
     mobileNav: null,
     overflowAfterInteractions: null,
   };
+  const isOpportunitiesTab = tab.id === "opportunities";
 
-  // Default tiles / list controls when on opportunities
+  // Tiles / list — primarily Opportunities; skip scoring on other tabs when absent
   const tilesBtn = page.locator('button:has-text("Tiles"), [data-gdi-view="tiles"], .gdi-view-toggle [data-view="tiles"]').first();
   const listBtn = page.locator('button:has-text("List"), [data-gdi-view="list"], .gdi-view-toggle [data-view="list"]').first();
-  if (await tilesBtn.count()) {
+  if (await tilesBtn.count() && (await tilesBtn.isVisible().catch(() => false))) {
     out.tilesDefault = (await tilesBtn.getAttribute("aria-pressed")) === "true" ||
       (await tilesBtn.evaluate((el) => el.classList.contains("active") || el.getAttribute("aria-current") === "true").catch(() => false));
   }
   if (await listBtn.count() && (await listBtn.isVisible().catch(() => false))) {
     const listClick = await safeClick(listBtn, "gdi_list_view");
     out.listView = listClick.ok ? "switched" : listClick.reason;
-    if (listClick.ok && (await tilesBtn.count())) {
+    if (listClick.ok && (await tilesBtn.count()) && (await tilesBtn.isVisible().catch(() => false))) {
       await safeClick(tilesBtn, "gdi_tiles_view");
     }
   } else {
-    out.listView = "control_absent";
+    out.listView = isOpportunitiesTab ? "control_absent" : "not_applicable_on_tab";
   }
 
-  // Enabled filter chips only (empty High uses .no-records by design)
+  // Priority filters live on Opportunities browse chrome — not required on ES / Priorities
   const enabledChip = page
     .locator("[data-gdi-priority].chain-scale-legend-item:not(.no-records)")
     .filter({ hasNotText: /^All/i })
     .first();
-  if (await enabledChip.count()) {
+  const chipVisible = (await enabledChip.count()) > 0 && (await enabledChip.isVisible().catch(() => false));
+  if (chipVisible) {
     const before = await enabledChip.getAttribute("aria-pressed").catch(() => null);
     const click = await safeClick(enabledChip, "gdi_priority_filter");
     if (!click.ok) {
@@ -281,47 +284,86 @@ async function gdiInteractions(page, vp, hotel) {
     out.filterState = {
       ok: true,
       interacted: false,
-      reason: disabledOnly ? "only_empty_disabled_filters" : "no_priority_filters",
+      reason: !isOpportunitiesTab
+        ? "filters_not_on_this_tab"
+        : disabledOnly
+          ? "only_empty_disabled_filters"
+          : "no_visible_priority_filters",
       intentionallyDisabledEmpty: disabledOnly > 0,
+      skipped: !isOpportunitiesTab,
     };
   }
 
-  // Opportunity drawer — must open, show identity, close via explicit control (not Escape alone)
-  const card = page.locator(".brand-card, .gdi-opportunity-card, [data-gdi-opportunity]").first();
-  if (await card.count() && (await card.isVisible().catch(() => false))) {
-    const title = (await card.innerText().catch(() => "")).split("\n")[0].trim().slice(0, 80);
-    const openClick = await safeClick(card, "gdi_opportunity_card");
-    if (!openClick.ok) {
-      out.drawer = { ok: false, reason: openClick.reason, detail: openClick.detail };
+  // Opportunity drawer — required only when Opportunities cards are visible
+  if (!isOpportunitiesTab) {
+    out.drawer = { ok: true, skipped: true, reason: "drawer_not_required_on_tab" };
+  } else {
+    const moreBtn = page.locator(".brand-card__more-btn[data-open], .brand-card [data-open], button.brand-card__more-btn").first();
+    const card = page.locator(".brand-card--gdi-opp, .brand-card, .gdi-opportunity-card, [data-gdi-opportunity]").first();
+    const openTarget =
+      (await moreBtn.count()) && (await moreBtn.isVisible().catch(() => false))
+        ? moreBtn
+        : (await card.count()) && (await card.isVisible().catch(() => false))
+          ? card
+          : null;
+    if (!openTarget) {
+      out.drawer = { ok: true, skipped: true, reason: "no_opportunity_card_visible" };
     } else {
-      await page.waitForTimeout(600);
-      const drawer = page.locator(".gdi-drawer, [data-gdi-drawer], .drawer-panel, .opportunity-drawer, [role='dialog']").first();
-      const drawerVisible = (await drawer.count()) > 0 && (await drawer.isVisible().catch(() => false));
-      let identityOk = false;
-      if (drawerVisible) {
-        const dText = await drawer.innerText().catch(() => "");
-        identityOk = Boolean(title) && dText.includes(title.slice(0, Math.min(24, title.length)));
-        const scrollable = await drawer.evaluate((el) => el.scrollHeight > el.clientHeight + 2 || true).catch(() => false);
-        const closeBtn = page.locator('.gdi-drawer [aria-label*="Close"], .drawer-close, [data-gdi-drawer-close], button:has-text("Close")').first();
-        const closeClick = await safeClick(closeBtn, "gdi_drawer_close");
-        await page.waitForTimeout(400);
-        const stillOpen = (await drawer.count()) > 0 && (await drawer.isVisible().catch(() => false));
-        out.drawer = {
-          ok: drawerVisible && closeClick.ok && !stillOpen,
-          opened: drawerVisible,
-          identityMatched: identityOk,
-          scrollable,
-          closedViaControl: closeClick.ok && !stillOpen,
-          closeReason: closeClick.ok ? "control" : closeClick.reason,
-          stillOpenAfterClose: stillOpen,
-          selectedTitle: title,
-        };
+      const titleEl = page.locator(".brand-card__name, .brand-card .brand-card__name-row").first();
+      const title = ((await titleEl.innerText().catch(() => "")) || (await card.innerText().catch(() => "")))
+        .split("\n")[0]
+        .trim()
+        .slice(0, 80);
+      const openClick = await safeClick(openTarget, "gdi_opportunity_open");
+      if (!openClick.ok) {
+        out.drawer = { ok: false, reason: openClick.reason, detail: openClick.detail };
       } else {
-        out.drawer = { ok: false, reason: "drawer_did_not_open", selectedTitle: title };
+        await page.waitForTimeout(700);
+        const drawer = page.locator("dialog.gdi-drawer, .gdi-drawer, [data-gdi-drawer], .opportunity-drawer").first();
+        const drawerOpen = await drawer
+          .evaluate((el) => {
+            if (!el) return false;
+            if (el.tagName === "DIALOG") return el.open === true;
+            return el.classList.contains("is-open") || el.getAttribute("aria-hidden") === "false";
+          })
+          .catch(() => false);
+        const drawerVisible = (await drawer.count()) > 0 && (drawerOpen || (await drawer.isVisible().catch(() => false)));
+        if (!drawerVisible) {
+          out.drawer = { ok: false, reason: "drawer_did_not_open", selectedTitle: title };
+        } else {
+          const dText = await drawer.innerText().catch(() => "");
+          const identityOk = Boolean(title) && dText.includes(title.slice(0, Math.min(24, title.length)));
+          const scrollable = await drawer.evaluate((el) => el.scrollHeight >= el.clientHeight).catch(() => true);
+          const closeBtn = page.locator("#gdiDrawerClose, dialog.gdi-drawer button[aria-label='Close']").first();
+          let closeClick = await safeClick(closeBtn, "gdi_drawer_close");
+          if (!closeClick.ok) {
+            // Last resort API close — still record that the control path failed
+            await drawer.evaluate((el) => {
+              if (el && el.tagName === "DIALOG" && typeof el.close === "function") el.close();
+            }).catch(() => {});
+            closeClick = { ok: false, reason: closeClick.reason || "gdi_drawer_close_failed" };
+          }
+          await page.waitForTimeout(400);
+          const stillOpen = await drawer
+            .evaluate((el) => {
+              if (!el) return false;
+              if (el.tagName === "DIALOG") return el.open === true;
+              return el.classList.contains("is-open") || el.getAttribute("aria-hidden") === "false";
+            })
+            .catch(() => false);
+          out.drawer = {
+            ok: drawerVisible && closeClick.ok && !stillOpen,
+            opened: drawerVisible,
+            identityMatched: identityOk,
+            scrollable,
+            closedViaControl: closeClick.ok && !stillOpen,
+            closeReason: closeClick.reason || "control",
+            stillOpenAfterClose: stillOpen,
+            selectedTitle: title,
+          };
+        }
       }
     }
-  } else {
-    out.drawer = { ok: true, skipped: true, reason: "no_opportunity_card_visible" };
   }
 
   // Contact links (display only — do not trigger enrich)
@@ -391,12 +433,18 @@ function buildGdiRoutes() {
           }
           return { ok: true };
         },
-        interactions: async (page, vp) => gdiInteractions(page, vp, hotel),
+        interactions: async (page, vp) => gdiInteractions(page, vp, hotel, tab),
         scoreInteractions: (ix) => {
           if (!ix) return { fail: true, note: "interactions_null" };
-          if (ix.filterState && ix.filterState.ok === false) return { fail: true, note: ix.filterState.reason };
-          if (ix.drawer && ix.drawer.ok === false && !ix.drawer.skipped) return { fail: true, note: ix.drawer.reason || "drawer_fail" };
-          if (ix.mobileNav && ix.mobileNav.ok === false && !ix.mobileNav.skipped) return { fail: true, note: "mobile_nav_fail" };
+          if (ix.filterState && ix.filterState.ok === false && !ix.filterState.skipped) {
+            return { fail: true, note: ix.filterState.reason };
+          }
+          if (ix.drawer && ix.drawer.ok === false && !ix.drawer.skipped) {
+            return { fail: true, note: ix.drawer.reason || "drawer_fail" };
+          }
+          if (ix.mobileNav && ix.mobileNav.ok === false && !ix.mobileNav.skipped) {
+            return { fail: true, note: "mobile_nav_fail" };
+          }
           if (ix.overflowAfterInteractions && ix.overflowAfterInteractions.pageOverflow > OVERFLOW_MAX_PX) {
             return { fail: true, note: `overflow_after_interactions_${ix.overflowAfterInteractions.pageOverflow}` };
           }
@@ -453,12 +501,19 @@ function buildStaticRoutes() {
           if (!open.ok) {
             moreFilterDrawer = { ok: false, reason: open.reason };
           } else {
-            const drawer = page.locator("#radarFilterDrawer, .radar-filter-drawer");
-            const opened = (await drawer.count()) > 0 && (await drawer.isVisible().catch(() => false));
-            const closeBtn = page.locator("#radarFilterDoneBtn, [data-radar-filter-close]").first();
-            const close = await safeClick(closeBtn, "radar_filter_close");
-            await page.waitForTimeout(300);
-            const still = (await drawer.count()) > 0 && (await drawer.isVisible().catch(() => false));
+            const drawer = page.locator("#radarFilterDrawer");
+            const opened = await drawer
+              .evaluate((el) => Boolean(el && (el.classList.contains("is-open") || el.getAttribute("aria-hidden") === "false")))
+              .catch(() => false);
+            // Prefer explicit close control; Done is also wired in radar-filter-drawer.js
+            let close = await safeClick(page.locator("#radarFilterDrawerClose").first(), "radar_filter_close_x");
+            if (!close.ok) {
+              close = await safeClick(page.locator("#radarFilterDoneBtn").first(), "radar_filter_done");
+            }
+            await page.waitForTimeout(350);
+            const still = await drawer
+              .evaluate((el) => Boolean(el && (el.classList.contains("is-open") || el.getAttribute("aria-hidden") === "false")))
+              .catch(() => false);
             moreFilterDrawer = {
               ok: opened && close.ok && !still,
               opened,
@@ -592,12 +647,25 @@ function buildStaticRoutes() {
       product: "HotelExplorer",
       findingIds: ["HE-001", "HE-002"],
       url: `${BASE}/hotel-explorer-preview.html?hotelExplorer=recLuxvwwxID7U2B8&mode=live`,
-      waitMs: 2000,
-      readyTimeoutMs: 30000,
-      // Require boot hidden AND explorer chrome — never treat static boot h1 as success
-      readySelector: "#hefp-boot[hidden], .hex-shell, [data-hex-root], .hotel-explorer-shell",
+      waitMs: 8000,
+      readyTimeoutMs: 45000,
+      // Visible explorer chrome only — never wait for #hefp-boot[hidden] with state=visible
+      readySelector: ".hex-shell, [data-hex-root], .hotel-explorer-shell, .hex-header",
       forbidSelectors: [],
       contentReady: async (page) => {
+        // Wait until founder preview dismisses boot (hidden property), then assert identity
+        try {
+          await page.waitForFunction(
+            () => {
+              const boot = document.getElementById("hefp-boot");
+              return !boot || boot.hidden === true;
+            },
+            { timeout: 40000 },
+          );
+        } catch {
+          const status = await page.locator("#hefp-status").innerText().catch(() => "");
+          return { ok: false, reason: "he_boot_not_dismissed", status: "FAIL", detail: status };
+        }
         const bootHidden = await page.locator("#hefp-boot").evaluate((el) => !el || el.hidden === true).catch(() => false);
         if (!bootHidden) {
           const status = await page.locator("#hefp-status").innerText().catch(() => "");
